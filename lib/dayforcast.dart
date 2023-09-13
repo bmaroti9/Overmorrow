@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:ui';
 
 import 'weather_refact.dart' as weather_refactor;
@@ -46,5 +47,35 @@ class Day {
         item["day"]["condition"]["text"],
       ),
       color: getDaysColor(item['date'], night),
+  );
+}
+
+class WeatherData {
+  final List<Day> days;
+  final Current current;
+  final String place;
+
+  WeatherData(this.days, this.current, this.place);
+}
+
+class Current {
+  final String text;
+  final String icon;
+  final double temp;
+
+  const Current({
+    required this.text,
+    required this.icon,
+    required this.temp,
+});
+
+  static Current fromJson(item) => Current(
+    text: textCorrection(
+      item["condition"]["text"],
+    ),
+    icon: iconCorrection(
+      item["condition"]["text"],
+    ),
+    temp: item["temp_c"],
   );
 }
