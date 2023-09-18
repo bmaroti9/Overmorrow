@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'ui_helper.dart';
 
 Map<String, String> weatherIconMap = {
   'Clear' : 'clear_night.png',
@@ -52,16 +53,17 @@ Map<String, String> weatherIconMap = {
 };
 
 Map<String, String> weatherTextMap = {
-    'Clear': 'Clear Night',
-    'Sunny': 'Sunny',
-    'Cloudy': 'Cloudy',
-    'Overcast': 'Cloudy',
+    'Clear': 'Clear Sky',
+    'Sunny': 'Clear Sky',
+    'Cloudy': 'Overcast',
+    'Partly cloudy': 'Partly Cloudy',
+    'Overcast': 'Overcast',
     'Mist': 'Haze',
     'Patchy rain possible': 'Rain',
     'Patchy snow possible': 'Snow',
     'Patchy sleet possible': 'Sleet',
     'Patchy freezing drizzle possible': 'Drizzle',
-    'Thundery outbreaks possible': 'Lightning',
+    'Thundery outbreaks possible': 'Thunderstorm',
     'Blowing snow': 'Heavy Snow',
     'Blizzard': 'Heavy Snow',
     'Fog': 'Fog',
@@ -96,10 +98,44 @@ Map<String, String> weatherTextMap = {
     'Moderate or heavy snow showers': 'Heavy Snow',
     'Light showers of ice pellets': 'Sleet',
     'Moderate or heavy showers of ice pellets': 'Sleet',
-    'Patchy light rain with thunder': 'Lightning',
-    'Moderate or heavy rain with thunder': 'Lightning',
-    'Patchy light snow with thunder': 'Lightning',
-    'Moderate or heavy snow with thunder': 'Lightning'
+    'Patchy light rain with thunder': 'Thunderstorm',
+    'Moderate or heavy rain with thunder': 'Thunderstorm',
+    'Patchy light snow with thunder': 'Thunderstorm',
+    'Moderate or heavy snow with thunder': 'Thunderstorm'
+};
+
+Map<String, String> textBackground = {
+  'Clear Night': 'clear_night.jpg',
+  'Partly Cloudy': 'cloudy13.jpg',
+  'Clear Sky': 'very_clear.jpg',
+  'Overcast': 'overcast.jpg',
+  'Haze': 'haze.jpg',
+  'Rain': 'rainy_sky.jpg',
+  'Sleet': 'snowy_sky.jpg',
+  'Drizzle': 'drizzle.jpg',
+  'Thunderstorm': 'thunderstorm.jpg',
+  'Heavy Snow': 'heavy_snow.jpg',
+  'Fog': 'fog.jpg',
+  'Snow': 'snowy_sky.jpg',
+  'Heavy Rain': 'heavy_rain.jpg',
+  'Cloudy Night' : 'clear_night_color.jpg'
+};
+
+Map<String, List<Color>> textFontColor = {
+  'Clear Night': const [BLACK, WHITE],
+  'Partly Cloudy': const [WHITE, WHITE],
+  'Clear Sky': const [BLACK, WHITE],
+  'Overcast': const [BLACK, WHITE],
+  'Haze': const [BLACK, WHITE],
+  'Rain': const [BLACK, WHITE],
+  'Sleet': const [BLACK, WHITE],
+  'Drizzle': const [BLACK, WHITE],
+  'Thunderstorm': const [BLACK, WHITE],
+  'Heavy Snow': const [BLACK, WHITE],
+  'Fog': const [BLACK, WHITE],
+  'Snow': const [BLACK, WHITE],
+  'Heavy Rain': const [BLACK, WHITE],
+  'Cloudy Night': const [WHITE, WHITE]
 };
 
 Map<int, Color> dayColorMap = {

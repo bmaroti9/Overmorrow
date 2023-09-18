@@ -23,8 +23,8 @@ class _MyAppState extends State<MyApp> {
     try {
       var params = {
         'key': apiKey,
-        'q': 'Szeged',
-        'days': '3',
+        'q': 'Malé',
+        'days': '0',
         'aqi': 'no',
         'alerts': 'no',
       };
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          body: FutureBuilder<dayforcast.WeatherData>(
+        body: FutureBuilder<dayforcast.WeatherData>(
         future: getDays(),
         builder: (BuildContext context,
             AsyncSnapshot<dayforcast.WeatherData> snapshot) {
@@ -68,67 +68,79 @@ class _MyAppState extends State<MyApp> {
               child: ErrorWidget(snapshot.error as Object),
             );
           }
-          return Center(
-            child: Column(
-              children: [
-                buildWholeThing(snapshot.data),
-                //buildCurrent(snapshot.data?.current),
-                // You can access the current data as well like this:
-                // buildCurrent(snapshot.data.current),
-              ],
-            ),
-          );
+          return buildWholeThing(snapshot.data);
         },
       )),
     );
   }
 
-  Widget buildWholeThing(dayforcast.WeatherData? data) => Container(
-    color: const Color(0xffD58477),
-    child: Column(
-      children: [
-        Container(
-          padding: EdgeInsets.all(20.0), // Adds 20-pixel padding on all sides
-          child: Text(
-            "Caption",
-            style: TextStyle(fontSize: 20, color: Colors.black),
+  Widget buildWholeThing(dayforcast.WeatherData? data) => Stack(
+    children: [
+      Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/backdrops/${data!.current.backdrop}'),
+            fit: BoxFit.cover,
+            alignment: const Alignment(-0.25, 0.0),
           ),
         ),
-        Container(
-          height: 696,
-          //constraints: BoxConstraints.expand(),
-          margin: EdgeInsets.symmetric(horizontal: 10.0), // Leaves 20-pixel margin on each side
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: const Color(0xff1b42c3), // Set the color of the outline
-              width: 5.0, // Set the width of the outline
-            ),
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          // Add your content here
+      ),
+      Center(
+        child: Column(
+          children: [
+            buildCurrent(data)
+          ],
         ),
-      ],
-    ),
+      ),
+    ],
   );
 
-
-  Widget buildCurrent(var current) => Container(
-      height: 400,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: const Color(0xff1b42c3), // Set the color of the outline
-          width: 5.0, // Set the width of the outline
+  Widget buildCurrent(var data) => Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 50.0, left: 40),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+              data.place,
+              style: GoogleFonts.comfortaa(
+                fontSize: 42,
+                color: data.current.titleColor
+            ),
+          )
         ),
-        borderRadius: const BorderRadius.all(Radius.circular(20.0)),
       ),
-      child: Center(
-        child: Text(
-          current.text,
-          style: GoogleFonts.comfortaa(
-              fontSize: 40, color: const Color(0xff1b42c3)),
-          textAlign: TextAlign.center,
+      Padding(
+        padding: const EdgeInsets.only(top: 260.0, left: 40),
+        child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Text(
+              '${data.current.temp}°',
+              style: GoogleFonts.comfortaa(
+                color: data.current.contentColor,
+                fontSize: 85,
+                fontWeight: FontWeight.w100,
+              ),
+            )
         ),
-      ));
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left: 40),
+        child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              data.current.text,
+              style: GoogleFonts.comfortaa(
+                color: data.current.contentColor,
+                fontSize: 50,
+                height: 0.7,
+                fontWeight: FontWeight.w300,
+              ),
+            )
+        ),
+      )
+    ],
+  );
 
   Widget buildDays(var thesedays) => ListView.builder(
       itemCount: thesedays.length,

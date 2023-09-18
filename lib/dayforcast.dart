@@ -1,5 +1,6 @@
 import 'dart:ffi';
 import 'dart:ui';
+import 'ui_helper.dart';
 
 import 'weather_refact.dart' as weather_refactor;
 
@@ -8,8 +9,36 @@ String iconCorrection(name) {
   return p;
 }
 
-String textCorrection(name) {
-  String p = weather_refactor.weatherTextMap[name] ?? "clear_night";
+String backdropCorrection(name, isday) {
+  String text = textCorrection(name, isday);
+  String backdrop = weather_refactor.textBackground[text] ?? "fog.jpg";
+  return backdrop;
+}
+
+String textCorrection(name, isday) {
+  if (name == 'Clear'){
+    if (isday == 1) {
+      return 'Clear Sky';
+    }
+    else{
+      return 'Clear Night';
+    }
+  }
+  if (name == 'Partly cloudy'){
+    if (isday == 1) {
+      return 'Partly Cloudy';
+    }
+    else{
+      return 'Cloudy Night';
+    }
+  }
+  String p = weather_refactor.weatherTextMap[name] ?? "undefined";
+  return p;
+}
+
+List<Color> contentColorCorrection(name, isday) {
+  String text = textCorrection(name, isday);
+  List<Color> p = weather_refactor.textFontColor[text] ?? [BLACK, WHITE];
   return p;
 }
 
@@ -29,6 +58,7 @@ class Day {
   final String icon;
   final Color color;
 
+
   const Day({
     required this.date,
     required this.text,
@@ -41,7 +71,7 @@ class Day {
       //text: item["day"]["condition"]["text"],
       //icon: "http:" + item["day"]['condition']['icon'],
       text: textCorrection(
-        item["day"]["condition"]["text"],
+        item["day"]["condition"]["text"], 1
       ),
       icon: iconCorrection(
         item["day"]["condition"]["text"],
@@ -60,22 +90,35 @@ class WeatherData {
 
 class Current {
   final String text;
-  final String icon;
-  final double temp;
+  final String backdrop;
+  final int temp;
+  final Color titleColor;
+  final Color contentColor;
 
   const Current({
     required this.text,
-    required this.icon,
+    required this.backdrop,
     required this.temp,
+    required this.titleColor,
+    required this.contentColor,
 });
 
   static Current fromJson(item) => Current(
+
     text: textCorrection(
-      item["condition"]["text"],
+      item["condition"]["text"], item["is_day"]
     ),
-    icon: iconCorrection(
-      item["condition"]["text"],
+    backdrop: backdropCorrection(
+      item["condition"]["text"], item["is_day"]
     ),
-    temp: item["temp_c"],
+    temp: item["temp_c"].round(),
+
+    titleColor: contentColorCorrection(
+      item["condition"]["text"], item["isday"]
+    )[0],
+
+    contentColor: contentColorCorrection(
+      item["condition"]["text"], item["isday"]
+    )[1],
   );
 }
