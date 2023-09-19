@@ -94,6 +94,10 @@ class Current {
   final int temp;
   final Color titleColor;
   final Color contentColor;
+  final int maxtemp;
+  final int mintemp;
+  final int precip;
+  final int wind;
 
   const Current({
     required this.text,
@@ -101,24 +105,33 @@ class Current {
     required this.temp,
     required this.titleColor,
     required this.contentColor,
+    required this.precip,
+    required this.maxtemp,
+    required this.mintemp,
+    required this.wind,
 });
 
   static Current fromJson(item) => Current(
 
     text: textCorrection(
-      item["condition"]["text"], item["is_day"]
+      item["current"]["condition"]["text"], item["is_day"]
     ),
     backdrop: backdropCorrection(
-      item["condition"]["text"], item["is_day"]
+      item["current"]["condition"]["text"], item["is_day"]
     ),
-    temp: item["temp_c"].round(),
+    temp: item["current"]["temp_c"].round(),
 
     titleColor: contentColorCorrection(
-      item["condition"]["text"], item["isday"]
+      item["current"]["condition"]["text"], item["isday"]
     )[0],
 
     contentColor: contentColorCorrection(
-      item["condition"]["text"], item["isday"]
+      item["current"]["condition"]["text"], item["isday"]
     )[1],
+
+    maxtemp: item["forecast"]["forecastday"][0]["day"]["maxtemp_c"].round(),
+    mintemp: item["forecast"]["forecastday"][0]["day"]["mintemp_c"].round(),
+    precip: item["current"]["precip_mm"].round(),
+    wind: item["current"]["wind_kph"].round(),
   );
 }

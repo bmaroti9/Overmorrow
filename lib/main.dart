@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'api_key.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'ui_helper.dart';
 
 import 'dayforcast.dart' as dayforcast;
 
@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
     try {
       var params = {
         'key': apiKey,
-        'q': 'Malé',
+        'q': 'Szeged',
         'days': '0',
         'aqi': 'no',
         'alerts': 'no',
@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
       }
 
       dayforcast.Current current =
-          dayforcast.Current.fromJson(jsonbody['current']);
+          dayforcast.Current.fromJson(jsonbody);
 
       return dayforcast.WeatherData(
           days, current, jsonbody['location']['name']);
@@ -138,6 +138,38 @@ class _MyAppState extends State<MyApp> {
               ),
             )
         ),
+      ),
+      Container(
+        padding: const EdgeInsets.only(top:30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DescriptionCircle(
+              color: WHITE,
+              text: '${data.current.maxtemp}°',
+              undercaption: 'temp. max',
+              extra: '',
+            ),
+            DescriptionCircle(
+              color: WHITE,
+              text: '${data.current.mintemp}°',
+              undercaption: 'temp. min',
+              extra: '',
+            ),
+            DescriptionCircle(
+              color: WHITE,
+              text: '${data.current.precip}',
+              undercaption: 'precip.',
+              extra: 'mm',
+            ),
+            DescriptionCircle(
+              color: WHITE,
+              text: '${data.current.wind}',
+              undercaption: 'wind',
+              extra: 'kmh',
+            ),
+          ]
+        )
       )
     ],
   );
