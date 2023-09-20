@@ -77,3 +77,85 @@ class DescriptionCircle extends StatelessWidget {
     );
   }
 }
+
+class WeatherPage extends StatelessWidget {
+  final days ;
+
+  WeatherPage({super.key, required this.days});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            backgroundColor: WHITE,
+            bottom: PreferredSize(
+              child: Container(),
+              preferredSize: Size(0, 20),
+            ),
+            pinned: false,
+            expandedHeight: MediaQuery.of(context).size.height * 0.8,
+            flexibleSpace: Stack(
+              children: [
+                const Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Image(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/backdrops/fog.jpg'),
+                    )),
+                Positioned(
+                  bottom: -1,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 30,
+                    decoration: const BoxDecoration(
+                      color: WHITE,
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(50),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SliverFixedExtentList(
+            itemExtent: 50.0,
+
+            delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                return Container(
+                  alignment: Alignment.center,
+                  color: WHITE,
+                  child: Text('List Item $index'),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ParallaxBackground extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/backdrops/fog.jpg'), // Replace with your image path
+          fit: BoxFit.cover,
+        ),
+      ),
+
+    );
+  }
+}
+
+

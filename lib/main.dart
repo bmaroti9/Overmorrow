@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
     try {
       var params = {
         'key': apiKey,
-        'q': 'Szeged',
+        'q': 'Budapest',
         'days': '0',
         'aqi': 'no',
         'alerts': 'no',
@@ -34,9 +34,10 @@ class _MyAppState extends State<MyApp> {
       var forecastlist = jsonbody['forecast']['forecastday'];
 
       List<dayforcast.Day> days = [];
+      int index = 0;
       for (var forecast in forecastlist) {
-        days.add(dayforcast.Day.fromJson(forecast, 1));
-        days.add(dayforcast.Day.fromJson(forecast, 0));
+        days.add(dayforcast.Day.fromJson(forecast, index));
+        index += 1;
       }
 
       dayforcast.Current current =
@@ -68,15 +69,18 @@ class _MyAppState extends State<MyApp> {
               child: ErrorWidget(snapshot.error as Object),
             );
           }
-          return buildWholeThing(snapshot.data);
+          //return buildWholeThing(snapshot.data);
+          return WeatherPage(days: snapshot.data?.days);
         },
       )),
     );
   }
 
-  Widget buildWholeThing(dayforcast.WeatherData? data) => Stack(
-    children: [
+  Widget buildWholeThing(dayforcast.WeatherData? data) => ListView(
+    children: <Widget>[
+      ParallaxBackground(),
       Container(
+        height: 500,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/backdrops/${data!.current.backdrop}'),
@@ -92,6 +96,16 @@ class _MyAppState extends State<MyApp> {
           ],
         ),
       ),
+      Container(
+        height: 400,
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: WHITE,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(20))
+          ),
+        ),
     ],
   );
 
@@ -105,7 +119,7 @@ class _MyAppState extends State<MyApp> {
               data.place,
               style: GoogleFonts.comfortaa(
                 fontSize: 42,
-                color: data.current.titleColor
+                color: data.current.contentColor[0]
             ),
           )
         ),
@@ -117,7 +131,7 @@ class _MyAppState extends State<MyApp> {
             child: Text(
               '${data.current.temp}°',
               style: GoogleFonts.comfortaa(
-                color: data.current.contentColor,
+                color: data.current.contentColor[1],
                 fontSize: 85,
                 fontWeight: FontWeight.w100,
               ),
@@ -131,7 +145,7 @@ class _MyAppState extends State<MyApp> {
             child: Text(
               data.current.text,
               style: GoogleFonts.comfortaa(
-                color: data.current.contentColor,
+                color: data.current.contentColor[1],
                 fontSize: 50,
                 height: 0.7,
                 fontWeight: FontWeight.w300,
