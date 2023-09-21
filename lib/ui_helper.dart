@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hihi_haha/dayforcast.dart';
 
 const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);
@@ -79,9 +80,9 @@ class DescriptionCircle extends StatelessWidget {
 }
 
 class WeatherPage extends StatelessWidget {
-  final days ;
+  final data;
 
-  WeatherPage({super.key, required this.days});
+  const WeatherPage({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -89,24 +90,27 @@ class WeatherPage extends StatelessWidget {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
-            backgroundColor: WHITE,
+            backgroundColor: Colors.transparent, // Set background to transparent
             bottom: PreferredSize(
+              preferredSize: Size(0, MediaQuery.of(context).size.height * 0.4),
               child: Container(),
-              preferredSize: Size(0, 20),
             ),
             pinned: false,
-            expandedHeight: MediaQuery.of(context).size.height * 0.8,
+            expandedHeight: MediaQuery.of(context).size.height * 0.92,
             flexibleSpace: Stack(
               children: [
-                const Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: Image(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/backdrops/fog.jpg'),
-                    )),
+                ParallaxBackground(data: data,),
+                Positioned(
+                  bottom: 50,
+                  left: 0,
+                  right: 0,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SingleChildScrollView(
+                      child: buildCurrent(data), // Place your buildCurrent widget here
+                    ),
+                  ),
+                ),
                 Positioned(
                   bottom: -1,
                   left: 0,
@@ -114,7 +118,7 @@ class WeatherPage extends StatelessWidget {
                   child: Container(
                     height: 30,
                     decoration: const BoxDecoration(
-                      color: WHITE,
+                      color: Color(0xffAEB5B3),
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(50),
                       ),
@@ -125,15 +129,17 @@ class WeatherPage extends StatelessWidget {
             ),
           ),
           SliverFixedExtentList(
-            itemExtent: 50.0,
-
+            itemExtent: 300.0,
             delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                return Container(
-                  alignment: Alignment.center,
-                  color: WHITE,
-                  child: Text('List Item $index'),
-                );
+                if (index < 3) {
+                  return Container(
+                    alignment: Alignment.center,
+                    color: const Color(0xffAEB5B3),
+                    child: Text(data.days[index].text),
+                  );
+                }
+                return null; // Return null for items beyond index 2
               },
             ),
           ),
@@ -144,18 +150,100 @@ class WeatherPage extends StatelessWidget {
 }
 
 class ParallaxBackground extends StatelessWidget {
+  final data;
+  const ParallaxBackground({super.key, required this.data});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/backdrops/fog.jpg'), // Replace with your image path
+          image: AssetImage('assets/backdrops/${data!.current.backdrop}'),
           fit: BoxFit.cover,
         ),
       ),
-
     );
   }
 }
+
+
+Widget buildCurrent(var data) => Column(
+  children: [
+    Padding(
+      padding: const EdgeInsets.only(top: 0.0, left: 40),
+      child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            data.place,
+            style: GoogleFonts.comfortaa(
+                fontSize: 42,
+                color: data.current.contentColor[0]
+            ),
+          )
+      ),
+    ),
+    Padding(
+      padding: const EdgeInsets.only(top: 260.0, left: 40),
+      child: Align(
+          alignment: Alignment.bottomLeft,
+          child: Text(
+            '${data.current.temp}°',
+            style: GoogleFonts.comfortaa(
+              color: data.current.contentColor[1],
+              fontSize: 85,
+              fontWeight: FontWeight.w100,
+            ),
+          )
+      ),
+    ),
+    Padding(
+      padding: const EdgeInsets.only(left: 40),
+      child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            data.current.text,
+            style: GoogleFonts.comfortaa(
+              color: data.current.contentColor[1],
+              fontSize: 50,
+              height: 0.7,
+              fontWeight: FontWeight.w300,
+            ),
+          )
+      ),
+    ),
+    Container(
+        padding: const EdgeInsets.only(top:30),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              DescriptionCircle(
+                color: WHITE,
+                text: '${data.current.maxtemp}°',
+                undercaption: 'temp. max',
+                extra: '',
+              ),
+              DescriptionCircle(
+                color: WHITE,
+                text: '${data.current.mintemp}°',
+                undercaption: 'temp. min',
+                extra: '',
+              ),
+              DescriptionCircle(
+                color: WHITE,
+                text: '${data.current.precip}',
+                undercaption: 'precip.',
+                extra: 'mm',
+              ),
+              DescriptionCircle(
+                color: WHITE,
+                text: '${data.current.wind}',
+                undercaption: 'wind',
+                extra: 'kmh',
+              ),
+            ]
+        )
+    )
+  ],
+);
 
 

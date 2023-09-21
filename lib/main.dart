@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
       var params = {
         'key': apiKey,
         'q': 'Budapest',
-        'days': '0',
+        'days': '3',
         'aqi': 'no',
         'alerts': 'no',
       };
@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
             );
           }
           //return buildWholeThing(snapshot.data);
-          return WeatherPage(days: snapshot.data?.days);
+          return WeatherPage(data: snapshot.data);
         },
       )),
     );
@@ -78,7 +78,6 @@ class _MyAppState extends State<MyApp> {
 
   Widget buildWholeThing(dayforcast.WeatherData? data) => ListView(
     children: <Widget>[
-      ParallaxBackground(),
       Container(
         height: 500,
         decoration: BoxDecoration(
