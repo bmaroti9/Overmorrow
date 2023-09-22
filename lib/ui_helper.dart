@@ -117,9 +117,9 @@ class WeatherPage extends StatelessWidget {
                   right: 0,
                   child: Container(
                     height: 30,
-                    decoration: const BoxDecoration(
-                      color: Color(0xffAEB5B3),
-                      borderRadius: BorderRadius.vertical(
+                    decoration: BoxDecoration(
+                      color: data.current.backcolor,
+                      borderRadius: const BorderRadius.vertical(
                         top: Radius.circular(50),
                       ),
                     ),
@@ -135,7 +135,7 @@ class WeatherPage extends StatelessWidget {
                 if (index < 3) {
                   return Container(
                     alignment: Alignment.center,
-                    color: const Color(0xffAEB5B3),
+                    color: data.current.backcolor,
                     child: Text(data.days[index].text),
                   );
                 }

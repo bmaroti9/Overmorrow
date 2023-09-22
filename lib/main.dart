@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
     try {
       var params = {
         'key': apiKey,
-        'q': 'Budapest',
+        'q': 'Padum',
         'days': '3',
         'aqi': 'no',
         'alerts': 'no',
@@ -105,85 +105,6 @@ class _MyAppState extends State<MyApp> {
           borderRadius: const BorderRadius.all(Radius.circular(20))
           ),
         ),
-    ],
-  );
-
-  Widget buildCurrent(var data) => Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(top: 50.0, left: 40),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-              data.place,
-              style: GoogleFonts.comfortaa(
-                fontSize: 42,
-                color: data.current.contentColor[0]
-            ),
-          )
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 260.0, left: 40),
-        child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              '${data.current.temp}°',
-              style: GoogleFonts.comfortaa(
-                color: data.current.contentColor[1],
-                fontSize: 85,
-                fontWeight: FontWeight.w100,
-              ),
-            )
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 40),
-        child: Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              data.current.text,
-              style: GoogleFonts.comfortaa(
-                color: data.current.contentColor[1],
-                fontSize: 50,
-                height: 0.7,
-                fontWeight: FontWeight.w300,
-              ),
-            )
-        ),
-      ),
-      Container(
-        padding: const EdgeInsets.only(top:30),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            DescriptionCircle(
-              color: WHITE,
-              text: '${data.current.maxtemp}°',
-              undercaption: 'temp. max',
-              extra: '',
-            ),
-            DescriptionCircle(
-              color: WHITE,
-              text: '${data.current.mintemp}°',
-              undercaption: 'temp. min',
-              extra: '',
-            ),
-            DescriptionCircle(
-              color: WHITE,
-              text: '${data.current.precip}',
-              undercaption: 'precip.',
-              extra: 'mm',
-            ),
-            DescriptionCircle(
-              color: WHITE,
-              text: '${data.current.wind}',
-              undercaption: 'wind',
-              extra: 'kmh',
-            ),
-          ]
-        )
-      )
     ],
   );
 

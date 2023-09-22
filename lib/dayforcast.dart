@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:ui';
 import 'ui_helper.dart';
 
@@ -6,6 +5,12 @@ import 'weather_refact.dart' as weather_refactor;
 
 String iconCorrection(name) {
   String p = weather_refactor.weatherIconMap[name] ?? "clear_night.png";
+  return p;
+}
+
+Color backroundColorCorrection(name, isday) {
+  String text = textCorrection(name, isday);
+  Color p = weather_refactor.textBackColor[text] ?? WHITE;
   return p;
 }
 
@@ -101,6 +106,7 @@ class Current {
   final int mintemp;
   final int precip;
   final int wind;
+  final Color backcolor;
 
   const Current({
     required this.text,
@@ -111,6 +117,7 @@ class Current {
     required this.maxtemp,
     required this.mintemp,
     required this.wind,
+    required this.backcolor,
 });
 
   static Current fromJson(item) => Current(
@@ -125,6 +132,10 @@ class Current {
 
     contentColor: contentColorCorrection(
       item["current"]["condition"]["text"], item["current"]["is_day"]
+    ),
+
+    backcolor: backroundColorCorrection(
+        item["current"]["condition"]["text"], item["current"]["is_day"]
     ),
 
     maxtemp: item["forecast"]["forecastday"][0]["day"]["maxtemp_c"].round(),
