@@ -3,8 +3,9 @@ import 'ui_helper.dart';
 
 import 'weather_refact.dart' as weather_refactor;
 
-String iconCorrection(name) {
-  String p = weather_refactor.weatherIconMap[name] ?? "clear_night.png";
+String iconCorrection(name, isday) {
+  String text = textCorrection(name, isday);
+  String p = weather_refactor.textIconMap[text] ?? 'clear_night.png';
   return p;
 }
 
@@ -67,12 +68,14 @@ class Day {
   final String text;
   final String icon;
   final String name;
+  final String minmaxtemp;
 
   const Day({
     required this.date,
     required this.text,
     required this.icon,
     required this.name,
+    required this.minmaxtemp,
   });
 
   static Day fromJson(item, index) => Day(
@@ -83,9 +86,11 @@ class Day {
         item["day"]["condition"]["text"], 1
       ),
       icon: iconCorrection(
-        item["day"]["condition"]["text"],
+        item["day"]["condition"]["text"], 1
       ),
       name: getName(index),
+      minmaxtemp: '${item["day"]["maxtemp_c"].round()}°'
+          '/${item["day"]["mintemp_c"].round()}°',
   );
 }
 
