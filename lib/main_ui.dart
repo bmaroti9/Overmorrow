@@ -117,7 +117,7 @@ Widget buildCurrent(var data) => Column(
             data.current.text,
             style: GoogleFonts.comfortaa(
               color: data.current.contentColor[1],
-              fontSize: 50,
+              fontSize: 45,
               height: 0.7,
               fontWeight: FontWeight.w300,
             ),
@@ -184,7 +184,7 @@ Widget buildDays(var thesedays) => ListView.builder(
     });
 
 Widget buildHihiDays(var data) => SliverFixedExtentList(
-  itemExtent: 180.0,
+  itemExtent: 450.0,
   delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           if (index < data.days.length) {
@@ -248,6 +248,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                       ],
                     ),
                   ),
+                  buildHours(day.hourly),
                 ],
               )
             );
@@ -256,3 +257,76 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
     },
   ),
 );
+
+Widget buildHours(List<dynamic> data) => Container(
+  height: 240, // Adjust the height as needed
+  child: ListView(
+    scrollDirection: Axis.horizontal,
+    children: data.map<Widget>((hour) {
+      return Container(
+        height: 240,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+              child: Text(
+                '${hour.temp}°',
+                style: GoogleFonts.comfortaa(
+                  color: WHITE,
+                  fontSize: 20,
+                  height: 0.7,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ),
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Container(
+                  width: 10,
+                  height: hour.temp * 2.5,
+                  decoration: const BoxDecoration(
+                      color: Colors.greenAccent,
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                  ),
+                ),
+                Container(
+                  width: 10,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: WHITE,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Image.asset(
+                'assets/icons/' + hour.icon,
+                fit: BoxFit.contain,
+                height: 45,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top:20, left: 10, right: 10),
+              child: Text(
+                hour.time,
+                style: GoogleFonts.comfortaa(
+                  color: WHITE,
+                  fontSize: 20,
+                  height: 0.7,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }).toList(),
+  ),
+);
+
+

@@ -22,8 +22,8 @@ class _MyAppState extends State<MyApp> {
     try {
       var params = {
         'key': apiKey,
-        'q': 'Boca Chica tx',
-        'days': '3',
+        'q': 'Szeged',
+        'days': '3 ',
         'aqi': 'no',
         'alerts': 'no',
       };

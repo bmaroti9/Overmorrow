@@ -9,6 +9,23 @@ String iconCorrection(name, isday) {
   return p;
 }
 
+String getTime(date) {
+  final realtime = date.split(' ')[1];
+  final realhour = realtime.split(':')[0];
+  if (int.parse(realhour) < 12) {
+    return realhour + 'am';
+  }
+  return realhour + 'pm';
+}
+
+List<Hour> buildHourly(data) {
+  List<Hour> hourly = [];
+  for (var i = 0; i < data.length; i++) {
+    hourly.add(Hour.fromJson(data[i]));
+  }
+  return hourly;
+}
+
 Color backroundColorCorrection(name, isday) {
   String text = textCorrection(name, isday);
   Color p = weather_refactor.textBackColor[text] ?? WHITE;
@@ -63,12 +80,39 @@ Color getDaysColor(date, night) {
   return p;
 }
 
+class Hour {
+  final temp;
+  final icon;
+  final time;
+  final text;
+
+  const Hour(
+  {
+    required this.temp,
+    required this.time,
+    required this.icon,
+    required this.text,
+  });
+
+  static Hour fromJson(item) => Hour(
+    text: textCorrection(
+        item["condition"]["text"], item["is_day"]
+    ),
+    icon: iconCorrection(
+        item["condition"]["text"], item["is_day"]
+    ),
+    temp: item["temp_c"],
+    time: getTime(item["time"])
+  );
+}
+
 class Day {
   final String date;
   final String text;
   final String icon;
   final String name;
   final String minmaxtemp;
+  final List<Hour> hourly;
 
   const Day({
     required this.date,
@@ -76,6 +120,7 @@ class Day {
     required this.icon,
     required this.name,
     required this.minmaxtemp,
+    required this.hourly,
   });
 
   static Day fromJson(item, index) => Day(
@@ -91,6 +136,7 @@ class Day {
       name: getName(index),
       minmaxtemp: '${item["day"]["maxtemp_c"].round()}°'
           '/${item["day"]["mintemp_c"].round()}°',
+      hourly: buildHourly(item["hour"]),
   );
 }
 
