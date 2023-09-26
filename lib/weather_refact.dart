@@ -71,12 +71,12 @@ Map<String, String> weatherTextMap = {
 };
 
 Map<String, String> textBackground = {
-  'Clear Night': 'clear_night.jpg',
+  'Clear Night': 'clear_sky_cut.png',
   'Partly Cloudy': 'cloudy13.jpg',
   'Clear Sky': 'very_clear.jpg',
   'Overcast': 'overcast.jpg',
   'Haze': 'haze.jpg',
-  'Rain': 'rainy_sky.jpg',
+  'Rain': 'rainy_colorfull.jpg',
   'Sleet': 'sleet.jpg',
   'Drizzle': 'drizzle.jpg',
   'Thunderstorm': 'thunderstorm.jpg',
@@ -88,7 +88,7 @@ Map<String, String> textBackground = {
 };
 
 Map<String, List<Color>> textFontColor = {
-  'Clear Night': const [BLACK, WHITE],
+  'Clear Night': const [WHITE, WHITE],
   'Partly Cloudy': const [WHITE, WHITE],
   'Clear Sky': const [BLACK, WHITE],
   'Overcast': const [BLACK, WHITE],
@@ -105,12 +105,12 @@ Map<String, List<Color>> textFontColor = {
 };
 
 Map<String, Color> textBackColor = {
-  'Clear Night': const Color(0xff494048),
+  'Clear Night': const Color(0xff1B1926),
   'Partly Cloudy': const Color(0xffD6D2C9),
   'Clear Sky': const Color(0xffCAD7E2),
   'Overcast': const Color(0xffB1C4CF),
-  'Haze': const Color(0xff5D666D),
-  'Rain': const Color(0xffDFDFDF),
+  'Haze': const Color(0xff3C5261),
+  'Rain': const Color(0xff827a97),
   'Sleet': const Color(0xffd5c3cf),
   'Drizzle': const Color(0xff959E9B),
   'Thunderstorm': const Color(0xff4C4152),

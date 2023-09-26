@@ -42,6 +42,7 @@ class WeatherPage extends StatelessWidget {
                   child: Container(
                     height: 30,
                     decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: WHITE),
                       color: data.current.backcolor,
                       borderRadius: const BorderRadius.vertical(
                         top: Radius.circular(50),
@@ -193,6 +194,10 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
             return Container(
               decoration: BoxDecoration(
                 color: darken(data.current.backcolor, index * 0.03),
+                  border: Border.symmetric(vertical: BorderSide(
+                      width: 1,
+                      color: WHITE
+                  ))
               ),
               child: Column(
                 children: [
@@ -248,7 +253,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                       ],
                     ),
                   ),
-                  buildHours(day.hourly),
+                  buildHours(day.hourly, data.current.contentColor),
                 ],
               )
             );
@@ -258,7 +263,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
   ),
 );
 
-Widget buildHours(List<dynamic> data) => Container(
+Widget buildHours(List<dynamic> data, List<Color> colors) => Container(
   height: 240, // Adjust the height as needed
   child: ListView(
     scrollDirection: Axis.horizontal,
@@ -285,9 +290,9 @@ Widget buildHours(List<dynamic> data) => Container(
                 Container(
                   width: 10,
                   height: hour.temp * 2.5,
-                  decoration: const BoxDecoration(
-                      color: Colors.greenAccent,
-                      borderRadius: BorderRadius.all(Radius.circular(20))
+                  decoration: BoxDecoration(
+                      color: colors[1],
+                      borderRadius: const BorderRadius.all(Radius.circular(20))
                   ),
                 ),
                 Container(
@@ -297,7 +302,7 @@ Widget buildHours(List<dynamic> data) => Container(
                       border: Border.all(
                         color: WHITE,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(20))
+                      borderRadius: const BorderRadius.all(Radius.circular(20))
                   ),
                 ),
               ],
