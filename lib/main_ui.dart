@@ -2,25 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'ui_helper.dart';
 
-
 class WeatherPage extends StatelessWidget {
   final data;
+  final updateLocation;
 
-  const WeatherPage({super.key, required this.data});
+  const WeatherPage({super.key, required this.data,
+        required this.updateLocation});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
+    return RefreshIndicator(
+      onRefresh: () async {
+        await updateLocation(data.place);
+      },
+      backgroundColor: WHITE,
+      color: data.current.backcolor,
+      child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
             backgroundColor: Colors.transparent, // Set background to transparent
             bottom: PreferredSize(
-              preferredSize: Size(0, MediaQuery.of(context).size.height * 0.4),
+              preferredSize: Size(0, MediaQuery.of(context).size.height * 0.5),
               child: Container(),
             ),
             pinned: false,
-            expandedHeight: MediaQuery.of(context).size.height * 0.92,
+            expandedHeight: MediaQuery.of(context).size.height * 0.9,
             flexibleSpace: Stack(
               children: [
                 ParallaxBackground(data: data,),
@@ -50,6 +56,8 @@ class WeatherPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                MySearchWidget(updateLocation: updateLocation,
+                data: data),
               ],
             ),
           ),
@@ -80,24 +88,8 @@ class ParallaxBackground extends StatelessWidget {
 
 Widget buildCurrent(var data) => Column(
   children: [
-    SizedBox(
-      height: 200,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 0, left: 40),
-        child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              data.place,
-              style: GoogleFonts.comfortaa(
-                  fontSize: 42,
-                  color: data.current.contentColor[0]
-              ),
-            )
-        ),
-      ),
-    ),
     Padding(
-      padding: const EdgeInsets.only(top: 150.0, left: 40),
+      padding: const EdgeInsets.only(top: 50.0, left: 40),
       child: Align(
           alignment: Alignment.bottomLeft,
           child: Text(
@@ -160,30 +152,6 @@ Widget buildCurrent(var data) => Column(
   ],
 );
 
-
-Widget buildDays(var thesedays) => ListView.builder(
-    itemCount: thesedays.length,
-    itemExtent: 380,
-    itemBuilder: (context, index) {
-      final day = thesedays[index];
-
-      return Container(
-        //margin: EdgeInsets.all(0),
-        //color: day.color,
-        decoration: BoxDecoration(
-          color: day.color,
-          image: const DecorationImage(
-              image: AssetImage("assets/images/squigly_line.png"),
-              fit: BoxFit.fill),
-        ),
-        child: Container(
-          padding: const EdgeInsets.all(20.0),
-          child: SizedBox(
-              height: 10, child: Image.asset('assets/images/' + day.icon)),
-        ),
-      );
-    });
-
 Widget buildHihiDays(var data) => SliverFixedExtentList(
   itemExtent: 450.0,
   delegate: SliverChildBuilderDelegate(
@@ -194,7 +162,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
             return Container(
               decoration: BoxDecoration(
                 color: darken(data.current.backcolor, index * 0.03),
-                  border: Border.symmetric(vertical: BorderSide(
+                  border: const Border.symmetric(vertical: BorderSide(
                       width: 1,
                       color: WHITE
                   ))

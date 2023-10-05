@@ -3,6 +3,9 @@ import 'ui_helper.dart';
 
 import 'weather_refact.dart' as weather_refactor;
 
+String LOCATION = 'Szeged';
+
+
 String iconCorrection(name, isday) {
   String text = textCorrection(name, isday);
   String p = weather_refactor.textIconMap[text] ?? 'clear_night.png';
@@ -78,6 +81,22 @@ Color getDaysColor(date, night) {
   Color p =
       weather_refactor.dayColorMap[dayIndex] ?? const Color(0xff000000);
   return p;
+}
+
+class Recomend {
+  final name;
+  final country;
+
+  const Recomend(
+      {
+        required this.name,
+        required this.country,
+      });
+
+  static Recomend fromJson(item) => Recomend(
+    name: item["name"],
+    country: item["country"]
+  );
 }
 
 class Hour {

@@ -90,7 +90,7 @@ Map<String, String> textBackground = {
 Map<String, List<Color>> textFontColor = {
   'Clear Night': const [WHITE, WHITE],
   'Partly Cloudy': const [WHITE, WHITE],
-  'Clear Sky': const [BLACK, WHITE],
+  'Clear Sky': const [WHITE, WHITE],
   'Overcast': const [BLACK, WHITE],
   'Haze': const [BLACK, WHITE],
   'Rain': const [BLACK, WHITE],
@@ -107,7 +107,7 @@ Map<String, List<Color>> textFontColor = {
 Map<String, Color> textBackColor = {
   'Clear Night': const Color(0xff1B1926),
   'Partly Cloudy': const Color(0xffD6D2C9),
-  'Clear Sky': const Color(0xffCAD7E2),
+  'Clear Sky': const Color(0xffBFD4E4),
   'Overcast': const Color(0xffB1C4CF),
   'Haze': const Color(0xff3C5261),
   'Rain': const Color(0xff827a97),

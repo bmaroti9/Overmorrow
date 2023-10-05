@@ -18,11 +18,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  void updateLocation(String newLocation) {
+    setState(() {
+      dayforcast.LOCATION = newLocation;
+    });
+  }
+
   static Future<dayforcast.WeatherData> getDays() async {
     try {
       var params = {
         'key': apiKey,
-        'q': 'Nig',
+        'q': dayforcast.LOCATION,
         'days': '3 ',
         'aqi': 'no',
         'alerts': 'no',
@@ -69,7 +75,8 @@ class _MyAppState extends State<MyApp> {
                 );
               }
               //return buildWholeThing(snapshot.data);
-              return WeatherPage(data: snapshot.data);
+              return WeatherPage(data: snapshot.data, 
+                        updateLocation: updateLocation);
             },
           )),
     );
