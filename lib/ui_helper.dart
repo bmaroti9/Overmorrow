@@ -7,9 +7,21 @@ import 'package:http/http.dart' as http;
 
 import 'api_key.dart';
 import 'dayforcast.dart';
+import 'settings_page.dart';
 
 const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);
+
+Widget comfortatext(String text, double size, {Color color = WHITE}) {
+  return Text(
+    text,
+    style: GoogleFonts.comfortaa(
+      color: color,
+      fontSize: size,
+      fontWeight: FontWeight.w300,
+    ),
+  );
+}
 
 Color darken(Color color, [double amount = .1]) {
   assert(amount >= 0 && amount <= 1);
@@ -94,7 +106,10 @@ class DescriptionCircle extends StatelessWidget {
   }
 }
 
+const favorites = [];
+
 Future<List<Recomend>> getRecommend(String query) async {
+
   if (query == '') {
     return [];
   }
@@ -162,7 +177,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
     return FloatingSearchBar(
       hint: 'Search...',
       title: Container(
-        padding: const EdgeInsets.only(left: 20, top: 4),
+        padding: const EdgeInsets.only(left: 0, top: 3),
         child: Text(
           data.place,
           style: GoogleFonts.comfortaa(
@@ -210,7 +225,6 @@ class _MySearchWidgetState extends State<MySearchWidget> {
         _controller.close();
       },
 
-
       iconColor: WHITE,
       backdropColor: color,
       // Specify a custom transition to be used for
@@ -236,33 +250,41 @@ class _MySearchWidgetState extends State<MySearchWidget> {
         ),
       ],
       builder: (context, transition) {
-        return ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: ListView.builder(
-              shrinkWrap : true,
-              padding: const EdgeInsets.only(top: 20),
-              itemCount: recommend.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    widget.updateLocation(recommend[index].name); // Call the callback to update the location
-                    _controller.close();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 20, bottom: 8),
-                    child: Text(
-                      recommend[index].name,
-                      style: GoogleFonts.comfortaa(
-                        color: WHITE,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w100,
+        if (recommend.length > 0) {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(25),
+            child: Container(
+              padding: const EdgeInsets.only(top:10, bottom: 10),
+              color: darken(color),
+              child: ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(top: 12),
+                itemCount: recommend.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      widget.updateLocation(recommend[index]
+                          .name); // Call the callback to update the location
+                      _controller.close();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 20, bottom: 12),
+                      child: Text(
+                        recommend[index].name,
+                        style: GoogleFonts.comfortaa(
+                          color: WHITE,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w100,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-        );
+          );
+        }
+        return Container();
       },
     );
   }

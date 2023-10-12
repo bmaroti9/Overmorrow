@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
   http: ^1.1.0
   material_floating_search_bar_2: ^0.5.0
+  settings_ui: ^2.0.2
+  toggle_switch: ^2.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

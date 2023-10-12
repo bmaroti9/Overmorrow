@@ -5,6 +5,7 @@ import 'api_key.dart';
 import 'main_ui.dart';
 
 import 'dayforcast.dart' as dayforcast;
+import 'settings_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -75,8 +76,8 @@ class _MyAppState extends State<MyApp> {
                 );
               }
               //return buildWholeThing(snapshot.data);
-              return WeatherPage(data: snapshot.data, 
-                        updateLocation: updateLocation);
+              return WeatherPage(data: snapshot.data,
+                     updateLocation: updateLocation);
             },
           )),
     );

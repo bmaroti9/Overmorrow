@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hihi_haha/settings_page.dart';
 import 'ui_helper.dart';
 
 class WeatherPage extends StatelessWidget {
@@ -9,60 +10,68 @@ class WeatherPage extends StatelessWidget {
   const WeatherPage({super.key, required this.data,
         required this.updateLocation});
 
+  void openDrawer(BuildContext context) {
+    Scaffold.of(context).openDrawer();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        await updateLocation(data.place);
-      },
-      backgroundColor: WHITE,
-      color: data.current.backcolor,
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            backgroundColor: Colors.transparent, // Set background to transparent
-            bottom: PreferredSize(
-              preferredSize: Size(0, MediaQuery.of(context).size.height * 0.5),
-              child: Container(),
-            ),
-            pinned: false,
-            expandedHeight: MediaQuery.of(context).size.height * 0.9,
-            flexibleSpace: Stack(
-              children: [
-                ParallaxBackground(data: data,),
-                Positioned(
-                  bottom: 50,
-                  left: 0,
-                  right: 0,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SingleChildScrollView(
-                      child: buildCurrent(data), // Place your buildCurrent widget here
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: -1,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: 30,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: WHITE),
-                      color: data.current.backcolor,
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(50),
+    return Scaffold(
+      drawer: MyDrawer(color: data.current.backcolor),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await updateLocation(data.place);
+        },
+        backgroundColor: WHITE,
+        color: data.current.backcolor,
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.transparent, // Set background to transparent
+              bottom: PreferredSize(
+                preferredSize: Size(0, MediaQuery.of(context).size.height * 0.5),
+                child: Container(),
+              ),
+              pinned: false,
+              expandedHeight: MediaQuery.of(context).size.height * 0.9,
+              flexibleSpace: Stack(
+                children: [
+                  ParallaxBackground(data: data,),
+                  Positioned(
+                    bottom: 50,
+                    left: 0,
+                    right: 0,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: SingleChildScrollView(
+                        child: buildCurrent(data), // Place your buildCurrent widget here
                       ),
                     ),
                   ),
-                ),
-                MySearchWidget(updateLocation: updateLocation,
-                data: data),
-              ],
+                  Positioned(
+                    bottom: -1,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: 30,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: WHITE),
+                        color: data.current.backcolor,
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(50),
+                        ),
+                      ),
+                    ),
+                  ),
+                  MySearchWidget(updateLocation: updateLocation,
+                  data: data),
+                ],
+              ),
             ),
-          ),
-          buildHihiDays(data),
-        ],
+            buildHihiDays(data),
+          ],
+        ),
       ),
     );
   }
