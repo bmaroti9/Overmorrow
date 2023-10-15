@@ -23,6 +23,15 @@ Widget comfortatext(String text, double size, {Color color = WHITE}) {
   );
 }
 
+Color lighten(Color color, [double amount = .1]) {
+  assert(amount >= 0 && amount <= 1);
+
+  final hsl = HSLColor.fromColor(color);
+  final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+
+  return hslLight.toColor();
+}
+
 Color darken(Color color, [double amount = .1]) {
   assert(amount >= 0 && amount <= 1);
 
@@ -106,12 +115,13 @@ class DescriptionCircle extends StatelessWidget {
   }
 }
 
-const favorites = [];
+const favorites = ['Szeged', 'Nashville', 'New York', 'Phoenix',
+        'Alsoors'];
 
-Future<List<Recomend>> getRecommend(String query) async {
+Future<List<String>> getRecommend(String query) async {
 
   if (query == '') {
-    return [];
+    return favorites;
   }
 
   var params = {
@@ -122,9 +132,9 @@ Future<List<Recomend>> getRecommend(String query) async {
   var response = await http.post(url);
   var jsonbody = jsonDecode(response.body);
 
-  List<Recomend> recomendations = [];
+  List<String> recomendations = [];
   for (var item in jsonbody) {
-    recomendations.add(Recomend.fromJson(item));
+    recomendations.add(item["name"]);
   }
 
   return recomendations; // Return the list of Recomend objects
@@ -149,9 +159,8 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   _MySearchWidgetState({required this.data});
 
   var recommend = [];
-  final favorites = ['Szeged', 'Budapest', 'Alsooros', 'Nashville', 'New York'];
 
-  void updateRec(List<Recomend> rec) {
+  void updateRec(List<String> rec) {
     setState(() {
       recommend = rec;
     });
@@ -209,12 +218,19 @@ class _MySearchWidgetState extends State<MySearchWidget> {
       transitionDuration: const Duration(milliseconds: 800),
       transitionCurve: Curves.easeInOut,
       physics: const BouncingScrollPhysics(),
-      axisAlignment: isPortrait ? 0.0 : -1,
-      openAxisAlignment: 0.0,
-      width: isPortrait ? 600 : 400,
       debounceDelay: const Duration(milliseconds: 500),
 
       controller: _controller,
+
+      onFocusChanged: (change) async {
+        if (change) {
+          var result = favorites;
+          updateRec(result);
+          print(('hihihihihi', recommend));
+        }
+        else {_controller.close();}
+      },
+
       onQueryChanged: (query) async {
         var result = await getRecommend(query);
         updateRec(result);
@@ -226,9 +242,8 @@ class _MySearchWidgetState extends State<MySearchWidget> {
       },
 
       iconColor: WHITE,
-      backdropColor: color,
-      // Specify a custom transition to be used for
-      // animating between opened and closed stated.
+      //backdropColor: darken(color, 0.5),
+      closeOnBackdropTap: true,
       transition: CircularFloatingSearchBarTransition(),
       actions: [
         FloatingSearchBarAction(
@@ -255,7 +270,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
             borderRadius: BorderRadius.circular(25),
             child: Container(
               padding: const EdgeInsets.only(top:10, bottom: 10),
-              color: darken(color),
+              color: color,
               child: ListView.builder(
                 shrinkWrap: true,
                 padding: const EdgeInsets.only(top: 12),
@@ -263,20 +278,12 @@ class _MySearchWidgetState extends State<MySearchWidget> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      widget.updateLocation(recommend[index]
-                          .name); // Call the callback to update the location
+                      widget.updateLocation(recommend[index]);
                       _controller.close();
                     },
                     child: Container(
                       padding: const EdgeInsets.only(left: 20, bottom: 12),
-                      child: Text(
-                        recommend[index].name,
-                        style: GoogleFonts.comfortaa(
-                          color: WHITE,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w100,
-                        ),
-                      ),
+                      child: comfortatext(recommend[index], 27, color: WHITE),
                     ),
                   );
                 },

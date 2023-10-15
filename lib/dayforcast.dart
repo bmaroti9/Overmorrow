@@ -4,7 +4,25 @@ import 'ui_helper.dart';
 import 'weather_refact.dart' as weather_refactor;
 
 String LOCATION = 'Szeged';
+String selected_temp_unit = '˚C';
 
+String get_temp(String before) {
+  if (selected_temp_unit == '˚C') {
+    return '${before}temp_c';
+  }
+  else{
+    return '${before}temp_f';
+  }
+}
+
+double temp_multiply_for_scale(double temp) {
+  if (selected_temp_unit == '˚C') {
+    return 25 + temp * 1.6;
+  }
+  else{
+    return 5 + temp * 0.8;
+  }
+}
 
 String iconCorrection(name, isday) {
   String text = textCorrection(name, isday);
@@ -83,22 +101,6 @@ Color getDaysColor(date, night) {
   return p;
 }
 
-class Recomend {
-  final name;
-  final country;
-
-  const Recomend(
-      {
-        required this.name,
-        required this.country,
-      });
-
-  static Recomend fromJson(item) => Recomend(
-    name: item["name"],
-    country: item["country"]
-  );
-}
-
 class Hour {
   final temp;
   final icon;
@@ -120,7 +122,7 @@ class Hour {
     icon: iconCorrection(
         item["condition"]["text"], item["is_day"]
     ),
-    temp: item["temp_c"],
+    temp: item[get_temp('')],
     time: getTime(item["time"])
   );
 }
@@ -153,8 +155,8 @@ class Day {
         item["day"]["condition"]["text"], 1
       ),
       name: getName(index),
-      minmaxtemp: '${item["day"]["maxtemp_c"].round()}°'
-          '/${item["day"]["mintemp_c"].round()}°',
+      minmaxtemp: '${item["day"][get_temp('max')].round()}°'
+          '/${item["day"][get_temp('min')].round()}°',
       hourly: buildHourly(item["hour"]),
   );
 }
@@ -198,7 +200,7 @@ class Current {
     backdrop: backdropCorrection(
       item["current"]["condition"]["text"], item["current"]["is_day"]
     ),
-    temp: item["current"]["temp_c"].round(),
+    temp: item["current"][get_temp('')].round(),
 
     contentColor: contentColorCorrection(
       item["current"]["condition"]["text"], item["current"]["is_day"]
@@ -208,8 +210,8 @@ class Current {
         item["current"]["condition"]["text"], item["current"]["is_day"]
     ),
 
-    maxtemp: item["forecast"]["forecastday"][0]["day"]["maxtemp_c"].round(),
-    mintemp: item["forecast"]["forecastday"][0]["day"]["mintemp_c"].round(),
+    maxtemp: item["forecast"]["forecastday"][0]["day"][get_temp("max")].round(),
+    mintemp: item["forecast"]["forecastday"][0]["day"][get_temp("min")].round(),
     precip: item["current"]["precip_mm"].round(),
     wind: item["current"]["wind_kph"].round(),
   );

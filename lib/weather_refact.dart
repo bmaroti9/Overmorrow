@@ -101,7 +101,7 @@ Map<String, List<Color>> textFontColor = {
   'Fog': const [BLACK, WHITE],
   'Snow': const [BLACK, WHITE],
   'Heavy Rain': const [WHITE, WHITE],
-  'Cloudy Night': const [WHITE, WHITE]
+  'Cloudy Night': const [BLACK, WHITE]
 };
 
 Map<String, Color> textBackColor = {

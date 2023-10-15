@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hihi_haha/dayforcast.dart';
 import 'package:hihi_haha/settings_page.dart';
 import 'ui_helper.dart';
 
@@ -34,7 +35,7 @@ class WeatherPage extends StatelessWidget {
                 child: Container(),
               ),
               pinned: false,
-              expandedHeight: MediaQuery.of(context).size.height * 0.9,
+              expandedHeight: MediaQuery.of(context).size.height - 80,
               flexibleSpace: Stack(
                 children: [
                   ParallaxBackground(data: data,),
@@ -54,12 +55,12 @@ class WeatherPage extends StatelessWidget {
                     left: 0,
                     right: 0,
                     child: Container(
-                      height: 30,
+                      height: 32,
                       decoration: BoxDecoration(
                         border: Border.all(width: 1, color: WHITE),
                         color: data.current.backcolor,
                         borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(50),
+                          top: Radius.circular(30),
                         ),
                       ),
                     ),
@@ -162,7 +163,7 @@ Widget buildCurrent(var data) => Column(
 );
 
 Widget buildHihiDays(var data) => SliverFixedExtentList(
-  itemExtent: 450.0,
+  itemExtent: 452.0,
   delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           if (index < data.days.length) {
@@ -170,7 +171,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
 
             return Container(
               decoration: BoxDecoration(
-                color: darken(data.current.backcolor, index * 0.03),
+                color: darken(data.current.backcolor, (index % 2) * 0.05),
                   border: const Border.symmetric(vertical: BorderSide(
                       width: 1,
                       color: WHITE
@@ -230,7 +231,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                       ],
                     ),
                   ),
-                  buildHours(day.hourly, data.current.contentColor),
+                  buildHours(day.hourly),
                 ],
               )
             );
@@ -240,7 +241,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
   ),
 );
 
-Widget buildHours(List<dynamic> data, List<Color> colors) => Container(
+Widget buildHours(List<dynamic> data) => Container(
   height: 240, // Adjust the height as needed
   child: ListView(
     scrollDirection: Axis.horizontal,
@@ -250,7 +251,7 @@ Widget buildHours(List<dynamic> data, List<Color> colors) => Container(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+              padding: const EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 10),
               child: Text(
                 '${hour.temp}°',
                 style: GoogleFonts.comfortaa(
@@ -266,10 +267,10 @@ Widget buildHours(List<dynamic> data, List<Color> colors) => Container(
               children: [
                 Container(
                   width: 10,
-                  height: hour.temp * 2.5,
-                  decoration: BoxDecoration(
-                      color: colors[1],
-                      borderRadius: const BorderRadius.all(Radius.circular(20))
+                  height: temp_multiply_for_scale(hour.temp),
+                  decoration: const BoxDecoration(
+                      color: WHITE,
+                      borderRadius: BorderRadius.all(Radius.circular(20))
                   ),
                 ),
                 Container(
@@ -289,7 +290,7 @@ Widget buildHours(List<dynamic> data, List<Color> colors) => Container(
               child: Image.asset(
                 'assets/icons/' + hour.icon,
                 fit: BoxFit.contain,
-                height: 45,
+                height: 40,
               ),
             ),
             Padding(
