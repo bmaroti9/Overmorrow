@@ -148,13 +148,13 @@ Widget buildCurrent(var data) => Column(
                 color: WHITE,
                 text: '${data.current.precip}',
                 undercaption: 'precip.',
-                extra: 'mm',
+                extra: data.units[1],
               ),
               DescriptionCircle(
                 color: WHITE,
                 text: '${data.current.wind}',
                 undercaption: 'wind',
-                extra: 'kmh',
+                extra: data.units[2],
               ),
             ]
         )

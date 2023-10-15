@@ -4,24 +4,15 @@ import 'ui_helper.dart';
 import 'weather_refact.dart' as weather_refactor;
 
 String LOCATION = 'Szeged';
-String selected_temp_unit = '˚C';
 
-String get_temp(String before) {
-  if (selected_temp_unit == '˚C') {
-    return '${before}temp_c';
-  }
-  else{
-    return '${before}temp_f';
-  }
+double unit_coversion(double value, String unit) {
+  List<double> p = weather_refactor.conversionTable[unit] ?? [0, 0];
+  double a = p[0] + value * p[1];
+  return a;
 }
 
 double temp_multiply_for_scale(double temp) {
-  if (selected_temp_unit == '˚C') {
-    return 25 + temp * 1.6;
-  }
-  else{
-    return 5 + temp * 0.8;
-  }
+  return 30 + temp * 0.6;
 }
 
 String iconCorrection(name, isday) {
@@ -39,10 +30,10 @@ String getTime(date) {
   return realhour + 'pm';
 }
 
-List<Hour> buildHourly(data) {
+List<Hour> buildHourly(data, units) {
   List<Hour> hourly = [];
   for (var i = 0; i < data.length; i++) {
-    hourly.add(Hour.fromJson(data[i]));
+    hourly.add(Hour.fromJson(data[i], units));
   }
   return hourly;
 }
@@ -115,14 +106,14 @@ class Hour {
     required this.text,
   });
 
-  static Hour fromJson(item) => Hour(
+  static Hour fromJson(item, units) => Hour(
     text: textCorrection(
         item["condition"]["text"], item["is_day"]
     ),
     icon: iconCorrection(
         item["condition"]["text"], item["is_day"]
     ),
-    temp: item[get_temp('')],
+    temp: unit_coversion(item["temp_c"], units[0]),
     time: getTime(item["time"])
   );
 }
@@ -144,7 +135,7 @@ class Day {
     required this.hourly,
   });
 
-  static Day fromJson(item, index) => Day(
+  static Day fromJson(item, index, units) => Day(
       date: item['date'],
       //text: item["day"]["condition"]["text"],
       //icon: "http:" + item["day"]['condition']['icon'],
@@ -155,18 +146,19 @@ class Day {
         item["day"]["condition"]["text"], 1
       ),
       name: getName(index),
-      minmaxtemp: '${item["day"][get_temp('max')].round()}°'
-          '/${item["day"][get_temp('min')].round()}°',
-      hourly: buildHourly(item["hour"]),
+      minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], units[0]).round()}°'
+          '/${unit_coversion(item["day"]["mintemp_c"], units[0]).round()}°',
+      hourly: buildHourly(item["hour"], units),
   );
 }
 
 class WeatherData {
+  final List<String> units;
   final List<Day> days;
   final Current current;
   final String place;
 
-  WeatherData(this.days, this.current, this.place);
+  WeatherData(this.days, this.current, this.place, this.units);
 }
 
 class Current {
@@ -176,7 +168,7 @@ class Current {
   final List<Color> contentColor;
   final int maxtemp;
   final int mintemp;
-  final int precip;
+  final double precip;
   final int wind;
   final Color backcolor;
 
@@ -192,7 +184,7 @@ class Current {
     required this.backcolor,
 });
 
-  static Current fromJson(item) => Current(
+  static Current fromJson(item, units) => Current(
 
     text: textCorrection(
       item["current"]["condition"]["text"], item["current"]["is_day"]
@@ -200,7 +192,7 @@ class Current {
     backdrop: backdropCorrection(
       item["current"]["condition"]["text"], item["current"]["is_day"]
     ),
-    temp: item["current"][get_temp('')].round(),
+    temp: unit_coversion(item["current"]["temp_c"], units[0]).round(),
 
     contentColor: contentColorCorrection(
       item["current"]["condition"]["text"], item["current"]["is_day"]
@@ -210,9 +202,9 @@ class Current {
         item["current"]["condition"]["text"], item["current"]["is_day"]
     ),
 
-    maxtemp: item["forecast"]["forecastday"][0]["day"][get_temp("max")].round(),
-    mintemp: item["forecast"]["forecastday"][0]["day"][get_temp("min")].round(),
-    precip: item["current"]["precip_mm"].round(),
-    wind: item["current"]["wind_kph"].round(),
+    maxtemp: unit_coversion(item["forecast"]["forecastday"][0]["day"]["maxtemp_c"], '˚C').round(),
+    mintemp: unit_coversion(item["forecast"]["forecastday"][0]["day"]["mintemp_c"], '˚C').round(),
+    precip: double.parse(unit_coversion(item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"], units[1]).toStringAsFixed(1)),
+    wind: unit_coversion(item["current"]["wind_kph"], units[2]).round(),
   );
 }

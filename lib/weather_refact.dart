@@ -137,3 +137,17 @@ Map<int, Color> dayColorMap = {
     13: const Color(0xffE1D4BB),
     14: const Color(0xffB4AA96),
 };
+
+Map<String, List<double>> conversionTable = {
+  '˚C': [0, 1],
+  '˚F': [32, 1.8],
+  'mm': [0, 1],
+  'in': [0, 0.0393701],
+  'kph': [0, 1],
+  'm/s': [0, 0.277778],
+  'mph': [0, 0.621371],
+  'inHg': [0, 1],
+  'mmHg': [0, 25.4],
+  'mb': [0, 33.864],
+  'hPa': [0, 33.863886],
+};

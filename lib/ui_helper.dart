@@ -6,8 +6,6 @@ import 'package:material_floating_search_bar_2/material_floating_search_bar_2.da
 import 'package:http/http.dart' as http;
 
 import 'api_key.dart';
-import 'dayforcast.dart';
-import 'settings_page.dart';
 
 const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);
@@ -47,8 +45,8 @@ class DescriptionCircle extends StatelessWidget {
   final String undercaption;
   final String extra;
   final double fontsize = 22;
-  final double width = 68;
-  final double height = 68;
+  final double width = 72;
+  final double height = 72;
   final Color color;
 
   const DescriptionCircle({super.key, required this.text,
@@ -57,7 +55,7 @@ class DescriptionCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
       child: Column(
         children: [
           Container(
@@ -181,7 +179,6 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   }
 
   Widget buildFloatingSearchBar(Color color) {
-    const isPortrait = false;
 
     return FloatingSearchBar(
       hint: 'Search...',
