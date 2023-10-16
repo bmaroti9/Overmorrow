@@ -11,8 +11,13 @@ double unit_coversion(double value, String unit) {
   return a;
 }
 
-double temp_multiply_for_scale(double temp) {
-  return 30 + temp * 0.6;
+double temp_multiply_for_scale(double temp, String unit) {
+  if (unit == '˚C') {
+    return 30 + temp * 1.6;
+  }
+  else{
+    return 5 * temp * 0.7;
+  }
 }
 
 String iconCorrection(name, isday) {
@@ -24,16 +29,25 @@ String iconCorrection(name, isday) {
 String getTime(date) {
   final realtime = date.split(' ')[1];
   final realhour = realtime.split(':')[0];
-  if (int.parse(realhour) < 12) {
+  if (int.parse(realhour) <= 12) {
     return realhour + 'am';
   }
-  return realhour + 'pm';
+  return '${int.parse(realhour) - 12}pm';
 }
 
-List<Hour> buildHourly(data, units) {
+List<Hour> buildHourly(data, units, int index, int timenow) {
   List<Hour> hourly = [];
-  for (var i = 0; i < data.length; i++) {
-    hourly.add(Hour.fromJson(data[i], units));
+  if (index == 0) {
+    for (var i = 0; i < data.length; i++) {
+      if (data[i]["time_epoch"] > timenow) {
+        hourly.add(Hour.fromJson(data[i], units));
+      }
+    }
+  }
+  else {
+    for (var i = 0; i < data.length; i++) {
+      hourly.add(Hour.fromJson(data[i], units));
+    }
   }
   return hourly;
 }
@@ -135,7 +149,7 @@ class Day {
     required this.hourly,
   });
 
-  static Day fromJson(item, index, units) => Day(
+  static Day fromJson(item, index, units, timenow) => Day(
       date: item['date'],
       //text: item["day"]["condition"]["text"],
       //icon: "http:" + item["day"]['condition']['icon'],
@@ -148,7 +162,7 @@ class Day {
       name: getName(index),
       minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], units[0]).round()}°'
           '/${unit_coversion(item["day"]["mintemp_c"], units[0]).round()}°',
-      hourly: buildHourly(item["hour"], units),
+      hourly: buildHourly(item["hour"], units, index, timenow),
   );
 }
 

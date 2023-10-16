@@ -231,7 +231,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                       ],
                     ),
                   ),
-                  buildHours(day.hourly),
+                  buildHours(day.hourly, data.units),
                 ],
               )
             );
@@ -241,7 +241,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
   ),
 );
 
-Widget buildHours(List<dynamic> data) => Container(
+Widget buildHours(List<dynamic> data, List<String> units) => Container(
   height: 240, // Adjust the height as needed
   child: ListView(
     scrollDirection: Axis.horizontal,
@@ -267,7 +267,7 @@ Widget buildHours(List<dynamic> data) => Container(
               children: [
                 Container(
                   width: 10,
-                  height: temp_multiply_for_scale(hour.temp),
+                  height: temp_multiply_for_scale(hour.temp, units[0]),
                   decoration: const BoxDecoration(
                       color: WHITE,
                       borderRadius: BorderRadius.all(Radius.circular(20))

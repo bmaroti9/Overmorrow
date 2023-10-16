@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hihi_haha/search_screens.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:http/http.dart' as http;
 
@@ -116,10 +117,10 @@ class DescriptionCircle extends StatelessWidget {
 const favorites = ['Szeged', 'Nashville', 'New York', 'Phoenix',
         'Alsoors'];
 
-Future<List<String>> getRecommend(String query) async {
+Future<List<dynamic>> getRecommend(String query) async {
 
   if (query == '') {
-    return favorites;
+    return ['favorites', favorites];
   }
 
   var params = {
@@ -135,7 +136,7 @@ Future<List<String>> getRecommend(String query) async {
     recomendations.add(item["name"]);
   }
 
-  return recomendations; // Return the list of Recomend objects
+  return ['recommend', recomendations];
 }
 
 class MySearchWidget extends StatefulWidget {
@@ -156,9 +157,9 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   final data;
   _MySearchWidgetState({required this.data});
 
-  var recommend = [];
+  List<dynamic> recommend = ['hihi', ['hihi', ['haha']]];
 
-  void updateRec(List<String> rec) {
+  void updateRec(List<dynamic> rec) {
     setState(() {
       recommend = rec;
     });
@@ -221,7 +222,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
 
       onFocusChanged: (change) async {
         if (change) {
-          var result = favorites;
+          var result = ['favorites', favorites];
           updateRec(result);
           print(('hihihihihi', recommend));
         }
@@ -239,7 +240,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
       },
 
       iconColor: WHITE,
-      //backdropColor: darken(color, 0.5),
+      backdropColor: darken(color, 0.5),
       closeOnBackdropTap: true,
       transition: CircularFloatingSearchBarTransition(),
       actions: [
@@ -262,31 +263,14 @@ class _MySearchWidgetState extends State<MySearchWidget> {
         ),
       ],
       builder: (context, transition) {
-        if (recommend.length > 0) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(25),
-            child: Container(
-              padding: const EdgeInsets.only(top:10, bottom: 10),
-              color: color,
-              child: ListView.builder(
-                shrinkWrap: true,
-                padding: const EdgeInsets.only(top: 12),
-                itemCount: recommend.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      widget.updateLocation(recommend[index]);
-                      _controller.close();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 20, bottom: 12),
-                      child: comfortatext(recommend[index], 27, color: WHITE),
-                    ),
-                  );
-                },
-              ),
-            ),
-          );
+        if (recommend[0] == 'favorites') {
+          return defaultSearchScreen(color, recommend[1], widget.updateLocation, _controller);
+        }
+        if (recommend[1].length != 0) {
+          if (recommend[0] == 'recommend') {
+            return recommendSearchScreen(
+                color, recommend[1], widget.updateLocation, _controller);
+          }
         }
         return Container();
       },

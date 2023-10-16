@@ -3,11 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'ui_helper.dart';
 
-List<String> unitsList = ['Temperature', 'Volume', 'Wind', 'Pressure'];
+List<String> unitsList = ['Temperature', 'Rain', 'Wind', 'Pressure'];
 
 Map<String, List<String>> settingSwitches = {
   'Temperature': ['˚C', '˚F'],
-  'Volume': ['mm', 'in'],
+  'Rain': ['mm', 'in'],
   'Wind': ['m/s', 'kph', 'mph'],
   'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa']
 };
