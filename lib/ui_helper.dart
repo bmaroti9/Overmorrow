@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/search_screens.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_key.dart';
 
@@ -114,13 +115,10 @@ class DescriptionCircle extends StatelessWidget {
   }
 }
 
-const favorites = ['Szeged', 'Nashville', 'New York', 'Phoenix',
-        'Alsoors'];
-
-Future<List<dynamic>> getRecommend(String query) async {
+Future<List<String>> getRecommend(String query, List<String> favorites) async {
 
   if (query == '') {
-    return ['favorites', favorites];
+    return [];
   }
 
   var params = {
@@ -136,37 +134,113 @@ Future<List<dynamic>> getRecommend(String query) async {
     recomendations.add(item["name"]);
   }
 
-  return ['recommend', recomendations];
+  return recomendations;
 }
-
-class MySearchWidget extends StatefulWidget {
+class MySearchParent extends StatefulWidget{
   final Function(String) updateLocation;
   final data;
 
-  MySearchWidget({required this.updateLocation,
-  required this.data});
+  const MySearchParent({super.key, required this.updateLocation,
+    required this.data});
 
   @override
-  _MySearchWidgetState createState() => _MySearchWidgetState(
-        data: data);
+  _MySearchParentState createState() => _MySearchParentState(
+      data: data);
+}
+
+class _MySearchParentState extends State<MySearchParent> {
+  bool isEditing = false;
+
+  final data;
+
+  _MySearchParentState({required this.data});
+
+  Future<SharedPreferences> getPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs;
+  }
+
+  List<String> getFavorites(SharedPreferences? prefs){
+    final ifnot = ['Szeged'];
+    final used = prefs?.getStringList('favorites') ?? ifnot;
+    return used;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<SharedPreferences>(
+      future: getPrefs(),
+      builder: (BuildContext context,
+          AsyncSnapshot<SharedPreferences> snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          print(snapshot.error);
+          return Center(
+            child: ErrorWidget(snapshot.error as Object),
+          );
+        }
+        List<String> favorites = getFavorites(snapshot.data);
+        //return buildWholeThing(snapshot.data);
+        return MySearchWidget(updateLocation: widget.updateLocation,
+            data: data, favorites: favorites, prefs: snapshot.data);
+      },
+    );
+  }
+}
+
+class MySearchWidget extends StatefulWidget{
+  final data;
+  final updateLocation;
+  final favorites;
+  final prefs;
+
+  MySearchWidget({required this.data, required this.updateLocation,
+  required this.favorites, required this.prefs});
+
+  @override
+  _MySearchWidgetState createState() => _MySearchWidgetState(data: data,
+  updateLocation: updateLocation, favorites: favorites, prefs: prefs);
 }
 
 class _MySearchWidgetState extends State<MySearchWidget> {
   final FloatingSearchBarController _controller = FloatingSearchBarController();
-
   final data;
-  _MySearchWidgetState({required this.data});
+  final updateLocation;
+  final prefs;
 
-  List<dynamic> recommend = ['hihi', ['hihi', ['haha']]];
+  List<String> favorites;
 
-  void updateRec(List<dynamic> rec) {
+  bool isEditing = false;
+
+  _MySearchWidgetState({required this.data, required this.updateLocation,
+        required this.favorites, required this.prefs});
+
+  List<String> recommend = [];
+
+  void updateFav(List<String> fav){
+    prefs.setStringList('favorites', fav);
+    setState(() {
+      favorites = fav;
+    });
+  }
+
+  void updateRec(List<String> rec) {
     setState(() {
       recommend = rec;
     });
   }
 
+  void updateIsEditing(bool h) {
+    setState(() {
+      isEditing = h;
+    });
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return buildHihiSearch(data.current.backcolor);
   }
 
@@ -180,100 +254,9 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   }
 
   Widget buildFloatingSearchBar(Color color) {
+    return searchBar(color, recommend, updateLocation,
+        _controller, updateIsEditing, isEditing, updateFav, favorites,
+        updateRec, data);
 
-    return FloatingSearchBar(
-      hint: 'Search...',
-      title: Container(
-        padding: const EdgeInsets.only(left: 0, top: 3),
-        child: Text(
-          data.place,
-          style: GoogleFonts.comfortaa(
-            color: WHITE,
-            fontSize: 28,
-            fontWeight: FontWeight.w300,
-          ),
-        ),
-      ),
-      hintStyle: GoogleFonts.comfortaa(
-        color: WHITE,
-        fontSize: 20,
-        fontWeight: FontWeight.w100,
-      ),
-
-      queryStyle: GoogleFonts.comfortaa(
-        color: WHITE,
-        fontSize: 25,
-        fontWeight: FontWeight.w100,
-      ),
-
-      borderRadius: BorderRadius.circular(25),
-      backgroundColor: color,
-      border: const BorderSide(width: 1.0, color: WHITE),
-
-      elevation: 0,
-      height: 60,
-      scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
-      transitionDuration: const Duration(milliseconds: 800),
-      transitionCurve: Curves.easeInOut,
-      physics: const BouncingScrollPhysics(),
-      debounceDelay: const Duration(milliseconds: 500),
-
-      controller: _controller,
-
-      onFocusChanged: (change) async {
-        if (change) {
-          var result = ['favorites', favorites];
-          updateRec(result);
-          print(('hihihihihi', recommend));
-        }
-        else {_controller.close();}
-      },
-
-      onQueryChanged: (query) async {
-        var result = await getRecommend(query);
-        updateRec(result);
-        print(('hihihihihi', recommend));
-      },
-      onSubmitted: (submission) {
-        widget.updateLocation(submission); // Call the callback to update the location
-        _controller.close();
-      },
-
-      iconColor: WHITE,
-      backdropColor: darken(color, 0.5),
-      closeOnBackdropTap: true,
-      transition: CircularFloatingSearchBarTransition(),
-      actions: [
-        FloatingSearchBarAction(
-          showIfOpened: false,
-          child: CircularButton(
-            icon: const Icon(Icons.place, color: WHITE,),
-            onPressed: () {},
-          ),
-        ),
-        FloatingSearchBarAction(
-          showIfOpened: true,
-          showIfClosed: false,
-          child: CircularButton(
-            icon: const Icon(Icons.close, color: WHITE,),
-            onPressed: () {
-              _controller.close();
-            },
-          ),
-        ),
-      ],
-      builder: (context, transition) {
-        if (recommend[0] == 'favorites') {
-          return defaultSearchScreen(color, recommend[1], widget.updateLocation, _controller);
-        }
-        if (recommend[1].length != 0) {
-          if (recommend[0] == 'recommend') {
-            return recommendSearchScreen(
-                color, recommend[1], widget.updateLocation, _controller);
-          }
-        }
-        return Container();
-      },
-    );
   }
 }

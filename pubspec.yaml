@@ -43,25 +43,25 @@ dependencies:
   google_fonts: ^6.0.0
 
 flutter_launcher_icons:
-  image_path_android: "assets/icons/Overmorrow_logo_circle.png"
-  image_path_ios: "assets/icons/Overmorrow_logo.png"
+  image_path_android: "assets/icons/Overmorrow_white_circle.png"
+  image_path_ios: "assets/icons/Overmorrow_white_classic.png"
   android: true # can specify file name here e.g. "ic_launcher"
   ios: true # can specify file name here e.g. "My-Launcher-Icon"
   remove_alpha_ios: true
-  image_path: "assets/icons/Overmorrow_logo.png"
+  image_path: "assets/icons/Overmorrow_white_classic.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "assets/icons/Overmorrow_logo.png"
+    image_path: "assets/icons/Overmorrow_white_classic.png"
     background_color: "#b1c4cf"
     theme_color: "#b1c4cf"
   windows:
     generate: true
-    image_path: "assets/icons/Overmorrow_logo.png"
+    image_path: "assets/icons/Overmorrow_white_classic.png"
     icon_size: 48 # min:48, max:256, default: 48
   macos:
     generate: true
-    image_path: "assets/icons/Overmorrow_logo.png"
+    image_path: "assets/icons/Overmorrow_white_classic.png"
 
 dev_dependencies:
   flutter_test:

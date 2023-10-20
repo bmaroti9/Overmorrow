@@ -54,18 +54,22 @@ class WeatherPage extends StatelessWidget {
                     bottom: -1,
                     left: 0,
                     right: 0,
-                    child: Container(
-                      height: 32,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: WHITE),
-                        color: data.current.backcolor,
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(30),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 32,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: WHITE),
+                            color: data.current.backcolor,
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(30),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
-                  MySearchWidget(updateLocation: updateLocation,
+                  MySearchParent(updateLocation: updateLocation,
                   data: data),
                 ],
               ),
