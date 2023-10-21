@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/dayforcast.dart';
@@ -17,8 +19,14 @@ class WeatherPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // First get the FlutterView.
+    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+
+    Size size = view.physicalSize / view.devicePixelRatio;
+    double safe_height = size.height;
+
     return Scaffold(
-      drawer: MyDrawer(color: data.current.backcolor),
+      drawer: MyDrawer(color: data.current.backcolor, data: data),
       body: RefreshIndicator(
         onRefresh: () async {
           await updateLocation(data.place);
@@ -35,7 +43,8 @@ class WeatherPage extends StatelessWidget {
                 child: Container(),
               ),
               pinned: false,
-              expandedHeight: MediaQuery.of(context).size.height - 80,
+
+              expandedHeight: safe_height - 60,
               flexibleSpace: Stack(
                 children: [
                   ParallaxBackground(data: data,),
@@ -139,26 +148,26 @@ Widget buildCurrent(var data) => Column(
               DescriptionCircle(
                 color: WHITE,
                 text: '${data.current.maxtemp}°',
-                undercaption: 'temp. max',
+                undercaption: translation('temp. max', data.settings[0]),
                 extra: '',
               ),
               DescriptionCircle(
                 color: WHITE,
                 text: '${data.current.mintemp}°',
-                undercaption: 'temp. min',
+                undercaption: translation('temp. min', data.settings[0]),
                 extra: '',
               ),
               DescriptionCircle(
                 color: WHITE,
                 text: '${data.current.precip}',
-                undercaption: 'precip.',
-                extra: data.units[1],
+                undercaption: translation('precip.', data.settings[0]),
+                extra: data.settings[2],
               ),
               DescriptionCircle(
                 color: WHITE,
                 text: '${data.current.wind}',
-                undercaption: 'wind',
-                extra: data.units[2],
+                undercaption: translation('Wind', data.settings[0]),
+                extra: data.settings[3],
               ),
             ]
         )
@@ -235,7 +244,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                       ],
                     ),
                   ),
-                  buildHours(day.hourly, data.units),
+                  buildHours(day.hourly, data.settings),
                 ],
               )
             );
@@ -271,7 +280,7 @@ Widget buildHours(List<dynamic> data, List<String> units) => Container(
               children: [
                 Container(
                   width: 10,
-                  height: temp_multiply_for_scale(hour.temp, units[0]),
+                  height: temp_multiply_for_scale(hour.temp, units[1]),
                   decoration: const BoxDecoration(
                       color: WHITE,
                       borderRadius: BorderRadius.all(Radius.circular(20))

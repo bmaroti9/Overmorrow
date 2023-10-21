@@ -22,7 +22,7 @@ Map<String, String> weatherTextMap = {
     'Clear': 'Clear Sky',
     'Sunny': 'Clear Sky',
     'Cloudy': 'Overcast',
-    'Partly cloudy': 'Partly Cloudy',
+    'Partly Cloudy': 'Partly Cloudy',
     'Overcast': 'Overcast',
     'Mist': 'Haze',
     'Patchy rain possible': 'Rain',

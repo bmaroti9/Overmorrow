@@ -2,8 +2,10 @@ import 'dart:ui';
 import 'ui_helper.dart';
 
 import 'weather_refact.dart' as weather_refactor;
+import 'languages.dart';
 
 String LOCATION = 'Szeged';
+bool RandomSwitch = false;
 
 double unit_coversion(double value, String unit) {
   List<double> p = weather_refactor.conversionTable[unit] ?? [0, 0];
@@ -11,12 +13,18 @@ double unit_coversion(double value, String unit) {
   return a;
 }
 
+String translation(String text, String language) {
+  int index = languageIndex[language] ?? 0;
+  String translated = mainTranslate[text]![index];
+  return translated;
+}
+
 double temp_multiply_for_scale(double temp, String unit) {
   if (unit == '˚C') {
     return 30 + temp * 1.6;
   }
   else{
-    return 5 * temp * 0.7;
+    return 5 + temp * 0.7;
   }
 }
 
@@ -35,18 +43,18 @@ String getTime(date) {
   return '${int.parse(realhour) - 12}pm';
 }
 
-List<Hour> buildHourly(data, units, int index, int timenow) {
+List<Hour> buildHourly(data, settings, int index, int timenow) {
   List<Hour> hourly = [];
   if (index == 0) {
     for (var i = 0; i < data.length; i++) {
       if (data[i]["time_epoch"] > timenow) {
-        hourly.add(Hour.fromJson(data[i], units));
+        hourly.add(Hour.fromJson(data[i], settings));
       }
     }
   }
   else {
     for (var i = 0; i < data.length; i++) {
-      hourly.add(Hour.fromJson(data[i], units));
+      hourly.add(Hour.fromJson(data[i], settings));
     }
   }
   return hourly;
@@ -58,9 +66,9 @@ Color backroundColorCorrection(name, isday) {
   return p;
 }
 
-String getName(index) {
+String getName(index, settings) {
   List<String> names = ['Today', 'Tomorrow', 'Overmorrow'];
-  return names[index];
+  return translation(names[index], settings[0]);
 }
 
 String backdropCorrection(name, isday) {
@@ -69,24 +77,28 @@ String backdropCorrection(name, isday) {
   return backdrop;
 }
 
-String textCorrection(name, isday) {
+String textCorrection(name, isday, {settings = 'English'}) {
+  String x = 'Thunderstorm';
   if (name == 'Clear'){
     if (isday == 1) {
-      return 'Clear Sky';
+      x =  'Clear Sky';
     }
     else{
-      return 'Clear Night';
+      x =  'Clear Night';
     }
   }
-  if (name == 'Partly cloudy'){
+  else if (name == 'Partly cloudy'){
     if (isday == 1) {
-      return 'Partly Cloudy';
+      x =  'Partly Cloudy';
     }
     else{
-      return 'Cloudy Night';
+      x =  'Cloudy Night';
     }
   }
-  String p = weather_refactor.weatherTextMap[name] ?? "undefined";
+  else {
+    x = weather_refactor.weatherTextMap[name] ?? "undefined";
+  }
+  String p = translation(x, settings[0]);
   return p;
 }
 
@@ -120,14 +132,14 @@ class Hour {
     required this.text,
   });
 
-  static Hour fromJson(item, units) => Hour(
+  static Hour fromJson(item, settings) => Hour(
     text: textCorrection(
-        item["condition"]["text"], item["is_day"]
+        item["condition"]["text"], item["is_day"], settings: settings
     ),
     icon: iconCorrection(
         item["condition"]["text"], item["is_day"]
     ),
-    temp: unit_coversion(item["temp_c"], units[0]),
+    temp:double.parse(unit_coversion(item["temp_c"], settings[1]).toStringAsFixed(1)),
     time: getTime(item["time"])
   );
 }
@@ -149,30 +161,30 @@ class Day {
     required this.hourly,
   });
 
-  static Day fromJson(item, index, units, timenow) => Day(
+  static Day fromJson(item, index, settings, timenow) => Day(
       date: item['date'],
       //text: item["day"]["condition"]["text"],
       //icon: "http:" + item["day"]['condition']['icon'],
       text: textCorrection(
-        item["day"]["condition"]["text"], 1
+        item["day"]["condition"]["text"], 1, settings: settings
       ),
       icon: iconCorrection(
         item["day"]["condition"]["text"], 1
       ),
-      name: getName(index),
-      minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], units[0]).round()}°'
-          '/${unit_coversion(item["day"]["mintemp_c"], units[0]).round()}°',
-      hourly: buildHourly(item["hour"], units, index, timenow),
+      name: getName(index, settings),
+      minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings[1]).round()}°'
+          '/${unit_coversion(item["day"]["mintemp_c"], settings[1]).round()}°',
+      hourly: buildHourly(item["hour"], settings, index, timenow),
   );
 }
 
 class WeatherData {
-  final List<String> units;
+  final List<String> settings;
   final List<Day> days;
   final Current current;
   final String place;
 
-  WeatherData(this.days, this.current, this.place, this.units);
+  WeatherData(this.days, this.current, this.place, this.settings);
 }
 
 class Current {
@@ -198,15 +210,15 @@ class Current {
     required this.backcolor,
 });
 
-  static Current fromJson(item, units) => Current(
+  static Current fromJson(item, settings) => Current(
 
     text: textCorrection(
-      item["current"]["condition"]["text"], item["current"]["is_day"]
+      item["current"]["condition"]["text"], item["current"]["is_day"], settings: settings
     ),
     backdrop: backdropCorrection(
       item["current"]["condition"]["text"], item["current"]["is_day"]
     ),
-    temp: unit_coversion(item["current"]["temp_c"], units[0]).round(),
+    temp: unit_coversion(item["current"]["temp_c"], settings[1]).round(),
 
     contentColor: contentColorCorrection(
       item["current"]["condition"]["text"], item["current"]["is_day"]
@@ -218,7 +230,7 @@ class Current {
 
     maxtemp: unit_coversion(item["forecast"]["forecastday"][0]["day"]["maxtemp_c"], '˚C').round(),
     mintemp: unit_coversion(item["forecast"]["forecastday"][0]["day"]["mintemp_c"], '˚C').round(),
-    precip: double.parse(unit_coversion(item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"], units[1]).toStringAsFixed(1)),
-    wind: unit_coversion(item["current"]["wind_kph"], units[2]).round(),
+    precip: double.parse(unit_coversion(item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"], settings[2]).toStringAsFixed(1)),
+    wind: unit_coversion(item["current"]["wind_kph"], settings[3]).round(),
   );
 }

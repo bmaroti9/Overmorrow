@@ -20,6 +20,7 @@ Widget comfortatext(String text, double size, {Color color = WHITE}) {
       fontSize: size,
       fontWeight: FontWeight.w300,
     ),
+    overflow: TextOverflow.ellipsis,
   );
 }
 
@@ -46,9 +47,9 @@ class DescriptionCircle extends StatelessWidget {
   final String text;
   final String undercaption;
   final String extra;
-  final double fontsize = 22;
-  final double width = 72;
-  final double height = 72;
+  final double fontsize = 21;
+  final double width = 73;
+  final double height = 73;
   final Color color;
 
   const DescriptionCircle({super.key, required this.text,
@@ -57,7 +58,7 @@ class DescriptionCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(5),
       child: Column(
         children: [
           Container(
@@ -96,7 +97,7 @@ class DescriptionCircle extends StatelessWidget {
         Center(
           child: Container(
             padding: const EdgeInsets.only(top:5),
-            width: width,
+            width: width + 8,
             height: height,
             child: Text(
               undercaption,
@@ -161,7 +162,7 @@ class _MySearchParentState extends State<MySearchParent> {
   }
 
   List<String> getFavorites(SharedPreferences? prefs){
-    final ifnot = ['Szeged'];
+    final ifnot = ['Nashville'];
     final used = prefs?.getStringList('favorites') ?? ifnot;
     return used;
   }

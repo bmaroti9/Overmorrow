@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'api_key.dart';
+import 'dayforcast.dart';
 import 'main_ui.dart';
 
 import 'dayforcast.dart' as dayforcast;
@@ -27,7 +28,8 @@ class _MyAppState extends State<MyApp> {
 
   static Future<dayforcast.WeatherData> getDays() async {
     try {
-      List<String> units_used = await getUnitsUsed();
+      List<String> units_used = await getSettingsUsed();
+      print(units_used);
 
       var params = {
         'key': apiKey,
@@ -62,6 +64,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
           body: FutureBuilder<dayforcast.WeatherData>(
             future: getDays(),

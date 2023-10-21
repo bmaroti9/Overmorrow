@@ -259,11 +259,24 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
             _controller.close();
           },
           child: Container(
-            padding: const EdgeInsets.only(left: 20, bottom: 0, right: 10),
+            padding: const EdgeInsets.only(left: 20, bottom: 3,
+                  right: 10, top: 3),
             child: Row(
               children: [
-                comfortatext(recommend[index], 27, color: WHITE),
-                const Spacer(),
+                Expanded(
+                  child: Text(
+                    recommend[index],
+                    style: GoogleFonts.comfortaa(
+                      color: WHITE,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: false,
+                    maxLines: 3,
+                  ),
+                ),
+
                 IconButton(onPressed: () {
                   if (favorites.contains(recommend[index])) {
                     favorites.remove(recommend[index]);

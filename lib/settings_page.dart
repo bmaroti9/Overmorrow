@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hihi_haha/dayforcast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'ui_helper.dart';
 
-List<String> unitsList = ['Temperature', 'Rain', 'Wind', 'Pressure'];
+List<String> settingsList = ['Language', 'Temperature', 'Rain', 'Wind', 'Pressure'];
 
 Map<String, List<String>> settingSwitches = {
+  'Language' : [
+    'English', 'Magyar', 'Español', 'Français', 'Deutsch', 'Italiano',
+    'Português', 'Русский', '简体中文', '日本語'
+  ],
   'Temperature': ['˚C', '˚F'],
   'Rain': ['mm', 'in'],
   'Wind': ['m/s', 'kph', 'mph'],
   'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa']
 };
 
-Future<List<String>> getUnitsUsed() async {
+Future<List<String>> getSettingsUsed() async {
   List<String> units = [];
-  for (String name in unitsList) {
+  for (String name in settingsList) {
     final prefs = await SharedPreferences.getInstance();
     final ifnot = settingSwitches[name] ?? ['˚C', '˚F'];
-    final used = prefs.getString('unit$name') ?? ifnot[0];
+    final used = prefs.getString('setting$name') ?? ifnot[0];
     units.add(used);
   }
   return units;
@@ -88,14 +93,41 @@ class _SettingsPageState extends State<SettingsPage> {
   void updatePage(String name, String to) {
     setState(() {
       //selected_temp_unit = newSelect;
-      print(('unit$name', to));
-      SetData('unit$name', to);
+      print(('setting$name', to));
+      SetData('setting$name', to);
     });
+  }
+
+  void goBack() {
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FutureBuilder<List<String>>(
+      future: getSettingsUsed(),
+      builder: (BuildContext context,
+          AsyncSnapshot<List<String>> snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          print(snapshot.error);
+          return Center(
+            child: ErrorWidget(snapshot.error as Object),
+          );
+        }
+        return SettingsMain(color, snapshot.data, updatePage, goBack);
+      },
+    );
+  }
+}
+
+Widget SettingsMain(Color color, List<String>? settings, Function updatePage,
+    Function goBack) {
+  return Scaffold(
       appBar: AppBar(
           toolbarHeight: 65,
           shape: RoundedRectangleBorder(
@@ -104,91 +136,68 @@ class _SettingsPageState extends State<SettingsPage> {
           elevation: 0,
           leadingWidth: 50,
           backgroundColor: darken(color, 0.3),
-          title: comfortatext('Settings', 25),
+          title: comfortatext(translation('Settings', settings![0]), 25),
           leading:
           IconButton(
             onPressed: (){
-              Navigator.pop(context);
+              goBack();
             },
             icon: const Icon(Icons.arrow_back, color: WHITE,),
           )
       ),
-      body: FutureBuilder<List<String>>(
-        future: getUnitsUsed(),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<String>> snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            print(snapshot.error);
-            return Center(
-              child: ErrorWidget(snapshot.error as Object),
-            );
-          }
-          //return buildWholeThing(snapshot.data);
-          return UnitsMain(color, snapshot.data, updatePage);
-        },
-      ),
-    );
-  }
+      body: UnitsMain(color, settings, updatePage),
+  );
 }
 
-Widget UnitsMain(Color color, List<String>? units, Function updatePage) {
+Widget UnitsMain(Color color, List<String>? settings, Function updatePage) {
   return Container(
     padding: const EdgeInsets.only(top: 30, left: 10, right: 30),
     color: color,
     child: Column(
         children: [
           leftpad(
-              comfortatext('Units', 30, color: WHITE),
-              10
-          ),
-          leftpad(
-              SizedBox(
-                height: 70.0 * units!.length,
-                child: ListView.builder(
-                  itemCount: units.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      height: 70,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          comfortatext(unitsList[index], 23),
-                          const Spacer(),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: SizedBox(
-                              width: 130,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: darken(color, 0.10),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 10, right: 4),
-                                    child: dropdown(
-                                        darken(color, 0.2),
-                                        unitsList[index],
-                                        updatePage,
-                                        units[index]
-                                    ),
+            SizedBox(
+              height: 70.0 * settings!.length,
+              child: ListView.builder(
+                itemCount: settings.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    height: 70,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        comfortatext(translation(settingsList[index], settings[0]), 23),
+                        const Spacer(),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: SizedBox(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: darken(color, 0.10),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10, right: 4),
+                                  child: dropdown(
+                                      darken(color, 0.2),
+                                      settingsList[index],
+                                      updatePage,
+                                      settings[index]
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-              30
+            ),
+            20
           )
         ]
     ),
@@ -198,8 +207,9 @@ Widget UnitsMain(Color color, List<String>? units, Function updatePage) {
 class MyDrawer extends StatelessWidget {
 
   final color;
+  final data;
 
-  MyDrawer({super.key, required this.color});
+  MyDrawer({super.key, required this.color, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +237,7 @@ class MyDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: comfortatext('Settings', 25),
+            title: comfortatext(translation('Settings', data.settings[0]), 25),
             leading: const Icon(Icons.settings, color: WHITE,),
             onTap: () {
               Navigator.push(
@@ -237,7 +247,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext('About', 25),
+            title: comfortatext(translation('About', data.settings[0]), 25),
             leading: const Icon(Icons.info_outline, color: WHITE,),
             onTap: () {
               // Handle the option 1 tap here
@@ -245,11 +255,11 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext('Donate', 25),
+            title: comfortatext(translation('Donate', data.settings[0]), 25),
             leading: const Icon(Icons.favorite_border, color: WHITE,),
             onTap: () {
               // Handle the option 1 tap here
-              Navigator.pop(context); // Close the drawer
+              Navigator.pop(context, true); // Close the drawer
             },
           ),
         ],
