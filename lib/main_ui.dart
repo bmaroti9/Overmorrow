@@ -44,7 +44,7 @@ class WeatherPage extends StatelessWidget {
               ),
               pinned: false,
 
-              expandedHeight: safe_height - 60,
+              expandedHeight: safe_height - 70,
               flexibleSpace: Stack(
                 children: [
                   ParallaxBackground(data: data,),
