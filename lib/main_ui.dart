@@ -36,10 +36,10 @@ class WeatherPage extends StatelessWidget {
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              automaticallyImplyLeading: false,
+              automaticallyImplyLeading: false, // remove the hamburger-menu
               backgroundColor: Colors.transparent, // Set background to transparent
               bottom: PreferredSize(
-                preferredSize: Size(0, MediaQuery.of(context).size.height * 0.5),
+                preferredSize: Size(0, safe_height - 350),
                 child: Container(),
               ),
               pinned: false,
@@ -60,22 +60,18 @@ class WeatherPage extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    bottom: -1,
+                    bottom: -3,
                     left: 0,
                     right: 0,
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 32,
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: WHITE),
-                            color: data.current.backcolor,
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(30),
-                            ),
-                          ),
+                    child: Container(
+                      height: 32,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: WHITE),
+                        color: data.current.backcolor,
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(30),
                         ),
-                      ],
+                      ),
                     ),
                   ),
                   MySearchParent(updateLocation: updateLocation,
@@ -219,27 +215,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 20),
-                          child: Text(
-                            day.text,
-                            style: GoogleFonts.comfortaa(
-                              color: WHITE,
-                              fontSize: 25,
-                              height: 0.7,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Text(
-                            day.minmaxtemp,
-                            style: GoogleFonts.comfortaa(
-                              color: WHITE,
-                              fontSize: 22,
-                              height: 0.7,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
+                          child: comfortatext(day.text + ' ' + day.minmaxtemp, 25, color: WHITE)
                         ),
                       ],
                     ),

@@ -206,7 +206,7 @@ Map<String, List<String>> mainTranslate = {
   ],
   'Partly Cloudy': [
     'Partly Cloudy',
-    'Részben felhősebbbbbb',
+    'Részben felhős',
     'Parcialmente nublado',
     'Partiellement nuageux',
     'Teils wolkig',
@@ -251,18 +251,6 @@ Map<String, List<String>> mainTranslate = {
     'Туман',
     '雾霾',
     '霧'
-  ],
-  'Rain': [
-    'Rain',
-    'Eső',
-    'Lluvia',
-    'Pluie',
-    'Regen',
-    'Pioggia',
-    'Chuva',
-    'Дождь',
-    '雨',
-    '雨'
   ],
   'Sleet': [
     'Sleet',

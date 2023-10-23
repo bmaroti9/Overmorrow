@@ -37,10 +37,21 @@ String iconCorrection(name, isday) {
 String getTime(date) {
   final realtime = date.split(' ')[1];
   final realhour = realtime.split(':')[0];
-  if (int.parse(realhour) <= 12) {
+  final num = int.parse(realhour);
+  if (num == 0) {
+    return '12am';
+  }
+  else if (num < 10) {
+    final minusHour = (num % 10).toString();
+    return minusHour + 'am';
+  }
+  else if (num < 12) {
     return realhour + 'am';
   }
-  return '${int.parse(realhour) - 12}pm';
+  else if (num == 12) {
+    return '12pm';
+  }
+  return '${num - 12}pm';
 }
 
 List<Hour> buildHourly(data, settings, int index, int timenow) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/dayforcast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'main.dart';
 import 'ui_helper.dart';
 
 List<String> settingsList = ['Language', 'Temperature', 'Rain', 'Wind', 'Pressure'];
@@ -99,8 +100,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void goBack() {
-    Navigator.pop(context);
-    Navigator.pop(context);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
   }
 
   @override

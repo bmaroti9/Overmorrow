@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'api_key.dart';
-import 'dayforcast.dart';
 import 'main_ui.dart';
 
 import 'dayforcast.dart' as dayforcast;
