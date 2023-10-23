@@ -1,6 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    package="com.example.url_launcher_example">
+    <queries>
+        <!-- If your app opens https URLs -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
     <application
-        android:label="hihi_haha"
+        android:label="Overmorrow"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

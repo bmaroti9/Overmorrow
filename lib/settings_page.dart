@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/dayforcast.dart';
+import 'package:hihi_haha/donation_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main.dart';
 import 'ui_helper.dart';
@@ -258,8 +259,10 @@ class MyDrawer extends StatelessWidget {
             title: comfortatext(translation('Donate', data.settings[0]), 25),
             leading: const Icon(Icons.favorite_border, color: WHITE,),
             onTap: () {
-              // Handle the option 1 tap here
-              Navigator.pop(context, true); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DonationPage(color: color, settings: null,)),
+              );
             },
           ),
         ],
