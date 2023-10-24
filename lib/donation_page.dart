@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/ui_helper.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import 'dayforcast.dart';
 import 'package:flutter_donation_buttons/flutter_donation_buttons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DonationPage extends StatefulWidget {
   final Color color;
@@ -112,11 +111,41 @@ class _DonationPageState extends State<DonationPage> {
                     ],
                   ),
                 ),
+                /*
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                    ),
+                      onPressed: () {  },
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 10, top: 8, bottom: 8),
+                            child: Icon(Icons.coffee),
+                          ),
+                          Text(
+                            'Buy my dad a coffee',
+                            style: TextStyle(
+                              fontSize: 21,
+                              fontWeight: FontWeight.w300,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                  ),
+                ),
+
                 KofiButton(kofiName: "flajt",kofiColor: KofiColor.Red,onDonation: (){
                   print("On Donation!");
                 }),
-                PayPalButton(paypalButtonId: "T6NT2YYTVX6VS"),
-                PatreonButton(patreonName: "buttonshy"),
+                const PayPalButton(paypalButtonId: "T6NT2YYTVX6VS"),
+
+                 */
+                const PatreonButton(patreonName: "buttonshy",),
                 // Just someone I stumbled accross on Patreon as an example, not affiliaited with him
               ],
             ),
@@ -124,15 +153,5 @@ class _DonationPageState extends State<DonationPage> {
         ),
       ),
     );
-  }
-}
-
-Future<void> _launchUrl() async {
-  final url = Uri.parse(
-      'https://pub.dev/packages/home_widget');
-  if (await canLaunchUrl(url)) {
-    await launchUrl(url);
-  } else {
-    throw 'Could not launch $url';
   }
 }

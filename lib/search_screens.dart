@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/ui_helper.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 
 Widget searchBar(Color color, List<String> recommend,
-    Function updateLocation, FloatingSearchBarController _controller,
+    Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, Function updateRec, var data) {
+    List<String> favorites, Function updateRec, var data, var context) {
 
   return FloatingSearchBar(
       hint: 'Search...',
@@ -45,7 +46,7 @@ Widget searchBar(Color color, List<String> recommend,
       physics: const BouncingScrollPhysics(),
       debounceDelay: const Duration(milliseconds: 500),
 
-      controller: _controller,
+      controller: controller,
 
       onQueryChanged: (query) async {
         isEditing = false;
@@ -55,7 +56,7 @@ Widget searchBar(Color color, List<String> recommend,
       onSubmitted: (submission) {
         isEditing = false;
         updateLocation(submission); // Call the callback to update the location
-        _controller.close();
+        controller.close();
       },
 
       iconColor: WHITE,
@@ -67,7 +68,26 @@ Widget searchBar(Color color, List<String> recommend,
           showIfOpened: false,
           child: CircularButton(
             icon: const Icon(Icons.place, color: WHITE,),
-            onPressed: () {},
+            onPressed: () async {
+              LocationPermission permission = await Geolocator.checkPermission();
+              if (permission == LocationPermission.denied) {
+                const snackBar = SnackBar(
+                    content: Text('Permission denied'),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+              if (permission == LocationPermission.deniedForever) {
+                const snackBar = SnackBar(
+                  content: Text('Permission denied forever'),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+              if (permission == LocationPermission.whileInUse ||
+                  permission == LocationPermission.always) {
+                Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+                updateLocation(position.latitude.toString() + ',' + position.longitude.toString());
+              }
+            },
           ),
         ),
         FloatingSearchBarAction(
@@ -76,7 +96,7 @@ Widget searchBar(Color color, List<String> recommend,
           child: CircularButton(
             icon: const Icon(Icons.close, color: WHITE,),
             onPressed: () {
-              _controller.clear();
+              controller.clear();
             },
           ),
         ),
@@ -88,26 +108,26 @@ Widget searchBar(Color color, List<String> recommend,
               return SizeTransition(sizeFactor: animation, child: child);
             },
             child: decideSearch(color, recommend, updateLocation,
-                _controller, updateIsEditing, isEditing, updateFav,
-                favorites, _controller.query)
+                controller, updateIsEditing, isEditing, updateFav,
+                favorites, controller.query)
         );
       }
   );
 }
 
 Widget decideSearch(Color color, List<String> recommend,
-    Function updateLocation, FloatingSearchBarController _controller,
+    Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
     List<String> favorites, String entered) {
 
   if (entered == '') {
     return defaultSearchScreen(color, updateLocation,
-        _controller, updateIsEditing, isEditing, updateFav, favorites);
+        controller, updateIsEditing, isEditing, updateFav, favorites);
   }
   else{
     if (recommend.isNotEmpty) {
       return recommendSearchScreen(
-          color, recommend, updateLocation, _controller,
+          color, recommend, updateLocation, controller,
           favorites, updateFav);
     }
   }
@@ -115,7 +135,7 @@ Widget decideSearch(Color color, List<String> recommend,
 }
 
 Widget defaultSearchScreen(Color color,
-    Function updateLocation, FloatingSearchBarController _controller,
+    Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
     List<String> favorites) {
 
@@ -124,22 +144,22 @@ Widget defaultSearchScreen(Color color,
     const Icon(Icons.close, color: WHITE,),
   ];
 
-  Icon edit_icon = const Icon(Icons.icecream, color: WHITE,);
-  Color rect_color = WHITE;
+  Icon editIcon = const Icon(Icons.icecream, color: WHITE,);
+  Color rectColor = WHITE;
   List<int> icons = [];
   if (isEditing) {
     for (String _ in favorites) {
       icons.add(1);
     }
-    edit_icon = const Icon(Icons.check, color: WHITE,);
-    rect_color = Colors.orangeAccent;
+    editIcon = const Icon(Icons.check, color: WHITE,);
+    rectColor = Colors.orangeAccent;
   }
   else{
     for (String _ in favorites) {
       icons.add(0);
     }
-    edit_icon = const Icon(Icons.edit, color: WHITE,);
-    rect_color = color;
+    editIcon = const Icon(Icons.edit, color: WHITE,);
+    rectColor = color;
   }
 
   return Column(
@@ -149,7 +169,7 @@ Widget defaultSearchScreen(Color color,
         child: Row(
           children: [
             comfortatext('Favorites', 30, color: WHITE),
-            Spacer(),
+            const Spacer(),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
               transitionBuilder: (Widget child, Animation<double> animation) {
@@ -157,15 +177,15 @@ Widget defaultSearchScreen(Color color,
                       child: child);
                 },
               child: Container(
-                key: ValueKey<Icon>(edit_icon),
+                key: ValueKey<Icon>(editIcon),
                 decoration: BoxDecoration(
-                  color: rect_color,
+                  color: rectColor,
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: IconButton(onPressed: () {
                   updateIsEditing(!isEditing);
                 },
-                  icon: edit_icon,
+                  icon: editIcon,
                 ),
               ),
             ),
@@ -175,14 +195,14 @@ Widget defaultSearchScreen(Color color,
       AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
           transitionBuilder: (Widget child, Animation<double> animation) {
-            return ScaleTransition(scale: animation, child: child,
-            alignment: Alignment.topCenter,);
+            return ScaleTransition(scale: animation,
+            alignment: Alignment.topCenter, child: child,);
           },
           child: Container(
-            key: ValueKey<Color>(rect_color),
+            key: ValueKey<Color>(rectColor),
             padding: const EdgeInsets.only(top:10, bottom: 10),
             decoration: BoxDecoration(
-              color: rect_color,
+              color: rectColor,
               borderRadius: BorderRadius.circular(25),
             ),
             child: ListView.builder(
@@ -193,7 +213,7 @@ Widget defaultSearchScreen(Color color,
                 return GestureDetector(
                   onTap: () {
                     updateLocation(favorites[index]);
-                    _controller.close();
+                    controller.close();
                   },
                   child: Container(
                     padding: const EdgeInsets.only(left: 20, bottom: 0, right: 10),
@@ -228,7 +248,7 @@ Widget defaultSearchScreen(Color color,
 }
 
 Widget recommendSearchScreen(Color color, List<String> recommend,
-    Function updateLocation, FloatingSearchBarController _controller, List<String> favorites,
+    Function updateLocation, FloatingSearchBarController controller, List<String> favorites,
     Function updateFav) {
   List<Icon> icons = [];
 
@@ -256,7 +276,7 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
         return GestureDetector(
           onTap: () {
             updateLocation(recommend[index]);
-            _controller.close();
+            controller.close();
           },
           child: Container(
             padding: const EdgeInsets.only(left: 20, bottom: 3,

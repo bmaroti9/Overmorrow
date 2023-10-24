@@ -198,7 +198,7 @@ class MySearchWidget extends StatefulWidget{
   final favorites;
   final prefs;
 
-  MySearchWidget({required this.data, required this.updateLocation,
+  const MySearchWidget({super.key, required this.data, required this.updateLocation,
   required this.favorites, required this.prefs});
 
   @override
@@ -257,7 +257,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   Widget buildFloatingSearchBar(Color color) {
     return searchBar(color, recommend, updateLocation,
         _controller, updateIsEditing, isEditing, updateFav, favorites,
-        updateRec, data);
+        updateRec, data, context);
 
   }
 }

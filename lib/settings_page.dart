@@ -67,7 +67,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit) {
     items: Items.map((item) {
       return DropdownMenuItem(
         value: item,
-        child: new Text(item),
+        child: Text(item),
       );
     }).toList(),
     onChanged: (Object? value) {
@@ -101,7 +101,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void goBack() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MyApp()));
   }
 
   @override
@@ -210,7 +210,7 @@ class MyDrawer extends StatelessWidget {
   final color;
   final data;
 
-  MyDrawer({super.key, required this.color, required this.data});
+  const MyDrawer({super.key, required this.color, required this.data});
 
   @override
   Widget build(BuildContext context) {

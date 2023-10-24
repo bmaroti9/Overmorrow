@@ -23,7 +23,7 @@ class WeatherPage extends StatelessWidget {
     FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
 
     Size size = view.physicalSize / view.devicePixelRatio;
-    double safe_height = size.height;
+    double safeHeight = size.height;
 
     return Scaffold(
       drawer: MyDrawer(color: data.current.backcolor, data: data),
@@ -39,12 +39,12 @@ class WeatherPage extends StatelessWidget {
               automaticallyImplyLeading: false, // remove the hamburger-menu
               backgroundColor: Colors.transparent, // Set background to transparent
               bottom: PreferredSize(
-                preferredSize: Size(0, safe_height - 350),
+                preferredSize: Size(0, safeHeight - 350),
                 child: Container(),
               ),
               pinned: false,
 
-              expandedHeight: safe_height - 70,
+              expandedHeight: safeHeight - 70,
               flexibleSpace: Stack(
                 children: [
                   ParallaxBackground(data: data,),
@@ -189,7 +189,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 30),
+                    padding: const EdgeInsets.only(top: 30),
                     child: Text(
                       day.name,
                       style: GoogleFonts.comfortaa(
@@ -230,12 +230,12 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
   ),
 );
 
-Widget buildHours(List<dynamic> data, List<String> units) => Container(
+Widget buildHours(List<dynamic> data, List<String> units) => SizedBox(
   height: 240, // Adjust the height as needed
   child: ListView(
     scrollDirection: Axis.horizontal,
     children: data.map<Widget>((hour) {
-      return Container(
+      return SizedBox(
         height: 240,
         child: Column(
           children: [

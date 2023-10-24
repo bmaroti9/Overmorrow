@@ -43,7 +43,7 @@ String getTime(date) {
   }
   else if (num < 10) {
     final minusHour = (num % 10).toString();
-    return minusHour + 'am';
+    return '${minusHour}am';
   }
   else if (num < 12) {
     return realhour + 'am';

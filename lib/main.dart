@@ -27,8 +27,8 @@ class _MyAppState extends State<MyApp> {
 
   static Future<dayforcast.WeatherData> getDays() async {
     try {
-      List<String> units_used = await getSettingsUsed();
-      print(units_used);
+      List<String> unitsUsed = await getSettingsUsed();
+      print(unitsUsed);
 
       var params = {
         'key': apiKey,
@@ -45,18 +45,18 @@ class _MyAppState extends State<MyApp> {
       List<dayforcast.Day> days = [];
       int index = 0;
       for (var forecast in forecastlist) {
-        days.add(dayforcast.Day.fromJson(forecast, index, units_used, jsonbody["location"]["localtime_epoch"]));
+        days.add(dayforcast.Day.fromJson(forecast, index, unitsUsed, jsonbody["location"]["localtime_epoch"]));
         index += 1;
       }
 
       dayforcast.Current current =
-      dayforcast.Current.fromJson(jsonbody, units_used);
+      dayforcast.Current.fromJson(jsonbody, unitsUsed);
 
       return dayforcast.WeatherData(
-          days, current, jsonbody['location']['name'], units_used);
+          days, current, jsonbody['location']['name'], unitsUsed);
     } catch (e, stacktrace) {
       print(stacktrace);
-      throw (e);
+      rethrow;
     }
   }
 
