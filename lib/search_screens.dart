@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hihi_haha/settings_page.dart';
 import 'package:hihi_haha/ui_helper.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
+
+import 'dayforcast.dart';
 
 Widget searchBar(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, Function updateRec, var data, var context) {
+    List<String> favorites, Function updateRec, var data, var context,
+    bool prog, Function updateProg) {
 
   return FloatingSearchBar(
       hint: 'Search...',
       title: Container(
-        padding: const EdgeInsets.only(left: 0, top: 3),
+        padding: const EdgeInsets.only(left: 10, top: 3),
         child: Text(
           data.place,
           style: GoogleFonts.comfortaa(
@@ -34,9 +38,11 @@ Widget searchBar(Color color, List<String> recommend,
         fontWeight: FontWeight.w100,
       ),
 
-      borderRadius: BorderRadius.circular(25),
+      borderRadius: BorderRadius.circular(102),
       backgroundColor: color,
-      border: const BorderSide(width: 1.0, color: WHITE),
+      border: const BorderSide(width: 1.2, color: WHITE),
+      progress: prog,
+      accentColor: WHITE,
 
       elevation: 0,
       height: 60,
@@ -59,6 +65,8 @@ Widget searchBar(Color color, List<String> recommend,
         controller.close();
       },
 
+      insets: EdgeInsets.zero,
+      padding: const EdgeInsets.only(left: 13),
       iconColor: WHITE,
       backdropColor: darken(color, 0.5),
       closeOnBackdropTap: true,
@@ -66,38 +74,25 @@ Widget searchBar(Color color, List<String> recommend,
       actions: [
         FloatingSearchBarAction(
           showIfOpened: false,
-          child: CircularButton(
-            icon: const Icon(Icons.place, color: WHITE,),
-            onPressed: () async {
-              LocationPermission permission = await Geolocator.checkPermission();
-              if (permission == LocationPermission.denied) {
-                const snackBar = SnackBar(
-                    content: Text('Permission denied'),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }
-              if (permission == LocationPermission.deniedForever) {
-                const snackBar = SnackBar(
-                  content: Text('Permission denied forever'),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }
-              if (permission == LocationPermission.whileInUse ||
-                  permission == LocationPermission.always) {
-                Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-                updateLocation(position.latitude.toString() + ',' + position.longitude.toString());
-              }
-            },
+          child: Padding(
+            padding: const EdgeInsets.only(top: 3, bottom: 3),
+            child: LocationButton(updateProg, updateLocation, color),
           ),
         ),
         FloatingSearchBarAction(
           showIfOpened: true,
           showIfClosed: false,
-          child: CircularButton(
-            icon: const Icon(Icons.close, color: WHITE,),
-            onPressed: () {
-              controller.clear();
-            },
+          child: Visibility(
+            visible: controller.query != '',
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: CircularButton(
+                icon: const Icon(Icons.close, color: WHITE,),
+                onPressed: () {
+                  controller.clear();
+                },
+              ),
+            ),
           ),
         ),
       ],
@@ -152,7 +147,7 @@ Widget defaultSearchScreen(Color color,
       icons.add(1);
     }
     editIcon = const Icon(Icons.check, color: WHITE,);
-    rectColor = Colors.orangeAccent;
+    rectColor = Color(0xffce5a67);
   }
   else{
     for (String _ in favorites) {
@@ -316,4 +311,45 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
       },
     ),
   );
+}
+
+Widget LocationButton(Function updateProg, Function updateLocation, Color color) {
+  if (LOCATION == 'CurrentLocation') {
+    return ElevatedButton(
+      style: ButtonStyle(
+        elevation: MaterialStateProperty.all<double>(0),
+        shape: MaterialStateProperty.all(const CircleBorder()),
+        padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
+        backgroundColor: MaterialStateProperty.all(WHITE),
+        // <-- Button color
+        overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+          if (states.contains(MaterialState.pressed)) {
+            return const Color(0xffce5a67);
+          }
+          return null; // <-- Splash color
+        }),
+      ),
+      onPressed: null,
+      child: Icon(Icons.place_rounded, color: color,),
+    );
+  }
+  else{
+    return ElevatedButton(
+      style: ButtonStyle(
+        elevation: MaterialStateProperty.all<double>(0),
+        shape: MaterialStateProperty.all(const CircleBorder()),
+        padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
+        backgroundColor: MaterialStateProperty.all(color),
+        side: MaterialStateProperty.resolveWith<BorderSide>(
+          (states) => const BorderSide(width: 1.2, color: WHITE)),
+      ),
+      onPressed: () async {
+        print('pressed');
+        if (await isLocationSafe()) {
+          updateLocation('CurrentLocation');
+        }
+      },
+      child: const Icon(Icons.place_outlined, color: WHITE,),
+    );
+  }
 }

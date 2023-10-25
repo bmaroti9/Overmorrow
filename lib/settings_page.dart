@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/dayforcast.dart';
 import 'package:hihi_haha/donation_page.dart';
@@ -30,11 +31,48 @@ Future<List<String>> getSettingsUsed() async {
   return units;
 }
 
+class SnackbarGlobal {
+  static GlobalKey<ScaffoldMessengerState> key =
+  GlobalKey<ScaffoldMessengerState>();
+
+  static void show(String message) {
+    key.currentState!
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(
+        content: comfortatext(message, 26, color: WHITE),
+        backgroundColor: BLACK,)
+      );
+  }
+}
+
+Future<bool> isLocationSafe() async {
+  LocationPermission permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      SnackbarGlobal.show('permission denied');
+    }
+  }
+  if (permission == LocationPermission.deniedForever) {
+    SnackbarGlobal.show('permission denied forever');
+  }
+  if (permission == LocationPermission.whileInUse ||
+      permission == LocationPermission.always) {
+    return true;
+  }
+  return false;
+}
+
+Future<String> getLastPlace() async {
+  final prefs = await SharedPreferences.getInstance();
+  final used = prefs.getString('LastPlace') ?? 'Szeged';
+  return used;
+}
+
 SetData(String name, String to) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString(name, to);
 }
-
 
 Widget leftpad(Widget child, double hihimargin) {
   return Align(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'api_key.dart';
@@ -19,20 +20,53 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  bool startup = true;
+  String oldLoc = 'New York';
+
   void updateLocation(String newLocation) {
+    print('updateLocation');
     setState(() {
+      oldLoc = dayforcast.LOCATION.toString();
       dayforcast.LOCATION = newLocation;
     });
   }
 
-  static Future<dayforcast.WeatherData> getDays() async {
+  Future<dayforcast.WeatherData> getDays() async {
+    print('getDays');
     try {
       List<String> unitsUsed = await getSettingsUsed();
       print(unitsUsed);
 
+      String forecastLoc = dayforcast.LOCATION;
+      String lastPlace = dayforcast.LOCATION;
+      print(('dayforcast', dayforcast.LOCATION));
+
+      if (startup) {
+        String x = await getLastPlace();
+        print(('hihihih', x));
+        lastPlace = x;
+        forecastLoc = x;
+        startup = false;
+        print(('this', lastPlace, forecastLoc, startup));
+      }
+
+      if (lastPlace == 'CurrentLocation') {
+        dayforcast.LOCATION = 'CurrentLocation';
+        if (await isLocationSafe()) {
+          Position position = await Geolocator.getCurrentPosition(
+              forceAndroidLocationManager: true,
+              desiredAccuracy: LocationAccuracy.low);
+          forecastLoc = '${position.latitude},${position.longitude}';
+        }
+        else {
+          forecastLoc = oldLoc;
+        }
+      }
+
       var params = {
         'key': apiKey,
-        'q': dayforcast.LOCATION,
+        'q': forecastLoc,
         'days': '3 ',
         'aqi': 'no',
         'alerts': 'no',
@@ -40,6 +74,16 @@ class _MyAppState extends State<MyApp> {
       var url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
       var response = await http.post(url);
       var jsonbody = jsonDecode(response.body);
+      if (response.statusCode == 400) {
+        print('somehow');
+        SnackbarGlobal.show(jsonbody['error']['message']);
+        updateLocation(oldLoc);
+      }
+      else{
+        print(('here', lastPlace));
+        SetData('LastPlace', lastPlace);
+        dayforcast.LOCATION = lastPlace;
+      }
       var forecastlist = jsonbody['forecast']['forecastday'];
 
       List<dayforcast.Day> days = [];
@@ -62,7 +106,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    print('build');
     return MaterialApp(
+      scaffoldMessengerKey: SnackbarGlobal.key,
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           body: FutureBuilder<dayforcast.WeatherData>(

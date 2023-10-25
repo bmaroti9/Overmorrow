@@ -21,6 +21,7 @@ Widget comfortatext(String text, double size, {Color color = WHITE}) {
       fontWeight: FontWeight.w300,
     ),
     overflow: TextOverflow.ellipsis,
+    maxLines: 3,
   );
 }
 
@@ -215,6 +216,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   List<String> favorites;
 
   bool isEditing = false;
+  bool prog = false;
 
   _MySearchWidgetState({required this.data, required this.updateLocation,
         required this.favorites, required this.prefs});
@@ -225,6 +227,11 @@ class _MySearchWidgetState extends State<MySearchWidget> {
     prefs.setStringList('favorites', fav);
     setState(() {
       favorites = fav;
+    });
+  }
+  void updateProg(bool to) {
+    setState(() {
+      prog = to;
     });
   }
 
@@ -257,7 +264,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   Widget buildFloatingSearchBar(Color color) {
     return searchBar(color, recommend, updateLocation,
         _controller, updateIsEditing, isEditing, updateFav, favorites,
-        updateRec, data, context);
+        updateRec, data, context, prog, updateProg);
 
   }
 }
