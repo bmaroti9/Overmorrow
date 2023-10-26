@@ -215,7 +215,10 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 20),
-                          child: comfortatext(day.text + ' ' + day.minmaxtemp, 25, color: WHITE)
+                          child: SizedBox(
+                            width: 260,
+                              child: comfortatext(day.text + ' ' + day.minmaxtemp, 25, color: WHITE)
+                          )
                         ),
                       ],
                     ),

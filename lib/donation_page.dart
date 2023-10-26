@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hihi_haha/dayforcast.dart';
 import 'package:hihi_haha/ui_helper.dart';
 
 import 'package:flutter_donation_buttons/flutter_donation_buttons.dart';
@@ -38,7 +39,7 @@ class _DonationPageState extends State<DonationPage> {
           elevation: 0,
           leadingWidth: 50,
           backgroundColor: darken(color, 0.3),
-          title: comfortatext('Donate', 25),
+          title: comfortatext(translation('Donate', settings[0]), 25),
           leading:
           IconButton(
             onPressed: (){
@@ -48,13 +49,22 @@ class _DonationPageState extends State<DonationPage> {
           )
       ),
       body:Container(
-        color: color,
+        color: darken(color),
         child: Padding(
           padding: const EdgeInsets.only(top: 30),
           child: Align(
             alignment: Alignment.topCenter,
             child: Column(
               children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Image.asset(
+                    'assets/icons/Overmorrow_white_classic.png',
+                    fit: BoxFit.contain,
+                    height: 100,
+                  ),
+                ),
+
                 SizedBox(
                   width: 300,
                   child: Column(
@@ -62,9 +72,7 @@ class _DonationPageState extends State<DonationPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Text(
-                          'If you enjoy using Overmorrow,'
-                              ' then please consider showing your support '
-                              'by donating.',
+                          'Overmorrow is a free app. :)',
                         style: GoogleFonts.comfortaa(
                           color: WHITE,
                           fontSize: 21,
@@ -79,7 +87,7 @@ class _DonationPageState extends State<DonationPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 15),
                         child: Text(
-                          'It really helps me out and keeps the app free and amazing.',
+                          'Support me on Patreon, to help me keep it that way!',
                           style: GoogleFonts.comfortaa(
                             color: WHITE,
                             fontSize: 21,
@@ -94,7 +102,7 @@ class _DonationPageState extends State<DonationPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 30, bottom: 40, left: 10),
+                          padding: const EdgeInsets.only(top: 30, bottom: 40),
                           child: Text(
                             'Thank You! -Balint',
                             style: GoogleFonts.comfortaa(
@@ -111,42 +119,23 @@ class _DonationPageState extends State<DonationPage> {
                     ],
                   ),
                 ),
-                /*
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                    ),
-                      onPressed: () {  },
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 10, top: 8, bottom: 8),
-                            child: Icon(Icons.coffee),
-                          ),
-                          Text(
-                            'Buy my dad a coffee',
-                            style: TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.w300,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
+                
+                PatreonButton(
+                  patreonName: "buttonshy",
+                  text: 'Support me on Patron',
+                  style: ButtonStyle(
+                    elevation: MaterialStateProperty.all<double>(0),
+                    padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
+                    backgroundColor: MaterialStateProperty.all(const Color(0xffF96854)),
+                    // <-- Button color
+                    overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return darken(const Color(0xffF96854), 0.2);
+                      }
+                      return null; // <-- Splash color
+                    }),
                   ),
                 ),
-
-                KofiButton(kofiName: "flajt",kofiColor: KofiColor.Red,onDonation: (){
-                  print("On Donation!");
-                }),
-                const PayPalButton(paypalButtonId: "T6NT2YYTVX6VS"),
-
-                 */
-                const PatreonButton(patreonName: "buttonshy",),
-                // Just someone I stumbled accross on Patreon as an example, not affiliaited with him
               ],
             ),
           ),

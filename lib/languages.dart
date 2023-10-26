@@ -347,6 +347,54 @@ Map<String, List<String>> mainTranslate = {
     'Облачная ночь',
     '多云的夜晚',
     '多云の夜'
+  ],
+  'Overmorrow is a free app. :)': [
+  'Overmorrow is a free app. :)',
+  'A Holnapután egy ingyenes alkalmazás. :)',
+  'Overmorrow es una aplicación gratuita. :)',
+  'Overmorrow est une application gratuite. :)',
+  'Overmorrow ist eine kostenlose App. :)',
+  'Overmorrow è un app gratuita. :)',
+  'O Overmorrow é um aplicativo gratuito. :)',
+  'Overmorrow - бесплатное приложение. :)',
+  'Holapután是一款免费应用程序。:)',
+  'Holnaputánは無料のアプリです。:)'
+  ],
+  'Support me on Patreon, to help me keep it that way!': [
+  'Support me on Patreon, to help me keep it that way!',
+  'Támogass a Patreonon, hogy segíts nekem fenntartani! :)',
+  '¡Apóyame en Patreon para ayudarme a mantenerlo así! :)',
+  'Soutenez-moi sur Patreon pour m aider à le maintenir de cette manière ! :)',
+  'Unterstützen Sie mich auf Patreon, um mir dabei zu helfen, es so zu halten! :)',
+  'Sostienimi su Patreon per aiutarmi a mantenerlo in questo modo! :)',
+  'Apoie-me no Patreon para me ajudar a mantê-lo assim! :)',
+  'Поддержите меня на Patreon, чтобы помочь мне сохранить это так! :)',
+  '在Patreon上支持我，以帮助我保持这种方式！:)',
+  'これを維持するのを助けるためにPatreonで私をサポートしてください！:)'
+  ],
+  'Thank You! -Balint': [
+    'Thank You! -Balint',
+    'Köszönöm! -Balint',
+    '¡Gracias! -Balint',
+    'Merci ! -Balint',
+    'Vielen Dank! -Balint',
+    'Grazie! -Balint',
+    'Obrigado! -Balint',
+    'Спасибо! -Балинт',
+    '谢谢！ -巴林特',
+    'ありがとうございます！ -バリント'
+  ],
+  'Support me on Patron': [
+    'Support me on Patron',
+    'Támogass a Patronon',
+    'Apóyame en Patreon',
+    'Soutenez-moi sur Patreon',
+    'Unterstützen Sie mich auf Patreon',
+    'Sostienimi su Patreon',
+    'Apoie-me no Patreon',
+    'Поддержите меня на Patron',
+    '在Patron上支持我',
+    'Patreonでサポートしてください'
   ]
 };
 

@@ -137,9 +137,15 @@ class _SettingsPageState extends State<SettingsPage> {
       SetData('setting$name', to);
     });
   }
-
   void goBack() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MyApp()));
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) {
+          return MyApp(); // Replace with the actual widget you want to reload.
+        },
+      ),
+    );
   }
 
   @override
