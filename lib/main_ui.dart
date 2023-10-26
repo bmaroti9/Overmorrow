@@ -29,7 +29,7 @@ class WeatherPage extends StatelessWidget {
       drawer: MyDrawer(color: data.current.backcolor, data: data),
       body: RefreshIndicator(
         onRefresh: () async {
-          await updateLocation(data.place);
+          await updateLocation(LOCATION);
         },
         backgroundColor: WHITE,
         color: data.current.backcolor,

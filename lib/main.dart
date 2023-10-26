@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -21,14 +22,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  String proposedLoc = 'New York';
   bool startup = true;
-  String oldLoc = 'New York';
 
   void updateLocation(String newLocation) {
     print('updateLocation');
     setState(() {
-      oldLoc = dayforcast.LOCATION.toString();
-      dayforcast.LOCATION = newLocation;
+      proposedLoc = newLocation;
     });
   }
 
@@ -38,35 +38,28 @@ class _MyAppState extends State<MyApp> {
       List<String> unitsUsed = await getSettingsUsed();
       print(unitsUsed);
 
-      String forecastLoc = dayforcast.LOCATION;
-      String lastPlace = dayforcast.LOCATION;
-      print(('dayforcast', dayforcast.LOCATION));
-
       if (startup) {
-        String x = await getLastPlace();
-        print(('hihihih', x));
-        lastPlace = x;
-        forecastLoc = x;
+        proposedLoc = await getLastPlace();
         startup = false;
-        print(('this', lastPlace, forecastLoc, startup));
       }
 
-      if (lastPlace == 'CurrentLocation') {
-        dayforcast.LOCATION = 'CurrentLocation';
+      String absoluteProposed = proposedLoc;
+
+      if (proposedLoc == 'CurrentLocation') {
         if (await isLocationSafe()) {
           Position position = await Geolocator.getCurrentPosition(
               forceAndroidLocationManager: true,
               desiredAccuracy: LocationAccuracy.low);
-          forecastLoc = '${position.latitude},${position.longitude}';
+          absoluteProposed = '${position.latitude},${position.longitude}';
         }
         else {
-          forecastLoc = oldLoc;
+          absoluteProposed = 'New York';
         }
       }
 
       var params = {
         'key': apiKey,
-        'q': forecastLoc,
+        'q': absoluteProposed,
         'days': '3 ',
         'aqi': 'no',
         'alerts': 'no',
@@ -75,14 +68,12 @@ class _MyAppState extends State<MyApp> {
       var response = await http.post(url);
       var jsonbody = jsonDecode(response.body);
       if (response.statusCode == 400) {
-        print('somehow');
         SnackbarGlobal.show(jsonbody['error']['message']);
-        updateLocation(oldLoc);
+        //updateLocation(oldLoc);
       }
       else{
-        print(('here', lastPlace));
-        SetData('LastPlace', lastPlace);
-        dayforcast.LOCATION = lastPlace;
+        dayforcast.LOCATION = proposedLoc;
+        SetData('LastPlace', proposedLoc);
       }
       var forecastlist = jsonbody['forecast']['forecastday'];
 
