@@ -83,12 +83,15 @@ class DescriptionCircle extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  Text(
-                    extra,
-                    style: GoogleFonts.comfortaa(
-                      color: color,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
+                  Flexible(
+                    child: Text(
+                      extra,
+                      style: GoogleFonts.comfortaa(
+                        color: color,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
@@ -140,22 +143,24 @@ Future<List<String>> getRecommend(String query, List<String> favorites) async {
 }
 class MySearchParent extends StatefulWidget{
   final Function(String) updateLocation;
-  final data;
+  final color;
+  final place;
 
   const MySearchParent({super.key, required this.updateLocation,
-    required this.data});
+    required this.color, required this.place});
 
   @override
-  _MySearchParentState createState() => _MySearchParentState(
-      data: data);
+  _MySearchParentState createState() => _MySearchParentState(color: color,
+  place: place);
 }
 
 class _MySearchParentState extends State<MySearchParent> {
   bool isEditing = false;
 
-  final data;
+  final color;
+  final place;
 
-  _MySearchParentState({required this.data});
+  _MySearchParentState({required this.color, required this.place});
 
   Future<SharedPreferences> getPrefs() async {
     final prefs = await SharedPreferences.getInstance();
@@ -187,29 +192,33 @@ class _MySearchParentState extends State<MySearchParent> {
         List<String> favorites = getFavorites(snapshot.data);
         //return buildWholeThing(snapshot.data);
         return MySearchWidget(updateLocation: widget.updateLocation,
-            data: data, favorites: favorites, prefs: snapshot.data);
+            color: color, favorites: favorites, prefs: snapshot.data,
+        place: place,);
       },
     );
   }
 }
 
 class MySearchWidget extends StatefulWidget{
-  final data;
+  final color;
+  final place;
   final updateLocation;
   final favorites;
   final prefs;
 
-  const MySearchWidget({super.key, required this.data, required this.updateLocation,
-  required this.favorites, required this.prefs});
+  const MySearchWidget({super.key, required this.color, required this.updateLocation,
+  required this.favorites, required this.prefs, required this.place});
 
   @override
-  _MySearchWidgetState createState() => _MySearchWidgetState(data: data,
-  updateLocation: updateLocation, favorites: favorites, prefs: prefs);
+  _MySearchWidgetState createState() => _MySearchWidgetState(color: color,
+  updateLocation: updateLocation, favorites: favorites,
+      prefs: prefs, place: place);
 }
 
 class _MySearchWidgetState extends State<MySearchWidget> {
   final FloatingSearchBarController _controller = FloatingSearchBarController();
-  final data;
+  final color;
+  final place;
   final updateLocation;
   final prefs;
 
@@ -218,8 +227,8 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   bool isEditing = false;
   bool prog = false;
 
-  _MySearchWidgetState({required this.data, required this.updateLocation,
-        required this.favorites, required this.prefs});
+  _MySearchWidgetState({required this.color, required this.updateLocation,
+        required this.favorites, required this.prefs, required this.place});
 
   List<String> recommend = [];
 
@@ -249,7 +258,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
 
   @override
   Widget build(BuildContext context){
-    return buildHihiSearch(data.current.backcolor);
+    return buildHihiSearch(color);
   }
 
   Widget buildHihiSearch(Color color) {
@@ -264,7 +273,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   Widget buildFloatingSearchBar(Color color) {
     return searchBar(color, recommend, updateLocation,
         _controller, updateIsEditing, isEditing, updateFav, favorites,
-        updateRec, data, context, prog, updateProg);
+        updateRec, place, context, prog, updateProg);
 
   }
 }

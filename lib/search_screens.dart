@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,7 +12,7 @@ import 'dayforcast.dart';
 Widget searchBar(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, Function updateRec, var data, var context,
+    List<String> favorites, Function updateRec, String place, var context,
     bool prog, Function updateProg) {
 
   return FloatingSearchBar(
@@ -18,7 +20,7 @@ Widget searchBar(Color color, List<String> recommend,
       title: Container(
         padding: const EdgeInsets.only(left: 10, top: 3),
         child: Text(
-          data.place,
+          place,
           style: GoogleFonts.comfortaa(
             color: WHITE,
             fontSize: 28,
@@ -350,6 +352,78 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color)
         }
       },
       child: const Icon(Icons.place_outlined, color: WHITE,),
+    );
+  }
+}
+
+class dumbySearch extends StatelessWidget {
+  final errorMessage;
+  final updateLocation;
+  final place;
+  final icon;
+
+  const dumbySearch({super.key, required this.errorMessage,
+    required this.updateLocation, required this.icon, required this.place});
+
+  @override
+  Widget build(BuildContext context) {
+    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+
+    Size size = view.physicalSize / view.devicePixelRatio;
+    double safeHeight = size.height;
+    return Scaffold(
+      backgroundColor: darken(const Color(0xffB1D2E1), 0.4),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await updateLocation(LOCATION);
+        },
+        backgroundColor: WHITE,
+        color: BLACK,
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              automaticallyImplyLeading: false, // remove the hamburger-menu
+              bottom: PreferredSize(
+                preferredSize: Size(0, 70),
+                child: Container(),
+              ),
+              backgroundColor: Colors.transparent,
+              pinned: false,
+              expandedHeight: safeHeight,
+              flexibleSpace: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 200),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: icon,
+                          ),
+                          SizedBox(
+                            width: 250,
+                            child: Center(child: Text(
+                              errorMessage,
+                              style: const TextStyle(
+                                color: WHITE,
+                                fontSize: 21,
+                              ),
+                              textAlign: TextAlign.center,
+                            ))
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  MySearchParent(updateLocation: updateLocation,
+                    color: BLACK, place: place,),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
