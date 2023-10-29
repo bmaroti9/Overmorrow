@@ -72,7 +72,7 @@ class _DonationPageState extends State<DonationPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Text(
-                          'Overmorrow is a free app. :)',
+                          translation('Overmorrow is a free app. :)', settings[0]),
                         style: GoogleFonts.comfortaa(
                           color: WHITE,
                           fontSize: 21,
@@ -87,7 +87,8 @@ class _DonationPageState extends State<DonationPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 15),
                         child: Text(
-                          'Support me on Patreon, to help me keep it that way!',
+                          translation('Support me on Patreon, to help me keep it that way!',
+                              settings[0]),
                           style: GoogleFonts.comfortaa(
                             color: WHITE,
                             fontSize: 21,
@@ -104,7 +105,7 @@ class _DonationPageState extends State<DonationPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 30, bottom: 40),
                           child: Text(
-                            'Thank You! -Balint',
+                            translation('Thank You! -Balint', settings[0]),
                             style: GoogleFonts.comfortaa(
                               color: WHITE,
                               fontSize: 18,
@@ -122,7 +123,7 @@ class _DonationPageState extends State<DonationPage> {
                 
                 PatreonButton(
                   patreonName: "buttonshy",
-                  text: 'Support me on Patron',
+                  text: translation('Support me on Patreon', settings[0]),
                   style: ButtonStyle(
                     elevation: MaterialStateProperty.all<double>(0),
                     padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
@@ -141,6 +142,54 @@ class _DonationPageState extends State<DonationPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+
+class InfoPage extends StatefulWidget {
+  final Color color;
+  final settings;
+
+  const InfoPage({Key? key, required this.color,
+    required this.settings}) : super(key: key);
+
+  @override
+  _InfoPageState createState() => _InfoPageState(color: color,
+      settings: settings);
+}
+
+class _InfoPageState extends State<InfoPage> {
+  final color;
+  final settings;
+
+  _InfoPageState({required this.color, required this.settings});
+
+  void goBack() {
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+            toolbarHeight: 65,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0)
+            ),
+            elevation: 0,
+            leadingWidth: 50,
+            backgroundColor: darken(color, 0.3),
+            title: comfortatext('About', 25),
+            leading:
+            IconButton(
+              onPressed: (){
+                goBack();
+              },
+              icon: const Icon(Icons.arrow_back, color: WHITE,),
+            )
+        ),
+      body: const Text('Welcome\nto\nMyWorld\nHello\nWorld\n'),
     );
   }
 }

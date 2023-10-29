@@ -295,8 +295,10 @@ class MyDrawer extends StatelessWidget {
             title: comfortatext(translation('About', data.settings[0]), 25),
             leading: const Icon(Icons.info_outline, color: WHITE,),
             onTap: () {
-              // Handle the option 1 tap here
-              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => InfoPage(color: color, settings: data.settings,)),
+              );
             },
           ),
           ListTile(
@@ -305,7 +307,7 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DonationPage(color: color, settings: null,)),
+                MaterialPageRoute(builder: (context) => DonationPage(color: color, settings: data.settings,)),
               );
             },
           ),

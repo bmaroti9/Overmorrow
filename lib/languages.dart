@@ -349,16 +349,16 @@ Map<String, List<String>> mainTranslate = {
     '多云の夜'
   ],
   'Overmorrow is a free app. :)': [
-  'Overmorrow is a free app. :)',
-  'A Holnapután egy ingyenes alkalmazás. :)',
-  'Overmorrow es una aplicación gratuita. :)',
-  'Overmorrow est une application gratuite. :)',
-  'Overmorrow ist eine kostenlose App. :)',
-  'Overmorrow è un app gratuita. :)',
-  'O Overmorrow é um aplicativo gratuito. :)',
-  'Overmorrow - бесплатное приложение. :)',
-  'Holapután是一款免费应用程序。:)',
-  'Holnaputánは無料のアプリです。:)'
+    'Overmorrow is a free app. :)',
+    'Overmorrow egy ingyenes alkalmazás. :)',
+    'Overmorrow es una aplicación gratuita. :)',
+    'Overmorrow est une application gratuite. :)',
+    'Overmorrow ist eine kostenlose App. :)',
+    'Overmorrow è un app gratuita. :)',
+    'O Overmorrow é um aplicativo gratuito. :)',
+    'Overmorrow - бесплатное приложение. :)',
+    'Overmorrow是一款免费应用程序。:)',
+    'Overmorrowは無料のアプリです。:)'
   ],
   'Support me on Patreon, to help me keep it that way!': [
   'Support me on Patreon, to help me keep it that way!',
@@ -384,16 +384,16 @@ Map<String, List<String>> mainTranslate = {
     '谢谢！ -巴林特',
     'ありがとうございます！ -バリント'
   ],
-  'Support me on Patron': [
-    'Support me on Patron',
-    'Támogass a Patronon',
+  'Support me on Patreon': [
+    'Support me on Patreon',
+    'Támogass a Patreonon',
     'Apóyame en Patreon',
     'Soutenez-moi sur Patreon',
     'Unterstützen Sie mich auf Patreon',
     'Sostienimi su Patreon',
     'Apoie-me no Patreon',
-    'Поддержите меня на Patron',
-    '在Patron上支持我',
+    'Поддержите меня на Patreon',
+    '在Patreon上支持我',
     'Patreonでサポートしてください'
   ]
 };

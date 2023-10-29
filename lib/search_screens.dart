@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/settings_page.dart';
 import 'package:hihi_haha/ui_helper.dart';
@@ -375,7 +374,7 @@ class dumbySearch extends StatelessWidget {
       backgroundColor: darken(const Color(0xffB1D2E1), 0.4),
       body: RefreshIndicator(
         onRefresh: () async {
-          await updateLocation(LOCATION);
+          await updateLocation(place);
         },
         backgroundColor: WHITE,
         color: BLACK,

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 import 'ui_helper.dart';
 
@@ -21,10 +22,10 @@ String translation(String text, String language) {
 
 double temp_multiply_for_scale(double temp, String unit) {
   if (unit == '˚C') {
-    return 30 + temp * 1.6;
+    return max(0, min(100, 17 + temp * 2.4));
   }
   else{
-    return 5 + temp * 0.7;
+    return max(0, min(100, 0 + temp));
   }
 }
 
