@@ -26,7 +26,7 @@ class WeatherPage extends StatelessWidget {
     double safeHeight = size.height;
 
     return Scaffold(
-      drawer: MyDrawer(color: data.current.backcolor, data: data),
+      drawer: MyDrawer(color: data.current.backcolor, settings: data.settings),
       body: RefreshIndicator(
         onRefresh: () async {
           await updateLocation(LOCATION);

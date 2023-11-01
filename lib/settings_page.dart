@@ -252,9 +252,9 @@ Widget UnitsMain(Color color, List<String>? settings, Function updatePage) {
 class MyDrawer extends StatelessWidget {
 
   final color;
-  final data;
+  final settings;
 
-  const MyDrawer({super.key, required this.color, required this.data});
+  const MyDrawer({super.key, required this.color, required this.settings});
 
   @override
   Widget build(BuildContext context) {
@@ -282,7 +282,7 @@ class MyDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: comfortatext(translation('Settings', data.settings[0]), 25),
+            title: comfortatext(translation('Settings', settings[0]), 25),
             leading: const Icon(Icons.settings, color: WHITE,),
             onTap: () {
               Navigator.push(
@@ -292,22 +292,22 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext(translation('About', data.settings[0]), 25),
+            title: comfortatext(translation('About', settings[0]), 25),
             leading: const Icon(Icons.info_outline, color: WHITE,),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => InfoPage(color: color, settings: data.settings,)),
+                MaterialPageRoute(builder: (context) => InfoPage(color: color, settings: settings,)),
               );
             },
           ),
           ListTile(
-            title: comfortatext(translation('Donate', data.settings[0]), 25),
+            title: comfortatext(translation('Donate', settings[0]), 25),
             leading: const Icon(Icons.favorite_border, color: WHITE,),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DonationPage(color: color, settings: data.settings,)),
+                MaterialPageRoute(builder: (context) => DonationPage(color: color, settings: settings,)),
               );
             },
           ),

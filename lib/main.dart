@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -72,10 +73,17 @@ class _MyAppState extends State<MyApp> {
       try {
         response = await http.post(url).timeout(
             const Duration(seconds: 10));
-      } on TimeoutException catch(e) {
+      } on TimeoutException {
         return dumbySearch(errorMessage: "Unable to load forecast. "
-            "Please check your internet connection", updateLocation: updateLocation,
-            icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,), place: absoluteProposed,);
+            "weak or no wifi connection", updateLocation: updateLocation,
+          icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
+          place: absoluteProposed, settings: unitsUsed,);
+      } on SocketException {
+        return dumbySearch(errorMessage: "not connected to the internet", updateLocation: updateLocation,
+          icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
+          place: absoluteProposed, settings: unitsUsed,);
+      } on Error catch (e) {
+        print('General Error: $e');
       }
 
       var jsonbody = jsonDecode(response.body);
@@ -83,7 +91,8 @@ class _MyAppState extends State<MyApp> {
         //SnackbarGlobal.show(jsonbody['error']['message']);
         //updateLocation(dayforcast.LOCATION);
         return dumbySearch(errorMessage: jsonbody["error"]["message"], updateLocation: updateLocation,
-            icon: const Icon(Icons.gps_off_outlined, color: WHITE, size: 30,), place: absoluteProposed,);
+            icon: const Icon(Icons.gps_off_outlined, color: WHITE, size: 30,),
+          place: absoluteProposed, settings: unitsUsed,);
       }
       else{
         dayforcast.LOCATION = proposedLoc;

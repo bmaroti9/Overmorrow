@@ -214,7 +214,7 @@ class _InfoPageState extends State<InfoPage> {
           elevation: 0,
           leadingWidth: 50,
           backgroundColor: darken(color, 0.3),
-          title: comfortatext('About', 25),
+          title: comfortatext(translation('About', settings[0]), 25),
           leading:
           IconButton(
             onPressed: (){
@@ -244,8 +244,8 @@ class _InfoPageState extends State<InfoPage> {
                 ),
               ),
               comfortatext(
-                  //'Welcome\nto\nMyWorld\nHello\nWorld\n',
-                '"Overmorrow is a beautiful minimalist weather app."',
+                translation('Overmorrow is a beautiful minimalist weather app.',
+                    settings[0]),
                   26),
               Padding(
                 padding: const EdgeInsets.only(top: 20, bottom: 10),
@@ -261,7 +261,7 @@ class _InfoPageState extends State<InfoPage> {
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.only(top:10, bottom: 10),
-                          child: comfortatext('Feautures:', 20),
+                          child: comfortatext(translation('Features:', settings[0]), 20),
                         ),
                       ),
                       Padding(
@@ -269,16 +269,16 @@ class _InfoPageState extends State<InfoPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            comfortatext('\u2022 accurate weather forecast',22),
-                            comfortatext('\u2022 open source',22),
-                            comfortatext('\u2022 no ads',22),
-                            comfortatext('\u2022 no data collected',22),
-                            comfortatext('\u2022 minimalist design',22),
-                            comfortatext('\u2022 dynamically adapting color scheme',22),
-                            comfortatext('\u2022 languages support',22),
-                            comfortatext('\u2022 place search',22),
-                            comfortatext('\u2022 weather for current location',22),
-                            comfortatext('\u2022 unit swapping',22),
+                            comfortatext('\u2022${translation('accurate weather forecast', settings[0])}',22),
+                            comfortatext('\u2022${translation('open source', settings[0])}',22),
+                            comfortatext('\u2022${translation('no ads', settings[0])}',22),
+                            comfortatext('\u2022${translation('no data collected', settings[0])}',22),
+                            comfortatext('\u2022${translation('minimalist design', settings[0])}',22),
+                            comfortatext('\u2022${translation('dynamically adapting color scheme', settings[0])}',22),
+                            comfortatext('\u2022${translation('languages support', settings[0])}',22),
+                            comfortatext('\u2022${translation('place search', settings[0])}',22),
+                            comfortatext('\u2022${translation('weather for current location', settings[0])}',22),
+                            comfortatext('\u2022${translation('unit swapping', settings[0])}',22),
                           ],
                         ),
                       ),
@@ -300,7 +300,7 @@ class _InfoPageState extends State<InfoPage> {
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(top:20, bottom: 10),
-                      child: comfortatext('Developed by:', 20),
+                      child: comfortatext(translation('Developed by:', settings[0]), 20),
                     ),
                   ),
                   Padding(
@@ -331,7 +331,7 @@ class _InfoPageState extends State<InfoPage> {
                                 padding: EdgeInsets.only(right: 3),
                                 child: Icon(Icons.mail_outline,color: WHITE,),
                               ),
-                              comfortatext('contact me', 20, color: WHITE)],
+                              comfortatext(translation('contact me', settings[0]), 20, color: WHITE)],
                           )
                         )
                       ],
@@ -355,7 +355,7 @@ class _InfoPageState extends State<InfoPage> {
                           alignment: Alignment.centerLeft,
                           child: Padding(
                             padding: const EdgeInsets.only(top:20, bottom: 10),
-                            child: comfortatext('Weather data from:', 20),
+                            child: comfortatext(translation('Weather data from:', settings[0]), 20),
                           ),
                       ),
                       TextButton(
@@ -381,7 +381,7 @@ class _InfoPageState extends State<InfoPage> {
                           alignment: Alignment.centerLeft,
                           child: Padding(
                             padding: const EdgeInsets.only(top:20, bottom: 10),
-                            child: comfortatext('Images used:', 20),
+                            child: comfortatext(translation('Images used:', settings[0]), 20),
                           ),
                         ),
                         ListView.builder(
@@ -396,7 +396,8 @@ class _InfoPageState extends State<InfoPage> {
                                 alignment: Alignment.centerLeft,
                                 child: TextButton(
                                   onPressed: () { _launchUrl(imageLink[index]); },
-                                  child: comfortatext(imageText[index], 20,
+                                  child: comfortatext(
+                                      translation(imageText[index], settings[0]), 20,
                                       color: Colors.orange),
                                 ),
                               ),

@@ -360,9 +360,11 @@ class dumbySearch extends StatelessWidget {
   final updateLocation;
   final place;
   final icon;
+  final settings;
 
   const dumbySearch({super.key, required this.errorMessage,
-    required this.updateLocation, required this.icon, required this.place});
+    required this.updateLocation, required this.icon, required this.place,
+  required this.settings});
 
   @override
   Widget build(BuildContext context) {
@@ -370,7 +372,9 @@ class dumbySearch extends StatelessWidget {
 
     Size size = view.physicalSize / view.devicePixelRatio;
     double safeHeight = size.height;
+
     return Scaffold(
+      drawer: MyDrawer(color: Color(0xffB1D2E1), settings: settings),
       backgroundColor: darken(const Color(0xffB1D2E1), 0.4),
       body: RefreshIndicator(
         onRefresh: () async {
