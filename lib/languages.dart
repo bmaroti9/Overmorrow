@@ -600,6 +600,42 @@ Map<String, List<String>> mainTranslate = {
     '源代码：',
     'ソースコード：'
   ],
+  'Weak or no wifi connection': [
+    'Weak or no wifi connection',
+    'Gyenge vagy nincs wifi kapcsolat',
+    'Conexión wifi débil o inexistente',
+    'Connexion Wi-Fi faible ou inexistante',
+    'Schwache oder keine WLAN-Verbindung',
+    'Connessione Wi-Fi debole o assente',
+    'Conexão Wi-Fi fraca ou inexistente',
+    'Слабое или отсутствующее подключение Wi-Fi',
+    '无线网络信号弱或无连接',
+    'Wi-Fi接続が弱いかありません'
+  ],
+  'Not connected to the internet': [
+    'Not connected to the internet',
+    'Nincs internetkapcsolat',
+    'No conectado a internet',
+    'Pas connecté à Internet',
+    'Nicht mit dem Internet verbunden',
+    'Non connesso a Internet',
+    'Não conectado à internet',
+    'Нет подключения к Интернету',
+    '未连接到互联网',
+    'インターネットに接続されていません'
+  ],
+  'Place not found': [
+    'Place not found',
+    'Hely nem található',
+    'Lugar no encontrado',
+    'Lieu non trouvé',
+    'Ort nicht gefunden',
+    'Luogo non trovato',
+    'Local não encontrado',
+    'Место не найдено',
+    '未找到地点',
+    '場所が見つかりません'
+  ]
 };
 
 

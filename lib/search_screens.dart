@@ -69,7 +69,7 @@ Widget searchBar(Color color, List<String> recommend,
       insets: EdgeInsets.zero,
       padding: const EdgeInsets.only(left: 13),
       iconColor: WHITE,
-      backdropColor: darken(color, 0.5),
+      backdropColor: darken(color, 0.3),
       closeOnBackdropTap: true,
       transition: CircularFloatingSearchBarTransition(),
       actions: [

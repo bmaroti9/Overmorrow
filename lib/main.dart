@@ -8,6 +8,7 @@ import 'package:hihi_haha/ui_helper.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'api_key.dart';
+import 'dayforcast.dart';
 import 'main_ui.dart';
 
 import 'dayforcast.dart' as dayforcast;
@@ -74,24 +75,29 @@ class _MyAppState extends State<MyApp> {
         response = await http.post(url).timeout(
             const Duration(seconds: 10));
       } on TimeoutException {
-        return dumbySearch(errorMessage: "Unable to load forecast. "
-            "weak or no wifi connection", updateLocation: updateLocation,
+        return dumbySearch(errorMessage: translation("Weak or no wifi connection", unitsUsed[0]),
+          updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
           place: absoluteProposed, settings: unitsUsed,);
       } on SocketException {
-        return dumbySearch(errorMessage: "not connected to the internet", updateLocation: updateLocation,
+        return dumbySearch(errorMessage: translation("Not connected to the internet", unitsUsed[0]), updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
           place: absoluteProposed, settings: unitsUsed,);
       } on Error catch (e) {
-        print('General Error: $e');
+        return dumbySearch(errorMessage: "general error:$e", updateLocation: updateLocation,
+          icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
+          place: absoluteProposed, settings: unitsUsed,);
       }
 
       var jsonbody = jsonDecode(response.body);
       if (response.statusCode == 400) {
-        //SnackbarGlobal.show(jsonbody['error']['message']);
-        //updateLocation(dayforcast.LOCATION);
-        return dumbySearch(errorMessage: jsonbody["error"]["message"], updateLocation: updateLocation,
+        if (jsonbody["error"]["code"] == 1006) {
+          return dumbySearch(errorMessage: translation('Place not found', unitsUsed[0]), updateLocation: updateLocation,
             icon: const Icon(Icons.gps_off_outlined, color: WHITE, size: 30,),
+            place: absoluteProposed, settings: unitsUsed,);
+        }
+        return dumbySearch(errorMessage: 'an error occured. \ncode:${jsonbody["error"]["code"]}' , updateLocation: updateLocation,
+            icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
           place: absoluteProposed, settings: unitsUsed,);
       }
       else{
