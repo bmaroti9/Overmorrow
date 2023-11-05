@@ -12,29 +12,29 @@ Map<String, int> languageIndex = {
 };
 
 Map<String, List<String>> mainTranslate = {
-  'temp. max': [
-    'Max. Temp',
-    'Max. hőmérséklet',
-    'Temp. Máxima',
-    'Temp. Maximale',
-    'Max. Temperatur',
-    'Temp. Massima',
-    'Temp. Máxima',
-    'Максимальная температура',
-    '最高温度',
-    '最高気温'
+  'humidity': [
+    'humidity',
+    'páratartalom',
+    'humedad',
+    'humidité',
+    'Luftfeuchtigkeit',
+    'umidità',
+    'umidade',
+    'влажность',
+    '湿度',
+    '湿度'
   ],
-  'temp. min': [
-    'Min. Temp',
-    'Min. hőmérséklet',
-    'Temp. Mínima',
-    'Temp. Minimale',
-    'Min. Temperatur',
-    'Temp. Minima',
-    'Temp. Mínima',
-    'Минимальная температура',
-    '最低温度',
-    '最低気温'
+  'UV': [
+    'UV',
+    'UV',
+    'UV',
+    'UV',
+    'UV',
+    'UV',
+    'UV',
+    'УФ',
+    '紫外线',
+    'UV'
   ],
   'precip.': [
     'Precip.',

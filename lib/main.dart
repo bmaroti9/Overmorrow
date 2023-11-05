@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hihi_haha/search_screens.dart';
 import 'package:hihi_haha/ui_helper.dart';
@@ -31,17 +33,23 @@ class _MyAppState extends State<MyApp> {
   bool startup = true;
 
   void updateLocation(String newLocation) {
-    print('updateLocation');
     setState(() {
       proposedLoc = newLocation;
     });
   }
 
   Future<Widget> getDays() async {
-    print('getDays');
     try {
+
+      CacheManager x = CacheManager(
+        Config(
+          'muszkli',
+          stalePeriod: const Duration(hours: 1),
+          repo: JsonCacheInfoRepository(databaseName: 'muszkli'),
+        ),
+      );
+
       List<String> unitsUsed = await getSettingsUsed();
-      print(unitsUsed);
 
       if (startup) {
         proposedLoc = await getLastPlace();
@@ -61,32 +69,40 @@ class _MyAppState extends State<MyApp> {
           absoluteProposed = 'New York';
         }
       }
-
-      var params = {
-        'key': apiKey,
-        'q': absoluteProposed,
-        'days': '3 ',
-        'aqi': 'no',
-        'alerts': 'no',
-      };
-      var url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
       var response;
-      try {
-        response = await http.post(url).timeout(
-            const Duration(seconds: 10));
-      } on TimeoutException {
-        return dumbySearch(errorMessage: translation("Weak or no wifi connection", unitsUsed[0]),
-          updateLocation: updateLocation,
-          icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: absoluteProposed, settings: unitsUsed,);
-      } on SocketException {
-        return dumbySearch(errorMessage: translation("Not connected to the internet", unitsUsed[0]), updateLocation: updateLocation,
-          icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: absoluteProposed, settings: unitsUsed,);
-      } on Error catch (e) {
-        return dumbySearch(errorMessage: "general error:$e", updateLocation: updateLocation,
-          icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: absoluteProposed, settings: unitsUsed,);
+
+      if (response== null) {
+        print('got here');
+        var params = {
+          'key': apiKey,
+          'q': absoluteProposed,
+          'days': '3 ',
+          'aqi': 'no',
+          'alerts': 'no',
+        };
+        var url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
+        try {
+          response = await http.post(url).timeout(
+              const Duration(seconds: 10));
+          var hihi = x.getFileStream(url.toString());
+          var huhu = await hihi.last;
+          print(huhu.originalUrl);
+          //x.downloadFile(url.toString(), key: 'muszkli');
+
+        } on TimeoutException {
+          return dumbySearch(errorMessage: translation("Weak or no wifi connection", unitsUsed[0]),
+            updateLocation: updateLocation,
+            icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
+            place: absoluteProposed, settings: unitsUsed,);
+        } on SocketException {
+          return dumbySearch(errorMessage: translation("Not connected to the internet", unitsUsed[0]), updateLocation: updateLocation,
+            icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
+            place: absoluteProposed, settings: unitsUsed,);
+        } on Error catch (e) {
+          return dumbySearch(errorMessage: "general error:$e", updateLocation: updateLocation,
+            icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
+            place: absoluteProposed, settings: unitsUsed,);
+        }
       }
 
       var jsonbody = jsonDecode(response.body);
@@ -130,7 +146,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

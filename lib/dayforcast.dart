@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
 import 'ui_helper.dart';
 
 import 'weather_refact.dart' as weather_refactor;
@@ -204,8 +206,8 @@ class Current {
   final String backdrop;
   final int temp;
   final List<Color> contentColor;
-  final int maxtemp;
-  final int mintemp;
+  final int humidity;
+  final int uv;
   final double precip;
   final int wind;
   final Color backcolor;
@@ -216,8 +218,8 @@ class Current {
     required this.temp,
     required this.contentColor,
     required this.precip,
-    required this.maxtemp,
-    required this.mintemp,
+    required this.humidity,
+    required this.uv,
     required this.wind,
     required this.backcolor,
 });
@@ -240,9 +242,14 @@ class Current {
         item["current"]["condition"]["text"], item["current"]["is_day"]
     ),
 
-    maxtemp: unit_coversion(item["forecast"]["forecastday"][0]["day"]["maxtemp_c"], '˚C').round(),
-    mintemp: unit_coversion(item["forecast"]["forecastday"][0]["day"]["mintemp_c"], '˚C').round(),
+    uv: item["current"]["uv"].round(),
+    humidity: item["current"]["humidity"],
     precip: double.parse(unit_coversion(item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"], settings[2]).toStringAsFixed(1)),
     wind: unit_coversion(item["current"]["wind_kph"], settings[3]).round(),
   );
+}
+
+class CustomCacheManager{
+  static const key = 'muszkli';
+
 }

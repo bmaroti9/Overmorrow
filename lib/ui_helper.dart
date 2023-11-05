@@ -62,42 +62,56 @@ class DescriptionCircle extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       child: Column(
         children: [
-          Container(
-            width: width,
+          SizedBox(
             height: height,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(width: 2.5, color: Colors.white),
-            ),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-                  Text(
-                    text,
-                    style: GoogleFonts.comfortaa(
-                      color: color,
-                      fontSize: fontsize,
-                      fontWeight: FontWeight.w400,
-                    ),
+            width: width,
+            child: Stack(
+              children: [
+                /*
+                Align(
+                  alignment: Alignment.bottomCenter,
+                    child: RainCircle(rainAmount: 0.3)
+                ),
+                 */
+                Container(
+                  width: width,
+                  height: height,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(width: 2.5, color: Colors.white),
                   ),
-                  Flexible(
-                    child: Text(
-                      extra,
-                      style: GoogleFonts.comfortaa(
-                        color: color,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      overflow: TextOverflow.ellipsis,
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          text,
+                          style: GoogleFonts.comfortaa(
+                            color: color,
+                            fontSize: fontsize,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Flexible(
+                          child: Text(
+                            extra,
+                            style: GoogleFonts.comfortaa(
+                              color: color,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            )
+                  )
         ),
+              ],
+            ),
+          ),
         Center(
           child: Container(
             padding: const EdgeInsets.only(top:5),
@@ -126,6 +140,7 @@ Future<List<String>> getRecommend(String query, List<String> favorites) async {
     return [];
   }
 
+
   var params = {
     'key': apiKey,
     'q': query,
@@ -152,6 +167,31 @@ class MySearchParent extends StatefulWidget{
   @override
   _MySearchParentState createState() => _MySearchParentState(color: color,
   place: place);
+}
+
+
+class RainCircle extends StatelessWidget {
+  final double rainAmount;
+
+  RainCircle({required this.rainAmount});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRect(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        heightFactor: rainAmount,
+        child: Container(
+          width: 73, // Adjust the size as needed
+          height: 73, // Make sure it's a square container
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.blue, // You can change the color to represent the rain
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _MySearchParentState extends State<MySearchParent> {

@@ -33,54 +33,57 @@ class WeatherPage extends StatelessWidget {
         },
         backgroundColor: WHITE,
         color: data.current.backcolor,
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              automaticallyImplyLeading: false, // remove the hamburger-menu
-              backgroundColor: Colors.transparent, // Set background to transparent
-              bottom: PreferredSize(
-                preferredSize: Size(0, safeHeight - 350),
-                child: Container(),
-              ),
-              pinned: false,
+        child: Container(
+          color: data.current.backcolor,
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                automaticallyImplyLeading: false, // remove the hamburger-menu
+                backgroundColor: Colors.transparent, // Set background to transparent
+                bottom: PreferredSize(
+                  preferredSize: Size(0, safeHeight - 350),
+                  child: Container(),
+                ),
+                pinned: false,
 
-              expandedHeight: safeHeight - 70,
-              flexibleSpace: Stack(
-                children: [
-                  ParallaxBackground(data: data,),
-                  Positioned(
-                    bottom: 50,
-                    left: 0,
-                    right: 0,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: SingleChildScrollView(
-                        child: buildCurrent(data), // Place your buildCurrent widget here
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: -3,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      height: 32,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: WHITE),
-                        color: data.current.backcolor,
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(30),
+                expandedHeight: safeHeight - 70,
+                flexibleSpace: Stack(
+                  children: [
+                    ParallaxBackground(data: data,),
+                    Positioned(
+                      bottom: 25,
+                      left: 0,
+                      right: 0,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SingleChildScrollView(
+                          child: buildCurrent(data, safeHeight - 100), // Place your buildCurrent widget here
                         ),
                       ),
                     ),
-                  ),
-                  MySearchParent(updateLocation: updateLocation,
-                  color: data.current.backcolor, place: data.place,),
-                ],
+                    Positioned(
+                      bottom: -3,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 32,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 1, color: WHITE),
+                          color: data.current.backcolor,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(30),
+                          ),
+                        ),
+                      ),
+                    ),
+                    MySearchParent(updateLocation: updateLocation,
+                    color: data.current.backcolor, place: data.place,),
+                  ],
+                ),
               ),
-            ),
-            buildHihiDays(data),
-          ],
+              buildHihiDays(data),
+            ],
+          ),
         ),
       ),
     );
@@ -105,70 +108,74 @@ class ParallaxBackground extends StatelessWidget {
 }
 
 
-Widget buildCurrent(var data) => Column(
-  children: [
-    Padding(
-      padding: const EdgeInsets.only(top: 50.0, left: 40),
-      child: Align(
-          alignment: Alignment.bottomLeft,
-          child: Text(
-            '${data.current.temp}°',
-            style: GoogleFonts.comfortaa(
-              color: data.current.contentColor[1],
-              fontSize: 85,
-              fontWeight: FontWeight.w100,
-            ),
-          )
+Widget buildCurrent(var data, double height) => SizedBox(
+  height: height,
+  child:   Column(
+    children: [
+      Spacer(),
+      Padding(
+        padding: const EdgeInsets.only(top: 50.0, left: 40),
+        child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Text(
+              '${data.current.temp}°',
+              style: GoogleFonts.comfortaa(
+                color: data.current.contentColor[1],
+                fontSize: 85,
+                fontWeight: FontWeight.w100,
+              ),
+            )
+        ),
       ),
-    ),
-    Padding(
-      padding: const EdgeInsets.only(left: 40),
-      child: Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            data.current.text,
-            style: GoogleFonts.comfortaa(
-              color: data.current.contentColor[1],
-              fontSize: 45,
-              height: 0.7,
-              fontWeight: FontWeight.w300,
-            ),
-          )
+      Padding(
+        padding: const EdgeInsets.only(left: 40),
+        child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              data.current.text,
+              style: GoogleFonts.comfortaa(
+                color: data.current.contentColor[1],
+                fontSize: 45,
+                height: 0.7,
+                fontWeight: FontWeight.w300,
+              ),
+            )
+        ),
       ),
-    ),
-    Container(
-        padding: const EdgeInsets.only(top:30),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              DescriptionCircle(
-                color: WHITE,
-                text: '${data.current.maxtemp}°',
-                undercaption: translation('temp. max', data.settings[0]),
-                extra: '',
-              ),
-              DescriptionCircle(
-                color: WHITE,
-                text: '${data.current.mintemp}°',
-                undercaption: translation('temp. min', data.settings[0]),
-                extra: '',
-              ),
-              DescriptionCircle(
-                color: WHITE,
-                text: '${data.current.precip}',
-                undercaption: translation('precip.', data.settings[0]),
-                extra: data.settings[2],
-              ),
-              DescriptionCircle(
-                color: WHITE,
-                text: '${data.current.wind}',
-                undercaption: translation('Wind', data.settings[0]),
-                extra: data.settings[3],
-              ),
-            ]
-        )
-    )
-  ],
+      Container(
+          padding: const EdgeInsets.only(top:30),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                DescriptionCircle(
+                  color: WHITE,
+                  text: '${data.current.humidity}',
+                  undercaption: translation('humidity', data.settings[0]),
+                  extra: '%',
+                ),
+                DescriptionCircle(
+                  color: WHITE,
+                  text: '${data.current.uv}',
+                  undercaption: translation('UV', data.settings[0]),
+                  extra: '',
+                ),
+                DescriptionCircle(
+                  color: WHITE,
+                  text: '${data.current.precip}',
+                  undercaption: translation('precip.', data.settings[0]),
+                  extra: data.settings[2],
+                ),
+                DescriptionCircle(
+                  color: WHITE,
+                  text: '${data.current.wind}',
+                  undercaption: translation('Wind', data.settings[0]),
+                  extra: data.settings[3],
+                ),
+              ]
+          )
+      )
+    ],
+  ),
 );
 
 Widget buildHihiDays(var data) => SliverFixedExtentList(
@@ -236,6 +243,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
 Widget buildHours(List<dynamic> data, List<String> units) => SizedBox(
   height: 240, // Adjust the height as needed
   child: ListView(
+    physics: BouncingScrollPhysics(),
     scrollDirection: Axis.horizontal,
     children: data.map<Widget>((hour) {
       return SizedBox(

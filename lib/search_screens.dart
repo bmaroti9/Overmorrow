@@ -345,7 +345,6 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color)
           (states) => const BorderSide(width: 1.2, color: WHITE)),
       ),
       onPressed: () async {
-        print('pressed');
         if (await isLocationSafe()) {
           updateLocation('CurrentLocation');
         }

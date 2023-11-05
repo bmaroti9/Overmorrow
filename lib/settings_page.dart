@@ -133,7 +133,6 @@ class _SettingsPageState extends State<SettingsPage> {
   void updatePage(String name, String to) {
     setState(() {
       //selected_temp_unit = newSelect;
-      print(('setting$name', to));
       SetData('setting$name', to);
     });
   }
