@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/search_screens.dart';
+import 'package:hive/hive.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -140,6 +141,14 @@ Future<List<String>> getRecommend(String query, List<String> favorites) async {
     return [];
   }
 
+  await Hive.openBox("myBox");
+  var box = Hive.box('myBox');
+
+  box.put('name', 'David');
+
+  var name = box.get('name');
+
+  print('Name: $name');
 
   var params = {
     'key': apiKey,
