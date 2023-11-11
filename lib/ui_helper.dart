@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/search_screens.dart';
-import 'package:hive/hive.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_key.dart';
+import 'caching.dart';
 
 const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);
@@ -141,22 +141,18 @@ Future<List<String>> getRecommend(String query, List<String> favorites) async {
     return [];
   }
 
-  await Hive.openBox("myBox");
-  var box = Hive.box('myBox');
-
-  box.put('name', 'David');
-
-  var name = box.get('name');
-
-  print('Name: $name');
-
   var params = {
     'key': apiKey,
     'q': query,
   };
   var url = Uri.http('api.weatherapi.com', 'v1/search.json', params);
-  var response = await http.post(url);
-  var jsonbody = jsonDecode(response.body);
+  //var response = await http.post(url);
+
+  var file = await cacheManager.getSingleFile(url.toString(), headers: {'cache-control': 'private, max-age=120'});
+  var response = await file.readAsString();
+
+  //var jsonbody = jsonDecode(response.body);
+  var jsonbody = jsonDecode(response);
 
   List<String> recomendations = [];
   for (var item in jsonbody) {

@@ -8,6 +8,7 @@ import 'package:hihi_haha/ui_helper.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'api_key.dart';
+import 'caching.dart';
 import 'dayforcast.dart';
 import 'main_ui.dart';
 
@@ -72,8 +73,10 @@ class _MyAppState extends State<MyApp> {
       };
       var url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
       try {
-        response = await http.post(url).timeout(
-            const Duration(seconds: 10));
+        var file = await cacheManager.getSingleFile(url.toString(), headers: {'cache-control': 'private, max-age=120'});
+        response = await file.readAsString();
+        //response = await http.post(url).timeout(
+        //    const Duration(seconds: 10));
         //var hihi = x.getFileStream(url.toString());
         //var huhu = await hihi.last;
         //print(huhu.originalUrl);
@@ -94,8 +97,9 @@ class _MyAppState extends State<MyApp> {
           place: absoluteProposed, settings: unitsUsed,);
       }
 
-      var jsonbody = jsonDecode(response.body);
-      if (response.statusCode == 400) {
+      //var jsonbody = jsonDecode(response.body);
+      var jsonbody = jsonDecode(response);
+      if (false) {
         if (jsonbody["error"]["code"] == 1006) {
           return dumbySearch(errorMessage: translation('Place not found', unitsUsed[0]), updateLocation: updateLocation,
             icon: const Icon(Icons.gps_off_outlined, color: WHITE, size: 30,),

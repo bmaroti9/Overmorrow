@@ -39,7 +39,6 @@ dependencies:
   flutter_donation_buttons: 0.4.8
   geolocator: ^10.1.0
   flutter_cache_manager: ^3.3.1
-  hive: ^2.2.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
