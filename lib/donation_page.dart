@@ -343,6 +343,31 @@ class _InfoPageState extends State<InfoPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 20, bottom: 10),
                 child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: darken(color),
+                      borderRadius: BorderRadius.circular(20)
+                  ),
+                  child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top:20, bottom: 10),
+                            child: comfortatext('source code:', 20),
+                          ),
+                        ),
+                        TextButton(
+                            onPressed: () async { await _launchUrl('https://www.weatherapi.com/'); },
+                            child: comfortatext('www.weatherapi.com', 20, color: Colors.orange)
+                        )
+                      ]
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 10),
+                child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                         color: darken(color),
@@ -365,6 +390,7 @@ class _InfoPageState extends State<InfoPage> {
                 ),
               ),
               ),
+
               Padding(
                 padding: const EdgeInsets.only(top: 20, bottom: 10),
                 child: Container(
