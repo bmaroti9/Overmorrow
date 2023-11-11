@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/dayforcast.dart';
 import 'package:hihi_haha/ui_helper.dart';
 
-import 'package:flutter_donation_buttons/flutter_donation_buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 final imageText = [
@@ -154,9 +153,7 @@ class _DonationPageState extends State<DonationPage> {
                   ),
                 ),
                 
-                PatreonButton(
-                  patreonName: "buttonshy",
-                  text: translation('Support me on Patreon', settings[0]),
+                ElevatedButton(
                   style: ButtonStyle(
                     elevation: MaterialStateProperty.all<double>(0),
                     padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
@@ -169,6 +166,8 @@ class _DonationPageState extends State<DonationPage> {
                       return null; // <-- Splash color
                     }),
                   ),
+                  onPressed: () {  },
+                  child: Text(translation('Support me on Patreon', settings[0])),
                 ),
               ],
             ),

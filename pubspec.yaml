@@ -36,7 +36,6 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   home_widget: ^0.3.0
   url_launcher: ^6.1.14
-  flutter_donation_buttons: 0.4.8
   geolocator: ^10.1.0
   flutter_cache_manager: ^3.3.1
 

@@ -134,14 +134,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.1"
-  flutter_donation_buttons:
-    dependency: "direct main"
-    description:
-      name: flutter_donation_buttons
-      sha256: c14843bfa60ac14d1b09cb2f670282f6255fcd816574db49bb1399350b1d246f
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.8"
   flutter_launcher_icons:
     dependency: "direct main"
     description:
@@ -464,14 +456,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
-  simple_icons:
-    dependency: transitive
-    description:
-      name: simple_icons
-      sha256: "8aa6832dc7a263a3213e40ecbf1328a392308c809d534a3b860693625890483b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.10.0"
   sky_engine:
     dependency: transitive
     description: flutter
