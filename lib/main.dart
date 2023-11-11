@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hihi_haha/search_screens.dart';
 import 'package:hihi_haha/ui_helper.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'api_key.dart';
 import 'caching.dart';
@@ -87,8 +87,19 @@ class _MyAppState extends State<MyApp> {
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
           place: absoluteProposed, settings: unitsUsed,);
+      } on HttpExceptionWithStatus catch (hihi){
+        print(hihi.toString());
+        if (hihi.toString().contains("statusCode: 400")) {
+          return dumbySearch(
+            errorMessage: 'unable to load forecast for place: $proposedLoc',
+            updateLocation: updateLocation,
+            icon: const Icon(Icons.location_disabled, color: WHITE, size: 30,),
+            place: absoluteProposed,
+            settings: unitsUsed,);
+        }
       } on SocketException {
-        return dumbySearch(errorMessage: translation("Not connected to the internet", unitsUsed[0]), updateLocation: updateLocation,
+        return dumbySearch(errorMessage: translation("Not connected to the internet", unitsUsed[0]),
+          updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
           place: absoluteProposed, settings: unitsUsed,);
       } on Error catch (e) {
@@ -99,20 +110,9 @@ class _MyAppState extends State<MyApp> {
 
       //var jsonbody = jsonDecode(response.body);
       var jsonbody = jsonDecode(response);
-      if (false) {
-        if (jsonbody["error"]["code"] == 1006) {
-          return dumbySearch(errorMessage: translation('Place not found', unitsUsed[0]), updateLocation: updateLocation,
-            icon: const Icon(Icons.gps_off_outlined, color: WHITE, size: 30,),
-            place: absoluteProposed, settings: unitsUsed,);
-        }
-        return dumbySearch(errorMessage: 'an error occured. \ncode:${jsonbody["error"]["code"]}' , updateLocation: updateLocation,
-            icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: absoluteProposed, settings: unitsUsed,);
-      }
-      else{
-        dayforcast.LOCATION = proposedLoc;
-        SetData('LastPlace', proposedLoc);
-      }
+
+      dayforcast.LOCATION = proposedLoc;
+      SetData('LastPlace', proposedLoc);
       var forecastlist = jsonbody['forecast']['forecastday'];
 
       List<dayforcast.Day> days = [];

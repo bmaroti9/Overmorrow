@@ -39,7 +39,7 @@ Widget searchBar(Color color, List<String> recommend,
         fontWeight: FontWeight.w100,
       ),
 
-      borderRadius: BorderRadius.circular(102),
+      borderRadius: BorderRadius.circular(30),
       backgroundColor: color,
       border: const BorderSide(width: 1.2, color: WHITE),
       progress: prog,

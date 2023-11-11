@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/search_screens.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_key.dart';
@@ -148,11 +148,16 @@ Future<List<String>> getRecommend(String query, List<String> favorites) async {
   var url = Uri.http('api.weatherapi.com', 'v1/search.json', params);
   //var response = await http.post(url);
 
-  var file = await cacheManager.getSingleFile(url.toString(), headers: {'cache-control': 'private, max-age=120'});
-  var response = await file.readAsString();
+  var jsonbody = [];
+  try {
+    var file = await cacheManager.getSingleFile(url.toString(), headers: {'cache-control': 'private, max-age=120'});
+    var response = await file.readAsString();
+    jsonbody = jsonDecode(response);
+  } on SocketException{
+    return [];
+  }
 
   //var jsonbody = jsonDecode(response.body);
-  var jsonbody = jsonDecode(response);
 
   List<String> recomendations = [];
   for (var item in jsonbody) {

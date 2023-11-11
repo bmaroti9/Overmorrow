@@ -33,57 +33,68 @@ class WeatherPage extends StatelessWidget {
         },
         backgroundColor: WHITE,
         color: data.current.backcolor,
-        child: Container(
-          color: data.current.backcolor,
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                automaticallyImplyLeading: false, // remove the hamburger-menu
-                backgroundColor: Colors.transparent, // Set background to transparent
-                bottom: PreferredSize(
-                  preferredSize: Size(0, safeHeight - 350),
-                  child: Container(),
-                ),
-                pinned: false,
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  color: data.current.backcolor,
+                  border: const Border.symmetric(vertical: BorderSide(
+                      width: 1,
+                      color: WHITE
+                  ))
+              ),
+            ),
+            CustomScrollView(
+              physics: BouncingScrollPhysics(),
+              slivers: <Widget>[
+                SliverAppBar(
+                  automaticallyImplyLeading: false, // remove the hamburger-menu
+                  backgroundColor: Colors.transparent, // Set background to transparent
+                  bottom: PreferredSize(
+                    preferredSize: Size(0, safeHeight - 350),
+                    child: Container(),
+                  ),
+                  pinned: false,
 
-                expandedHeight: safeHeight - 70,
-                flexibleSpace: Stack(
-                  children: [
-                    ParallaxBackground(data: data,),
-                    Positioned(
-                      bottom: 25,
-                      left: 0,
-                      right: 0,
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: SingleChildScrollView(
-                          child: buildCurrent(data, safeHeight - 100), // Place your buildCurrent widget here
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: -3,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        height: 32,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: WHITE),
-                          color: data.current.backcolor,
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(30),
+                  expandedHeight: safeHeight - 70,
+                  flexibleSpace: Stack(
+                    children: [
+                      ParallaxBackground(data: data,),
+                      Positioned(
+                        bottom: 25,
+                        left: 0,
+                        right: 0,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SingleChildScrollView(
+                            child: buildCurrent(data, safeHeight - 100), // Place your buildCurrent widget here
                           ),
                         ),
                       ),
-                    ),
-                    MySearchParent(updateLocation: updateLocation,
-                    color: data.current.backcolor, place: data.place,),
-                  ],
+                      Positioned(
+                        bottom: -3,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 32,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: WHITE),
+                            color: data.current.backcolor,
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(30),
+                            ),
+                          ),
+                        ),
+                      ),
+                      MySearchParent(updateLocation: updateLocation,
+                      color: data.current.backcolor, place: data.place,),
+                    ],
+                  ),
                 ),
-              ),
-              buildHihiDays(data),
-            ],
-          ),
+                buildHihiDays(data),
+              ],
+            ),
+          ],
         ),
       ),
     );
