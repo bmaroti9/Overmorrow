@@ -156,7 +156,7 @@ Widget buildCurrent(var data, double height) => SizedBox(
       Container(
           padding: const EdgeInsets.only(top:30),
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 DescriptionCircle(
                   color: WHITE,
