@@ -110,7 +110,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit) {
     dropdownColor: bgcolor,
     borderRadius: BorderRadius.circular(20),
     icon: const Padding(
-      padding: EdgeInsets.only(left:20),
+      padding: EdgeInsets.only(left:5),
       child: Icon(Icons.arrow_drop_down, color: WHITE,),
     ),
     style: GoogleFonts.comfortaa(
@@ -213,7 +213,7 @@ Widget SettingsMain(Color color, List<String>? settings, Function updatePage,
 
 Widget UnitsMain(Color color, List<String>? settings, Function updatePage) {
   return Container(
-    padding: const EdgeInsets.only(top: 30, left: 10, right: 30),
+    padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
     color: color,
     child: Column(
         children: [
@@ -259,7 +259,7 @@ Widget UnitsMain(Color color, List<String>? settings, Function updatePage) {
                 },
               ),
             ),
-            20
+            10
           )
         ]
     ),

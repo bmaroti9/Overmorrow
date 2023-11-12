@@ -42,6 +42,10 @@ class WeatherPage extends StatelessWidget {
 
     Size size = view.physicalSize / view.devicePixelRatio;
     double safeHeight = size.height;
+    final availableHeight = MediaQuery.of(context).size.height -
+        AppBar().preferredSize.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
 
     return Scaffold(
       drawer: MyDrawer(color: data.current.backcolor, settings: data.settings),
@@ -74,7 +78,7 @@ class WeatherPage extends StatelessWidget {
                   ),
                   pinned: false,
 
-                  expandedHeight: safeHeight - 70,
+                  expandedHeight: availableHeight + 40,
                   flexibleSpace: Stack(
                     children: [
                       ParallaxBackground(data: data,),

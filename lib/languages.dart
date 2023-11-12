@@ -653,6 +653,18 @@ Map<String, List<String>> mainTranslate = {
     'Место не найдено',
     '未找到地点',
     '場所が見つかりません'
+  ],
+  'Unable to locate device': [
+    'Unable to locate device',
+    'Nem sikerült megtalálni az eszközt',
+    'No se puede localizar el dispositivo',
+    'Impossible de localiser l appareil',
+    'Gerät kann nicht gefunden werden',
+    'Impossibile localizzare il dispositivo',
+    'Não é possível localizar o dispositivo',
+    'Не удается найти устройство',
+    '无法定位设备',
+    'デバイスを特定できません'
   ]
 };
 

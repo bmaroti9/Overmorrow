@@ -69,9 +69,17 @@ class _MyAppState extends State<MyApp> {
 
       if (proposedLoc == 'CurrentLocation') {
         if (await isLocationSafe()) {
-          Position position = await Geolocator.getCurrentPosition(
+          Position position;
+          try {
+            position = await Geolocator.getCurrentPosition(
               forceAndroidLocationManager: true,
-              desiredAccuracy: LocationAccuracy.low);
+              desiredAccuracy: LocationAccuracy.low).timeout(const Duration(seconds: 15));
+          } on TimeoutException {
+            return dumbySearch(errorMessage: translation("Unable to locate device", unitsUsed[0]),
+              updateLocation: updateLocation,
+              icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
+              place: absoluteProposed, settings: unitsUsed,);
+          }
           absoluteProposed = '${position.latitude},${position.longitude}';
         }
         else {
