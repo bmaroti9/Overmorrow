@@ -73,7 +73,7 @@ class WeatherPage extends StatelessWidget {
                   automaticallyImplyLeading: false, // remove the hamburger-menu
                   backgroundColor: Colors.transparent, // Set background to transparent
                   bottom: PreferredSize(
-                    preferredSize: Size(0, safeHeight - 350),
+                    preferredSize: Size(0, 380),
                     child: Container(),
                   ),
                   pinned: false,
@@ -147,7 +147,7 @@ Widget buildCurrent(var data, double height) => SizedBox(
     children: [
       Spacer(),
       Padding(
-        padding: const EdgeInsets.only(top: 50.0, left: 40),
+        padding: const EdgeInsets.only(top: 50.0, left: 30),
         child: Align(
             alignment: Alignment.bottomLeft,
             child: Text(
@@ -161,7 +161,7 @@ Widget buildCurrent(var data, double height) => SizedBox(
         ),
       ),
       Padding(
-        padding: const EdgeInsets.only(left: 40),
+        padding: const EdgeInsets.only(left: 30),
         child: Align(
             alignment: Alignment.topLeft,
             child: Text(
@@ -175,7 +175,28 @@ Widget buildCurrent(var data, double height) => SizedBox(
             )
         ),
       ),
-      Container(
+
+    Center(
+      child: Container(
+        child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              if(constraints.maxWidth > 400.0) {
+                return Circles(400, data);
+              } else {
+                return Circles(constraints.maxWidth, data);
+              }
+            }
+        ),
+      ),
+    ),
+    ],
+  ),
+);
+
+Widget Circles(double width, var data) {
+  return SizedBox(
+    width: width,
+      child: Container(
           padding: const EdgeInsets.only(top:30),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -185,31 +206,34 @@ Widget buildCurrent(var data, double height) => SizedBox(
                   text: '${data.current.humidity}',
                   undercaption: translation('humidity', data.settings[0]),
                   extra: '%',
+                  size: width,
                 ),
                 DescriptionCircle(
                   color: WHITE,
                   text: '${data.current.uv}',
                   undercaption: translation('UV', data.settings[0]),
                   extra: '',
+                  size: width,
                 ),
                 DescriptionCircle(
                   color: WHITE,
                   text: '${data.current.precip}',
                   undercaption: translation('precip.', data.settings[0]),
                   extra: data.settings[2],
+                  size: width,
                 ),
                 DescriptionCircle(
                   color: WHITE,
                   text: '${data.current.wind}',
                   undercaption: translation('Wind', data.settings[0]),
                   extra: data.settings[3],
+                  size: width,
                 ),
               ]
           )
       )
-    ],
-  ),
-);
+  );
+}
 
 Widget buildHihiDays(var data) => SliverFixedExtentList(
   itemExtent: 452.0,
@@ -227,6 +251,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                   ))
               ),
               child: Column(
+
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 30),
@@ -243,23 +268,20 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                   Padding(
                     padding: const EdgeInsets.only(top: 50, bottom: 30),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start, // Align the Row to the right
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          padding: const EdgeInsets.only(left: 20),
+                          padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Image.asset(
                             'assets/icons/' + day.icon,
                             fit: BoxFit.contain,
                             height: 45,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: SizedBox(
-                            width: 260,
-                              child: comfortatext(day.text + ' ' + day.minmaxtemp, 25, color: WHITE)
-                          )
-                        ),
+                      Flexible(
+                        fit: FlexFit.loose,
+                          child: comfortatext(day.text + ' ' + day.minmaxtemp, 25, color: WHITE)
+                        )
                       ],
                     ),
                   ),

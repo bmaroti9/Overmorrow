@@ -67,16 +67,18 @@ class DescriptionCircle extends StatelessWidget {
   final String text;
   final String undercaption;
   final String extra;
-  final double fontsize = 21;
-  final double width = 73;
-  final double height = 73;
   final Color color;
+  final double size;
 
   const DescriptionCircle({super.key, required this.text,
-      required this.undercaption, required this.color, required this.extra});
+      required this.undercaption, required this.color, required this.extra, required this.size});
 
   @override
   Widget build(BuildContext context) {
+    final double fontsize = size / 17;
+    final double small_font = size / 25;
+    final double width = size / 5;
+    final double height = size / 5;
     return Container(
       //padding: const EdgeInsets.all(5),
       child: Column(
@@ -118,7 +120,7 @@ class DescriptionCircle extends StatelessWidget {
                             extra,
                             style: GoogleFonts.comfortaa(
                               color: color,
-                              fontSize: 15,
+                              fontSize: small_font,
                               fontWeight: FontWeight.w400,
                             ),
                             overflow: TextOverflow.ellipsis,
@@ -141,7 +143,7 @@ class DescriptionCircle extends StatelessWidget {
               textAlign: TextAlign.center,
               style: GoogleFonts.comfortaa(
                 color: color,
-                fontSize: 15,
+                fontSize: small_font,
                 fontWeight: FontWeight.w300,
               ),
             ),
