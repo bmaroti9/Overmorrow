@@ -22,18 +22,21 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/dayforcast.dart';
 import 'package:hihi_haha/settings_page.dart';
+import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'ui_helper.dart';
 
 class WeatherPage extends StatelessWidget {
   final data;
   final updateLocation;
 
-  const WeatherPage({super.key, required this.data,
+  WeatherPage({super.key, required this.data,
         required this.updateLocation});
 
   void openDrawer(BuildContext context) {
     Scaffold.of(context).openDrawer();
   }
+
+  final FloatingSearchBarController controller = FloatingSearchBarController();
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +112,8 @@ class WeatherPage extends StatelessWidget {
                         ),
                       ),
                       MySearchParent(updateLocation: updateLocation,
-                      color: data.current.backcolor, place: data.place,),
+                      color: data.current.backcolor, place: data.place,
+                      controller: controller,),
                     ],
                   ),
                 ),

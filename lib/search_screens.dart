@@ -379,9 +379,11 @@ class dumbySearch extends StatelessWidget {
   final icon;
   final settings;
 
-  const dumbySearch({super.key, required this.errorMessage,
+  dumbySearch({super.key, required this.errorMessage,
     required this.updateLocation, required this.icon, required this.place,
   required this.settings});
+
+  final FloatingSearchBarController controller = FloatingSearchBarController();
 
   @override
   Widget build(BuildContext context) {
@@ -437,7 +439,7 @@ class dumbySearch extends StatelessWidget {
                     ),
                   ),
                   MySearchParent(updateLocation: updateLocation,
-                    color: BLACK, place: place,),
+                    color: BLACK, place: place, controller: controller,),
                 ],
               ),
             ),
