@@ -37,6 +37,33 @@ void main() {
   runApp(const MyApp());
 }
 
+Future<List<Image>> getRadar() async {
+  const String url = 'https://api.rainviewer.com/public/weather-maps.json';
+
+  var file = await cacheManager.getSingleFile(url.toString());
+  var response = await file.readAsString();
+  //final response = await http.get(Uri.parse(url));
+  //print('Response data: ${response.body}');
+  final Map<String, dynamic> data = json.decode(response);
+
+  final String host = data["host"];
+  //const atEnd = "/512/2/-32/108/3/1_1.png";
+  const atEnd = "/512/2/2/1/3/1_1.png";
+
+  final radar = data["radar"]["past"];
+  print(data["radar"]["past"]);
+
+  List<Image> images = [];
+
+  for (var x in radar) {
+    print(host + x["path"] + atEnd);
+    Image hihi = Image.network(host + x["path"] + atEnd);
+    images.add(hihi);
+  }
+
+  return images;
+}
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -105,8 +132,6 @@ class _MyAppState extends State<MyApp> {
         //    const Duration(seconds: 10));
         //var hihi = x.getFileStream(url.toString());
         //var huhu = await hihi.last;
-        //print(huhu.originalUrl);
-        //x.downloadFile(url.toString(), key: 'muszkli');
 
       } on TimeoutException {
         return dumbySearch(errorMessage: translation("Weak or no wifi connection", unitsUsed[0]),
@@ -134,6 +159,8 @@ class _MyAppState extends State<MyApp> {
           place: absoluteProposed, settings: unitsUsed,);
       }
 
+      List<Image> radar = await getRadar();
+
       //var jsonbody = jsonDecode(response.body);
       var jsonbody = jsonDecode(response);
 
@@ -152,7 +179,7 @@ class _MyAppState extends State<MyApp> {
       dayforcast.Current.fromJson(jsonbody, unitsUsed);
 
       dayforcast.WeatherData data = dayforcast.WeatherData(
-          days, current, jsonbody['location']['name'], unitsUsed);
+          days, current, jsonbody['location']['name'], unitsUsed, radar);
 
       return WeatherPage(data: data,
           updateLocation: updateLocation);

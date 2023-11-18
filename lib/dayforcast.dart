@@ -19,6 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
+
 import 'ui_helper.dart';
 
 import 'weather_refact.dart' as weather_refactor;
@@ -214,8 +216,9 @@ class WeatherData {
   final List<Day> days;
   final Current current;
   final String place;
+  final List<Image> radar;
 
-  WeatherData(this.days, this.current, this.place, this.settings);
+  WeatherData(this.days, this.current, this.place, this.settings, this.radar);
 }
 
 class Current {
