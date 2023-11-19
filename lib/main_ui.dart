@@ -251,78 +251,63 @@ Widget Circles(double width, var data) {
       )
   );
 }
+Widget buildHihiDays(var data) => SliverFixedExtentList(
+    itemExtent: 452.0,
+    delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
+        if (index < data.days.length) {
+          final day = data.days[index];
+            return Container(
+                decoration: BoxDecoration(
+                    color: darken(data.current.backcolor, (index % 2) * 0.05),
+                    border: const Border.symmetric(vertical: BorderSide(
+                        width: 1,
+                        color: WHITE
+                    ))
+                ),
+              child: Column(
 
-Widget buildHihiDays(var data) => SliverToBoxAdapter(
-  child:   Padding(
-    padding: const EdgeInsets.only(top:15, left: 6, right: 6, bottom: 15),
-    child: Container(
-      padding: EdgeInsets.only(top:25, bottom: 25),
-      decoration: BoxDecoration(
-        color: darken(data.current.backcolor, 0.1),
-        borderRadius: BorderRadius.circular(25)
-      ),
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.zero,
-        itemExtent: 452.0,
-        itemBuilder:
-              (BuildContext context, int index) {
-                if (index < data.days.length) {
-                  final day = data.days[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: darken(data.current.backcolor, 0.1 + (index % 2) * 0.05),
-                        //border: const Border.symmetric(vertical: BorderSide(
-                        //    width: 1,
-                        //    color: WHITE
-                        //))
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Text(
+                      day.name,
+                      style: GoogleFonts.comfortaa(
+                        color: WHITE,
+                        fontSize: 30,
+                        height: 0.7,
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
-                    child: Column(
-
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 50, bottom: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30),
-                          child: Text(
-                            day.name,
-                            style: GoogleFonts.comfortaa(
-                              color: WHITE,
-                              fontSize: 30,
-                              height: 0.7,
-                              fontWeight: FontWeight.w300,
-                            ),
+                        Container(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: Image.asset(
+                            'assets/icons/' + day.icon,
+                            fit: BoxFit.contain,
+                            height: 45,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 50, bottom: 30),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.only(left: 20, right: 20),
-                                child: Image.asset(
-                                  'assets/icons/' + day.icon,
-                                  fit: BoxFit.contain,
-                                  height: 45,
-                                ),
-                              ),
-                            Flexible(
-                              fit: FlexFit.loose,
-                                child: comfortatext(day.text + ' ' + day.minmaxtemp, 25, color: WHITE)
-                              )
-                            ],
-                          ),
-                        ),
-                        buildHours(day.hourly, data.settings),
+                      Flexible(
+                        fit: FlexFit.loose,
+                          child: comfortatext(day.text + ' ' + day.minmaxtemp, 25, color: WHITE)
+                        )
                       ],
-                    )
-                  );
-                }
-                return null;
-          },
-      ),
-    ),
-  ),
+                    ),
+                  ),
+                  buildHours(day.hourly, data.settings),
+                ],
+              )
+            );
+          }
+          return null;
+    },
+)
 );
 
 Widget buildHours(List<dynamic> data, List<String> units) => SizedBox(
