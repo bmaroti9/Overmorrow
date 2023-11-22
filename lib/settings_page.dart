@@ -176,9 +176,9 @@ class _SettingsPageState extends State<SettingsPage> {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          print(snapshot.error);
           return Center(
-            child: ErrorWidget(snapshot.error as Object),
+            //child: ErrorWidget(snapshot.error as Object),
+            child: comfortatext('A problem occurred', 30, color: Colors.orangeAccent),
           );
         }
         return SettingsMain(color, snapshot.data, updatePage, goBack);
