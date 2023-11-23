@@ -94,7 +94,6 @@ flutter:
   #   - images/a_dot_ham.jpeg
 
   assets:
-    - assets/images/
     - assets/backdrops/
     - assets/icons/
 

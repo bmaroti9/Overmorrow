@@ -89,7 +89,7 @@ Map<String, String> weatherTextMap = {
 };
 
 Map<String, String> textBackground = {
-  'Clear Night': 'clear_sky_cut.png',
+  'Clear Night': 'clear_night.jpg',
   'Partly Cloudy': 'cloudy13.jpg',
   'Clear Sky': 'very_clear.jpg',
   'Overcast': 'overcast.jpg',
