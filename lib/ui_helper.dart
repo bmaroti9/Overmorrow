@@ -256,9 +256,9 @@ class _MySearchParentState extends State<MySearchParent> {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
+          print(snapshot.error);
           return Center(
-            //child: ErrorWidget(snapshot.error as Object),
-            child: comfortatext('A problem occurred', 30, color: Colors.orangeAccent),
+            child: ErrorWidget(snapshot.error as Object),
           );
         }
         List<String> favorites = getFavorites(snapshot.data);

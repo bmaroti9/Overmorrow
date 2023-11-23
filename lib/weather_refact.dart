@@ -139,6 +139,23 @@ Map<String, Color> textBackColor = {
   'Cloudy Night': const Color(0xff053960)
 };
 
+Map<int, Color> dayColorMap = {
+    1: const Color(0xffD58477),
+    2: const Color(0xffA3655B),
+    3: const Color(0xffB1D2E1),
+    4: const Color(0xff788F99),
+    5: const Color(0xffFFFAA0),
+    6: const Color(0xffCCC880),
+    7: const Color(0xffE1B4BB),
+    8: const Color(0xffB49096),
+    9: const Color(0xffA9C8A4),
+    10: const Color(0xff87A083),
+    11: const Color(0xffE5C8DF),
+    12: const Color(0xffB7A0B2),
+    13: const Color(0xffE1D4BB),
+    14: const Color(0xffB4AA96),
+};
+
 Map<String, List<double>> conversionTable = {
   '˚C': [0, 1],
   '˚F': [32, 1.8],

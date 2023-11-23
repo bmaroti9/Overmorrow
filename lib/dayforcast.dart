@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 
@@ -51,7 +52,7 @@ double temp_multiply_for_scale(double temp, String unit) {
 
 String iconCorrection(name, isday) {
   String text = textCorrection(name, isday);
-  String p = weather_refactor.textIconMap[text] ?? 'cloudy13.jpg';
+  String p = weather_refactor.textIconMap[text] ?? 'clear_night.png';
   return p;
 }
 
@@ -140,6 +141,16 @@ List<Color> contentColorCorrection(name, isday) {
   return p;
 }
 
+Color getDaysColor(date, night) {
+  final splitted = date.split('-');
+  final hihi = DateTime.utc(int.parse(splitted[0]),
+      int.parse(splitted[1]), int.parse(splitted[2]));
+  final dayIndex = (hihi.weekday * 2) - night;
+  Color p =
+      weather_refactor.dayColorMap[dayIndex] ?? const Color(0xff000000);
+  return p;
+}
+
 class Hour {
   final temp;
   final icon;
@@ -205,8 +216,9 @@ class WeatherData {
   final List<Day> days;
   final Current current;
   final String place;
+  final List<Image> radar;
 
-  WeatherData(this.days, this.current, this.place, this.settings);
+  WeatherData(this.days, this.current, this.place, this.settings, this.radar);
 }
 
 class Current {

@@ -118,6 +118,7 @@ class WeatherPage extends StatelessWidget {
                   ),
                 ),
                 buildHihiDays(data),
+                RadarView(data),
               ],
             ),
           ],
@@ -144,15 +145,17 @@ class ParallaxBackground extends StatelessWidget {
   }
 }
 
-Widget RadarView(var data) => Padding(
-  padding: const EdgeInsets.all(14),
-  child: Container(
-    decoration: BoxDecoration(
-        color: darken(data.current.backcolor, 0.1),
-        borderRadius: BorderRadius.circular(25)
-    ),
-  child: data.radar[0],
+Widget RadarView(var data) => SliverToBoxAdapter(
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+            color: darken(data.current.backcolor, 0.1),
+            borderRadius: BorderRadius.circular(25)
+        ),
+      child: data.radar[0],
   ),
+    )
 );
 
 Widget buildCurrent(var data, double height) => SizedBox(
@@ -248,7 +251,8 @@ Widget Circles(double width, var data) {
       )
   );
 }
-Widget buildHihiDays(var data) => SliverList(
+Widget buildHihiDays(var data) => SliverFixedExtentList(
+    itemExtent: 452.0,
     delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
         if (index < data.days.length) {
@@ -296,15 +300,12 @@ Widget buildHihiDays(var data) => SliverList(
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 30),
-                    child: buildHours(day.hourly, data.settings),
-                  ),
-                ]
+                  buildHours(day.hourly, data.settings),
+                ],
               )
             );
           }
-        return Container();
+          return null;
     },
 )
 );

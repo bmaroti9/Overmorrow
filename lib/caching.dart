@@ -37,6 +37,7 @@ class MyGetResponse implements FileServiceResponse {
 
   @override
   DateTime get validTill {
+    print(url);
     if (url.toString().contains("forecast.json")) {
       return DateTime.now().add(
           Duration(minutes: 60 - DateTime.now().minute,
@@ -64,6 +65,7 @@ class MyFileService extends HttpFileService {
 
     var hihi = MyGetResponse(result, url);
 
+    print((hihi.validTill, 'hihi'));
     return hihi;
   }
 }

@@ -37,6 +37,33 @@ void main() {
   runApp(const MyApp());
 }
 
+Future<List<Image>> getRadar() async {
+  const String url = 'https://api.rainviewer.com/public/weather-maps.json';
+
+  var file = await cacheManager.getSingleFile(url.toString());
+  var response = await file.readAsString();
+  //final response = await http.get(Uri.parse(url));
+  //print('Response data: ${response.body}');
+  final Map<String, dynamic> data = json.decode(response);
+
+  final String host = data["host"];
+  //const atEnd = "/512/2/-32/108/3/1_1.png";
+  const atEnd = "/512/2/2/1/3/1_1.png";
+
+  final radar = data["radar"]["past"];
+  print(data["radar"]["past"]);
+
+  List<Image> images = [];
+
+  for (var x in radar) {
+    print(host + x["path"] + atEnd);
+    Image hihi = Image.network(host + x["path"] + atEnd);
+    images.add(hihi);
+  }
+
+  return images;
+}
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -89,6 +116,7 @@ class _MyAppState extends State<MyApp> {
 
       var response;
 
+      print('got here');
       var params = {
         'key': apiKey,
         'q': absoluteProposed,
@@ -111,6 +139,7 @@ class _MyAppState extends State<MyApp> {
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
           place: absoluteProposed, settings: unitsUsed,);
       } on HttpExceptionWithStatus catch (hihi){
+        print(hihi.toString());
         if (hihi.toString().contains("statusCode: 400")) {
           return dumbySearch(
             errorMessage: 'unable to load forecast for place: $proposedLoc',
@@ -119,12 +148,6 @@ class _MyAppState extends State<MyApp> {
             place: absoluteProposed,
             settings: unitsUsed,);
         }
-        return dumbySearch(
-          errorMessage: 'General error',
-          updateLocation: updateLocation,
-          icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: absoluteProposed,
-          settings: unitsUsed,);
       } on SocketException {
         return dumbySearch(errorMessage: translation("Not connected to the internet", unitsUsed[0]),
           updateLocation: updateLocation,
@@ -135,6 +158,8 @@ class _MyAppState extends State<MyApp> {
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
           place: absoluteProposed, settings: unitsUsed,);
       }
+
+      List<Image> radar = await getRadar();
 
       //var jsonbody = jsonDecode(response.body);
       var jsonbody = jsonDecode(response);
@@ -154,12 +179,13 @@ class _MyAppState extends State<MyApp> {
       dayforcast.Current.fromJson(jsonbody, unitsUsed);
 
       dayforcast.WeatherData data = dayforcast.WeatherData(
-          days, current, jsonbody['location']['name'], unitsUsed);
+          days, current, jsonbody['location']['name'], unitsUsed, radar);
 
       return WeatherPage(data: data,
           updateLocation: updateLocation);
 
-    } catch (e) {
+    } catch (e, stacktrace) {
+      print(stacktrace);
       rethrow;
     }
   }
@@ -178,9 +204,11 @@ class _MyAppState extends State<MyApp> {
                 child: CircularProgressIndicator(),
               );
             } else if (snapshot.hasError) {
+              print(snapshot.error);
               return Center(
-                child: comfortatext('A problem occurred', 30, color: Colors.orangeAccent),
+                child: ErrorWidget(snapshot.error as Object),
               );
+              //return comfortatext('Error fetching data', 20);
             }
             //return buildWholeThing(snapshot.data);
             return snapshot.data!;
