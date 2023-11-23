@@ -178,7 +178,7 @@ class _SettingsPageState extends State<SettingsPage> {
         } else if (snapshot.hasError) {
           return Center(
             //child: ErrorWidget(snapshot.error as Object),
-            child: comfortatext('A problem occurred: ${snapshot.error}', 20, color: BLACK),
+            child: comfortatext('A problem occurred${snapshot.error}', 20, color: BLACK),
           );
         }
         return SettingsMain(color, snapshot.data, updatePage, goBack);

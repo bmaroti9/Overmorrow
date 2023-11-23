@@ -258,7 +258,7 @@ class _MySearchParentState extends State<MySearchParent> {
         } else if (snapshot.hasError) {
           return Center(
             //child: ErrorWidget(snapshot.error as Object),
-            child: comfortatext('A problem occurred: ${snapshot.error}', 20, color: BLACK,)
+            child: comfortatext('A problem occurred${snapshot.error}', 20, color: BLACK,)
           );
         }
         List<String> favorites = getFavorites(snapshot.data);
