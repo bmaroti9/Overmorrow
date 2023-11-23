@@ -118,7 +118,6 @@ class WeatherPage extends StatelessWidget {
                   ),
                 ),
                 buildHihiDays(data),
-                RadarView(data),
               ],
             ),
           ],
@@ -144,19 +143,6 @@ class ParallaxBackground extends StatelessWidget {
     );
   }
 }
-
-Widget RadarView(var data) => SliverToBoxAdapter(
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-            color: darken(data.current.backcolor, 0.1),
-            borderRadius: BorderRadius.circular(25)
-        ),
-      child: data.radar[0],
-  ),
-    )
-);
 
 Widget buildCurrent(var data, double height) => SizedBox(
   height: height,

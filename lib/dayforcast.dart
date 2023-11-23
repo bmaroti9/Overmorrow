@@ -216,9 +216,8 @@ class WeatherData {
   final List<Day> days;
   final Current current;
   final String place;
-  final List<Image> radar;
 
-  WeatherData(this.days, this.current, this.place, this.settings, this.radar);
+  WeatherData(this.days, this.current, this.place, this.settings);
 }
 
 class Current {
