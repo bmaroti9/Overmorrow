@@ -90,19 +90,6 @@ Widget searchBar(Color color, List<String> recommend,
       backdropColor: darken(color, 0.3),
       closeOnBackdropTap: true,
       transition: CircularFloatingSearchBarTransition(),
-      automaticallyImplyDrawerHamburger: false,
-      leadingActions: [
-        FloatingSearchBarAction(
-          showIfOpened: false,
-          child: CircularButton(
-            icon: const Icon(Icons.menu, color: WHITE, size: 28,),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-              controller.clear();
-            },
-          ),
-        ),
-      ],
       actions: [
         FloatingSearchBarAction(
           showIfOpened: false,
