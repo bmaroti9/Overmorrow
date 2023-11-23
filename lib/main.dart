@@ -179,7 +179,7 @@ class _MyAppState extends State<MyApp> {
               );
             } else if (snapshot.hasError) {
               return Center(
-                child: comfortatext('A problem occurred${snapshot.error}', 20, color: BLACK),
+                child: comfortatext('A problem occurred: ${snapshot.error}', 20, color: BLACK),
               );
             }
             //return buildWholeThing(snapshot.data);
