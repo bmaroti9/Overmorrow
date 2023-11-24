@@ -665,6 +665,54 @@ Map<String, List<String>> mainTranslate = {
     'Не удается найти устройство',
     '无法定位设备',
     'デバイスを特定できません'
+  ],
+  'location services are disabled.': [
+    'location services are disabled.',
+    'A helymeghatározás szolgáltatások kikapcsolva vannak.',
+    'Los servicios de ubicación están desactivados.',
+    'Les services de localisation sont désactivés.',
+    'Standortdienste sind deaktiviert.',
+    'I servizi di localizzazione sono disattivati.',
+    'Os serviços de localização estão desativados.',
+    'Сервисы определения местоположения отключены.',
+    '位置服务已禁用。',
+    '位置サービスは無効です。'
+  ],
+  'location permission is denied': [
+    'location permission is denied',
+    'A helyengedélyt megtagadták',
+    'Se denegó el permiso de ubicación',
+    "L'autorisation de localisation est refusée",
+    'Standortberechtigung verweigert',
+    'Permesso di posizione negato',
+    'Permissão de localização negada',
+    'Отказано в разрешении на местоположение',
+    '位置权限已拒绝',
+    '位置許可が拒否されました'
+  ],
+  'location permission denied forever': [
+    'location permission denied forever',
+    'A helyengedélyt örökre megtagadták',
+    'Permiso de ubicación denegado para siempre',
+    "Autorisation de localisation refusée définitivement",
+    'Standortberechtigung für immer verweigert',
+    'Permesso di posizione negato per sempre',
+    'Permissão de localização negada para sempre',
+    'Разрешение на местоположение отклонено навсегда',
+    '位置权限已永久拒绝',
+    '位置許可が永久に拒否されました'
+  ],
+  'failed to access gps': [
+    'failed to access gps',
+    'Nem sikerült hozzáférni a GPS-hez',
+    'No se pudo acceder al GPS',
+    "Impossible d'accéder au GPS",
+    'GPS-Zugriff fehlgeschlagen',
+    'Impossibile accedere al GPS',
+    'Falha ao acessar o GPS',
+    'Не удалось получить доступ к GPS',
+    '无法访问 GPS',
+    'GPSにアクセスできませんでした'
   ]
 };
 

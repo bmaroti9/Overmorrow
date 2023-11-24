@@ -68,7 +68,8 @@ class _MyAppState extends State<MyApp> {
       String absoluteProposed = proposedLoc;
 
       if (proposedLoc == 'CurrentLocation') {
-        if (await isLocationSafe()) {
+        String loc_status = await isLocationSafe();
+        if (loc_status == "enabled") {
           Position position;
           try {
             position = await Geolocator.getCurrentPosition(
@@ -83,7 +84,10 @@ class _MyAppState extends State<MyApp> {
           absoluteProposed = '${position.latitude},${position.longitude}';
         }
         else {
-          absoluteProposed = 'New York';
+          return dumbySearch(errorMessage: translation(loc_status, unitsUsed[0]),
+            updateLocation: updateLocation,
+            icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
+            place: absoluteProposed, settings: unitsUsed,);
         }
       }
 

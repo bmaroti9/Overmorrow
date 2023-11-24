@@ -57,14 +57,13 @@ Widget searchBar(Color color, List<String> recommend,
         fontWeight: FontWeight.w100,
       ),
 
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(35),
       backgroundColor: color,
       border: const BorderSide(width: 1.2, color: WHITE),
-      progress: prog,
       accentColor: WHITE,
 
       elevation: 0,
-      height: 60,
+      height: 62,
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
       transitionDuration: const Duration(milliseconds: 800),
       transitionCurve: Curves.easeInOut,
@@ -376,9 +375,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color)
           (states) => const BorderSide(width: 1.2, color: WHITE)),
       ),
       onPressed: () async {
-        if (await isLocationSafe()) {
-          updateLocation('CurrentLocation');
-        }
+        updateLocation('CurrentLocation');
       },
       child: const Icon(Icons.place_outlined, color: WHITE,),
     );

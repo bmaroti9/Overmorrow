@@ -49,36 +49,27 @@ Future<List<String>> getSettingsUsed() async {
   return units;
 }
 
-class SnackbarGlobal {
-  static GlobalKey<ScaffoldMessengerState> key =
-  GlobalKey<ScaffoldMessengerState>();
-
-  static void show(String message) {
-    key.currentState!
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(
-        content: comfortatext(message, 26, color: WHITE),
-        backgroundColor: BLACK,)
-      );
+Future<String> isLocationSafe() async {
+  bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    return "location services are disabled.";
   }
-}
 
-Future<bool> isLocationSafe() async {
   LocationPermission permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      SnackbarGlobal.show('permission denied');
+      return "location permission is denied";
     }
   }
   if (permission == LocationPermission.deniedForever) {
-    SnackbarGlobal.show('permission denied forever');
+    return "location permission denied forever";
   }
   if (permission == LocationPermission.whileInUse ||
       permission == LocationPermission.always) {
-    return true;
+    return "enabled";
   }
-  return false;
+  return "failed to access gps";
 }
 
 Future<String> getLastPlace() async {
