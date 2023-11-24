@@ -94,7 +94,7 @@ Widget searchBar(Color color, List<String> recommend,
         FloatingSearchBarAction(
           showIfOpened: false,
           showIfClosed: true,
-          child: CircularButton(
+          child: IconButton(
             icon: const Icon(Icons.menu, color: WHITE, size: 28,),
             onPressed: () {
               Scaffold.of(context).openDrawer();

@@ -80,6 +80,11 @@ class _MyAppState extends State<MyApp> {
               updateLocation: updateLocation,
               icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
               place: absoluteProposed, settings: unitsUsed,);
+          } on LocationServiceDisabledException {
+            return dumbySearch(errorMessage: translation("location services are disabled.", unitsUsed[0]),
+              updateLocation: updateLocation,
+              icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
+              place: absoluteProposed, settings: unitsUsed,);
           }
           absoluteProposed = '${position.latitude},${position.longitude}';
         }
