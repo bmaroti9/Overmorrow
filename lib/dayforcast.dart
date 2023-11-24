@@ -99,6 +99,13 @@ Color backroundColorCorrection(name, isday) {
   return p;
 }
 
+
+Color accentColorCorrection(name, isday) {
+  String text = textCorrection(name, isday);
+  Color p = weather_refactor.accentColors[text] ?? WHITE;
+  return p;
+}
+
 String getName(index, settings) {
   List<String> names = ['Today', 'Tomorrow', 'Overmorrow'];
   return translation(names[index], settings[0]);
@@ -230,6 +237,7 @@ class Current {
   final double precip;
   final int wind;
   final Color backcolor;
+  final Color accentcolor;
 
   const Current({
     required this.text,
@@ -241,6 +249,7 @@ class Current {
     required this.uv,
     required this.wind,
     required this.backcolor,
+    required this.accentcolor,
 });
 
   static Current fromJson(item, settings) => Current(
@@ -258,6 +267,10 @@ class Current {
     ),
 
     backcolor: backroundColorCorrection(
+        item["current"]["condition"]["text"], item["current"]["is_day"]
+    ),
+
+    accentcolor: accentColorCorrection(
         item["current"]["condition"]["text"], item["current"]["is_day"]
     ),
 
