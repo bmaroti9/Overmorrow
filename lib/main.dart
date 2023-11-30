@@ -29,12 +29,18 @@ import 'api_key.dart';
 import 'caching.dart';
 import 'dayforcast.dart';
 import 'main_ui.dart';
+import 'package:flutter/services.dart';
 
 import 'dayforcast.dart' as dayforcast;
 import 'settings_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  //runApp(const MyApp());
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -124,7 +130,7 @@ class _MyAppState extends State<MyApp> {
         print(hihi.toString());
         if (hihi.toString().contains("statusCode: 400")) {
           return dumbySearch(
-            errorMessage: 'unable to load forecast for place: $proposedLoc',
+            errorMessage: '${translation('Place not found', unitsUsed[0])}: $proposedLoc',
             updateLocation: updateLocation,
             icon: const Icon(Icons.location_disabled, color: WHITE, size: 30,),
             place: absoluteProposed,

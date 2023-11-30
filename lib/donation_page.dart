@@ -452,7 +452,7 @@ class _InfoPageState extends State<InfoPage> {
 Future<void> launchEmail() async {
   final Uri _emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: 'bmaroti9@gmail.com', // Replace with your email address
+      path: 'maroti.devel@gmail.com', // Replace with your email address
       queryParameters: {'subject': 'Feedback or Support Request'} // Optional subject
   );
 

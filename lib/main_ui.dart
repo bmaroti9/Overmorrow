@@ -286,7 +286,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                       ],
                     ),
                   ),
-                  buildHours(day.hourly, data.settings),
+                  buildHours(day.hourly, data.settings, data.current.accentcolor),
                 ],
               )
             );
@@ -296,7 +296,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
 )
 );
 
-Widget buildHours(List<dynamic> data, List<String> units) => SizedBox(
+Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor) => SizedBox(
   height: 240, // Adjust the height as needed
   child: ListView(
     physics: BouncingScrollPhysics(),
@@ -307,12 +307,12 @@ Widget buildHours(List<dynamic> data, List<String> units) => SizedBox(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 10),
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
               child: Text(
                 '${hour.temp}°',
                 style: GoogleFonts.comfortaa(
                   color: WHITE,
-                  fontSize: 20,
+                  fontSize: 22,
                   height: 0.7,
                   fontWeight: FontWeight.w300,
                 ),
@@ -322,20 +322,20 @@ Widget buildHours(List<dynamic> data, List<String> units) => SizedBox(
               alignment: Alignment.bottomCenter,
               children: [
                 Container(
-                  width: 10,
-                  height: temp_multiply_for_scale(hour.temp, units[1]),
-                  decoration: const BoxDecoration(
-                      color: WHITE,
-                      borderRadius: BorderRadius.all(Radius.circular(20))
-                  ),
-                ),
-                Container(
-                  width: 10,
+                  width: 13,
                   height: 100,
                   decoration: BoxDecoration(
                       border: Border.all(
                         color: WHITE,
                       ),
+                      borderRadius: const BorderRadius.all(Radius.circular(20))
+                  ),
+                ),
+                Container(
+                  width: 13,
+                  height: temp_multiply_for_scale(hour.temp, units[1]),
+                  decoration: BoxDecoration(
+                      color: WHITE,
                       borderRadius: const BorderRadius.all(Radius.circular(20))
                   ),
                 ),
@@ -345,12 +345,12 @@ Widget buildHours(List<dynamic> data, List<String> units) => SizedBox(
               padding: const EdgeInsets.only(top: 20),
               child: Image.asset(
                 'assets/icons/' + hour.icon,
-                fit: BoxFit.contain,
+                fit: BoxFit.scaleDown,
                 height: 40,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top:20, left: 10, right: 10),
+              padding: const EdgeInsets.only(top:20, left: 9, right: 9),
               child: Text(
                 hour.time,
                 style: GoogleFonts.comfortaa(

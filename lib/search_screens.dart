@@ -393,6 +393,8 @@ class dumbySearch extends StatelessWidget {
     required this.updateLocation, required this.icon, required this.place,
   required this.settings});
 
+  final Color color = const Color(0xffB1D2E1);
+
   final FloatingSearchBarController controller = FloatingSearchBarController();
 
   @override
@@ -403,8 +405,8 @@ class dumbySearch extends StatelessWidget {
     double safeHeight = size.height;
 
     return Scaffold(
-      drawer: MyDrawer(color: Color(0xffB1D2E1), settings: settings),
-      backgroundColor: darken(const Color(0xffB1D2E1), 0.4),
+      drawer: MyDrawer(color: color, settings: settings),
+      backgroundColor: darken(color, 0.4),
       body: RefreshIndicator(
         onRefresh: () async {
           await updateLocation(place);
@@ -449,7 +451,7 @@ class dumbySearch extends StatelessWidget {
                     ),
                   ),
                   MySearchParent(updateLocation: updateLocation,
-                    color: BLACK, place: place, controller: controller,),
+                    color: darken(color, 0.5), place: place, controller: controller,),
                 ],
               ),
             ),

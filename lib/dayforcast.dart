@@ -41,12 +41,12 @@ String translation(String text, String language) {
   return translated;
 }
 
-double temp_multiply_for_scale(double temp, String unit) {
+double temp_multiply_for_scale(int temp, String unit) {
   if (unit == '˚C') {
     return max(0, min(100, 17 + temp * 2.4));
   }
   else{
-    return max(0, min(100, 0 + temp));
+    return max(0, min(100, (0 + temp).toDouble()));
   }
 }
 
@@ -179,7 +179,8 @@ class Hour {
     icon: iconCorrection(
         item["condition"]["text"], item["is_day"]
     ),
-    temp:double.parse(unit_coversion(item["temp_c"], settings[1]).toStringAsFixed(1)),
+    //temp:double.parse(unit_coversion(item["temp_c"], settings[1]).toStringAsFixed(1)),
+    temp: unit_coversion(item["temp_c"], settings[1]).round(),
     time: getTime(item["time"])
   );
 }
