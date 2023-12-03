@@ -322,7 +322,7 @@ Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor) => 
               alignment: Alignment.bottomCenter,
               children: [
                 Container(
-                  width: 13,
+                  width: 15,
                   height: 100,
                   decoration: BoxDecoration(
                       border: Border.all(
@@ -332,7 +332,7 @@ Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor) => 
                   ),
                 ),
                 Container(
-                  width: 13,
+                  width: 15,
                   height: temp_multiply_for_scale(hour.temp, units[1]),
                   decoration: BoxDecoration(
                       color: WHITE,

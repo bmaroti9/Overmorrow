@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<Widget> getDays() async {
+  Future<Widget> getDays(bool recall) async {
     try {
 
       List<String> unitsUsed = await getSettingsUsed();
@@ -103,6 +103,7 @@ class _MyAppState extends State<MyApp> {
       }
 
       var response;
+      var file;
 
       print('got here');
       var params = {
@@ -114,7 +115,7 @@ class _MyAppState extends State<MyApp> {
       };
       var url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
       try {
-        var file = await cacheManager.getSingleFile(url.toString(), headers: {'cache-control': 'private, max-age=120'});
+        file = await cacheManager.getSingleFile(url.toString(), key: absoluteProposed, headers: {'cache-control': 'private, max-age=120'});
         response = await file.readAsString();
         //response = await http.post(url).timeout(
         //    const Duration(seconds: 10));
@@ -136,13 +137,21 @@ class _MyAppState extends State<MyApp> {
             place: absoluteProposed,
             settings: unitsUsed,);
         }
+        else if (hihi.toString().contains("statusCode: ")) {
+          String replacement = "<api_key>";
+
+          String newStr = hihi.toString().replaceAll(apiKey, replacement);
+          return dumbySearch(errorMessage: "general error at place 1: $newStr", updateLocation: updateLocation,
+            icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
+            place: absoluteProposed, settings: unitsUsed,);
+        }
       } on SocketException {
         return dumbySearch(errorMessage: translation("Not connected to the internet", unitsUsed[0]),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
           place: absoluteProposed, settings: unitsUsed,);
       } on Error catch (e) {
-        return dumbySearch(errorMessage: "general error:$e", updateLocation: updateLocation,
+        return dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
           place: absoluteProposed, settings: unitsUsed,);
       }
@@ -152,12 +161,31 @@ class _MyAppState extends State<MyApp> {
 
       dayforcast.LOCATION = proposedLoc;
       SetData('LastPlace', proposedLoc);
-      var forecastlist = jsonbody['forecast']['forecastday'];
+
+      var forecastlist;
+      var timenow;
+      String loc_p;
+
+      try {
+        forecastlist = jsonbody['forecast']['forecastday'];
+        timenow = jsonbody["location"]["localtime_epoch"];
+        loc_p = jsonbody['location']['name'];
+      } on Error catch (e) {
+        cacheManager.removeFile(absoluteProposed);
+        if (recall) {
+          return dumbySearch(errorMessage: "general error at place 3: $e", updateLocation: updateLocation,
+            icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
+            place: absoluteProposed, settings: unitsUsed,);
+        }
+        else {
+          return getDays(true);
+        }
+      }
 
       List<dayforcast.Day> days = [];
       int index = 0;
       for (var forecast in forecastlist) {
-        days.add(dayforcast.Day.fromJson(forecast, index, unitsUsed, jsonbody["location"]["localtime_epoch"]));
+        days.add(dayforcast.Day.fromJson(forecast, index, unitsUsed, timenow));
         index += 1;
       }
 
@@ -165,7 +193,7 @@ class _MyAppState extends State<MyApp> {
       dayforcast.Current.fromJson(jsonbody, unitsUsed);
 
       dayforcast.WeatherData data = dayforcast.WeatherData(
-          days, current, jsonbody['location']['name'], unitsUsed);
+          days, current, loc_p, unitsUsed);
 
       return WeatherPage(data: data,
           updateLocation: updateLocation);
@@ -182,7 +210,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: FutureBuilder<Widget>(
-          future: getDays(),
+          future: getDays(false),
           builder: (BuildContext context,
               AsyncSnapshot<Widget> snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
