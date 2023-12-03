@@ -30,10 +30,10 @@ Widget searchBar(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
     List<String> favorites, Function updateRec, String place, var context,
-    bool prog, Function updateProg) {
+    bool prog, Function updateProg, List<String> settings) {
 
   return FloatingSearchBar(
-      hint: 'Search...',
+      hint: translation('Search...', settings[0]),
       title: Container(
         padding: const EdgeInsets.only(left: 10, top: 3),
         child: Text(
@@ -148,7 +148,7 @@ Widget searchBar(Color color, List<String> recommend,
             },
             child: decideSearch(color, recommend, updateLocation,
                 controller, updateIsEditing, isEditing, updateFav,
-                favorites, controller.query)
+                favorites, controller.query, settings)
         );
       }
   );
@@ -157,11 +157,11 @@ Widget searchBar(Color color, List<String> recommend,
 Widget decideSearch(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, String entered) {
+    List<String> favorites, String entered, List<String> settings) {
 
   if (entered == '') {
     return defaultSearchScreen(color, updateLocation,
-        controller, updateIsEditing, isEditing, updateFav, favorites);
+        controller, updateIsEditing, isEditing, updateFav, favorites, settings);
   }
   else{
     if (recommend.isNotEmpty) {
@@ -176,7 +176,7 @@ Widget decideSearch(Color color, List<String> recommend,
 Widget defaultSearchScreen(Color color,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites) {
+    List<String> favorites, List<String> settings) {
 
   List<Icon> Myicon = [
     const Icon(null),
@@ -207,7 +207,7 @@ Widget defaultSearchScreen(Color color,
         padding: const EdgeInsets.only(top:5, bottom: 10, right: 20, left: 20),
         child: Row(
           children: [
-            comfortatext('Favorites', 30, color: WHITE),
+            comfortatext(translation("Favorites", settings[0]), 30, color: WHITE),
             const Spacer(),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
@@ -464,7 +464,7 @@ class dumbySearch extends StatelessWidget {
                     ),
                   ),
                   MySearchParent(updateLocation: updateLocation,
-                    color: darken(color, 0.5), place: place, controller: controller,),
+                    color: darken(color, 0.5), place: place, controller: controller, settings: settings,),
                 ],
               ),
             ),

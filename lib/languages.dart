@@ -207,8 +207,8 @@ Map<String, List<String>> mainTranslate = {
     'Preferiti',
     'Favoritos',
     'Избранное',
-    'お気に入り',
-    'Favoritos'
+    '收藏夹',
+    'お気に入り'
   ],
   'Clear Night': [
     'Clear Night',
@@ -713,7 +713,19 @@ Map<String, List<String>> mainTranslate = {
     'Не удалось получить доступ к GPS',
     '无法访问 GPS',
     'GPSにアクセスできませんでした'
-  ]
+  ],
+  'Search...': [
+    'Search...',
+    'Keresés...',
+    'Buscar...',
+    'Rechercher...',
+    'Suchen...',
+    'Cerca...',
+    'Buscar...',
+    'Поиск...',
+    '搜索...',
+    '検索...'
+  ],
 };
 
 

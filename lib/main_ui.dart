@@ -113,7 +113,7 @@ class WeatherPage extends StatelessWidget {
                       ),
                       MySearchParent(updateLocation: updateLocation,
                       color: data.current.backcolor, place: data.place,
-                      controller: controller,),
+                      controller: controller, settings: data.settings,),
                     ],
                   ),
                 ),
