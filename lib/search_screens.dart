@@ -92,6 +92,19 @@ Widget searchBar(Color color, List<String> recommend,
       transition: CircularFloatingSearchBarTransition(),
       leadingActions: [
         FloatingSearchBarAction(
+          showIfOpened: true,
+          showIfClosed: false,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: CircularButton(
+              icon: const Icon(Icons.arrow_back_outlined, color: WHITE,),
+              onPressed: () {
+                controller.close();
+              },
+            ),
+          ),
+        ),
+        FloatingSearchBarAction(
           showIfOpened: false,
           showIfClosed: true,
           child: IconButton(
