@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/dayforcast.dart';
@@ -117,7 +118,8 @@ class WeatherPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                buildHihiDays(data),
+                //buildHihiDays(data),
+                NewTimes(data)
               ],
             ),
           ],
@@ -237,6 +239,105 @@ Widget Circles(double width, var data) {
       )
   );
 }
+
+Widget NewTimes(var data) => SliverList(
+  delegate: SliverChildListDelegate(
+    [
+      Container(
+        decoration: BoxDecoration(
+            color: data.current.backcolor,
+            border: const Border.symmetric(vertical: BorderSide(
+                width: 1,
+                color: WHITE
+            ))
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: comfortatext('sunrise/sunset', 20, color: WHITE),
+                ),
+              ),
+              Center(
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(width: 1.2, color: WHITE)
+                  ),
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(18),
+                          topRight: Radius.circular(0),
+                          bottomRight: Radius.circular(0),
+                          bottomLeft: Radius.circular(18),
+                        ),
+                        child: Container(
+                          color: WHITE,
+                          height: 52,
+                          width: 200,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Icon(CupertinoIcons.sunrise, color: data.current.backcolor,),
+                        ),
+                      ),
+                      const Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 20),
+                          child: Icon(CupertinoIcons.sunset, color: WHITE,),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                        width: 67,
+                          child: Align(
+                            alignment: Alignment.center,
+                              child: comfortatext('10:22', 18, color: WHITE)
+                          )
+                      )
+                    ),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: SizedBox(
+                          width: 67,
+                            child: Align(
+                              alignment: Alignment.center,
+                                child: comfortatext('10:22', 18, color: WHITE)
+                            )
+                        )
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      )
+      // Add more items as needed
+    ],
+  ),
+);
+
 Widget buildHihiDays(var data) => SliverFixedExtentList(
     itemExtent: 452.0,
     delegate: SliverChildBuilderDelegate(

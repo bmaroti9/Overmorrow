@@ -57,7 +57,7 @@ Widget searchBar(Color color, List<String> recommend,
         fontWeight: FontWeight.w100,
       ),
 
-      borderRadius: BorderRadius.circular(35),
+      borderRadius: BorderRadius.circular(27),
       backgroundColor: color,
       border: const BorderSide(width: 1.2, color: WHITE),
       accentColor: WHITE,
@@ -359,38 +359,49 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
 
 Widget LocationButton(Function updateProg, Function updateLocation, Color color) {
   if (LOCATION == 'CurrentLocation') {
-    return ElevatedButton(
-      style: ButtonStyle(
-        elevation: MaterialStateProperty.all<double>(0),
-        shape: MaterialStateProperty.all(const CircleBorder()),
-        padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-        backgroundColor: MaterialStateProperty.all(WHITE),
-        // <-- Button color
-        overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-          if (states.contains(MaterialState.pressed)) {
-            return const Color(0xffce5a67);
-          }
-          return null; // <-- Splash color
-        }),
+    return Padding(
+      padding: const EdgeInsets.only(right: 6, top: 3, bottom: 3),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              elevation: 0,
+              padding: const EdgeInsets.all(10),
+              backgroundColor: WHITE,
+              side: const BorderSide(width: 1.2, color: WHITE),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)
+              )
+          ),
+          onPressed: () async {
+            updateLocation('CurrentLocation');
+          },
+          child: Icon(Icons.place_outlined, color: color,),
+        ),
       ),
-      onPressed: null,
-      child: Icon(Icons.place_rounded, color: color,),
     );
   }
   else{
-    return ElevatedButton(
-      style: ButtonStyle(
-        elevation: MaterialStateProperty.all<double>(0),
-        shape: MaterialStateProperty.all(const CircleBorder()),
-        padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-        backgroundColor: MaterialStateProperty.all(color),
-        side: MaterialStateProperty.resolveWith<BorderSide>(
-          (states) => const BorderSide(width: 1.2, color: WHITE)),
+    return Padding(
+      padding: const EdgeInsets.only(right: 6, top: 3, bottom: 3),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              elevation: 0,
+              padding: const EdgeInsets.all(10),
+              backgroundColor: color,
+              side: const BorderSide(width: 1.2, color: WHITE),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20)
+            )
+          ),
+          onPressed: () async {
+            updateLocation('CurrentLocation');
+          },
+          child: const Icon(Icons.place_outlined, color: WHITE,),
+        ),
       ),
-      onPressed: () async {
-        updateLocation('CurrentLocation');
-      },
-      child: const Icon(Icons.place_outlined, color: WHITE,),
     );
   }
 }
