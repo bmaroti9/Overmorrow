@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,7 +31,8 @@ import 'caching.dart';
 const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);
 
-Widget comfortatext(String text, double size, {Color color = WHITE}) {
+Widget comfortatext(String text, double size,
+    {Color color = WHITE, TextAlign align = TextAlign.left }) {
   return Text(
     text,
     style: GoogleFonts.comfortaa(
@@ -40,6 +42,7 @@ Widget comfortatext(String text, double size, {Color color = WHITE}) {
     ),
     overflow: TextOverflow.ellipsis,
     maxLines: 3,
+    textAlign: align,
   );
 }
 
@@ -100,7 +103,7 @@ class DescriptionCircle extends StatelessWidget {
                     //shape: BoxShape.circle,
                     border: Border.all(width: 2.5, color: Colors.white),
                     //color: WHITE,
-                    borderRadius: BorderRadius.circular(40)
+                    borderRadius: BorderRadius.circular(35)
                   ),
                   child: Center(
                     child: Row(
@@ -130,7 +133,7 @@ class DescriptionCircle extends StatelessWidget {
                       ],
                     ),
                   )
-        ),
+                ),
               ],
             ),
           ),
@@ -154,6 +157,27 @@ class DescriptionCircle extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget aqiDataPoints(String name, double value) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 10, bottom: 2, top: 2),
+    child: Row(
+      children: [
+        comfortatext(name, 22),
+        Spacer(),
+        Container(
+          padding: EdgeInsets.all(3),
+          decoration: BoxDecoration(
+              //border: Border.all(color: Colors.blueAccent)
+            color: Colors.greenAccent,
+            borderRadius: BorderRadius.circular(10)
+          ),
+          child: Text(value.toString(), textScaleFactor: 1.2,),
+        )
+      ],
+    ),
+  );
 }
 
 Future<List<String>> getRecommend(String query, List<String> favorites) async {

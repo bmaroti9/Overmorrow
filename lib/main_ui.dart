@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/dayforcast.dart';
 import 'package:hihi_haha/settings_page.dart';
+import 'package:hihi_haha/weather_refact.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'ui_helper.dart';
 
@@ -65,19 +66,19 @@ class WeatherPage extends StatelessWidget {
               decoration: BoxDecoration(
                   color: data.current.backcolor,
                   border: const Border.symmetric(vertical: BorderSide(
-                      width: 1,
+                      width: 1.2,
                       color: WHITE
                   ))
               ),
             ),
             CustomScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               slivers: <Widget>[
                 SliverAppBar(
                   automaticallyImplyLeading: false, // remove the hamburger-menu
                   backgroundColor: Colors.transparent, // Set background to transparent
                   bottom: PreferredSize(
-                    preferredSize: Size(0, 380),
+                    preferredSize: const Size(0, 380),
                     child: Container(),
                   ),
                   pinned: false,
@@ -104,10 +105,10 @@ class WeatherPage extends StatelessWidget {
                         child: Container(
                           height: 32,
                           decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: WHITE),
+                            border: Border.all(width: 1.2, color: WHITE),
                             color: data.current.backcolor,
                             borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(30),
+                              top: Radius.circular(27),
                             ),
                           ),
                         ),
@@ -150,7 +151,7 @@ Widget buildCurrent(var data, double height) => SizedBox(
   height: height,
   child:   Column(
     children: [
-      Spacer(),
+      const Spacer(),
       Padding(
         padding: const EdgeInsets.only(top: 50.0, left: 30),
         child: Align(
@@ -207,28 +208,28 @@ Widget Circles(double width, var data) {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 DescriptionCircle(
-                  color: WHITE,
+                  color: data.current.contentColor[1],
                   text: '${data.current.humidity}',
                   undercaption: translation('humidity', data.settings[0]),
                   extra: '%',
                   size: width,
                 ),
                 DescriptionCircle(
-                  color: WHITE,
+                  color: data.current.contentColor[1],
                   text: '${data.current.uv}',
                   undercaption: translation('UV', data.settings[0]),
                   extra: '',
                   size: width,
                 ),
                 DescriptionCircle(
-                  color: WHITE,
+                  color: data.current.contentColor[1],
                   text: '${data.current.precip}',
                   undercaption: translation('precip.', data.settings[0]),
                   extra: data.settings[2],
                   size: width,
                 ),
                 DescriptionCircle(
-                  color: WHITE,
+                  color: data.current.contentColor[1],
                   text: '${data.current.wind}',
                   undercaption: translation('Wind', data.settings[0]),
                   extra: data.settings[3],
@@ -243,71 +244,73 @@ Widget Circles(double width, var data) {
 Widget NewTimes(var data) => SliverList(
   delegate: SliverChildListDelegate(
     [
-      Container(
-        decoration: BoxDecoration(
-            color: data.current.backcolor,
-            border: const Border.symmetric(vertical: BorderSide(
-                width: 1,
-                color: WHITE
-            ))
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: comfortatext('sunrise/sunset', 20, color: WHITE),
-                ),
+      Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: comfortatext('sunrise/sunset', 20, color: WHITE),
               ),
-              Center(
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(width: 1.2, color: WHITE)
-                  ),
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(18),
-                          topRight: Radius.circular(0),
-                          bottomRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(18),
-                        ),
-                        child: Container(
-                          color: WHITE,
-                          height: 52,
-                          width: 200,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Icon(CupertinoIcons.sunrise, color: data.current.backcolor,),
-                        ),
-                      ),
-                      const Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 20),
-                          child: Icon(CupertinoIcons.sunset, color: WHITE,),
-                        ),
-                      ),
-                    ],
-                  ),
+            ),
+            Center(
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(width: 1.2, color: WHITE)
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10),
                 child: Stack(
                   children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(18),
+                        topRight: Radius.circular(0),
+                        bottomRight: Radius.circular(0),
+                        bottomLeft: Radius.circular(18),
+                      ),
+                      child: Container(
+                        color: WHITE,
+                        height: 52,
+                        width: 200,
+                      ),
+                    ),
                     Align(
                       alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Icon(CupertinoIcons.sunrise, color: data.current.backcolor,),
+                      ),
+                    ),
+                    const Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: Icon(CupertinoIcons.sunset, color: WHITE,),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: SizedBox(
+                      width: 67,
+                        child: Align(
+                          alignment: Alignment.center,
+                            child: comfortatext('10:22', 18, color: WHITE)
+                        )
+                    )
+                  ),
+                  Align(
+                      alignment: Alignment.centerRight,
                       child: SizedBox(
                         width: 67,
                           child: Align(
@@ -315,25 +318,77 @@ Widget NewTimes(var data) => SliverList(
                               child: comfortatext('10:22', 18, color: WHITE)
                           )
                       )
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 5),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: comfortatext('air quality', 20, color: WHITE),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(width: 1.2, color: WHITE)
+              ),
+              padding: const EdgeInsets.all(13),
+              child: Row(
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: aqi_colors[1],
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: comfortatext('1', 40, color: WHITE),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: SizedBox(
+                            width: 120,
+                              child: comfortatext('good', 17, color: WHITE,
+                              align: TextAlign.center)
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        aqiDataPoints("pm2.5", 55.4),
+                        aqiDataPoints("pm10", 55.4),
+                        aqiDataPoints("o3", 55.4),
+                        aqiDataPoints("No2", 55.4),
+                      ],
                     ),
-                    Align(
-                        alignment: Alignment.centerRight,
-                        child: SizedBox(
-                          width: 67,
-                            child: Align(
-                              alignment: Alignment.center,
-                                child: comfortatext('10:22', 18, color: WHITE)
-                            )
-                        )
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
       )
-      // Add more items as needed
     ],
   ),
 );
@@ -348,12 +403,11 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                 decoration: BoxDecoration(
                     color: darken(data.current.backcolor, (index % 2) * 0.05),
                     border: const Border.symmetric(vertical: BorderSide(
-                        width: 1,
+                        width: 1.2,
                         color: WHITE
                     ))
                 ),
               child: Column(
-
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 30),
@@ -400,7 +454,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
 Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor) => SizedBox(
   height: 240, // Adjust the height as needed
   child: ListView(
-    physics: BouncingScrollPhysics(),
+    physics: const BouncingScrollPhysics(),
     scrollDirection: Axis.horizontal,
     children: data.map<Widget>((hour) {
       return SizedBox(
@@ -435,9 +489,9 @@ Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor) => 
                 Container(
                   width: 15,
                   height: temp_multiply_for_scale(hour.temp, units[1]),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: WHITE,
-                      borderRadius: const BorderRadius.all(Radius.circular(20))
+                      borderRadius: BorderRadius.all(Radius.circular(20))
                   ),
                 ),
               ],

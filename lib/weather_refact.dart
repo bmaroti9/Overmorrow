@@ -173,6 +173,15 @@ Map<int, Color> dayColorMap = {
     14: const Color(0xffB4AA96),
 };
 
+Map<int, Color> aqi_colors = {
+  1: const Color(0xFFb5cbbb),
+  2: const Color(0xFFFAC898),
+  3: const Color(0xffE0B4D0),
+  4: const Color(0xffEE8591),
+  5: const Color(0xffA0025C),
+  6: const Color(0xff121212),
+};
+
 Map<String, List<double>> conversionTable = {
   '˚C': [0, 1],
   '˚F': [32, 1.8],
