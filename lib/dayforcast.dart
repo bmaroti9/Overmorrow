@@ -282,6 +282,11 @@ class Current {
   final String sunrise;
   final String sunset;
   final double sunstatus;
+  final int aqi_index;
+  final double pm2_5;
+  final double pm10;
+  final double o3;
+  final double no2;
 
   const Current({
     required this.text,
@@ -297,7 +302,11 @@ class Current {
     required this.sunrise,
     required this.sunset,
     required this.sunstatus,
-
+    required this.aqi_index,
+    required this.no2,
+    required this.o3,
+    required this.pm2_5,
+    required this.pm10,
 });
 
   static Current fromJson(item, settings) => Current(
@@ -326,6 +335,12 @@ class Current {
     humidity: item["current"]["humidity"],
     precip: double.parse(unit_coversion(item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"], settings[2]).toStringAsFixed(1)),
     wind: unit_coversion(item["current"]["wind_kph"], settings[3]).round(),
+
+    aqi_index: item["current"]["air_quality"]["us-epa-index"],
+    pm10: item["current"]["air_quality"]["pm10"],
+    pm2_5: item["current"]["air_quality"]["pm2_5"],
+    o3: item["current"]["air_quality"]["o3"],
+    no2: item["current"]["air_quality"]["no2"],
 
     sunrise: convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"]),
     sunset: convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"]),

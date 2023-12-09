@@ -370,7 +370,7 @@ Widget NewTimes(var data) => SliverList(
                         child: Center(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 5),
-                            child: comfortatext('1', 40,
+                            child: comfortatext(data.current.aqi_index.toString(), 40,
                                 color: WHITE),
                           ),
                         ),
@@ -381,7 +381,10 @@ Widget NewTimes(var data) => SliverList(
                           alignment: Alignment.centerLeft,
                           child: SizedBox(
                             width: 120,
-                              child: comfortatext('good', 17, color: WHITE,
+                              child: comfortatext(
+                            ['good', 'moderate', 'Slightly unhealthy',
+                            'unhealthy', 'very unhealthy',
+                              'hazardous'][data.current.aqi_index - 1], 17, color: WHITE,
                               align: TextAlign.center)
                           ),
                         ),
@@ -391,10 +394,10 @@ Widget NewTimes(var data) => SliverList(
                   Expanded(
                     child: Column(
                       children: [
-                        aqiDataPoints("pm2.5", 55.4, data.current.backcolor),
-                        aqiDataPoints("pm10", 55.4, data.current.backcolor),
-                        aqiDataPoints("o3", 55.4, data.current.backcolor),
-                        aqiDataPoints("No2", 55.4, data.current.backcolor),
+                        aqiDataPoints("pm2.5", data.current.pm2_5, data.current.backcolor),
+                        aqiDataPoints("pm10", data.current.pm10, data.current.backcolor),
+                        aqiDataPoints("o3", data.current.o3, data.current.backcolor),
+                        aqiDataPoints("No2", data.current.no2, data.current.backcolor),
                       ],
                     ),
                   )

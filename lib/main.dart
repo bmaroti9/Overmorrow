@@ -110,7 +110,7 @@ class _MyAppState extends State<MyApp> {
         'key': apiKey,
         'q': absoluteProposed,
         'days': '3 ',
-        'aqi': 'no',
+        'aqi': 'yes',
         'alerts': 'no',
       };
       var url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);

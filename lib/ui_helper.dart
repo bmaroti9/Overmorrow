@@ -167,7 +167,7 @@ Widget aqiDataPoints(String name, double value, Color color) {
         comfortatext(name, 22),
         const Spacer(),
         Container(
-          padding: const EdgeInsets.only(top:3,bottom: 3, left: 3, right: 10),
+          padding: const EdgeInsets.only(top:3,bottom: 3, left: 3, right: 3),
           decoration: BoxDecoration(
               //border: Border.all(color: Colors.blueAccent)
             color: WHITE,
