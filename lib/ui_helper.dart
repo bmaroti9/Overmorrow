@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -158,25 +159,85 @@ class DescriptionCircle extends StatelessWidget {
   }
 }
 
-Widget aqiDataPoints(String name, double value) {
+Widget aqiDataPoints(String name, double value, Color color) {
   return Padding(
     padding: const EdgeInsets.only(left: 10, bottom: 2, top: 2),
     child: Row(
       children: [
         comfortatext(name, 22),
-        Spacer(),
+        const Spacer(),
         Container(
-          padding: EdgeInsets.all(3),
+          padding: const EdgeInsets.only(top:3,bottom: 3, left: 3, right: 10),
           decoration: BoxDecoration(
               //border: Border.all(color: Colors.blueAccent)
-            color: Colors.greenAccent,
+            color: WHITE,
             borderRadius: BorderRadius.circular(10)
           ),
-          child: Text(value.toString(), textScaleFactor: 1.2,),
+          child: Text(
+              value.toString(),
+              style: TextStyle(
+                color: color
+              ),
+              textScaleFactor: 1.2
+          ),
         )
       ],
     ),
   );
+}
+
+class MyChart extends StatelessWidget {
+  final List<double> data = [14, 80, 30, 130, 50, 80, 30, 60, 50, 80, 30, 60]; // Sample data for the chart
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: BarChartPainter(data),
+    );
+  }
+}
+
+class BarChartPainter extends CustomPainter {
+  final List<double> data;
+
+  BarChartPainter(this.data);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = WHITE
+      ..style = PaintingStyle.fill;
+
+    double maxValue = data.reduce((value, element) => value > element ? value : element);
+    double scaleY = size.height / maxValue;
+
+    int numberOfBars = data.length;
+    double totalWidth = size.width; // Subtract padding
+    double barWidth = totalWidth / numberOfBars;
+
+    for (int i = 0; i < numberOfBars; i++) {
+      double barHeight = data[i] * scaleY;
+      double x = i * barWidth; // Add half of the remaining padding
+      double y = size.height - barHeight;
+
+      double topRadius = 8.0; // Adjust the radius for the desired rounding
+
+      RRect roundedRect = RRect.fromLTRBR(
+        x + barWidth * 0.1,
+        y,
+        x + barWidth * 0.9,
+        size.height,
+        Radius.circular(topRadius),
+      );
+
+      canvas.drawRRect(roundedRect, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
 }
 
 Future<List<String>> getRecommend(String query, List<String> favorites) async {

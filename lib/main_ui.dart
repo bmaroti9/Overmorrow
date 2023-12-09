@@ -262,36 +262,50 @@ Widget NewTimes(var data) => SliverList(
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(width: 1.2, color: WHITE)
                 ),
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(18),
-                        topRight: Radius.circular(0),
-                        bottomRight: Radius.circular(0),
-                        bottomLeft: Radius.circular(18),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(18),
+                  child: Stack(
+                    children: [
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 20),
+                          child: Icon(CupertinoIcons.sunrise, color: WHITE,),
+                        ),
                       ),
-                      child: Container(
-                        color: WHITE,
-                        height: 52,
-                        width: 200,
+                      const Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 20),
+                          child: Icon(CupertinoIcons.sunset, color: WHITE,),
+                        ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Icon(CupertinoIcons.sunrise, color: data.current.backcolor,),
+                      LayoutBuilder(
+                        builder: (BuildContext context, BoxConstraints constraints) {
+                          return Container(
+                            color: WHITE,
+                            height: constraints.maxHeight,
+                            width: constraints.maxWidth * data.current.sunstatus,
+                            child: Stack(
+                              clipBehavior: Clip.hardEdge,
+                              children: [
+                                Positioned(
+                                  height: constraints.maxHeight,
+                                  left: 20,
+                                  child: Icon(CupertinoIcons.sunrise, color: data.current.backcolor),
+                                ),
+                                Positioned(
+                                  left: constraints.maxWidth - 46,
+                                  height: constraints.maxHeight,
+                                  child: Icon(CupertinoIcons.sunset, color: data.current.backcolor),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                    const Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 20),
-                        child: Icon(CupertinoIcons.sunset, color: WHITE,),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -305,7 +319,7 @@ Widget NewTimes(var data) => SliverList(
                       width: 67,
                         child: Align(
                           alignment: Alignment.center,
-                            child: comfortatext('10:22', 18, color: WHITE)
+                            child: comfortatext(data.current.sunrise, 18, color: WHITE)
                         )
                     )
                   ),
@@ -315,7 +329,7 @@ Widget NewTimes(var data) => SliverList(
                         width: 67,
                           child: Align(
                             alignment: Alignment.center,
-                              child: comfortatext('10:22', 18, color: WHITE)
+                              child: comfortatext(data.current.sunset, 18, color: WHITE)
                           )
                       )
                   )
@@ -350,13 +364,14 @@ Widget NewTimes(var data) => SliverList(
                         height: 80,
                         width: 80,
                         decoration: BoxDecoration(
-                          color: aqi_colors[1],
+                          color: darken(data.current.backcolor, 0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Center(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 5),
-                            child: comfortatext('1', 40, color: WHITE),
+                            child: comfortatext('1', 40,
+                                color: WHITE),
                           ),
                         ),
                       ),
@@ -376,10 +391,10 @@ Widget NewTimes(var data) => SliverList(
                   Expanded(
                     child: Column(
                       children: [
-                        aqiDataPoints("pm2.5", 55.4),
-                        aqiDataPoints("pm10", 55.4),
-                        aqiDataPoints("o3", 55.4),
-                        aqiDataPoints("No2", 55.4),
+                        aqiDataPoints("pm2.5", 55.4, data.current.backcolor),
+                        aqiDataPoints("pm10", 55.4, data.current.backcolor),
+                        aqiDataPoints("o3", 55.4, data.current.backcolor),
+                        aqiDataPoints("No2", 55.4, data.current.backcolor),
                       ],
                     ),
                   )
@@ -388,6 +403,72 @@ Widget NewTimes(var data) => SliverList(
             ),
           ],
         ),
+      ),
+      Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 15, bottom: 10),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: comfortatext('precipitation', 20, color: WHITE),
+            ),
+          ),
+          Flex(
+            direction: Axis.horizontal,
+            children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 0, bottom: 20, top: 5),
+                    child: Container(
+                      height: 130,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(width: 1.2, color: WHITE)
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: MyChart(),
+                        )
+                      ),
+                    ),
+                ),
+              ),
+              Container(
+                height: 130,
+                padding: EdgeInsets.only(left: 5, right: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        comfortatext('6', 18),
+                        comfortatext('mm', 13),
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        comfortatext('3', 18),
+                        comfortatext('mm', 13),
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        comfortatext('0', 18),
+                        comfortatext('mm', 13),
+                      ],
+                    ),
+
+                  ],
+                ),
+              )
+            ]
+          ),
+        ],
       )
     ],
   ),

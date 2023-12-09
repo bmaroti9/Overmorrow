@@ -29,6 +29,55 @@ import 'languages.dart';
 String LOCATION = 'Szeged';
 bool RandomSwitch = false;
 
+String convertTime(String input) {
+  List<String> splited = input.split(" ");
+  List<String> num = splited[0].split(":");
+  int hour = int.parse(num[0]);
+  int minute = int.parse(num[1]);
+  if (splited[1] == 'PM') {
+    hour += 12;
+  }
+  if (hour < 10) {
+    if (minute < 10) {
+      return "0$hour:0$minute";
+    }
+    return "0$hour:$minute";
+  }
+  if (minute < 10) {
+    return "$hour:0$minute";
+  }
+  return "$hour:$minute";
+}
+
+double getSunStatus(String sunrise, String sunset, String time) {
+  List<String> splited1 = sunrise.split(" ");
+  List<String> num1 = splited1[0].split(":");
+  int hour1 = int.parse(num1[0]);
+  int minute1 = int.parse(num1[1]);
+  if (splited1[1] == 'PM') {
+    hour1 += 12;
+  }
+  int all1 = hour1 * 60 + minute1;
+
+  List<String> splited2 = sunset.split(" ");
+  List<String> num2 = splited2[0].split(":");
+  int hour2 = int.parse(num2[0]);
+  int minute2 = int.parse(num2[1]);
+  if (splited2[1] == 'PM') {
+    hour2 += 12;
+  }
+  int all2 = (hour2 * 60 + minute2) - all1;
+
+  List<String> splited3 = time.split(" ");
+  List<String> num3 = splited3[1].split(":");
+  int hour3 = int.parse(num3[0]);
+  int minute3 = int.parse(num3[1]);
+  int all3 = (hour3 * 60 + minute3) - all1;
+
+  return min(1, max(all3 / all2, 0));
+
+}
+
 double unit_coversion(double value, String unit) {
   List<double> p = weather_refactor.conversionTable[unit] ?? [0, 0];
   double a = p[0] + value * p[1];
@@ -148,15 +197,6 @@ List<Color> contentColorCorrection(name, isday) {
   return p;
 }
 
-Color getDaysColor(date, night) {
-  final splitted = date.split('-');
-  final hihi = DateTime.utc(int.parse(splitted[0]),
-      int.parse(splitted[1]), int.parse(splitted[2]));
-  final dayIndex = (hihi.weekday * 2) - night;
-  Color p =
-      weather_refactor.dayColorMap[dayIndex] ?? const Color(0xff000000);
-  return p;
-}
 
 class Hour {
   final temp;
@@ -239,6 +279,9 @@ class Current {
   final int wind;
   final Color backcolor;
   final Color accentcolor;
+  final String sunrise;
+  final String sunset;
+  final double sunstatus;
 
   const Current({
     required this.text,
@@ -251,6 +294,10 @@ class Current {
     required this.wind,
     required this.backcolor,
     required this.accentcolor,
+    required this.sunrise,
+    required this.sunset,
+    required this.sunstatus,
+
 });
 
   static Current fromJson(item, settings) => Current(
@@ -279,6 +326,11 @@ class Current {
     humidity: item["current"]["humidity"],
     precip: double.parse(unit_coversion(item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"], settings[2]).toStringAsFixed(1)),
     wind: unit_coversion(item["current"]["wind_kph"], settings[3]).round(),
+
+    sunrise: convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"]),
+    sunset: convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"]),
+    sunstatus: getSunStatus(item["forecast"]["forecastday"][0]["astro"]["sunrise"],
+        item["forecast"]["forecastday"][0]["astro"]["sunset"], item["current"]["last_updated"]),
   );
 }
 

@@ -126,7 +126,7 @@ Map<String, Color> textBackColor = {
   'Clear Night': const Color(0xff201F2D),
   'Partly Cloudy': const Color(0xffD6D2C9),
   'Clear Sky': const Color(0xffBFD4E4),
-  'Overcast': const Color(0xffB1C4CF),
+  'Overcast': const Color(0xffA0B2BE),
   'Haze': const Color(0xff3C5261),
   'Rain': const Color(0xff827a97),
   'Sleet': const Color(0xffd5c3cf),
@@ -154,23 +154,6 @@ Map<String, Color> accentColors = {
   'Snow': const Color(0xFF6E7270), // Gray
   'Heavy Rain': const Color(0xFF6F6D70), // Quicksilver
   'Cloudy Night': const Color(0xFF35424A), // Outer Space
-};
-
-Map<int, Color> dayColorMap = {
-    1: const Color(0xffD58477),
-    2: const Color(0xffA3655B),
-    3: const Color(0xffB1D2E1),
-    4: const Color(0xff788F99),
-    5: const Color(0xffFFFAA0),
-    6: const Color(0xffCCC880),
-    7: const Color(0xffE1B4BB),
-    8: const Color(0xffB49096),
-    9: const Color(0xffA9C8A4),
-    10: const Color(0xff87A083),
-    11: const Color(0xffE5C8DF),
-    12: const Color(0xffB7A0B2),
-    13: const Color(0xffE1D4BB),
-    14: const Color(0xffB4AA96),
 };
 
 Map<int, Color> aqi_colors = {
