@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -343,27 +344,68 @@ class _RadarMapState extends State<RadarMap> {
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Material(
                     child: AnimatedContainer(
                       duration: Duration(milliseconds: 300,),
-                      width: 60,
-                      height: 60,
+                      width: 50,
+                      height: 50,
                       child: InkWell(
                         onTap: () {
                           togglePlayPause();
                         },
-                        splashColor: Colors.blueAccent,
+                        splashColor: data.current.backcolor,
                         child: Icon(
                             isPlaying? Icons.pause : Icons.play_arrow,
                           color: data.current.backcolor,
+                          size: 20,
                         ),
                       ),
                     ),
                   ),
                 ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: LayoutBuilder(
+                      builder: (BuildContext context, BoxConstraints constraints) {
+                        return Container(
+                          height: 50,
+                          width: constraints.maxWidth,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(width: 1.2, color: WHITE)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(18),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  color: WHITE,
+                                  width: constraints.maxWidth *
+                                      (max(currentFrameIndex - 1, 0) / data.current.radar.length),
+                                ),
+                                AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 200),
+                                  transitionBuilder: (Widget child, Animation<double> animation) =>
+                                  SizeTransition(sizeFactor: animation, axis: Axis.horizontal, child: child),
+                                  child: Container(
+                                    key: ValueKey<int>(currentFrameIndex),
+                                    color: WHITE,
+                                    width: constraints.maxWidth *
+                                        (currentFrameIndex / data.current.radar.length),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                      ),
+                  ),
+                )
             ],
           ),
         )
