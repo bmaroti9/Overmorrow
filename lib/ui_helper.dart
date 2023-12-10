@@ -16,13 +16,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/search_screens.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_key.dart';
@@ -197,6 +199,7 @@ class MyChart extends StatelessWidget {
   }
 }
 
+
 class BarChartPainter extends CustomPainter {
   final List<double> data;
 
@@ -237,6 +240,135 @@ class BarChartPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
+  }
+}
+
+class RadarMap extends StatefulWidget {
+
+  final data;
+  RadarMap(this.data);
+
+  @override
+  _RadarMapState createState() => _RadarMapState(data);
+}
+
+class _RadarMapState extends State<RadarMap> {
+  int currentFrameIndex = 0;
+  late Timer timer;
+
+  final data;
+  _RadarMapState(this.data);
+
+  bool isPlaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Set up a timer to update the radar frame every 5 seconds
+    timer = Timer.periodic(const Duration(milliseconds: 1300), (Timer t) {
+      if (isPlaying) {
+        setState(() {
+          // Increment the frame index (you may want to add logic to handle the end of the frames)
+          currentFrameIndex =
+              ((currentFrameIndex + 1) % data.current.radar.length).toInt();
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the timer when the widget is disposed
+    timer.cancel();
+    super.dispose();
+  }
+
+  void togglePlayPause() {
+    setState(() {
+      isPlaying = !isPlaying;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 20, bottom: 0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: comfortatext('radar', 20, color: WHITE),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+          child: AspectRatio(
+            aspectRatio: 1.5,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: WHITE,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(width: 1, color: WHITE)
+              ),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  //child: data.current.radar[0]
+                  child: FlutterMap(
+                    options: MapOptions(
+                      initialCenter: LatLng(data.current.lat, data.current.lng),
+                      initialZoom: 6,
+                      backgroundColor: WHITE,
+                      keepAlive: true,
+                      cameraConstraint: CameraConstraint.containCenter(
+                        bounds: LatLngBounds(
+                          LatLng(data.current.lat - 3, data.current.lng - 3),
+                          LatLng(data.current.lat + 3, data.current.lng + 3),
+                        ),
+                      ),
+                    ),
+                    children: [
+                      TileLayer(
+                        urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
+                      ),
+                      TileLayer(
+                        urlTemplate: data.current.radar[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_0.png",
+                      ),
+                    ],
+                  ),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+          child: Row(
+            children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Material(
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 300,),
+                      width: 60,
+                      height: 60,
+                      child: InkWell(
+                        onTap: () {
+                          togglePlayPause();
+                        },
+                        splashColor: Colors.blueAccent,
+                        child: Icon(
+                            isPlaying? Icons.pause : Icons.play_arrow,
+                          color: data.current.backcolor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        )
+      ],
+    );
   }
 }
 

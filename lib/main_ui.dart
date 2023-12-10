@@ -20,12 +20,9 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/dayforcast.dart';
 import 'package:hihi_haha/settings_page.dart';
-import 'package:hihi_haha/weather_refact.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'ui_helper.dart';
 
@@ -488,62 +485,7 @@ Widget NewTimes(var data) => SliverList(
           )
         ],
       ),
-      Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: comfortatext('radar', 20, color: WHITE),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: AspectRatio(
-              aspectRatio: 1.5,
-              child: Container(
-                  decoration: BoxDecoration(
-                    //color: lighten(data.current.backcolor, 0.05),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(width: 1.2, color: WHITE)
-                  ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(18),
-                    //child: data.current.radar[0]
-                  child: FlutterMap(
-                    options: MapOptions(
-                      initialCenter: LatLng(data.current.lat, data.current.lng),
-                      initialZoom: 5,
-                      keepAlive: true,
-                      cameraConstraint: CameraConstraint.containCenter(
-                          bounds: LatLngBounds(LatLng(data.current.lat - 3, data.current.lng - 3),
-                              LatLng(data.current.lat + 3, data.current.lng + 3)))
-                      //cameraConstraint: CameraConstraint.contain(bounds: LatLngBounds(LatLng(20, 20), LatLng(-20, -20)))
-                    ),
-                    children: [
-                      TileLayer(
-                        urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
-                        userAgentPackageName: 'com.marotidev.Overmorrow',
-                        ),
-                      /*
-                      TileLayer(
-                        urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
-                        userAgentPackageName: 'com.marotidev.Overmorrow',
-                      ),
-
-                       */
-                      TileLayer(
-                        urlTemplate: data.current.radar[1] + "/512/{z}/{x}/{y}/8/1_0.png",
-                        userAgentPackageName: 'com.marotidev.Overmorrow',
-                      ),
-                    ],
-                  ),
-                  ),
-                ),
-            ),
-          ),
-        ],
-      )
+      RadarMap(data),
     ],
   ),
 );
