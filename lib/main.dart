@@ -50,6 +50,7 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
+
 class _MyAppState extends State<MyApp> {
 
   String proposedLoc = 'New York';
@@ -59,6 +60,34 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       proposedLoc = newLocation;
     });
+  }
+
+  Future<List<String>> getRadar() async {
+    const String url = 'https://api.rainviewer.com/public/weather-maps.json';
+
+    var file = await cacheManager.getSingleFile(url.toString());
+    var response = await file.readAsString();
+    //final response = await http.get(Uri.parse(url));
+    //print('Response data: ${response.body}');
+    final Map<String, dynamic> data = json.decode(response);
+
+    final String host = data["host"];
+    print(host);
+    //const atEnd = "/512/2/-32/108/3/1_1.png";
+    const atEnd = "/512/2/2/1/8/1_1.png";
+
+    final radar = data["radar"]["past"];
+    print(data["radar"]["past"]);
+
+    List<String> images = [];
+
+    for (var x in radar) {
+      print(host + x["path"]);
+      //Image hihi = Image.network(host + x["path"] + atEnd);
+      images.add(host + x["path"]);
+    }
+
+    return images;
   }
 
   Future<Widget> getDays(bool recall) async {
@@ -189,8 +218,9 @@ class _MyAppState extends State<MyApp> {
         index += 1;
       }
 
-      dayforcast.Current current =
-      dayforcast.Current.fromJson(jsonbody, unitsUsed);
+      List<String> radar = await getRadar();
+
+      dayforcast.Current current = dayforcast.Current.fromJson(jsonbody, unitsUsed, radar);
 
       dayforcast.WeatherData data = dayforcast.WeatherData(
           days, current, loc_p, unitsUsed);

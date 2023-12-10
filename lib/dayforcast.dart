@@ -279,9 +279,16 @@ class Current {
   final int wind;
   final Color backcolor;
   final Color accentcolor;
+
+  final double lat;
+  final double lng;
+
+  final List<String> radar;
+
   final String sunrise;
   final String sunset;
   final double sunstatus;
+
   final int aqi_index;
   final double pm2_5;
   final double pm10;
@@ -307,9 +314,12 @@ class Current {
     required this.o3,
     required this.pm2_5,
     required this.pm10,
+    required this.radar,
+    required this.lat,
+    required this.lng,
 });
 
-  static Current fromJson(item, settings) => Current(
+  static Current fromJson(item, settings, radar) => Current(
 
     text: textCorrection(
       item["current"]["condition"]["text"], item["current"]["is_day"], settings: settings
@@ -346,6 +356,9 @@ class Current {
     sunset: convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"]),
     sunstatus: getSunStatus(item["forecast"]["forecastday"][0]["astro"]["sunrise"],
         item["forecast"]["forecastday"][0]["astro"]["sunset"], item["current"]["last_updated"]),
+    radar: radar,
+    lat: item["location"]["lat"],
+    lng: item["location"]["lon"]
   );
 }
 

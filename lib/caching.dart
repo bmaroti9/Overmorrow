@@ -38,13 +38,14 @@ class MyGetResponse implements FileServiceResponse {
   @override
   DateTime get validTill {
     print(url);
-    if (url.toString().contains("forecast.json")) {
-      return DateTime.now().add(
-          Duration(minutes: 60 - DateTime.now().minute,
-          seconds: 60 - DateTime.now().second)
-      );
+    if (url.toString().contains("search.json")) {
+      return DateTime.now().add(const Duration(days: 20));
     }
-    return DateTime.now().add(const Duration(days: 20));
+
+    return DateTime.now().add(
+        Duration(minutes: 60 - DateTime.now().minute,
+            seconds: 60 - DateTime.now().second)
+    );
   }
 
   @override

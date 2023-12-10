@@ -124,7 +124,7 @@ Map<String, List<Color>> textFontColor = {
 
 Map<String, Color> textBackColor = {
   'Clear Night': const Color(0xff201F2D),
-  'Partly Cloudy': const Color(0xffD6D2C9),
+  'Partly Cloudy': const Color(0xffd0cbc0),
   'Clear Sky': const Color(0xffBFD4E4),
   'Overcast': const Color(0xffA0B2BE),
   'Haze': const Color(0xff3C5261),
