@@ -431,41 +431,30 @@ Widget NewTimes(var data) => SliverList(
                         borderRadius: BorderRadius.circular(18),
                         child: Padding(
                           padding: const EdgeInsets.all(6),
-                          child: MyChart(),
+                          child: MyChart(data.days[0].hourly),
                         )
                       ),
                     ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 150,
-                padding: EdgeInsets.only(left: 5, right: 20, top: 4, bottom: 4),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        comfortatext('6', 18),
-                        comfortatext('mm', 13),
-                      ],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        comfortatext('3', 18),
-                        comfortatext('mm', 13),
-                      ],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        comfortatext('0', 18),
-                        comfortatext('mm', 13),
-                      ],
-                    ),
-
-                  ],
+                width: 65,
+                child: ListView.builder(
+                  reverse: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          comfortatext((index * 5).toString(), 17),
+                          comfortatext('mm', 14),
+                        ],
+                      ),
+                    );
+                  }
                 ),
               )
             ]

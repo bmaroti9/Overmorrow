@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
     final String host = data["host"];
     print(host);
     //const atEnd = "/512/2/-32/108/3/1_1.png";
-    const atEnd = "/512/2/2/1/8/1_1.png";
+    //const atEnd = "/512/2/2/1/8/1_1.png";
 
     final radar = data["radar"]["past"];
     print(data["radar"]["past"]);
@@ -144,7 +144,7 @@ class _MyAppState extends State<MyApp> {
       };
       var url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
       try {
-        file = await cacheManager.getSingleFile(url.toString(), key: absoluteProposed, headers: {'cache-control': 'private, max-age=120'});
+        file = await cacheManager.getSingleFile(url.toString(), key: absoluteProposed, headers: {'cache-control': 'private, max-age=120'}).timeout(const Duration(seconds: 6));
         response = await file.readAsString();
         //response = await http.post(url).timeout(
         //    const Duration(seconds: 10));

@@ -24,6 +24,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hihi_haha/dayforcast.dart';
 import 'package:hihi_haha/search_screens.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -93,12 +94,6 @@ class DescriptionCircle extends StatelessWidget {
             width: width,
             child: Stack(
               children: [
-                /*
-                Align(
-                  alignment: Alignment.bottomCenter,
-                    child: RainCircle(rainAmount: 0.3)
-                ),
-                 */
                 Container(
                   width: width,
                   height: height,
@@ -190,7 +185,9 @@ Widget aqiDataPoints(String name, double value, Color color) {
 }
 
 class MyChart extends StatelessWidget {
-  final List<double> data = [14, 80, 30, 130, 50, 80, 30, 60, 50, 80, 30, 60]; // Sample data for the chart
+  final List<Hour> data; // Sample data for the chart
+
+  const MyChart(this.data, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -200,14 +197,24 @@ class MyChart extends StatelessWidget {
   }
 }
 
-
 class BarChartPainter extends CustomPainter {
-  final List<double> data;
+  final List<Hour> hours;
 
-  BarChartPainter(this.data);
+  BarChartPainter(this.hours);
 
   @override
   void paint(Canvas canvas, Size size) {
+
+    List<double> data = [];
+
+    for (var i = 0; i < hours.length; i+= 2) {
+      data.add(min(round((hours[i].precip + hours[i + 1].precip) / 2, decimals: 0), 15));
+      print((hours[i].precip + hours[i + 1].precip) / 2);
+      //data.add(20);
+    }
+
+    data.add(15); // set the wanted max point
+
     Paint paint = Paint()
       ..color = WHITE
       ..style = PaintingStyle.fill;
@@ -215,7 +222,7 @@ class BarChartPainter extends CustomPainter {
     double maxValue = data.reduce((value, element) => value > element ? value : element);
     double scaleY = size.height / maxValue;
 
-    int numberOfBars = data.length;
+    int numberOfBars = data.length - 1; // get rid of the extra data points
     double totalWidth = size.width; // Subtract padding
     double barWidth = totalWidth / numberOfBars;
 
@@ -321,6 +328,8 @@ class _RadarMapState extends State<RadarMap> {
                       initialZoom: 6,
                       backgroundColor: WHITE,
                       keepAlive: true,
+                      maxZoom: 6,
+                      minZoom: 6,
                       cameraConstraint: CameraConstraint.containCenter(
                         bounds: LatLngBounds(
                           LatLng(data.current.lat - 3, data.current.lng - 3),
@@ -333,7 +342,7 @@ class _RadarMapState extends State<RadarMap> {
                         urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
                       ),
                       TileLayer(
-                        urlTemplate: data.current.radar[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_0.png",
+                        urlTemplate: data.current.radar[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_1.png",
                       ),
                     ],
                   ),
@@ -388,7 +397,7 @@ class _RadarMapState extends State<RadarMap> {
                                       (max(currentFrameIndex - 1, 0) / data.current.radar.length),
                                 ),
                                 AnimatedSwitcher(
-                                  duration: const Duration(milliseconds: 200),
+                                  duration: const Duration(milliseconds: 300),
                                   transitionBuilder: (Widget child, Animation<double> animation) =>
                                   SizeTransition(sizeFactor: animation, axis: Axis.horizontal, child: child),
                                   child: Container(

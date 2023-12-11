@@ -127,7 +127,7 @@ String getTime(date) {
 
 List<Hour> buildHourly(data, settings, int index, int timenow) {
   List<Hour> hourly = [];
-  if (index == 0) {
+  if (index == -1) { // THIS HAS BEEN DISABLED
     for (var i = 0; i < data.length; i++) {
       if (data[i]["time_epoch"] > timenow) {
         hourly.add(Hour.fromJson(data[i], settings));
@@ -203,6 +203,7 @@ class Hour {
   final icon;
   final time;
   final text;
+  final precip;
 
   const Hour(
   {
@@ -210,6 +211,7 @@ class Hour {
     required this.time,
     required this.icon,
     required this.text,
+    required this.precip,
   });
 
   static Hour fromJson(item, settings) => Hour(
@@ -221,7 +223,8 @@ class Hour {
     ),
     //temp:double.parse(unit_coversion(item["temp_c"], settings[1]).toStringAsFixed(1)),
     temp: unit_coversion(item["temp_c"], settings[1]).round(),
-    time: getTime(item["time"])
+    time: getTime(item["time"]),
+    precip: item["precip_mm"],
   );
 }
 
