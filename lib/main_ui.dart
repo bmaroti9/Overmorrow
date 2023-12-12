@@ -118,8 +118,8 @@ class WeatherPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                //buildHihiDays(data),
-                NewTimes(data)
+                buildHihiDays(data),
+                //NewTimes(data)
               ],
             ),
           ],

@@ -127,7 +127,7 @@ String getTime(date) {
 
 List<Hour> buildHourly(data, settings, int index, int timenow) {
   List<Hour> hourly = [];
-  if (index == -1) { // THIS HAS BEEN DISABLED
+  if (index == 0) { // THIS HAS BEEN DISABLED
     for (var i = 0; i < data.length; i++) {
       if (data[i]["time_epoch"] > timenow) {
         hourly.add(Hour.fromJson(data[i], settings));

@@ -324,36 +324,13 @@ class _InfoPageState extends State<InfoPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: comfortatext('Balint',22),
-                            ),
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                elevation: MaterialStateProperty.all<double>(0),
-                                padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-                                backgroundColor: MaterialStateProperty.all(Colors.orange),
-                                // <-- Button color
-                                overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-                                  if (states.contains(MaterialState.pressed)) {
-                                    return darken(Colors.orange, 0.2);
-                                  }
-                                  return null; // <-- Splash color
-                                }),
-                              ),
-                              onPressed: () async { await launchEmail(); },
-                              child: Row(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(right: 3),
-                                    child: Icon(Icons.mail_outline,color: WHITE,),
-                                  ),
-                                  comfortatext(translation('contact me', settings[0]), 20, color: WHITE)],
-                              )
-                            )
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: comfortatext('Balint',22),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: comfortatext('(maroti.devel@gmail.com)',18),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top:10),
@@ -449,19 +426,6 @@ class _InfoPageState extends State<InfoPage> {
   }
 }
 
-Future<void> launchEmail() async {
-  final Uri _emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: 'maroti.devel@gmail.com', // Replace with your email address
-      queryParameters: {'subject': 'Feedback or Support Request'} // Optional subject
-  );
-
-  if (await canLaunchUrl(_emailLaunchUri)) {
-    await launchUrl(_emailLaunchUri);
-  } else {
-    throw 'Could not launch email';
-  }
-}
 Future<void> _launchUrl(String url) async {
   final Uri _url = Uri.parse(url);
   if (!await launchUrl(_url)) {

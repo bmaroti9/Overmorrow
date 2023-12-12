@@ -218,9 +218,9 @@ class _MyAppState extends State<MyApp> {
         index += 1;
       }
 
-      List<String> radar = await getRadar();
+      //List<String> radar = await getRadar();
 
-      dayforcast.Current current = dayforcast.Current.fromJson(jsonbody, unitsUsed, radar);
+      dayforcast.Current current = dayforcast.Current.fromJson(jsonbody, unitsUsed, ['HIHI']);
 
       dayforcast.WeatherData data = dayforcast.WeatherData(
           days, current, loc_p, unitsUsed);
