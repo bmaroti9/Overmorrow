@@ -130,7 +130,7 @@ Map<String, Color> textBackColor = {
   'Haze': const Color(0xff3C5261),
   'Rain': const Color(0xff827a97),
   'Sleet': const Color(0xffd5c3cf),
-  'Drizzle': const Color(0xff959E9B),
+  'Drizzle': const Color(0xff959f9c),
   'Thunderstorm': const Color(0xff4C4152),
   'Heavy Snow': const Color(0xffc6d4cc),
   'Fog': const Color(0xff2E3638),

@@ -127,7 +127,7 @@ String getTime(date) {
 
 List<Hour> buildHourly(data, settings, int index, int timenow) {
   List<Hour> hourly = [];
-  if (index == 0) { // THIS HAS BEEN DISABLED
+  if (index == -1) { // THIS HAS BEEN DISABLED
     for (var i = 0; i < data.length; i++) {
       if (data[i]["time_epoch"] > timenow) {
         hourly.add(Hour.fromJson(data[i], settings));
@@ -236,6 +236,11 @@ class Day {
   final String minmaxtemp;
   final List<Hour> hourly;
 
+  final int precip_prob;
+  final double total_precip;
+  final int windspeed;
+  final int avg_temp;
+
   const Day({
     required this.date,
     required this.text,
@@ -243,6 +248,11 @@ class Day {
     required this.name,
     required this.minmaxtemp,
     required this.hourly,
+
+    required this.precip_prob,
+    required this.avg_temp,
+    required this.total_precip,
+    required this.windspeed,
   });
 
   static Day fromJson(item, index, settings, timenow) => Day(
@@ -259,6 +269,11 @@ class Day {
       minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings[1]).round()}°'
           '/${unit_coversion(item["day"]["mintemp_c"], settings[1]).round()}°',
       hourly: buildHourly(item["hour"], settings, index, timenow),
+
+      total_precip: double.parse(unit_coversion(item["day"]["totalprecip_mm"], settings[2]).toStringAsFixed(1)),
+      precip_prob: item["day"]["daily_chance_of_rain"],
+      avg_temp: unit_coversion(item["day"]["avgtemp_c"], settings[1]).round(),
+      windspeed: unit_coversion(item["day"]["maxwind_kph"], settings[3]).round(),
   );
 }
 

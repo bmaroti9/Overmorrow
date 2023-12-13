@@ -118,8 +118,9 @@ class WeatherPage extends StatelessWidget {
                     ],
                   ),
                 ),
+                NewTimes(data),
                 buildHihiDays(data),
-                //NewTimes(data)
+                SliverPadding(padding: EdgeInsets.only(bottom: 20))
               ],
             ),
           ],
@@ -475,61 +476,154 @@ Widget NewTimes(var data) => SliverList(
         ],
       ),
       RadarMap(data),
+      Padding(
+          padding: const EdgeInsets.only(top: 6, right: 30, left: 30, bottom: 10),
+          child: Container(
+            height: 1.2,
+            color: WHITE,
+          ),
+      ),
     ],
   ),
 );
 
 Widget buildHihiDays(var data) => SliverFixedExtentList(
-    itemExtent: 452.0,
+    itemExtent: 500.0,
     delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
         if (index < data.days.length) {
           final day = data.days[index];
-            return Container(
-                decoration: BoxDecoration(
-                    color: darken(data.current.backcolor, (index % 2) * 0.05),
-                    border: const Border.symmetric(vertical: BorderSide(
-                        width: 1.2,
-                        color: WHITE
-                    ))
-                ),
+            return Padding(
+              padding: const EdgeInsets.all(10),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 30),
+                    padding: const EdgeInsets.only(left: 10, top: 30),
                     child: Text(
                       day.name,
                       style: GoogleFonts.comfortaa(
                         color: WHITE,
-                        fontSize: 30,
+                        fontSize: 20,
                         height: 0.7,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50, bottom: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Image.asset(
-                            'assets/icons/' + day.icon,
-                            fit: BoxFit.contain,
-                            height: 45,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0, top: 20, bottom: 10, right: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(left: 10, right: 20),
+                                child: Image.asset(
+                                  'assets/icons/' + day.icon,
+                                  fit: BoxFit.contain,
+                                  height: 40,
+                                ),
+                              ),
+                            Flexible(
+                              fit: FlexFit.loose,
+                                child: Row(
+                                  children: [
+                                    comfortatext(day.text, 22, color: WHITE),
+                                    Spacer(),
+                                    Container(
+                                          padding: const EdgeInsets.only(top:3,bottom: 3, left: 3, right: 3),
+                                          decoration: BoxDecoration(
+                                            //border: Border.all(color: Colors.blueAccent)
+                                              color: WHITE,
+                                              borderRadius: BorderRadius.circular(10)
+                                          ),
+                                        child: Text(
+                                            day.minmaxtemp,
+                                            style: TextStyle(
+                                                color: data.current.backcolor
+                                            ),
+                                            textScaleFactor: 1.4
+                                        ),
+                                    ),
+                                  ],
+                                )
+                              )
+                            ],
                           ),
                         ),
-                      Flexible(
-                        fit: FlexFit.loose,
-                          child: comfortatext(day.text + ' ' + day.minmaxtemp, 25, color: WHITE)
-                        )
                       ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 30),
+                    child: Container(
+                      height: 85,
+                      padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1.2, color: WHITE),
+                        borderRadius: BorderRadius.circular(20)
+                      ),
+                      child:  GridView.count(
+                        padding: const EdgeInsets.all(0),
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisSpacing: 1,
+                        mainAxisSpacing: 1,
+                        crossAxisCount: 2,
+                        childAspectRatio: 4.8,
+                        // Generate 100 widgets that display their index in the List.
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.water_drop_outlined, color: WHITE,),
+                                const Padding(padding: EdgeInsets.only(right: 10)),
+                                comfortatext('${day.precip_prob}%', 20),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.water_drop, color: WHITE,),
+                                const Padding(padding: EdgeInsets.only(right: 10)),
+                                comfortatext(day.total_precip.toString() + data.settings[2], 20),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Row(
+                              children: [
+                                const Icon(CupertinoIcons.wind, color: WHITE,),
+                                const Padding(padding: EdgeInsets.only(right: 10)),
+                                comfortatext('${day.windspeed} ${data.settings[3]}', 20),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Row(
+                              children: [
+                                const Icon(CupertinoIcons.thermometer, color: WHITE,),
+                                const Padding(padding: EdgeInsets.only(right: 10)),
+                                comfortatext('${day.avg_temp} ${data.settings[1]}', 20),
+                              ],
+                            ),
+                          ),
+                        ]
+                      ),
                     ),
                   ),
                   buildHours(day.hourly, data.settings, data.current.accentcolor),
                 ],
-              )
+              ),
             );
           }
           return null;
@@ -544,7 +638,7 @@ Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor) => 
     scrollDirection: Axis.horizontal,
     children: data.map<Widget>((hour) {
       return SizedBox(
-        height: 240,
+        height: 220,
         child: Column(
           children: [
             Padding(
@@ -587,11 +681,11 @@ Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor) => 
               child: Image.asset(
                 'assets/icons/' + hour.icon,
                 fit: BoxFit.scaleDown,
-                height: 40,
+                height: 38,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top:20, left: 9, right: 9),
+              padding: const EdgeInsets.only(top:20, left: 7, right: 7),
               child: Text(
                 hour.time,
                 style: GoogleFonts.comfortaa(

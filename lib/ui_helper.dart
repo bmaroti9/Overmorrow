@@ -81,7 +81,7 @@ class DescriptionCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double fontsize = size / 17;
+    final double fontsize = size / 18;
     final double small_font = size / 25;
     final double width = size / 5;
     final double height = size / 5;
@@ -231,7 +231,7 @@ class BarChartPainter extends CustomPainter {
       double x = i * barWidth; // Add half of the remaining padding
       double y = size.height - barHeight;
 
-      double topRadius = 8.0; // Adjust the radius for the desired rounding
+      double topRadius = 6.0; // Adjust the radius for the desired rounding
 
       RRect roundedRect = RRect.fromLTRBR(
         x + barWidth * 0.1,

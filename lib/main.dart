@@ -218,9 +218,16 @@ class _MyAppState extends State<MyApp> {
         index += 1;
       }
 
-      //List<String> radar = await getRadar();
+      List<String> radar;
+      try {
+         radar = await getRadar();
+      } on Error catch(e) {
+        return dumbySearch(errorMessage: "error with the radar: $e", updateLocation: updateLocation,
+          icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
+          place: absoluteProposed, settings: unitsUsed,);
+      }
 
-      dayforcast.Current current = dayforcast.Current.fromJson(jsonbody, unitsUsed, ['HIHI']);
+      dayforcast.Current current = dayforcast.Current.fromJson(jsonbody, unitsUsed, radar);
 
       dayforcast.WeatherData data = dayforcast.WeatherData(
           days, current, loc_p, unitsUsed);
