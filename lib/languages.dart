@@ -726,6 +726,126 @@ Map<String, List<String>> mainTranslate = {
     '搜索...',
     '検索...'
   ],
+  'sunrise/sunset': [
+    'sunrise/sunset',
+    'napkelte/napnyugta',
+    'amanecer/anochecer',
+    'lever/coucher du soleil',
+    'Sonnenaufgang/Sonnenuntergang',
+    'alba/tramonto',
+    'nascer do sol/pôr do sol',
+    'восход/заход солнца',
+    '日出/日落',
+    '日の出/日没'
+  ],
+  'air quality': [
+    'air quality',
+    'levegő minősége',
+    'calidad del aire',
+    'qualité de l\'air',
+    'Luftqualität',
+    'qualità dell\'aria',
+    'qualidade do ar',
+    'качество воздуха',
+    '空气质量',
+    '空気の質'
+  ],
+  'good': [
+    'good',
+    'jó',
+    'bueno',
+    'bon',
+    'gut',
+    'buono',
+    'bom',
+    'хорошо',
+    '好',
+    '良好'
+  ],
+  'moderate': [
+    'moderate',
+    'közepes',
+    'moderado',
+    'modéré',
+    'mäßig',
+    'moderato',
+    'moderado',
+    'умеренный',
+    '适度',
+    '適度'
+  ],
+  'slightly unhealthy': [
+    'slightly unhealthy',
+    'enyhén egészségtelen',
+    'ligeramente insalubre',
+    'légèrement malsain',
+    'leicht ungesund',
+    'lievemente insalubre',
+    'levemente insalubre',
+    'слегка нездоровый',
+    '轻微不健康',
+    '軽度不健康'
+  ],
+  'unhealthy': [
+    'unhealthy',
+    'egészségtelen',
+    'insalubre',
+    'malsain',
+    'ungesund',
+    'insalubre',
+    'não saudável',
+    'нездоровый',
+    '不健康',
+    '不健康'
+  ],
+  'very unhealthy': [
+    'very unhealthy',
+    'nagyon egészségtelen',
+    'muy insalubre',
+    'très malsain',
+    'sehr ungesund',
+    'molto insalubre',
+    'muito insalubre',
+    'очень нездоровый',
+    '非常不健康',
+    '非常に不健康'
+  ],
+  'hazardous': [
+    'hazardous',
+    'veszélyes',
+    'peligroso',
+    'dangereux',
+    'gefährlich',
+    'pericoloso',
+    'perigoso',
+    'опасный',
+    '危险',
+    '有害'
+  ],
+  'precipitation': [
+    'precipitation',
+    'csapadék',
+    'precipitación',
+    'précipitations',
+    'Niederschlag',
+    'precipitazione',
+    'precipitação',
+    'осадки',
+    '降水',
+    '降水'
+  ],
+  'radar': [
+    'radar',
+    'radar',
+    'radar',
+    'radar',
+    'Radar',
+    'radar',
+    'radar',
+    'радар',
+    '雷达',
+    'レーダー'
+  ]
 };
 
 

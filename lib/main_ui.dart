@@ -120,7 +120,7 @@ class WeatherPage extends StatelessWidget {
                 ),
                 NewTimes(data),
                 buildHihiDays(data),
-                SliverPadding(padding: EdgeInsets.only(bottom: 20))
+                const SliverPadding(padding: EdgeInsets.only(bottom: 20))
               ],
             ),
           ],
@@ -252,7 +252,7 @@ Widget NewTimes(var data) => SliverList(
               padding: const EdgeInsets.only(bottom: 15),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: comfortatext('sunrise/sunset', 20, color: WHITE),
+                child: comfortatext(translation('sunrise/sunset', data.settings[0]), 20, color: WHITE),
               ),
             ),
             Center(
@@ -347,7 +347,7 @@ Widget NewTimes(var data) => SliverList(
               padding: const EdgeInsets.only(bottom: 10),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: comfortatext('air quality', 20, color: WHITE),
+                child: comfortatext(translation('air quality', data.settings[0]), 20, color: WHITE),
               ),
             ),
             Container(
@@ -382,9 +382,9 @@ Widget NewTimes(var data) => SliverList(
                           child: SizedBox(
                             width: 120,
                               child: comfortatext(
-                            ['good', 'moderate', 'Slightly unhealthy',
-                            'unhealthy', 'very unhealthy',
-                              'hazardous'][data.current.aqi_index - 1], 17, color: WHITE,
+                            translation(['good', 'moderate', 'slightly unhealthy',
+                              'unhealthy', 'very unhealthy',
+                              'hazardous'][data.current.aqi_index - 1], data.settings[0]), 17, color: WHITE,
                               align: TextAlign.center)
                           ),
                         ),
@@ -413,7 +413,7 @@ Widget NewTimes(var data) => SliverList(
             padding: const EdgeInsets.only(left: 15, bottom: 10),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: comfortatext('precipitation', 20, color: WHITE),
+              child: comfortatext(translation('precipitation', data.settings[0]), 20, color: WHITE),
             ),
           ),
           Flex(
@@ -446,15 +446,28 @@ Widget NewTimes(var data) => SliverList(
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: 4,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          comfortatext((index * 5).toString(), 17),
-                          comfortatext('mm', 14),
-                        ],
-                      ),
-                    );
+                    if (data.settings[2] == 'in') {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            comfortatext((index * 2).toString(), 17),
+                            comfortatext('in', 14),
+                          ],
+                        ),
+                      );
+                    }
+                    else {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            comfortatext((index * 5).toString(), 17),
+                            comfortatext('mm', 14),
+                          ],
+                        ),
+                      );
+                    }
                   }
                 ),
               )

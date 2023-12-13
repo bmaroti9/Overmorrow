@@ -72,17 +72,14 @@ class _MyAppState extends State<MyApp> {
     final Map<String, dynamic> data = json.decode(response);
 
     final String host = data["host"];
-    print(host);
     //const atEnd = "/512/2/-32/108/3/1_1.png";
     //const atEnd = "/512/2/2/1/8/1_1.png";
 
     final radar = data["radar"]["past"];
-    print(data["radar"]["past"]);
 
     List<String> images = [];
 
     for (var x in radar) {
-      print(host + x["path"]);
       //Image hihi = Image.network(host + x["path"] + atEnd);
       images.add(host + x["path"]);
     }

@@ -209,8 +209,6 @@ class BarChartPainter extends CustomPainter {
 
     for (var i = 0; i < hours.length; i+= 2) {
       data.add(min(round((hours[i].precip + hours[i + 1].precip) / 2, decimals: 0), 15));
-      print((hours[i].precip + hours[i + 1].precip) / 2);
-      //data.add(20);
     }
 
     data.add(15); // set the wanted max point
@@ -306,7 +304,7 @@ class _RadarMapState extends State<RadarMap> {
           padding: EdgeInsets.only(left: 20, bottom: 0),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: comfortatext('radar', 20, color: WHITE),
+            child: comfortatext(translation('radar', data.settings[0]), 20, color: WHITE),
           ),
         ),
         Padding(
