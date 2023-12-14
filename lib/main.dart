@@ -141,7 +141,7 @@ class _MyAppState extends State<MyApp> {
       };
       var url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
       try {
-        file = await cacheManager.getSingleFile(url.toString(), key: absoluteProposed, headers: {'cache-control': 'private, max-age=120'}).timeout(const Duration(seconds: 6));
+        file = await cacheManager2.getSingleFile(url.toString(), key: absoluteProposed, headers: {'cache-control': 'private, max-age=120'}).timeout(const Duration(seconds: 6));
         response = await file.readAsString();
         //response = await http.post(url).timeout(
         //    const Duration(seconds: 10));
@@ -188,25 +188,11 @@ class _MyAppState extends State<MyApp> {
       dayforcast.LOCATION = proposedLoc;
       SetData('LastPlace', proposedLoc);
 
-      var forecastlist;
-      var timenow;
-      String loc_p;
 
-      try {
-        forecastlist = jsonbody['forecast']['forecastday'];
-        timenow = jsonbody["location"]["localtime_epoch"];
-        loc_p = jsonbody['location']['name'];
-      } on Error catch (e) {
-        cacheManager.removeFile(absoluteProposed);
-        if (recall) {
-          return dumbySearch(errorMessage: "general error at place 3: $e", updateLocation: updateLocation,
-            icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-            place: absoluteProposed, settings: unitsUsed,);
-        }
-        else {
-          return getDays(true);
-        }
-      }
+      var forecastlist = jsonbody['forecast']['forecastday'];
+      var timenow = jsonbody["location"]["localtime_epoch"];
+      String loc_p = jsonbody['location']['name'];
+
 
       List<dayforcast.Day> days = [];
       int index = 0;
@@ -232,9 +218,20 @@ class _MyAppState extends State<MyApp> {
       return WeatherPage(data: data,
           updateLocation: updateLocation);
 
-    } catch (e, stacktrace) {
-      print(stacktrace);
-      rethrow;
+    } catch (e) {
+      proposedLoc = await getLastPlace();
+      List<String> unitsUsed = await getSettingsUsed();
+
+      cacheManager2.emptyCache();
+
+      if (recall) {
+        return dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
+          icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
+          place: proposedLoc, settings: unitsUsed,);
+      }
+      else {
+        return getDays(true);
+      }
     }
   }
 

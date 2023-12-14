@@ -73,6 +73,13 @@ class MyFileService extends HttpFileService {
 
 CacheManager cacheManager = CacheManager(Config(
   "pudzikey",
+  stalePeriod: const Duration(days: 20),
+  fileService: MyFileService(),
+));
+
+
+CacheManager cacheManager2 = CacheManager(Config(
+  "hihikey",
   stalePeriod: const Duration(hours: 3),
   fileService: MyFileService(),
 ));
