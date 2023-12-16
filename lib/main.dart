@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
   Future<List<String>> getRadar() async {
     const String url = 'https://api.rainviewer.com/public/weather-maps.json';
 
-    var file = await cacheManager.getSingleFile(url.toString());
+    var file = await cacheManager2.getSingleFile(url.toString());
     var response = await file.readAsString();
     //final response = await http.get(Uri.parse(url));
     //print('Response data: ${response.body}');
@@ -221,6 +221,8 @@ class _MyAppState extends State<MyApp> {
     } catch (e) {
       proposedLoc = await getLastPlace();
       List<String> unitsUsed = await getSettingsUsed();
+
+      print("ERRRRRRRRROR");
 
       cacheManager2.emptyCache();
 

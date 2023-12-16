@@ -87,7 +87,7 @@ Widget searchBar(Color color, List<String> recommend,
       automaticallyImplyDrawerHamburger: false,
       padding: const EdgeInsets.only(left: 13),
       iconColor: WHITE,
-      backdropColor: darken(color, 0.3),
+      backdropColor: darken(color, 0.2),
       closeOnBackdropTap: true,
       transition: CircularFloatingSearchBarTransition(),
       leadingActions: [
@@ -180,25 +180,28 @@ Widget defaultSearchScreen(Color color,
 
   List<Icon> Myicon = [
     const Icon(null),
-    const Icon(Icons.close, color: WHITE,),
+    Icon(Icons.close, color: color,),
   ];
 
   Icon editIcon = const Icon(Icons.icecream, color: WHITE,);
   Color rectColor = WHITE;
+  Color textColor;
   List<int> icons = [];
   if (isEditing) {
     for (String _ in favorites) {
       icons.add(1);
     }
-    editIcon = const Icon(Icons.check, color: WHITE,);
-    rectColor = Color(0xffce5a67);
+    editIcon = Icon(Icons.check, color: color,);
+    rectColor = WHITE;
+    textColor = color;
   }
   else{
     for (String _ in favorites) {
       icons.add(0);
     }
-    editIcon = const Icon(Icons.edit, color: WHITE,);
+    editIcon = Icon(Icons.edit, color: color,);
     rectColor = color;
+    textColor = WHITE;
   }
 
   return Column(
@@ -212,19 +215,26 @@ Widget defaultSearchScreen(Color color,
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
               transitionBuilder: (Widget child, Animation<double> animation) {
-                  return RotationTransition(turns: animation,
-                      child: child);
-                },
-              child: Container(
-                key: ValueKey<Icon>(editIcon),
-                decoration: BoxDecoration(
-                  color: rectColor,
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: IconButton(onPressed: () {
-                  updateIsEditing(!isEditing);
-                },
-                  icon: editIcon,
+                  return ScaleTransition(scale: animation, child: child,);
+              },
+              child: SizedBox(
+                key: ValueKey<bool> (isEditing),
+                height: 48,
+                width: 48,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      padding: const EdgeInsets.all(10),
+                      backgroundColor: WHITE,
+                      side: const BorderSide(width: 1.2, color: WHITE),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)
+                      )
+                  ),
+                  onPressed: () async {
+                    updateIsEditing(!isEditing);
+                  },
+                  child: editIcon,
                 ),
               ),
             ),
@@ -234,19 +244,19 @@ Widget defaultSearchScreen(Color color,
       AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
           transitionBuilder: (Widget child, Animation<double> animation) {
-            return ScaleTransition(scale: animation,
-            alignment: Alignment.topCenter, child: child,);
+            return ScaleTransition(scale: animation, child: child,);
           },
           child: Container(
             key: ValueKey<Color>(rectColor),
             padding: const EdgeInsets.only(top:10, bottom: 10),
             decoration: BoxDecoration(
-              color: rectColor,
+              //color: rectColor,
+              border: Border.all(width: 1.2, color: WHITE),
               borderRadius: BorderRadius.circular(25),
             ),
             child: ListView.builder(
               shrinkWrap: true,
-              padding: const EdgeInsets.only(top: 0),
+              padding: const EdgeInsets.only(top: 0, bottom: 0),
               itemCount: favorites.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
@@ -258,7 +268,10 @@ Widget defaultSearchScreen(Color color,
                     padding: const EdgeInsets.only(left: 20, bottom: 0, right: 10),
                     child: Row(
                       children: [
-                        comfortatext(favorites[index], 27, color: WHITE),
+                        Expanded(
+                          flex: 100,
+                          child: comfortatext(favorites[index], 27, color: textColor),
+                        ),
                         const Spacer(),
                         AnimatedSwitcher(
                             duration: const Duration(milliseconds: 200),
@@ -269,8 +282,10 @@ Widget defaultSearchScreen(Color color,
                               key: ValueKey<int>(icons[index]),
                               icon: Myicon[icons[index]],
                               onPressed: () {
-                                favorites.remove(favorites[index]);
-                                updateFav(favorites);
+                                if (isEditing) {
+                                  favorites.remove(favorites[index]);
+                                  updateFav(favorites);
+                                }
                               },
                             )
                         ),
