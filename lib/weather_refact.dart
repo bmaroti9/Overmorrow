@@ -106,18 +106,18 @@ Map<String, String> textBackground = {
 };
 
 Map<String, List<Color>> textFontColor = {
-  'Clear Night': const [WHITE, WHITE],
+  'Clear Night': const [BLACK, WHITE],
   'Partly Cloudy': const [WHITE, WHITE],
   'Clear Sky': const [WHITE, WHITE],
-  'Overcast': const [BLACK, WHITE],
-  'Haze': const [BLACK, WHITE],
-  'Rain': const [BLACK, WHITE],
-  'Sleet': const [BLACK, WHITE],
-  'Drizzle': const [BLACK, WHITE],
-  'Thunderstorm': const [BLACK, WHITE],
-  'Heavy Snow': const [BLACK, WHITE],
-  'Fog': const [BLACK, WHITE],
-  'Snow': const [BLACK, WHITE],
+  'Overcast': const [WHITE, WHITE],
+  'Haze': const [WHITE, WHITE],
+  'Rain': const [WHITE, WHITE],
+  'Sleet': const [WHITE, WHITE],
+  'Drizzle': const [WHITE, WHITE],
+  'Thunderstorm': const [WHITE, WHITE],
+  'Heavy Snow': const [WHITE, WHITE],
+  'Fog': const [WHITE, WHITE],
+  'Snow': const [WHITE, WHITE],
   'Heavy Rain': const [WHITE, WHITE],
   'Cloudy Night': const [BLACK, WHITE]
 };

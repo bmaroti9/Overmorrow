@@ -22,7 +22,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/dayforcast.dart';
 import 'package:hihi_haha/search_screens.dart';
@@ -158,29 +157,45 @@ class DescriptionCircle extends StatelessWidget {
 }
 
 Widget aqiDataPoints(String name, double value, Color color) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 10, bottom: 2, top: 2),
-    child: Row(
-      children: [
-        comfortatext(name, 22),
-        const Spacer(),
-        Container(
-          padding: const EdgeInsets.only(top:3,bottom: 3, left: 3, right: 3),
-          decoration: BoxDecoration(
-              //border: Border.all(color: Colors.blueAccent)
-            color: WHITE,
-            borderRadius: BorderRadius.circular(10)
-          ),
-          child: Text(
-              value.toString(),
-              style: TextStyle(
-                color: color
-              ),
-              textScaleFactor: 1.2
-          ),
-        )
-      ],
-    ),
+  return Align(
+    alignment: Alignment.centerRight,
+    child: LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        double width;
+        if (constraints.maxWidth > 300) {
+          width = 200;
+        }
+        else {width = constraints.maxWidth;}
+
+        return SizedBox(
+          width: width,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, bottom: 2, top: 2),
+            child: Row(
+              children: [
+                comfortatext(name, 22),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.only(top:3,bottom: 3, left: 3, right: 3),
+                  decoration: BoxDecoration(
+                      //border: Border.all(color: Colors.blueAccent)
+                    color: WHITE,
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Text(
+                      value.toString(),
+                      style: TextStyle(
+                        color: color
+                      ),
+                      textScaleFactor: 1.2
+                  ),
+                )
+              ],
+            ),
+          )
+        );
+      }
+    )
   );
 }
 
@@ -249,178 +264,6 @@ class BarChartPainter extends CustomPainter {
   }
 }
 
-class RadarMap extends StatefulWidget {
-
-  final data;
-  RadarMap(this.data);
-
-  @override
-  _RadarMapState createState() => _RadarMapState(data);
-}
-
-class _RadarMapState extends State<RadarMap> {
-  int currentFrameIndex = 0;
-  late Timer timer;
-
-  final data;
-  _RadarMapState(this.data);
-
-  bool isPlaying = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Set up a timer to update the radar frame every 5 seconds
-    timer = Timer.periodic(const Duration(milliseconds: 1300), (Timer t) {
-      if (isPlaying) {
-        setState(() {
-          // Increment the frame index (you may want to add logic to handle the end of the frames)
-          currentFrameIndex =
-              ((currentFrameIndex + 1) % data.current.radar.length).toInt();
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    // Dispose of the timer when the widget is disposed
-    timer.cancel();
-    super.dispose();
-  }
-
-  void togglePlayPause() {
-    setState(() {
-      isPlaying = !isPlaying;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 20, bottom: 0),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: comfortatext(translation('radar', data.settings[0]), 20, color: WHITE),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-          child: AspectRatio(
-            aspectRatio: 1.5,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: WHITE,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(width: 1, color: WHITE)
-              ),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  //child: data.current.radar[0]
-                  child: FlutterMap(
-                    options: MapOptions(
-                      initialCenter: LatLng(data.current.lat, data.current.lng),
-                      initialZoom: 6,
-                      backgroundColor: WHITE,
-                      keepAlive: true,
-                      maxZoom: 6,
-                      minZoom: 6,
-                      cameraConstraint: CameraConstraint.containCenter(
-                        bounds: LatLngBounds(
-                          LatLng(data.current.lat - 3, data.current.lng - 3),
-                          LatLng(data.current.lat + 3, data.current.lng + 3),
-                        ),
-                      ),
-                    ),
-                    children: [
-                      TileLayer(
-                        urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
-                      ),
-                      TileLayer(
-                        urlTemplate: data.current.radar[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_1.png",
-                      ),
-                    ],
-                  ),
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Material(
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300,),
-                      width: 50,
-                      height: 50,
-                      child: InkWell(
-                        onTap: () {
-                          togglePlayPause();
-                        },
-                        splashColor: data.current.backcolor,
-                        child: Icon(
-                            isPlaying? Icons.pause : Icons.play_arrow,
-                          color: data.current.backcolor,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: LayoutBuilder(
-                      builder: (BuildContext context, BoxConstraints constraints) {
-                        return Container(
-                          height: 50,
-                          width: constraints.maxWidth,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(width: 1.2, color: WHITE)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(18),
-                            child: Stack(
-                              children: [
-                                Container(
-                                  color: WHITE,
-                                  width: constraints.maxWidth *
-                                      (max(currentFrameIndex - 1, 0) / data.current.radar.length),
-                                ),
-                                AnimatedSwitcher(
-                                  duration: const Duration(milliseconds: 300),
-                                  transitionBuilder: (Widget child, Animation<double> animation) =>
-                                  SizeTransition(sizeFactor: animation, axis: Axis.horizontal, child: child),
-                                  child: Container(
-                                    key: ValueKey<int>(currentFrameIndex),
-                                    color: WHITE,
-                                    width: constraints.maxWidth *
-                                        (currentFrameIndex / data.current.radar.length),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }
-                      ),
-                  ),
-                )
-            ],
-          ),
-        )
-      ],
-    );
-  }
-}
-
 Future<List<String>> getRecommend(String query, List<String> favorites) async {
 
   if (query == '') {
@@ -465,31 +308,6 @@ class MySearchParent extends StatefulWidget{
   @override
   _MySearchParentState createState() => _MySearchParentState(color: color,
   place: place, controller: controller, settings: settings);
-}
-
-
-class RainCircle extends StatelessWidget {
-  final double rainAmount;
-
-  RainCircle({required this.rainAmount});
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRect(
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        heightFactor: rainAmount,
-        child: Container(
-          width: 73, // Adjust the size as needed
-          height: 73, // Make sure it's a square container
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.blue, // You can change the color to represent the rain
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class _MySearchParentState extends State<MySearchParent> {

@@ -250,8 +250,8 @@ Widget defaultSearchScreen(Color color,
             key: ValueKey<Color>(rectColor),
             padding: const EdgeInsets.only(top:10, bottom: 10),
             decoration: BoxDecoration(
-              //color: rectColor,
-              border: Border.all(width: 1.2, color: WHITE),
+              color: rectColor,
+              //border: Border.all(width: 1.2, color: WHITE),
               borderRadius: BorderRadius.circular(25),
             ),
             child: ListView.builder(

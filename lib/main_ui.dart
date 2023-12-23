@@ -22,6 +22,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/dayforcast.dart';
+import 'package:hihi_haha/radar.dart';
 import 'package:hihi_haha/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'ui_helper.dart';
@@ -93,7 +94,7 @@ class WeatherPage extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: SingleChildScrollView(
-                            child: buildCurrent(data, safeHeight - 100), // Place your buildCurrent widget here
+                            child: buildCurrent(data, safeHeight - 100),
                           ),
                         ),
                       ),
@@ -439,7 +440,7 @@ Widget NewTimes(var data) => SliverList(
                 ),
               ),
               SizedBox(
-                height: 150,
+                height: 165,
                 width: 65,
                 child: ListView.builder(
                   reverse: true,
@@ -448,7 +449,7 @@ Widget NewTimes(var data) => SliverList(
                   itemBuilder: (context, index) {
                     if (data.settings[2] == 'in') {
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Row(
                           children: [
                             comfortatext((index * 2).toString(), 17),
@@ -459,7 +460,7 @@ Widget NewTimes(var data) => SliverList(
                     }
                     else {
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(10),
                         child: Row(
                           children: [
                             comfortatext((index * 5).toString(), 17),
@@ -581,56 +582,75 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                         border: Border.all(width: 1.2, color: WHITE),
                         borderRadius: BorderRadius.circular(20)
                       ),
-                      child:  GridView.count(
-                        padding: const EdgeInsets.all(0),
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisSpacing: 1,
-                        mainAxisSpacing: 1,
-                        crossAxisCount: 2,
-                        childAspectRatio: 4.8,
-                        // Generate 100 widgets that display their index in the List.
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 8),
-                            child: Row(
+                      child:  LayoutBuilder(
+                        builder: (BuildContext context, BoxConstraints constraints) {
+                          return GridView.count(
+                              padding: const EdgeInsets.all(0),
+                              physics: const NeverScrollableScrollPhysics(),
+                              crossAxisSpacing: 1,
+                              mainAxisSpacing: 1,
+                              crossAxisCount: 2,
+                              childAspectRatio: constraints.maxWidth / constraints.maxHeight,
                               children: [
-                                const Icon(Icons.water_drop_outlined, color: WHITE,),
-                                const Padding(padding: EdgeInsets.only(right: 10)),
-                                comfortatext('${day.precip_prob}%', 20),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 8),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.water_drop, color: WHITE,),
-                                const Padding(padding: EdgeInsets.only(right: 10)),
-                                comfortatext(day.total_precip.toString() + data.settings[2], 20),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 8),
-                            child: Row(
-                              children: [
-                                const Icon(CupertinoIcons.wind, color: WHITE,),
-                                const Padding(padding: EdgeInsets.only(right: 10)),
-                                comfortatext('${day.windspeed} ${data.settings[3]}', 20),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 8),
-                            child: Row(
-                              children: [
-                                const Icon(CupertinoIcons.thermometer, color: WHITE,),
-                                const Padding(padding: EdgeInsets.only(right: 10)),
-                                comfortatext('${day.avg_temp} ${data.settings[1]}', 20),
-                              ],
-                            ),
-                          ),
-                        ]
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8, right: 8),
+                                  child: Row(
+                                    children: [
+                                      const Icon(Icons.water_drop_outlined,
+                                        color: WHITE,),
+                                      const Padding(
+                                          padding: EdgeInsets.only(right: 10)),
+                                      comfortatext('${day.precip_prob}%', 20),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8, right: 8),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.water_drop, color: WHITE,),
+                                      const Padding(
+                                          padding: EdgeInsets.only(right: 10)),
+                                      comfortatext(day.total_precip.toString() +
+                                          data.settings[2], 20),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8, right: 8),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.wind, color: WHITE,),
+                                      const Padding(
+                                          padding: EdgeInsets.only(right: 10)),
+                                      comfortatext('${day.windspeed} ${data
+                                          .settings[3]}', 20),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8, right: 8),
+                                  child: Row(
+                                    children: [
+                                      const Icon(CupertinoIcons.thermometer,
+                                        color: WHITE,),
+                                      const Padding(
+                                          padding: EdgeInsets.only(right: 10)),
+                                      comfortatext(
+                                          '${day.avg_temp} ${data.settings[1]}',
+                                          20),
+                                    ],
+                                  ),
+                                ),
+                              ]
+                          );
+                        }
                       ),
                     ),
                   ),
