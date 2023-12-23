@@ -259,8 +259,8 @@ class _RadarPageState extends State<RadarPage> {
           children: [
             TileLayer(
               urlTemplate: data.current.contentColor[0] == WHITE
-                  ? 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
-                  : 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',
+                  ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+                  : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
             ),
             TileLayer(
               urlTemplate: data.current.radar[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_1.png",
@@ -310,7 +310,7 @@ class _RadarPageState extends State<RadarPage> {
                             height: 53,
                             width: constraints.maxWidth,
                             decoration: BoxDecoration(
-                                color: top,
+                                color: main,
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(width: 3, color: main)
                             ),
@@ -319,7 +319,7 @@ class _RadarPageState extends State<RadarPage> {
                               child: Stack(
                                 children: [
                                   Container(
-                                    color: main,
+                                    color: top,
                                     width: constraints.maxWidth *
                                         (max(currentFrameIndex - 1, 0) / data.current.radar.length),
                                   ),
@@ -329,7 +329,7 @@ class _RadarPageState extends State<RadarPage> {
                                         SizeTransition(sizeFactor: animation, axis: Axis.horizontal, child: child),
                                     child: Container(
                                       key: ValueKey<int>(currentFrameIndex),
-                                      color: main,
+                                      color: top,
                                       width: constraints.maxWidth *
                                           (currentFrameIndex / data.current.radar.length),
                                     ),

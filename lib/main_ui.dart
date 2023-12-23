@@ -433,7 +433,7 @@ Widget NewTimes(var data) => SliverList(
                         borderRadius: BorderRadius.circular(18),
                         child: Padding(
                           padding: const EdgeInsets.all(6),
-                          child: MyChart(data.days[0].hourly),
+                          child: MyChart(data.days[0].hourly_for_precip),
                         )
                       ),
                     ),

@@ -105,13 +105,19 @@ class _MyAppState extends State<MyApp> {
           Position position;
           try {
             position = await Geolocator.getCurrentPosition(
-              forceAndroidLocationManager: true,
-              desiredAccuracy: LocationAccuracy.low).timeout(const Duration(seconds: 15));
+              //forceAndroidLocationManager: true,
+              desiredAccuracy: LocationAccuracy.low, timeLimit: const Duration(seconds: 4));
           } on TimeoutException {
-            return dumbySearch(errorMessage: translation("Unable to locate device", unitsUsed[0]),
-              updateLocation: updateLocation,
-              icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-              place: absoluteProposed, settings: unitsUsed,);
+            try {
+              position = (await Geolocator.getLastKnownPosition())!;
+            } on Error {
+              return dumbySearch(errorMessage: translation(
+                  "Unable to locate device", unitsUsed[0]),
+                updateLocation: updateLocation,
+                icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
+                place: absoluteProposed,
+                settings: unitsUsed,);
+            }
           } on LocationServiceDisabledException {
             return dumbySearch(errorMessage: translation("location services are disabled.", unitsUsed[0]),
               updateLocation: updateLocation,
