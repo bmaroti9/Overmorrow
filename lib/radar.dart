@@ -57,6 +57,8 @@ class _RadarMapState extends State<RadarMap> {
 
   @override
   Widget build(BuildContext context) {
+    Color main = data.current.contentColor[0] == WHITE? data.current.backcolor : WHITE;
+    Color top = data.current.contentColor[0] == WHITE? WHITE : data.current.backcolor;
     return Column(
       children: [
         Padding(
@@ -76,41 +78,76 @@ class _RadarMapState extends State<RadarMap> {
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(width: 1, color: WHITE)
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                //child: data.current.radar[0]
-                child: FlutterMap(
-                  options: MapOptions(
-                    onTap: (tapPosition, point) => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RadarPage(data: data,)),
-                      )
-                    },
-                    initialCenter: LatLng(data.current.lat, data.current.lng),
-                    initialZoom: 6,
-                    backgroundColor: WHITE,
-                    keepAlive: true,
-                    maxZoom: 6,
-                    minZoom: 6,
-                    cameraConstraint: CameraConstraint.containCenter(
-                      bounds: LatLngBounds(
-                        LatLng(data.current.lat - 3, data.current.lng - 3),
-                        LatLng(data.current.lat + 3, data.current.lng + 3),
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    //child: data.current.radar[0]
+                    child: FlutterMap(
+                      options: MapOptions(
+                        onTap: (tapPosition, point) => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RadarPage(data: data,)),
+                          )
+                        },
+                        initialCenter: LatLng(data.current.lat, data.current.lng),
+                        initialZoom: 6,
+                        backgroundColor: WHITE,
+                        keepAlive: true,
+                        maxZoom: 6,
+                        minZoom: 6,
+                        cameraConstraint: CameraConstraint.containCenter(
+                          bounds: LatLngBounds(
+                            LatLng(data.current.lat - 3, data.current.lng - 3),
+                            LatLng(data.current.lat + 3, data.current.lng + 3),
+                          ),
+                        ),
+                      ),
+                      children: [
+                        TileLayer(
+                          urlTemplate: data.current.contentColor[0] == WHITE
+                              ? 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
+                              : 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',
+                        ),
+                        TileLayer(
+                          urlTemplate: data.current.radar[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_1.png",
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10, top: 10),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Hero(
+                        tag: 'switch',
+                        child: SizedBox(
+                          height: 48,
+                          width: 48,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 10,
+                              padding: const EdgeInsets.all(10),
+                              backgroundColor: top,
+                              //side: BorderSide(width: 3, color: main),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => RadarPage(data: data,)),
+                              );
+                            },
+                            child: Icon(Icons.open_in_full, color: main, size: 25,),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                  children: [
-                    TileLayer(
-                      urlTemplate: data.current.contentColor[0] == WHITE
-                          ? 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
-                          : 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',
-                    ),
-                    TileLayer(
-                      urlTemplate: data.current.radar[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_1.png",
-                    ),
-                  ],
-                ),
+                ],
               ),
             ),
           ),
@@ -125,62 +162,68 @@ class _RadarMapState extends State<RadarMap> {
                 transitionBuilder: (Widget child, Animation<double> animation) {
                   return ScaleTransition(scale: animation, child: child,);
                 },
-                child: SizedBox(
+                child: Hero(
+                  tag: 'playpause',
                   key: ValueKey<bool> (isPlaying),
-                  height: 48,
-                  width: 48,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(10),
-                        backgroundColor: WHITE,
-                        side: const BorderSide(width: 1.2, color: WHITE),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
-                        )
+                  child: SizedBox(
+                    height: 48,
+                    width: 48,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(10),
+                          backgroundColor: WHITE,
+                          side: const BorderSide(width: 1.2, color: WHITE),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)
+                          )
+                      ),
+                      onPressed: () async {
+                        togglePlayPause();
+                      },
+                      child: Icon(isPlaying? Icons.pause : Icons.play_arrow, color: data.current.backcolor, size: 18,),
                     ),
-                    onPressed: () async {
-                      togglePlayPause();
-                    },
-                    child: Icon(isPlaying? Icons.pause : Icons.play_arrow, color: data.current.backcolor, size: 18,),
                   ),
                 ),
               ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: LayoutBuilder(
-                      builder: (BuildContext context, BoxConstraints constraints) {
-                        return Container(
-                          height: 50,
-                          width: constraints.maxWidth,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(width: 1.2, color: WHITE)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(18),
-                            child: Stack(
-                              children: [
-                                Container(
-                                  color: WHITE,
-                                  width: constraints.maxWidth *
-                                      (max(currentFrameIndex - 1, 0) / data.current.radar.length),
-                                ),
-                                AnimatedSwitcher(
-                                  duration: const Duration(milliseconds: 300),
-                                  transitionBuilder: (Widget child, Animation<double> animation) =>
-                                      SizeTransition(sizeFactor: animation, axis: Axis.horizontal, child: child),
-                                  child: Container(
-                                    key: ValueKey<int>(currentFrameIndex),
+                  child: Hero(
+                    tag: 'progress',
+                    child: LayoutBuilder(
+                        builder: (BuildContext context, BoxConstraints constraints) {
+                          return Container(
+                            height: 50,
+                            width: constraints.maxWidth,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(width: 1.2, color: WHITE)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(18),
+                              child: Stack(
+                                children: [
+                                  Container(
                                     color: WHITE,
                                     width: constraints.maxWidth *
-                                        (currentFrameIndex / data.current.radar.length),
+                                        (max(currentFrameIndex - 1, 0) / data.current.radar.length),
                                   ),
-                                ),
-                              ],
+                                  AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 300),
+                                    transitionBuilder: (Widget child, Animation<double> animation) =>
+                                        SizeTransition(sizeFactor: animation, axis: Axis.horizontal, child: child),
+                                    child: Container(
+                                      key: ValueKey<int>(currentFrameIndex),
+                                      color: WHITE,
+                                      width: constraints.maxWidth *
+                                          (currentFrameIndex / data.current.radar.length),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      }
+                          );
+                        }
+                    ),
                   ),
                 ),
               )
@@ -246,8 +289,8 @@ class _RadarPageState extends State<RadarPage> {
   @override
   Widget build(BuildContext context) {
     double x = MediaQuery.of(context).padding.top;
-    Color main = data.current.contentColor[0] == WHITE? darken(data.current.backcolor, 0.2) : WHITE;
-    Color top = data.current.contentColor[0] == WHITE? WHITE : BLACK;
+    Color main = data.current.contentColor[0] == WHITE? data.current.backcolor : WHITE;
+    Color top = data.current.contentColor[0] == WHITE? WHITE : data.current.backcolor;
     return Stack(
       children: [
         FlutterMap(
@@ -271,102 +314,119 @@ class _RadarPageState extends State<RadarPage> {
           alignment: Alignment.bottomCenter,
           child: Padding(
             padding: const EdgeInsets.all(15),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
-                  transitionBuilder: (Widget child, Animation<double> animation) {
-                    return ScaleTransition(scale: animation, child: child,);
-                  },
-                  child: SizedBox(
-                    key: ValueKey<bool> (isPlaying),
-                    height: 53,
-                    width: 53,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          padding: const EdgeInsets.all(10),
-                          backgroundColor: main,
-                          //side: const BorderSide(width: 5, color: WHITE),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)
-                          ),
-                      ),
-                      onPressed: () async {
-                        togglePlayPause();
-                      },
-                      child: Icon(isPlaying? Icons.pause : Icons.play_arrow, color: top, size: 18,),
-                    ),
-                  ),
+            child: Material(
+              borderRadius: BorderRadius.circular(20),
+              elevation: 10,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: top,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: LayoutBuilder(
-                        builder: (BuildContext context, BoxConstraints constraints) {
-                          return Container(
-                            padding: EdgeInsets.all(3),
-                            height: 53,
-                            width: constraints.maxWidth,
-                            decoration: BoxDecoration(
-                                color: main,
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(width: 3, color: main)
+                padding: EdgeInsets.all(6),
+                child: Row(
+                  children: [
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 200),
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        return ScaleTransition(scale: animation, child: child,);
+                      },
+                      child: Hero(
+                        key: ValueKey<bool> (isPlaying),
+                        tag: 'playpause',
+                        child: SizedBox(
+                          height: 48,
+                          width: 48,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 8,
+                                padding: const EdgeInsets.all(10),
+                                backgroundColor: top,
+                                //side: const BorderSide(width: 5, color: WHITE),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16)
+                                ),
                             ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    color: top,
-                                    width: constraints.maxWidth *
-                                        (max(currentFrameIndex - 1, 0) / data.current.radar.length),
-                                  ),
-                                  AnimatedSwitcher(
-                                    duration: const Duration(milliseconds: 300),
-                                    transitionBuilder: (Widget child, Animation<double> animation) =>
-                                        SizeTransition(sizeFactor: animation, axis: Axis.horizontal, child: child),
+                            onPressed: () async {
+                              togglePlayPause();
+                            },
+                            child: Icon(isPlaying? Icons.pause : Icons.play_arrow, color: main, size: 18,),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 6),
+                        child: Hero(
+                          tag: 'progress',
+                          child: LayoutBuilder(
+                              builder: (BuildContext context, BoxConstraints constraints) {
+                                return Material(
+                                  borderRadius: BorderRadius.circular(13),
+                                  elevation: 8,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(13),
                                     child: Container(
-                                      key: ValueKey<int>(currentFrameIndex),
+                                      height: 48,
                                       color: top,
-                                      width: constraints.maxWidth *
-                                          (currentFrameIndex / data.current.radar.length),
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            color: main,
+                                            width: constraints.maxWidth *
+                                                (max(currentFrameIndex - 1, 0) / data.current.radar.length),
+                                          ),
+                                          AnimatedSwitcher(
+                                            duration: const Duration(milliseconds: 300),
+                                            transitionBuilder: (Widget child, Animation<double> animation) =>
+                                                SizeTransition(sizeFactor: animation, axis: Axis.horizontal, child: child),
+                                            child: Container(
+                                              key: ValueKey<int>(currentFrameIndex),
+                                              color: main,
+                                              width: constraints.maxWidth *
+                                                  (currentFrameIndex / data.current.radar.length),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }
-                    ),
-                  ),
-                )
-              ],
+                                );
+                              }
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 15, top: x + 15),
+          padding: EdgeInsets.only(right: 15, top: x + 15),
           child: Align(
-            alignment: Alignment.topLeft,
-            child:  SizedBox(
-              height: 53,
-              width: 53,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  padding: const EdgeInsets.all(10),
-                  backgroundColor: main,
-                  //side: const BorderSide(width: 5, color: WHITE),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)
+            alignment: Alignment.topRight,
+            child:  Hero(
+              tag: 'switch',
+              child: SizedBox(
+                height: 48,
+                width: 48,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 10,
+                    padding: const EdgeInsets.all(10),
+                    backgroundColor: top,
+                    //side: BorderSide(width: 3, color: main),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                    ),
                   ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Icon(Icons.close_fullscreen, color: main, size: 25,),
                 ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Icon(Icons.arrow_back, color: top, size: 18,),
               ),
             ),
           ),
