@@ -34,7 +34,7 @@ Map<String, List<String>> settingSwitches = {
   ],
   'Temperature': ['˚C', '˚F'],
   'Rain': ['mm', 'in'],
-  'Wind': ['m/s', 'kph', 'mph'],
+  'Wind': ['m/s', 'kph', 'mph', 'kn'],
   'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa']
 };
 

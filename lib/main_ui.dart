@@ -452,7 +452,7 @@ Widget NewTimes(var data) => SliverList(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
                           children: [
-                            comfortatext((index * 2).toString(), 17),
+                            comfortatext((index * 0.2).toStringAsFixed(1), 17),
                             comfortatext('in', 14),
                           ],
                         ),

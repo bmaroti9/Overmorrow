@@ -170,22 +170,19 @@ class _DonationPageState extends State<DonationPage> {
                     ],
                   ),
                 ),
-                
+
                 ElevatedButton(
-                  style: ButtonStyle(
-                    elevation: MaterialStateProperty.all<double>(0),
-                    padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-                    backgroundColor: MaterialStateProperty.all(const Color(0xffF96854)),
-                    // <-- Button color
-                    overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-                      if (states.contains(MaterialState.pressed)) {
-                        return darken(const Color(0xffF96854), 0.2);
-                      }
-                      return null; // <-- Splash color
-                    }),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 6,
+                    padding: const EdgeInsets.all(10),
+                    backgroundColor: Color(0xfff96854),
+                    //side: BorderSide(width: 3, color: main),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)
+                    ),
                   ),
-                  onPressed: () {  },
-                  child: Text(translation('Support me on Patreon', settings[0])),
+                  onPressed: () async { await _launchUrl('https://www.patreon.com/MarotiDevel'); },
+                  child: Text(translation('Support me on Patreon', settings[0]), style: TextStyle(color: WHITE), textScaleFactor: 1.4,)
                 ),
               ],
             ),

@@ -97,6 +97,7 @@ class _RadarMapState extends State<RadarMap> {
                         keepAlive: true,
                         maxZoom: 6,
                         minZoom: 6,
+                        interactionOptions: const InteractionOptions(flags: InteractiveFlag.drag,),
                         cameraConstraint: CameraConstraint.containCenter(
                           bounds: LatLngBounds(
                             LatLng(data.current.lat - 3, data.current.lng - 3),
@@ -298,6 +299,7 @@ class _RadarPageState extends State<RadarPage> {
             initialCenter: LatLng(data.current.lat, data.current.lng),
             initialZoom: 5,
             backgroundColor: WHITE,
+            interactionOptions: const InteractionOptions(flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag | InteractiveFlag.pinchMove,),
           ),
           children: [
             TileLayer(
@@ -313,7 +315,7 @@ class _RadarPageState extends State<RadarPage> {
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.only(left: 15, bottom: 30, right: 15),
             child: Material(
               borderRadius: BorderRadius.circular(20),
               elevation: 10,

@@ -173,6 +173,7 @@ Map<String, List<double>> conversionTable = {
   'kph': [0, 1],
   'm/s': [0, 0.277778],
   'mph': [0, 0.621371],
+  'kn' : [0, 0.539957],
   'inHg': [0, 1],
   'mmHg': [0, 25.4],
   'mb': [0, 33.864],
