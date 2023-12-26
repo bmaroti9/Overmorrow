@@ -1,5 +1,7 @@
 # Overmorrow Weather
 
+https://play.google.com/store/apps/details?id=com.marotidev.Overmorrow
+
 Beautiful minimalist weather app.
 
 ## Features
