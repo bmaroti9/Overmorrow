@@ -23,7 +23,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hihi_haha/dayforcast.dart';
+import 'package:hihi_haha/decoders/decode_wapi.dart';
 import 'package:hihi_haha/search_screens.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -264,14 +264,38 @@ class BarChartPainter extends CustomPainter {
   }
 }
 
-Future<List<String>> getRecommend(String query, List<String> favorites) async {
+bool isUppercase(String str){
+  return str == str.toUpperCase();
+}
+
+String generateAbbreviation(String countryName) {
+  List<String> words = countryName.split(' ');
+
+  if (words.length == 1) {
+    return countryName;
+
+  } else {
+
+    String abbreviation = '';
+
+    for (String word in words) {
+      if (word.isNotEmpty && isUppercase(word[0])) {
+        abbreviation += word[0];
+      }
+    }
+
+    return abbreviation;
+  }
+}
+
+Future<List<String>> getRecommend(String query) async {
 
   if (query == '') {
     return [];
   }
 
   var params = {
-    'key': apiKey,
+    'key': wapi_Key,
     'q': query,
   };
   var url = Uri.http('api.weatherapi.com', 'v1/search.json', params);
@@ -290,7 +314,7 @@ Future<List<String>> getRecommend(String query, List<String> favorites) async {
 
   List<String> recomendations = [];
   for (var item in jsonbody) {
-    recomendations.add(item["name"]);
+    recomendations.add(item["name"] + "/" + item["region"] + ", " + generateAbbreviation(item["country"]));
   }
 
   return recomendations;

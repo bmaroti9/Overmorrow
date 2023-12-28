@@ -21,10 +21,12 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 
-import 'ui_helper.dart';
+import '../ui_helper.dart';
 
-import 'weather_refact.dart' as weather_refactor;
-import 'languages.dart';
+import '../weather_refact.dart' as weather_refactor;
+import '../languages.dart';
+
+//decodes the whole response from the weatherapi.com api_call
 
 String LOCATION = 'Szeged';
 bool RandomSwitch = false;
@@ -287,7 +289,30 @@ class WeatherData {
   final Current current;
   final String place;
 
-  WeatherData(this.days, this.current, this.place, this.settings);
+  WeatherData({required this.days, required this.current, required this.place, required this.settings});
+
+  static WeatherData fromJson(jsonbody, settings, radar) {
+
+    var forecastlist = jsonbody['forecast']['forecastday'];
+    var timenow = jsonbody["location"]["localtime_epoch"];
+    String loc_p = jsonbody['location']['name'];
+
+    List<Day> days = [];
+    int index = 0;
+    for (var forecast in forecastlist) {
+      days.add(Day.fromJson(forecast, index, settings, timenow));
+      index += 1;
+    }
+
+    Current current = Current.fromJson(jsonbody, settings, radar);
+
+    return WeatherData(
+        days: days,
+        current: current,
+        place: jsonbody["location"]["name"],
+        settings: settings
+    );
+  }
 }
 
 class Current {

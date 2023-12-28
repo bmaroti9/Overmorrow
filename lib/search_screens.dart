@@ -24,7 +24,7 @@ import 'package:hihi_haha/settings_page.dart';
 import 'package:hihi_haha/ui_helper.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 
-import 'dayforcast.dart';
+import 'decoders/decode_wapi.dart';
 
 Widget searchBar(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
@@ -74,7 +74,7 @@ Widget searchBar(Color color, List<String> recommend,
 
       onQueryChanged: (query) async {
         isEditing = false;
-        var result = await getRecommend(query, favorites);
+        var result = await getRecommend(query);
         updateRec(result);
       },
       onSubmitted: (submission) {
@@ -260,18 +260,31 @@ Widget defaultSearchScreen(Color color,
               padding: const EdgeInsets.only(top: 0, bottom: 0),
               itemCount: favorites.length,
               itemBuilder: (context, index) {
+                List<String> split = favorites[index].split("/");
+                if (split.length < 2) {  // //for older app versions where the favorite system only had the name
+                  split.add("");
+                }
                 return GestureDetector(
                   onTap: () {
                     updateLocation(favorites[index]);
                     controller.close();
                   },
                   child: Container(
-                    padding: const EdgeInsets.only(left: 20, bottom: 0, right: 10),
+                    padding: const EdgeInsets.only(left: 20, bottom: 2, right: 10, top: 2),
                     child: Row(
                       children: [
                         Expanded(
                           flex: 100,
-                          child: comfortatext(favorites[index], 27, color: textColor),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              comfortatext(split[0], 26, color: textColor),
+                              Visibility( //for older app versions where the favorite system only had the name
+                                visible: split[1] != "",
+                                  child: comfortatext(split[1], 17, color: textColor)
+                              )
+                            ],
+                          ),
                         ),
                         const Spacer(),
                         AnimatedSwitcher(
@@ -328,6 +341,7 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
       padding: const EdgeInsets.only(top: 0),
       itemCount: recommend.length,
       itemBuilder: (context, index) {
+        final split = recommend[index].split("/");
         return GestureDetector(
           onTap: () {
             updateLocation(recommend[index]);
@@ -339,16 +353,12 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
-                    recommend[index],
-                    style: GoogleFonts.comfortaa(
-                      color: WHITE,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w300,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: false,
-                    maxLines: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      comfortatext(split[0], 26),
+                      comfortatext(split[1], 17)
+                    ],
                   ),
                 ),
 

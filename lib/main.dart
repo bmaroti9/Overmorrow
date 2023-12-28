@@ -27,11 +27,11 @@ import 'package:hihi_haha/ui_helper.dart';
 import 'dart:convert';
 import 'api_key.dart';
 import 'caching.dart';
-import 'dayforcast.dart';
+import 'decoders/decode_wapi.dart';
 import 'main_ui.dart';
 import 'package:flutter/services.dart';
 
-import 'dayforcast.dart' as dayforcast;
+import 'decoders/decode_wapi.dart' as dayforcast;
 import 'settings_page.dart';
 
 void main() {
@@ -139,7 +139,7 @@ class _MyAppState extends State<MyApp> {
 
       print('got here');
       var params = {
-        'key': apiKey,
+        'key': wapi_Key,
         'q': absoluteProposed,
         'days': '3 ',
         'aqi': 'yes',
@@ -172,7 +172,7 @@ class _MyAppState extends State<MyApp> {
         else if (hihi.toString().contains("statusCode: ")) {
           String replacement = "<api_key>";
 
-          String newStr = hihi.toString().replaceAll(apiKey, replacement);
+          String newStr = hihi.toString().replaceAll(wapi_Key, replacement);
           return dumbySearch(errorMessage: "general error at place 1: $newStr", updateLocation: updateLocation,
             icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
             place: absoluteProposed, settings: unitsUsed,);
@@ -194,34 +194,16 @@ class _MyAppState extends State<MyApp> {
       dayforcast.LOCATION = proposedLoc;
       SetData('LastPlace', proposedLoc);
 
-
-      var forecastlist = jsonbody['forecast']['forecastday'];
-      var timenow = jsonbody["location"]["localtime_epoch"];
-      String loc_p = jsonbody['location']['name'];
-
-
-      List<dayforcast.Day> days = [];
-      int index = 0;
-      for (var forecast in forecastlist) {
-        days.add(dayforcast.Day.fromJson(forecast, index, unitsUsed, timenow));
-        index += 1;
-      }
-
       List<String> radar;
       try {
-         radar = await getRadar();
+        radar = await getRadar();
       } on Error catch(e) {
         return dumbySearch(errorMessage: "error with the radar: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
           place: absoluteProposed, settings: unitsUsed,);
       }
 
-      dayforcast.Current current = dayforcast.Current.fromJson(jsonbody, unitsUsed, radar);
-
-      dayforcast.WeatherData data = dayforcast.WeatherData(
-          days, current, loc_p, unitsUsed);
-
-      return WeatherPage(data: data,
+      return WeatherPage(data: dayforcast.WeatherData.fromJson(jsonbody, unitsUsed, radar),
           updateLocation: updateLocation);
 
     } catch (e) {

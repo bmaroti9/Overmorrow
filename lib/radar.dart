@@ -24,7 +24,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:hihi_haha/ui_helper.dart';
 import 'package:latlong2/latlong.dart';
 
-import 'dayforcast.dart';
+import 'decoders/decode_wapi.dart';
 
 
 class RadarMap extends StatefulWidget {
@@ -115,7 +115,7 @@ class _RadarMapState extends State<RadarMap> {
                         keepAlive: true,
                         maxZoom: 6,
                         minZoom: 6,
-                        interactionOptions: const InteractionOptions(flags: InteractiveFlag.drag,),
+                        interactionOptions: const InteractionOptions(flags: InteractiveFlag.drag | InteractiveFlag.flingAnimation),
                         cameraConstraint: CameraConstraint.containCenter(
                           bounds: LatLngBounds(
                             LatLng(data.current.lat - 3, data.current.lng - 3),
@@ -317,7 +317,7 @@ class _RadarPageState extends State<RadarPage> {
             initialCenter: LatLng(data.current.lat, data.current.lng),
             initialZoom: 5,
             backgroundColor: WHITE,
-            interactionOptions: const InteractionOptions(flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag | InteractiveFlag.pinchMove,),
+            interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate,),
           ),
           children: [
             TileLayer(
