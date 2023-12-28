@@ -845,6 +845,18 @@ Map<String, List<String>> mainTranslate = {
     'радар',
     '雷达',
     'レーダー'
+  ],
+  'Color mode': [
+    'Color mode',
+    'Színmód',
+    'Modo de color',
+    'Mode couleur',
+    'Farbmodus',
+    'Modalità colore',
+    'Modo de cor',
+    'Режим цвета',
+    '彩色模式',
+    'カラーモード'
   ]
 };
 

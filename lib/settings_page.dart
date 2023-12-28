@@ -25,7 +25,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'main.dart';
 import 'ui_helper.dart';
 
-List<String> settingsList = ['Language', 'Temperature', 'Rain', 'Wind', 'Pressure'];
+List<String> settingsList = ['Language', 'Temperature', 'Rain', 'Wind', 'Pressure',
+        'Color mode'];
 
 Map<String, List<String>> settingSwitches = {
   'Language' : [
@@ -35,18 +36,19 @@ Map<String, List<String>> settingSwitches = {
   'Temperature': ['˚C', '˚F'],
   'Rain': ['mm', 'in'],
   'Wind': ['m/s', 'kph', 'mph', 'kn'],
-  'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa']
+  'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa'],
+  'Color mode' : ['normal', 'zen', 'high contrast'],
 };
 
 Future<List<String>> getSettingsUsed() async {
-  List<String> units = [];
+  List<String> settings = [];
   for (String name in settingsList) {
     final prefs = await SharedPreferences.getInstance();
     final ifnot = settingSwitches[name] ?? ['˚C', '˚F'];
     final used = prefs.getString('setting$name') ?? ifnot[0];
-    units.add(used);
+    settings.add(used);
   }
-  return units;
+  return settings;
 }
 
 Future<String> isLocationSafe() async {
@@ -81,16 +83,6 @@ Future<String> getLastPlace() async {
 SetData(String name, String to) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString(name, to);
-}
-
-Widget leftpad(Widget child, double hihimargin) {
-  return Align(
-    alignment: Alignment.centerLeft,
-    child: Padding(
-      padding: EdgeInsets.only(left: hihimargin, top: 10),
-      child: child,
-    ),
-  );
 }
 
 Widget dropdown(Color bgcolor, String name, Function updatePage, String unit) {
@@ -134,7 +126,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  // You can add your state variables here
 
   final color;
   _SettingsPageState({required this.color});
@@ -150,7 +141,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) {
-          return MyApp(); // Replace with the actual widget you want to reload.
+          return MyApp();
         },
       ),
     );
@@ -163,16 +154,15 @@ class _SettingsPageState extends State<SettingsPage> {
       builder: (BuildContext context,
           AsyncSnapshot<List<String>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return Scaffold(backgroundColor: color,);
         } else if (snapshot.hasError) {
           print(snapshot.error);
           return Center(
             child: ErrorWidget(snapshot.error as Object),
           );
         }
-        return SettingsMain(color, snapshot.data, updatePage, goBack);
+        final co = snapshot.data?[5] == 'high contrast' ? BLACK : color;
+        return SettingsMain(co, snapshot.data, updatePage, goBack);
       },
     );
   }
@@ -198,60 +188,55 @@ Widget SettingsMain(Color color, List<String>? settings, Function updatePage,
             icon: const Icon(Icons.arrow_back, color: WHITE,),
           )
       ),
-      body: UnitsMain(color, settings, updatePage),
+      body: settingsMain(color, settings, updatePage),
   );
 }
 
-Widget UnitsMain(Color color, List<String>? settings, Function updatePage) {
+Widget settingsMain(Color color, List<String> settings, Function updatePage) {
   return Container(
-    padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
+    padding: const EdgeInsets.only(top: 10, left: 20, right: 10),
     color: color,
     child: Column(
         children: [
-          leftpad(
-            SizedBox(
-              height: 70.0 * settings!.length,
-              child: ListView.builder(
-                itemCount: settings.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    height: 70,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        comfortatext(translation(settingsList[index], settings[0]), 23),
-                        const Spacer(),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: SizedBox(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: darken(color, 0.10),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10, right: 4),
-                                  child: dropdown(
-                                      darken(color, 0.2),
-                                      settingsList[index],
-                                      updatePage,
-                                      settings[index]
-                                  ),
+            ListView.builder(
+              itemCount: settings.length,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return SizedBox(
+                  height: 55,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      comfortatext(translation(settingsList[index], settings[0]), 23),
+                      const Spacer(),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: SizedBox(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: darken(color, 0.10),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10, right: 4),
+                                child: dropdown(
+                                    darken(color, 0.2),
+                                    settingsList[index],
+                                    updatePage,
+                                    settings[index]
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-            10
-          )
         ]
     ),
   );

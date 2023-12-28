@@ -295,7 +295,6 @@ class WeatherData {
 
     var forecastlist = jsonbody['forecast']['forecastday'];
     var timenow = jsonbody["location"]["localtime_epoch"];
-    String loc_p = jsonbody['location']['name'];
 
     List<Day> days = [];
     int index = 0;
@@ -376,13 +375,13 @@ class Current {
     ),
     temp: unit_coversion(item["current"]["temp_c"], settings[1]).round(),
 
-    contentColor: contentColorCorrection(
-      item["current"]["condition"]["text"], item["current"]["is_day"]
-    ),
+    contentColor: settings[5] == "high contrast"
+          ? [BLACK,WHITE]
+          :  contentColorCorrection(item["current"]["condition"]["text"], item["current"]["is_day"]),
 
-    backcolor: backroundColorCorrection(
-        item["current"]["condition"]["text"], item["current"]["is_day"]
-    ),
+    backcolor: settings[5] == "high contrast"
+        ? BLACK
+        :  backroundColorCorrection(item["current"]["condition"]["text"], item["current"]["is_day"]),
 
     accentcolor: accentColorCorrection(
         item["current"]["condition"]["text"], item["current"]["is_day"]

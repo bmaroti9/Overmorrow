@@ -37,13 +37,14 @@ final imageText = [
   'Fog',
   'Snow',
   'Heavy Rain',
-  'Cloudy Night'];
+  'Cloudy Night'
+];
 
 final imageLink = [
   'https://unsplash.com/photos/time-lapse-photography-of-stars-at-nighttime-YvOT1lJ0NPQ',
   'https://unsplash.com/photos/ocean-under-clouds-Plkff-dVfNM',
-  'https://unsplash.com/photos/white-clouds--qGKIX1Vxtk',
-  'https://unsplash.com/photos/selective-focus-photography-of-gray-clouds-4C6Rp23RjnE',
+  'https://unsplash.com/photos/blue-sea-under-blue-sky-during-daytime-XNZRf6rrKm4',
+  'https://unsplash.com/photos/a-cloudy-sky-with-some-clouds-UT5FSjTrhEQ',
   'https://unsplash.com/photos/silhouette-of-trees-and-sea-L-HxY2XlaaY',
   'https://unsplash.com/photos/water-droplets-on-clear-glass-1YHXFeOYpN0',
   'https://unsplash.com/photos/snow-covered-trees-and-road-during-daytime-wyM1KmMUSbA',
@@ -60,12 +61,12 @@ class DonationPage extends StatefulWidget {
   final Color color;
   final settings;
 
-  const DonationPage({Key? key, required this.color,
-  required this.settings}) : super(key: key);
+  const DonationPage({Key? key, required this.color, required this.settings})
+      : super(key: key);
 
   @override
-  _DonationPageState createState() => _DonationPageState(color: color,
-  settings: settings);
+  _DonationPageState createState() =>
+      _DonationPageState(color: color, settings: settings);
 }
 
 class _DonationPageState extends State<DonationPage> {
@@ -83,22 +84,21 @@ class _DonationPageState extends State<DonationPage> {
     return Scaffold(
       appBar: AppBar(
           toolbarHeight: 65,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0)
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
           elevation: 0,
           leadingWidth: 50,
           backgroundColor: darken(color, 0.3),
           title: comfortatext(translation('Donate', settings[0]), 25),
-          leading:
-          IconButton(
-            onPressed: (){
+          leading: IconButton(
+            onPressed: () {
               goBack();
             },
-            icon: const Icon(Icons.arrow_back, color: WHITE,),
-          )
-      ),
-      body:Container(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: WHITE,
+            ),
+          )),
+      body: Container(
         color: darken(color),
         child: Padding(
           padding: const EdgeInsets.only(top: 30),
@@ -114,7 +114,6 @@ class _DonationPageState extends State<DonationPage> {
                     height: 100,
                   ),
                 ),
-
                 SizedBox(
                   width: 300,
                   child: Column(
@@ -122,22 +121,24 @@ class _DonationPageState extends State<DonationPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Text(
-                          translation('Overmorrow is a free app. :)', settings[0]),
-                        style: GoogleFonts.comfortaa(
-                          color: WHITE,
-                          fontSize: 21,
-                          fontWeight: FontWeight.w300,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        maxLines: 10,
-                        textAlign: TextAlign.center,
+                          translation(
+                              'Overmorrow is a free app. :)', settings[0]),
+                          style: GoogleFonts.comfortaa(
+                            color: WHITE,
+                            fontSize: 21,
+                            fontWeight: FontWeight.w300,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          maxLines: 10,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 15),
                         child: Text(
-                          translation('Support me on Patreon, to help me keep it that way!',
+                          translation(
+                              'Support me on Patreon, to help me keep it that way!',
                               settings[0]),
                           style: GoogleFonts.comfortaa(
                             color: WHITE,
@@ -170,20 +171,23 @@ class _DonationPageState extends State<DonationPage> {
                     ],
                   ),
                 ),
-
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 6,
-                    padding: const EdgeInsets.all(10),
-                    backgroundColor: Color(0xfff96854),
-                    //side: BorderSide(width: 3, color: main),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)
+                    style: ElevatedButton.styleFrom(
+                      elevation: 6,
+                      padding: const EdgeInsets.all(10),
+                      backgroundColor: Color(0xfff96854),
+                      //side: BorderSide(width: 3, color: main),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
                     ),
-                  ),
-                  onPressed: () async { await _launchUrl('https://www.patreon.com/MarotiDevel'); },
-                  child: Text(translation('Support me on Patreon', settings[0]), style: TextStyle(color: WHITE), textScaleFactor: 1.4,)
-                ),
+                    onPressed: () async {
+                      await _launchUrl('https://www.patreon.com/MarotiDevel');
+                    },
+                    child: Text(
+                      translation('Support me on Patreon', settings[0]),
+                      style: TextStyle(color: WHITE),
+                      textScaleFactor: 1.4,
+                    )),
               ],
             ),
           ),
@@ -193,17 +197,16 @@ class _DonationPageState extends State<DonationPage> {
   }
 }
 
-
 class InfoPage extends StatefulWidget {
   final Color color;
   final settings;
 
-  const InfoPage({Key? key, required this.color,
-    required this.settings}) : super(key: key);
+  const InfoPage({Key? key, required this.color, required this.settings})
+      : super(key: key);
 
   @override
-  _InfoPageState createState() => _InfoPageState(color: color,
-      settings: settings);
+  _InfoPageState createState() =>
+      _InfoPageState(color: color, settings: settings);
 }
 
 class _InfoPageState extends State<InfoPage> {
@@ -219,211 +222,237 @@ class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: color,
-      appBar: AppBar(
-          toolbarHeight: 65,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0)
-          ),
-          elevation: 0,
-          leadingWidth: 50,
-          backgroundColor: darken(color, 0.3),
-          title: comfortatext(translation('About', settings[0]), 25),
-          leading:
-          IconButton(
-            onPressed: (){
-              goBack();
-            },
-            icon: const Icon(Icons.arrow_back, color: WHITE,),
-          )
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 40),
-                child: Container(
-                  height: 200.0,
-                  width: 200.0,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                          'assets/backdrops/very_clear.jpg'),
-                      fit: BoxFit.cover,
+        backgroundColor: color,
+        appBar: AppBar(
+            toolbarHeight: 65,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+            elevation: 0,
+            leadingWidth: 50,
+            backgroundColor: darken(color, 0.3),
+            title: comfortatext(translation('About', settings[0]), 25),
+            leading: IconButton(
+              onPressed: () {
+                goBack();
+              },
+              icon: const Icon(
+                Icons.arrow_back,
+                color: WHITE,
+              ),
+            )),
+        body: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 40),
+                  child: Container(
+                    height: 200.0,
+                    width: 200.0,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/backdrops/very_clear.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                      shape: BoxShape.circle,
                     ),
-                    shape: BoxShape.circle,
                   ),
                 ),
-              ),
-              comfortatext(
-                translation('Overmorrow is a beautiful minimalist weather app.',
-                    settings[0]),
-                  26),
-              Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 10),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: darken(color),
-                    borderRadius: BorderRadius.circular(20)
-                  ),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top:10, bottom: 10),
-                          child: comfortatext(translation('Features:', settings[0]), 20),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            comfortatext('\u2022${translation('accurate weather forecast', settings[0])}',22),
-                            comfortatext('\u2022${translation('open source', settings[0])}',22),
-                            comfortatext('\u2022${translation('no ads', settings[0])}',22),
-                            comfortatext('\u2022${translation('no data collected', settings[0])}',22),
-                            comfortatext('\u2022${translation('minimalist design', settings[0])}',22),
-                            comfortatext('\u2022${translation('dynamically adapting color scheme', settings[0])}',22),
-                            comfortatext('\u2022${translation('languages support', settings[0])}',22),
-                            comfortatext('\u2022${translation('place search', settings[0])}',22),
-                            comfortatext('\u2022${translation('weather for current location', settings[0])}',22),
-                            comfortatext('\u2022${translation('unit swapping', settings[0])}',22),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 10),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: darken(color),
-                      borderRadius: BorderRadius.circular(20)
-                  ),
-                  child: Column(
-                    children: [
-                    Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top:20, bottom: 10),
-                      child: comfortatext(translation('Developed by:', settings[0]), 20),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20),
-                          child: comfortatext('Balint',22),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20),
-                          child: comfortatext('(maroti.devel@gmail.com)',18),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top:10),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: TextButton(
-                                onPressed: () async { await _launchUrl('https://github.com/bmaroti9/Overmorrow'); },
-                                child: comfortatext('source code', 20, color: Colors.orange)
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  ]
-                )
-              ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 10),
-                child: Container(
+                comfortatext(
+                    translation(
+                        'Overmorrow is a beautiful minimalist weather app.',
+                        settings[0]),
+                    26),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 10),
+                  child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                         color: darken(color),
-                        borderRadius: BorderRadius.circular(20)
-                    ),
+                        borderRadius: BorderRadius.circular(20)),
                     child: Column(
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: const EdgeInsets.only(top:20, bottom: 10),
-                            child: comfortatext(translation('Weather data from:', settings[0]), 20),
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            child: comfortatext(
+                                translation('Features:', settings[0]), 20),
                           ),
-                      ),
-                      TextButton(
-                          onPressed: () async { await _launchUrl('https://www.rainviewer.com/api.html'); },
-                          child: comfortatext('www.rainviewer.com', 20, color: Colors.orange)
-                      ),
-                      TextButton(
-                          onPressed: () async { await _launchUrl('https://www.weatherapi.com/'); },
-                          child: comfortatext('www.weatherapi.com', 20, color: Colors.orange)
-                      )
-                  ]
-                ),
-              ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 10),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: darken(color),
-                      borderRadius: BorderRadius.circular(20)
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              comfortatext(
+                                  '\u2022${translation('accurate weather forecast', settings[0])}',
+                                  22),
+                              comfortatext(
+                                  '\u2022${translation('open source', settings[0])}',
+                                  22),
+                              comfortatext(
+                                  '\u2022${translation('no ads', settings[0])}',
+                                  22),
+                              comfortatext(
+                                  '\u2022${translation('no data collected', settings[0])}',
+                                  22),
+                              comfortatext(
+                                  '\u2022${translation('minimalist design', settings[0])}',
+                                  22),
+                              comfortatext(
+                                  '\u2022${translation('dynamically adapting color scheme', settings[0])}',
+                                  22),
+                              comfortatext(
+                                  '\u2022${translation('languages support', settings[0])}',
+                                  22),
+                              comfortatext(
+                                  '\u2022${translation('place search', settings[0])}',
+                                  22),
+                              comfortatext(
+                                  '\u2022${translation('weather for current location', settings[0])}',
+                                  22),
+                              comfortatext(
+                                  '\u2022${translation('unit swapping', settings[0])}',
+                                  22),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 10),
+                  child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          color: darken(color),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Column(children: [
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: const EdgeInsets.only(top:20, bottom: 10),
-                            child: comfortatext(translation('Images used:', settings[0]), 20),
+                            padding: const EdgeInsets.only(top: 20, bottom: 10),
+                            child: comfortatext(
+                                translation('Developed by:', settings[0]), 20),
                           ),
                         ),
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: imageText.length,
-                          itemExtent: 40,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: TextButton(
-                                  onPressed: () { _launchUrl(imageLink[index]); },
-                                  child: comfortatext(
-                                      translation(imageText[index], settings[0]), 20,
-                                      color: Colors.orange),
-                                ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: comfortatext('Balint', 22),
                               ),
-                            );
+                              Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: comfortatext(
+                                    '(maroti.devel@gmail.com)', 18),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: TextButton(
+                                      onPressed: () async {
+                                        await _launchUrl(
+                                            'https://github.com/bmaroti9/Overmorrow');
+                                      },
+                                      child: comfortatext('source code', 20,
+                                          color: Colors.orange)),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ])),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 10),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        color: darken(color),
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Column(children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 20, bottom: 10),
+                          child: comfortatext(
+                              translation('Weather data from:', settings[0]),
+                              20),
+                        ),
+                      ),
+                      TextButton(
+                          onPressed: () async {
+                            await _launchUrl(
+                                'https://www.rainviewer.com/api.html');
                           },
-                        )
-                      ]
+                          child: comfortatext('www.rainviewer.com', 20,
+                              color: Colors.orange)),
+                      TextButton(
+                          onPressed: () async {
+                            await _launchUrl('https://www.weatherapi.com/');
+                          },
+                          child: comfortatext('www.weatherapi.com', 20,
+                              color: Colors.orange))
+                    ]),
                   ),
                 ),
-              )
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 10),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        color: darken(color),
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 20, bottom: 10),
+                              child: comfortatext(
+                                  translation('Images used:', settings[0]), 20),
+                            ),
+                          ),
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: imageText.length,
+                            itemExtent: 40,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      _launchUrl(imageLink[index]);
+                                    },
+                                    child: comfortatext(
+                                        translation(
+                                            imageText[index], settings[0]),
+                                        20,
+                                        color: Colors.orange),
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                        ]),
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-      )
-    );
+        ));
   }
 }
 

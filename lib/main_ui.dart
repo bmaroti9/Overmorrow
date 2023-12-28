@@ -137,14 +137,21 @@ class ParallaxBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/backdrops/${data!.current.backdrop}'),
-          fit: BoxFit.cover,
+    if (data.settings[5] == 'normal') {
+      return Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/backdrops/${data!.current.backdrop}'),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-    );
+      );
+    }
+    else {
+      return Container(
+        color: darken(data.current.backcolor, 0.05),
+      );
+    }
   }
 }
 
@@ -397,8 +404,8 @@ Widget NewTimes(var data) => SliverList(
                       children: [
                         aqiDataPoints("pm2.5", data.current.pm2_5, data.current.backcolor),
                         aqiDataPoints("pm10", data.current.pm10, data.current.backcolor),
-                        aqiDataPoints("o3", data.current.o3, data.current.backcolor),
-                        aqiDataPoints("No2", data.current.no2, data.current.backcolor),
+                        aqiDataPoints("O3", data.current.o3, data.current.backcolor),
+                        aqiDataPoints("NO2", data.current.no2, data.current.backcolor),
                       ],
                     ),
                   )

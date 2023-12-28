@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
   Future<Widget> getDays(bool recall) async {
     try {
 
-      List<String> unitsUsed = await getSettingsUsed();
+      List<String> settings = await getSettingsUsed();
 
       if (startup) {
         proposedLoc = await getLastPlace();
@@ -112,25 +112,25 @@ class _MyAppState extends State<MyApp> {
               position = (await Geolocator.getLastKnownPosition())!;
             } on Error {
               return dumbySearch(errorMessage: translation(
-                  "Unable to locate device", unitsUsed[0]),
+                  "Unable to locate device", settings[0]),
                 updateLocation: updateLocation,
                 icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
                 place: absoluteProposed,
-                settings: unitsUsed,);
+                settings: settings,);
             }
           } on LocationServiceDisabledException {
-            return dumbySearch(errorMessage: translation("location services are disabled.", unitsUsed[0]),
+            return dumbySearch(errorMessage: translation("location services are disabled.", settings[0]),
               updateLocation: updateLocation,
               icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-              place: absoluteProposed, settings: unitsUsed,);
+              place: absoluteProposed, settings: settings,);
           }
           absoluteProposed = '${position.latitude},${position.longitude}';
         }
         else {
-          return dumbySearch(errorMessage: translation(loc_status, unitsUsed[0]),
+          return dumbySearch(errorMessage: translation(loc_status, settings[0]),
             updateLocation: updateLocation,
             icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-            place: absoluteProposed, settings: unitsUsed,);
+            place: absoluteProposed, settings: settings,);
         }
       }
 
@@ -155,19 +155,19 @@ class _MyAppState extends State<MyApp> {
         //var huhu = await hihi.last;
 
       } on TimeoutException {
-        return dumbySearch(errorMessage: translation("Weak or no wifi connection", unitsUsed[0]),
+        return dumbySearch(errorMessage: translation("Weak or no wifi connection", settings[0]),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: absoluteProposed, settings: unitsUsed,);
+          place: absoluteProposed, settings: settings,);
       } on HttpExceptionWithStatus catch (hihi){
         print(hihi.toString());
         if (hihi.toString().contains("statusCode: 400")) {
           return dumbySearch(
-            errorMessage: '${translation('Place not found', unitsUsed[0])}: $proposedLoc',
+            errorMessage: '${translation('Place not found', settings[0])}: $proposedLoc',
             updateLocation: updateLocation,
             icon: const Icon(Icons.location_disabled, color: WHITE, size: 30,),
             place: absoluteProposed,
-            settings: unitsUsed,);
+            settings: settings,);
         }
         else if (hihi.toString().contains("statusCode: ")) {
           String replacement = "<api_key>";
@@ -175,17 +175,17 @@ class _MyAppState extends State<MyApp> {
           String newStr = hihi.toString().replaceAll(wapi_Key, replacement);
           return dumbySearch(errorMessage: "general error at place 1: $newStr", updateLocation: updateLocation,
             icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-            place: absoluteProposed, settings: unitsUsed,);
+            place: absoluteProposed, settings: settings,);
         }
       } on SocketException {
-        return dumbySearch(errorMessage: translation("Not connected to the internet", unitsUsed[0]),
+        return dumbySearch(errorMessage: translation("Not connected to the internet", settings[0]),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: absoluteProposed, settings: unitsUsed,);
+          place: absoluteProposed, settings: settings,);
       } on Error catch (e) {
         return dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: absoluteProposed, settings: unitsUsed,);
+          place: absoluteProposed, settings: settings,);
       }
 
       //var jsonbody = jsonDecode(response.body);
@@ -200,15 +200,15 @@ class _MyAppState extends State<MyApp> {
       } on Error catch(e) {
         return dumbySearch(errorMessage: "error with the radar: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: absoluteProposed, settings: unitsUsed,);
+          place: absoluteProposed, settings: settings,);
       }
 
-      return WeatherPage(data: dayforcast.WeatherData.fromJson(jsonbody, unitsUsed, radar),
+      return WeatherPage(data: dayforcast.WeatherData.fromJson(jsonbody, settings, radar),
           updateLocation: updateLocation);
 
     } catch (e) {
       proposedLoc = await getLastPlace();
-      List<String> unitsUsed = await getSettingsUsed();
+      List<String> settings = await getSettingsUsed();
 
       print("ERRRRRRRRROR");
 
@@ -217,7 +217,7 @@ class _MyAppState extends State<MyApp> {
       if (recall) {
         return dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: proposedLoc, settings: unitsUsed,);
+          place: proposedLoc, settings: settings,);
       }
       else {
         return getDays(true);
