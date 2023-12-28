@@ -121,7 +121,52 @@ class WeatherPage extends StatelessWidget {
                 ),
                 NewTimes(data),
                 buildHihiDays(data),
-                const SliverPadding(padding: EdgeInsets.only(bottom: 20))
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: WHITE, width: 1.2)
+                      ),
+                      child: Column(
+                        children: [
+                          comfortatext('weather provider', 18),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: DropdownButton(
+                              underline: Container(),
+                              borderRadius: BorderRadius.circular(20),
+                              icon: const Padding(
+                                padding: EdgeInsets.only(left:5),
+                                child: Icon(Icons.arrow_drop_down_circle, color: WHITE,),
+                              ),
+                              style: GoogleFonts.comfortaa(
+                                color: WHITE,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w300,
+                              ),
+                              //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
+                              value: 'weatherapi.com',
+                              items: ['weatherapi.com', 'openweathermap.com'].map((item) {
+                                return DropdownMenuItem(
+                                  value: item,
+                                  child: Text(item),
+                                );
+                              }).toList(),
+                              onChanged: (Object? value) {},
+                              isExpanded: true,
+                              dropdownColor: darken(data.current.backcolor, 0.1),
+                              elevation: 0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SliverPadding(padding: EdgeInsets.only(bottom: 30))
               ],
             ),
           ],

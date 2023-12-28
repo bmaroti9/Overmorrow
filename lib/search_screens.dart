@@ -24,6 +24,7 @@ import 'package:hihi_haha/settings_page.dart';
 import 'package:hihi_haha/ui_helper.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 
+import 'api_key.dart';
 import 'decoders/decode_wapi.dart';
 
 Widget searchBar(Color color, List<String> recommend,
@@ -454,6 +455,9 @@ class dumbySearch extends StatelessWidget {
     Size size = view.physicalSize / view.devicePixelRatio;
     double safeHeight = size.height;
 
+    const replacement = "<api_key>";
+    String newStr = errorMessage.toString().replaceAll(wapi_Key, replacement);
+
     return Scaffold(
       drawer: MyDrawer(color: color, settings: settings),
       backgroundColor: darken(color, 0.4),
@@ -488,7 +492,7 @@ class dumbySearch extends StatelessWidget {
                           SizedBox(
                             width: 250,
                             child: Center(child: Text(
-                              errorMessage,
+                              newStr,
                               style: const TextStyle(
                                 color: WHITE,
                                 fontSize: 21,

@@ -105,7 +105,6 @@ class _MyAppState extends State<MyApp> {
           Position position;
           try {
             position = await Geolocator.getCurrentPosition(
-              //forceAndroidLocationManager: true,
               desiredAccuracy: LocationAccuracy.low, timeLimit: const Duration(seconds: 4));
           } on TimeoutException {
             try {
@@ -146,8 +145,9 @@ class _MyAppState extends State<MyApp> {
         'alerts': 'no',
       };
       var url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
+
       try {
-        file = await cacheManager2.getSingleFile(url.toString(), key: absoluteProposed, headers: {'cache-control': 'private, max-age=120'}).timeout(const Duration(seconds: 6));
+        file = await cacheManager2.getSingleFile(url.toString(), key: absoluteProposed).timeout(const Duration(seconds: 6));
         response = await file.readAsString();
         //response = await http.post(url).timeout(
         //    const Duration(seconds: 10));
@@ -171,7 +171,6 @@ class _MyAppState extends State<MyApp> {
         }
         else if (hihi.toString().contains("statusCode: ")) {
           String replacement = "<api_key>";
-
           String newStr = hihi.toString().replaceAll(wapi_Key, replacement);
           return dumbySearch(errorMessage: "general error at place 1: $newStr", updateLocation: updateLocation,
             icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
