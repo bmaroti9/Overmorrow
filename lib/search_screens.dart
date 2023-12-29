@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -80,7 +81,7 @@ Widget searchBar(Color color, List<String> recommend,
       },
       onSubmitted: (submission) {
         isEditing = false;
-        updateLocation(submission); // Call the callback to update the location
+        updateLocation('search', submission); // Call the callback to update the location
         controller.close();
       },
 
@@ -261,13 +262,11 @@ Widget defaultSearchScreen(Color color,
               padding: const EdgeInsets.only(top: 0, bottom: 0),
               itemCount: favorites.length,
               itemBuilder: (context, index) {
-                List<String> split = favorites[index].split("/");
-                if (split.length < 2) {  // //for older app versions where the favorite system only had the name
-                  split.add("");
-                }
+                var split = json.decode(favorites[index]);
+                //var split = favorites[index].split("/");
                 return GestureDetector(
                   onTap: () {
-                    updateLocation(favorites[index]);
+                    updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
                     controller.close();
                   },
                   child: Container(
@@ -279,11 +278,9 @@ Widget defaultSearchScreen(Color color,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              comfortatext(split[0], 26, color: textColor),
-                              Visibility( //for older app versions where the favorite system only had the name
-                                visible: split[1] != "",
-                                  child: comfortatext(split[1], 17, color: textColor)
-                              )
+                              comfortatext(split["name"], 26, color: textColor),
+                              comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 17, color: textColor)
+                              //comfortatext(split[0], 23)
                             ],
                           ),
                         ),
@@ -342,10 +339,11 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
       padding: const EdgeInsets.only(top: 0),
       itemCount: recommend.length,
       itemBuilder: (context, index) {
-        final split = recommend[index].split("/");
+        var split = json.decode(recommend[index]);
+        //var split = recommend[index].split("/");
         return GestureDetector(
           onTap: () {
-            updateLocation(recommend[index]);
+            updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
             controller.close();
           },
           child: Container(
@@ -357,8 +355,9 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      comfortatext(split[0], 26),
-                      comfortatext(split[1], 17)
+                      comfortatext(split["name"], 26),
+                      comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 17)
+                      //comfortatext(split[0], 23)
                     ],
                   ),
                 ),
@@ -424,8 +423,8 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color)
             )
           ),
           onPressed: () async {
-            updateLocation('CurrentLocation');
-          },
+            updateLocation('40.7128, 74.0060', 'CurrentLocation');
+          },                   //^ this is new york for backup
           child: const Icon(Icons.place_outlined, color: WHITE,),
         ),
       ),
@@ -457,6 +456,7 @@ class dumbySearch extends StatelessWidget {
 
     const replacement = "<api_key>";
     String newStr = errorMessage.toString().replaceAll(wapi_Key, replacement);
+    //String newStr = newStr2.replaceAll(owm_Key, replacement);
 
     return Scaffold(
       drawer: MyDrawer(color: color, settings: settings),

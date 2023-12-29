@@ -314,13 +314,15 @@ Future<List<String>> getRecommend(String query) async {
 
   List<String> recomendations = [];
   for (var item in jsonbody) {
-    recomendations.add(item["name"] + "/" + item["region"] + ", " + generateAbbreviation(item["country"]));
+    //recomendations.add(item["name"] + "/" + item["region"] + ", " + generateAbbreviation(item["country"]));
+    //recomendations.add(item["name"]);
+    recomendations.add(json.encode(item));
   }
 
   return recomendations;
 }
 class MySearchParent extends StatefulWidget{
-  final Function(String) updateLocation;
+  final updateLocation;
   final color;
   final place;
   final controller;
@@ -351,8 +353,17 @@ class _MySearchParentState extends State<MySearchParent> {
   }
 
   List<String> getFavorites(SharedPreferences? prefs){
-    final ifnot = ['Nashville'];
+    final ifnot = ["{\n        \"id\": 2651922,\n        \"name\": \"Nashville\",\n        \"region\": \"Tennessee\",\n        \"country\": \"United States of America\",\n        \"lat\": 36.17,\n        \"lon\": -86.78,\n        \"url\": \"nashville-tennessee-united-states-of-america\"\n    }"];
     final used = prefs?.getStringList('favorites') ?? ifnot;
+    int n = 0;
+    while (n < used.length){
+      try {
+        jsonDecode(used[n]);
+        n += 1;
+      } on FormatException {
+        used.remove(used[n]);
+      }
+    }
     return used;
   }
 

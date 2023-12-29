@@ -288,8 +288,15 @@ class WeatherData {
   final List<Day> days;
   final Current current;
   final String place;
+  final String provider;
 
-  WeatherData({required this.days, required this.current, required this.place, required this.settings});
+  WeatherData({
+    required this.days,
+    required this.current,
+    required this.place,
+    required this.settings,
+    required this.provider,
+  });
 
   static WeatherData fromJson(jsonbody, settings, radar) {
 
@@ -309,7 +316,8 @@ class WeatherData {
         days: days,
         current: current,
         place: jsonbody["location"]["name"],
-        settings: settings
+        settings: settings,
+        provider: 'weatherapi.com',
     );
   }
 }

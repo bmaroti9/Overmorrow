@@ -56,7 +56,7 @@ class WeatherPage extends StatelessWidget {
       drawer: MyDrawer(color: data.current.backcolor, settings: data.settings),
       body: RefreshIndicator(
         onRefresh: () async {
-          await updateLocation(LOCATION);
+          await updateLocation(LOCATION, data.place);
         },
         backgroundColor: WHITE,
         color: data.current.backcolor,
@@ -123,7 +123,7 @@ class WeatherPage extends StatelessWidget {
                 buildHihiDays(data),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.only(left: 20, top:30, right: 20),
                     child: Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -148,14 +148,17 @@ class WeatherPage extends StatelessWidget {
                                 fontWeight: FontWeight.w300,
                               ),
                               //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
-                              value: 'weatherapi.com',
-                              items: ['weatherapi.com', 'openweathermap.com'].map((item) {
+                              value: data.provider.toString(),
+                              items: ['weatherapi.com'].map((item) {
                                 return DropdownMenuItem(
                                   value: item,
                                   child: Text(item),
                                 );
                               }).toList(),
-                              onChanged: (Object? value) {},
+                              onChanged: (String? value) async {
+                                SetData('weather_provider', value!);
+                                updateLocation(LOCATION, data.place);
+                              },
                               isExpanded: true,
                               dropdownColor: darken(data.current.backcolor, 0.1),
                               elevation: 0,

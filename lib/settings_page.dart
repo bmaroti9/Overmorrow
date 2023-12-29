@@ -80,6 +80,12 @@ Future<String> getLastPlace() async {
   return used;
 }
 
+Future<String> getWeatherProvider() async {
+  final prefs = await SharedPreferences.getInstance();
+  final used = prefs.getString('weather_provider') ?? 'weatherapi.com';
+  return used;
+}
+
 SetData(String name, String to) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString(name, to);

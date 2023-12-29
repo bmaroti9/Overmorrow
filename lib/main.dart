@@ -50,15 +50,17 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-
 class _MyAppState extends State<MyApp> {
 
-  String proposedLoc = 'New York';
+  String proposedLoc = '40.7128, 74.0060';
+  String backupName = "New York";
+
   bool startup = true;
 
-  void updateLocation(String newLocation) {
+  void updateLocation(String coordinates, String backup_name) {
     setState(() {
-      proposedLoc = newLocation;
+      proposedLoc = coordinates;
+      backupName = backup_name;
     });
   }
 
@@ -91,6 +93,7 @@ class _MyAppState extends State<MyApp> {
     try {
 
       List<String> settings = await getSettingsUsed();
+      //String weather_provider = await getWeatherProvider();
 
       if (startup) {
         proposedLoc = await getLastPlace();
@@ -99,7 +102,8 @@ class _MyAppState extends State<MyApp> {
 
       String absoluteProposed = proposedLoc;
 
-      if (proposedLoc == 'CurrentLocation') {
+      if (backupName == 'CurrentLocation' || proposedLoc == 'CurrentLocation') {
+        backupName = 'CurrentLocation'; //if the proposed loc is the current location that the backup will be too
         String loc_status = await isLocationSafe();
         if (loc_status == "enabled") {
           Position position;
@@ -114,14 +118,14 @@ class _MyAppState extends State<MyApp> {
                   "Unable to locate device", settings[0]),
                 updateLocation: updateLocation,
                 icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-                place: absoluteProposed,
+                place: backupName,
                 settings: settings,);
             }
           } on LocationServiceDisabledException {
             return dumbySearch(errorMessage: translation("location services are disabled.", settings[0]),
               updateLocation: updateLocation,
               icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-              place: absoluteProposed, settings: settings,);
+              place: backupName, settings: settings,);
           }
           absoluteProposed = '${position.latitude},${position.longitude}';
         }
@@ -129,22 +133,38 @@ class _MyAppState extends State<MyApp> {
           return dumbySearch(errorMessage: translation(loc_status, settings[0]),
             updateLocation: updateLocation,
             icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-            place: absoluteProposed, settings: settings,);
+            place: backupName, settings: settings,);
+        }
+      }
+      if (proposedLoc == 'search') {
+        List<dynamic> x = await getRecommend(backupName);
+        if (x.length > 0) {
+          var split = json.decode(x[0]);
+          absoluteProposed = "${split["lat"]},${split["lon"]}";
+        } else {
+          return dumbySearch(
+            errorMessage: '${translation('Place not found', settings[0])}: $backupName',
+            updateLocation: updateLocation,
+            icon: const Icon(Icons.location_disabled, color: WHITE, size: 30,),
+            place: backupName, settings: settings,);
         }
       }
 
       var response;
       var file;
 
-      print('got here');
-      var params = {
+      var params;
+      var url;
+
+      params = {
         'key': wapi_Key,
         'q': absoluteProposed,
         'days': '3 ',
         'aqi': 'yes',
         'alerts': 'no',
       };
-      var url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
+      url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
+
 
       try {
         file = await cacheManager2.getSingleFile(url.toString(), key: absoluteProposed).timeout(const Duration(seconds: 6));
@@ -158,40 +178,28 @@ class _MyAppState extends State<MyApp> {
         return dumbySearch(errorMessage: translation("Weak or no wifi connection", settings[0]),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: absoluteProposed, settings: settings,);
+          place: backupName, settings: settings,);
       } on HttpExceptionWithStatus catch (hihi){
         print(hihi.toString());
-        if (hihi.toString().contains("statusCode: 400")) {
-          return dumbySearch(
-            errorMessage: '${translation('Place not found', settings[0])}: $proposedLoc',
-            updateLocation: updateLocation,
-            icon: const Icon(Icons.location_disabled, color: WHITE, size: 30,),
-            place: absoluteProposed,
-            settings: settings,);
-        }
-        else if (hihi.toString().contains("statusCode: ")) {
-          String replacement = "<api_key>";
-          String newStr = hihi.toString().replaceAll(wapi_Key, replacement);
-          return dumbySearch(errorMessage: "general error at place 1: $newStr", updateLocation: updateLocation,
-            icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-            place: absoluteProposed, settings: settings,);
-        }
+        return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
+          icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
+          place: backupName, settings: settings,);
       } on SocketException {
         return dumbySearch(errorMessage: translation("Not connected to the internet", settings[0]),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: absoluteProposed, settings: settings,);
+          place: backupName, settings: settings,);
       } on Error catch (e) {
         return dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: absoluteProposed, settings: settings,);
+          place: backupName, settings: settings,);
       }
 
       //var jsonbody = jsonDecode(response.body);
       var jsonbody = jsonDecode(response);
 
-      dayforcast.LOCATION = proposedLoc;
-      SetData('LastPlace', proposedLoc);
+      dayforcast.LOCATION = backupName;
+      SetData('LastPlace', backupName == 'CurrentLocation' ? 'CurrentLocation' : absoluteProposed);
 
       List<String> radar;
       try {
@@ -199,7 +207,7 @@ class _MyAppState extends State<MyApp> {
       } on Error catch(e) {
         return dumbySearch(errorMessage: "error with the radar: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: absoluteProposed, settings: settings,);
+          place: backupName, settings: settings,);
       }
 
       return WeatherPage(data: dayforcast.WeatherData.fromJson(jsonbody, settings, radar),
