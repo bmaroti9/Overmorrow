@@ -56,7 +56,7 @@ class WeatherPage extends StatelessWidget {
       drawer: MyDrawer(color: data.current.backcolor, settings: data.settings),
       body: RefreshIndicator(
         onRefresh: () async {
-          await updateLocation(LOCATION, data.place);
+          await updateLocation("${data.current.lat}, ${data.current.lng}", LOCATION);
         },
         backgroundColor: WHITE,
         color: data.current.backcolor,
@@ -157,7 +157,7 @@ class WeatherPage extends StatelessWidget {
                               }).toList(),
                               onChanged: (String? value) async {
                                 SetData('weather_provider', value!);
-                                updateLocation(LOCATION, data.place);
+                                await updateLocation("${data.current.lat}, ${data.current.lng}", LOCATION);
                               },
                               isExpanded: true,
                               dropdownColor: darken(data.current.backcolor, 0.1),

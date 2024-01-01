@@ -298,7 +298,7 @@ class WeatherData {
     required this.provider,
   });
 
-  static WeatherData fromJson(jsonbody, settings, radar) {
+  static WeatherData fromJson(jsonbody, settings, radar, placeName) {
 
     var forecastlist = jsonbody['forecast']['forecastday'];
     var timenow = jsonbody["location"]["localtime_epoch"];
@@ -315,7 +315,7 @@ class WeatherData {
     return WeatherData(
         days: days,
         current: current,
-        place: jsonbody["location"]["name"],
+        place: placeName,
         settings: settings,
         provider: 'weatherapi.com',
     );

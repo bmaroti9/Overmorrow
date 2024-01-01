@@ -96,14 +96,17 @@ class _MyAppState extends State<MyApp> {
       //String weather_provider = await getWeatherProvider();
 
       if (startup) {
-        proposedLoc = await getLastPlace();
+        List<String> n = await getLastPlace();
+        print(n);
+        proposedLoc = n[1];
+        backupName = n[0];
         startup = false;
       }
 
       String absoluteProposed = proposedLoc;
+      bool isItCurrentLocation = false;
 
-      if (backupName == 'CurrentLocation' || proposedLoc == 'CurrentLocation') {
-        backupName = 'CurrentLocation'; //if the proposed loc is the current location that the backup will be too
+      if (backupName == 'CurrentLocation') {
         String loc_status = await isLocationSafe();
         if (loc_status == "enabled") {
           Position position;
@@ -127,7 +130,11 @@ class _MyAppState extends State<MyApp> {
               icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
               place: backupName, settings: settings,);
           }
-          absoluteProposed = '${position.latitude},${position.longitude}';
+
+          backupName = '${position.latitude},${position.longitude}';
+          proposedLoc = 'search';
+          isItCurrentLocation = true;
+          print('True');
         }
         else {
           return dumbySearch(errorMessage: translation(loc_status, settings[0]),
@@ -141,6 +148,7 @@ class _MyAppState extends State<MyApp> {
         if (x.length > 0) {
           var split = json.decode(x[0]);
           absoluteProposed = "${split["lat"]},${split["lon"]}";
+          backupName = split["name"];
         } else {
           return dumbySearch(
             errorMessage: '${translation('Place not found', settings[0])}: $backupName',
@@ -198,8 +206,12 @@ class _MyAppState extends State<MyApp> {
       //var jsonbody = jsonDecode(response.body);
       var jsonbody = jsonDecode(response);
 
-      dayforcast.LOCATION = backupName;
-      SetData('LastPlace', backupName == 'CurrentLocation' ? 'CurrentLocation' : absoluteProposed);
+      String RealName = backupName.toString();
+      if (isItCurrentLocation) {
+        backupName = 'CurrentLocation';
+      }
+      LOCATION = backupName;
+      await setLastPlace(backupName, absoluteProposed);
 
       List<String> radar;
       try {
@@ -210,11 +222,10 @@ class _MyAppState extends State<MyApp> {
           place: backupName, settings: settings,);
       }
 
-      return WeatherPage(data: dayforcast.WeatherData.fromJson(jsonbody, settings, radar),
+      return WeatherPage(data: dayforcast.WeatherData.fromJson(jsonbody, settings, radar, RealName),
           updateLocation: updateLocation);
 
     } catch (e) {
-      proposedLoc = await getLastPlace();
       List<String> settings = await getSettingsUsed();
 
       print("ERRRRRRRRROR");
@@ -224,7 +235,7 @@ class _MyAppState extends State<MyApp> {
       if (recall) {
         return dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: proposedLoc, settings: settings,);
+          place: backupName, settings: settings,);
       }
       else {
         return getDays(true);
@@ -253,6 +264,7 @@ class _MyAppState extends State<MyApp> {
               //return comfortatext('Error fetching data', 20);
             }
             //return buildWholeThing(snapshot.data);
+            print(('build', LOCATION));
             return snapshot.data!;
           },
         )),

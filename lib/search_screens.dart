@@ -384,6 +384,7 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
 }
 
 Widget LocationButton(Function updateProg, Function updateLocation, Color color) {
+  print(LOCATION);
   if (LOCATION == 'CurrentLocation') {
     return Padding(
       padding: const EdgeInsets.only(right: 6, top: 3, bottom: 3),
@@ -399,9 +400,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color)
                   borderRadius: BorderRadius.circular(20)
               )
           ),
-          onPressed: () async {
-            updateLocation('CurrentLocation');
-          },
+          onPressed: () async {},
           child: Icon(Icons.place_outlined, color: color,),
         ),
       ),

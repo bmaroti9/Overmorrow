@@ -74,10 +74,17 @@ Future<String> isLocationSafe() async {
   return "failed to access gps";
 }
 
-Future<String> getLastPlace() async {
+Future<List<String>> getLastPlace() async {
   final prefs = await SharedPreferences.getInstance();
-  final used = prefs.getString('LastPlace') ?? 'Szeged';
-  return used;
+  final place = prefs.getString('LastPlaceN') ?? 'New York';
+  final cord = prefs.getString('LastCord') ?? '40.7128, 74.0060';
+  return [place, cord];
+}
+
+setLastPlace(String place, String cord) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('LastPlaceN', place);
+  await prefs.setString('LastCord', cord);
 }
 
 Future<String> getWeatherProvider() async {
