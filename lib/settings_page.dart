@@ -22,6 +22,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/decoders/decode_wapi.dart';
 import 'package:hihi_haha/donation_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'languages.dart';
 import 'main.dart';
 import 'ui_helper.dart';
 
@@ -39,6 +40,13 @@ Map<String, List<String>> settingSwitches = {
   'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa'],
   'Color mode' : ['normal', 'zen', 'high contrast'],
 };
+
+
+String translation(String text, String language) {
+  int index = languageIndex[language] ?? 0;
+  String translated = mainTranslate[text]![index];
+  return translated;
+}
 
 Future<List<String>> getSettingsUsed() async {
   List<String> settings = [];

@@ -56,7 +56,7 @@ class WeatherPage extends StatelessWidget {
       drawer: MyDrawer(color: data.current.backcolor, settings: data.settings),
       body: RefreshIndicator(
         onRefresh: () async {
-          await updateLocation("${data.current.lat}, ${data.current.lng}", LOCATION);
+          await updateLocation("${data.current.lat}, ${data.current.lng}", data.real_loc);
         },
         backgroundColor: WHITE,
         color: data.current.backcolor,
@@ -115,7 +115,7 @@ class WeatherPage extends StatelessWidget {
                       ),
                       MySearchParent(updateLocation: updateLocation,
                       color: data.current.backcolor, place: data.place,
-                      controller: controller, settings: data.settings,),
+                      controller: controller, settings: data.settings, real_loc: data.real_loc,),
                     ],
                   ),
                 ),
@@ -149,7 +149,7 @@ class WeatherPage extends StatelessWidget {
                               ),
                               //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
                               value: data.provider.toString(),
-                              items: ['weatherapi.com'].map((item) {
+                              items: ['weatherapi.com', 'met.norway'].map((item) {
                                 return DropdownMenuItem(
                                   value: item,
                                   child: Text(item),
@@ -157,7 +157,7 @@ class WeatherPage extends StatelessWidget {
                               }).toList(),
                               onChanged: (String? value) async {
                                 SetData('weather_provider', value!);
-                                await updateLocation("${data.current.lat}, ${data.current.lng}", LOCATION);
+                                await updateLocation("${data.current.lat}, ${data.current.lng}", data.real_loc);
                               },
                               isExpanded: true,
                               dropdownColor: darken(data.current.backcolor, 0.1),

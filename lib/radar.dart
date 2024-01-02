@@ -21,6 +21,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:hihi_haha/settings_page.dart';
 import 'package:hihi_haha/ui_helper.dart';
 import 'package:latlong2/latlong.dart';
 

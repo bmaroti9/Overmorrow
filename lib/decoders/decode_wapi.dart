@@ -19,8 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
-
+import '../settings_page.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart' as weather_refactor;
@@ -28,7 +27,6 @@ import '../languages.dart';
 
 //decodes the whole response from the weatherapi.com api_call
 
-String LOCATION = 'Szeged';
 bool RandomSwitch = false;
 
 String convertTime(String input) {
@@ -84,12 +82,6 @@ double unit_coversion(double value, String unit) {
   List<double> p = weather_refactor.conversionTable[unit] ?? [0, 0];
   double a = p[0] + value * p[1];
   return a;
-}
-
-String translation(String text, String language) {
-  int index = languageIndex[language] ?? 0;
-  String translated = mainTranslate[text]![index];
-  return translated;
 }
 
 double temp_multiply_for_scale(int temp, String unit) {
@@ -289,6 +281,7 @@ class WeatherData {
   final Current current;
   final String place;
   final String provider;
+  final String real_loc;
 
   WeatherData({
     required this.days,
@@ -296,9 +289,10 @@ class WeatherData {
     required this.place,
     required this.settings,
     required this.provider,
+    required this.real_loc,
   });
 
-  static WeatherData fromJson(jsonbody, settings, radar, placeName) {
+  static WeatherData fromJson(jsonbody, settings, radar, placeName, real_loc) {
 
     var forecastlist = jsonbody['forecast']['forecastday'];
     var timenow = jsonbody["location"]["localtime_epoch"];
@@ -318,6 +312,7 @@ class WeatherData {
         place: placeName,
         settings: settings,
         provider: 'weatherapi.com',
+        real_loc: real_loc
     );
   }
 }

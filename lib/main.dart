@@ -27,11 +27,10 @@ import 'package:hihi_haha/ui_helper.dart';
 import 'dart:convert';
 import 'api_key.dart';
 import 'caching.dart';
-import 'decoders/decode_wapi.dart';
 import 'main_ui.dart';
 import 'package:flutter/services.dart';
 
-import 'decoders/decode_wapi.dart' as dayforcast;
+import 'decoders/decode_wapi.dart' as wapi;
 import 'settings_page.dart';
 
 void main() {
@@ -93,7 +92,8 @@ class _MyAppState extends State<MyApp> {
     try {
 
       List<String> settings = await getSettingsUsed();
-      //String weather_provider = await getWeatherProvider();
+      String weather_provider = await getWeatherProvider();
+      print(weather_provider);
 
       if (startup) {
         List<String> n = await getLastPlace();
@@ -164,18 +164,27 @@ class _MyAppState extends State<MyApp> {
       var params;
       var url;
 
-      params = {
-        'key': wapi_Key,
-        'q': absoluteProposed,
-        'days': '3 ',
-        'aqi': 'yes',
-        'alerts': 'no',
-      };
-      url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
-
+      if (weather_provider == 'met.norway') {
+        List<String> split = absoluteProposed.split(', ');
+        params = {
+          'lat': split[0],
+          'lon': split[1],
+        };
+        url = Uri.http('api.met.no', 'weatherapi/locationforecast/2.0/complete', params);
+        //print('ifdfjdfjshfksjflkjflkjlksjf');
+      } else {
+        params = {
+          'key': wapi_Key,
+          'q': absoluteProposed,
+          'days': '3 ',
+          'aqi': 'yes',
+          'alerts': 'no',
+        };
+        url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
+      }
 
       try {
-        file = await cacheManager2.getSingleFile(url.toString(), key: absoluteProposed).timeout(const Duration(seconds: 6));
+        file = await cacheManager2.getSingleFile(url.toString(), key: "$absoluteProposed,$weather_provider").timeout(const Duration(seconds: 6));
         response = await file.readAsString();
         //response = await http.post(url).timeout(
         //    const Duration(seconds: 10));
@@ -205,12 +214,13 @@ class _MyAppState extends State<MyApp> {
 
       //var jsonbody = jsonDecode(response.body);
       var jsonbody = jsonDecode(response);
+      //print(response);
 
       String RealName = backupName.toString();
       if (isItCurrentLocation) {
         backupName = 'CurrentLocation';
       }
-      LOCATION = backupName;
+
       await setLastPlace(backupName, absoluteProposed);
 
       List<String> radar;
@@ -222,7 +232,7 @@ class _MyAppState extends State<MyApp> {
           place: backupName, settings: settings,);
       }
 
-      return WeatherPage(data: dayforcast.WeatherData.fromJson(jsonbody, settings, radar, RealName),
+      return WeatherPage(data: wapi.WeatherData.fromJson(jsonbody, settings, radar, RealName, backupName),
           updateLocation: updateLocation);
 
     } catch (e) {
@@ -264,7 +274,6 @@ class _MyAppState extends State<MyApp> {
               //return comfortatext('Error fetching data', 20);
             }
             //return buildWholeThing(snapshot.data);
-            print(('build', LOCATION));
             return snapshot.data!;
           },
         )),

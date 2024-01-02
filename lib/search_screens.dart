@@ -32,7 +32,7 @@ Widget searchBar(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
     List<String> favorites, Function updateRec, String place, var context,
-    bool prog, Function updateProg, List<String> settings) {
+    bool prog, Function updateProg, List<String> settings, String real_loc) {
 
   return FloatingSearchBar(
       hint: translation('Search...', settings[0]),
@@ -123,7 +123,7 @@ Widget searchBar(Color color, List<String> recommend,
           showIfOpened: false,
           child: Padding(
             padding: const EdgeInsets.only(top: 3, bottom: 3),
-            child: LocationButton(updateProg, updateLocation, color),
+            child: LocationButton(updateProg, updateLocation, color, real_loc),
           ),
         ),
         FloatingSearchBarAction(
@@ -383,9 +383,8 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
   );
 }
 
-Widget LocationButton(Function updateProg, Function updateLocation, Color color) {
-  print(LOCATION);
-  if (LOCATION == 'CurrentLocation') {
+Widget LocationButton(Function updateProg, Function updateLocation, Color color, String real_loc) {
+  if (real_loc == 'CurrentLocation') {
     return Padding(
       padding: const EdgeInsets.only(right: 6, top: 3, bottom: 3),
       child: AspectRatio(
@@ -504,7 +503,8 @@ class dumbySearch extends StatelessWidget {
                     ),
                   ),
                   MySearchParent(updateLocation: updateLocation,
-                    color: darken(color, 0.5), place: place, controller: controller, settings: settings,),
+                    color: darken(color, 0.5), place: place, controller: controller, settings: settings,
+                  real_loc: place,),
                 ],
               ),
             ),
