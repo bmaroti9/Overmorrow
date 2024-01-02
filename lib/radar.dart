@@ -25,7 +25,6 @@ import 'package:hihi_haha/settings_page.dart';
 import 'package:hihi_haha/ui_helper.dart';
 import 'package:latlong2/latlong.dart';
 
-import 'decoders/decode_wapi.dart';
 
 
 class RadarMap extends StatefulWidget {

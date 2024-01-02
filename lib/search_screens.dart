@@ -26,7 +26,6 @@ import 'package:hihi_haha/ui_helper.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 
 import 'api_key.dart';
-import 'decoders/decode_wapi.dart';
 
 Widget searchBar(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,

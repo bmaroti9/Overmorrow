@@ -23,7 +23,6 @@ import '../settings_page.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart' as weather_refactor;
-import '../languages.dart';
 
 //decodes the whole response from the weatherapi.com api_call
 
