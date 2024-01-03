@@ -25,8 +25,6 @@ import 'package:hihi_haha/settings_page.dart';
 import 'package:hihi_haha/ui_helper.dart';
 import 'package:latlong2/latlong.dart';
 
-
-
 class RadarMap extends StatefulWidget {
 
   final data;
@@ -100,7 +98,6 @@ class _RadarMapState extends State<RadarMap> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    //child: data.current.radar[0]
                     child: FlutterMap(
                       options: MapOptions(
                         onTap: (tapPosition, point) => {
@@ -130,7 +127,7 @@ class _RadarMapState extends State<RadarMap> {
                               : 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',
                         ),
                         TileLayer(
-                          urlTemplate: data.current.radar[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_1.png",
+                          urlTemplate: data.current.radar[currentFrameIndex][0] + "/512/{z}/{x}/{y}/8/1_1.png",
                         ),
                       ],
                     ),
@@ -308,8 +305,8 @@ class _RadarPageState extends State<RadarPage> {
   @override
   Widget build(BuildContext context) {
     double x = MediaQuery.of(context).padding.top;
-    Color main = data.current.contentColor[0] == WHITE? data.current.backcolor : WHITE;
-    Color top = data.current.contentColor[0] == WHITE? WHITE : data.current.backcolor;
+    Color main = WHITE;
+    Color top = data.current.backcolor;
     return Stack(
       children: [
         FlutterMap(
@@ -326,7 +323,7 @@ class _RadarPageState extends State<RadarPage> {
                   : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
             ),
             TileLayer(
-              urlTemplate: data.current.radar[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_1.png",
+              urlTemplate: data.current.radar[currentFrameIndex][0] + "/512/{z}/{x}/{y}/8/1_1.png",
             ),
           ],
         ),
@@ -339,7 +336,7 @@ class _RadarPageState extends State<RadarPage> {
               elevation: 10,
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(18),
                   color: top,
                 ),
                 padding: EdgeInsets.all(6),
@@ -385,7 +382,7 @@ class _RadarPageState extends State<RadarPage> {
                                   borderRadius: BorderRadius.circular(13),
                                   elevation: 8,
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(13),
+                                    borderRadius: BorderRadius.circular(12),
                                     child: Container(
                                       height: 48,
                                       color: top,

@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<List<String>> getRadar() async {
+  Future<List<List<String>>> getRadar() async {
     const String url = 'https://api.rainviewer.com/public/weather-maps.json';
 
     var file = await cacheManager2.getSingleFile(url.toString());
@@ -83,13 +83,23 @@ class _MyAppState extends State<MyApp> {
     //const atEnd = "/512/2/-32/108/3/1_1.png";
     //const atEnd = "/512/2/2/1/8/1_1.png";
 
-    final radar = data["radar"]["past"];
+    int timenow = DateTime.now().toUtc().microsecond;
 
-    List<String> images = [];
+    List<List<String>> images = [];
 
-    for (var x in radar) {
-      //Image hihi = Image.network(host + x["path"] + atEnd);
-      images.add(host + x["path"]);
+    final past = data["radar"]["past"];
+    final future = data["radar"]["nowcast"];
+
+    for (var x in past) {
+      DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"]);
+      print("${time.hour}h ${time.minute}m");
+      images.add([host + x["path"], "-${time.hour}h ${time.minute}m"]);
+    }
+
+    for (var x in future) {
+      int dif = x["time"] * 1000 - timenow;
+      DateTime time = DateTime.fromMicrosecondsSinceEpoch(dif);
+      images.add([host + x["path"], "-${time.hour}h ${time.minute}m"]);
     }
 
     return images;
@@ -232,10 +242,11 @@ class _MyAppState extends State<MyApp> {
 
       await setLastPlace(backupName, absoluteProposed);
 
-      List<String> radar;
+      List<List<String>> radar;
       try {
         radar = await getRadar();
-      } on Error catch(e) {
+      } on Error catch(e, stacktrace) {
+        print(stacktrace);
         return dumbySearch(errorMessage: "error with the radar: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
           place: backupName, settings: settings,);

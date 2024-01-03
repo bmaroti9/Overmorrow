@@ -331,7 +331,7 @@ class Current {
   final double lat;
   final double lng;
 
-  final List<String> radar;
+  final List<List<String>> radar;
 
   final String sunrise;
   final String sunset;
