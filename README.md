@@ -13,9 +13,10 @@ Beautiful minimalist weather app.
 -no ads\
 -no data collected\
 -minimalist design\
+-detailed forecast\
+-sunrise sunset times\
+-air quality insights\
+-full screen radar\
+-hourly weather for every day\
 -dynamically adapting color scheme\
--languages support\
--place search\
--weather for current location\
--unit swapping\
-
+-languages support

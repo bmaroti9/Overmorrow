@@ -192,11 +192,11 @@ List<Color> contentColorCorrection(name, isday) {
 
 
 class Hour {
-  final temp;
-  final icon;
-  final time;
-  final text;
-  final precip;
+  final int temp;
+  final String icon;
+  final String time;
+  final String text;
+  final double precip;
 
   const Hour(
   {

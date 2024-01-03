@@ -38,8 +38,15 @@ void main() {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(MyApp()));
+  final data = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
+  final ratio = WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
+
+  if (data.shortestSide / ratio < 600) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+        .then((value) => runApp(MyApp()));
+  } else {
+    runApp(const MyApp());
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -93,7 +100,7 @@ class _MyAppState extends State<MyApp> {
 
       List<String> settings = await getSettingsUsed();
       String weather_provider = await getWeatherProvider();
-      print(weather_provider);
+      //print(weather_provider);
 
       if (startup) {
         List<String> n = await getLastPlace();
@@ -164,6 +171,7 @@ class _MyAppState extends State<MyApp> {
       var params;
       var url;
 
+      /*
       if (weather_provider == 'met.norway') {
         List<String> split = absoluteProposed.split(', ');
         params = {
@@ -172,16 +180,17 @@ class _MyAppState extends State<MyApp> {
         };
         url = Uri.http('api.met.no', 'weatherapi/locationforecast/2.0/complete', params);
         //print('ifdfjdfjshfksjflkjflkjlksjf');
-      } else {
-        params = {
-          'key': wapi_Key,
-          'q': absoluteProposed,
-          'days': '3 ',
-          'aqi': 'yes',
-          'alerts': 'no',
-        };
-        url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
-      }
+
+       */
+      params = {
+        'key': wapi_Key,
+        'q': absoluteProposed,
+        'days': '3 ',
+        'aqi': 'yes',
+        'alerts': 'no',
+      };
+      url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
+
 
       try {
         file = await cacheManager2.getSingleFile(url.toString(), key: "$absoluteProposed,$weather_provider").timeout(const Duration(seconds: 6));
