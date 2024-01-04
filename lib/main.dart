@@ -25,12 +25,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:hihi_haha/search_screens.dart';
 import 'package:hihi_haha/ui_helper.dart';
 import 'dart:convert';
-import 'api_key.dart';
 import 'caching.dart';
+import 'decoders/extra_info.dart';
 import 'main_ui.dart';
 import 'package:flutter/services.dart';
 
-import 'decoders/decode_wapi.dart' as wapi;
 import 'settings_page.dart';
 
 void main() {
@@ -70,50 +69,15 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<List<List<String>>> getRadar() async {
-    const String url = 'https://api.rainviewer.com/public/weather-maps.json';
-
-    var file = await cacheManager2.getSingleFile(url.toString());
-    var response = await file.readAsString();
-    //final response = await http.get(Uri.parse(url));
-    //print('Response data: ${response.body}');
-    final Map<String, dynamic> data = json.decode(response);
-
-    final String host = data["host"];
-    //const atEnd = "/512/2/-32/108/3/1_1.png";
-    //const atEnd = "/512/2/2/1/8/1_1.png";
-
-    int timenow = DateTime.now().toUtc().microsecond;
-
-    List<List<String>> images = [];
-
-    final past = data["radar"]["past"];
-    final future = data["radar"]["nowcast"];
-
-    for (var x in past) {
-      DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"]);
-      print("${time.hour}h ${time.minute}m");
-      images.add([host + x["path"], "-${time.hour}h ${time.minute}m"]);
-    }
-
-    for (var x in future) {
-      int dif = x["time"] * 1000 - timenow;
-      DateTime time = DateTime.fromMicrosecondsSinceEpoch(dif);
-      images.add([host + x["path"], "-${time.hour}h ${time.minute}m"]);
-    }
-
-    return images;
-  }
-
   Future<Widget> getDays(bool recall) async {
     try {
 
       List<String> settings = await getSettingsUsed();
-      String weather_provider = await getWeatherProvider();
+      //String weather_provider = await getWeatherProvider();
       //print(weather_provider);
 
       if (startup) {
-        List<String> n = await getLastPlace();
+        List<String> n = await getLastPlace();  //loads the last place you visited
         print(n);
         proposedLoc = n[1];
         backupName = n[0];
@@ -175,40 +139,15 @@ class _MyAppState extends State<MyApp> {
         }
       }
 
-      var response;
-      var file;
+      String RealName = backupName.toString();
+      if (isItCurrentLocation) {
+        backupName = 'CurrentLocation';
+      }
 
-      var params;
-      var url;
-
-      /*
-      if (weather_provider == 'met.norway') {
-        List<String> split = absoluteProposed.split(', ');
-        params = {
-          'lat': split[0],
-          'lon': split[1],
-        };
-        url = Uri.http('api.met.no', 'weatherapi/locationforecast/2.0/complete', params);
-        //print('ifdfjdfjshfksjflkjflkjlksjf');
-
-       */
-      params = {
-        'key': wapi_Key,
-        'q': absoluteProposed,
-        'days': '3 ',
-        'aqi': 'yes',
-        'alerts': 'no',
-      };
-      url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
-
+      var weatherdata;
 
       try {
-        file = await cacheManager2.getSingleFile(url.toString(), key: "$absoluteProposed,$weather_provider").timeout(const Duration(seconds: 6));
-        response = await file.readAsString();
-        //response = await http.post(url).timeout(
-        //    const Duration(seconds: 10));
-        //var hihi = x.getFileStream(url.toString());
-        //var huhu = await hihi.last;
+        weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed);
 
       } on TimeoutException {
         return dumbySearch(errorMessage: translation("Weak or no wifi connection", settings[0]),
@@ -225,34 +164,17 @@ class _MyAppState extends State<MyApp> {
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
           place: backupName, settings: settings,);
-      } on Error catch (e) {
+      } on Error catch (e, stacktrace) {
+        print(stacktrace);
         return dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
           place: backupName, settings: settings,);
       }
 
-      //var jsonbody = jsonDecode(response.body);
-      var jsonbody = jsonDecode(response);
-      //print(response);
+      await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
+                                // then this will be the new startup
 
-      String RealName = backupName.toString();
-      if (isItCurrentLocation) {
-        backupName = 'CurrentLocation';
-      }
-
-      await setLastPlace(backupName, absoluteProposed);
-
-      List<List<String>> radar;
-      try {
-        radar = await getRadar();
-      } on Error catch(e, stacktrace) {
-        print(stacktrace);
-        return dumbySearch(errorMessage: "error with the radar: $e", updateLocation: updateLocation,
-          icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: backupName, settings: settings,);
-      }
-
-      return WeatherPage(data: wapi.WeatherData.fromJson(jsonbody, settings, radar, RealName, backupName),
+      return WeatherPage(data: weatherdata,
           updateLocation: updateLocation);
 
     } catch (e) {

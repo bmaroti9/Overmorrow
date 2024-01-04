@@ -52,7 +52,7 @@ class _RadarMapState extends State<RadarMap> {
         setState(() {
           // Increment the frame index (you may want to add logic to handle the end of the frames)
           currentFrameIndex =
-              ((currentFrameIndex + 1) % data.current.radar.length).toInt();
+              ((currentFrameIndex + 1) % data.radar.images.length).toInt();
         });
       }
     });
@@ -106,7 +106,7 @@ class _RadarMapState extends State<RadarMap> {
                             MaterialPageRoute(builder: (context) => RadarPage(data: data,)),
                           )
                         },
-                        initialCenter: LatLng(data.current.lat, data.current.lng),
+                        initialCenter: LatLng(data.lat, data.lng),
                         initialZoom: 6,
                         backgroundColor: WHITE,
                         keepAlive: true,
@@ -115,8 +115,8 @@ class _RadarMapState extends State<RadarMap> {
                         interactionOptions: const InteractionOptions(flags: InteractiveFlag.drag | InteractiveFlag.flingAnimation),
                         cameraConstraint: CameraConstraint.containCenter(
                           bounds: LatLngBounds(
-                            LatLng(data.current.lat - 3, data.current.lng - 3),
-                            LatLng(data.current.lat + 3, data.current.lng + 3),
+                            LatLng(data.lat - 3, data.lng - 3),
+                            LatLng(data.lat + 3, data.lng + 3),
                           ),
                         ),
                       ),
@@ -127,7 +127,7 @@ class _RadarMapState extends State<RadarMap> {
                               : 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',
                         ),
                         TileLayer(
-                          urlTemplate: data.current.radar[currentFrameIndex][0] + "/512/{z}/{x}/{y}/8/1_1.png",
+                          urlTemplate: data.radar.images[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_1.png",
                         ),
                       ],
                     ),
@@ -221,7 +221,7 @@ class _RadarMapState extends State<RadarMap> {
                                   Container(
                                     color: WHITE,
                                     width: constraints.maxWidth *
-                                        (max(currentFrameIndex - 1, 0) / data.current.radar.length),
+                                        (max(currentFrameIndex - 1, 0) / data.radar.images.length),
                                   ),
                                   AnimatedSwitcher(
                                     duration: const Duration(milliseconds: 300),
@@ -231,7 +231,7 @@ class _RadarMapState extends State<RadarMap> {
                                       key: ValueKey<int>(currentFrameIndex),
                                       color: WHITE,
                                       width: constraints.maxWidth *
-                                          (currentFrameIndex / data.current.radar.length),
+                                          (currentFrameIndex / data.radar.images.length),
                                     ),
                                   ),
                                 ],
@@ -279,7 +279,7 @@ class _RadarPageState extends State<RadarPage> {
         setState(() {
           // Increment the frame index (you may want to add logic to handle the end of the frames)
           currentFrameIndex =
-              ((currentFrameIndex + 1) % data.current.radar.length).toInt();
+              ((currentFrameIndex + 1) % data.radar.images.length).toInt();
         });
       }
     });
@@ -311,7 +311,7 @@ class _RadarPageState extends State<RadarPage> {
       children: [
         FlutterMap(
           options: MapOptions(
-            initialCenter: LatLng(data.current.lat, data.current.lng),
+            initialCenter: LatLng(data.lat, data.lng),
             initialZoom: 5,
             backgroundColor: WHITE,
             interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate,),
@@ -323,7 +323,7 @@ class _RadarPageState extends State<RadarPage> {
                   : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
             ),
             TileLayer(
-              urlTemplate: data.current.radar[currentFrameIndex][0] + "/512/{z}/{x}/{y}/8/1_1.png",
+              urlTemplate: data.radar.images[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_1.png",
             ),
           ],
         ),
@@ -391,7 +391,7 @@ class _RadarPageState extends State<RadarPage> {
                                           Container(
                                             color: main,
                                             width: constraints.maxWidth *
-                                                (max(currentFrameIndex - 1, 0) / data.current.radar.length),
+                                                (max(currentFrameIndex - 1, 0) / data.radar.images.length),
                                           ),
                                           AnimatedSwitcher(
                                             duration: const Duration(milliseconds: 300),
@@ -401,7 +401,7 @@ class _RadarPageState extends State<RadarPage> {
                                               key: ValueKey<int>(currentFrameIndex),
                                               color: main,
                                               width: constraints.maxWidth *
-                                                  (currentFrameIndex / data.current.radar.length),
+                                                  (currentFrameIndex / data.radar.images.length),
                                             ),
                                           ),
                                         ],

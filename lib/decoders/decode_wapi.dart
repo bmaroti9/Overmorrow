@@ -118,23 +118,6 @@ String getTime(date) {
   return '${num - 12}pm';
 }
 
-List<Hour> buildHourly(data, settings, int index, int timenow, bool get_rid_first) {
-  List<Hour> hourly = [];
-  if (index == 0 && get_rid_first) {
-    for (var i = 0; i < data.length; i++) {
-      if (data[i]["time_epoch"] > timenow) {
-        hourly.add(Hour.fromJson(data[i], settings));
-      }
-    }
-  }
-  else {
-    for (var i = 0; i < data.length; i++) {
-      hourly.add(Hour.fromJson(data[i], settings));
-    }
-  }
-  return hourly;
-}
-
 Color backroundColorCorrection(name, isday) {
   String text = textCorrection(name, isday);
   Color p = weather_refactor.textBackColor[text] ?? WHITE;
@@ -190,133 +173,7 @@ List<Color> contentColorCorrection(name, isday) {
   return p;
 }
 
-
-class Hour {
-  final int temp;
-  final String icon;
-  final String time;
-  final String text;
-  final double precip;
-
-  const Hour(
-  {
-    required this.temp,
-    required this.time,
-    required this.icon,
-    required this.text,
-    required this.precip,
-  });
-
-  static Hour fromJson(item, settings) => Hour(
-    text: textCorrection(
-        item["condition"]["text"], item["is_day"], settings: settings
-    ),
-    icon: iconCorrection(
-        item["condition"]["text"], item["is_day"]
-    ),
-    //temp:double.parse(unit_coversion(item["temp_c"], settings[1]).toStringAsFixed(1)),
-    temp: unit_coversion(item["temp_c"], settings[1]).round(),
-    time: getTime(item["time"]),
-    precip: item["precip_mm"],
-  );
-}
-
-class Day {
-  final String date;
-  final String text;
-  final String icon;
-  final String name;
-  final String minmaxtemp;
-  final List<Hour> hourly;
-  final List<Hour> hourly_for_precip;
-
-  final int precip_prob;
-  final double total_precip;
-  final int windspeed;
-  final int avg_temp;
-
-  const Day({
-    required this.date,
-    required this.text,
-    required this.icon,
-    required this.name,
-    required this.minmaxtemp,
-    required this.hourly,
-
-    required this.precip_prob,
-    required this.avg_temp,
-    required this.total_precip,
-    required this.windspeed,
-    required this.hourly_for_precip
-  });
-
-  static Day fromJson(item, index, settings, timenow) => Day(
-      date: item['date'],
-      //text: item["day"]["condition"]["text"],
-      //icon: "http:" + item["day"]['condition']['icon'],
-      text: textCorrection(
-        item["day"]["condition"]["text"], 1, settings: settings
-      ),
-      icon: iconCorrection(
-        item["day"]["condition"]["text"], 1
-      ),
-      name: getName(index, settings),
-      minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings[1]).round()}°'
-          '/${unit_coversion(item["day"]["mintemp_c"], settings[1]).round()}°',
-
-      hourly: buildHourly(item["hour"], settings, index, timenow, true),
-      hourly_for_precip: buildHourly(item["hour"], settings, index, timenow, false),
-
-      total_precip: double.parse(unit_coversion(item["day"]["totalprecip_mm"], settings[2]).toStringAsFixed(1)),
-      precip_prob: item["day"]["daily_chance_of_rain"],
-      avg_temp: unit_coversion(item["day"]["avgtemp_c"], settings[1]).round(),
-      windspeed: unit_coversion(item["day"]["maxwind_kph"], settings[3]).round(),
-  );
-}
-
-class WeatherData {
-  final List<String> settings;
-  final List<Day> days;
-  final Current current;
-  final String place;
-  final String provider;
-  final String real_loc;
-
-  WeatherData({
-    required this.days,
-    required this.current,
-    required this.place,
-    required this.settings,
-    required this.provider,
-    required this.real_loc,
-  });
-
-  static WeatherData fromJson(jsonbody, settings, radar, placeName, real_loc) {
-
-    var forecastlist = jsonbody['forecast']['forecastday'];
-    var timenow = jsonbody["location"]["localtime_epoch"];
-
-    List<Day> days = [];
-    int index = 0;
-    for (var forecast in forecastlist) {
-      days.add(Day.fromJson(forecast, index, settings, timenow));
-      index += 1;
-    }
-
-    Current current = Current.fromJson(jsonbody, settings, radar);
-
-    return WeatherData(
-        days: days,
-        current: current,
-        place: placeName,
-        settings: settings,
-        provider: 'weatherapi.com',
-        real_loc: real_loc
-    );
-  }
-}
-
-class Current {
+class WapiCurrent {
   final String text;
   final String backdrop;
   final int temp;
@@ -328,58 +185,31 @@ class Current {
   final Color backcolor;
   final Color accentcolor;
 
-  final double lat;
-  final double lng;
-
-  final List<List<String>> radar;
-
-  final String sunrise;
-  final String sunset;
-  final double sunstatus;
-
-  final int aqi_index;
-  final double pm2_5;
-  final double pm10;
-  final double o3;
-  final double no2;
-
-  const Current({
-    required this.text,
-    required this.backdrop,
-    required this.temp,
-    required this.contentColor,
+  const WapiCurrent({
     required this.precip,
+    required this.accentcolor,
+    required this.backcolor,
+    required this.backdrop,
+    required this.contentColor,
     required this.humidity,
+    required this.temp,
+    required this.text,
     required this.uv,
     required this.wind,
-    required this.backcolor,
-    required this.accentcolor,
-    required this.sunrise,
-    required this.sunset,
-    required this.sunstatus,
-    required this.aqi_index,
-    required this.no2,
-    required this.o3,
-    required this.pm2_5,
-    required this.pm10,
-    required this.radar,
-    required this.lat,
-    required this.lng,
-});
+  });
 
-  static Current fromJson(item, settings, radar) => Current(
-
+  static WapiCurrent fromJson(item, settings) => WapiCurrent(
     text: textCorrection(
-      item["current"]["condition"]["text"], item["current"]["is_day"], settings: settings
+        item["current"]["condition"]["text"], item["current"]["is_day"], settings: settings
     ),
     backdrop: backdropCorrection(
-      item["current"]["condition"]["text"], item["current"]["is_day"]
+        item["current"]["condition"]["text"], item["current"]["is_day"]
     ),
     temp: unit_coversion(item["current"]["temp_c"], settings[1]).round(),
 
     contentColor: settings[5] == "high contrast"
-          ? [BLACK,WHITE]
-          :  contentColorCorrection(item["current"]["condition"]["text"], item["current"]["is_day"]),
+        ? [BLACK,WHITE]
+        :  contentColorCorrection(item["current"]["condition"]["text"], item["current"]["is_day"]),
 
     backcolor: settings[5] == "high contrast"
         ? BLACK
@@ -393,24 +223,106 @@ class Current {
     humidity: item["current"]["humidity"],
     precip: double.parse(unit_coversion(item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"], settings[2]).toStringAsFixed(1)),
     wind: unit_coversion(item["current"]["wind_kph"], settings[3]).round(),
-
-    aqi_index: item["current"]["air_quality"]["us-epa-index"],
-    pm10: item["current"]["air_quality"]["pm10"],
-    pm2_5: item["current"]["air_quality"]["pm2_5"],
-    o3: item["current"]["air_quality"]["o3"],
-    no2: item["current"]["air_quality"]["no2"],
-
-    sunrise: convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"]),
-    sunset: convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"]),
-    sunstatus: getSunStatus(item["forecast"]["forecastday"][0]["astro"]["sunrise"],
-        item["forecast"]["forecastday"][0]["astro"]["sunset"], item["current"]["last_updated"]),
-    radar: radar,
-    lat: item["location"]["lat"],
-    lng: item["location"]["lon"]
   );
 }
 
-class CustomCacheManager{
-  static const key = 'muszkli';
+class WapiDay {
+  final String date;
+  final String text;
+  final String icon;
+  final String name;
+  final String minmaxtemp;
+  final List<WapiHour> hourly;
+  final List<WapiHour> hourly_for_precip;
 
+  final int precip_prob;
+  final double total_precip;
+  final int windspeed;
+  final int avg_temp;
+  final mm_precip;
+
+  const WapiDay({
+    required this.date,
+    required this.text,
+    required this.icon,
+    required this.name,
+    required this.minmaxtemp,
+    required this.hourly,
+
+    required this.precip_prob,
+    required this.avg_temp,
+    required this.total_precip,
+    required this.windspeed,
+    required this.hourly_for_precip,
+    required this.mm_precip,
+  });
+
+  static WapiDay fromJson(item, index, settings, timenow) => WapiDay(
+    date: item['date'],
+    text: textCorrection(
+        item["day"]["condition"]["text"], 1, settings: settings
+    ),
+    icon: iconCorrection(
+        item["day"]["condition"]["text"], 1
+    ),
+    name: getName(index, settings),
+    minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings[1]).round()}°'
+        '/${unit_coversion(item["day"]["mintemp_c"], settings[1]).round()}°',
+
+    hourly: buildWapiHour(item["hour"], settings, index, timenow, true),
+    hourly_for_precip: buildWapiHour(item["hour"], settings, index, timenow, false),
+
+    mm_precip: item["day"]["totalprecip_mm"],
+    total_precip: double.parse(unit_coversion(item["day"]["totalprecip_mm"], settings[2]).toStringAsFixed(1)),
+    precip_prob: item["day"]["daily_chance_of_rain"],
+    avg_temp: unit_coversion(item["day"]["avgtemp_c"], settings[1]).round(),
+    windspeed: unit_coversion(item["day"]["maxwind_kph"], settings[3]).round(),
+  );
+
+  static List<WapiHour> buildWapiHour(data, settings, int index, int timenow, bool get_rid_first) {
+    List<WapiHour> hourly = [];
+    if (index == 0 && get_rid_first) {
+      for (var i = 0; i < data.length; i++) {
+        if (data[i]["time_epoch"] > timenow) {
+          hourly.add(WapiHour.fromJson(data[i], settings));
+        }
+      }
+    }
+    else {
+      for (var i = 0; i < data.length; i++) {
+        hourly.add(WapiHour.fromJson(data[i], settings));
+      }
+    }
+    return hourly;
+  }
+}
+
+class WapiHour {
+  final int temp;
+  final String icon;
+  final String time;
+  final String text;
+  final double precip;
+
+  const WapiHour(
+      {
+        required this.temp,
+        required this.time,
+        required this.icon,
+        required this.text,
+        required this.precip,
+      });
+
+  static WapiHour fromJson(item, settings) => WapiHour(
+    text: textCorrection(
+        item["condition"]["text"], item["is_day"], settings: settings
+    ),
+    icon: iconCorrection(
+        item["condition"]["text"], item["is_day"]
+    ),
+    //temp:double.parse(unit_coversion(item["temp_c"], settings[1]).toStringAsFixed(1)),
+    temp: unit_coversion(item["temp_c"], settings[1]).round(),
+    time: getTime(item["time"]),
+    precip: item["precip_mm"],
+  );
 }

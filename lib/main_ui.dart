@@ -56,7 +56,7 @@ class WeatherPage extends StatelessWidget {
       drawer: MyDrawer(color: data.current.backcolor, settings: data.settings),
       body: RefreshIndicator(
         onRefresh: () async {
-          await updateLocation("${data.current.lat}, ${data.current.lng}", data.real_loc);
+          await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
         },
         backgroundColor: WHITE,
         color: data.current.backcolor,
@@ -148,8 +148,8 @@ class WeatherPage extends StatelessWidget {
                                 fontWeight: FontWeight.w300,
                               ),
                               //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
-                              value: data.provider.toString(),
-                              items: ['weatherapi.com', 'met.norway'].map((item) {
+                              value: 'weatherapi.com',
+                              items: ['weatherapi.com'].map((item) {
                                 return DropdownMenuItem(
                                   value: item,
                                   child: Text(item),
@@ -157,7 +157,7 @@ class WeatherPage extends StatelessWidget {
                               }).toList(),
                               onChanged: (String? value) async {
                                 SetData('weather_provider', value!);
-                                await updateLocation("${data.current.lat}, ${data.current.lng}", data.real_loc);
+                                await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
                               },
                               isExpanded: true,
                               dropdownColor: darken(data.current.backcolor, 0.1),
@@ -341,7 +341,7 @@ Widget NewTimes(var data) => SliverList(
                           return Container(
                             color: WHITE,
                             height: constraints.maxHeight,
-                            width: constraints.maxWidth * data.current.sunstatus,
+                            width: constraints.maxWidth * data.sunstatus.sunstatus,
                             child: Stack(
                               clipBehavior: Clip.hardEdge,
                               children: [
@@ -375,7 +375,7 @@ Widget NewTimes(var data) => SliverList(
                       width: 67,
                         child: Align(
                           alignment: Alignment.center,
-                            child: comfortatext(data.current.sunrise, 18, color: WHITE)
+                            child: comfortatext(data.sunstatus.sunrise, 18, color: WHITE)
                         )
                     )
                   ),
@@ -385,7 +385,7 @@ Widget NewTimes(var data) => SliverList(
                         width: 67,
                           child: Align(
                             alignment: Alignment.center,
-                              child: comfortatext(data.current.sunset, 18, color: WHITE)
+                              child: comfortatext(data.sunstatus.sunset, 18, color: WHITE)
                           )
                       )
                   )
@@ -417,8 +417,8 @@ Widget NewTimes(var data) => SliverList(
                   Column(
                     children: [
                       Container(
-                        height: 80,
-                        width: 80,
+                        height: 85,
+                        width: 85,
                         decoration: BoxDecoration(
                           color: darken(data.current.backcolor, 0.1),
                           borderRadius: BorderRadius.circular(20),
@@ -426,7 +426,7 @@ Widget NewTimes(var data) => SliverList(
                         child: Center(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 5),
-                            child: comfortatext(data.current.aqi_index.toString(), 40,
+                            child: comfortatext(data.aqi.aqi_index.toString(), 40,
                                 color: WHITE),
                           ),
                         ),
@@ -440,7 +440,7 @@ Widget NewTimes(var data) => SliverList(
                               child: comfortatext(
                             translation(['good', 'moderate', 'slightly unhealthy',
                               'unhealthy', 'very unhealthy',
-                              'hazardous'][data.current.aqi_index - 1], data.settings[0]), 17, color: WHITE,
+                              'hazardous'][data.aqi.aqi_index - 1], data.settings[0]), 17, color: WHITE,
                               align: TextAlign.center)
                           ),
                         ),
@@ -450,10 +450,10 @@ Widget NewTimes(var data) => SliverList(
                   Expanded(
                     child: Column(
                       children: [
-                        aqiDataPoints("pm2.5", data.current.pm2_5, data.current.backcolor),
-                        aqiDataPoints("pm10", data.current.pm10, data.current.backcolor),
-                        aqiDataPoints("O3", data.current.o3, data.current.backcolor),
-                        aqiDataPoints("NO2", data.current.no2, data.current.backcolor),
+                        aqiDataPoints("pm2.5", data.aqi.pm2_5, data.current.backcolor),
+                        aqiDataPoints("pm10", data.aqi.pm10, data.current.backcolor),
+                        aqiDataPoints("O3", data.aqi.o3, data.current.backcolor),
+                        aqiDataPoints("NO2", data.aqi.no2, data.current.backcolor),
                       ],
                     ),
                   )
@@ -462,87 +462,6 @@ Widget NewTimes(var data) => SliverList(
             ),
           ],
         ),
-      ),
-      Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 15, bottom: 10),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: comfortatext(translation('precipitation', data.settings[0]), 20, color: WHITE),
-            ),
-          ),
-          Flex(
-            direction: Axis.horizontal,
-            children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 0, bottom: 5, top: 5),
-                    child: Container(
-                      height: 150,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(width: 1.2, color: WHITE)
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(18),
-                        child: Padding(
-                          padding: const EdgeInsets.all(6),
-                          child: MyChart(data.days[0].hourly_for_precip),
-                        )
-                      ),
-                    ),
-                ),
-              ),
-              SizedBox(
-                height: 165,
-                width: 65,
-                child: ListView.builder(
-                  reverse: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    if (data.settings[2] == 'in') {
-                      return Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            comfortatext((index * 0.2).toStringAsFixed(1), 17),
-                            comfortatext('in', 14),
-                          ],
-                        ),
-                      );
-                    }
-                    else {
-                      return Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            comfortatext((index * 5).toString(), 17),
-                            comfortatext('mm', 14),
-                          ],
-                        ),
-                      );
-                    }
-                  }
-                ),
-              )
-            ]
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 33, top: 0, right: 70, bottom: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                comfortatext("0", 18),
-                comfortatext("6", 18),
-                comfortatext("12", 18),
-                comfortatext("18", 18),
-                comfortatext("24", 18),
-              ]
-            )
-          )
-        ],
       ),
       RadarMap(data),
       Padding(
@@ -556,8 +475,7 @@ Widget NewTimes(var data) => SliverList(
   ),
 );
 
-Widget buildHihiDays(var data) => SliverFixedExtentList(
-    itemExtent: 500.0,
+Widget buildHihiDays(var data) => SliverList(
     delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
         if (index < data.days.length) {
@@ -709,6 +627,10 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
                       ),
                     ),
                   ),
+                  Visibility(
+                    visible: day.mm_precip > 0.2,
+                    child: RainWidget(data.settings, day)
+                  ),
                   buildHours(day.hourly, data.settings, data.current.accentcolor),
                 ],
               ),
@@ -720,7 +642,7 @@ Widget buildHihiDays(var data) => SliverFixedExtentList(
 );
 
 Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor) => SizedBox(
-  height: 240, // Adjust the height as needed
+  height: 240,
   child: ListView(
     physics: const BouncingScrollPhysics(),
     scrollDirection: Axis.horizontal,

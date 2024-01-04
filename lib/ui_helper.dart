@@ -23,8 +23,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hihi_haha/decoders/decode_wapi.dart';
 import 'package:hihi_haha/search_screens.dart';
+import 'package:hihi_haha/settings_page.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -199,8 +199,92 @@ Widget aqiDataPoints(String name, double value, Color color) {
   );
 }
 
+Widget RainWidget(settings, day) {
+  return Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 15, bottom: 10),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: comfortatext(translation('precipitation', settings[0]), 20, color: WHITE),
+        ),
+      ),
+      Flex(
+          direction: Axis.horizontal,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 5, bottom: 5, top: 5),
+                child: Container(
+                  height: 150,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(width: 1.2, color: WHITE)
+                  ),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(18),
+                      child: Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: MyChart(day.hourly_for_precip),
+                      )
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 165,
+              width: 65,
+              child: ListView.builder(
+                  reverse: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    if (settings[2] == 'in') {
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          children: [
+                            comfortatext((index * 0.2).toStringAsFixed(1), 17),
+                            comfortatext('in', 14),
+                          ],
+                        ),
+                      );
+                    }
+                    else {
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            comfortatext((index * 5).toString(), 17),
+                            comfortatext('mm', 14),
+                          ],
+                        ),
+                      );
+                    }
+                  }
+              ),
+            )
+          ]
+      ),
+      Padding(
+          padding: const EdgeInsets.only(left: 33, top: 0, right: 70, bottom: 35),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                comfortatext("0", 18),
+                comfortatext("6", 18),
+                comfortatext("12", 18),
+                comfortatext("18", 18),
+                comfortatext("24", 18),
+              ]
+          )
+      )
+    ],
+  );
+}
+
 class MyChart extends StatelessWidget {
-  final List<Hour> data; // Sample data for the chart
+  final List<dynamic> data; // Sample data for the chart
 
   const MyChart(this.data, {super.key});
 
@@ -213,7 +297,7 @@ class MyChart extends StatelessWidget {
 }
 
 class BarChartPainter extends CustomPainter {
-  final List<Hour> hours;
+  final List<dynamic> hours;
 
   BarChartPainter(this.hours);
 
@@ -223,7 +307,7 @@ class BarChartPainter extends CustomPainter {
     List<double> data = [];
 
     for (var i = 0; i < hours.length; i+= 2) {
-      data.add(min(round((hours[i].precip + hours[i + 1].precip) / 2, decimals: 0), 15));
+      data.add(min(round((hours[i].precip + hours[i + 1].precip) * 2, decimals: 0) / 4, 15));
     }
 
     data.add(15); // set the wanted max point
