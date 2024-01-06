@@ -47,7 +47,7 @@ class _RadarMapState extends State<RadarMap> {
     super.initState();
 
     // Set up a timer to update the radar frame every 5 seconds
-    timer = Timer.periodic(const Duration(milliseconds: 1300), (Timer t) {
+    timer = Timer.periodic(const Duration(milliseconds: 1500), (Timer t) {
       if (isPlaying) {
         setState(() {
           // Increment the frame index (you may want to add logic to handle the end of the frames)
@@ -274,7 +274,7 @@ class _RadarPageState extends State<RadarPage> {
     super.initState();
 
     // Set up a timer to update the radar frame every 5 seconds
-    timer = Timer.periodic(const Duration(milliseconds: 1300), (Timer t) {
+    timer = Timer.periodic(const Duration(milliseconds: 1500), (Timer t) {
       if (isPlaying) {
         setState(() {
           // Increment the frame index (you may want to add logic to handle the end of the frames)

@@ -132,7 +132,7 @@ class WeatherPage extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          comfortatext('weather provider', 18),
+                          comfortatext(translation('Weather provider', data.settings[0]), 18),
                           Padding(
                             padding: const EdgeInsets.only(left: 20, right: 20),
                             child: DropdownButton(
@@ -481,12 +481,12 @@ Widget buildHihiDays(var data) => SliverList(
         if (index < data.days.length) {
           final day = data.days[index];
             return Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 10, top: 30),
+                    padding: const EdgeInsets.only(top: 30, bottom: 10),
                     child: Text(
                       day.name,
                       style: GoogleFonts.comfortaa(
@@ -497,15 +497,17 @@ Widget buildHihiDays(var data) => SliverList(
                       ),
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0, top: 20, bottom: 10, right: 5),
-                          child: Row(
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: day.mm_precip > 0.1 ? darken(data.current.backcolor, 0.05) : data.current.backcolor,
+                      ),
+                      padding: const EdgeInsets.only(top: 8, left: 3, right: 5, bottom: 3),
+                      child: Column(
+                        children: [
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
@@ -542,12 +544,16 @@ Widget buildHihiDays(var data) => SliverList(
                               )
                             ],
                           ),
-                        ),
-                      ],
+                          Visibility(
+                            visible: day.mm_precip > 0.1,
+                            child: RainWidget(data.settings, day)
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 30),
+                    padding: const EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 30),
                     child: Container(
                       height: 85,
                       padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
@@ -626,10 +632,6 @@ Widget buildHihiDays(var data) => SliverList(
                         }
                       ),
                     ),
-                  ),
-                  Visibility(
-                    visible: day.mm_precip > 0.2,
-                    child: RainWidget(data.settings, day)
                   ),
                   buildHours(day.hourly, data.settings, data.current.accentcolor),
                 ],

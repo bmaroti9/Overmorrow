@@ -857,6 +857,18 @@ Map<String, List<String>> mainTranslate = {
     'Режим цвета',
     '彩色模式',
     'カラーモード'
+  ],
+  'Weather provider': [
+    'Weather provider',
+    'Időjárás szolgáltató',
+    'Proveedor de clima',
+    'Fournisseur de météo',
+    'Wetteranbieter',
+    'Fornitore di previsioni meteorologiche',
+    'Provedor de clima',
+    'Поставщик погоды',
+    '天气服务提供商',
+    '天気プロバイダ'
   ]
 };
 

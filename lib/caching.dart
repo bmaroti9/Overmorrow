@@ -37,7 +37,6 @@ class MyGetResponse implements FileServiceResponse {
 
   @override
   DateTime get validTill {
-    print(url);
     if (url.toString().contains("search.json")) {
       return DateTime.now().add(const Duration(days: 20));
     }

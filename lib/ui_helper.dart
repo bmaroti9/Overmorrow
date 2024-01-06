@@ -24,7 +24,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/search_screens.dart';
-import 'package:hihi_haha/settings_page.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -200,15 +199,17 @@ Widget aqiDataPoints(String name, double value, Color color) {
 }
 
 Widget RainWidget(settings, day) {
+  List<dynamic> hours = day.hourly_for_precip;
+
+  List<double> data = [];
+
+  for (var i = 0; i < hours.length; i+= 2) {
+    double x = min(round((hours[i].precip + hours[i + 1].precip) * 4, decimals: 0) / 2, 10);
+    data.add(x);
+  }
+
   return Column(
     children: [
-      Padding(
-        padding: const EdgeInsets.only(left: 15, bottom: 10),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: comfortatext(translation('precipitation', settings[0]), 20, color: WHITE),
-        ),
-      ),
       Flex(
           direction: Axis.horizontal,
           children: [
@@ -225,7 +226,7 @@ Widget RainWidget(settings, day) {
                       borderRadius: BorderRadius.circular(18),
                       child: Padding(
                         padding: const EdgeInsets.all(6),
-                        child: MyChart(day.hourly_for_precip),
+                        child: MyChart(data),
                       )
                   ),
                 ),
@@ -237,11 +238,11 @@ Widget RainWidget(settings, day) {
               child: ListView.builder(
                   reverse: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: 4,
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     if (settings[2] == 'in') {
                       return Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
                         child: Row(
                           children: [
                             comfortatext((index * 0.2).toStringAsFixed(1), 17),
@@ -252,7 +253,7 @@ Widget RainWidget(settings, day) {
                     }
                     else {
                       return Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
                         child: Row(
                           children: [
                             comfortatext((index * 5).toString(), 17),
@@ -267,7 +268,7 @@ Widget RainWidget(settings, day) {
           ]
       ),
       Padding(
-          padding: const EdgeInsets.only(left: 33, top: 0, right: 70, bottom: 35),
+          padding: const EdgeInsets.only(left: 33, top: 0, right: 70, bottom: 15),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -284,7 +285,7 @@ Widget RainWidget(settings, day) {
 }
 
 class MyChart extends StatelessWidget {
-  final List<dynamic> data; // Sample data for the chart
+  final List<double> data; // Sample data for the chart
 
   const MyChart(this.data, {super.key});
 
@@ -297,29 +298,21 @@ class MyChart extends StatelessWidget {
 }
 
 class BarChartPainter extends CustomPainter {
-  final List<dynamic> hours;
+  final List<double> data;
 
-  BarChartPainter(this.hours);
+  BarChartPainter(this.data);
 
   @override
   void paint(Canvas canvas, Size size) {
-
-    List<double> data = [];
-
-    for (var i = 0; i < hours.length; i+= 2) {
-      data.add(min(round((hours[i].precip + hours[i + 1].precip) * 2, decimals: 0) / 4, 15));
-    }
-
-    data.add(15); // set the wanted max point
 
     Paint paint = Paint()
       ..color = WHITE
       ..style = PaintingStyle.fill;
 
-    double maxValue = data.reduce((value, element) => value > element ? value : element);
+    double maxValue = 10;
     double scaleY = size.height / maxValue;
 
-    int numberOfBars = data.length - 1; // get rid of the extra data points
+    int numberOfBars = data.length; // get rid of the extra data points
     double totalWidth = size.width; // Subtract padding
     double barWidth = totalWidth / numberOfBars;
 

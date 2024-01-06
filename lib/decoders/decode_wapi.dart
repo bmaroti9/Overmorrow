@@ -272,7 +272,7 @@ class WapiDay {
     hourly: buildWapiHour(item["hour"], settings, index, timenow, true),
     hourly_for_precip: buildWapiHour(item["hour"], settings, index, timenow, false),
 
-    mm_precip: item["day"]["totalprecip_mm"],
+    mm_precip: item["day"]["totalprecip_mm"] + item["day"]["totalsnow_cm"] / 10,
     total_precip: double.parse(unit_coversion(item["day"]["totalprecip_mm"], settings[2]).toStringAsFixed(1)),
     precip_prob: item["day"]["daily_chance_of_rain"],
     avg_temp: unit_coversion(item["day"]["avgtemp_c"], settings[1]).round(),
@@ -323,6 +323,6 @@ class WapiHour {
     //temp:double.parse(unit_coversion(item["temp_c"], settings[1]).toStringAsFixed(1)),
     temp: unit_coversion(item["temp_c"], settings[1]).round(),
     time: getTime(item["time"]),
-    precip: item["precip_mm"],
+    precip: item["precip_mm"] + (item["snow_cm"] / 10),
   );
 }
