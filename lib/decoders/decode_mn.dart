@@ -1,37 +1,35 @@
-import 'dart:math';
 import 'dart:ui';
+
+import 'package:hihi_haha/decoders/decode_wapi.dart';
 
 import '../settings_page.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart';
-/*
-class WeatherDataN {
-  final List<String> settings;
-  final String place;
-  final String provider;
-  final String real_loc;
 
-  WeatherDataN({
-    required this.place,
-    required this.settings,
-    required this.provider,
-    required this.real_loc,
-  });
-
-  static WeatherDataN fromJson(jsonbody, settings, radar, placeName, real_loc) {
-
-    return WeatherDataN(
-        settings: settings,
-        provider: 'met.norway',
-        real_loc: real_loc,
-        place: placeName,
-    );
-  }
+String metNTextCorrection(String text, {language = 'English'}) {
+  String p = metNWeatherToText[text] ?? 'Clear Sky';
+  String t = translation(p, language);
+  return t;
 }
 
+String metNBackdropCorrection(String text) {
+  return textBackground[text] ?? 'very_clear.jpg';
+}
 
-class Current {
+Color metNBackColorCorrection(String text) {
+  return textBackColor[text] ?? BLACK;
+}
+
+Color metNAccentColorCorrection(String text) {
+  return accentColors[text] ?? WHITE;
+}
+
+List<Color> metNContentColorCorrection(String text) {
+  return textFontColor[text] ?? [WHITE, WHITE];
+}
+
+class MetNCurrent {
   final String text;
   final String backdrop;
   final int temp;
@@ -43,52 +41,71 @@ class Current {
   final Color backcolor;
   final Color accentcolor;
 
-  final double lat;
-  final double lng;
-
-  final List<String> radar;
-
-  final String sunrise;
-  final String sunset;
-  final double sunstatus;
-
-  final int aqi_index;
-  final double pm2_5;
-  final double pm10;
-  final double o3;
-  final double no2;
-
-  const Current({
-    required this.text,
-    required this.backdrop,
-    required this.temp,
-    required this.contentColor,
+  const MetNCurrent({
     required this.precip,
+    required this.accentcolor,
+    required this.backcolor,
+    required this.backdrop,
+    required this.contentColor,
     required this.humidity,
+    required this.temp,
+    required this.text,
     required this.uv,
     required this.wind,
-    required this.backcolor,
-    required this.accentcolor,
-    required this.sunrise,
-    required this.sunset,
-    required this.sunstatus,
-    required this.aqi_index,
-    required this.no2,
-    required this.o3,
-    required this.pm2_5,
-    required this.pm10,
-    required this.radar,
-    required this.lat,
-    required this.lng,
   });
 
-  static Current fromJson(item, settings, radar) => Current(
+  static MetNCurrent fromJson(item, settings) => MetNCurrent(
+    text: metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"], language: settings[0]),
 
-    text: item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"],
-    precip: item["timeseries"][0]["data"]["next_1_hours"]["details"]["precipitation_amount"],
-    lng: item["geometry"]["coordinates"][0],
-    lat: item["geometry"]["coordinates"][1],
-    radar: radar,
-    sunstatus: 'none'
+    precip: unit_coversion(item["timeseries"][0]["data"]["next_1_hours"]["details"]["precipitation_amount"], settings[2]),
+    temp: unit_coversion(item["timeseries"][0]["data"]["instant"]["details"]["air_temperature"], settings[1]).round(),
+    humidity: item["timeseries"][0]["data"]["instant"]["details"]["relative_humidity"],
+    wind: unit_coversion(item["timeseries"][0]["data"]["instant"]["details"]["wind_speed"] * 3.6, settings[3]).round(),
+    uv: item["timeseries"][0]["data"]["instant"]["details"]["ultraviolet_index_clear_sky"],
+
+    backdrop: metNBackdropCorrection(
+      metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+    ),
+    backcolor: metNBackColorCorrection(
+      metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+    ),
+    accentcolor: metNAccentColorCorrection(
+      metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+    ),
+    contentColor: metNContentColorCorrection(
+      metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+    ),
   );
-*/
+}
+
+class MetNDay {
+  final String date;
+  final String text;
+  final String icon;
+  final String name;
+  final String minmaxtemp;
+  final List<WapiHour> hourly;
+  final List<WapiHour> hourly_for_precip;
+
+  final int precip_prob;
+  final double total_precip;
+  final int windspeed;
+  final int avg_temp;
+  final mm_precip;
+
+  const MetNDay({
+    required this.date,
+    required this.text,
+    required this.icon,
+    required this.name,
+    required this.minmaxtemp,
+    required this.hourly,
+
+    required this.precip_prob,
+    required this.avg_temp,
+    required this.total_precip,
+    required this.windspeed,
+    required this.hourly_for_precip,
+    required this.mm_precip,
+  });
+}

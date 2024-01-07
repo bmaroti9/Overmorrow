@@ -161,7 +161,7 @@ String textCorrection(name, isday, {settings = 'English'}) {
     }
   }
   else {
-    x = weather_refactor.weatherTextMap[name] ?? "undefined";
+    x = weather_refactor.weatherTextMap[name] ?? "Clear Sky";
   }
   String p = translation(x, settings[0]);
   return p;
