@@ -266,3 +266,22 @@ Map<String, List<double>> conversionTable = {
   'mb': [0, 33.864],
   'hPa': [0, 33.863886],
 };
+
+//if i have to get the average of two weather conditions then the condition
+// with the highest value will be chosen
+Map<String, int> weatherConditionBiassTable = {
+  'Clear Night': 1, // you don't want night in the daily summary
+  'Partly Cloudy': 6,
+  'Clear Sky': 5,
+  'Overcast': 4,
+  'Haze': 3,
+  'Rain': 11,  // you can't go wrong by choosing the less extreme one
+  'Sleet': 8,
+  'Drizzle': 9,
+  'Thunderstorm': 14,  // super rare
+  'Heavy Snow': 12,
+  'Fog': 7,
+  'Snow': 13,  // you can't go wrong by choosing the less extreme one
+  'Heavy Rain': 10,
+  'Cloudy Night' : 1, // you don't want night in the daily summary
+};

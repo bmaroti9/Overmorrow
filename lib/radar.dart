@@ -46,11 +46,9 @@ class _RadarMapState extends State<RadarMap> {
   void initState() {
     super.initState();
 
-    // Set up a timer to update the radar frame every 5 seconds
     timer = Timer.periodic(const Duration(milliseconds: 1500), (Timer t) {
       if (isPlaying) {
         setState(() {
-          // Increment the frame index (you may want to add logic to handle the end of the frames)
           currentFrameIndex =
               ((currentFrameIndex + 1) % data.radar.images.length).toInt();
         });
@@ -60,7 +58,6 @@ class _RadarMapState extends State<RadarMap> {
 
   @override
   void dispose() {
-    // Dispose of the timer when the widget is disposed
     timer.cancel();
     super.dispose();
   }
@@ -273,11 +270,9 @@ class _RadarPageState extends State<RadarPage> {
   void initState() {
     super.initState();
 
-    // Set up a timer to update the radar frame every 5 seconds
     timer = Timer.periodic(const Duration(milliseconds: 1500), (Timer t) {
       if (isPlaying) {
         setState(() {
-          // Increment the frame index (you may want to add logic to handle the end of the frames)
           currentFrameIndex =
               ((currentFrameIndex + 1) % data.radar.images.length).toInt();
         });
@@ -287,7 +282,6 @@ class _RadarPageState extends State<RadarPage> {
 
   @override
   void dispose() {
-    // Dispose of the timer when the widget is disposed
     timer.cancel();
     super.dispose();
   }
@@ -305,8 +299,8 @@ class _RadarPageState extends State<RadarPage> {
   @override
   Widget build(BuildContext context) {
     double x = MediaQuery.of(context).padding.top;
-    Color main = WHITE;
-    Color top = data.current.backcolor;
+    Color main = data.current.contentColor[0] == WHITE ? data.current.backcolor : WHITE;
+    Color top = data.current.contentColor[0] == WHITE ? WHITE : data.current.backcolor;
     return Stack(
       children: [
         FlutterMap(

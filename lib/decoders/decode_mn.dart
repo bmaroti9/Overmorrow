@@ -29,6 +29,39 @@ List<Color> metNContentColorCorrection(String text) {
   return textFontColor[text] ?? [WHITE, WHITE];
 }
 
+String metNIconCorrection(String text) {
+  return textIconMap[text] ?? 'sun.png';
+}
+
+String metNTimeCorrect(String date) {
+  final realtime = date.split('T')[1];
+  final realhour = realtime.split(':')[0];
+  final num = int.parse(realhour);
+  if (num == 0) {
+    return '12am';
+  }
+  else if (num < 10) {
+    final minusHour = (num % 10).toString();
+    return '${minusHour}am';
+  }
+  else if (num < 12) {
+    return realhour + 'am';
+  }
+  else if (num == 12) {
+    return '12pm';
+  }
+  return '${num - 12}pm';
+}
+
+String chooseAverageCondition(String first, String second) {
+  int bias1 = weatherConditionBiassTable[first] ?? 0;
+  int bias2 = weatherConditionBiassTable[second] ?? 0;
+  if (bias1 > bias2) {
+    return first;
+  }
+  return second;
+}
+
 class MetNCurrent {
   final String text;
   final String backdrop;
@@ -108,4 +141,31 @@ class MetNDay {
     required this.hourly_for_precip,
     required this.mm_precip,
   });
+}
+
+class MetNHour {
+  final int temp;
+  final String icon;
+  final String time;
+  final String text;
+  final double precip;
+
+  const MetNHour(
+      {
+        required this.temp,
+        required this.time,
+        required this.icon,
+        required this.text,
+        required this.precip,
+      });
+
+  static MetNHour fromJson(item, settings) => MetNHour(
+    text: metNTextCorrection(item["data"]["next_1_hours"]["summary"]["symbol_code"], language: settings[0]),
+    temp: unit_coversion(item["data"]["instant"]["details"]["air_temperature"], settings[1]).round(),
+    precip: unit_coversion(item["data"]["next_1_hours"]["details"]["precipitation_amount"], settings[2]),
+    icon: metNIconCorrection(
+      metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+    ),
+    time: metNTimeCorrect(item["time"]),
+  );
 }

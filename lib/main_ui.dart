@@ -481,7 +481,7 @@ Widget buildHihiDays(var data) => SliverList(
         if (index < data.days.length) {
           final day = data.days[index];
             return Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -638,7 +638,8 @@ Widget buildHihiDays(var data) => SliverList(
               ),
             );
           }
-          return null;
+        return null;
+
     },
 )
 );
