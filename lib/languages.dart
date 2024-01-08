@@ -869,6 +869,18 @@ Map<String, List<String>> mainTranslate = {
     'Поставщик погоды',
     '天气服务提供商',
     '天気プロバイダ'
+  ],
+  'Time mode': [
+    'Time mode',
+    'Idő mód',
+    'Modo de tiempo',
+    'Mode temps',
+    'Zeitmodus',
+    'Modalità tempo',
+    'Modo de tempo',
+    'Режим времени',
+    '时间模式',
+    '時間モード'
   ]
 };
 

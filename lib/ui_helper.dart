@@ -99,7 +99,7 @@ class DescriptionCircle extends StatelessWidget {
                     //shape: BoxShape.circle,
                     border: Border.all(width: 2.5, color: Colors.white),
                     //color: WHITE,
-                    borderRadius: BorderRadius.circular(35)
+                    borderRadius: BorderRadius.circular(size * 0.09)
                   ),
                   child: Center(
                     child: Row(
@@ -107,24 +107,9 @@ class DescriptionCircle extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        Text(
-                          text,
-                          style: GoogleFonts.comfortaa(
-                            color: color,
-                            fontSize: fontsize,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
+                        comfortatext(text, fontsize),
                         Flexible(
-                          child: Text(
-                            extra,
-                            style: GoogleFonts.comfortaa(
-                              color: color,
-                              fontSize: small_font,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          child: comfortatext(extra, small_font)
                         ),
                       ],
                     ),
@@ -138,15 +123,7 @@ class DescriptionCircle extends StatelessWidget {
             padding: const EdgeInsets.only(top:5),
             width: width + 8,
             height: height,
-            child: Text(
-              undercaption,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.comfortaa(
-                color: color,
-                fontSize: small_font,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
+            child: comfortatext(undercaption, small_font, align: TextAlign.center)
           )
         )
       ]
@@ -269,15 +246,26 @@ Widget RainWidget(settings, day) {
       ),
       Padding(
           padding: const EdgeInsets.only(left: 33, top: 0, right: 70, bottom: 15),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                comfortatext("0", 18),
-                comfortatext("6", 18),
-                comfortatext("12", 18),
-                comfortatext("18", 18),
-                comfortatext("24", 18),
-              ]
+          child: Visibility(
+            visible: settings[6] == "24 hour",
+            replacement: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  comfortatext("3am", 14),
+                  comfortatext("9am", 14),
+                  comfortatext("3pm", 14),
+                  comfortatext("9pm", 14),
+                ]
+            ),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  comfortatext("3:00", 14),
+                  comfortatext("9:00", 14),
+                  comfortatext("15:00", 14),
+                  comfortatext("21:00", 14),
+                ]
+            ),
           )
       )
     ],

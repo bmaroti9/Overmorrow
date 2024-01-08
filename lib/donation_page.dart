@@ -17,7 +17,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/settings_page.dart';
 import 'package:hihi_haha/ui_helper.dart';
 
@@ -120,52 +119,20 @@ class _DonationPageState extends State<DonationPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
-                        child: Text(
-                          translation(
-                              'Overmorrow is a free app. :)', settings[0]),
-                          style: GoogleFonts.comfortaa(
-                            color: WHITE,
-                            fontSize: 21,
-                            fontWeight: FontWeight.w300,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                          maxLines: 10,
-                          textAlign: TextAlign.center,
-                        ),
+                        child: comfortatext(translation(
+                            'Overmorrow is a free app. :)', settings[0]), 21)
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 15),
-                        child: Text(
-                          translation(
-                              'Support me on Patreon, to help me keep it that way!',
-                              settings[0]),
-                          style: GoogleFonts.comfortaa(
-                            color: WHITE,
-                            fontSize: 21,
-                            fontWeight: FontWeight.w300,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                          maxLines: 10,
-                          textAlign: TextAlign.center,
-                        ),
+                        child: comfortatext(translation(
+                            'Support me on Patreon, to help me keep it that way!',
+                            settings[0]), 21)
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 30, bottom: 40),
-                          child: Text(
-                            translation('Thank You! -Balint', settings[0]),
-                            style: GoogleFonts.comfortaa(
-                              color: WHITE,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w300,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
-                            maxLines: 10,
-                          ),
+                          child: comfortatext(translation('Thank You! -Balint', settings[0]), 18)
                         ),
                       ),
                     ],
@@ -183,11 +150,8 @@ class _DonationPageState extends State<DonationPage> {
                     onPressed: () async {
                       await _launchUrl('https://www.patreon.com/MarotiDevel');
                     },
-                    child: Text(
-                      translation('Support me on Patreon', settings[0]),
-                      style: TextStyle(color: WHITE),
-                      textScaleFactor: 1.4,
-                    )),
+                    child: comfortatext(translation('Support me on Patreon', settings[0]), 20),
+                ),
               ],
             ),
           ),

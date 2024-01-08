@@ -37,14 +37,7 @@ Widget searchBar(Color color, List<String> recommend,
       hint: translation('Search...', settings[0]),
       title: Container(
         padding: const EdgeInsets.only(left: 10, top: 3),
-        child: Text(
-          place,
-          style: GoogleFonts.comfortaa(
-            color: WHITE,
-            fontSize: 28,
-            fontWeight: FontWeight.w300,
-          ),
-        ),
+        child: comfortatext(place, 28)
       ),
       hintStyle: GoogleFonts.comfortaa(
         color: WHITE,

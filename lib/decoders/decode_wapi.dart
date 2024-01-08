@@ -28,6 +28,19 @@ import '../weather_refact.dart' as weather_refactor;
 
 bool RandomSwitch = false;
 
+
+String amPmTime(String time) {
+  List<String> splited = time.split(" ");
+  List<String> num = splited[0].split(":");
+  int hour = int.parse(num[0]);
+  int minute = int.parse(num[1]);
+  String atEnd = 'am';
+  if (splited[1] == 'PM') {
+    atEnd = 'pm';
+  }
+  return "$hour:$minute$atEnd";
+}
+
 String convertTime(String input) {
   List<String> splited = input.split(" ");
   List<String> num = splited[0].split(":");
@@ -98,24 +111,30 @@ String iconCorrection(name, isday) {
   return p;
 }
 
-String getTime(date) {
-  final realtime = date.split(' ')[1];
-  final realhour = realtime.split(':')[0];
-  final num = int.parse(realhour);
-  if (num == 0) {
-    return '12am';
-  }
-  else if (num < 10) {
-    final minusHour = (num % 10).toString();
-    return '${minusHour}am';
-  }
-  else if (num < 12) {
-    return realhour + 'am';
-  }
-  else if (num == 12) {
-    return '12pm';
-  }
-  return '${num - 12}pm';
+String getTime(date, bool ampm) {
+   if (ampm) {
+     final realtime = date.split(' ')[1];
+     final realhour = realtime.split(':')[0];
+     final num = int.parse(realhour);
+     if (num == 0) {
+       return '12am';
+     }
+     else if (num < 10) {
+       final minusHour = (num % 10).toString();
+       return '${minusHour}am';
+     }
+     else if (num < 12) {
+       return realhour + 'am';
+     }
+     else if (num == 12) {
+       return '12pm';
+     }
+     return '${num - 12}pm';
+   }
+   else {
+     final realtime = date.split(' ');
+     return realtime[1];
+   }
 }
 
 Color backroundColorCorrection(name, isday) {
@@ -227,7 +246,6 @@ class WapiCurrent {
 }
 
 class WapiDay {
-  final String date;
   final String text;
   final String icon;
   final String name;
@@ -242,7 +260,6 @@ class WapiDay {
   final mm_precip;
 
   const WapiDay({
-    required this.date,
     required this.text,
     required this.icon,
     required this.name,
@@ -258,7 +275,6 @@ class WapiDay {
   });
 
   static WapiDay fromJson(item, index, settings, timenow) => WapiDay(
-    date: item['date'],
     text: textCorrection(
         item["day"]["condition"]["text"], 1, settings: settings
     ),
@@ -322,7 +338,7 @@ class WapiHour {
     ),
     //temp:double.parse(unit_coversion(item["temp_c"], settings[1]).toStringAsFixed(1)),
     temp: unit_coversion(item["temp_c"], settings[1]).round(),
-    time: getTime(item["time"]),
+    time: getTime(item["time"], settings[6] == '12 hour'),
     precip: item["precip_mm"] + (item["snow_cm"] / 10),
   );
 }

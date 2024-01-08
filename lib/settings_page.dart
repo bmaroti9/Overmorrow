@@ -26,7 +26,7 @@ import 'main.dart';
 import 'ui_helper.dart';
 
 List<String> settingsList = ['Language', 'Temperature', 'Rain', 'Wind', 'Pressure',
-        'Color mode'];
+        'Color mode', 'Time mode'];
 
 Map<String, List<String>> settingSwitches = {
   'Language' : [
@@ -38,6 +38,7 @@ Map<String, List<String>> settingSwitches = {
   'Wind': ['m/s', 'kph', 'mph', 'kn'],
   'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa'],
   'Color mode' : ['normal', 'zen', 'high contrast'],
+  'Time mode': ['12 hour', '24 hour']
 };
 
 

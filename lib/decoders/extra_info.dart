@@ -92,7 +92,7 @@ class WeatherData {
 
       current: WapiCurrent.fromJson(wapi_body, settings),
       days: days,
-      sunstatus: WapiSunstatus.fromJson(wapi_body),
+      sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
       aqi: WapiAqi.fromJson(wapi_body),
       radar: await RainviewerRadar.getData(),
     );
@@ -160,9 +160,13 @@ class WapiSunstatus {
     required this.sunset
   });
 
-  static WapiSunstatus fromJson(item) => WapiSunstatus(
-    sunrise: convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"]),
-    sunset: convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"]),
+  static WapiSunstatus fromJson(item, settings) => WapiSunstatus(
+    sunrise: settings[6] == "24 hour"
+        ? convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"])
+        : amPmTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"]),
+    sunset: settings[6] == "24 hour"
+        ? convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"])
+        : amPmTime(item["forecast"]["forecastday"][0]["astro"]["sunset"]),
     sunstatus: getSunStatus(item["forecast"]["forecastday"][0]["astro"]["sunrise"],
         item["forecast"]["forecastday"][0]["astro"]["sunset"], item["current"]["last_updated"]),
   );

@@ -210,31 +210,18 @@ Widget buildCurrent(var data, double height) => SizedBox(
       const Spacer(),
       Padding(
         padding: const EdgeInsets.only(top: 50.0, left: 30),
-        child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              '${data.current.temp}°',
-              style: GoogleFonts.comfortaa(
-                color: data.current.contentColor[1],
-                fontSize: 85,
-                fontWeight: FontWeight.w100,
-              ),
-            )
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            comfortatext("${data.current.temp}°", 85),
+          ],
         ),
       ),
       Padding(
         padding: const EdgeInsets.only(left: 30),
         child: Align(
             alignment: Alignment.topLeft,
-            child: Text(
-              data.current.text,
-              style: GoogleFonts.comfortaa(
-                color: data.current.contentColor[1],
-                fontSize: 45,
-                height: 0.7,
-                fontWeight: FontWeight.w300,
-              ),
-            )
+            child: comfortatext(data.current.text, 45),
         ),
       ),
 
@@ -301,78 +288,81 @@ Widget NewTimes(var data) => SliverList(
   delegate: SliverChildListDelegate(
     [
       Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 15),
+              padding: const EdgeInsets.only(left: 15, bottom: 10),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: comfortatext(translation('sunrise/sunset', data.settings[0]), 20, color: WHITE),
               ),
             ),
             Center(
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(width: 1.2, color: WHITE)
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(18),
-                  child: Stack(
-                    children: [
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Icon(CupertinoIcons.sunrise, color: WHITE,),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(width: 1.2, color: WHITE)
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(18),
+                    child: Stack(
+                      children: [
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 20),
+                            child: Icon(CupertinoIcons.sunrise, color: WHITE,),
+                          ),
                         ),
-                      ),
-                      const Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 20),
-                          child: Icon(CupertinoIcons.sunset, color: WHITE,),
+                        const Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 20),
+                            child: Icon(CupertinoIcons.sunset, color: WHITE,),
+                          ),
                         ),
-                      ),
-                      LayoutBuilder(
-                        builder: (BuildContext context, BoxConstraints constraints) {
-                          return Container(
-                            color: WHITE,
-                            height: constraints.maxHeight,
-                            width: constraints.maxWidth * data.sunstatus.sunstatus,
-                            child: Stack(
-                              clipBehavior: Clip.hardEdge,
-                              children: [
-                                Positioned(
-                                  height: constraints.maxHeight,
-                                  left: 20,
-                                  child: Icon(CupertinoIcons.sunrise, color: data.current.backcolor),
-                                ),
-                                Positioned(
-                                  left: constraints.maxWidth - 46,
-                                  height: constraints.maxHeight,
-                                  child: Icon(CupertinoIcons.sunset, color: data.current.backcolor),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                        LayoutBuilder(
+                          builder: (BuildContext context, BoxConstraints constraints) {
+                            return Container(
+                              color: WHITE,
+                              height: constraints.maxHeight,
+                              width: constraints.maxWidth * data.sunstatus.sunstatus,
+                              child: Stack(
+                                clipBehavior: Clip.hardEdge,
+                                children: [
+                                  Positioned(
+                                    height: constraints.maxHeight,
+                                    left: 20,
+                                    child: Icon(CupertinoIcons.sunrise, color: data.current.backcolor),
+                                  ),
+                                  Positioned(
+                                    left: constraints.maxWidth - 46,
+                                    height: constraints.maxHeight,
+                                    child: Icon(CupertinoIcons.sunset, color: data.current.backcolor),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
               child: Stack(
                 children: [
                   Align(
                     alignment: Alignment.centerLeft,
                     child: SizedBox(
-                      width: 67,
+                      width: 90,
                         child: Align(
                           alignment: Alignment.center,
                             child: comfortatext(data.sunstatus.sunrise, 18, color: WHITE)
@@ -382,7 +372,7 @@ Widget NewTimes(var data) => SliverList(
                   Align(
                       alignment: Alignment.centerRight,
                       child: SizedBox(
-                        width: 67,
+                        width: 90,
                           child: Align(
                             alignment: Alignment.center,
                               child: comfortatext(data.sunstatus.sunset, 18, color: WHITE)
@@ -487,15 +477,7 @@ Widget buildHihiDays(var data) => SliverList(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 30, bottom: 10),
-                    child: Text(
-                      day.name,
-                      style: GoogleFonts.comfortaa(
-                        color: WHITE,
-                        fontSize: 20,
-                        height: 0.7,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
+                    child: comfortatext(day.name, 20)
                   ),
                   Padding(
                     padding: const EdgeInsets.all(2.0),
@@ -645,26 +627,18 @@ Widget buildHihiDays(var data) => SliverList(
 );
 
 Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor) => SizedBox(
-  height: 240,
+  height: 244,
   child: ListView(
     physics: const BouncingScrollPhysics(),
     scrollDirection: Axis.horizontal,
     children: data.map<Widget>((hour) {
       return SizedBox(
-        height: 220,
+        height: 224,
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: Text(
-                '${hour.temp}°',
-                style: GoogleFonts.comfortaa(
-                  color: WHITE,
-                  fontSize: 22,
-                  height: 0.7,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
+              child: comfortatext('${hour.temp}°', 22),
             ),
             Stack(
               alignment: Alignment.bottomCenter,
@@ -698,16 +672,8 @@ Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor) => 
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top:20, left: 7, right: 7),
-              child: Text(
-                hour.time,
-                style: GoogleFonts.comfortaa(
-                  color: WHITE,
-                  fontSize: 20,
-                  height: 0.7,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
+              padding: const EdgeInsets.only(top:20, left: 9, right: 9),
+              child: comfortatext(hour.time, 17)
             )
           ],
         ),

@@ -53,15 +53,6 @@ String metNTimeCorrect(String date) {
   return '${num - 12}pm';
 }
 
-String chooseAverageCondition(String first, String second) {
-  int bias1 = weatherConditionBiassTable[first] ?? 0;
-  int bias2 = weatherConditionBiassTable[second] ?? 0;
-  if (bias1 > bias2) {
-    return first;
-  }
-  return second;
-}
-
 class MetNCurrent {
   final String text;
   final String backdrop;
@@ -112,7 +103,6 @@ class MetNCurrent {
 }
 
 class MetNDay {
-  final String date;
   final String text;
   final String icon;
   final String name;
@@ -127,7 +117,6 @@ class MetNDay {
   final mm_precip;
 
   const MetNDay({
-    required this.date,
     required this.text,
     required this.icon,
     required this.name,
@@ -141,6 +130,50 @@ class MetNDay {
     required this.hourly_for_precip,
     required this.mm_precip,
   });
+
+  static Build(item, settings, index) {
+
+    //finds the beggining of the day in question
+    int days_found = 0;
+    int index = 0;
+    while (days_found < index) {
+      String date = item["timeseries"][index]["time"];
+      final realtime = date.split('T')[1];
+      final realhour = realtime.split(':')[0];
+      final num = int.parse(realhour);
+      if (num == 0) {
+        days_found += 1;
+      }
+      index += 1;
+    }
+
+    /*
+    int begin = index.toInt() - 1;
+    int end = 0;
+
+    while (end != 0) {
+      String date = item["timeseries"][index]["time"];
+      final realtime = date.split('T')[1];
+      final realhour = realtime.split(':')[0];
+      final num = int.parse(realhour);
+      if (num == 0) {
+        end = index.toInt();
+      }
+      index += 1;
+    }
+
+    //now we know the timestamps for the beginning and the end of the day
+
+    int minTemp = 1000;
+    int maxTemp = -1000;
+    List<int> temperatures;
+    List<int> windspeeds;
+    int total_precip = 0;
+    int precip_probe = 0;
+
+     */
+
+  }
 }
 
 class MetNHour {
