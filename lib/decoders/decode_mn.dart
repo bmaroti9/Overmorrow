@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:hihi_haha/decoders/decode_wapi.dart';
@@ -107,14 +108,14 @@ class MetNDay {
   final String icon;
   final String name;
   final String minmaxtemp;
-  final List<WapiHour> hourly;
-  final List<WapiHour> hourly_for_precip;
+  final List<MetNHour> hourly;
+  final List<MetNHour> hourly_for_precip;
 
   final int precip_prob;
   final double total_precip;
   final int windspeed;
   final int avg_temp;
-  final mm_precip;
+  final double mm_precip;
 
   const MetNDay({
     required this.text,
@@ -147,7 +148,7 @@ class MetNDay {
       index += 1;
     }
 
-    /*
+
     int begin = index.toInt() - 1;
     int end = 0;
 
@@ -163,16 +164,52 @@ class MetNDay {
     }
 
     //now we know the timestamps for the beginning and the end of the day
+    
+    List<int> temperatures = [];
+    List<int> windspeeds = [];
+    List<double> precip_mm = [];
 
-    int minTemp = 1000;
-    int maxTemp = -1000;
-    List<int> temperatures;
-    List<int> windspeeds;
-    int total_precip = 0;
-    int precip_probe = 0;
+    int precipProb = 0;
 
-     */
+    List<int> oneSummary = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const weather_names = ['Clear Night', 'Partly Cloudy', 'Clear Sky', 'Overcast',
+      'Haze', 'Rain', 'Sleet', 'Drizzle', 'Thunderstorm', 'Heavy Snow', 'Fog', 'Snow',
+      'Heavy Rain', 'Cloudy Night'];
+    
+    List<MetNHour> hours = [];
+    
+    for (int n = begin; n < end; n++) {
+      MetNHour hour = MetNHour.fromJson(item[n], settings);
+      temperatures.add(hour.temp);
+      windspeeds.add(hour.wind);
+      precip_mm.add(hour.precip);
 
+      int index = weather_names.indexOf(hour.text);
+      int value = weatherConditionBiassTable[hour.text] ?? 0;
+      oneSummary[index] += value;
+
+      if (hour.precip_prob > precipProb) {
+        precipProb = hour.precip_prob.toInt();
+      }
+      hours.add(hour);
+    }
+
+    int largest_value = oneSummary.reduce(max);
+    int BIndex = oneSummary.indexOf(largest_value);
+
+    return MetNDay(
+      mm_precip: precip_mm.reduce((a, b) => a + b),
+      precip_prob: precipProb,
+      avg_temp: (precip_mm.reduce((a, b) => a + b) / temperatures.length).round(),
+      minmaxtemp: "${temperatures.reduce(max)}˚/${temperatures.reduce(min)}°",
+      hourly: hours,
+      hourly_for_precip: hours,
+      total_precip: unit_coversion(precip_mm.reduce((a, b) => a + b), settings[2]),
+      windspeed: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
+      name: getName(index, settings),
+      text: metNTextCorrection(weather_names[BIndex]),
+      icon: metNIconCorrection(weather_names[BIndex]),
+    );
   }
 }
 
@@ -182,6 +219,8 @@ class MetNHour {
   final String time;
   final String text;
   final double precip;
+  final int wind;
+  final int precip_prob;
 
   const MetNHour(
       {
@@ -190,15 +229,19 @@ class MetNHour {
         required this.icon,
         required this.text,
         required this.precip,
+        required this.wind,
+        required this.precip_prob,
       });
 
   static MetNHour fromJson(item, settings) => MetNHour(
     text: metNTextCorrection(item["data"]["next_1_hours"]["summary"]["symbol_code"], language: settings[0]),
     temp: unit_coversion(item["data"]["instant"]["details"]["air_temperature"], settings[1]).round(),
-    precip: unit_coversion(item["data"]["next_1_hours"]["details"]["precipitation_amount"], settings[2]),
+    precip: item["data"]["next_1_hours"]["details"]["precipitation_amount"],
+    precip_prob : item["data"]["next_1_hours"]["details"]["probability_of_precipitation"].round(),
     icon: metNIconCorrection(
       metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
     ),
     time: metNTimeCorrect(item["time"]),
+    wind: unit_coversion(item["data"]["instant"]["details"]["wind_speed"] * 3.6, settings[3]).round(),
   );
 }

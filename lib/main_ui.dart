@@ -83,7 +83,7 @@ class WeatherPage extends StatelessWidget {
                   ),
                   pinned: false,
 
-                  expandedHeight: availableHeight + 40,
+                  expandedHeight: availableHeight + 43,
                   flexibleSpace: Stack(
                     children: [
                       ParallaxBackground(data: data,),
@@ -103,7 +103,7 @@ class WeatherPage extends StatelessWidget {
                         left: 0,
                         right: 0,
                         child: Container(
-                          height: 32,
+                          height: 35,
                           decoration: BoxDecoration(
                             border: Border.all(width: 1.2, color: WHITE),
                             color: data.current.backcolor,
@@ -123,7 +123,7 @@ class WeatherPage extends StatelessWidget {
                 buildHihiDays(data),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20, top:30, right: 20),
+                    padding: const EdgeInsets.only(left: 20, top:40, right: 20),
                     child: Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -627,56 +627,53 @@ Widget buildHihiDays(var data) => SliverList(
 );
 
 Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor) => SizedBox(
-  height: 244,
+  height: 255,
   child: ListView(
     physics: const BouncingScrollPhysics(),
     scrollDirection: Axis.horizontal,
     children: data.map<Widget>((hour) {
-      return SizedBox(
-        height: 224,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: comfortatext('${hour.temp}°', 22),
-            ),
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Container(
-                  width: 15,
-                  height: 100,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: WHITE,
-                      ),
-                      borderRadius: const BorderRadius.all(Radius.circular(20))
-                  ),
-                ),
-                Container(
-                  width: 15,
-                  height: temp_multiply_for_scale(hour.temp, units[1]),
-                  decoration: const BoxDecoration(
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            child: comfortatext('${hour.temp}°', 22),
+          ),
+          Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Container(
+                width: 15,
+                height: 100,
+                decoration: BoxDecoration(
+                    border: Border.all(
                       color: WHITE,
-                      borderRadius: BorderRadius.all(Radius.circular(20))
-                  ),
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(20))
                 ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Image.asset(
-                'assets/icons/' + hour.icon,
-                fit: BoxFit.scaleDown,
-                height: 38,
               ),
+              Container(
+                width: 15,
+                height: temp_multiply_for_scale(hour.temp, units[1]),
+                decoration: const BoxDecoration(
+                    color: WHITE,
+                    borderRadius: BorderRadius.all(Radius.circular(20))
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Image.asset(
+              'assets/icons/' + hour.icon,
+              fit: BoxFit.scaleDown,
+              height: 38,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top:20, left: 9, right: 9),
-              child: comfortatext(hour.time, 17)
-            )
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top:20, left: 9, right: 9),
+            child: comfortatext(hour.time, 17)
+          )
+        ],
       );
     }).toList(),
   ),
