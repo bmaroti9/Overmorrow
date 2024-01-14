@@ -881,6 +881,90 @@ Map<String, List<String>> mainTranslate = {
     'Режим времени',
     '时间模式',
     '時間モード'
+  ],
+  'Monday': [
+    'Monday',
+    'Hétfő',
+    'Lunes',
+    'Lundi',
+    'Montag',
+    'Lunedì',
+    'Segunda-feira',
+    'Понедельник',
+    '星期一',
+    '月曜日'
+  ],
+  'Tuesday': [
+    'Tuesday',
+    'Kedd',
+    'Martes',
+    'Mardi',
+    'Dienstag',
+    'Martedì',
+    'Terça-feira',
+    'Вторник',
+    '星期二',
+    '火曜日'
+  ],
+  'Wednesday': [
+    'Wednesday',
+    'Szerda',
+    'Miércoles',
+    'Mercredi',
+    'Mittwoch',
+    'Mercoledì',
+    'Quarta-feira',
+    'Среда',
+    '星期三',
+    '水曜日'
+  ],
+  'Thursday': [
+    'Thursday',
+    'Csütörtök',
+    'Jueves',
+    'Jeudi',
+    'Donnerstag',
+    'Giovedì',
+    'Quinta-feira',
+    'Четверг',
+    '星期四',
+    '木曜日'
+  ],
+  'Friday': [
+    'Friday',
+    'Péntek',
+    'Viernes',
+    'Vendredi',
+    'Freitag',
+    'Venerdì',
+    'Sexta-feira',
+    'Пятница',
+    '星期五',
+    '金曜日'
+  ],
+  'Saturday': [
+    'Saturday',
+    'Szombat',
+    'Sábado',
+    'Samedi',
+    'Samstag',
+    'Sabato',
+    'Sábado',
+    'Суббота',
+    '星期六',
+    '土曜日'
+  ],
+  'Sunday': [
+    'Sunday',
+    'Vasárnap',
+    'Domingo',
+    'Dimanche',
+    'Sonntag',
+    'Domenica',
+    'Domingo',
+    'Воскресенье',
+    '星期天',
+    '日曜日'
   ]
 };
 

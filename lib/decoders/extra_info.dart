@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:convert';
 
-import 'package:hihi_haha/decoders/decode_mn.dart';
+import 'package:hihi_haha/decoders/decode_OM.dart';
 
 import '../api_key.dart';
 import '../caching.dart';
@@ -77,17 +77,6 @@ class WeatherData {
 
     var timenow = wapi_body["location"]["localtime_epoch"];
 
-    final mn_params = {
-      'lat': lat.toString(),
-      'lon': lng.toString(),
-    };
-    final mn_url = Uri.https('api.met.no', 'weatherapi/locationforecast/2.0/complete', mn_params);
-    print(mn_url);
-
-    var mn_file = await cacheManager2.getSingleFile(mn_url.toString(), key: "$real_loc, met.no").timeout(const Duration(seconds: 6));
-    var mn_response = await mn_file.readAsString();
-    var mn_body = jsonDecode(mn_response);
-
     if (provider == 'weatherapi.com') {
       List<WapiDay> days = [];
 
@@ -113,9 +102,25 @@ class WeatherData {
       );
     }
     else {
-      List<MetNDay> days = [];
-      for (int n = 0; n < 9; n++) {
-        MetNDay x = MetNDay.Build(mn_body["properties"]["timeseries"], settings, n);
+      final oMParams = {
+        "latitude": lat.toString(),
+        "longitude": lng.toString(),
+        "current": ["temperature_2m", "relative_humidity_2m", "precipitation", "weather_code", "wind_speed_10m"],
+        "hourly": ["temperature_2m", "precipitation", "weather_code"],
+        "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "uv_index_max", "precipitation_sum", "precipitation_probability_max", "wind_speed_10m_max"],
+        "timezone": "auto",
+        "forecast_days": "14"
+      };
+      final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
+      print(oMUrl);
+
+      var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
+      var oMResponse = await oMFile.readAsString();
+      var oMBody = jsonDecode(oMResponse);
+
+      List<OMDay> days = [];
+      for (int n = 0; n < 14; n++) {
+        OMDay x = OMDay.build(oMBody, settings, n);
         days.add(x);
       }
 
@@ -124,7 +129,7 @@ class WeatherData {
         aqi: WapiAqi.fromJson(wapi_body),
         sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
 
-        current: MetNCurrent.fromJson(mn_body, settings),
+        current: OMCurrent.fromJson(oMBody, settings),
         days: days,
 
         lat: lat,
@@ -132,7 +137,7 @@ class WeatherData {
 
         place: placeName,
         settings: settings,
-        provider: "weatherapi.com",
+        provider: "open-meteo",
         real_loc: real_loc,
       );
     }

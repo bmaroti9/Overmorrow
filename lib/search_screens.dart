@@ -521,7 +521,7 @@ class dumbySearch extends StatelessWidget {
                                       ),
                                       //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
                                       value: provider.toString(),
-                                      items: ['weatherapi.com', 'met.no'].map((item) {
+                                      items: ['weatherapi.com', 'open-meteo'].map((item) {
                                         return DropdownMenuItem(
                                           value: item,
                                           child: Text(item),

@@ -177,11 +177,12 @@ class _MyAppState extends State<MyApp> {
       return WeatherPage(data: weatherdata,
           updateLocation: updateLocation);
 
-    } catch (e) {
+    } catch (e, stacktrace) {
       List<String> settings = await getSettingsUsed();
       String weather_provider = await getWeatherProvider();
 
       print("ERRRRRRRRROR");
+      print(stacktrace);
 
       cacheManager2.emptyCache();
 
