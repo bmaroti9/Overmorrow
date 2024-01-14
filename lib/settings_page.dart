@@ -97,7 +97,7 @@ setLastPlace(String place, String cord) async {
 
 Future<String> getWeatherProvider() async {
   final prefs = await SharedPreferences.getInstance();
-  final used = prefs.getString('weather_provider') ?? 'weatherapi.com';
+  final used = prefs.getString('weather_provider') ?? 'open-meteo';
   return used;
 }
 

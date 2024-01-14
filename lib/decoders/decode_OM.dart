@@ -15,7 +15,7 @@ String oMGetName(index, settings, item) {
   String x = item["daily"]["time"][index].split("T")[0];
   List<String> z = x.split("-");
   DateTime time = DateTime(int.parse(z[0]), int.parse(z[1]), int.parse(z[2]));
-  const weeks = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const weeks = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   return translation(weeks[time.weekday - 1], settings[0]);
 }
 
@@ -24,10 +24,13 @@ String oMamPmTime(String time) {
   List<String> num = splited[1].split(":");
   int hour = int.parse(num[0]);
   if (hour == 0) {
-    return "0am";
+    return "12am";
   }
   if (hour < 12) {
     return "${hour}am";
+  }
+  if (hour == 12) {
+    return "12pm";
   }
   return "${hour - 12}pm";
 }

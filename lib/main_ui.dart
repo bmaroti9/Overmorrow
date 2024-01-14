@@ -121,6 +121,7 @@ class WeatherPage extends StatelessWidget {
                 ),
                 NewTimes(data),
                 buildHihiDays(data),
+                buildGlanceDay(data),
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20, top:40, right: 20),
@@ -468,7 +469,7 @@ Widget NewTimes(var data) => SliverList(
 Widget buildHihiDays(var data) => SliverList(
     delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
-        if (index < data.days.length) {
+        if (index < 3) {
           final day = data.days[index];
             return Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -621,9 +622,45 @@ Widget buildHihiDays(var data) => SliverList(
             );
           }
         return null;
-
     },
 )
+);
+
+Widget buildGlanceDay(var data) => SliverPadding(
+  padding: EdgeInsets.all(20),
+  sliver: SliverToBoxAdapter(
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(width: 1.2, color: WHITE),
+      ),
+      child: ListView.builder(
+        shrinkWrap: true,
+        padding: EdgeInsets.only(top: 10, bottom: 10),
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: data.days.length - 3,
+        itemBuilder: (context, index) {
+          final day = data.days[index + 3];
+          return Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 10),
+            child: Row(
+              children: [
+                SizedBox(width: 50, child: comfortatext(day.name, 18)),
+                Container(
+                  padding: const EdgeInsets.only(left: 0, right: 20),
+                  child: Image.asset(
+                    'assets/icons/' + day.icon,
+                    fit: BoxFit.contain,
+                    height: 30,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      )
+    ),
+  ),
 );
 
 Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor) => SizedBox(

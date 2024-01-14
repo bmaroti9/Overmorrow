@@ -354,6 +354,13 @@ class _InfoPageState extends State<InfoPage> {
                       TextButton(
                           onPressed: () async {
                             await _launchUrl(
+                                'https://open-meteo.com');
+                          },
+                          child: comfortatext('open-meteo.com', 20,
+                              color: Colors.orange)),
+                      TextButton(
+                          onPressed: () async {
+                            await _launchUrl(
                                 'https://www.rainviewer.com/api.html');
                           },
                           child: comfortatext('www.rainviewer.com', 20,

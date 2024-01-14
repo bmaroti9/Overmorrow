@@ -882,89 +882,89 @@ Map<String, List<String>> mainTranslate = {
     '时间模式',
     '時間モード'
   ],
-  'Monday': [
-    'Monday',
-    'Hétfő',
-    'Lunes',
-    'Lundi',
-    'Montag',
-    'Lunedì',
-    'Segunda-feira',
-    'Понедельник',
-    '星期一',
-    '月曜日'
+  'Mon': [
+    'Mon',
+    'H',
+    'Lun',
+    'Lun',
+    'Mo',
+    'Lun',
+    'Seg',
+    'Пн',
+    '一',
+    '月'
   ],
-  'Tuesday': [
-    'Tuesday',
-    'Kedd',
-    'Martes',
-    'Mardi',
-    'Dienstag',
-    'Martedì',
-    'Terça-feira',
-    'Вторник',
-    '星期二',
-    '火曜日'
+  'Tue': [
+    'Tue',
+    'K',
+    'Mar',
+    'Mar',
+    'Di',
+    'Mar',
+    'Ter',
+    'Вт',
+    '二',
+    '火'
   ],
-  'Wednesday': [
-    'Wednesday',
-    'Szerda',
-    'Miércoles',
-    'Mercredi',
-    'Mittwoch',
-    'Mercoledì',
-    'Quarta-feira',
-    'Среда',
-    '星期三',
-    '水曜日'
+  'Wed': [
+    'Wed',
+    'Sz',
+    'Mié',
+    'Mer',
+    'Mi',
+    'Mer',
+    'Qua',
+    'Ср',
+    '三',
+    '水'
   ],
-  'Thursday': [
-    'Thursday',
-    'Csütörtök',
-    'Jueves',
-    'Jeudi',
-    'Donnerstag',
-    'Giovedì',
-    'Quinta-feira',
-    'Четверг',
-    '星期四',
-    '木曜日'
+  'Thu': [
+    'Thu',
+    'Cs',
+    'Jue',
+    'Jeu',
+    'Do',
+    'Gio',
+    'Qui',
+    'Чт',
+    '四',
+    '木'
   ],
-  'Friday': [
-    'Friday',
-    'Péntek',
-    'Viernes',
-    'Vendredi',
-    'Freitag',
-    'Venerdì',
-    'Sexta-feira',
-    'Пятница',
-    '星期五',
-    '金曜日'
+  'Fri': [
+    'Fri',
+    'P',
+    'Vie',
+    'Ven',
+    'Fr',
+    'Ven',
+    'Sex',
+    'Пт',
+    '五',
+    '金'
   ],
-  'Saturday': [
-    'Saturday',
-    'Szombat',
-    'Sábado',
-    'Samedi',
-    'Samstag',
-    'Sabato',
-    'Sábado',
-    'Суббота',
-    '星期六',
-    '土曜日'
+  'Sat': [
+    'Sat',
+    'Szo',
+    'Sáb',
+    'Sam',
+    'Sa',
+    'Sab',
+    'Sáb',
+    'Сб',
+    '六',
+    '土'
   ],
-  'Sunday': [
-    'Sunday',
-    'Vasárnap',
-    'Domingo',
-    'Dimanche',
-    'Sonntag',
-    'Domenica',
-    'Domingo',
-    'Воскресенье',
-    '星期天',
-    '日曜日'
+  'Sun': [
+    'Sun',
+    'V',
+    'Dom',
+    'Dim',
+    'So',
+    'Dom',
+    'Dom',
+    'Вс',
+    '日',
+    '日'
   ]
 };
 
