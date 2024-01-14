@@ -18,6 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:convert';
 
+import 'package:hihi_haha/decoders/decode_mn.dart';
+
 import '../api_key.dart';
 import '../caching.dart';
 
@@ -52,7 +54,7 @@ class WeatherData {
     required this.current,
   });
 
-  static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong) async {
+  static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
 
     List<String> split = latlong.split(",");
     double lat = double.parse(split[0]);
@@ -75,27 +77,65 @@ class WeatherData {
 
     var timenow = wapi_body["location"]["localtime_epoch"];
 
-    List<WapiDay> days = [];
+    final mn_params = {
+      'lat': lat.toString(),
+      'lon': lng.toString(),
+    };
+    final mn_url = Uri.https('api.met.no', 'weatherapi/locationforecast/2.0/complete', mn_params);
+    print(mn_url);
 
-    for (int n = 0; n < wapi_body["forecast"]["forecastday"].length; n++) {
-      days.add(WapiDay.fromJson(wapi_body["forecast"]["forecastday"][n], n, settings, timenow));
+    var mn_file = await cacheManager2.getSingleFile(mn_url.toString(), key: "$real_loc, met.no").timeout(const Duration(seconds: 6));
+    var mn_response = await mn_file.readAsString();
+    var mn_body = jsonDecode(mn_response);
+
+    if (provider == 'weatherapi.com') {
+      List<WapiDay> days = [];
+
+      for (int n = 0; n < wapi_body["forecast"]["forecastday"].length; n++) {
+        days.add(WapiDay.fromJson(
+            wapi_body["forecast"]["forecastday"][n], n, settings, timenow));
+      }
+
+      return WeatherData(
+        place: placeName,
+        settings: settings,
+        provider: "weatherapi.com",
+        real_loc: real_loc,
+
+        lat: lat,
+        lng: lng,
+
+        current: WapiCurrent.fromJson(wapi_body, settings),
+        days: days,
+        sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
+        aqi: WapiAqi.fromJson(wapi_body),
+        radar: await RainviewerRadar.getData(),
+      );
     }
+    else {
+      List<MetNDay> days = [];
+      for (int n = 0; n < 9; n++) {
+        MetNDay x = MetNDay.Build(mn_body["properties"]["timeseries"], settings, n);
+        days.add(x);
+      }
 
-    return WeatherData(
-      place: placeName,
-      settings: settings,
-      provider: 'weatherapi.com',
-      real_loc: real_loc,
+      return WeatherData(
+        radar: await RainviewerRadar.getData(),
+        aqi: WapiAqi.fromJson(wapi_body),
+        sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
 
-      lat: lat,
-      lng: lng,
+        current: MetNCurrent.fromJson(mn_body, settings),
+        days: days,
 
-      current: WapiCurrent.fromJson(wapi_body, settings),
-      days: days,
-      sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
-      aqi: WapiAqi.fromJson(wapi_body),
-      radar: await RainviewerRadar.getData(),
-    );
+        lat: lat,
+        lng: lng,
+
+        place: placeName,
+        settings: settings,
+        provider: "weatherapi.com",
+        real_loc: real_loc,
+      );
+    }
   }
 }
 

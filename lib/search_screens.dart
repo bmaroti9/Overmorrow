@@ -428,10 +428,12 @@ class dumbySearch extends StatelessWidget {
   final place;
   final icon;
   final settings;
+  final provider;
+  final latlng;
 
   dumbySearch({super.key, required this.errorMessage,
     required this.updateLocation, required this.icon, required this.place,
-  required this.settings});
+  required this.settings, required this.provider, required this.latlng});
 
   final Color color = const Color(0xffB1D2E1);
 
@@ -439,6 +441,7 @@ class dumbySearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
 
     Size size = view.physicalSize / view.devicePixelRatio;
@@ -453,7 +456,7 @@ class dumbySearch extends StatelessWidget {
       backgroundColor: darken(color, 0.4),
       body: RefreshIndicator(
         onRefresh: () async {
-          await updateLocation(place);
+          await updateLocation(latlng, place);
         },
         backgroundColor: WHITE,
         color: BLACK,
@@ -465,9 +468,9 @@ class dumbySearch extends StatelessWidget {
                 preferredSize: Size(0, 70),
                 child: Container(),
               ),
+              expandedHeight: safeHeight - 100,
               backgroundColor: Colors.transparent,
               pinned: false,
-              expandedHeight: safeHeight,
               flexibleSpace: Stack(
                 children: [
                   Padding(
@@ -489,7 +492,54 @@ class dumbySearch extends StatelessWidget {
                               ),
                               textAlign: TextAlign.center,
                             ))
-                          )
+                          ),
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: WHITE, width: 1.2)
+                              ),
+                              child: Column(
+                                children: [
+                                  comfortatext(translation('Weather provider', settings[0]), 18),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20, right: 20),
+                                    child: DropdownButton(
+                                      underline: Container(),
+                                      borderRadius: BorderRadius.circular(20),
+                                      icon: const Padding(
+                                        padding: EdgeInsets.only(left:5),
+                                        child: Icon(Icons.arrow_drop_down_circle, color: WHITE,),
+                                      ),
+                                      style: GoogleFonts.comfortaa(
+                                        color: WHITE,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                      //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
+                                      value: provider.toString(),
+                                      items: ['weatherapi.com', 'met.no'].map((item) {
+                                        return DropdownMenuItem(
+                                          value: item,
+                                          child: Text(item),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? value) async {
+                                        SetData('weather_provider', value!);
+                                        await updateLocation(latlng, place);
+                                      },
+                                      isExpanded: true,
+                                      dropdownColor: darken(color, 0.1),
+                                      elevation: 0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

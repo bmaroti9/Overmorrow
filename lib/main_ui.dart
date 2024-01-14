@@ -148,8 +148,8 @@ class WeatherPage extends StatelessWidget {
                                 fontWeight: FontWeight.w300,
                               ),
                               //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
-                              value: 'weatherapi.com',
-                              items: ['weatherapi.com'].map((item) {
+                              value: data.provider.toString(),
+                              items: ['weatherapi.com', 'met.no'].map((item) {
                                 return DropdownMenuItem(
                                   value: item,
                                   child: Text(item),

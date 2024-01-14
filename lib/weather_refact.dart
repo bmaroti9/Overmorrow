@@ -174,6 +174,37 @@ Map<String, String> metNWeatherToText = {
   'snowshowersandthunder_polartwilight' : 'Thunderstorm'
  };
 
+Map<int, String> OMCodes = {
+  0: 'Clear Sky',
+  1: 'Clear Sky',
+  2: 'Partly Cloudy',
+  3: 'Overcast',
+  45: 'Fog',
+  48: 'Fog',
+  51: 'Drizzle',
+  53: 'Drizzle',
+  55: 'Rain',
+  56: 'Sleet',
+  57: 'Sleet',
+  61: 'Rain',
+  63: 'Heavy Rain',
+  65: 'Heavy Rain',
+  66: 'Sleet',
+  67: 'Sleet',
+  71: 'Snow',
+  73: 'Snow',
+  75: 'Heavy Snow',
+  77: 'Heavy Snow',
+  80: 'Drizzle',
+  81: 'Rain',
+  82: 'Heavy Rain',
+  85: 'Snow',
+  86: 'Heavy Snow',
+  95: 'Thunderstorm',
+  96: 'Thunderstorm',
+  99: 'thunderstorm',
+};
+
 
 Map<String, String> textBackground = {
   'Clear Night': 'clear_night.jpg',

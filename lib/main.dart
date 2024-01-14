@@ -73,7 +73,7 @@ class _MyAppState extends State<MyApp> {
     try {
 
       List<String> settings = await getSettingsUsed();
-      //String weather_provider = await getWeatherProvider();
+      String weather_provider = await getWeatherProvider();
       //print(weather_provider);
 
       if (startup) {
@@ -103,13 +103,13 @@ class _MyAppState extends State<MyApp> {
                 updateLocation: updateLocation,
                 icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
                 place: backupName,
-                settings: settings,);
+                settings: settings, provider: weather_provider, latlng: absoluteProposed,);
             }
           } on LocationServiceDisabledException {
             return dumbySearch(errorMessage: translation("location services are disabled.", settings[0]),
               updateLocation: updateLocation,
               icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-              place: backupName, settings: settings,);
+              place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
           }
 
           backupName = '${position.latitude},${position.longitude}';
@@ -121,7 +121,7 @@ class _MyAppState extends State<MyApp> {
           return dumbySearch(errorMessage: translation(loc_status, settings[0]),
             updateLocation: updateLocation,
             icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-            place: backupName, settings: settings,);
+            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
         }
       }
       if (proposedLoc == 'search') {
@@ -135,7 +135,7 @@ class _MyAppState extends State<MyApp> {
             errorMessage: '${translation('Place not found', settings[0])}: $backupName',
             updateLocation: updateLocation,
             icon: const Icon(Icons.location_disabled, color: WHITE, size: 30,),
-            place: backupName, settings: settings,);
+            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
         }
       }
 
@@ -147,28 +147,28 @@ class _MyAppState extends State<MyApp> {
       var weatherdata;
 
       try {
-        weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed);
+        weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weather_provider);
 
       } on TimeoutException {
         return dumbySearch(errorMessage: translation("Weak or no wifi connection", settings[0]),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: backupName, settings: settings,);
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on HttpExceptionWithStatus catch (hihi){
         print(hihi.toString());
         return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: backupName, settings: settings,);
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on SocketException {
         return dumbySearch(errorMessage: translation("Not connected to the internet", settings[0]),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: backupName, settings: settings,);
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on Error catch (e, stacktrace) {
         print(stacktrace);
         return dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: backupName, settings: settings,);
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       }
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
@@ -179,6 +179,7 @@ class _MyAppState extends State<MyApp> {
 
     } catch (e) {
       List<String> settings = await getSettingsUsed();
+      String weather_provider = await getWeatherProvider();
 
       print("ERRRRRRRRROR");
 
@@ -187,7 +188,7 @@ class _MyAppState extends State<MyApp> {
       if (recall) {
         return dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: backupName, settings: settings,);
+          place: backupName, settings: settings, provider: weather_provider, latlng: 'search',);
       }
       else {
         return getDays(true);

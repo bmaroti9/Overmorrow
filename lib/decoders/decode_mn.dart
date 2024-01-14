@@ -138,7 +138,7 @@ class MetNDay {
     int days_found = 0;
     int index = 0;
     while (days_found < index) {
-      String date = item["timeseries"][index]["time"];
+      String date = item[index]["time"];
       final realtime = date.split('T')[1];
       final realhour = realtime.split(':')[0];
       final num = int.parse(realhour);
@@ -148,12 +148,11 @@ class MetNDay {
       index += 1;
     }
 
-
-    int begin = index.toInt() - 1;
+    int begin = index.toInt();
     int end = 0;
 
-    while (end != 0) {
-      String date = item["timeseries"][index]["time"];
+    while (end == 0) {
+      String date = item[index]["time"];
       final realtime = date.split('T')[1];
       final realhour = realtime.split(':')[0];
       final num = int.parse(realhour);
@@ -162,6 +161,8 @@ class MetNDay {
       }
       index += 1;
     }
+
+    print(("hihihihihih", begin, end));
 
     //now we know the timestamps for the beginning and the end of the day
     
