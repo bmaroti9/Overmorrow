@@ -112,7 +112,6 @@ class WeatherData {
         "forecast_days": "14"
       };
       final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
-      print(oMUrl);
 
       var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
       var oMResponse = await oMFile.readAsString();

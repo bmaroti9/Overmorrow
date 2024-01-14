@@ -23,10 +23,18 @@ String oMamPmTime(String time) {
   List<String> splited = time.split("T");
   List<String> num = splited[1].split(":");
   int hour = int.parse(num[0]);
+  if (hour == 0) {
+    return "0am";
+  }
   if (hour < 12) {
     return "${hour}am";
   }
-  return "${hour}pm";
+  return "${hour - 12}pm";
+}
+
+String oM24hour(String time) {
+  List<String> splited = time.split("T");
+  return splited[1];
 }
 
 String oMTextCorrection(int code) {
@@ -137,13 +145,13 @@ class OMDay {
       text: translation(oMTextCorrection(item["daily"]["weather_code"][index]), settings[0]),
       name: oMGetName(index, settings, item),
       windspeed: unit_coversion(item["daily"]["wind_speed_10m_max"][index], settings[3]).round(),
-      total_precip: unit_coversion(item["daily"]["precipitation_sum"][index], settings[3]).roundToDouble(),
+      total_precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][index], settings[2]).toStringAsFixed(1)),
       minmaxtemp: "${unit_coversion(item["daily"]["temperature_2m_min"][index], settings[1]).round().toString()}°"
           "/${unit_coversion(item["daily"]["temperature_2m_max"][index], settings[1]).round().toString()}°",
       precip_prob: item["daily"]["precipitation_probability_max"][index] ?? 0,
       mm_precip: item["daily"]["precipitation_sum"][index],
-      hourly_for_precip: buildHours(index, true, item, settings),
-      hourly: buildHours(index, false, item, settings),
+      hourly_for_precip: buildHours(index, false, item, settings),
+      hourly: buildHours(index, true, item, settings),
       avg_temp: 0,
     );
   }
@@ -151,19 +159,20 @@ class OMDay {
   static List<OMHour> buildHours(index, get_rid_first, item, settings) {
     int timenow = int.parse(item["current"]["time"].split("T")[1].split(":")[0]);
     List<OMHour> hourly = [];
-    if (index == -1 && get_rid_first) {
-      for (var i = 0; i < item["daily"]["time"].length; i++) {
-        if (int.parse(item["daily"]["time"][index].split("T")[1].split(":")[0]) > timenow) {
+    if (index == 0 && get_rid_first) {
+      for (var i = 0; i < 23; i++) {
+        if (index * 24 + i >= timenow) {
           hourly.add(OMHour.fromJson(item, i, settings));
         }
       }
+      return hourly;
     }
     else {
       for (var i = 0; i < 24; i++) {
         hourly.add(OMHour.fromJson(item, index * 24 + i, settings));
       }
+      return hourly;
     }
-    return hourly;
   }
 }
 
@@ -186,7 +195,7 @@ class OMHour {
     temp: unit_coversion(item["hourly"]["temperature_2m"][index], settings[1]).round(),
     text: translation(oMTextCorrection(item["hourly"]["weather_code"][index]), settings[0]),
     icon: oMIconCorrection(oMTextCorrection(item["hourly"]["weather_code"][index])),
-    time: oMamPmTime(item["hourly"]["time"][index]),
+    time: settings[6] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
     precip: unit_coversion(item["hourly"]["precipitation"][index], settings[2]),
   );
 }
