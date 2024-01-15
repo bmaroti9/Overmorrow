@@ -598,13 +598,11 @@ Widget buildHihiDays(var data) => SliverList(
                                       left: 8, right: 8),
                                   child: Row(
                                     children: [
-                                      const Icon(CupertinoIcons.thermometer,
+                                      const Icon(CupertinoIcons.sun_min,
                                         color: WHITE,),
                                       const Padding(
                                           padding: EdgeInsets.only(right: 10)),
-                                      comfortatext(
-                                          '${day.avg_temp} ${data.settings[1]}',
-                                          20),
+                                      comfortatext('${day.uv} UV', 20),
                                     ],
                                   ),
                                 ),
@@ -692,12 +690,14 @@ Widget buildGlanceDay(var data) => SliverPadding(
                                 Icon(Icons.arrow_drop_down, color: data.current.backcolor, size: 20,),
                               ],
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                comfortatext(day.minmaxtemp.split("/")[1], 17, color: data.current.backcolor),
-                                comfortatext(day.minmaxtemp.split("/")[0], 17, color: data.current.backcolor),
-                              ],
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  comfortatext(day.minmaxtemp.split("/")[1], 17, color: data.current.backcolor),
+                                  comfortatext(day.minmaxtemp.split("/")[0], 17, color: data.current.backcolor),
+                                ],
+                              ),
                             ),
                           ],
                         ),

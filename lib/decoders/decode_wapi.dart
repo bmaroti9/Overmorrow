@@ -256,7 +256,7 @@ class WapiDay {
   final int precip_prob;
   final double total_precip;
   final int windspeed;
-  final int avg_temp;
+  final int uv;
   final mm_precip;
 
   const WapiDay({
@@ -265,9 +265,9 @@ class WapiDay {
     required this.name,
     required this.minmaxtemp,
     required this.hourly,
+    required this.uv,
 
     required this.precip_prob,
-    required this.avg_temp,
     required this.total_precip,
     required this.windspeed,
     required this.hourly_for_precip,
@@ -291,8 +291,8 @@ class WapiDay {
     mm_precip: item["day"]["totalprecip_mm"] + item["day"]["totalsnow_cm"] / 10,
     total_precip: double.parse(unit_coversion(item["day"]["totalprecip_mm"], settings[2]).toStringAsFixed(1)),
     precip_prob: item["day"]["daily_chance_of_rain"],
-    avg_temp: unit_coversion(item["day"]["avgtemp_c"], settings[1]).round(),
     windspeed: unit_coversion(item["day"]["maxwind_kph"], settings[3]).round(),
+    uv: item["day"]["uv"].round(),
   );
 
   static List<WapiHour> buildWapiHour(data, settings, int index, int timenow, bool get_rid_first) {

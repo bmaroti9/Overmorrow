@@ -124,8 +124,8 @@ class OMDay {
   final int precip_prob;
   final double total_precip;
   final int windspeed;
-  final int avg_temp;
   final double mm_precip;
+  final int uv;
 
   const OMDay({
     required this.text,
@@ -135,15 +135,16 @@ class OMDay {
     required this.hourly,
 
     required this.precip_prob,
-    required this.avg_temp,
     required this.total_precip,
     required this.windspeed,
     required this.hourly_for_precip,
     required this.mm_precip,
+    required this.uv,
   });
 
   static OMDay build(item, settings, index) {
     return OMDay(
+      uv: item["daily"]["uv_index_max"][0].round(),
       icon: oMIconCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
       text: translation(oMTextCorrection(item["daily"]["weather_code"][index]), settings[0]),
       name: oMGetName(index, settings, item),
@@ -155,7 +156,6 @@ class OMDay {
       mm_precip: item["daily"]["precipitation_sum"][index],
       hourly_for_precip: buildHours(index, false, item, settings),
       hourly: buildHours(index, true, item, settings),
-      avg_temp: 0,
     );
   }
 
