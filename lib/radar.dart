@@ -124,7 +124,7 @@ class _RadarMapState extends State<RadarMap> {
                               : 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',
                         ),
                         TileLayer(
-                          urlTemplate: data.radar.images[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_1.png",
+                          urlTemplate: data.radar.images[currentFrameIndex] + "/256/{z}/{x}/{y}/8/1_1.png",
                         ),
                       ],
                     ),
@@ -317,7 +317,7 @@ class _RadarPageState extends State<RadarPage> {
                   : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
             ),
             TileLayer(
-              urlTemplate: data.radar.images[currentFrameIndex] + "/512/{z}/{x}/{y}/8/1_1.png",
+              urlTemplate: data.radar.images[currentFrameIndex] + "/256/{z}/{x}/{y}/8/1_1.png",
             ),
           ],
         ),

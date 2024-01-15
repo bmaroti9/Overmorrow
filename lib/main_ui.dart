@@ -124,7 +124,7 @@ class WeatherPage extends StatelessWidget {
                 buildGlanceDay(data),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20, top:40, right: 20),
+                    padding: const EdgeInsets.only(left: 20, top:20, right: 20),
                     child: Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -400,7 +400,8 @@ Widget NewTimes(var data) => SliverList(
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(width: 1.2, color: WHITE)
+                //border: Border.all(width: 1.2, color: WHITE)
+                color: darken(data.current.backcolor)
               ),
               padding: const EdgeInsets.all(13),
               child: Row(
@@ -411,14 +412,14 @@ Widget NewTimes(var data) => SliverList(
                         height: 85,
                         width: 85,
                         decoration: BoxDecoration(
-                          color: darken(data.current.backcolor, 0.1),
+                          color: WHITE,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Center(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 5),
                             child: comfortatext(data.aqi.aqi_index.toString(), 40,
-                                color: WHITE),
+                                color: data.current.backcolor),
                           ),
                         ),
                       ),
@@ -485,7 +486,7 @@ Widget buildHihiDays(var data) => SliverList(
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: day.mm_precip > 0.1 ? darken(data.current.backcolor, 0.05) : data.current.backcolor,
+                        color: day.mm_precip > 0.1 ? darken(data.current.backcolor, 0.1) : data.current.backcolor,
                       ),
                       padding: const EdgeInsets.only(top: 8, left: 3, right: 5, bottom: 3),
                       child: Column(
@@ -507,20 +508,17 @@ Widget buildHihiDays(var data) => SliverList(
                                   children: [
                                     comfortatext(day.text, 22, color: WHITE),
                                     Spacer(),
-                                    Container(
-                                          padding: const EdgeInsets.only(top:3,bottom: 3, left: 3, right: 3),
-                                          decoration: BoxDecoration(
-                                            //border: Border.all(color: Colors.blueAccent)
-                                              color: WHITE,
-                                              borderRadius: BorderRadius.circular(10)
-                                          ),
-                                        child: Text(
-                                            day.minmaxtemp,
-                                            style: TextStyle(
-                                                color: data.current.backcolor
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 6),
+                                      child: Container(
+                                            padding: const EdgeInsets.only(top:7,bottom: 7, left: 5, right: 5),
+                                            decoration: BoxDecoration(
+                                              //border: Border.all(color: Colors.blueAccent)
+                                                color: WHITE,
+                                                borderRadius: BorderRadius.circular(10)
                                             ),
-                                            textScaleFactor: 1.4
-                                        ),
+                                          child: comfortatext(day.minmaxtemp, 17, color: data.current.backcolor)
+                                      ),
                                     ),
                                   ],
                                 )
@@ -627,38 +625,139 @@ Widget buildHihiDays(var data) => SliverList(
 );
 
 Widget buildGlanceDay(var data) => SliverPadding(
-  padding: EdgeInsets.all(20),
+  padding: EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 10),
   sliver: SliverToBoxAdapter(
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 1.2, color: WHITE),
-      ),
-      child: ListView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.only(top: 10, bottom: 10),
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: data.days.length - 3,
-        itemBuilder: (context, index) {
-          final day = data.days[index + 3];
-          return Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 10),
-            child: Row(
-              children: [
-                SizedBox(width: 50, child: comfortatext(day.name, 18)),
-                Container(
-                  padding: const EdgeInsets.only(left: 0, right: 20),
-                  child: Image.asset(
-                    'assets/icons/' + day.icon,
-                    fit: BoxFit.contain,
-                    height: 30,
-                  ),
+    child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: comfortatext('Daily', 20, color: WHITE),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(width: 1.2, color: WHITE),
+          ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.only(top: 8, bottom: 8),
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: data.days.length - 3,
+            itemBuilder: (context, index) {
+              final day = data.days[index + 3];
+              return Padding(
+                padding: const EdgeInsets.only(left: 12, right: 12, bottom: 4, top: 4),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 75,
+                      width: 75,
+                      decoration: BoxDecoration(
+                          color: darken(data.current.backcolor),
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          comfortatext(day.name, 18),
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            child: Image.asset(
+                              'assets/icons/' + day.icon,
+                              fit: BoxFit.contain,
+                              height: 28,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Container(
+                        height: 75,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            color: WHITE,
+                            borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.arrow_drop_up, color: data.current.backcolor, size: 20,),
+                                Icon(Icons.arrow_drop_down, color: data.current.backcolor, size: 20,),
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                comfortatext(day.minmaxtemp.split("/")[1], 17, color: data.current.backcolor),
+                                comfortatext(day.minmaxtemp.split("/")[0], 17, color: data.current.backcolor),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Container(
+                            height: 75,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: WHITE, width: 1.2)
+                            ),
+                            padding: const EdgeInsets.all(3),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.water_drop_outlined,
+                                      color: WHITE, size: 18,),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 2, right: 5),
+                                      child: comfortatext('${day.precip_prob}%', 17),
+                                    ),
+                                    const Icon(
+                                      Icons.water_drop, color: WHITE, size: 18,),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 2, right: 2),
+                                      child: comfortatext(day.total_precip.toString() +
+                                          data.settings[2], 17),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      CupertinoIcons.wind, color: WHITE, size: 18,),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 2, right: 2),
+                                      child: comfortatext('${day.windspeed} ${data
+                                          .settings[3]}', 17),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                    )
+                  ],
                 ),
-              ],
-            ),
-          );
-        }
-      )
+              );
+            }
+          )
+        ),
+      ],
     ),
   ),
 );
