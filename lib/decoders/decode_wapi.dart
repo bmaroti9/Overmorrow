@@ -28,7 +28,6 @@ import '../weather_refact.dart' as weather_refactor;
 
 bool RandomSwitch = false;
 
-
 String amPmTime(String time) {
   List<String> splited = time.split(" ");
   List<String> num = splited[0].split(":");

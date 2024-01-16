@@ -44,6 +44,36 @@ String oMTextCorrection(int code) {
   return OMCodes[code] ?? 'Clear Sky';
 }
 
+String oMCurrentTextCorrection(int code, sunstatus, time){
+  String t = time.contains("T") ? time.split("T")[1] : time.split(" ")[1];
+  int minute = int.parse(t.split(":")[1]);
+  int hour = int.parse(t.split(":")[0]);
+
+  List<String> x = sunstatus.absoluteSunriseSunset.split("/");
+  int up_h = int.parse(x[0].split(":")[0]);
+  int up_m = int.parse(x[0].split(":")[1]);
+
+  int down_h = int.parse(x[1].split(":")[0]);
+  int donw_m = int.parse(x[1].split(":")[1]);
+
+  double a_current = hour + minute / 60;
+  double a_up = up_h + up_m / 60;
+  double a_down = down_h + donw_m / 60;
+  
+  if (a_up <= a_current && a_current <= a_down) {
+    return OMCodes[code] ?? 'Clear Sky';
+  }
+  else {
+    if (code == 0 || code == 1) {
+      return 'Clear Night';
+    }
+    else if (code == 2 || code == 3) {
+      return 'Cloudy Night';
+    }
+    return OMCodes[code] ?? 'Clear Sky';
+  }
+}
+
 String oMBackdropCorrection(String text) {
   return textBackground[text] ?? 'very_clear.jpg';
 }
@@ -90,20 +120,20 @@ class OMCurrent {
     required this.wind,
   });
 
-  static OMCurrent fromJson(item, settings) => OMCurrent(
-    text: translation(oMTextCorrection(item["current"]["weather_code"]), settings[0]),
+  static OMCurrent fromJson(item, settings, sunstatus, timenow) => OMCurrent(
+    text: translation(oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow), settings[0]),
     uv: item["daily"]["uv_index_max"][0].round(),
     accentcolor: oMAccentColorCorrection(
-      oMTextCorrection(item["current"]["weather_code"]),
+      oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
     ),
     backcolor: oMBackColorCorrection(
-      oMTextCorrection(item["current"]["weather_code"]),
+      oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
     ),
     backdrop: oMBackdropCorrection(
-      oMTextCorrection(item["current"]["weather_code"]),
+      oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
     ),
     contentColor: oMContentColorCorrection(
-      oMTextCorrection(item["current"]["weather_code"]),
+      oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
     ),
     precip: unit_coversion(item["current"]["precipitation"], settings[2]),
     wind: unit_coversion(item["current"]["precipitation"], settings[3]).round(),
@@ -142,7 +172,7 @@ class OMDay {
     required this.uv,
   });
 
-  static OMDay build(item, settings, index) {
+  static OMDay build(item, settings, index, sunstatus) {
     return OMDay(
       uv: item["daily"]["uv_index_max"][0].round(),
       icon: oMIconCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
@@ -154,25 +184,25 @@ class OMDay {
           "/${unit_coversion(item["daily"]["temperature_2m_max"][index], settings[1]).round().toString()}°",
       precip_prob: item["daily"]["precipitation_probability_max"][index] ?? 0,
       mm_precip: item["daily"]["precipitation_sum"][index],
-      hourly_for_precip: buildHours(index, false, item, settings),
-      hourly: buildHours(index, true, item, settings),
+      hourly_for_precip: buildHours(index, false, item, settings, sunstatus),
+      hourly: buildHours(index, true, item, settings, sunstatus),
     );
   }
 
-  static List<OMHour> buildHours(index, get_rid_first, item, settings) {
+  static List<OMHour> buildHours(index, get_rid_first, item, settings, sunstatus) {
     int timenow = int.parse(item["current"]["time"].split("T")[1].split(":")[0]);
     List<OMHour> hourly = [];
     if (index == 0 && get_rid_first) {
       for (var i = 0; i < 23; i++) {
         if (index * 24 + i >= timenow) {
-          hourly.add(OMHour.fromJson(item, i, settings));
+          hourly.add(OMHour.fromJson(item, i, settings, sunstatus));
         }
       }
       return hourly;
     }
     else {
       for (var i = 0; i < 24; i++) {
-        hourly.add(OMHour.fromJson(item, index * 24 + i, settings));
+        hourly.add(OMHour.fromJson(item, index * 24 + i, settings, sunstatus));
       }
       return hourly;
     }
@@ -194,10 +224,12 @@ class OMHour {
     required this.precip,
   });
 
-  static OMHour fromJson(item, index, settings) => OMHour(
+  static OMHour fromJson(item, index, settings, sunstatus) => OMHour(
     temp: unit_coversion(item["hourly"]["temperature_2m"][index], settings[1]).round(),
-    text: translation(oMTextCorrection(item["hourly"]["weather_code"][index]), settings[0]),
-    icon: oMIconCorrection(oMTextCorrection(item["hourly"]["weather_code"][index])),
+    text: translation(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
+        sunstatus, item["hourly"]["time"][index]), settings[0]),
+    icon: oMIconCorrection(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
+        sunstatus, item["hourly"]["time"][index])),
     time: settings[6] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
     precip: unit_coversion(item["hourly"]["precipitation"][index], settings[2]),
   );

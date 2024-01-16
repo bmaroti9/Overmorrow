@@ -1,10 +1,12 @@
+![app_screens](Screenshots/Overmorrow_white_circle_mini.png)
+
 # Overmorrow Weather
 
-https://play.google.com/store/apps/details?id=com.marotidev.Overmorrow
-
-Beautiful minimalist weather app.
+### Beautiful minimalist weather app.
 
 ![app_screens](Screenshots/Overmorrow_screen_galery.png)
+
+[![Download on Google Play](/Screenshots/play_badge4.png 'Codey the Codecademy mascot')](https://play.google.com/store/apps/details?id=com.marotidev.Overmorrow)
 
 ## Features
 

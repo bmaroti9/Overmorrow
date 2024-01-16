@@ -694,8 +694,8 @@ Widget buildGlanceDay(var data) => SliverPadding(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  comfortatext(day.minmaxtemp.split("/")[1], 17, color: data.current.backcolor),
-                                  comfortatext(day.minmaxtemp.split("/")[0], 17, color: data.current.backcolor),
+                                  comfortatext(day.minmaxtemp.split("/")[1], 16, color: data.current.backcolor),
+                                  comfortatext(day.minmaxtemp.split("/")[0], 16, color: data.current.backcolor),
                                 ],
                               ),
                             ),

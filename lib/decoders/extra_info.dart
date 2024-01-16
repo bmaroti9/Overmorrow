@@ -70,12 +70,16 @@ class WeatherData {
     };
     final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
 
-    var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com").timeout(const Duration(seconds: 6));
+    var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com")
+        .timeout(const Duration(seconds: 6));
     var response = await file.readAsString();
 
     var wapi_body = jsonDecode(response);
 
     var timenow = wapi_body["location"]["localtime_epoch"];
+    String real_time = wapi_body["location"]["localtime"];
+
+    WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
 
     if (provider == 'weatherapi.com') {
       List<WapiDay> days = [];
@@ -96,7 +100,7 @@ class WeatherData {
 
         current: WapiCurrent.fromJson(wapi_body, settings),
         days: days,
-        sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
+        sunstatus: sunstatus,
         aqi: WapiAqi.fromJson(wapi_body),
         radar: await RainviewerRadar.getData(),
       );
@@ -119,7 +123,7 @@ class WeatherData {
 
       List<OMDay> days = [];
       for (int n = 0; n < 14; n++) {
-        OMDay x = OMDay.build(oMBody, settings, n);
+        OMDay x = OMDay.build(oMBody, settings, n, sunstatus);
         days.add(x);
       }
 
@@ -128,7 +132,7 @@ class WeatherData {
         aqi: WapiAqi.fromJson(wapi_body),
         sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
 
-        current: OMCurrent.fromJson(oMBody, settings),
+        current: OMCurrent.fromJson(oMBody, settings, sunstatus, real_time),
         days: days,
 
         lat: lat,
@@ -197,11 +201,13 @@ class WapiSunstatus {
   final String sunrise;
   final String sunset;
   final double sunstatus;
+  final String absoluteSunriseSunset;
 
   const WapiSunstatus({
     required this.sunrise,
     required this.sunstatus,
-    required this.sunset
+    required this.sunset,
+    required this.absoluteSunriseSunset,
   });
 
   static WapiSunstatus fromJson(item, settings) => WapiSunstatus(
@@ -211,6 +217,8 @@ class WapiSunstatus {
     sunset: settings[6] == "24 hour"
         ? convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"])
         : amPmTime(item["forecast"]["forecastday"][0]["astro"]["sunset"]),
+    absoluteSunriseSunset: "${convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"])}/"
+        "${convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"])}",
     sunstatus: getSunStatus(item["forecast"]["forecastday"][0]["astro"]["sunrise"],
         item["forecast"]["forecastday"][0]["astro"]["sunset"], item["current"]["last_updated"]),
   );
