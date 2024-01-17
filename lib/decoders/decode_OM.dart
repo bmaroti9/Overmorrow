@@ -193,7 +193,7 @@ class OMDay {
     int timenow = int.parse(item["current"]["time"].split("T")[1].split(":")[0]);
     List<OMHour> hourly = [];
     if (index == 0 && get_rid_first) {
-      for (var i = 0; i < 23; i++) {
+      for (var i = 0; i < 24; i++) {
         if (index * 24 + i >= timenow) {
           hourly.add(OMHour.fromJson(item, i, settings, sunstatus));
         }

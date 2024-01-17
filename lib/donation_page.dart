@@ -87,7 +87,7 @@ class _DonationPageState extends State<DonationPage> {
           elevation: 0,
           leadingWidth: 50,
           backgroundColor: darken(color, 0.3),
-          title: comfortatext(translation('Donate', settings[0]), 25),
+          title: comfortatext(translation('Donate', settings[0]), 25, settings),
           leading: IconButton(
             onPressed: () {
               goBack();
@@ -120,19 +120,20 @@ class _DonationPageState extends State<DonationPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: comfortatext(translation(
-                            'Overmorrow is a free app. :)', settings[0]), 21)
+                            'Overmorrow is a free app. :)', settings[0]), 21, settings)
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 15),
                         child: comfortatext(translation(
                             'Support me on Patreon, to help me keep it that way!',
-                            settings[0]), 21)
+                            settings[0]), 21, settings)
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 30, bottom: 40),
-                          child: comfortatext(translation('Thank You! -Balint', settings[0]), 18)
+                          child: comfortatext(translation('Thank You! -Balint',
+                              settings[0]), 18, settings)
                         ),
                       ),
                     ],
@@ -150,7 +151,8 @@ class _DonationPageState extends State<DonationPage> {
                     onPressed: () async {
                       await _launchUrl('https://www.patreon.com/MarotiDevel');
                     },
-                    child: comfortatext(translation('Support me on Patreon', settings[0]), 20),
+                    child: comfortatext(translation('Support me on Patreon', settings[0]),
+                        20, settings),
                 ),
               ],
             ),
@@ -194,7 +196,7 @@ class _InfoPageState extends State<InfoPage> {
             elevation: 0,
             leadingWidth: 50,
             backgroundColor: darken(color, 0.3),
-            title: comfortatext(translation('About', settings[0]), 25),
+            title: comfortatext(translation('About', settings[0]), 25, settings),
             leading: IconButton(
               onPressed: () {
                 goBack();
@@ -219,7 +221,7 @@ class _InfoPageState extends State<InfoPage> {
                         image: AssetImage('assets/backdrops/very_clear.jpg'),
                         fit: BoxFit.cover,
                       ),
-                      shape: BoxShape.circle,
+                      shape: BoxShape.circle
                     ),
                   ),
                 ),
@@ -227,7 +229,7 @@ class _InfoPageState extends State<InfoPage> {
                     translation(
                         'Overmorrow is a beautiful minimalist weather app.',
                         settings[0]),
-                    26),
+                    26, settings),
                 Padding(
                   padding: const EdgeInsets.only(top: 20, bottom: 10),
                   child: Container(
@@ -242,7 +244,7 @@ class _InfoPageState extends State<InfoPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 10, bottom: 10),
                             child: comfortatext(
-                                translation('Features:', settings[0]), 20),
+                                translation('Features:', settings[0]), 20, settings),
                           ),
                         ),
                         Padding(
@@ -252,34 +254,34 @@ class _InfoPageState extends State<InfoPage> {
                             children: [
                               comfortatext(
                                   '\u2022${translation('accurate weather forecast', settings[0])}',
-                                  22),
+                                  22, settings),
                               comfortatext(
                                   '\u2022${translation('open source', settings[0])}',
-                                  22),
+                                  22, settings),
                               comfortatext(
                                   '\u2022${translation('no ads', settings[0])}',
-                                  22),
+                                  22, settings),
                               comfortatext(
                                   '\u2022${translation('no data collected', settings[0])}',
-                                  22),
+                                  22, settings),
                               comfortatext(
                                   '\u2022${translation('minimalist design', settings[0])}',
-                                  22),
+                                  22, settings),
                               comfortatext(
                                   '\u2022${translation('dynamically adapting color scheme', settings[0])}',
-                                  22),
+                                  22, settings),
                               comfortatext(
                                   '\u2022${translation('languages support', settings[0])}',
-                                  22),
+                                  22, settings),
                               comfortatext(
                                   '\u2022${translation('place search', settings[0])}',
-                                  22),
+                                  22, settings),
                               comfortatext(
                                   '\u2022${translation('weather for current location', settings[0])}',
-                                  22),
+                                  22, settings),
                               comfortatext(
                                   '\u2022${translation('unit swapping', settings[0])}',
-                                  22),
+                                  22, settings),
                             ],
                           ),
                         ),
@@ -300,7 +302,7 @@ class _InfoPageState extends State<InfoPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 20, bottom: 10),
                             child: comfortatext(
-                                translation('Developed by:', settings[0]), 20),
+                                translation('Developed by:', settings[0]), 20, settings),
                           ),
                         ),
                         Padding(
@@ -309,12 +311,12 @@ class _InfoPageState extends State<InfoPage> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(right: 20),
-                                child: comfortatext('Balint', 22),
+                                child: comfortatext('Balint', 22, settings),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 20),
                                 child: comfortatext(
-                                    '(maroti.devel@gmail.com)', 18),
+                                    '(maroti.devel@gmail.com)', 18, settings),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 10),
@@ -325,7 +327,7 @@ class _InfoPageState extends State<InfoPage> {
                                         await _launchUrl(
                                             'https://github.com/bmaroti9/Overmorrow');
                                       },
-                                      child: comfortatext('source code', 20,
+                                      child: comfortatext('source code', 20, settings,
                                           color: Colors.orange)),
                                 ),
                               )
@@ -348,7 +350,7 @@ class _InfoPageState extends State<InfoPage> {
                           padding: const EdgeInsets.only(top: 20, bottom: 10),
                           child: comfortatext(
                               translation('Weather data from:', settings[0]),
-                              20),
+                              20, settings),
                         ),
                       ),
                       TextButton(
@@ -356,20 +358,20 @@ class _InfoPageState extends State<InfoPage> {
                             await _launchUrl(
                                 'https://open-meteo.com');
                           },
-                          child: comfortatext('open-meteo.com', 20,
+                          child: comfortatext('open-meteo.com', 20, settings,
                               color: Colors.orange)),
                       TextButton(
                           onPressed: () async {
                             await _launchUrl(
                                 'https://www.rainviewer.com/api.html');
                           },
-                          child: comfortatext('www.rainviewer.com', 20,
+                          child: comfortatext('www.rainviewer.com', 20, settings,
                               color: Colors.orange)),
                       TextButton(
                           onPressed: () async {
                             await _launchUrl('https://www.weatherapi.com/');
                           },
-                          child: comfortatext('www.weatherapi.com', 20,
+                          child: comfortatext('www.weatherapi.com', 20, settings,
                               color: Colors.orange))
                     ]),
                   ),
@@ -390,7 +392,7 @@ class _InfoPageState extends State<InfoPage> {
                               padding:
                                   const EdgeInsets.only(top: 20, bottom: 10),
                               child: comfortatext(
-                                  translation('Images used:', settings[0]), 20),
+                                  translation('Images used:', settings[0]), 20, settings),
                             ),
                           ),
                           ListView.builder(
@@ -410,7 +412,7 @@ class _InfoPageState extends State<InfoPage> {
                                     child: comfortatext(
                                         translation(
                                             imageText[index], settings[0]),
-                                        20,
+                                        20, settings,
                                         color: Colors.orange),
                                   ),
                                 ),

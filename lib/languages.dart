@@ -965,6 +965,18 @@ Map<String, List<String>> mainTranslate = {
     'Вс',
     '日',
     '日'
+  ],
+  'Font size': [
+    'Font size',
+    'Betűméret',
+    'Tamaño de fuente',
+    'Taille de police',
+    'Schriftgröße',
+    'Dimensione del carattere',
+    'Tamanho da fonte',
+    'Размер шрифта',
+    '字体大小',
+    'フォントサイズ'
   ]
 };
 

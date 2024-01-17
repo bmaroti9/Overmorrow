@@ -26,7 +26,7 @@ import 'main.dart';
 import 'ui_helper.dart';
 
 List<String> settingsList = ['Language', 'Temperature', 'Rain', 'Wind', 'Pressure',
-        'Color mode', 'Time mode'];
+        'Color mode', 'Time mode', 'Font size'];
 
 Map<String, List<String>> settingSwitches = {
   'Language' : [
@@ -38,9 +38,9 @@ Map<String, List<String>> settingSwitches = {
   'Wind': ['m/s', 'kph', 'mph', 'kn'],
   'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa'],
   'Color mode' : ['normal', 'zen', 'high contrast'],
-  'Time mode': ['12 hour', '24 hour']
+  'Time mode': ['12 hour', '24 hour'],
+  'Font size': ['normal', 'small', 'very small', 'big']
 };
-
 
 String translation(String text, String language) {
   int index = languageIndex[language] ?? 0;
@@ -200,7 +200,7 @@ Widget SettingsMain(Color color, List<String>? settings, Function updatePage,
           elevation: 0,
           leadingWidth: 50,
           backgroundColor: darken(color, 0.3),
-          title: comfortatext(translation('Settings', settings![0]), 25),
+          title: comfortatext(translation('Settings', settings![0]), 25, settings),
           leading:
           IconButton(
             onPressed: (){
@@ -228,7 +228,7 @@ Widget settingsMain(Color color, List<String> settings, Function updatePage) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      comfortatext(translation(settingsList[index], settings[0]), 23),
+                      comfortatext(translation(settingsList[index], settings[0]), 23, settings),
                       const Spacer(),
                       Align(
                         alignment: Alignment.centerRight,
@@ -286,17 +286,17 @@ class MyDrawer extends StatelessWidget {
               children: [
                 Align(
                     alignment: Alignment.center,
-                    child: comfortatext('Overmorrow', 30, color: color)
+                    child: comfortatext('Overmorrow', 30, settings, color: color)
                 ),
                 Align(
                   alignment: Alignment.centerRight,
-                    child: comfortatext('Weather', 30, color: color)
+                    child: comfortatext('Weather', 30, settings, color: color)
                 ),
               ],
             ),
           ),
           ListTile(
-            title: comfortatext(translation('Settings', settings[0]), 25),
+            title: comfortatext(translation('Settings', settings[0]), 25, settings),
             leading: const Icon(Icons.settings, color: WHITE,),
             onTap: () {
               Navigator.push(
@@ -306,7 +306,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext(translation('About', settings[0]), 25),
+            title: comfortatext(translation('About', settings[0]), 25, settings),
             leading: const Icon(Icons.info_outline, color: WHITE,),
             onTap: () {
               Navigator.push(
@@ -316,7 +316,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext(translation('Donate', settings[0]), 25),
+            title: comfortatext(translation('Donate', settings[0]), 25, settings),
             leading: const Icon(Icons.favorite_border, color: WHITE,),
             onTap: () {
               Navigator.push(

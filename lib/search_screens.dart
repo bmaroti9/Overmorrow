@@ -37,7 +37,7 @@ Widget searchBar(Color color, List<String> recommend,
       hint: translation('Search...', settings[0]),
       title: Container(
         padding: const EdgeInsets.only(left: 10, top: 3),
-        child: comfortatext(place, 28)
+        child: comfortatext(place, 28, settings)
       ),
       hintStyle: GoogleFonts.comfortaa(
         color: WHITE,
@@ -162,7 +162,7 @@ Widget decideSearch(Color color, List<String> recommend,
     if (recommend.isNotEmpty) {
       return recommendSearchScreen(
           color, recommend, updateLocation, controller,
-          favorites, updateFav);
+          favorites, updateFav, settings);
     }
   }
   return Container();
@@ -205,7 +205,7 @@ Widget defaultSearchScreen(Color color,
         padding: const EdgeInsets.only(top:5, bottom: 10, right: 20, left: 20),
         child: Row(
           children: [
-            comfortatext(translation("Favorites", settings[0]), 30, color: WHITE),
+            comfortatext(translation("Favorites", settings[0]), 30, settings, color: WHITE),
             const Spacer(),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
@@ -270,8 +270,8 @@ Widget defaultSearchScreen(Color color,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              comfortatext(split["name"], 26, color: textColor),
-                              comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 17, color: textColor)
+                              comfortatext(split["name"], 26, settings, color: textColor),
+                              comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 17, settings, color: textColor)
                               //comfortatext(split[0], 23)
                             ],
                           ),
@@ -307,7 +307,7 @@ Widget defaultSearchScreen(Color color,
 
 Widget recommendSearchScreen(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller, List<String> favorites,
-    Function updateFav) {
+    Function updateFav, var settings) {
   List<Icon> icons = [];
 
   for (String n in recommend) {
@@ -347,8 +347,8 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      comfortatext(split["name"], 26),
-                      comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 17)
+                      comfortatext(split["name"], 26, settings),
+                      comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 17, settings)
                       //comfortatext(split[0], 23)
                     ],
                   ),
@@ -504,7 +504,7 @@ class dumbySearch extends StatelessWidget {
                               ),
                               child: Column(
                                 children: [
-                                  comfortatext(translation('Weather provider', settings[0]), 18),
+                                  comfortatext(translation('Weather provider', settings[0]), 18, settings),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 20, right: 20),
                                     child: DropdownButton(

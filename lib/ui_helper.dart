@@ -33,19 +33,30 @@ import 'caching.dart';
 const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);
 
-Widget comfortatext(String text, double size,
+Widget comfortatext(String text, double size, settings,
     {Color color = WHITE, TextAlign align = TextAlign.left }) {
+
+  double x = 1;
+  if (settings[7] == "small")  {
+    x = 0.9;
+  }
+  else if (settings[7] == "very small") {
+    x = 0.8;
+  }
+  else if (settings[7] == 'big') {
+    x = 1.1;
+  }
   return Text(
-    text,
-    style: GoogleFonts.comfortaa(
-      color: color,
-      fontSize: size,
-      fontWeight: FontWeight.w300,
-    ),
-    overflow: TextOverflow.ellipsis,
-    maxLines: 3,
-    textAlign: align,
-  );
+  text,
+  style: GoogleFonts.comfortaa(
+    color: color,
+    fontSize: size * x,
+    fontWeight: FontWeight.w300,
+  ),
+  overflow: TextOverflow.ellipsis,
+  maxLines: 3,
+  textAlign: align,
+);
 }
 
 Color lighten(Color color, [double amount = .1]) {
@@ -73,9 +84,11 @@ class DescriptionCircle extends StatelessWidget {
   final String extra;
   final Color color;
   final double size;
+  final settings;
 
   const DescriptionCircle({super.key, required this.text,
-      required this.undercaption, required this.color, required this.extra, required this.size});
+      required this.undercaption, required this.color, required this.extra,
+    required this.size, required this.settings});
 
   @override
   Widget build(BuildContext context) {
@@ -107,9 +120,9 @@ class DescriptionCircle extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        comfortatext(text, fontsize),
+                        comfortatext(text, fontsize, settings),
                         Flexible(
-                          child: comfortatext(extra, small_font)
+                          child: comfortatext(extra, small_font, settings)
                         ),
                       ],
                     ),
@@ -123,7 +136,7 @@ class DescriptionCircle extends StatelessWidget {
             padding: const EdgeInsets.only(top:5),
             width: width + 8,
             height: height,
-            child: comfortatext(undercaption, small_font, align: TextAlign.center)
+            child: comfortatext(undercaption, small_font, settings, align: TextAlign.center)
           )
         )
       ]
@@ -132,7 +145,7 @@ class DescriptionCircle extends StatelessWidget {
   }
 }
 
-Widget aqiDataPoints(String name, double value, Color color) {
+Widget aqiDataPoints(String name, double value, Color color, var settings) {
   return Align(
     alignment: Alignment.centerRight,
     child: LayoutBuilder(
@@ -149,7 +162,7 @@ Widget aqiDataPoints(String name, double value, Color color) {
             padding: const EdgeInsets.only(left: 10, bottom: 2, top: 2),
             child: Row(
               children: [
-                comfortatext(name, 20),
+                comfortatext(name, 20, settings),
                 const Spacer(),
                 Container(
                   padding: const EdgeInsets.only(top:3,bottom: 3, left: 3, right: 3),
@@ -222,8 +235,8 @@ Widget RainWidget(settings, day) {
                         padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
                         child: Row(
                           children: [
-                            comfortatext((index * 0.2).toStringAsFixed(1), 17),
-                            comfortatext('in', 14),
+                            comfortatext((index * 0.2).toStringAsFixed(1), 17, settings),
+                            comfortatext('in', 14, settings),
                           ],
                         ),
                       );
@@ -233,8 +246,8 @@ Widget RainWidget(settings, day) {
                         padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
                         child: Row(
                           children: [
-                            comfortatext((index * 5).toString(), 17),
-                            comfortatext('mm', 14),
+                            comfortatext((index * 5).toString(), 17, settings),
+                            comfortatext('mm', 14, settings),
                           ],
                         ),
                       );
@@ -251,19 +264,19 @@ Widget RainWidget(settings, day) {
             replacement: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  comfortatext("3am", 14),
-                  comfortatext("9am", 14),
-                  comfortatext("3pm", 14),
-                  comfortatext("9pm", 14),
+                  comfortatext("3am", 14, settings),
+                  comfortatext("9am", 14, settings),
+                  comfortatext("3pm", 14, settings),
+                  comfortatext("9pm", 14, settings),
                 ]
             ),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  comfortatext("3:00", 14),
-                  comfortatext("9:00", 14),
-                  comfortatext("15:00", 14),
-                  comfortatext("21:00", 14),
+                  comfortatext("3:00", 14, settings),
+                  comfortatext("9:00", 14, settings),
+                  comfortatext("15:00", 14, settings),
+                  comfortatext("21:00", 14, settings),
                 ]
             ),
           )
