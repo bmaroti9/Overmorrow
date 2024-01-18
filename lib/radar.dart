@@ -313,11 +313,16 @@ class _RadarPageState extends State<RadarPage> {
           children: [
             TileLayer(
               urlTemplate: data.current.contentColor[0] == WHITE
-                  ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
-                  : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                  ? 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
+                  : 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',
             ),
             TileLayer(
               urlTemplate: data.radar.images[currentFrameIndex] + "/256/{z}/{x}/{y}/8/1_1.png",
+            ),
+            TileLayer(
+              urlTemplate: data.current.contentColor[0] == WHITE
+                  ? 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png'
+                  : 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png',
             ),
           ],
         ),
