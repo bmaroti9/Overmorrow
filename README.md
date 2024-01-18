@@ -14,8 +14,8 @@
 - [rainvewer](https://www.rainviewer.com/api.html)
 
 Only now after working on Overmorrow for more than 6 months, have I realized that my 
-app is defined as "non commercial" in open-meteo's documentation 😂. Which is great 😎! 
-Because now i can add 14 days of forecast . Also its one of the most accurate weather providers.
+app is defined as "non commercial" in open-meteo's documentation 😂. Which is great because i can use it completely for free 😎! 
+So now i can add 14 days of forecast . Also its one of the most accurate weather providers.
 
 I get my sunrise sunset times and air quality from weatherapi.com 🍃. 
 Also it is offered as a second weather provider, but it only has 3 days of weather data.
