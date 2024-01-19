@@ -2,6 +2,8 @@
 
 # Overmorrow Weather
 
+![app_gallery](Screenshots/feature_gallery_insane2.png)
+
 ### Beautiful minimalist weather app. 
 
 ![app_screens](Screenshots/Overmorrow_screen_galery.png)
@@ -63,7 +65,7 @@ So instead here is my take on the weather app ui (but i did kep it free and ad f
 - ❌ Maybe add to Iphone (right now Android only)
 - ❌ More weather providers
 
-#### Anything I have missed? Let me know!
+#### Anything I should add? let me know!
 
 ## Support me! ❤️
 
