@@ -6,7 +6,7 @@
 
 ### Beautiful minimalist weather app. 
 
-![app_screens](Screenshots/Overmorrow_screen_galery2.png)
+![app_screens](Screenshots/app_gallery_round.png)
 
 [![Download on Google Play](/Screenshots/play_badge4.png 'Download')](https://play.google.com/store/apps/details?id=com.marotidev.Overmorrow)
 
