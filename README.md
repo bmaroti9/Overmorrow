@@ -75,3 +75,5 @@ However at larger audience sizes unfortunately i won't be able to do it for free
 So if you want to help, or just simply want to support me.
 this is my patreon: https://www.patreon.com/MarotiDevel.
 Thank you so much! ❤️
+
+also if you liked this app please consider leaving it a star on github ⭐.

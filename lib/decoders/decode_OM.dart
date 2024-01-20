@@ -126,15 +126,19 @@ class OMCurrent {
     accentcolor: oMAccentColorCorrection(
       oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
     ),
-    backcolor: oMBackColorCorrection(
-      oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
-    ),
+
+    backcolor: settings[5] == "high contrast"
+        ? BLACK
+        :  oMBackColorCorrection(oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),),
+
     backdrop: oMBackdropCorrection(
       oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
     ),
-    contentColor: oMContentColorCorrection(
-      oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
-    ),
+
+    contentColor: settings[5] == "high contrast"
+        ? [BLACK,WHITE]
+        :  oMContentColorCorrection(oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),),
+
     precip: unit_coversion(item["current"]["precipitation"], settings[2]),
     wind: unit_coversion(item["current"]["precipitation"], settings[3]).round(),
     humidity: item["current"]["relative_humidity_2m"],
