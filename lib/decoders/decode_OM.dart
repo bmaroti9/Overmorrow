@@ -1,3 +1,22 @@
+/*
+Copyright (C) <2023>  <Balint Maroti>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+*/
+
+
 import 'dart:ui';
 
 import 'package:hihi_haha/decoders/decode_wapi.dart';
@@ -139,7 +158,7 @@ class OMCurrent {
         ? [BLACK,WHITE]
         :  oMContentColorCorrection(oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),),
 
-    precip: unit_coversion(item["current"]["precipitation"], settings[2]),
+    precip: double.parse(unit_coversion(item["current"]["precipitation"], settings[2]).toStringAsFixed(1)),
     wind: unit_coversion(item["current"]["precipitation"], settings[3]).round(),
     humidity: item["current"]["relative_humidity_2m"],
     temp: unit_coversion(item["current"]["temperature_2m"], settings[1]).round(),
