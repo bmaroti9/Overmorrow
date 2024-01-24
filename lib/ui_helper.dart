@@ -33,19 +33,24 @@ import 'caching.dart';
 const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);
 
+double getFontSize(String set) {
+  double x = 0.99;
+  if (set == "small")  {
+    x = 0.9;
+  }
+  else if (set == "very small") {
+    x = 0.8;
+  }
+  else if (set == 'big') {
+    x = 1.15;
+  }
+  return x;
+}
+
 Widget comfortatext(String text, double size, settings,
     {Color color = WHITE, TextAlign align = TextAlign.left }) {
 
-  double x = 1;
-  if (settings[7] == "small")  {
-    x = 0.9;
-  }
-  else if (settings[7] == "very small") {
-    x = 0.8;
-  }
-  else if (settings[7] == 'big') {
-    x = 1.1;
-  }
+  double x = getFontSize(settings[7]);
   return Text(
   text,
   style: GoogleFonts.comfortaa(

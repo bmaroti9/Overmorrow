@@ -109,7 +109,7 @@ class WeatherData {
       final oMParams = {
         "latitude": lat.toString(),
         "longitude": lng.toString(),
-        "current": ["temperature_2m", "relative_humidity_2m", "precipitation", "weather_code", "wind_speed_10m"],
+        "current": ["temperature_2m", "relative_humidity_2m", "apparent_temperature", "weather_code", "wind_speed_10m"],
         "hourly": ["temperature_2m", "precipitation", "weather_code"],
         "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "uv_index_max", "precipitation_sum", "precipitation_probability_max", "wind_speed_10m_max"],
         "timezone": "auto",

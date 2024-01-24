@@ -41,13 +41,13 @@ Widget searchBar(Color color, List<String> recommend,
       ),
       hintStyle: GoogleFonts.comfortaa(
         color: WHITE,
-        fontSize: 20,
+        fontSize: 20 * getFontSize(settings[7]),
         fontWeight: FontWeight.w100,
       ),
 
       queryStyle: GoogleFonts.comfortaa(
         color: WHITE,
-        fontSize: 25,
+        fontSize: 25 * getFontSize(settings[7]),
         fontWeight: FontWeight.w100,
       ),
 
@@ -257,6 +257,7 @@ Widget defaultSearchScreen(Color color,
                 var split = json.decode(favorites[index]);
                 //var split = favorites[index].split("/");
                 return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
                   onTap: () {
                     updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
                     controller.close();
@@ -264,6 +265,7 @@ Widget defaultSearchScreen(Color color,
                   child: Container(
                     padding: const EdgeInsets.only(left: 20, bottom: 2, right: 10, top: 2),
                     child: Row(
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
                           flex: 100,
@@ -276,22 +278,14 @@ Widget defaultSearchScreen(Color color,
                             ],
                           ),
                         ),
-                        const Spacer(),
-                        AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 200),
-                            transitionBuilder: (Widget child, Animation<double> animation) {
-                              return ScaleTransition(scale: animation, child: child);
-                            },
-                            child: IconButton(
-                              key: ValueKey<int>(icons[index]),
-                              icon: Myicon[icons[index]],
-                              onPressed: () {
-                                if (isEditing) {
-                                  favorites.remove(favorites[index]);
-                                  updateFav(favorites);
-                                }
-                              },
-                            )
+                        IconButton(
+                          icon: Myicon[icons[index]],
+                          onPressed: () {
+                            if (isEditing) {
+                              favorites.remove(favorites[index]);
+                              updateFav(favorites);
+                            }
+                          },
                         ),
                       ],
                     ),
@@ -334,6 +328,7 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
         var split = json.decode(recommend[index]);
         //var split = recommend[index].split("/");
         return GestureDetector(
+          behavior: HitTestBehavior.translucent,
           onTap: () {
             updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
             controller.close();
@@ -516,7 +511,7 @@ class dumbySearch extends StatelessWidget {
                                       ),
                                       style: GoogleFonts.comfortaa(
                                         color: WHITE,
-                                        fontSize: 20,
+                                        fontSize: 20 * getFontSize(settings[7]),
                                         fontWeight: FontWeight.w300,
                                       ),
                                       //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty

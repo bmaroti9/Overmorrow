@@ -120,6 +120,7 @@ class OMCurrent {
   final int temp;
   final List<Color> contentColor;
   final int humidity;
+  final int feels_like;
   final int uv;
   final double precip;
   final int wind;
@@ -133,6 +134,7 @@ class OMCurrent {
     required this.backdrop,
     required this.contentColor,
     required this.humidity,
+    required this.feels_like,
     required this.temp,
     required this.text,
     required this.uv,
@@ -145,6 +147,7 @@ class OMCurrent {
     accentcolor: oMAccentColorCorrection(
       oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
     ),
+    feels_like: unit_coversion(item["current"]["apparent_temperature"], settings[1]).round(),
 
     backcolor: settings[5] == "high contrast"
         ? BLACK
@@ -158,8 +161,8 @@ class OMCurrent {
         ? [BLACK,WHITE]
         :  oMContentColorCorrection(oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),),
 
-    precip: double.parse(unit_coversion(item["current"]["precipitation"], settings[2]).toStringAsFixed(1)),
-    wind: unit_coversion(item["current"]["precipitation"], settings[3]).round(),
+    precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][0], settings[2]).toStringAsFixed(1)),
+    wind: unit_coversion(item["current"]["wind_speed_10m"], settings[3]).round(),
     humidity: item["current"]["relative_humidity_2m"],
     temp: unit_coversion(item["current"]["temperature_2m"], settings[1]).round(),
   );

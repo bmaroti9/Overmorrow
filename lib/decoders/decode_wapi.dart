@@ -197,6 +197,7 @@ class WapiCurrent {
   final int temp;
   final List<Color> contentColor;
   final int humidity;
+  final int feels_like;
   final int uv;
   final double precip;
   final int wind;
@@ -204,6 +205,7 @@ class WapiCurrent {
   final Color accentcolor;
 
   const WapiCurrent({
+    required this.feels_like,
     required this.precip,
     required this.accentcolor,
     required this.backcolor,
@@ -224,6 +226,7 @@ class WapiCurrent {
         item["current"]["condition"]["text"], item["current"]["is_day"]
     ),
     temp: unit_coversion(item["current"]["temp_c"], settings[1]).round(),
+    feels_like: unit_coversion(item["current"]["feelslike_c"], settings[1]).round(),
 
     contentColor: settings[5] == "high contrast"
         ? [BLACK,WHITE]

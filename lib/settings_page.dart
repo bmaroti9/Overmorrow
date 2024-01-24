@@ -106,7 +106,7 @@ SetData(String name, String to) async {
   await prefs.setString(name, to);
 }
 
-Widget dropdown(Color bgcolor, String name, Function updatePage, String unit) {
+Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, settings) {
   List<String> Items = settingSwitches[name] ?? ['˚C', '˚F'];
   return DropdownButton(
     elevation: 0,
@@ -119,7 +119,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit) {
     ),
     style: GoogleFonts.comfortaa(
       color: WHITE,
-      fontSize: 20,
+      fontSize: 20 * getFontSize(settings[7]),
       fontWeight: FontWeight.w300,
     ),
     //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
@@ -246,7 +246,8 @@ Widget settingsMain(Color color, List<String> settings, Function updatePage) {
                                     darken(color, 0.2),
                                     settingsList[index],
                                     updatePage,
-                                    settings[index]
+                                    settings[index],
+                                    settings
                                 ),
                               ),
                             ),

@@ -30,14 +30,14 @@ Map<String, int> languageIndex = {
 };
 
 Map<String, List<String>> mainTranslate = {
-  'humidity': [
-    'humidity',
-    'páratartalom',
-    'humedad',
-    'humidité',
+  'Humidity': [
+    'Humidity',
+    'Páratartalom',
+    'Humedad',
+    'Humidité',
     'Luftfeuchtigkeit',
-    'umidità',
-    'umidade',
+    'Umidità',
+    'Umidade',
     'влажность',
     '湿度',
     '湿度'
@@ -77,6 +77,18 @@ Map<String, List<String>> mainTranslate = {
     'Настройки',
     '设置',
     '設定'
+  ],
+  'Feels like': [
+    'Feels like',
+    'Érződik, mint',
+    'Se siente como',
+    'Se sent comme',
+    'Fühlt sich an wie',
+    'Sembra',
+    'Sente-se como',
+    'Чувствуется как',
+    '感觉像',
+    '感じる'
   ],
   'Donate': [
     'Donate',

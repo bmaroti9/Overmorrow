@@ -145,7 +145,7 @@ class WeatherPage extends StatelessWidget {
                               ),
                               style: GoogleFonts.comfortaa(
                                 color: WHITE,
-                                fontSize: 20,
+                                fontSize: 20 * getFontSize(data.settings[7]),
                                 fontWeight: FontWeight.w300,
                               ),
                               //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
@@ -253,17 +253,17 @@ Widget Circles(double width, var data) {
               children: [
                 DescriptionCircle(
                   color: data.current.contentColor[1],
-                  text: '${data.current.humidity}',
-                  undercaption: translation('humidity', data.settings[0]),
-                  extra: '%',
+                  text: '${data.current.feels_like}°',
+                  undercaption: translation('Feels like', data.settings[0]),
+                  extra: '',
                   size: width,
                   settings: data.settings,
                 ),
                 DescriptionCircle(
                   color: data.current.contentColor[1],
-                  text: '${data.current.uv}',
-                  undercaption: translation('UV', data.settings[0]),
-                  extra: '',
+                  text: '${data.current.humidity}',
+                  undercaption: translation('Humidity', data.settings[0]),
+                  extra: '%',
                   size: width,
                   settings: data.settings,
                 ),
