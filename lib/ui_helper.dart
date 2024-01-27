@@ -167,7 +167,7 @@ Widget aqiDataPoints(String name, double value, Color color, var settings) {
             padding: const EdgeInsets.only(left: 10, bottom: 2, top: 2),
             child: Row(
               children: [
-                comfortatext(name, 20, settings),
+                comfortatext(name, 19, settings),
                 const Spacer(),
                 Container(
                   padding: const EdgeInsets.only(top:3,bottom: 3, left: 3, right: 3),

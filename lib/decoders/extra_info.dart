@@ -64,7 +64,7 @@ class WeatherData {
     final params = {
       'key': wapi_Key,
       'q': latlong,
-      'days': '3 ',
+      'days': '3',
       'aqi': 'yes',
       'alerts': 'no',
     };

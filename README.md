@@ -2,7 +2,7 @@
 
 # Overmorrow Weather
 
-![app_gallery](Screenshots/feature_gallery_insane2.png)
+![app_gallery](Screenshots/feature_gallery_insane_3.png)
 
 ### Beautiful minimalist weather app. 
 

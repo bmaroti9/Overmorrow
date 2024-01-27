@@ -428,7 +428,7 @@ Widget NewTimes(var data) => SliverList(
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 5),
+                        padding: const EdgeInsets.only(top: 7),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: SizedBox(
@@ -436,7 +436,7 @@ Widget NewTimes(var data) => SliverList(
                               child: comfortatext(
                             translation(['good', 'moderate', 'slightly unhealthy',
                               'unhealthy', 'very unhealthy',
-                              'hazardous'][data.aqi.aqi_index - 1], data.settings[0]), 17, data.settings, color: WHITE,
+                              'hazardous'][data.aqi.aqi_index - 1], data.settings[0]), 16, data.settings, color: WHITE,
                               align: TextAlign.center)
                           ),
                         ),
@@ -446,8 +446,8 @@ Widget NewTimes(var data) => SliverList(
                   Expanded(
                     child: Column(
                       children: [
-                        aqiDataPoints("pm2.5", data.aqi.pm2_5, data.current.backcolor, data.settings),
-                        aqiDataPoints("pm10", data.aqi.pm10, data.current.backcolor, data.settings),
+                        aqiDataPoints("PM2.5", data.aqi.pm2_5, data.current.backcolor, data.settings),
+                        aqiDataPoints("PM10", data.aqi.pm10, data.current.backcolor, data.settings),
                         aqiDataPoints("O3", data.aqi.o3, data.current.backcolor, data.settings),
                         aqiDataPoints("NO2", data.aqi.no2, data.current.backcolor, data.settings),
                       ],
