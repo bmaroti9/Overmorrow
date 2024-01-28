@@ -161,8 +161,10 @@ String backdropCorrection(name, isday) {
 }
 
 String textCorrection(name, isday, {settings = 'English'}) {
-  String x = 'Thunderstorm';
-  if (name == 'Clear'){
+  name = weather_refactor.weatherTextMap[name] ?? "Clear Sky";
+  String x = 'Clear Sky';
+  print(name);
+  if (name == 'Clear Sky'){
     if (isday == 1) {
       x =  'Clear Sky';
     }
@@ -170,16 +172,13 @@ String textCorrection(name, isday, {settings = 'English'}) {
       x =  'Clear Night';
     }
   }
-  else if (name == 'Partly cloudy'){
+  else if (name == 'Partly Cloudy'){
     if (isday == 1) {
       x =  'Partly Cloudy';
     }
     else{
       x =  'Cloudy Night';
     }
-  }
-  else {
-    x = weather_refactor.weatherTextMap[name] ?? "Clear Sky";
   }
   String p = translation(x, settings[0]);
   return p;
