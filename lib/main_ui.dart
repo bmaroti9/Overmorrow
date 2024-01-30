@@ -20,11 +20,10 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hihi_haha/decoders/decode_wapi.dart';
+import 'package:hihi_haha/main_screens.dart';
 import 'package:hihi_haha/radar.dart';
 import 'package:hihi_haha/settings_page.dart';
-import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'ui_helper.dart';
 
 class WeatherPage extends StatelessWidget {
@@ -38,145 +37,12 @@ class WeatherPage extends StatelessWidget {
     Scaffold.of(context).openDrawer();
   }
 
-  final FloatingSearchBarController controller = FloatingSearchBarController();
-
   @override
   Widget build(BuildContext context) {
-    // First get the FlutterView.
-    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+    // Build the ui for phones
+    //return PhoneLayout(data, updateLocation, context);
+    return TabletLayout(data, updateLocation, context);
 
-    Size size = view.physicalSize / view.devicePixelRatio;
-    double safeHeight = size.height;
-    final availableHeight = MediaQuery.of(context).size.height -
-        AppBar().preferredSize.height -
-        MediaQuery.of(context).padding.top -
-        MediaQuery.of(context).padding.bottom;
-
-    return Scaffold(
-      drawer: MyDrawer(color: data.current.backcolor, settings: data.settings),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
-        },
-        backgroundColor: WHITE,
-        color: data.current.backcolor,
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  color: data.current.backcolor,
-                  border: const Border.symmetric(vertical: BorderSide(
-                      width: 1.2,
-                      color: WHITE
-                  ))
-              ),
-            ),
-            CustomScrollView(
-              physics: const BouncingScrollPhysics(),
-              slivers: <Widget>[
-                SliverAppBar(
-                  automaticallyImplyLeading: false, // remove the hamburger-menu
-                  backgroundColor: Colors.transparent, // Set background to transparent
-                  bottom: PreferredSize(
-                    preferredSize: const Size(0, 380),
-                    child: Container(),
-                  ),
-                  pinned: false,
-
-                  expandedHeight: availableHeight + 43,
-                  flexibleSpace: Stack(
-                    children: [
-                      ParallaxBackground(data: data,),
-                      Positioned(
-                        bottom: 25,
-                        left: 0,
-                        right: 0,
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: SingleChildScrollView(
-                            child: buildCurrent(data, safeHeight - 100),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: -3,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          height: 35,
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 1.2, color: WHITE),
-                            color: data.current.backcolor,
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(27),
-                            ),
-                          ),
-                        ),
-                      ),
-                      MySearchParent(updateLocation: updateLocation,
-                      color: data.current.backcolor, place: data.place,
-                      controller: controller, settings: data.settings, real_loc: data.real_loc,),
-                    ],
-                  ),
-                ),
-                NewTimes(data),
-                buildHihiDays(data),
-                buildGlanceDay(data),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20, top:20, right: 20),
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: WHITE, width: 1.2)
-                      ),
-                      child: Column(
-                        children: [
-                          comfortatext(translation('Weather provider', data.settings[0]), 18, data.settings),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
-                            child: DropdownButton(
-                              underline: Container(),
-                              borderRadius: BorderRadius.circular(20),
-                              icon: const Padding(
-                                padding: EdgeInsets.only(left:5),
-                                child: Icon(Icons.arrow_drop_down_circle, color: WHITE,),
-                              ),
-                              style: GoogleFonts.comfortaa(
-                                color: WHITE,
-                                fontSize: 20 * getFontSize(data.settings[7]),
-                                fontWeight: FontWeight.w300,
-                              ),
-                              //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
-                              value: data.provider.toString(),
-                              items: ['weatherapi.com', 'open-meteo'].map((item) {
-                                return DropdownMenuItem(
-                                  value: item,
-                                  child: Text(item),
-                                );
-                              }).toList(),
-                              onChanged: (String? value) async {
-                                SetData('weather_provider', value!);
-                                await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
-                              },
-                              isExpanded: true,
-                              dropdownColor: darken(data.current.backcolor, 0.1),
-                              elevation: 0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SliverPadding(padding: EdgeInsets.only(bottom: 30))
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
 
@@ -226,7 +92,8 @@ Widget buildCurrent(var data, double height) => SizedBox(
         ),
       ),
 
-    Center(
+    Align(
+      alignment: Alignment.bottomLeft,
       child: Container(
         child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
@@ -247,7 +114,7 @@ Widget Circles(double width, var data) {
   return SizedBox(
     width: width,
       child: Container(
-          padding: const EdgeInsets.only(top:30),
+          padding: const EdgeInsets.only(top:30, left: 20, right: 20),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
