@@ -40,8 +40,8 @@ class WeatherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Build the ui for phones
-    //return PhoneLayout(data, updateLocation, context);
-    return TabletLayout(data, updateLocation, context);
+    return PhoneLayout(data, updateLocation, context);
+    //return TabletLayout(data, updateLocation, context);
 
   }
 }
@@ -111,48 +111,50 @@ Widget buildCurrent(var data, double height) => SizedBox(
 );
 
 Widget Circles(double width, var data) {
-  return SizedBox(
-    width: width,
-      child: Container(
-          padding: const EdgeInsets.only(top:30, left: 20, right: 20),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                DescriptionCircle(
-                  color: data.current.contentColor[1],
-                  text: '${data.current.feels_like}°',
-                  undercaption: translation('Feels like', data.settings[0]),
-                  extra: '',
-                  size: width,
-                  settings: data.settings,
-                ),
-                DescriptionCircle(
-                  color: data.current.contentColor[1],
-                  text: '${data.current.humidity}',
-                  undercaption: translation('Humidity', data.settings[0]),
-                  extra: '%',
-                  size: width,
-                  settings: data.settings,
-                ),
-                DescriptionCircle(
-                  color: data.current.contentColor[1],
-                  text: '${data.current.precip}',
-                  undercaption: translation('precip.', data.settings[0]),
-                  extra: data.settings[2],
-                  size: width,
-                  settings: data.settings,
-                ),
-                DescriptionCircle(
-                  color: data.current.contentColor[1],
-                  text: '${data.current.wind}',
-                  undercaption: translation('Wind', data.settings[0]),
-                  extra: data.settings[3],
-                  size: width,
-                  settings: data.settings,
-                ),
-              ]
-          )
-      )
+  return Center(
+    child: SizedBox(
+      width: width,
+        child: Container(
+            padding: const EdgeInsets.only(top:30, left: 5, right: 5),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DescriptionCircle(
+                    color: data.current.contentColor[1],
+                    text: '${data.current.feels_like}°',
+                    undercaption: translation('Feels like', data.settings[0]),
+                    extra: '',
+                    size: width,
+                    settings: data.settings,
+                  ),
+                  DescriptionCircle(
+                    color: data.current.contentColor[1],
+                    text: '${data.current.humidity}',
+                    undercaption: translation('Humidity', data.settings[0]),
+                    extra: '%',
+                    size: width,
+                    settings: data.settings,
+                  ),
+                  DescriptionCircle(
+                    color: data.current.contentColor[1],
+                    text: '${data.current.precip}',
+                    undercaption: translation('precip.', data.settings[0]),
+                    extra: data.settings[2],
+                    size: width,
+                    settings: data.settings,
+                  ),
+                  DescriptionCircle(
+                    color: data.current.contentColor[1],
+                    text: '${data.current.wind}',
+                    undercaption: translation('Wind', data.settings[0]),
+                    extra: data.settings[3],
+                    size: width,
+                    settings: data.settings,
+                  ),
+                ]
+            )
+        )
+    ),
   );
 }
 

@@ -151,8 +151,7 @@ Widget PhoneLayout(data, updateLocation, context) {
 
 Widget TabletLayout(data, updateLocation, context) {
 
-  FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-  Size size = view.physicalSize / view.devicePixelRatio;
+  final FloatingSearchBarController controller = FloatingSearchBarController();
 
   double toppad = MediaQuery.of(context).viewPadding.top;
 
@@ -167,37 +166,41 @@ Widget TabletLayout(data, updateLocation, context) {
       color: data.current.backcolor,
       child: Padding(
         padding: EdgeInsets.only(left: 20, right: 20, bottom: 20, top: toppad + 20),
-        child: Row(
+        child: ListView(
+          physics: BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
           children: [
-            SizedBox(
-              height: 550,
-              width: 800,
+            AspectRatio(
+              aspectRatio: 2.2,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                   child: Stack(
                     children: [
                       ParallaxBackground(data: data),
-                      buildCurrent(data, size.height),
+                      buildCurrent(data, 800),
                       Align(
-                        alignment: Alignment.topRight,
+                        alignment: Alignment.bottomRight,
                         child: FlutterTimeDemo(settings: data.settings,),
-                      )
+                      ),
+                      MySearchParent(updateLocation: updateLocation,
+                          color: data.current.backcolor, place: data.place,
+                          controller: controller, settings: data.settings,
+                          real_loc: data.real_loc)
                     ],
                   )
               ),
-            )
+            ),
+            SizedBox(height: 500,)
           ],
         ),
       )
     )
   );
 }
-
 class FlutterTimeDemo extends StatefulWidget{
 
   final settings;
 
-  const FlutterTimeDemo({this.settings});
+  const FlutterTimeDemo({required this.settings});
 
   @override
   _FlutterTimeDemoState createState()=> _FlutterTimeDemoState();
@@ -210,28 +213,22 @@ class _FlutterTimeDemoState extends State<FlutterTimeDemo>
 
   @override
   void initState(){
-    _timeString = "${DateTime.now().hour} : ${DateTime.now().minute}";
-    Timer.periodic(Duration(seconds:1), (Timer t)=>_getCurrentTime());
+    _timeString = "${DateTime.now().hour}:${DateTime.now().minute}";
+    Timer.periodic(const Duration(minutes: 1), (Timer t)=>_getCurrentTime());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //return Text(_timeString, style: TextStyle(fontSize: 30),);
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.only(right: 40, bottom: 60),
       child: comfortatext(_timeString, 40, widget.settings),
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   void _getCurrentTime()  {
     setState(() {
-      _timeString = "${DateTime.now().hour} : ${DateTime.now().minute}";
+      _timeString = "${DateTime.now().hour}:${DateTime.now().minute}";
     });
   }
 }

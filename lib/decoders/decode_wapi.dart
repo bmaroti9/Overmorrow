@@ -161,10 +161,8 @@ String backdropCorrection(name, isday) {
 }
 
 String textCorrection(name, isday, {settings = 'English'}) {
-  name = weather_refactor.weatherTextMap[name] ?? "Clear Sky";
-  String x = 'Clear Sky';
-  print(name);
-  if (name == 'Clear Sky'){
+  String x = weather_refactor.weatherTextMap[name] ?? 'Clear Sky';
+  if (x == 'Clear Sky'){
     if (isday == 1) {
       x =  'Clear Sky';
     }
@@ -172,7 +170,7 @@ String textCorrection(name, isday, {settings = 'English'}) {
       x =  'Clear Night';
     }
   }
-  else if (name == 'Partly Cloudy'){
+  else if (x == 'Partly Cloudy'){
     if (isday == 1) {
       x =  'Partly Cloudy';
     }
@@ -219,24 +217,24 @@ class WapiCurrent {
 
   static WapiCurrent fromJson(item, settings) => WapiCurrent(
     text: textCorrection(
-        item["current"]["condition"]["text"], item["current"]["is_day"], settings: settings
+        item["current"]["condition"]["code"], item["current"]["is_day"], settings: settings
     ),
     backdrop: backdropCorrection(
-        item["current"]["condition"]["text"], item["current"]["is_day"]
+        item["current"]["condition"]["code"], item["current"]["is_day"]
     ),
     temp: unit_coversion(item["current"]["temp_c"], settings[1]).round(),
     feels_like: unit_coversion(item["current"]["feelslike_c"], settings[1]).round(),
 
     contentColor: settings[5] == "high contrast"
         ? [BLACK,WHITE]
-        :  contentColorCorrection(item["current"]["condition"]["text"], item["current"]["is_day"]),
+        :  contentColorCorrection(item["current"]["condition"]["code"], item["current"]["is_day"]),
 
     backcolor: settings[5] == "high contrast"
         ? BLACK
-        :  backroundColorCorrection(item["current"]["condition"]["text"], item["current"]["is_day"]),
+        :  backroundColorCorrection(item["current"]["condition"]["code"], item["current"]["is_day"]),
 
     accentcolor: accentColorCorrection(
-        item["current"]["condition"]["text"], item["current"]["is_day"]
+        item["current"]["condition"]["code"], item["current"]["is_day"]
     ),
 
     uv: item["current"]["uv"].round(),
@@ -277,10 +275,10 @@ class WapiDay {
 
   static WapiDay fromJson(item, index, settings, timenow) => WapiDay(
     text: textCorrection(
-        item["day"]["condition"]["text"], 1, settings: settings
+        item["day"]["condition"]["code"], 1, settings: settings
     ),
     icon: iconCorrection(
-        item["day"]["condition"]["text"], 1
+        item["day"]["condition"]["code"], 1
     ),
     name: getName(index, settings),
     minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings[1]).round()}°'
@@ -332,10 +330,10 @@ class WapiHour {
 
   static WapiHour fromJson(item, settings) => WapiHour(
     text: textCorrection(
-        item["condition"]["text"], item["is_day"], settings: settings
+        item["condition"]["code"], item["is_day"], settings: settings
     ),
     icon: iconCorrection(
-        item["condition"]["text"], item["is_day"]
+        item["condition"]["code"], item["is_day"]
     ),
     //temp:double.parse(unit_coversion(item["temp_c"], settings[1]).toStringAsFixed(1)),
     temp: unit_coversion(item["temp_c"], settings[1]).round(),

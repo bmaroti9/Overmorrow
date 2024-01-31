@@ -64,6 +64,9 @@ Widget searchBar(Color color, List<String> recommend,
       physics: const BouncingScrollPhysics(),
       debounceDelay: const Duration(milliseconds: 500),
 
+      width: 500,
+      axisAlignment: 0,
+
       controller: controller,
 
       onQueryChanged: (query) async {
