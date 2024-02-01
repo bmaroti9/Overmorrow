@@ -176,20 +176,200 @@ Widget TabletLayout(data, updateLocation, context) {
                   child: Stack(
                     children: [
                       ParallaxBackground(data: data),
-                      buildCurrent(data, 800),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: FlutterTimeDemo(settings: data.settings,),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 50.0, left: 30),
+                            child: Align(
+                                alignment: Alignment.topLeft,
+                                child: comfortatext("${data.current.temp}°", 85, data.settings)
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30, bottom: 50),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: comfortatext(data.current.text, 45, data.settings),
+                            ),
+                          ),
+                      ]
+                    ),
+                    LayoutBuilder(
+                        builder: (BuildContext context, BoxConstraints constraints) {
+                          if(constraints.maxWidth > 400.0) {
+                            return Circles(400, data);
+                          } else {
+                            return Circles(constraints.maxWidth, data);
+                          }
+                        }
                       ),
-                      MySearchParent(updateLocation: updateLocation,
-                          color: data.current.backcolor, place: data.place,
-                          controller: controller, settings: data.settings,
-                          real_loc: data.real_loc)
-                    ],
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: FlutterTimeDemo(settings: data.settings,),
+                    ),
+                    MySearchParent(updateLocation: updateLocation,
+                        color: data.current.backcolor, place: data.place,
+                        controller: controller, settings: data.settings,
+                        real_loc: data.real_loc)
+                  ],
                   )
               ),
             ),
-            SizedBox(height: 500,)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: List.generate(3, (index) {
+                final day = data.days[index];
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.only(top: 30, bottom: 10),
+                            child: comfortatext(day.name, 20, data.settings)
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: day.mm_precip > 0.1 ? darken(data.current.backcolor, 0.1) : data.current.backcolor,
+                            ),
+                            padding: const EdgeInsets.only(top: 8, left: 3, right: 5, bottom: 3),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.only(left: 10, right: 20),
+                                      child: Image.asset(
+                                        'assets/icons/' + day.icon,
+                                        fit: BoxFit.contain,
+                                        height: 40,
+                                      ),
+                                    ),
+                                    Flexible(
+                                        fit: FlexFit.loose,
+                                        child: Row(
+                                          children: [
+                                            comfortatext(day.text, 22, data.settings, color: WHITE),
+                                            Spacer(),
+                                            Padding(
+                                              padding: const EdgeInsets.only(right: 6),
+                                              child: Container(
+                                                  padding: const EdgeInsets.only(top:7,bottom: 7, left: 5, right: 5),
+                                                  decoration: BoxDecoration(
+                                                    //border: Border.all(color: Colors.blueAccent)
+                                                      color: WHITE,
+                                                      borderRadius: BorderRadius.circular(10)
+                                                  ),
+                                                  child: comfortatext(day.minmaxtemp, 17, data.settings, color: data.current.backcolor)
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                    )
+                                  ],
+                                ),
+                                Visibility(
+                                    visible: day.mm_precip > 0.1,
+                                    child: RainWidget(data.settings, day)
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 30),
+                          child: Container(
+                            height: 85,
+                            padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
+                            decoration: BoxDecoration(
+                                border: Border.all(width: 1.2, color: WHITE),
+                                borderRadius: BorderRadius.circular(20)
+                            ),
+                            child:  LayoutBuilder(
+                                builder: (BuildContext context, BoxConstraints constraints) {
+                                  return GridView.count(
+                                      padding: const EdgeInsets.all(0),
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      crossAxisSpacing: 1,
+                                      mainAxisSpacing: 1,
+                                      crossAxisCount: 2,
+                                      childAspectRatio: constraints.maxWidth / constraints.maxHeight,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8, right: 8),
+                                          child: Row(
+                                            children: [
+                                              const Icon(Icons.water_drop_outlined,
+                                                color: WHITE,),
+                                              const Padding(
+                                                  padding: EdgeInsets.only(right: 10)),
+                                              comfortatext('${day.precip_prob}%', 20, data.settings),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8, right: 8),
+                                          child: Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.water_drop, color: WHITE,),
+                                              const Padding(
+                                                  padding: EdgeInsets.only(right: 10)),
+                                              comfortatext(day.total_precip.toString() +
+                                                  data.settings[2], 20, data.settings),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8, right: 8),
+                                          child: Row(
+                                            children: [
+                                              const Icon(
+                                                CupertinoIcons.wind, color: WHITE,),
+                                              const Padding(
+                                                  padding: EdgeInsets.only(right: 10)),
+                                              comfortatext('${day.windspeed} ${data
+                                                  .settings[3]}', 20, data.settings),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8, right: 8),
+                                          child: Row(
+                                            children: [
+                                              const Icon(CupertinoIcons.sun_min,
+                                                color: WHITE,),
+                                              const Padding(
+                                                  padding: EdgeInsets.only(right: 10)),
+                                              comfortatext('${day.uv} UV', 20, data.settings),
+                                            ],
+                                          ),
+                                        ),
+                                      ]
+                                  );
+                                }
+                            ),
+                          ),
+                        ),
+                        buildHours(day.hourly, data.settings, data.current.accentcolor, data.settings),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            )
+            )
           ],
         ),
       )

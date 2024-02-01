@@ -104,6 +104,7 @@ class DescriptionCircle extends StatelessWidget {
     return Container(
       //padding: const EdgeInsets.all(5),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           SizedBox(
             height: height,
@@ -140,7 +141,7 @@ class DescriptionCircle extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.only(top:5),
             width: width + 8,
-            height: height,
+            height: height * 0.6,
             child: comfortatext(undercaption, small_font, settings, align: TextAlign.center)
           )
         )
