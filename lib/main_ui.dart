@@ -70,42 +70,39 @@ class ParallaxBackground extends StatelessWidget {
   }
 }
 
-Widget buildCurrent(var data, double height) => SizedBox(
-  height: height,
-  child:   Column(
-    mainAxisAlignment: MainAxisAlignment.end,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(top: 50.0, left: 30),
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: comfortatext("${data.current.temp}°", 85, data.settings)
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 30),
-        child: Align(
-            alignment: Alignment.topLeft,
-            child: comfortatext(data.current.text, 45, data.settings),
-        ),
-      ),
-
-    Align(
-      alignment: Alignment.bottomLeft,
-      child: Container(
-        child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              if(constraints.maxWidth > 400.0) {
-                return Circles(400, data);
-              } else {
-                return Circles(constraints.maxWidth, data);
-              }
-            }
-        ),
+Widget buildCurrent(var data, double height) => Column(
+  mainAxisAlignment: MainAxisAlignment.end,
+  children: [
+    Padding(
+      padding: const EdgeInsets.only(top: 0.0, left: 30),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: comfortatext("${data.current.temp}°", 85, data.settings)
       ),
     ),
-    ],
+    Padding(
+      padding: const EdgeInsets.only(left: 30),
+      child: Align(
+          alignment: Alignment.topLeft,
+          child: comfortatext(data.current.text, 45, data.settings),
+      ),
+    ),
+
+  Align(
+    alignment: Alignment.bottomLeft,
+    child: Container(
+      child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            if(constraints.maxWidth > 400.0) {
+              return Circles(400, data);
+            } else {
+              return Circles(constraints.maxWidth, data);
+            }
+          }
+      ),
+    ),
   ),
+  ],
 );
 
 Widget Circles(double width, var data) {
@@ -156,7 +153,7 @@ Widget Circles(double width, var data) {
   );
 }
 
-Widget NewTimes(var data) => SliverList(
+Widget NewTimes(var data, bool divider) => SliverList(
   delegate: SliverChildListDelegate(
     [
       Padding(
@@ -327,12 +324,15 @@ Widget NewTimes(var data) => SliverList(
         ),
       ),
       RadarMap(data),
-      Padding(
-          padding: const EdgeInsets.only(top: 6, right: 30, left: 30, bottom: 10),
-          child: Container(
-            height: 1.2,
-            color: WHITE,
-          ),
+      Visibility(
+        visible: divider,
+        child: Padding(
+            padding: const EdgeInsets.only(top: 6, right: 30, left: 30, bottom: 10),
+            child: Container(
+              height: 1.2,
+              color: WHITE,
+            ),
+        ),
       ),
     ],
   ),
