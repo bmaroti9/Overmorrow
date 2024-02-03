@@ -218,7 +218,7 @@ class _InfoPageState extends State<InfoPage> {
                     width: 200.0,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/backdrops/very_clear.jpg'),
+                        image: AssetImage('assets/backdrops/very_clear_a.jpg'),
                         fit: BoxFit.cover,
                       ),
                       shape: BoxShape.circle

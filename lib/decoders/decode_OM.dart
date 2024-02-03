@@ -94,7 +94,7 @@ String oMCurrentTextCorrection(int code, sunstatus, time){
 }
 
 String oMBackdropCorrection(String text) {
-  return textBackground[text] ?? 'very_clear.jpg';
+  return textBackground[text] ?? 'very_clear_a.jpg';
 }
 
 Color oMBackColorCorrection(String text) {

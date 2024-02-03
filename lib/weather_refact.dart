@@ -208,7 +208,7 @@ Map<int, String> OMCodes = {
 Map<String, String> textBackground = {
   'Clear Night': 'clear_night.jpg',
   'Partly Cloudy': 'cloudy13.jpg',
-  'Clear Sky': 'very_clear.jpg',
+  'Clear Sky': 'very_clear_a.jpg',
   'Overcast': 'overcast2.jpg',
   'Haze': 'haze.jpg',
   'Rain': 'rainy_colorfull.jpg',

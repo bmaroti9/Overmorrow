@@ -93,7 +93,7 @@ class _MyAppState extends State<MyApp> {
           Position position;
           try {
             position = await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.low, timeLimit: const Duration(seconds: 4));
+              desiredAccuracy: LocationAccuracy.medium, timeLimit: const Duration(seconds: 4));
           } on TimeoutException {
             try {
               position = (await Geolocator.getLastKnownPosition())!;

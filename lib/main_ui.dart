@@ -70,7 +70,7 @@ class ParallaxBackground extends StatelessWidget {
   }
 }
 
-Widget buildCurrent(var data, double height) => Column(
+Widget buildCurrent(var data, double height, double bottom) => Column(
   mainAxisAlignment: MainAxisAlignment.end,
   children: [
     Padding(
@@ -94,9 +94,9 @@ Widget buildCurrent(var data, double height) => Column(
       child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             if(constraints.maxWidth > 400.0) {
-              return Circles(400, data);
+              return Circles(400, data, bottom);
             } else {
-              return Circles(constraints.maxWidth, data);
+              return Circles(constraints.maxWidth, data, bottom);
             }
           }
       ),
@@ -105,7 +105,7 @@ Widget buildCurrent(var data, double height) => Column(
   ],
 );
 
-Widget Circles(double width, var data) {
+Widget Circles(double width, var data, double bottom) {
   return Center(
     child: SizedBox(
       width: width,
@@ -121,6 +121,7 @@ Widget Circles(double width, var data) {
                     extra: '',
                     size: width,
                     settings: data.settings,
+                    bottom: bottom,
                   ),
                   DescriptionCircle(
                     color: data.current.contentColor[1],
@@ -129,6 +130,7 @@ Widget Circles(double width, var data) {
                     extra: '%',
                     size: width,
                     settings: data.settings,
+                    bottom: bottom,
                   ),
                   DescriptionCircle(
                     color: data.current.contentColor[1],
@@ -137,6 +139,7 @@ Widget Circles(double width, var data) {
                     extra: data.settings[2],
                     size: width,
                     settings: data.settings,
+                    bottom: bottom,
                   ),
                   DescriptionCircle(
                     color: data.current.contentColor[1],
@@ -145,6 +148,7 @@ Widget Circles(double width, var data) {
                     extra: data.settings[3],
                     size: width,
                     settings: data.settings,
+                    bottom: bottom,
                   ),
                 ]
             )
@@ -360,47 +364,42 @@ Widget buildHihiDays(var data) => SliverList(
                         color: day.mm_precip > 0.1 ? darken(data.current.backcolor, 0.1) : data.current.backcolor,
                       ),
                       padding: const EdgeInsets.only(top: 8, left: 3, right: 5, bottom: 3),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.only(left: 10, right: 20),
-                                child: Image.asset(
-                                  'assets/icons/' + day.icon,
-                                  fit: BoxFit.contain,
-                                  height: 40,
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.only(left: 10, right: 20),
+                                  child: Image.asset(
+                                    'assets/icons/' + day.icon,
+                                    fit: BoxFit.contain,
+                                    height: 40,
+                                  ),
                                 ),
-                              ),
-                            Flexible(
-                              fit: FlexFit.loose,
-                                child: Row(
-                                  children: [
-                                    comfortatext(day.text, 22, data.settings, color: WHITE),
-                                    Spacer(),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 6),
-                                      child: Container(
-                                            padding: const EdgeInsets.only(top:7,bottom: 7, left: 5, right: 5),
-                                            decoration: BoxDecoration(
-                                              //border: Border.all(color: Colors.blueAccent)
-                                                color: WHITE,
-                                                borderRadius: BorderRadius.circular(10)
-                                            ),
-                                          child: comfortatext(day.minmaxtemp, 17, data.settings, color: data.current.backcolor)
+                              comfortatext(day.text, 22, data.settings, color: WHITE),
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 6),
+                                child: Container(
+                                      padding: const EdgeInsets.only(top:7,bottom: 7, left: 5, right: 5),
+                                      decoration: BoxDecoration(
+                                        //border: Border.all(color: Colors.blueAccent)
+                                          color: WHITE,
+                                          borderRadius: BorderRadius.circular(10)
                                       ),
-                                    ),
-                                  ],
-                                )
+                                    child: comfortatext(day.minmaxtemp, 17, data.settings, color: data.current.backcolor)
+                                ),
                               )
-                            ],
-                          ),
-                          Visibility(
-                            visible: day.mm_precip > 0.1,
-                            child: RainWidget(data.settings, day)
-                          ),
-                        ],
+                              ],
+                            ),
+                            Visibility(
+                              visible: day.mm_precip > 0.1,
+                              child: RainWidget(data.settings, day)
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

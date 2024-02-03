@@ -34,15 +34,15 @@ const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);
 
 double getFontSize(String set) {
-  double x = 0.99;
+  double x = 0.95;
   if (set == "small")  {
-    x = 0.9;
+    x = 0.85;
   }
   else if (set == "very small") {
-    x = 0.8;
+    x = 0.75;
   }
   else if (set == 'big') {
-    x = 1.15;
+    x = 1.1;
   }
   return x;
 }
@@ -90,10 +90,11 @@ class DescriptionCircle extends StatelessWidget {
   final Color color;
   final double size;
   final settings;
+  final bottom;
 
   const DescriptionCircle({super.key, required this.text,
       required this.undercaption, required this.color, required this.extra,
-    required this.size, required this.settings});
+    required this.size, required this.settings, required this.bottom});
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +142,7 @@ class DescriptionCircle extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.only(top:5),
             width: width + 8,
-            height: height * 0.6,
+            height: height * bottom,
             child: comfortatext(undercaption, small_font, settings, align: TextAlign.center)
           )
         )

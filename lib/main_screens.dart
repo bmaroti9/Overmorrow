@@ -63,7 +63,7 @@ Widget PhoneLayout(data, updateLocation, context) {
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: SingleChildScrollView(
-                          child: buildCurrent(data, safeHeight - 100),
+                          child: buildCurrent(data, safeHeight - 100, 1),
                         ),
                       ),
                     ),
@@ -178,35 +178,192 @@ Widget TabletLayout(data, updateLocation, context) {
                 width: size.width * 0.6,
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 40, right: 40, bottom: 30),
-                      child: SizedBox(
-                        height: 100,
-                        child: MySearchParent(updateLocation: updateLocation,
-                            color: data.current.backcolor, place: data.place,
-                            controller: controller, settings: data.settings,
-                            real_loc: data.real_loc),
-                      ),
-                    ),
                     AspectRatio(
-                      aspectRatio: 2.2,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Stack(
-                          children: [
-                            ParallaxBackground(data: data),
-                            buildCurrent(data, 100),
-                          ],
+                      aspectRatio: 1.7,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Stack(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 130),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: ParallaxBackground(data: data)
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 130),
+                                  child: buildCurrent(data, 100, 0.6),
+                                ),
+                              ),
+                              MySearchParent(updateLocation: updateLocation,
+                                  color: data.current.backcolor, place: data.place,
+                                  controller: controller, settings: data.settings,
+                                  real_loc: data.real_loc),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    CustomScrollView(
-                      physics: NeverScrollableScrollPhysics(),
+                    ListView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      slivers: [
-                        buildHihiDays(data)
-                      ],
-                    )
+                        itemBuilder:
+                              (BuildContext context, int index) {
+                            if (index < 3) {
+                              final day = data.days[index];
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(top: 30, bottom: 10),
+                                      child: comfortatext(day.name, 20, data.settings)
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 2, right: 2, bottom: 20),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: day.mm_precip > 0.1 ? darken(data.current.backcolor) : data.current.backcolor
+                                      ),
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: day.mm_precip > 0.1 ? size.width / 3 : size.width * 0.6 - 20,
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      padding: const EdgeInsets.only(left: 10, right: 20),
+                                                      child: Image.asset(
+                                                        'assets/icons/' + day.icon,
+                                                        fit: BoxFit.contain,
+                                                        height: 40,
+                                                      ),
+                                                    ),
+                                                    comfortatext(day.text, 22, data.settings, color: WHITE),
+                                                    Spacer(),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(right: 6),
+                                                      child: Container(
+                                                          padding: const EdgeInsets.only(top:7,bottom: 7, left: 5, right: 5),
+                                                          decoration: BoxDecoration(
+                                                            //border: Border.all(color: Colors.blueAccent)
+                                                              color: WHITE,
+                                                              borderRadius: BorderRadius.circular(10)
+                                                          ),
+                                                          child: comfortatext(day.minmaxtemp, 17, data.settings, color: data.current.backcolor)
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 15, right: 5, top: 15, bottom: 30),
+                                                  child: Container(
+                                                    height: 85,
+                                                    padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(width: 1.2, color: WHITE),
+                                                        borderRadius: BorderRadius.circular(20)
+                                                    ),
+                                                    child:  LayoutBuilder(
+                                                        builder: (BuildContext context, BoxConstraints constraints) {
+                                                          return GridView.count(
+                                                              padding: const EdgeInsets.all(0),
+                                                              physics: const NeverScrollableScrollPhysics(),
+                                                              crossAxisSpacing: 1,
+                                                              mainAxisSpacing: 1,
+                                                              crossAxisCount: 2,
+                                                              childAspectRatio: constraints.maxWidth / constraints.maxHeight,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets.only(
+                                                                      left: 8, right: 8),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      const Icon(Icons.water_drop_outlined,
+                                                                        color: WHITE,),
+                                                                      const Padding(
+                                                                          padding: EdgeInsets.only(right: 10)),
+                                                                      comfortatext('${day.precip_prob}%', 20, data.settings),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets.only(
+                                                                      left: 8, right: 8),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      const Icon(
+                                                                        Icons.water_drop, color: WHITE,),
+                                                                      const Padding(
+                                                                          padding: EdgeInsets.only(right: 10)),
+                                                                      comfortatext(day.total_precip.toString() +
+                                                                          data.settings[2], 20, data.settings),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets.only(
+                                                                      left: 8, right: 8),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      const Icon(
+                                                                        CupertinoIcons.wind, color: WHITE,),
+                                                                      const Padding(
+                                                                          padding: EdgeInsets.only(right: 10)),
+                                                                      comfortatext('${day.windspeed} ${data
+                                                                          .settings[3]}', 20, data.settings),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets.only(
+                                                                      left: 8, right: 8),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      const Icon(CupertinoIcons.sun_min,
+                                                                        color: WHITE,),
+                                                                      const Padding(
+                                                                          padding: EdgeInsets.only(right: 10)),
+                                                                      comfortatext('${day.uv} UV', 20, data.settings),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ]
+                                                          );
+                                                        }
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Visibility(
+                                                visible: day.mm_precip > 0.1,
+                                                child: RainWidget(data.settings, day)
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  buildHours(day.hourly, data.settings, data.current.accentcolor, data.settings),
+                                ],
+                              );
+                            }
+                            return null;
+                          },
+                    ),
                   ],
                 ),
               ),
