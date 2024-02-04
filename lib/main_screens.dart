@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -158,6 +159,9 @@ Widget TabletLayout(data, updateLocation, context) {
 
   double toppad = MediaQuery.of(context).viewPadding.top;
 
+  double width = size.width - max(size.width * 0.4, 458);
+  double heigth = max(width / 2.4, 500);
+
   return Scaffold(
     backgroundColor: data.current.backcolor,
     drawer: MyDrawer(color: data.current.backcolor, settings: data.settings),
@@ -168,20 +172,20 @@ Widget TabletLayout(data, updateLocation, context) {
       backgroundColor: WHITE,
       color: data.current.backcolor,
       child: Padding(
-        padding: EdgeInsets.only(left: 30, right: 30, bottom: 30, top: toppad),
+        padding: EdgeInsets.only(left: 40, right: 30, bottom: 30, top: toppad),
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: size.width * 0.6,
+                width: width,
                 child: Column(
                   children: [
-                    AspectRatio(
-                      aspectRatio: 1.7,
+                    SizedBox(
+                      height: heigth,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.only(left: 10, top: 10),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Stack(
@@ -193,10 +197,10 @@ Widget TabletLayout(data, updateLocation, context) {
                                   child: ParallaxBackground(data: data)
                                 ),
                               ),
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 130),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 130),
+                                child: Align(
+                                  alignment: Alignment.bottomCenter,
                                   child: buildCurrent(data, 100, 0.6),
                                 ),
                               ),
@@ -233,16 +237,17 @@ Widget TabletLayout(data, updateLocation, context) {
                                       ),
                                       padding: const EdgeInsets.all(5.0),
                                       child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
-                                            width: day.mm_precip > 0.1 ? size.width / 3 : size.width * 0.6 - 20,
+                                            width: day.mm_precip > 0.1 ? width * 0.6 : width - 20,
                                             child: Column(
                                               children: [
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: [
                                                     Container(
-                                                      padding: const EdgeInsets.only(left: 10, right: 20),
+                                                      padding: const EdgeInsets.only(left: 10, right: 20, top: 18),
                                                       child: Image.asset(
                                                         'assets/icons/' + day.icon,
                                                         fit: BoxFit.contain,
@@ -266,7 +271,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                                   ],
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 15, right: 5, top: 15, bottom: 30),
+                                                  padding: const EdgeInsets.only(left: 15, right: 5, top: 15),
                                                   child: Container(
                                                     height: 85,
                                                     padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
@@ -369,7 +374,7 @@ Widget TabletLayout(data, updateLocation, context) {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
+                  padding: const EdgeInsets.only(left: 20, top: 50),
                   child: Column(
                     children: [
                       CustomScrollView(
@@ -381,7 +386,7 @@ Widget TabletLayout(data, updateLocation, context) {
                             ]
                         ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20, top:20, right: 20),
+                        padding: const EdgeInsets.all(20.0),
                         child: Container(
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(

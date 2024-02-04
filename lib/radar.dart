@@ -328,92 +328,95 @@ class _RadarPageState extends State<RadarPage> {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15, bottom: 30, right: 15),
-            child: Material(
-              borderRadius: BorderRadius.circular(20),
-              elevation: 10,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(18),
-                  color: top,
-                ),
-                padding: EdgeInsets.all(6),
-                child: Row(
-                  children: [
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 200),
-                      transitionBuilder: (Widget child, Animation<double> animation) {
-                        return ScaleTransition(scale: animation, child: child,);
-                      },
-                      child: Hero(
-                        key: ValueKey<bool> (isPlaying),
-                        tag: 'playpause',
-                        child: SizedBox(
-                          height: 48,
-                          width: 48,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              elevation: 8,
-                                padding: const EdgeInsets.all(10),
-                                backgroundColor: top,
-                                //side: const BorderSide(width: 5, color: WHITE),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16)
-                                ),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15, bottom: 30, right: 15),
+              child: Material(
+                borderRadius: BorderRadius.circular(20),
+                elevation: 10,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    color: top,
+                  ),
+                  padding: EdgeInsets.all(6),
+                  child: Row(
+                    children: [
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        transitionBuilder: (Widget child, Animation<double> animation) {
+                          return ScaleTransition(scale: animation, child: child,);
+                        },
+                        child: Hero(
+                          key: ValueKey<bool> (isPlaying),
+                          tag: 'playpause',
+                          child: SizedBox(
+                            height: 48,
+                            width: 48,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 8,
+                                  padding: const EdgeInsets.all(10),
+                                  backgroundColor: top,
+                                  //side: const BorderSide(width: 5, color: WHITE),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16)
+                                  ),
+                              ),
+                              onPressed: () async {
+                                togglePlayPause();
+                              },
+                              child: Icon(isPlaying? Icons.pause : Icons.play_arrow, color: main, size: 18,),
                             ),
-                            onPressed: () async {
-                              togglePlayPause();
-                            },
-                            child: Icon(isPlaying? Icons.pause : Icons.play_arrow, color: main, size: 18,),
                           ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 6),
-                        child: Hero(
-                          tag: 'progress',
-                          child: LayoutBuilder(
-                              builder: (BuildContext context, BoxConstraints constraints) {
-                                return Material(
-                                  borderRadius: BorderRadius.circular(13),
-                                  elevation: 8,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Container(
-                                      height: 48,
-                                      color: top,
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            color: main,
-                                            width: constraints.maxWidth *
-                                                (max(currentFrameIndex - 1, 0) / data.radar.images.length),
-                                          ),
-                                          AnimatedSwitcher(
-                                            duration: const Duration(milliseconds: 300),
-                                            transitionBuilder: (Widget child, Animation<double> animation) =>
-                                                SizeTransition(sizeFactor: animation, axis: Axis.horizontal, child: child),
-                                            child: Container(
-                                              key: ValueKey<int>(currentFrameIndex),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 6),
+                          child: Hero(
+                            tag: 'progress',
+                            child: LayoutBuilder(
+                                builder: (BuildContext context, BoxConstraints constraints) {
+                                  return Material(
+                                    borderRadius: BorderRadius.circular(13),
+                                    elevation: 8,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Container(
+                                        height: 48,
+                                        color: top,
+                                        child: Stack(
+                                          children: [
+                                            Container(
                                               color: main,
                                               width: constraints.maxWidth *
-                                                  (currentFrameIndex / data.radar.images.length),
+                                                  (max(currentFrameIndex - 1, 0) / data.radar.images.length),
                                             ),
-                                          ),
-                                        ],
+                                            AnimatedSwitcher(
+                                              duration: const Duration(milliseconds: 300),
+                                              transitionBuilder: (Widget child, Animation<double> animation) =>
+                                                  SizeTransition(sizeFactor: animation, axis: Axis.horizontal, child: child),
+                                              child: Container(
+                                                key: ValueKey<int>(currentFrameIndex),
+                                                color: main,
+                                                width: constraints.maxWidth *
+                                                    (currentFrameIndex / data.radar.images.length),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }
+                                  );
+                                }
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
