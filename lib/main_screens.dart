@@ -159,7 +159,7 @@ Widget TabletLayout(data, updateLocation, context) {
 
   double toppad = MediaQuery.of(context).viewPadding.top;
 
-  double width = size.width - max(size.width * 0.4, 458);
+  double width = size.width - max(size.width * 0.4, 430);
   double heigth = max(width / 2.4, 500);
 
   return Scaffold(
@@ -172,7 +172,7 @@ Widget TabletLayout(data, updateLocation, context) {
       backgroundColor: WHITE,
       color: data.current.backcolor,
       child: Padding(
-        padding: EdgeInsets.only(left: 40, right: 30, bottom: 30, top: toppad),
+        padding: EdgeInsets.only(left: 35, right: 25, bottom: 30, top: toppad),
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Row(
@@ -247,7 +247,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   children: [
                                                     Container(
-                                                      padding: const EdgeInsets.only(left: 10, right: 20, top: 18),
+                                                      padding: const EdgeInsets.only(left: 10, right: 20, top: 4),
                                                       child: Image.asset(
                                                         'assets/icons/' + day.icon,
                                                         fit: BoxFit.contain,
