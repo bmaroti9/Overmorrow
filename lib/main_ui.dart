@@ -40,8 +40,8 @@ class WeatherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Build the ui for phones
-    //return PhoneLayout(data, updateLocation, context);
-    return TabletLayout(data, updateLocation, context);
+    return PhoneLayout(data, updateLocation, context);
+    //return TabletLayout(data, updateLocation, context);
 
   }
 }
