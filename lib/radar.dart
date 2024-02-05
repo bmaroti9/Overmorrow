@@ -307,10 +307,16 @@ class _RadarPageState extends State<RadarPage> {
           options: MapOptions(
             initialCenter: LatLng(data.lat, data.lng),
             initialZoom: 5,
+            minZoom: 2,
+            maxZoom: 8,
+
             backgroundColor: WHITE,
             interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate,),
           ),
           children: [
+            Container(
+              color: data.current.contentColor[0] == WHITE? const Color(0xffD4DADC) : const Color(0xff262626),
+            ),
             TileLayer(
               urlTemplate: data.current.contentColor[0] == WHITE
                   ? 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
