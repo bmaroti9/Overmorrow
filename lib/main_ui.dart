@@ -26,6 +26,8 @@ import 'package:hihi_haha/radar.dart';
 import 'package:hihi_haha/settings_page.dart';
 import 'ui_helper.dart';
 
+Color instantBackColor = const Color(0xff7a9dbc);
+
 class WeatherPage extends StatelessWidget {
   final data;
   final updateLocation;
@@ -39,6 +41,9 @@ class WeatherPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    instantBackColor = data.current.backcolor;
+
     // Build the ui for phones
     return PhoneLayout(data, updateLocation, context);
     //return TabletLayout(data, updateLocation, context);

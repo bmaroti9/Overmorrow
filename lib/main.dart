@@ -24,6 +24,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hihi_haha/search_screens.dart';
 import 'package:hihi_haha/ui_helper.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'dart:convert';
 import 'caching.dart';
 import 'decoders/extra_info.dart';
@@ -70,6 +71,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<Widget> getDays(bool recall) async {
+
+    await Future.delayed(const Duration(milliseconds: 800));
+
     try {
 
       List<String> settings = await getSettingsUsed();
@@ -199,6 +203,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -207,8 +212,17 @@ class _MyAppState extends State<MyApp> {
           builder: (BuildContext context,
               AsyncSnapshot<Widget> snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              //return const Center(
+              //  child: CircularProgressIndicator(),
+              //);
+              return Container(
+                color: instantBackColor,
+                child: Center(
+                  child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: WHITE,
+                      size: 40,
+                  ),
+                ),
               );
             } else if (snapshot.hasError) {
               print(snapshot.error);
