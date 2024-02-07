@@ -21,6 +21,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hihi_haha/main_ui.dart';
 import 'package:hihi_haha/settings_page.dart';
 import 'package:hihi_haha/ui_helper.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
@@ -430,7 +431,7 @@ class dumbySearch extends StatelessWidget {
     required this.updateLocation, required this.icon, required this.place,
   required this.settings, required this.provider, required this.latlng});
 
-  final Color color = const Color(0xffB1D2E1);
+  final Color color = instantBackColor;
 
   final FloatingSearchBarController controller = FloatingSearchBarController();
 
@@ -448,7 +449,7 @@ class dumbySearch extends StatelessWidget {
 
     return Scaffold(
       drawer: MyDrawer(color: color, settings: settings),
-      backgroundColor: darken(color, 0.4),
+      backgroundColor: color,
       body: RefreshIndicator(
         onRefresh: () async {
           await updateLocation(latlng, place);
@@ -540,7 +541,7 @@ class dumbySearch extends StatelessWidget {
                     ),
                   ),
                   MySearchParent(updateLocation: updateLocation,
-                    color: darken(color, 0.5), place: place, controller: controller, settings: settings,
+                    color: color, place: place, controller: controller, settings: settings,
                   real_loc: place,),
                 ],
               ),

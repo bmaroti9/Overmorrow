@@ -45,8 +45,14 @@ class WeatherPage extends StatelessWidget {
     instantBackColor = data.current.backcolor;
 
     // Build the ui for phones
+
+    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+    Size size = view.physicalSize / view.devicePixelRatio;
+
+    if (size.width > 1000) {
+      return TabletLayout(data, updateLocation, context);
+    }
     return PhoneLayout(data, updateLocation, context);
-    //return TabletLayout(data, updateLocation, context);
 
   }
 }

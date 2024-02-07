@@ -70,9 +70,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<Widget> getDays(bool recall) async {
-
-    await Future.delayed(const Duration(milliseconds: 800));
+  Future<List<dynamic>> getDays(bool recall) async {
 
     try {
 
@@ -102,18 +100,18 @@ class _MyAppState extends State<MyApp> {
             try {
               position = (await Geolocator.getLastKnownPosition())!;
             } on Error {
-              return dumbySearch(errorMessage: translation(
+              return [dumbySearch(errorMessage: translation(
                   "Unable to locate device", settings[0]),
                 updateLocation: updateLocation,
                 icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
                 place: backupName,
-                settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+                settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
             }
           } on LocationServiceDisabledException {
-            return dumbySearch(errorMessage: translation("location services are disabled.", settings[0]),
+            return [dumbySearch(errorMessage: translation("location services are disabled.", settings[0]),
               updateLocation: updateLocation,
               icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-              place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+              place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
           }
 
           backupName = '${position.latitude},${position.longitude}';
@@ -122,10 +120,10 @@ class _MyAppState extends State<MyApp> {
           print('True');
         }
         else {
-          return dumbySearch(errorMessage: translation(loc_status, settings[0]),
+          return [dumbySearch(errorMessage: translation(loc_status, settings[0]),
             updateLocation: updateLocation,
             icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
         }
       }
       if (proposedLoc == 'search') {
@@ -135,11 +133,11 @@ class _MyAppState extends State<MyApp> {
           absoluteProposed = "${split["lat"]},${split["lon"]}";
           backupName = split["name"];
         } else {
-          return dumbySearch(
+          return [dumbySearch(
             errorMessage: '${translation('Place not found', settings[0])}: $backupName',
             updateLocation: updateLocation,
             icon: const Icon(Icons.location_disabled, color: WHITE, size: 30,),
-            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
         }
       }
 
@@ -154,32 +152,32 @@ class _MyAppState extends State<MyApp> {
         weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weather_provider);
 
       } on TimeoutException {
-        return dumbySearch(errorMessage: translation("Weak or no wifi connection", settings[0]),
+        return [dumbySearch(errorMessage: translation("Weak or no wifi connection", settings[0]),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
       } on HttpExceptionWithStatus catch (hihi){
         print(hihi.toString());
-        return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
+        return [dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
       } on SocketException {
-        return dumbySearch(errorMessage: translation("Not connected to the internet", settings[0]),
+        return [dumbySearch(errorMessage: translation("Not connected to the internet", settings[0]),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
       } on Error catch (e, stacktrace) {
         print(stacktrace);
-        return dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
+        return [dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
       }
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
                                 // then this will be the new startup
 
-      return WeatherPage(data: weatherdata,
-          updateLocation: updateLocation);
+      return [WeatherPage(data: weatherdata,
+          updateLocation: updateLocation), weatherdata.current.backcolor];
 
     } catch (e, stacktrace) {
       List<String> settings = await getSettingsUsed();
@@ -191,14 +189,20 @@ class _MyAppState extends State<MyApp> {
       cacheManager2.emptyCache();
 
       if (recall) {
-        return dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
+        return [dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: 'search',);
+          place: backupName, settings: settings, provider: weather_provider, latlng: 'search',), instantBackColor];
       }
       else {
         return getDays(true);
       }
     }
+  }
+
+  Future<Widget> fillTime(var data) async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    return data[0];
   }
 
   @override
@@ -207,20 +211,17 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: FutureBuilder<Widget>(
+        body: FutureBuilder<List<dynamic>>(
           future: getDays(false),
           builder: (BuildContext context,
-              AsyncSnapshot<Widget> snapshot) {
+              AsyncSnapshot<List<dynamic>> snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              //return const Center(
-              //  child: CircularProgressIndicator(),
-              //);
               return Container(
                 color: instantBackColor,
                 child: Center(
                   child: LoadingAnimationWidget.staggeredDotsWave(
-                      color: WHITE,
-                      size: 40,
+                    color: WHITE,
+                    size: 40,
                   ),
                 ),
               );
@@ -232,9 +233,54 @@ class _MyAppState extends State<MyApp> {
               //return comfortatext('Error fetching data', 20);
             }
             //return buildWholeThing(snapshot.data);
-            return snapshot.data!;
+            //return snapshot.data![0];
+            return FutureBuilder<Widget>(
+                future: fillTime(snapshot.data),
+                builder: (BuildContext context,
+                    AsyncSnapshot<Widget> snapshot2) {
+                  if (snapshot2.connectionState != ConnectionState.done) {
+                    return TweenBackgroundAnimation(
+                      color1: instantBackColor,
+                      color2: snapshot.data?[1],
+                    );
+                  } else if (snapshot2.hasError) {
+                    print(snapshot.error);
+                    return Center(
+                      child: ErrorWidget(snapshot.error as Object),
+                    );
+                    //return comfortatext('Error fetching data', 20);
+                  }
+                  return snapshot2.data!;
+                }
+            );
           },
         )),
+    );
+  }
+}
+
+class TweenBackgroundAnimation extends StatelessWidget {
+  final Color color1;
+  final Color color2;
+
+  const TweenBackgroundAnimation({Key? key, required this.color1, required this.color2}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<Color?>(
+      duration: const Duration(seconds: 1),
+      tween: ColorTween(begin: color1, end: color2),
+      builder: (context, color, child) {
+        return Container(
+          color: color,
+          child: Center(
+            child: LoadingAnimationWidget.staggeredDotsWave(
+              color: WHITE,
+              size: 40,
+            ),
+          ),
+        );
+      },
     );
   }
 }
