@@ -243,32 +243,35 @@ Widget TabletLayout(data, updateLocation, context) {
                                             width: day.mm_precip > 0.1 ? width * 0.6 : width - 20,
                                             child: Column(
                                               children: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      padding: const EdgeInsets.only(left: 10, right: 20, top: 4),
-                                                      child: Image.asset(
-                                                        'assets/icons/' + day.icon,
-                                                        fit: BoxFit.contain,
-                                                        height: 40,
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 10),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                                                      Container(
+                                                        padding: const EdgeInsets.only(left: 10, right: 20, top: 4),
+                                                        child: Image.asset(
+                                                          'assets/icons/' + day.icon,
+                                                          fit: BoxFit.contain,
+                                                          height: 40,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    comfortatext(day.text, 22, data.settings, color: WHITE),
-                                                    Spacer(),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(right: 6),
-                                                      child: Container(
-                                                          padding: const EdgeInsets.only(top:7,bottom: 7, left: 5, right: 5),
-                                                          decoration: BoxDecoration(
-                                                            //border: Border.all(color: Colors.blueAccent)
-                                                              color: WHITE,
-                                                              borderRadius: BorderRadius.circular(10)
-                                                          ),
-                                                          child: comfortatext(day.minmaxtemp, 17, data.settings, color: data.current.backcolor)
-                                                      ),
-                                                    )
-                                                  ],
+                                                      comfortatext(day.text, 22, data.settings, color: WHITE),
+                                                      Spacer(),
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(right: 6),
+                                                        child: Container(
+                                                            padding: const EdgeInsets.only(top:7,bottom: 7, left: 5, right: 5),
+                                                            decoration: BoxDecoration(
+                                                              //border: Border.all(color: Colors.blueAccent)
+                                                                color: WHITE,
+                                                                borderRadius: BorderRadius.circular(10)
+                                                            ),
+                                                            child: comfortatext(day.minmaxtemp, 17, data.settings, color: data.current.backcolor)
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 15, right: 5, top: 15),
