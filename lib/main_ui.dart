@@ -26,7 +26,7 @@ import 'package:hihi_haha/radar.dart';
 import 'package:hihi_haha/settings_page.dart';
 import 'ui_helper.dart';
 
-Color instantBackColor = const Color(0xff7a9dbc);
+Color instantBackColor = Colors.white;
 
 class WeatherPage extends StatelessWidget {
   final data;

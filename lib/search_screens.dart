@@ -66,6 +66,7 @@ Widget searchBar(Color color, List<String> recommend,
       debounceDelay: const Duration(milliseconds: 500),
 
       controller: controller,
+      width: 800,
 
       onQueryChanged: (query) async {
         isEditing = false;
@@ -493,6 +494,7 @@ class dumbySearch extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(15.0),
                             child: Container(
+                              constraints: const BoxConstraints(maxWidth: 800),
                               padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),

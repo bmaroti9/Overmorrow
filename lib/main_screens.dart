@@ -171,6 +171,7 @@ Widget TabletLayout(data, updateLocation, context) {
       },
       backgroundColor: WHITE,
       color: data.current.backcolor,
+      displacement: 100,
       child: Padding(
         padding: EdgeInsets.only(left: 35, right: 25, bottom: 30, top: toppad),
         child: SingleChildScrollView(
