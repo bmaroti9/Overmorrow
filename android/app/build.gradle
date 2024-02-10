@@ -26,7 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    namespace "com.example.hihi_haha"
+    namespace "com.example.overmorrow"
     compileSdkVersion 33
     // compileSdkVersion flutter.compileSdkVersion <- this vas the original one but
     // geolocator insisted on it being 33

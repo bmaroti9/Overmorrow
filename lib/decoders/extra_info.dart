@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:convert';
 
-import 'package:hihi_haha/decoders/decode_OM.dart';
+import 'package:overmorrow/decoders/decode_OM.dart';
 
 import '../api_key.dart';
 import '../caching.dart';

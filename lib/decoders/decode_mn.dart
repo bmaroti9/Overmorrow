@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:hihi_haha/decoders/decode_wapi.dart';
+import 'package:overmorrow/decoders/decode_wapi.dart';
 
 import '../settings_page.dart';
 import '../ui_helper.dart';

@@ -20,10 +20,10 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hihi_haha/decoders/decode_wapi.dart';
-import 'package:hihi_haha/main_screens.dart';
-import 'package:hihi_haha/radar.dart';
-import 'package:hihi_haha/settings_page.dart';
+import 'package:overmorrow/decoders/decode_wapi.dart';
+import 'package:overmorrow/main_screens.dart';
+import 'package:overmorrow/radar.dart';
+import 'package:overmorrow/settings_page.dart';
 import 'ui_helper.dart';
 
 Color instantBackColor = Colors.white;

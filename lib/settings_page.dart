@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hihi_haha/donation_page.dart';
+import 'package:overmorrow/donation_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'languages.dart';
 import 'main.dart';
