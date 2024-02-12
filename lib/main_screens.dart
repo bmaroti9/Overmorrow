@@ -173,7 +173,7 @@ Widget TabletLayout(data, updateLocation, context) {
       color: data.current.backcolor,
       displacement: 100,
       child: Padding(
-        padding: EdgeInsets.only(left: 35, right: 25, bottom: 30, top: toppad),
+        padding: EdgeInsets.only(left: 20, right: 10, bottom: 10, top: toppad),
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Row(
@@ -184,7 +184,7 @@ Widget TabletLayout(data, updateLocation, context) {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: heigth,
+                      height: heigth * 0.9,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10, top: 10),
                         child: ClipRRect(
@@ -192,14 +192,14 @@ Widget TabletLayout(data, updateLocation, context) {
                           child: Stack(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 130),
+                                padding: const EdgeInsets.only(top: 100),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: ParallaxBackground(data: data)
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(top: 130),
+                                padding: const EdgeInsets.only(top: 100),
                                 child: Align(
                                   alignment: Alignment.bottomCenter,
                                   child: buildCurrent(data, 100, 0.6),
