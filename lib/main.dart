@@ -105,13 +105,13 @@ class _MyAppState extends State<MyApp> {
                 updateLocation: updateLocation,
                 icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
                 place: backupName,
-                settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
+                settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
             }
           } on LocationServiceDisabledException {
             return [dumbySearch(errorMessage: translation("location services are disabled.", settings[0]),
               updateLocation: updateLocation,
               icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-              place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
+              place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
           }
 
           backupName = '${position.latitude},${position.longitude}';
@@ -123,7 +123,7 @@ class _MyAppState extends State<MyApp> {
           return [dumbySearch(errorMessage: translation(loc_status, settings[0]),
             updateLocation: updateLocation,
             icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
+            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
         }
       }
       if (proposedLoc == 'search') {
@@ -137,7 +137,7 @@ class _MyAppState extends State<MyApp> {
             errorMessage: '${translation('Place not found', settings[0])}: $backupName',
             updateLocation: updateLocation,
             icon: const Icon(Icons.location_disabled, color: WHITE, size: 30,),
-            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
+            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
         }
       }
 
@@ -155,22 +155,22 @@ class _MyAppState extends State<MyApp> {
         return [dumbySearch(errorMessage: translation("Weak or no wifi connection", settings[0]),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
       } on HttpExceptionWithStatus catch (hihi){
         print(hihi.toString());
         return [dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
       } on SocketException {
         return [dumbySearch(errorMessage: translation("Not connected to the internet", settings[0]),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
       } on Error catch (e, stacktrace) {
         print(stacktrace);
         return [dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor];
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
       }
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
@@ -191,7 +191,7 @@ class _MyAppState extends State<MyApp> {
       if (recall) {
         return [dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: 'search',), instantBackColor];
+          place: backupName, settings: settings, provider: weather_provider, latlng: 'search',), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
       }
       else {
         return getDays(true);
@@ -220,7 +220,7 @@ class _MyAppState extends State<MyApp> {
                 color: instantBackColor,
                 child: Center(
                   child: LoadingAnimationWidget.staggeredDotsWave(
-                    color: WHITE,
+                    color: instantBackColor == WHITE ? const Color(0xff7a9dbc) : WHITE,
                     size: 40,
                   ),
                 ),

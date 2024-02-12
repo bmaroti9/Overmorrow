@@ -432,7 +432,7 @@ class dumbySearch extends StatelessWidget {
     required this.updateLocation, required this.icon, required this.place,
   required this.settings, required this.provider, required this.latlng});
 
-  final Color color = instantBackColor;
+  final Color color = instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor;
 
   final FloatingSearchBarController controller = FloatingSearchBarController();
 
