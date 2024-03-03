@@ -49,7 +49,7 @@ class WeatherPage extends StatelessWidget {
     FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     Size size = view.physicalSize / view.devicePixelRatio;
 
-    if (size.width > 1000) {
+    if (size.width > 950) {
       return TabletLayout(data, updateLocation, context);
     }
     return PhoneLayout(data, updateLocation, context);
@@ -646,7 +646,7 @@ Widget buildGlanceDay(var data) => SliverPadding(
 Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor, settings) => SizedBox(
   height: 255,
   child: ListView(
-    physics: const BouncingScrollPhysics(),
+    physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
     scrollDirection: Axis.horizontal,
     children: data.map<Widget>((hour) {
       return Column(
@@ -679,7 +679,7 @@ Widget buildHours(List<dynamic> data, List<String> units, Color accentcolor, set
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 20, left: 3, right: 3),
             child: Image.asset(
               'assets/icons/' + hour.icon,
               fit: BoxFit.scaleDown,

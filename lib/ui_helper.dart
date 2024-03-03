@@ -34,15 +34,16 @@ const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);
 
 double getFontSize(String set) {
-  double x = 0.95;
+  double x = Platform.isLinux ? 0.75 : 0.95;
+
   if (set == "small")  {
-    x = 0.85;
+    x = 0.85 * x;
   }
   else if (set == "very small") {
-    x = 0.75;
+    x = 0.75 * x;
   }
   else if (set == 'big') {
-    x = 1.1;
+    x = 1.1 * x;
   }
   return x;
 }
@@ -183,7 +184,7 @@ Widget aqiDataPoints(String name, double value, Color color, var settings) {
                       style: TextStyle(
                         color: color
                       ),
-                      textScaleFactor: 1.2
+                      textScaleFactor: getFontSize(settings[7])
                   ),
                 )
               ],

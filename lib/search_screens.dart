@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:convert';
 import 'dart:ui';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -117,7 +118,10 @@ Widget searchBar(Color color, List<String> recommend,
           showIfOpened: false,
           child: Padding(
             padding: const EdgeInsets.only(top: 3, bottom: 3),
-            child: LocationButton(updateProg, updateLocation, color, real_loc),
+            child: Visibility(
+              visible: !Platform.isLinux,
+              child: LocationButton(updateProg, updateLocation, color, real_loc)
+            ),
           ),
         ),
         FloatingSearchBarAction(

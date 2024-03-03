@@ -90,7 +90,9 @@ class _MyAppState extends State<MyApp> {
       bool isItCurrentLocation = false;
 
       if (backupName == 'CurrentLocation') {
+        print("almost therre");
         String loc_status = await isLocationSafe();
+        print("got past");
         if (loc_status == "enabled") {
           Position position;
           try {

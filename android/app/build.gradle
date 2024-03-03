@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     namespace "com.example.overmorrow"
-    compileSdkVersion 33
+    compileSdkVersion 34
     // compileSdkVersion flutter.compileSdkVersion <- this vas the original one but
     // geolocator insisted on it being 33
     ndkVersion flutter.ndkVersion

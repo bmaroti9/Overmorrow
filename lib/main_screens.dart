@@ -42,7 +42,7 @@ Widget PhoneLayout(data, updateLocation, context) {
             ),
           ),
           CustomScrollView(
-            physics: const BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
             slivers: <Widget>[
               SliverAppBar(
                 automaticallyImplyLeading: false, // remove the hamburger-menu
@@ -159,8 +159,8 @@ Widget TabletLayout(data, updateLocation, context) {
 
   double toppad = MediaQuery.of(context).viewPadding.top;
 
-  double width = size.width - max(size.width * 0.4, 430);
-  double heigth = max(width / 2.4, 500);
+  double width = size.width - min(max(size.width * 0.4, 400), 450);
+  double heigth = min(max(width / 1.5, 450), 510);
 
   return Scaffold(
     backgroundColor: data.current.backcolor,
@@ -173,7 +173,7 @@ Widget TabletLayout(data, updateLocation, context) {
       color: data.current.backcolor,
       displacement: 100,
       child: Padding(
-        padding: EdgeInsets.only(left: 20, right: 10, bottom: 10, top: toppad),
+        padding: EdgeInsets.only(left: 20, right: 10, bottom: 10, top: toppad + 10),
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Row(
@@ -241,7 +241,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
-                                            width: day.mm_precip > 0.1 ? width * 0.6 : width - 20,
+                                            width: day.mm_precip > 0.2 ? width - max(width * 0.4, 300) : width - 20,
                                             child: Column(
                                               children: [
                                                 Padding(
@@ -358,7 +358,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                           ),
                                           Expanded(
                                             child: Visibility(
-                                                visible: day.mm_precip > 0.1,
+                                                visible: day.mm_precip > 0.2,
                                                 child: RainWidget(data.settings, day)
                                             ),
                                           ),
