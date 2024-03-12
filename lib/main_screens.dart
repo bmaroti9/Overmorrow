@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/settings_page.dart';
@@ -50,8 +51,16 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
   Widget build(BuildContext context) {
 
     FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+    Size size = view.physicalSize / view.devicePixelRatio;
     
-    Color color = const Color(0xfff0c6b3);
+    //Color color = const Color(0xfff0c6b3);
+    //Color color = const Color(0xff7C88BA);
+    //Color color = const Color(0xff5791BB);
+    //Color color = const Color(0xffb3c8c7);
+    Color color = const Color(0xff90ABC0);
+    //Color color = BLACK;
+
+    List<double> x = [20, 40, 30, 20, 45, 90, 80, 40, 30, 30, 10, 10, 10, 10, 10];
 
     return Scaffold(
       backgroundColor: color,
@@ -104,74 +113,233 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                   child: LayoutBuilder(
                       builder: (BuildContext context, BoxConstraints constraints) {
                         if(constraints.maxWidth > 400.0) {
-                          return Circles(400, data, 0.3, data.current.backcolor);
+                          return Circles(400, data, 0.3, WHITE);
                         } else {
-                          return Circles(constraints.maxWidth * 0.95, data, 1, data.current.backcolor);
+                          return Circles(constraints.maxWidth * 0.95, data, 1, WHITE);
                         }
                       }
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 17, right: 17, top: 25),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: darken(data.current.backcolor, 0.00),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  padding: const EdgeInsets.only(top: 15, bottom: 15),
+                padding: EdgeInsets.only(left: 18, right: 18, top: 25),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Column(
-                        children: [
-                          comfortatext('weatherapi', 13, data.settings, weight: FontWeight.w500),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(top: 10, right: 8),
-                                child: Icon(Icons.wb_cloudy_outlined, color: WHITE, size: 30)
-                              ),
-                              comfortatext('-5°', 26, data.settings, weight: FontWeight.w500),
-                            ],
-                          ),
-                        ],
+                      Expanded(
+                          child: Container(
+                            color: lighten(color, 0.04),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: comfortatext('open-meteo', 13, data.settings, weight: FontWeight.w500),
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.only(bottom: 7),
+                                  child: comfortatext('-10°', 20, data.settings),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 10),
+                                  child: comfortatext('Cloudy night', 13, data.settings),
+                                ),
+                              ],
+                            ),
+                          )
                       ),
-                      Column(
-                        children: [
-                          comfortatext('visual-crossing', 13, data.settings, weight: FontWeight.w500),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const Padding(
-                                  padding: EdgeInsets.only(top: 10, right: 8),
-                                  child: Icon(Icons.wb_cloudy_outlined, color: WHITE, size: 30)
-                              ),
-                              comfortatext('-10°', 26, data.settings, weight: FontWeight.w500),
-                            ],
-                          ),
-                        ],
+                      Expanded(
+                          child: Container(
+                            color: darken(color, 0.12),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: comfortatext('weatherapi', 13, data.settings, weight: FontWeight.w500),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 7),
+                                  child: comfortatext('-6°', 20, data.settings),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 10),
+                                  child: comfortatext('Clear night', 13, data.settings),
+                                ),
+                              ],
+                            ),
+                          )
                       ),
-                      Column(
-                        children: [
-                          comfortatext('weatherapi', 13, data.settings, weight: FontWeight.w500),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const Padding(
-                                  padding: EdgeInsets.only(top: 10, right: 8),
-                                  child: Icon(Icons.sunny, color: WHITE, size: 30)
-                              ),
-                              comfortatext('1°', 26, data.settings, weight: FontWeight.w500),
-                            ],
-                          ),
-                        ],
-                      ),
+                      Expanded(
+                          child: Container(
+                            color: darken(color),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: comfortatext('visual-crossing', 13, data.settings, weight: FontWeight.w500),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 7),
+                                  child: comfortatext('-8°', 20, data.settings),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 10),
+                                  child: comfortatext('Cloudy night', 13, data.settings),
+                                ),
+                              ],
+                            ),
+                          )
+                      )
                     ],
                   ),
                 ),
-              )
+              ),
+              Padding(
+                  padding: EdgeInsets.only(left: 20, top: 30),
+                child: comfortatext('today', 18, data.settings),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 30, right: 30, top: 15),
+                child: comfortatext("Partly cloudy throughout the day and cloudy in the night.", 17, data.settings,
+                color: data.current.backcolor, weight: FontWeight.w400),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 17, right: 17, top: 28),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: data.days[0].mm_precip > 0.1 ? darken(data.current.backcolor, 0.1) : color,
+                        ),
+                        child: SizedBox(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.only(left: 10, right: 10),
+                                    child: Image.asset(
+                                      'assets/icons/' + data.days[0].icon,
+                                      fit: BoxFit.contain,
+                                      height: 35,
+                                    ),
+                                  ),
+                                  comfortatext(data.days[0].text, 20, data.settings, color: WHITE),
+                                  Spacer(),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 6),
+                                    child: Container(
+                                        padding: const EdgeInsets.only(top:7,bottom: 7, left: 5, right: 5),
+                                        decoration: BoxDecoration(
+                                          //border: Border.all(color: Colors.blueAccent)
+                                            color: WHITE,
+                                            borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        child: comfortatext(data.days[0].minmaxtemp, 17, data.settings, color: data.current.backcolor)
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Visibility(
+                                  visible: data.days[0].mm_precip > 0.1,
+                                  child: RainWidget(data.settings, data.days[0])
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 30),
+                      child: Container(
+                        height: 85,
+                        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1.2, color: WHITE),
+                            borderRadius: BorderRadius.circular(20)
+                        ),
+                        child:  LayoutBuilder(
+                            builder: (BuildContext context, BoxConstraints constraints) {
+                              return GridView.count(
+                                  padding: const EdgeInsets.all(0),
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  crossAxisSpacing: 1,
+                                  mainAxisSpacing: 1,
+                                  crossAxisCount: 2,
+                                  childAspectRatio: constraints.maxWidth / constraints.maxHeight,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, right: 8),
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.water_drop_outlined,
+                                            color: WHITE,),
+                                          const Padding(
+                                              padding: EdgeInsets.only(right: 10)),
+                                          comfortatext('${data.days[0].precip_prob}%', 20, data.settings),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, right: 8),
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.water_drop, color: WHITE,),
+                                          const Padding(
+                                              padding: EdgeInsets.only(right: 10)),
+                                          comfortatext(data.days[0].total_precip.toString() +
+                                              data.settings[2], 20, data.settings),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, right: 8),
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                            CupertinoIcons.wind, color: WHITE,),
+                                          const Padding(
+                                              padding: EdgeInsets.only(right: 10)),
+                                          comfortatext('${data.days[0].windspeed} ${data
+                                              .settings[3]}', 20, data.settings),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, right: 8),
+                                      child: Row(
+                                        children: [
+                                          const Icon(CupertinoIcons.sun_min,
+                                            color: WHITE,),
+                                          const Padding(
+                                              padding: EdgeInsets.only(right: 10)),
+                                          comfortatext('${data.days[0].uv} UV', 20, data.settings),
+                                        ],
+                                      ),
+                                    ),
+                                  ]
+                              );
+                            }
+                        ),
+                      ),
+                    ),
+                    buildHours(data.days[0].hourly, data.settings, data.current.accentcolor, data.settings),
+                  ],
+                ),
+              ),
+              Padding(padding: EdgeInsets.only(bottom: 50))
             ],
           ),
           if (isLoading) _buildLoadingWidget()
@@ -215,93 +383,119 @@ Widget PhoneLayout(data, updateLocation, context) {
       },
       backgroundColor: WHITE,
       color: data.current.backcolor,
-      child: CustomScrollView(
-        physics: Platform.isLinux? const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast)
-            : const BouncingScrollPhysics(),
-        slivers: <Widget>[
-          SliverAppBar(
-            automaticallyImplyLeading: false, // remove the hamburger-menu
-            backgroundColor: Colors.transparent, // Set background to transparent
-            bottom: PreferredSize(
-              preferredSize: const Size(0, 380),
-              child: Container(),
-            ),
-            pinned: false,
-
-            expandedHeight: availableHeight -200,
-            flexibleSpace: Stack(
-              children: [
-                ParallaxBackground(data: data,),
-                Positioned(
-                  bottom: 25,
-                  left: 0,
-                  right: 0,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SingleChildScrollView(
-                      child: buildCurrent(data, safeHeight - 100, 0.3),
-                    ),
-                  ),
-                ),
-                MySearchParent(updateLocation: updateLocation,
-                  color: data.current.backcolor, place: data.place,
-                  controller: controller, settings: data.settings, real_loc: data.real_loc,),
-              ],
+      child: Stack(
+        children: [
+          Container(
+          decoration: BoxDecoration(
+          color: data.current.backcolor,
+              border: const Border.symmetric(vertical: BorderSide(
+                  width: 1.2,
+                  color: WHITE
+                )
+              )
             ),
           ),
-          const SliverPadding(padding: EdgeInsets.only(top: 30)),
-          NewTimes(data, true),
-          buildHihiDays(data),
-          buildGlanceDay(data),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, top:20, right: 20),
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: WHITE, width: 1.2)
+          CustomScrollView(
+            physics: Platform.isLinux? const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast)
+                : const BouncingScrollPhysics(),
+            slivers: <Widget>[
+              SliverAppBar(
+                automaticallyImplyLeading: false, // remove the hamburger-menu
+                backgroundColor: Colors.transparent, // Set background to transparent
+                bottom: PreferredSize(
+                  preferredSize: const Size(0, 380),
+                  child: Container(),
                 ),
-                child: Column(
+                pinned: false,
+
+                expandedHeight: availableHeight + 43,
+                flexibleSpace: Stack(
                   children: [
-                    comfortatext(translation('Weather provider', data.settings[0]), 18, data.settings),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: DropdownButton(
-                        underline: Container(),
-                        borderRadius: BorderRadius.circular(20),
-                        icon: const Padding(
-                          padding: EdgeInsets.only(left:5),
-                          child: Icon(Icons.arrow_drop_down_circle, color: WHITE,),
+                    ParallaxBackground(data: data,),
+                    Positioned(
+                      bottom: 25,
+                      left: 0,
+                      right: 0,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SingleChildScrollView(
+                          child: buildCurrent(data, safeHeight - 100, 1),
                         ),
-                        style: GoogleFonts.comfortaa(
-                          color: WHITE,
-                          fontSize: 20 * getFontSize(data.settings[7]),
-                          fontWeight: FontWeight.w300,
-                        ),
-                        //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
-                        value: data.provider.toString(),
-                        items: ['weatherapi.com', 'open-meteo'].map((item) {
-                          return DropdownMenuItem(
-                            value: item,
-                            child: Text(item),
-                          );
-                        }).toList(),
-                        onChanged: (String? value) async {
-                          SetData('weather_provider', value!);
-                          await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
-                        },
-                        isExpanded: true,
-                        dropdownColor: darken(data.current.backcolor, 0.1),
-                        elevation: 0,
                       ),
                     ),
+                    Positioned(
+                      bottom: -3,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                      height: 35,
+                      decoration: BoxDecoration(
+                      border: Border.all(width: 1.2, color: WHITE),
+                      color: data.current.backcolor,
+                      borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(27),)
+                    ),),),
+                    MySearchParent(updateLocation: updateLocation,
+                      color: data.current.backcolor, place: data.place,
+                      controller: controller, settings: data.settings, real_loc: data.real_loc,),
                   ],
                 ),
               ),
-            ),
+              const SliverPadding(padding: EdgeInsets.only(top: 30)),
+              NewTimes(data, true),
+              buildHihiDays(data),
+              buildGlanceDay(data),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, top:20, right: 20),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: WHITE, width: 1.2)
+                    ),
+                    child: Column(
+                      children: [
+                        comfortatext(translation('Weather provider', data.settings[0]), 18, data.settings),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: DropdownButton(
+                            underline: Container(),
+                            borderRadius: BorderRadius.circular(20),
+                            icon: const Padding(
+                              padding: EdgeInsets.only(left:5),
+                              child: Icon(Icons.arrow_drop_down_circle, color: WHITE,),
+                            ),
+                            style: GoogleFonts.comfortaa(
+                              color: WHITE,
+                              fontSize: 20 * getFontSize(data.settings[7]),
+                              fontWeight: FontWeight.w300,
+                            ),
+                            //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
+                            value: data.provider.toString(),
+                            items: ['weatherapi.com', 'open-meteo'].map((item) {
+                              return DropdownMenuItem(
+                                value: item,
+                                child: Text(item),
+                              );
+                            }).toList(),
+                            onChanged: (String? value) async {
+                              SetData('weather_provider', value!);
+                              await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
+                            },
+                            isExpanded: true,
+                            dropdownColor: darken(data.current.backcolor, 0.1),
+                            elevation: 0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SliverPadding(padding: EdgeInsets.only(bottom: 30))
+            ],
           ),
-          const SliverPadding(padding: EdgeInsets.only(bottom: 30))
         ],
       ),
     ),
