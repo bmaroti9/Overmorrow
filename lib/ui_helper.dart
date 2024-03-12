@@ -49,7 +49,7 @@ double getFontSize(String set) {
 }
 
 Widget comfortatext(String text, double size, settings,
-    {Color color = WHITE, TextAlign align = TextAlign.left }) {
+    {Color color = WHITE, TextAlign align = TextAlign.left, weight = FontWeight.w300}) {
 
   double x = getFontSize(settings[7]);
   return Text(
@@ -57,7 +57,7 @@ Widget comfortatext(String text, double size, settings,
   style: GoogleFonts.comfortaa(
     color: color,
     fontSize: size * x,
-    fontWeight: FontWeight.w300,
+    fontWeight: weight,
   ),
   overflow: TextOverflow.ellipsis,
   maxLines: 3,
@@ -117,10 +117,11 @@ class DescriptionCircle extends StatelessWidget {
                   width: width,
                   height: height,
                   decoration: BoxDecoration(
-                    //shape: BoxShape.circle,
-                    border: Border.all(width: 2.5, color: Colors.white),
+                    shape: BoxShape.circle,
+
+                    border: Border.all(width: 2, color: color),
                     //color: WHITE,
-                    borderRadius: BorderRadius.circular(size * 0.09)
+                    //borderRadius: BorderRadius.circular(size * 0.09)
                   ),
                   child: Center(
                     child: Row(
@@ -128,9 +129,9 @@ class DescriptionCircle extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        comfortatext(text, fontsize, settings),
+                        comfortatext(text, fontsize, settings, color: color, weight: FontWeight.w500),
                         Flexible(
-                          child: comfortatext(extra, small_font, settings)
+                          child: comfortatext(extra, small_font, settings, color: color, weight: FontWeight.w500)
                         ),
                       ],
                     ),
@@ -144,7 +145,7 @@ class DescriptionCircle extends StatelessWidget {
             padding: const EdgeInsets.only(top:5),
             width: width + 8,
             height: height * bottom,
-            child: comfortatext(undercaption, small_font, settings, align: TextAlign.center)
+            child: comfortatext(undercaption, small_font, settings, align: TextAlign.center, color: color, weight: FontWeight.w500)
           )
         )
       ]

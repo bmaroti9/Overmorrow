@@ -1,13 +1,197 @@
 import 'dart:math';
 import 'dart:ui';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
+import 'package:stretchy_header/stretchy_header.dart';
 import 'main_ui.dart';
 import 'ui_helper.dart';
+
+class SampleRefreshIndicator extends StatefulWidget {
+  final data;
+  final updateLocation;
+
+  const SampleRefreshIndicator({required this.data, required this.updateLocation});
+
+  @override
+  _SampleRefreshIndicatorState createState() => _SampleRefreshIndicatorState(data: data,
+  updateLocation: updateLocation);
+}
+
+class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
+  bool isLoading = false;
+  bool numbers = true;
+
+  final FloatingSearchBarController controller = FloatingSearchBarController();
+
+  final data;
+  final updateLocation;
+
+  _SampleRefreshIndicatorState({required this.data, required this.updateLocation});
+
+  void _loadFakeData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 1));
+    numbers = !numbers;
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+    
+    Color color = const Color(0xfff0c6b3);
+
+    return Scaffold(
+      backgroundColor: color,
+      //backgroundColor: WHITE,
+      body: Stack(
+        children: [
+          StretchyHeader.listView(
+            displacement: 150,
+            onRefresh: () {
+              _loadFakeData();
+            },
+            headerData: HeaderData(
+              //backgroundColor: WHITE,
+              blurContent: false,
+              headerHeight: 430,
+              header: Image.asset(
+                'assets/backdrops/${data!.current.backdrop}',
+                fit: BoxFit.cover,
+              ),
+              overlay: Padding(
+                padding: EdgeInsets.only(left: 25, top: MediaQuery.of(context).padding.top + 20, right: 25, bottom: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        comfortatext(data.place, 27, data.settings),
+                        const Spacer(),
+                        const Icon(Icons.search, color: WHITE, size: 30,)
+                      ],
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0, bottom: 5),
+                      child: comfortatext("${data.current.temp}°", 60, data.settings, color: color),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0),
+                      child: comfortatext(data.current.text, 32, data.settings),
+                    )
+                  ],
+                ),
+              )
+            ),
+            children: [
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Container(
+                  child: LayoutBuilder(
+                      builder: (BuildContext context, BoxConstraints constraints) {
+                        if(constraints.maxWidth > 400.0) {
+                          return Circles(400, data, 0.3, data.current.backcolor);
+                        } else {
+                          return Circles(constraints.maxWidth * 0.95, data, 1, data.current.backcolor);
+                        }
+                      }
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 17, right: 17, top: 25),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: darken(data.current.backcolor, 0.00),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  padding: const EdgeInsets.only(top: 15, bottom: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        children: [
+                          comfortatext('weatherapi', 13, data.settings, weight: FontWeight.w500),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(top: 10, right: 8),
+                                child: Icon(Icons.wb_cloudy_outlined, color: WHITE, size: 30)
+                              ),
+                              comfortatext('-5°', 26, data.settings, weight: FontWeight.w500),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          comfortatext('visual-crossing', 13, data.settings, weight: FontWeight.w500),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              const Padding(
+                                  padding: EdgeInsets.only(top: 10, right: 8),
+                                  child: Icon(Icons.wb_cloudy_outlined, color: WHITE, size: 30)
+                              ),
+                              comfortatext('-10°', 26, data.settings, weight: FontWeight.w500),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          comfortatext('weatherapi', 13, data.settings, weight: FontWeight.w500),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              const Padding(
+                                  padding: EdgeInsets.only(top: 10, right: 8),
+                                  child: Icon(Icons.sunny, color: WHITE, size: 30)
+                              ),
+                              comfortatext('1°', 26, data.settings, weight: FontWeight.w500),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+          if (isLoading) _buildLoadingWidget()
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLoadingWidget() {
+    return Container(
+      color: Colors.black54,
+      child: Center(
+        child: LoadingAnimationWidget.staggeredDotsWave(
+          color: WHITE,
+          size: 40,
+        ),
+      ),
+    );
+  }
+}
 
 Widget PhoneLayout(data, updateLocation, context) {
 
@@ -23,6 +207,7 @@ Widget PhoneLayout(data, updateLocation, context) {
       MediaQuery.of(context).padding.bottom;
 
   return Scaffold(
+    backgroundColor: data.current.backcolor,
     drawer: MyDrawer(color: data.current.backcolor, settings: data.settings),
     body: RefreshIndicator(
       onRefresh: () async {
@@ -30,119 +215,93 @@ Widget PhoneLayout(data, updateLocation, context) {
       },
       backgroundColor: WHITE,
       color: data.current.backcolor,
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                color: data.current.backcolor,
-                border: const Border.symmetric(vertical: BorderSide(
-                    width: 1.2,
-                    color: WHITE
-                ))
+      child: CustomScrollView(
+        physics: Platform.isLinux? const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast)
+            : const BouncingScrollPhysics(),
+        slivers: <Widget>[
+          SliverAppBar(
+            automaticallyImplyLeading: false, // remove the hamburger-menu
+            backgroundColor: Colors.transparent, // Set background to transparent
+            bottom: PreferredSize(
+              preferredSize: const Size(0, 380),
+              child: Container(),
             ),
-          ),
-          CustomScrollView(
-            physics: BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
-            slivers: <Widget>[
-              SliverAppBar(
-                automaticallyImplyLeading: false, // remove the hamburger-menu
-                backgroundColor: Colors.transparent, // Set background to transparent
-                bottom: PreferredSize(
-                  preferredSize: const Size(0, 380),
-                  child: Container(),
-                ),
-                pinned: false,
+            pinned: false,
 
-                expandedHeight: availableHeight + 43,
-                flexibleSpace: Stack(
-                  children: [
-                    ParallaxBackground(data: data,),
-                    Positioned(
-                      bottom: 25,
-                      left: 0,
-                      right: 0,
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: SingleChildScrollView(
-                          child: buildCurrent(data, safeHeight - 100, 1),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: -3,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        height: 35,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1.2, color: WHITE),
-                          color: data.current.backcolor,
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(27),
-                          ),
-                        ),
-                      ),
-                    ),
-                    MySearchParent(updateLocation: updateLocation,
-                      color: data.current.backcolor, place: data.place,
-                      controller: controller, settings: data.settings, real_loc: data.real_loc,),
-                  ],
-                ),
-              ),
-              NewTimes(data, true),
-              buildHihiDays(data),
-              buildGlanceDay(data),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20, top:20, right: 20),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: WHITE, width: 1.2)
-                    ),
-                    child: Column(
-                      children: [
-                        comfortatext(translation('Weather provider', data.settings[0]), 18, data.settings),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: DropdownButton(
-                            underline: Container(),
-                            borderRadius: BorderRadius.circular(20),
-                            icon: const Padding(
-                              padding: EdgeInsets.only(left:5),
-                              child: Icon(Icons.arrow_drop_down_circle, color: WHITE,),
-                            ),
-                            style: GoogleFonts.comfortaa(
-                              color: WHITE,
-                              fontSize: 20 * getFontSize(data.settings[7]),
-                              fontWeight: FontWeight.w300,
-                            ),
-                            //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
-                            value: data.provider.toString(),
-                            items: ['weatherapi.com', 'open-meteo'].map((item) {
-                              return DropdownMenuItem(
-                                value: item,
-                                child: Text(item),
-                              );
-                            }).toList(),
-                            onChanged: (String? value) async {
-                              SetData('weather_provider', value!);
-                              await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
-                            },
-                            isExpanded: true,
-                            dropdownColor: darken(data.current.backcolor, 0.1),
-                            elevation: 0,
-                          ),
-                        ),
-                      ],
+            expandedHeight: availableHeight -200,
+            flexibleSpace: Stack(
+              children: [
+                ParallaxBackground(data: data,),
+                Positioned(
+                  bottom: 25,
+                  left: 0,
+                  right: 0,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SingleChildScrollView(
+                      child: buildCurrent(data, safeHeight - 100, 0.3),
                     ),
                   ),
                 ),
-              ),
-              const SliverPadding(padding: EdgeInsets.only(bottom: 30))
-            ],
+                MySearchParent(updateLocation: updateLocation,
+                  color: data.current.backcolor, place: data.place,
+                  controller: controller, settings: data.settings, real_loc: data.real_loc,),
+              ],
+            ),
           ),
+          const SliverPadding(padding: EdgeInsets.only(top: 30)),
+          NewTimes(data, true),
+          buildHihiDays(data),
+          buildGlanceDay(data),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, top:20, right: 20),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: WHITE, width: 1.2)
+                ),
+                child: Column(
+                  children: [
+                    comfortatext(translation('Weather provider', data.settings[0]), 18, data.settings),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: DropdownButton(
+                        underline: Container(),
+                        borderRadius: BorderRadius.circular(20),
+                        icon: const Padding(
+                          padding: EdgeInsets.only(left:5),
+                          child: Icon(Icons.arrow_drop_down_circle, color: WHITE,),
+                        ),
+                        style: GoogleFonts.comfortaa(
+                          color: WHITE,
+                          fontSize: 20 * getFontSize(data.settings[7]),
+                          fontWeight: FontWeight.w300,
+                        ),
+                        //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
+                        value: data.provider.toString(),
+                        items: ['weatherapi.com', 'open-meteo'].map((item) {
+                          return DropdownMenuItem(
+                            value: item,
+                            child: Text(item),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) async {
+                          SetData('weather_provider', value!);
+                          await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
+                        },
+                        isExpanded: true,
+                        dropdownColor: darken(data.current.backcolor, 0.1),
+                        elevation: 0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SliverPadding(padding: EdgeInsets.only(bottom: 30))
         ],
       ),
     ),
@@ -175,7 +334,7 @@ Widget TabletLayout(data, updateLocation, context) {
       child: Padding(
         padding: EdgeInsets.only(left: 20, right: 10, bottom: 10, top: toppad + 10),
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -258,7 +417,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                                         ),
                                                       ),
                                                       comfortatext(day.text, 22, data.settings, color: WHITE),
-                                                      Spacer(),
+                                                      const Spacer(),
                                                       Padding(
                                                         padding: const EdgeInsets.only(right: 6),
                                                         child: Container(
@@ -382,7 +541,7 @@ Widget TabletLayout(data, updateLocation, context) {
                   child: Column(
                     children: [
                       CustomScrollView(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                             slivers: [
                               NewTimes(data, false),
@@ -392,7 +551,7 @@ Widget TabletLayout(data, updateLocation, context) {
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Container(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(color: WHITE, width: 1.2)

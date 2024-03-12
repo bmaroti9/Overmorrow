@@ -52,7 +52,8 @@ class WeatherPage extends StatelessWidget {
     if (size.width > 950) {
       return TabletLayout(data, updateLocation, context);
     }
-    return PhoneLayout(data, updateLocation, context);
+    //return PhoneLayout(data, updateLocation, context);
+    return SampleRefreshIndicator(data: data, updateLocation: updateLocation,);
 
   }
 }
@@ -88,14 +89,14 @@ Widget buildCurrent(var data, double height, double bottom) => Column(
       padding: const EdgeInsets.only(top: 0.0, left: 30),
       child: Align(
         alignment: Alignment.topLeft,
-        child: comfortatext("${data.current.temp}°", 85, data.settings)
+        child: comfortatext("${data.current.temp}°", 70, data.settings)
       ),
     ),
     Padding(
       padding: const EdgeInsets.only(left: 30),
       child: Align(
           alignment: Alignment.topLeft,
-          child: comfortatext(data.current.text, 45, data.settings),
+          child: comfortatext(data.current.text, 40, data.settings),
       ),
     ),
 
@@ -105,9 +106,9 @@ Widget buildCurrent(var data, double height, double bottom) => Column(
       child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             if(constraints.maxWidth > 400.0) {
-              return Circles(400, data, bottom);
+              return Circles(400, data, bottom, WHITE);
             } else {
-              return Circles(constraints.maxWidth, data, bottom);
+              return Circles(constraints.maxWidth * 0.93, data, bottom, WHITE);
             }
           }
       ),
@@ -116,7 +117,7 @@ Widget buildCurrent(var data, double height, double bottom) => Column(
   ],
 );
 
-Widget Circles(double width, var data, double bottom) {
+Widget Circles(double width, var data, double bottom, color) {
   return Center(
     child: SizedBox(
       width: width,
@@ -126,7 +127,7 @@ Widget Circles(double width, var data, double bottom) {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   DescriptionCircle(
-                    color: data.current.contentColor[1],
+                    color: color,
                     text: '${data.current.feels_like}°',
                     undercaption: translation('Feels like', data.settings[0]),
                     extra: '',
@@ -135,7 +136,7 @@ Widget Circles(double width, var data, double bottom) {
                     bottom: bottom,
                   ),
                   DescriptionCircle(
-                    color: data.current.contentColor[1],
+                    color: color,
                     text: '${data.current.humidity}',
                     undercaption: translation('Humidity', data.settings[0]),
                     extra: '%',
@@ -144,7 +145,7 @@ Widget Circles(double width, var data, double bottom) {
                     bottom: bottom,
                   ),
                   DescriptionCircle(
-                    color: data.current.contentColor[1],
+                    color: color,
                     text: '${data.current.precip}',
                     undercaption: translation('precip.', data.settings[0]),
                     extra: data.settings[2],
@@ -153,7 +154,7 @@ Widget Circles(double width, var data, double bottom) {
                     bottom: bottom,
                   ),
                   DescriptionCircle(
-                    color: data.current.contentColor[1],
+                    color: color,
                     text: '${data.current.wind}',
                     undercaption: translation('Wind', data.settings[0]),
                     extra: data.settings[3],
