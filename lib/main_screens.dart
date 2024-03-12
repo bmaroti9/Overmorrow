@@ -50,8 +50,6 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
   @override
   Widget build(BuildContext context) {
 
-    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-    Size size = view.physicalSize / view.devicePixelRatio;
     
     //Color color = const Color(0xfff0c6b3);
     //Color color = const Color(0xff7C88BA);
@@ -59,8 +57,6 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
     //Color color = const Color(0xffb3c8c7);
     Color color = const Color(0xff90ABC0);
     //Color color = BLACK;
-
-    List<double> x = [20, 40, 30, 20, 45, 90, 80, 40, 30, 30, 10, 10, 10, 10, 10];
 
     return Scaffold(
       backgroundColor: color,
