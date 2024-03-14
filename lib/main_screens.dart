@@ -54,8 +54,8 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
     //Color color = const Color(0xfff0c6b3);
     //Color color = const Color(0xff7C88BA);
     //Color color = const Color(0xff5791BB);
-    //Color color = const Color(0xffb3c8c7);
-    Color color = const Color(0xff90ABC0);
+    Color color = const Color(0xff41687c);
+    //Color color = const Color(0xff90ABC0);
     //Color color = BLACK;
 
     return Scaffold(
@@ -109,18 +109,18 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                   child: LayoutBuilder(
                       builder: (BuildContext context, BoxConstraints constraints) {
                         if(constraints.maxWidth > 400.0) {
-                          return Circles(400, data, 0.3, WHITE);
+                          return Circles(400, data, 0.5, data.current.backcolor);
                         } else {
-                          return Circles(constraints.maxWidth * 0.95, data, 1, WHITE);
+                          return Circles(constraints.maxWidth * 0.95, data, 0.5, data.current.backcolor);
                         }
                       }
                   ),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 18, right: 18, top: 25),
+                padding: EdgeInsets.only(left: 18, right: 18, top: 15),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(17),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -131,12 +131,12 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                             child: Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.only(top: 10, bottom: 13),
                                   child: comfortatext('open-meteo', 13, data.settings, weight: FontWeight.w500),
                                 ),
                                 Padding(
                                     padding: EdgeInsets.only(bottom: 7),
-                                  child: comfortatext('-10°', 20, data.settings),
+                                  child: comfortatext('-10°', 24, data.settings),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(bottom: 10),
@@ -152,12 +152,12 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                             child: Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.only(top: 10, bottom: 13),
                                   child: comfortatext('weatherapi', 13, data.settings, weight: FontWeight.w500),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(bottom: 7),
-                                  child: comfortatext('-6°', 20, data.settings),
+                                  child: comfortatext('-6°', 24, data.settings),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(bottom: 10),
@@ -173,12 +173,12 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                             child: Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.only(top: 10, bottom: 13),
                                   child: comfortatext('visual-crossing', 13, data.settings, weight: FontWeight.w500),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(bottom: 7),
-                                  child: comfortatext('-8°', 20, data.settings),
+                                  child: comfortatext('-8°', 24, data.settings),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(bottom: 10),
@@ -202,7 +202,7 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                 color: data.current.backcolor, weight: FontWeight.w400),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 17, right: 17, top: 28),
+                padding: const EdgeInsets.only(left: 17, right: 17, top: 25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -210,9 +210,10 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                       padding: const EdgeInsets.all(2.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: data.days[0].mm_precip > 0.1 ? darken(data.current.backcolor, 0.1) : color,
+                          borderRadius: BorderRadius.circular(17),
+                          color: data.days[0].mm_precip > 0.1 ? darken(color, 0.1) : color,
                         ),
+                        padding: EdgeInsets.only(top: 10),
                         child: SizedBox(
                           child: Column(
                             children: [
@@ -230,7 +231,7 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                                   comfortatext(data.days[0].text, 20, data.settings, color: WHITE),
                                   Spacer(),
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 6),
+                                    padding: const EdgeInsets.only(right: 8),
                                     child: Container(
                                         padding: const EdgeInsets.only(top:7,bottom: 7, left: 5, right: 5),
                                         decoration: BoxDecoration(
@@ -238,7 +239,7 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                                             color: WHITE,
                                             borderRadius: BorderRadius.circular(10)
                                         ),
-                                        child: comfortatext(data.days[0].minmaxtemp, 17, data.settings, color: data.current.backcolor)
+                                        child: comfortatext(data.days[0].minmaxtemp, 15, data.settings, color: data.current.backcolor)
                                     ),
                                   )
                                 ],
@@ -259,7 +260,7 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                         padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
                         decoration: BoxDecoration(
                             border: Border.all(width: 1.2, color: WHITE),
-                            borderRadius: BorderRadius.circular(20)
+                            borderRadius: BorderRadius.circular(17)
                         ),
                         child:  LayoutBuilder(
                             builder: (BuildContext context, BoxConstraints constraints) {
@@ -277,10 +278,10 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                                       child: Row(
                                         children: [
                                           const Icon(Icons.water_drop_outlined,
-                                            color: WHITE,),
+                                            color: WHITE, size: 20,),
                                           const Padding(
                                               padding: EdgeInsets.only(right: 10)),
-                                          comfortatext('${data.days[0].precip_prob}%', 20, data.settings),
+                                          comfortatext('${data.days[0].precip_prob}%', 18, data.settings),
                                         ],
                                       ),
                                     ),
@@ -290,11 +291,11 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                                       child: Row(
                                         children: [
                                           const Icon(
-                                            Icons.water_drop, color: WHITE,),
+                                            Icons.water_drop, color: WHITE, size: 20,),
                                           const Padding(
                                               padding: EdgeInsets.only(right: 10)),
                                           comfortatext(data.days[0].total_precip.toString() +
-                                              data.settings[2], 20, data.settings),
+                                              data.settings[2], 18, data.settings),
                                         ],
                                       ),
                                     ),
@@ -304,11 +305,11 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                                       child: Row(
                                         children: [
                                           const Icon(
-                                            CupertinoIcons.wind, color: WHITE,),
+                                            CupertinoIcons.wind, color: WHITE, size: 20,),
                                           const Padding(
                                               padding: EdgeInsets.only(right: 10)),
                                           comfortatext('${data.days[0].windspeed} ${data
-                                              .settings[3]}', 20, data.settings),
+                                              .settings[3]}', 18, data.settings),
                                         ],
                                       ),
                                     ),
@@ -318,10 +319,10 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                                       child: Row(
                                         children: [
                                           const Icon(CupertinoIcons.sun_min,
-                                            color: WHITE,),
+                                            color: WHITE, size: 20,),
                                           const Padding(
                                               padding: EdgeInsets.only(right: 10)),
-                                          comfortatext('${data.days[0].uv} UV', 20, data.settings),
+                                          comfortatext('${data.days[0].uv} UV', 18, data.settings),
                                         ],
                                       ),
                                     ),

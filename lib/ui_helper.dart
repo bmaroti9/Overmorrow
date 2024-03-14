@@ -233,7 +233,7 @@ Widget RainWidget(settings, day) {
             ),
             SizedBox(
               height: 165,
-              width: 65,
+              width: 55,
               child: ListView.builder(
                   reverse: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -243,9 +243,10 @@ Widget RainWidget(settings, day) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             comfortatext((index * 0.2).toStringAsFixed(1), 17, settings),
-                            comfortatext('in', 14, settings),
+                            comfortatext('in', 12, settings),
                           ],
                         ),
                       );
@@ -254,9 +255,10 @@ Widget RainWidget(settings, day) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             comfortatext((index * 5).toString(), 17, settings),
-                            comfortatext('mm', 14, settings),
+                            comfortatext('mm', 12, settings),
                           ],
                         ),
                       );
