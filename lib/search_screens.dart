@@ -39,27 +39,29 @@ Widget searchBar(Color color, List<String> recommend,
       hint: translation('Search...', settings[0]),
       title: Container(
         padding: const EdgeInsets.only(left: 10, top: 3),
-        child: comfortatext(place, 28, settings)
+        child: comfortatext(place, 28, settings, )
       ),
       hintStyle: GoogleFonts.comfortaa(
         color: WHITE,
-        fontSize: 20 * getFontSize(settings[7]),
+        fontSize: 18 * getFontSize(settings[7]),
         fontWeight: FontWeight.w100,
       ),
 
       queryStyle: GoogleFonts.comfortaa(
         color: WHITE,
-        fontSize: 25 * getFontSize(settings[7]),
+        fontSize: 22 * getFontSize(settings[7]),
         fontWeight: FontWeight.w100,
       ),
 
-      borderRadius: BorderRadius.circular(27),
+      margins: EdgeInsets.only(left: 10, right: 10, top: MediaQuery.of(context).padding.top + 15),
+
+      borderRadius: BorderRadius.circular(25),
       backgroundColor: color,
-      border: const BorderSide(width: 1.2, color: WHITE),
-      accentColor: WHITE,
+      //border: const BorderSide(width: 1.2, color: WHITE),
+      accentColor: const Color(0xff7a9dbc),
 
       elevation: 0,
-      height: 62,
+      height: 60,
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
       transitionDuration: const Duration(milliseconds: 800),
       transitionCurve: Curves.easeInOut,
@@ -81,9 +83,9 @@ Widget searchBar(Color color, List<String> recommend,
       },
 
       insets: EdgeInsets.zero,
-      automaticallyImplyDrawerHamburger: false,
+      automaticallyImplyDrawerHamburger: true,
       padding: const EdgeInsets.only(left: 13),
-      iconColor: WHITE,
+      iconColor: const Color(0xff7a9dbc),
       backdropColor: darken(color, 0.2),
       closeOnBackdropTap: true,
       transition: CircularFloatingSearchBarTransition(),
@@ -95,7 +97,7 @@ Widget searchBar(Color color, List<String> recommend,
           child: Padding(
             padding: const EdgeInsets.only(right: 12),
             child: CircularButton(
-              icon: const Icon(Icons.arrow_back_outlined, color: WHITE,),
+              icon: const Icon(Icons.arrow_back_outlined, color: const Color(0xff7a9dbc),),
               onPressed: () {
                 controller.close();
               },
@@ -106,7 +108,7 @@ Widget searchBar(Color color, List<String> recommend,
           showIfOpened: false,
           showIfClosed: true,
           child: IconButton(
-            icon: const Icon(Icons.menu, color: WHITE, size: 28,),
+            icon: const Icon(Icons.menu, color: const Color(0xff7a9dbc), size: 28,),
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
@@ -386,14 +388,13 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
           style: ElevatedButton.styleFrom(
               elevation: 0,
               padding: const EdgeInsets.all(10),
-              backgroundColor: WHITE,
-              side: const BorderSide(width: 1.2, color: WHITE),
+              backgroundColor: const Color(0xff7a9dbc),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)
               )
           ),
           onPressed: () async {},
-          child: Icon(Icons.place_outlined, color: color,),
+          child: Icon(Icons.place_outlined, color: WHITE,),
         ),
       ),
     );
@@ -416,7 +417,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
           onPressed: () async {
             updateLocation('40.7128, 74.0060', 'CurrentLocation');
           },                   //^ this is new york for backup
-          child: const Icon(Icons.place_outlined, color: WHITE,),
+          child: const Icon(Icons.place_outlined, color: const Color(0xff7a9dbc),),
         ),
       ),
     );

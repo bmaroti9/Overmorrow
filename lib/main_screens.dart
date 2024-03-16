@@ -49,12 +49,11 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
 
   @override
   Widget build(BuildContext context) {
-
     
     //Color color = const Color(0xfff0c6b3);
     //Color color = const Color(0xff7C88BA);
     //Color color = const Color(0xff5791BB);
-    Color color = const Color(0xff41687c);
+    Color color = const Color(0xff526181);
     //Color color = const Color(0xff90ABC0);
     //Color color = BLACK;
 
@@ -71,35 +70,34 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
             headerData: HeaderData(
               //backgroundColor: WHITE,
               blurContent: false,
-              headerHeight: 430,
+              headerHeight: 500,
               header: Image.asset(
                 'assets/backdrops/${data!.current.backdrop}',
                 fit: BoxFit.cover,
               ),
-              overlay: Padding(
-                padding: EdgeInsets.only(left: 25, top: MediaQuery.of(context).padding.top + 20, right: 25, bottom: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+              overlay: Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 25, top: MediaQuery.of(context).padding.top + 20, right: 25, bottom: 30),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        comfortatext(data.place, 27, data.settings),
                         const Spacer(),
-                        const Icon(Icons.search, color: WHITE, size: 30,)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0, bottom: 5),
+                          child: comfortatext("${data.current.temp}°", 60, data.settings, color: color),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0),
+                          child: comfortatext(data.current.text, 32, data.settings),
+                        )
                       ],
                     ),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 0, bottom: 5),
-                      child: comfortatext("${data.current.temp}°", 60, data.settings, color: color),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 0),
-                      child: comfortatext(data.current.text, 32, data.settings),
-                    )
-                  ],
-                ),
+                  ),
+                  MySearchParent(updateLocation: updateLocation,
+                    color: color, place: data.place,
+                    controller: controller, settings: data.settings, real_loc: data.real_loc,),
+                ],
               )
             ),
             children: [
@@ -118,91 +116,11 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 18, right: 18, top: 15),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(17),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                          child: Container(
-                            color: lighten(color, 0.04),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10, bottom: 13),
-                                  child: comfortatext('open-meteo', 13, data.settings, weight: FontWeight.w500),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only(bottom: 7),
-                                  child: comfortatext('-10°', 24, data.settings),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 10),
-                                  child: comfortatext('Cloudy night', 13, data.settings),
-                                ),
-                              ],
-                            ),
-                          )
-                      ),
-                      Expanded(
-                          child: Container(
-                            color: darken(color, 0.12),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10, bottom: 13),
-                                  child: comfortatext('weatherapi', 13, data.settings, weight: FontWeight.w500),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 7),
-                                  child: comfortatext('-6°', 24, data.settings),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 10),
-                                  child: comfortatext('Clear night', 13, data.settings),
-                                ),
-                              ],
-                            ),
-                          )
-                      ),
-                      Expanded(
-                          child: Container(
-                            color: darken(color),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10, bottom: 13),
-                                  child: comfortatext('visual-crossing', 13, data.settings, weight: FontWeight.w500),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 7),
-                                  child: comfortatext('-8°', 24, data.settings),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 10),
-                                  child: comfortatext('Cloudy night', 13, data.settings),
-                                ),
-                              ],
-                            ),
-                          )
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                  padding: EdgeInsets.only(left: 20, top: 30),
+                  padding: EdgeInsets.only(left: 20, top: 20),
                 child: comfortatext('today', 18, data.settings),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30, top: 15),
-                child: comfortatext("Partly cloudy throughout the day and cloudy in the night.", 17, data.settings,
-                color: data.current.backcolor, weight: FontWeight.w400),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 17, right: 17, top: 25),
+                padding: const EdgeInsets.only(left: 17, right: 17, top: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
