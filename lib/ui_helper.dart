@@ -417,13 +417,15 @@ class MySearchParent extends StatefulWidget{
   final controller;
   final settings;
   final real_loc;
+  final secondColor;
 
   const MySearchParent({super.key, required this.updateLocation,
-    required this.color, required this.place, required this.controller, required this.settings, required this.real_loc});
+    required this.color, required this.place, required this.controller, required this.settings,
+    required this.real_loc, required this.secondColor});
 
   @override
   _MySearchParentState createState() => _MySearchParentState(color: color,
-  place: place, controller: controller, settings: settings, real_loc: real_loc);
+  place: place, controller: controller, settings: settings, real_loc: real_loc, secondColor: secondColor);
 }
 
 class _MySearchParentState extends State<MySearchParent> {
@@ -434,9 +436,10 @@ class _MySearchParentState extends State<MySearchParent> {
   final controller;
   final settings;
   final real_loc;
+  final secondColor;
 
   _MySearchParentState({required this.color, required this.place,
-  required this.controller, required this.settings, required this.real_loc});
+  required this.controller, required this.settings, required this.real_loc, required this.secondColor});
 
   Future<SharedPreferences> getPrefs() async {
     final prefs = await SharedPreferences.getInstance();
@@ -478,7 +481,8 @@ class _MySearchParentState extends State<MySearchParent> {
         //return buildWholeThing(snapshot.data);
         return MySearchWidget(updateLocation: widget.updateLocation,
             color: color, favorites: favorites, prefs: snapshot.data,
-        place: place, controller: controller, settings: settings, real_loc: real_loc,);
+        place: place, controller: controller, settings: settings, real_loc: real_loc,
+        secondColor: secondColor,);
       },
     );
   }
@@ -493,15 +497,17 @@ class MySearchWidget extends StatefulWidget{
   final controller;
   final settings;
   final real_loc;
+  final secondColor;
 
   const MySearchWidget({super.key, required this.color, required this.updateLocation,
   required this.favorites, required this.prefs, required this.place,
-  required this.controller, required this.settings, required this.real_loc});
+  required this.controller, required this.settings, required this.real_loc, required this.secondColor});
 
   @override
   _MySearchWidgetState createState() => _MySearchWidgetState(color: color,
   updateLocation: updateLocation, favorites: favorites,
-      prefs: prefs, place: place, controller: controller, settins: settings, real_loc: real_loc);
+      prefs: prefs, place: place, controller: controller, settins: settings, real_loc: real_loc,
+  secondColor: secondColor);
 }
 
 class _MySearchWidgetState extends State<MySearchWidget> {
@@ -513,6 +519,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   final prefs;
   final settins;
   final real_loc;
+  final secondColor;
 
   List<String> favorites;
 
@@ -521,7 +528,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
 
   _MySearchWidgetState({required this.color, required this.updateLocation,
         required this.favorites, required this.prefs, required this.place,
-  required this.controller, required this.settins, required this.real_loc});
+  required this.controller, required this.settins, required this.real_loc, required this.secondColor});
 
   List<String> recommend = [];
 
@@ -566,7 +573,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   Widget buildFloatingSearchBar(Color color) {
     return searchBar(color, recommend, updateLocation,
         controller, updateIsEditing, isEditing, updateFav, favorites,
-        updateRec, place, context, prog, updateProg, settins, real_loc);
+        updateRec, place, context, prog, updateProg, settins, real_loc, secondColor);
 
   }
 }

@@ -33,7 +33,7 @@ Widget searchBar(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
     List<String> favorites, Function updateRec, String place, var context,
-    bool prog, Function updateProg, List<String> settings, String real_loc) {
+    bool prog, Function updateProg, List<String> settings, String real_loc, Color secondColor) {
 
   return FloatingSearchBar(
       hint: translation('Search...', settings[0]),
@@ -58,7 +58,7 @@ Widget searchBar(Color color, List<String> recommend,
       borderRadius: BorderRadius.circular(25),
       backgroundColor: color,
       //border: const BorderSide(width: 1.2, color: WHITE),
-      accentColor: const Color(0xff7a9dbc),
+      accentColor: secondColor,
 
       elevation: 0,
       height: 60,
@@ -85,7 +85,7 @@ Widget searchBar(Color color, List<String> recommend,
       insets: EdgeInsets.zero,
       automaticallyImplyDrawerHamburger: true,
       padding: const EdgeInsets.only(left: 13),
-      iconColor: const Color(0xff7a9dbc),
+      iconColor: secondColor,
       backdropColor: darken(color, 0.2),
       closeOnBackdropTap: true,
       transition: CircularFloatingSearchBarTransition(),
@@ -97,7 +97,7 @@ Widget searchBar(Color color, List<String> recommend,
           child: Padding(
             padding: const EdgeInsets.only(right: 12),
             child: CircularButton(
-              icon: const Icon(Icons.arrow_back_outlined, color: const Color(0xff7a9dbc),),
+              icon: Icon(Icons.arrow_back_outlined, color: secondColor),
               onPressed: () {
                 controller.close();
               },
@@ -108,7 +108,7 @@ Widget searchBar(Color color, List<String> recommend,
           showIfOpened: false,
           showIfClosed: true,
           child: IconButton(
-            icon: const Icon(Icons.menu, color: const Color(0xff7a9dbc), size: 28,),
+            icon: Icon(Icons.menu, color: secondColor, size: 28,),
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
@@ -122,7 +122,7 @@ Widget searchBar(Color color, List<String> recommend,
             padding: const EdgeInsets.only(top: 3, bottom: 3),
             child: Visibility(
               visible: !Platform.isLinux,
-              child: LocationButton(updateProg, updateLocation, color, real_loc)
+              child: LocationButton(updateProg, updateLocation, color, real_loc, secondColor)
             ),
           ),
         ),
@@ -378,7 +378,8 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
   );
 }
 
-Widget LocationButton(Function updateProg, Function updateLocation, Color color, String real_loc) {
+Widget LocationButton(Function updateProg, Function updateLocation, Color color, String real_loc,
+    Color secondColor) {
   if (real_loc == 'CurrentLocation') {
     return Padding(
       padding: const EdgeInsets.only(right: 6, top: 3, bottom: 3),
@@ -388,7 +389,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
           style: ElevatedButton.styleFrom(
               elevation: 0,
               padding: const EdgeInsets.all(10),
-              backgroundColor: const Color(0xff7a9dbc),
+              backgroundColor: secondColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)
               )
@@ -417,7 +418,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
           onPressed: () async {
             updateLocation('40.7128, 74.0060', 'CurrentLocation');
           },                   //^ this is new york for backup
-          child: const Icon(Icons.place_outlined, color: const Color(0xff7a9dbc),),
+          child: Icon(Icons.place_outlined, color: secondColor,),
         ),
       ),
     );
@@ -437,7 +438,7 @@ class dumbySearch extends StatelessWidget {
     required this.updateLocation, required this.icon, required this.place,
   required this.settings, required this.provider, required this.latlng});
 
-  final Color color = instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor;
+  final Color color = instantBackColor == WHITE ? const Color(0xff201F2D) : instantBackColor;
 
   final FloatingSearchBarController controller = FloatingSearchBarController();
 
@@ -549,7 +550,7 @@ class dumbySearch extends StatelessWidget {
                   ),
                   MySearchParent(updateLocation: updateLocation,
                     color: color, place: place, controller: controller, settings: settings,
-                  real_loc: place,),
+                  real_loc: place, secondColor: WHITE,),
                 ],
               ),
             ),

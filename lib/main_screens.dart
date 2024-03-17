@@ -78,14 +78,15 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
               overlay: Stack(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 25, top: MediaQuery.of(context).padding.top + 20, right: 25, bottom: 30),
+                    padding: EdgeInsets.only(left: 25,
+                        top: MediaQuery.of(context).padding.top + 20, right: 25, bottom: 30),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Spacer(),
                         Padding(
                           padding: const EdgeInsets.only(left: 0, bottom: 5),
-                          child: comfortatext("${data.current.temp}°", 60, data.settings, color: color),
+                          child: comfortatext("${data.current.temp}°", 65, data.settings, color: color),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 0),
@@ -96,7 +97,8 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                   ),
                   MySearchParent(updateLocation: updateLocation,
                     color: color, place: data.place,
-                    controller: controller, settings: data.settings, real_loc: data.real_loc,),
+                    controller: controller, settings: data.settings, real_loc: data.real_loc,
+                  secondColor: data.current.backcolor,),
                 ],
               )
             ),
@@ -254,7 +256,7 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                   ],
                 ),
               ),
-              Padding(padding: EdgeInsets.only(bottom: 50))
+              Padding(padding: EdgeInsets.only(bottom: 250))
             ],
           ),
           if (isLoading) _buildLoadingWidget()
@@ -352,7 +354,8 @@ Widget PhoneLayout(data, updateLocation, context) {
                     ),),),
                     MySearchParent(updateLocation: updateLocation,
                       color: data.current.backcolor, place: data.place,
-                      controller: controller, settings: data.settings, real_loc: data.real_loc,),
+                      controller: controller, settings: data.settings, real_loc: data.real_loc,
+                    secondColor: WHITE,),
                   ],
                 ),
               ),
@@ -476,7 +479,7 @@ Widget TabletLayout(data, updateLocation, context) {
                               MySearchParent(updateLocation: updateLocation,
                                   color: data.current.backcolor, place: data.place,
                                   controller: controller, settings: data.settings,
-                                  real_loc: data.real_loc),
+                                  real_loc: data.real_loc, secondColor: WHITE,),
                             ],
                           ),
                         ),
