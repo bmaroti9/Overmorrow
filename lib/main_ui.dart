@@ -52,8 +52,13 @@ class WeatherPage extends StatelessWidget {
     if (size.width > 950) {
       return TabletLayout(data, updateLocation, context);
     }
+
+    //IMPORTANT: i have been testing a new look for Overmorrow
+    // If you wish to test the old one, uncomment first return
+    // note: some things might be broken in the old one
+
     //return PhoneLayout(data, updateLocation, context);
-    return SampleRefreshIndicator(data: data, updateLocation: updateLocation,);
+    return NewMain(data: data, updateLocation: updateLocation,);
 
   }
 }

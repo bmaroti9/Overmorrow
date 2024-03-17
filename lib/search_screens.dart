@@ -39,7 +39,7 @@ Widget searchBar(Color color, List<String> recommend,
       hint: translation('Search...', settings[0]),
       title: Container(
         padding: const EdgeInsets.only(left: 10, top: 3),
-        child: comfortatext(place, 28, settings, )
+        child: comfortatext(place, 28 * getFontSize(settings[7]), settings, )
       ),
       hintStyle: GoogleFonts.comfortaa(
         color: WHITE,
@@ -55,7 +55,7 @@ Widget searchBar(Color color, List<String> recommend,
 
       margins: EdgeInsets.only(left: 10, right: 10, top: MediaQuery.of(context).padding.top + 15),
 
-      borderRadius: BorderRadius.circular(25),
+      borderRadius: BorderRadius.circular(23),
       backgroundColor: color,
       //border: const BorderSide(width: 1.2, color: WHITE),
       accentColor: secondColor,
@@ -213,7 +213,8 @@ Widget defaultSearchScreen(Color color,
         padding: const EdgeInsets.only(top:5, bottom: 10, right: 20, left: 20),
         child: Row(
           children: [
-            comfortatext(translation("Favorites", settings[0]), 30, settings, color: WHITE),
+            comfortatext(translation("Favorites", settings[0]), 26 * getFontSize(settings[7]),
+                settings, color: WHITE),
             const Spacer(),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
@@ -222,12 +223,12 @@ Widget defaultSearchScreen(Color color,
               },
               child: SizedBox(
                 key: ValueKey<bool> (isEditing),
-                height: 48,
-                width: 48,
+                height: 45,
+                width: 45,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       elevation: 0,
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(6),
                       backgroundColor: WHITE,
                       side: const BorderSide(width: 1.2, color: WHITE),
                       shape: RoundedRectangleBorder(
@@ -255,7 +256,7 @@ Widget defaultSearchScreen(Color color,
             decoration: BoxDecoration(
               color: rectColor,
               //border: Border.all(width: 1.2, color: WHITE),
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: ListView.builder(
               shrinkWrap: true,
@@ -271,7 +272,7 @@ Widget defaultSearchScreen(Color color,
                     controller.close();
                   },
                   child: Container(
-                    padding: const EdgeInsets.only(left: 20, bottom: 2, right: 10, top: 2),
+                    padding: const EdgeInsets.only(left: 20, bottom: 3, right: 10, top: 3),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -280,9 +281,9 @@ Widget defaultSearchScreen(Color color,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              comfortatext(split["name"], 26, settings, color: textColor),
-                              comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 17, settings, color: textColor)
-                              //comfortatext(split[0], 23)
+                              comfortatext(split["name"], 25 * getFontSize(settings[7]), settings, color: textColor),
+                              comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 18
+                                  * getFontSize(settings[7]), settings, color: textColor)
                             ],
                           ),
                         ),
@@ -326,7 +327,7 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
     padding: const EdgeInsets.only(top:10, bottom: 10),
     decoration: BoxDecoration(
       color: color,
-      borderRadius: BorderRadius.circular(25),
+      borderRadius: BorderRadius.circular(20),
     ),
     child: ListView.builder(
       shrinkWrap: true,
@@ -350,8 +351,8 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      comfortatext(split["name"], 26, settings),
-                      comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 17, settings)
+                      comfortatext(split["name"], 25 * getFontSize(settings[7]), settings),
+                      comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 18 * getFontSize(settings[7]), settings)
                       //comfortatext(split[0], 23)
                     ],
                   ),

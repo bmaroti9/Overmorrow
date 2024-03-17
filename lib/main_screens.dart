@@ -13,18 +13,18 @@ import 'package:stretchy_header/stretchy_header.dart';
 import 'main_ui.dart';
 import 'ui_helper.dart';
 
-class SampleRefreshIndicator extends StatefulWidget {
+class NewMain extends StatefulWidget {
   final data;
   final updateLocation;
 
-  const SampleRefreshIndicator({required this.data, required this.updateLocation});
+  const NewMain({required this.data, required this.updateLocation});
 
   @override
-  _SampleRefreshIndicatorState createState() => _SampleRefreshIndicatorState(data: data,
+  _NewMainState createState() => _NewMainState(data: data,
   updateLocation: updateLocation);
 }
 
-class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
+class _NewMainState extends State<NewMain> {
   bool isLoading = false;
   bool numbers = true;
 
@@ -33,7 +33,7 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
   final data;
   final updateLocation;
 
-  _SampleRefreshIndicatorState({required this.data, required this.updateLocation});
+  _NewMainState({required this.data, required this.updateLocation});
 
   void _loadFakeData() async {
     setState(() {
@@ -57,6 +57,11 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
     //Color color = const Color(0xff90ABC0);
     //Color color = BLACK;
 
+
+    //get the size of the device
+    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+    Size size = view.physicalSize / view.devicePixelRatio;
+
     return Scaffold(
       backgroundColor: color,
       //backgroundColor: WHITE,
@@ -70,7 +75,7 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
             headerData: HeaderData(
               //backgroundColor: WHITE,
               blurContent: false,
-              headerHeight: 500,
+              headerHeight: max(size.height * 0.6, 400), //we don't want it to be smaller than 400
               header: Image.asset(
                 'assets/backdrops/${data!.current.backdrop}',
                 fit: BoxFit.cover,
@@ -79,7 +84,8 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 25,
-                        top: MediaQuery.of(context).padding.top + 20, right: 25, bottom: 30),
+                        top: MediaQuery.of(context).padding.top + 20, right: 25, bottom: 30
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -130,7 +136,7 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                       padding: const EdgeInsets.all(2.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(17),
+                          borderRadius: BorderRadius.circular(20),
                           color: data.days[0].mm_precip > 0.1 ? darken(color, 0.1) : color,
                         ),
                         padding: EdgeInsets.only(top: 10),
@@ -151,15 +157,16 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                                   comfortatext(data.days[0].text, 20, data.settings, color: WHITE),
                                   Spacer(),
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 8),
+                                    padding: const EdgeInsets.only(right: 8, top: 3),
                                     child: Container(
-                                        padding: const EdgeInsets.only(top:7,bottom: 7, left: 5, right: 5),
+                                        padding: const EdgeInsets.only(top:9,bottom: 7, left: 9, right: 7),
                                         decoration: BoxDecoration(
                                           //border: Border.all(color: Colors.blueAccent)
-                                            color: WHITE,
-                                            borderRadius: BorderRadius.circular(10)
+                                            color: data.current.backcolor,
+                                            borderRadius: BorderRadius.circular(13)
                                         ),
-                                        child: comfortatext(data.days[0].minmaxtemp, 15, data.settings, color: data.current.backcolor)
+                                        child: comfortatext(data.days[0].minmaxtemp, 17,
+                                            data.settings, color: color, weight: FontWeight.w500)
                                     ),
                                   )
                                 ],
@@ -180,7 +187,7 @@ class _SampleRefreshIndicatorState extends State<SampleRefreshIndicator> {
                         padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
                         decoration: BoxDecoration(
                             border: Border.all(width: 1.2, color: WHITE),
-                            borderRadius: BorderRadius.circular(17)
+                            borderRadius: BorderRadius.circular(20)
                         ),
                         child:  LayoutBuilder(
                             builder: (BuildContext context, BoxConstraints constraints) {
