@@ -26,7 +26,7 @@ import '../caching.dart';
 import 'decode_wapi.dart';
 
 class WeatherData {
-  final List<String> settings;
+  final Map<String, String> settings;
   final String place;
   final String provider;
   final String real_loc;
@@ -211,10 +211,10 @@ class WapiSunstatus {
   });
 
   static WapiSunstatus fromJson(item, settings) => WapiSunstatus(
-    sunrise: settings[6] == "24 hour"
+    sunrise: settings["Time mode"] == "24 hour"
         ? convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"])
         : amPmTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"]),
-    sunset: settings[6] == "24 hour"
+    sunset: settings["Time mode"] == "24 hour"
         ? convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"])
         : amPmTime(item["forecast"]["forecastday"][0]["astro"]["sunset"]),
     absoluteSunriseSunset: "${convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"])}/"

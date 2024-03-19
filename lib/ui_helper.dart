@@ -51,7 +51,7 @@ double getFontSize(String set) {
 Widget comfortatext(String text, double size, settings,
     {Color color = WHITE, TextAlign align = TextAlign.left, weight = FontWeight.w300}) {
 
-  double x = getFontSize(settings[7]);
+  double x = getFontSize(settings["Font size"]);
   return Text(
   text,
   style: GoogleFonts.comfortaa(
@@ -185,7 +185,7 @@ Widget aqiDataPoints(String name, double value, Color color, var settings) {
                       style: TextStyle(
                         color: color
                       ),
-                      textScaleFactor: getFontSize(settings[7])
+                      textScaleFactor: getFontSize(settings["Font size"])
                   ),
                 )
               ],
@@ -239,7 +239,7 @@ Widget RainWidget(settings, day) {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: 3,
                   itemBuilder: (context, index) {
-                    if (settings[2] == 'in') {
+                    if (settings["Rain"] == 'in') {
                       return Padding(
                         padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
                         child: Row(
@@ -271,7 +271,7 @@ Widget RainWidget(settings, day) {
       Padding(
           padding: const EdgeInsets.only(left: 33, top: 0, right: 70, bottom: 15),
           child: Visibility(
-            visible: settings[6] == "24 hour",
+            visible: settings["Time mode"] == "24 hour",
             replacement: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -506,7 +506,7 @@ class MySearchWidget extends StatefulWidget{
   @override
   _MySearchWidgetState createState() => _MySearchWidgetState(color: color,
   updateLocation: updateLocation, favorites: favorites,
-      prefs: prefs, place: place, controller: controller, settins: settings, real_loc: real_loc,
+      prefs: prefs, place: place, controller: controller, settings: settings, real_loc: real_loc,
   secondColor: secondColor);
 }
 
@@ -517,7 +517,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   final place;
   final updateLocation;
   final prefs;
-  final settins;
+  final settings;
   final real_loc;
   final secondColor;
 
@@ -528,7 +528,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
 
   _MySearchWidgetState({required this.color, required this.updateLocation,
         required this.favorites, required this.prefs, required this.place,
-  required this.controller, required this.settins, required this.real_loc, required this.secondColor});
+  required this.controller, required this.settings, required this.real_loc, required this.secondColor});
 
   List<String> recommend = [];
 
@@ -573,7 +573,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   Widget buildFloatingSearchBar(Color color) {
     return searchBar(color, recommend, updateLocation,
         controller, updateIsEditing, isEditing, updateFav, favorites,
-        updateRec, place, context, prog, updateProg, settins, real_loc, secondColor);
+        updateRec, place, context, prog, updateProg, settings, real_loc, secondColor);
 
   }
 }

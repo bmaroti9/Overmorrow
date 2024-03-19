@@ -151,7 +151,7 @@ Color accentColorCorrection(name, isday) {
 
 String getName(index, settings) {
   List<String> names = ['Today', 'Tomorrow', 'Overmorrow'];
-  return translation(names[index], settings[0]);
+  return translation(names[index], settings["Language"]);
 }
 
 String backdropCorrection(name, isday) {
@@ -178,7 +178,7 @@ String textCorrection(name, isday, {settings = 'English'}) {
       x =  'Cloudy Night';
     }
   }
-  String p = translation(x, settings[0]);
+  String p = translation(x, settings["Language"]);
   return p;
 }
 
@@ -222,14 +222,14 @@ class WapiCurrent {
     backdrop: backdropCorrection(
         item["current"]["condition"]["code"], item["current"]["is_day"]
     ),
-    temp: unit_coversion(item["current"]["temp_c"], settings[1]).round(),
-    feels_like: unit_coversion(item["current"]["feelslike_c"], settings[1]).round(),
+    temp: unit_coversion(item["current"]["temp_c"], settings["Temperature"]).round(),
+    feels_like: unit_coversion(item["current"]["feelslike_c"], settings["Temperature"]).round(),
 
-    contentColor: settings[5] == "high contrast"
+    contentColor: settings["Color mode"] == "high contrast"
         ? [BLACK,WHITE]
         :  contentColorCorrection(item["current"]["condition"]["code"], item["current"]["is_day"]),
 
-    backcolor: settings[5] == "high contrast"
+    backcolor: settings["Color mode"] == "high contrast"
         ? BLACK
         :  backroundColorCorrection(item["current"]["condition"]["code"], item["current"]["is_day"]),
 
@@ -239,8 +239,8 @@ class WapiCurrent {
 
     uv: item["current"]["uv"].round(),
     humidity: item["current"]["humidity"],
-    precip: double.parse(unit_coversion(item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"], settings[2]).toStringAsFixed(1)),
-    wind: unit_coversion(item["current"]["wind_kph"], settings[3]).round(),
+    precip: double.parse(unit_coversion(item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"], settings["Rain"]).toStringAsFixed(1)),
+    wind: unit_coversion(item["current"]["wind_kph"], settings["Wind"]).round(),
   );
 }
 
@@ -281,16 +281,16 @@ class WapiDay {
         item["day"]["condition"]["code"], 1
     ),
     name: getName(index, settings),
-    minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings[1]).round()}°'
-        '/${unit_coversion(item["day"]["mintemp_c"], settings[1]).round()}°',
+    minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings["Temperature"]).round()}°'
+        '/${unit_coversion(item["day"]["mintemp_c"], settings["Temperature"]).round()}°',
 
     hourly: buildWapiHour(item["hour"], settings, index, timenow, true),
     hourly_for_precip: buildWapiHour(item["hour"], settings, index, timenow, false),
 
     mm_precip: item["day"]["totalprecip_mm"] + item["day"]["totalsnow_cm"] / 10,
-    total_precip: double.parse(unit_coversion(item["day"]["totalprecip_mm"], settings[2]).toStringAsFixed(1)),
+    total_precip: double.parse(unit_coversion(item["day"]["totalprecip_mm"], settings["Rain"]).toStringAsFixed(1)),
     precip_prob: item["day"]["daily_chance_of_rain"],
-    windspeed: unit_coversion(item["day"]["maxwind_kph"], settings[3]).round(),
+    windspeed: unit_coversion(item["day"]["maxwind_kph"], settings["Wind"]).round(),
     uv: item["day"]["uv"].round(),
   );
 
@@ -335,9 +335,9 @@ class WapiHour {
     icon: iconCorrection(
         item["condition"]["code"], item["is_day"]
     ),
-    //temp:double.parse(unit_coversion(item["temp_c"], settings[1]).toStringAsFixed(1)),
-    temp: unit_coversion(item["temp_c"], settings[1]).round(),
-    time: getTime(item["time"], settings[6] == '12 hour'),
+    //temp:double.parse(unit_coversion(item["temp_c"], settings["Temperature"]).toStringAsFixed(1)),
+    temp: unit_coversion(item["temp_c"], settings["Temperature"]).round(),
+    time: getTime(item["time"], settings["Time mode"] == '12 hour'),
     precip: item["precip_mm"] + (item["snow_cm"] / 10),
   );
 }

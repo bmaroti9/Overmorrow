@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
 
     try {
 
-      List<String> settings = await getSettingsUsed();
+      Map<String, String> settings = await getSettingsUsed();
       String weather_provider = await getWeatherProvider();
       //print(weather_provider);
 
@@ -103,14 +103,14 @@ class _MyAppState extends State<MyApp> {
               position = (await Geolocator.getLastKnownPosition())!;
             } on Error {
               return [dumbySearch(errorMessage: translation(
-                  "Unable to locate device", settings[0]),
+                  "Unable to locate device", settings["Language"]!),
                 updateLocation: updateLocation,
                 icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
                 place: backupName,
                 settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
             }
           } on LocationServiceDisabledException {
-            return [dumbySearch(errorMessage: translation("location services are disabled.", settings[0]),
+            return [dumbySearch(errorMessage: translation("location services are disabled.", settings["Language"]!),
               updateLocation: updateLocation,
               icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
               place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
@@ -122,7 +122,7 @@ class _MyAppState extends State<MyApp> {
           print('True');
         }
         else {
-          return [dumbySearch(errorMessage: translation(loc_status, settings[0]),
+          return [dumbySearch(errorMessage: translation(loc_status, settings["Language"]!),
             updateLocation: updateLocation,
             icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
             place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
@@ -136,7 +136,7 @@ class _MyAppState extends State<MyApp> {
           backupName = split["name"];
         } else {
           return [dumbySearch(
-            errorMessage: '${translation('Place not found', settings[0])}: $backupName',
+            errorMessage: '${translation('Place not found', settings["Language"]!)}: $backupName',
             updateLocation: updateLocation,
             icon: const Icon(Icons.location_disabled, color: WHITE, size: 30,),
             place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
@@ -154,7 +154,7 @@ class _MyAppState extends State<MyApp> {
         weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weather_provider);
 
       } on TimeoutException {
-        return [dumbySearch(errorMessage: translation("Weak or no wifi connection", settings[0]),
+        return [dumbySearch(errorMessage: translation("Weak or no wifi connection", settings["Language"]!),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
@@ -164,7 +164,7 @@ class _MyAppState extends State<MyApp> {
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
       } on SocketException {
-        return [dumbySearch(errorMessage: translation("Not connected to the internet", settings[0]),
+        return [dumbySearch(errorMessage: translation("Not connected to the internet", settings["Language"]!),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
@@ -182,7 +182,7 @@ class _MyAppState extends State<MyApp> {
           updateLocation: updateLocation), weatherdata.current.backcolor];
 
     } catch (e, stacktrace) {
-      List<String> settings = await getSettingsUsed();
+      Map<String, String> settings = await getSettingsUsed();
       String weather_provider = await getWeatherProvider();
 
       print("ERRRRRRRRROR");

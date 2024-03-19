@@ -33,23 +33,23 @@ Widget searchBar(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
     List<String> favorites, Function updateRec, String place, var context,
-    bool prog, Function updateProg, List<String> settings, String real_loc, Color secondColor) {
+    bool prog, Function updateProg, Map<String, String> settings, String real_loc, Color secondColor) {
 
   return FloatingSearchBar(
-      hint: translation('Search...', settings[0]),
+      hint: translation('Search...', settings["Language"]!),
       title: Container(
-        padding: const EdgeInsets.only(left: 10, top: 3),
-        child: comfortatext(place, 28 * getFontSize(settings[7]), settings, )
+        padding: const EdgeInsets.only(left: 5, top: 3),
+        child: comfortatext(place, 28 * getFontSize(settings["Font size"]!), settings, )
       ),
       hintStyle: GoogleFonts.comfortaa(
         color: WHITE,
-        fontSize: 18 * getFontSize(settings[7]),
+        fontSize: 18 * getFontSize(settings["Font size"]!),
         fontWeight: FontWeight.w100,
       ),
 
       queryStyle: GoogleFonts.comfortaa(
         color: WHITE,
-        fontSize: 22 * getFontSize(settings[7]),
+        fontSize: 22 * getFontSize(settings["Font size"]!),
         fontWeight: FontWeight.w100,
       ),
 
@@ -83,7 +83,7 @@ Widget searchBar(Color color, List<String> recommend,
       },
 
       insets: EdgeInsets.zero,
-      automaticallyImplyDrawerHamburger: true,
+      automaticallyImplyDrawerHamburger: false,
       padding: const EdgeInsets.only(left: 13),
       iconColor: secondColor,
       backdropColor: darken(color, 0.2),
@@ -108,7 +108,7 @@ Widget searchBar(Color color, List<String> recommend,
           showIfOpened: false,
           showIfClosed: true,
           child: IconButton(
-            icon: Icon(Icons.menu, color: secondColor, size: 28,),
+            icon: Icon(Icons.menu, color: secondColor, size: 26,),
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
@@ -160,7 +160,7 @@ Widget searchBar(Color color, List<String> recommend,
 Widget decideSearch(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, String entered, List<String> settings) {
+    List<String> favorites, String entered, Map<String, String> settings) {
 
   if (entered == '') {
     return defaultSearchScreen(color, updateLocation,
@@ -179,7 +179,7 @@ Widget decideSearch(Color color, List<String> recommend,
 Widget defaultSearchScreen(Color color,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, List<String> settings) {
+    List<String> favorites, Map<String, String> settings) {
 
   List<Icon> Myicon = [
     const Icon(null),
@@ -213,7 +213,7 @@ Widget defaultSearchScreen(Color color,
         padding: const EdgeInsets.only(top:5, bottom: 10, right: 20, left: 20),
         child: Row(
           children: [
-            comfortatext(translation("Favorites", settings[0]), 26 * getFontSize(settings[7]),
+            comfortatext(translation("Favorites", settings["Language"]!), 26 * getFontSize(settings["Font size"]!),
                 settings, color: WHITE),
             const Spacer(),
             AnimatedSwitcher(
@@ -281,9 +281,9 @@ Widget defaultSearchScreen(Color color,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              comfortatext(split["name"], 25 * getFontSize(settings[7]), settings, color: textColor),
+                              comfortatext(split["name"], 25 * getFontSize(settings["Font size"]!), settings, color: textColor),
                               comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 18
-                                  * getFontSize(settings[7]), settings, color: textColor)
+                                  * getFontSize(settings["Font size"]!), settings, color: textColor)
                             ],
                           ),
                         ),
@@ -351,8 +351,8 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      comfortatext(split["name"], 25 * getFontSize(settings[7]), settings),
-                      comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 18 * getFontSize(settings[7]), settings)
+                      comfortatext(split["name"], 25 * getFontSize(settings["Font size"]), settings),
+                      comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 18 * getFontSize(settings["Font size"]), settings)
                       //comfortatext(split[0], 23)
                     ],
                   ),
@@ -509,7 +509,7 @@ class dumbySearch extends StatelessWidget {
                               ),
                               child: Column(
                                 children: [
-                                  comfortatext(translation('Weather provider', settings[0]), 18, settings),
+                                  comfortatext(translation('Weather provider', settings["Language"]), 18, settings),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 20, right: 20),
                                     child: DropdownButton(
@@ -521,7 +521,7 @@ class dumbySearch extends StatelessWidget {
                                       ),
                                       style: GoogleFonts.comfortaa(
                                         color: WHITE,
-                                        fontSize: 20 * getFontSize(settings[7]),
+                                        fontSize: 20 * getFontSize(settings["Font size"]),
                                         fontWeight: FontWeight.w300,
                                       ),
                                       //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty

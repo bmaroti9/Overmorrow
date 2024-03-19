@@ -39,7 +39,8 @@ Map<String, List<String>> settingSwitches = {
   'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa'],
   'Color mode' : ['normal', 'zen', 'high contrast'],
   'Time mode': ['12 hour', '24 hour'],
-  'Font size': ['normal', 'small', 'very small', 'big']
+  'Font size': ['normal', 'small', 'very small', 'big'],
+  'Colors Theme': ['']
 };
 
 String translation(String text, String language) {
@@ -48,13 +49,13 @@ String translation(String text, String language) {
   return translated;
 }
 
-Future<List<String>> getSettingsUsed() async {
-  List<String> settings = [];
+Future<Map<String, String>> getSettingsUsed() async {
+  Map<String, String> settings = {};
   for (String name in settingsList) {
     final prefs = await SharedPreferences.getInstance();
     final ifnot = settingSwitches[name] ?? ['˚C', '˚F'];
     final used = prefs.getString('setting$name') ?? ifnot[0];
-    settings.add(used);
+    settings[name] = (used);
   }
   return settings;
 }
@@ -119,7 +120,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
     ),
     style: GoogleFonts.comfortaa(
       color: WHITE,
-      fontSize: 20 * getFontSize(settings[7]),
+      fontSize: 20 * getFontSize(settings["Font size"]),
       fontWeight: FontWeight.w300,
     ),
     //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
@@ -170,10 +171,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<String>>(
+    return FutureBuilder<Map<String, String>>(
       future: getSettingsUsed(),
       builder: (BuildContext context,
-          AsyncSnapshot<List<String>> snapshot) {
+          AsyncSnapshot<Map<String, String>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Scaffold(backgroundColor: color,);
         } else if (snapshot.hasError) {
@@ -189,7 +190,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 }
 
-Widget SettingsMain(Color color, List<String>? settings, Function updatePage,
+Widget SettingsMain(Color color, Map<String, String>? settings, Function updatePage,
     Function goBack) {
   return Scaffold(
       appBar: AppBar(
@@ -200,7 +201,7 @@ Widget SettingsMain(Color color, List<String>? settings, Function updatePage,
           elevation: 0,
           leadingWidth: 50,
           backgroundColor: darken(color, 0.3),
-          title: comfortatext(translation('Settings', settings![0]), 25, settings),
+          title: comfortatext(translation('Settings', settings!["Language"]!), 25, settings),
           leading:
           IconButton(
             onPressed: (){
@@ -213,7 +214,8 @@ Widget SettingsMain(Color color, List<String>? settings, Function updatePage,
   );
 }
 
-Widget settingsMain(Color color, List<String> settings, Function updatePage) {
+Widget settingsMain(Color color, Map<String, String> settings, Function updatePage) {
+  var entryList = settings.entries.toList();
   return Container(
     padding: const EdgeInsets.only(top: 10, left: 20, right: 10),
     color: color,
@@ -228,7 +230,7 @@ Widget settingsMain(Color color, List<String> settings, Function updatePage) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      comfortatext(translation(settingsList[index], settings[0]), 23, settings),
+                      comfortatext(translation(settingsList[index], settings["Language"]!), 23, settings),
                       const Spacer(),
                       Align(
                         alignment: Alignment.centerRight,
@@ -244,9 +246,9 @@ Widget settingsMain(Color color, List<String> settings, Function updatePage) {
                                 padding: const EdgeInsets.only(left: 10, right: 4),
                                 child: dropdown(
                                     darken(color, 0.2),
-                                    settingsList[index],
+                                    entryList[index].key,
                                     updatePage,
-                                    settings[index],
+                                    entryList[index].value,
                                     settings
                                 ),
                               ),
@@ -297,7 +299,7 @@ class MyDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: comfortatext(translation('Settings', settings[0]), 25, settings),
+            title: comfortatext(translation('Settings', settings["Language"]), 25, settings),
             leading: const Icon(Icons.settings, color: WHITE,),
             onTap: () {
               Navigator.push(
@@ -307,7 +309,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext(translation('About', settings[0]), 25, settings),
+            title: comfortatext(translation('About', settings["Language"]), 25, settings),
             leading: const Icon(Icons.info_outline, color: WHITE,),
             onTap: () {
               Navigator.push(
@@ -317,7 +319,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext(translation('Donate', settings[0]), 25, settings),
+            title: comfortatext(translation('Donate', settings["Language"]), 25, settings),
             leading: const Icon(Icons.favorite_border, color: WHITE,),
             onTap: () {
               Navigator.push(

@@ -29,13 +29,13 @@ import '../weather_refact.dart';
 String oMGetName(index, settings, item) {
   if (index < 3) {
     const names = ['Today', 'Tomorrow', 'Overmorrow'];
-    return translation(names[index], settings[0]);
+    return translation(names[index], settings["Language"]);
   }
   String x = item["daily"]["time"][index].split("T")[0];
   List<String> z = x.split("-");
   DateTime time = DateTime(int.parse(z[0]), int.parse(z[1]), int.parse(z[2]));
   const weeks = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  return translation(weeks[time.weekday - 1], settings[0]);
+  return translation(weeks[time.weekday - 1], settings["Language"]);
 }
 
 String oMamPmTime(String time) {
@@ -142,14 +142,14 @@ class OMCurrent {
   });
 
   static OMCurrent fromJson(item, settings, sunstatus, timenow) => OMCurrent(
-    text: translation(oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow), settings[0]),
+    text: translation(oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow), settings["Language"]),
     uv: item["daily"]["uv_index_max"][0].round(),
     accentcolor: oMAccentColorCorrection(
       oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
     ),
-    feels_like: unit_coversion(item["current"]["apparent_temperature"], settings[1]).round(),
+    feels_like: unit_coversion(item["current"]["apparent_temperature"], settings["Temperature"]).round(),
 
-    backcolor: settings[5] == "high contrast"
+    backcolor: settings["Color mode"] == "high contrast"
         ? BLACK
         :  oMBackColorCorrection(oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),),
 
@@ -157,14 +157,14 @@ class OMCurrent {
       oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
     ),
 
-    contentColor: settings[5] == "high contrast"
+    contentColor: settings["Color mode"] == "high contrast"
         ? [BLACK,WHITE]
         :  oMContentColorCorrection(oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),),
 
-    precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][0], settings[2]).toStringAsFixed(1)),
-    wind: unit_coversion(item["current"]["wind_speed_10m"], settings[3]).round(),
+    precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][0], settings["Rain"]).toStringAsFixed(1)),
+    wind: unit_coversion(item["current"]["wind_speed_10m"], settings["Wind"]).round(),
     humidity: item["current"]["relative_humidity_2m"],
-    temp: unit_coversion(item["current"]["temperature_2m"], settings[1]).round(),
+    temp: unit_coversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
   );
 }
 
@@ -202,12 +202,12 @@ class OMDay {
     return OMDay(
       uv: item["daily"]["uv_index_max"][0].round(),
       icon: oMIconCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
-      text: translation(oMTextCorrection(item["daily"]["weather_code"][index]), settings[0]),
+      text: translation(oMTextCorrection(item["daily"]["weather_code"][index]), settings["Language"]),
       name: oMGetName(index, settings, item),
-      windspeed: unit_coversion(item["daily"]["wind_speed_10m_max"][index], settings[3]).round(),
-      total_precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][index], settings[2]).toStringAsFixed(1)),
-      minmaxtemp: "${unit_coversion(item["daily"]["temperature_2m_min"][index], settings[1]).round().toString()}°"
-          "/${unit_coversion(item["daily"]["temperature_2m_max"][index], settings[1]).round().toString()}°",
+      windspeed: unit_coversion(item["daily"]["wind_speed_10m_max"][index], settings["Wind"]).round(),
+      total_precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][index], settings["Rain"]).toStringAsFixed(1)),
+      minmaxtemp: "${unit_coversion(item["daily"]["temperature_2m_min"][index], settings["Temperature"]).round().toString()}°"
+          "/${unit_coversion(item["daily"]["temperature_2m_max"][index], settings["Temperature"]).round().toString()}°",
       precip_prob: item["daily"]["precipitation_probability_max"][index] ?? 0,
       mm_precip: item["daily"]["precipitation_sum"][index],
       hourly_for_precip: buildHours(index, false, item, settings, sunstatus),
@@ -251,12 +251,12 @@ class OMHour {
   });
 
   static OMHour fromJson(item, index, settings, sunstatus) => OMHour(
-    temp: unit_coversion(item["hourly"]["temperature_2m"][index], settings[1]).round(),
+    temp: unit_coversion(item["hourly"]["temperature_2m"][index], settings["Temperature"]).round(),
     text: translation(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
-        sunstatus, item["hourly"]["time"][index]), settings[0]),
+        sunstatus, item["hourly"]["time"][index]), settings["Language"]),
     icon: oMIconCorrection(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
         sunstatus, item["hourly"]["time"][index])),
-    time: settings[6] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
-    precip: unit_coversion(item["hourly"]["precipitation"][index], settings[2]),
+    time: settings["Time mode"] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
+    precip: unit_coversion(item["hourly"]["precipitation"][index], settings["Rain"]),
   );
 }

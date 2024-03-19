@@ -53,10 +53,10 @@ class _NewMainState extends State<NewMain> {
     //Color color = const Color(0xfff0c6b3);
     //Color color = const Color(0xff7C88BA);
     //Color color = const Color(0xff5791BB);
-    Color color = const Color(0xff526181);
-    //Color color = const Color(0xff90ABC0);
+    //Color color = const Color(0xff526181);
+    //Color color = const Color(0xff8D8881);
+    Color color = const Color(0xFF7CA2A5);
     //Color color = BLACK;
-
 
     //get the size of the device
     FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
@@ -64,7 +64,7 @@ class _NewMainState extends State<NewMain> {
 
     return Scaffold(
       backgroundColor: color,
-      //backgroundColor: WHITE,
+      drawer: MyDrawer(color: data.current.backcolor, settings: data.settings),
       body: Stack(
         children: [
           StretchyHeader.listView(
@@ -165,7 +165,7 @@ class _NewMainState extends State<NewMain> {
                                             color: data.current.backcolor,
                                             borderRadius: BorderRadius.circular(13)
                                         ),
-                                        child: comfortatext(data.days[0].minmaxtemp, 17,
+                                        child: comfortatext(data.days[0].minmaxtemp, 18,
                                             data.settings, color: color, weight: FontWeight.w500)
                                     ),
                                   )
@@ -222,7 +222,7 @@ class _NewMainState extends State<NewMain> {
                                           const Padding(
                                               padding: EdgeInsets.only(right: 10)),
                                           comfortatext(data.days[0].total_precip.toString() +
-                                              data.settings[2], 18, data.settings),
+                                              data.settings["Rain"], 18, data.settings),
                                         ],
                                       ),
                                     ),
@@ -236,7 +236,7 @@ class _NewMainState extends State<NewMain> {
                                           const Padding(
                                               padding: EdgeInsets.only(right: 10)),
                                           comfortatext('${data.days[0].windspeed} ${data
-                                              .settings[3]}', 18, data.settings),
+                                              .settings["Wind"]}', 18, data.settings),
                                         ],
                                       ),
                                     ),
@@ -259,7 +259,7 @@ class _NewMainState extends State<NewMain> {
                         ),
                       ),
                     ),
-                    buildHours(data.days[0].hourly, data.settings, data.current.accentcolor, data.settings),
+                    buildHours(data.days[0].hourly, data.settings, data.current.accentcolor),
                   ],
                 ),
               ),
@@ -381,7 +381,7 @@ Widget PhoneLayout(data, updateLocation, context) {
                     ),
                     child: Column(
                       children: [
-                        comfortatext(translation('Weather provider', data.settings[0]), 18, data.settings),
+                        comfortatext(translation('Weather provider', data.settings["Language"]), 18, data.settings),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: DropdownButton(
@@ -393,7 +393,7 @@ Widget PhoneLayout(data, updateLocation, context) {
                             ),
                             style: GoogleFonts.comfortaa(
                               color: WHITE,
-                              fontSize: 20 * getFontSize(data.settings[7]),
+                              fontSize: 20 * getFontSize(data.settings["Font size"]),
                               fontWeight: FontWeight.w300,
                             ),
                             //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
@@ -594,7 +594,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                                                       const Padding(
                                                                           padding: EdgeInsets.only(right: 10)),
                                                                       comfortatext(day.total_precip.toString() +
-                                                                          data.settings[2], 20, data.settings),
+                                                                          data.settings["Rain"], 20, data.settings),
                                                                     ],
                                                                   ),
                                                                 ),
@@ -608,7 +608,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                                                       const Padding(
                                                                           padding: EdgeInsets.only(right: 10)),
                                                                       comfortatext('${day.windspeed} ${data
-                                                                          .settings[3]}', 20, data.settings),
+                                                                          .settings["Wind"]}', 20, data.settings),
                                                                     ],
                                                                   ),
                                                                 ),
@@ -644,7 +644,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                       ),
                                     ),
                                   ),
-                                  buildHours(day.hourly, data.settings, data.current.accentcolor, data.settings),
+                                  buildHours(day.hourly, data.settings, data.current.accentcolor),
                                 ],
                               );
                             }
@@ -677,7 +677,7 @@ Widget TabletLayout(data, updateLocation, context) {
                           ),
                           child: Column(
                             children: [
-                              comfortatext(translation('Weather provider', data.settings[0]), 18, data.settings),
+                              comfortatext(translation('Weather provider', data.settings["Language"]), 18, data.settings),
                               Padding(
                                 padding: const EdgeInsets.only(left: 20, right: 20),
                                 child: DropdownButton(
@@ -689,7 +689,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                   ),
                                   style: GoogleFonts.comfortaa(
                                     color: WHITE,
-                                    fontSize: 20 * getFontSize(data.settings[7]),
+                                    fontSize: 20 * getFontSize(data.settings["Font size"]),
                                     fontWeight: FontWeight.w300,
                                   ),
                                   //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty

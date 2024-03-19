@@ -98,12 +98,12 @@ class MetNCurrent {
   });
 
   static MetNCurrent fromJson(item, settings) => MetNCurrent(
-    text: metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"], language: settings[0]),
+    text: metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"], language: settings["Language"]),
 
-    precip: unit_coversion(item["timeseries"][0]["data"]["next_1_hours"]["details"]["precipitation_amount"], settings[2]),
-    temp: unit_coversion(item["timeseries"][0]["data"]["instant"]["details"]["air_temperature"], settings[1]).round(),
+    precip: unit_coversion(item["timeseries"][0]["data"]["next_1_hours"]["details"]["precipitation_amount"], settings["Rain"]),
+    temp: unit_coversion(item["timeseries"][0]["data"]["instant"]["details"]["air_temperature"], settings["Temperature"]).round(),
     humidity: item["timeseries"][0]["data"]["instant"]["details"]["relative_humidity"],
-    wind: unit_coversion(item["timeseries"][0]["data"]["instant"]["details"]["wind_speed"] * 3.6, settings[3]).round(),
+    wind: unit_coversion(item["timeseries"][0]["data"]["instant"]["details"]["wind_speed"] * 3.6, settings["Wind"]).round(),
     uv: item["timeseries"][0]["data"]["instant"]["details"]["ultraviolet_index_clear_sky"],
 
     backdrop: metNBackdropCorrection(
@@ -223,7 +223,7 @@ class MetNDay {
       minmaxtemp: "${temperatures.reduce(max)}˚/${temperatures.reduce(min)}°",
       hourly: hours,
       hourly_for_precip: hours,
-      total_precip: unit_coversion(precip_mm.reduce((a, b) => a + b), settings[2]),
+      total_precip: unit_coversion(precip_mm.reduce((a, b) => a + b), settings["Rain"]),
       windspeed: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
       name: getName(index, settings),
       text: metNTextCorrection(weather_names[BIndex]),
@@ -253,14 +253,14 @@ class MetNHour {
       });
 
   static MetNHour fromJson(item, settings) => MetNHour(
-    text: metNTextCorrection(item["data"]["next_1_hours"]["summary"]["symbol_code"], language: settings[0]),
-    temp: unit_coversion(item["data"]["instant"]["details"]["air_temperature"], settings[1]).round(),
+    text: metNTextCorrection(item["data"]["next_1_hours"]["summary"]["symbol_code"], language: settings["Language"]),
+    temp: unit_coversion(item["data"]["instant"]["details"]["air_temperature"], settings["Temperature"]).round(),
     precip: item["data"]["next_1_hours"]["details"]["precipitation_amount"],
     precip_prob : item["data"]["next_1_hours"]["details"]["probability_of_precipitation"].round(),
     icon: metNIconCorrection(
       metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
     ),
     time: metNTimeCorrect(item["time"]),
-    wind: unit_coversion(item["data"]["instant"]["details"]["wind_speed"] * 3.6, settings[3]).round(),
+    wind: unit_coversion(item["data"]["instant"]["details"]["wind_speed"] * 3.6, settings["Wind"]).round(),
   );
 }
