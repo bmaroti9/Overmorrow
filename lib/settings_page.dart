@@ -25,9 +25,6 @@ import 'languages.dart';
 import 'main.dart';
 import 'ui_helper.dart';
 
-List<String> settingsList = ['Language', 'Temperature', 'Rain', 'Wind', 'Pressure',
-        'Color mode', 'Time mode', 'Font size'];
-
 Map<String, List<String>> settingSwitches = {
   'Language' : [
     'English', 'Magyar', 'Español', 'Français', 'Deutsch', 'Italiano',
@@ -37,10 +34,9 @@ Map<String, List<String>> settingSwitches = {
   'Rain': ['mm', 'in'],
   'Wind': ['m/s', 'kph', 'mph', 'kn'],
   'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa'],
-  'Color mode' : ['normal', 'zen', 'high contrast'],
+  'Color mode' : ['colorfull', 'light', 'dark'],
   'Time mode': ['12 hour', '24 hour'],
   'Font size': ['normal', 'small', 'very small', 'big'],
-  'Colors Theme': ['']
 };
 
 String translation(String text, String language) {
@@ -51,11 +47,11 @@ String translation(String text, String language) {
 
 Future<Map<String, String>> getSettingsUsed() async {
   Map<String, String> settings = {};
-  for (String name in settingsList) {
+  for (var v in settingSwitches.entries) {
     final prefs = await SharedPreferences.getInstance();
-    final ifnot = settingSwitches[name] ?? ['˚C', '˚F'];
-    final used = prefs.getString('setting$name') ?? ifnot[0];
-    settings[name] = (used);
+    final ifnot = v.value[0];
+    final used = prefs.getString('setting${v.key}') ?? ifnot;
+    settings[v.key] = v.value.contains(used) ? used: ifnot;
   }
   return settings;
 }
@@ -230,7 +226,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      comfortatext(translation(settingsList[index], settings["Language"]!), 23, settings),
+                      comfortatext(translation(entryList[index].key, settings["Language"]!), 23, settings),
                       const Spacer(),
                       Align(
                         alignment: Alignment.centerRight,

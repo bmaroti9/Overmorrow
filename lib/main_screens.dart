@@ -55,8 +55,9 @@ class _NewMainState extends State<NewMain> {
     //Color color = const Color(0xff5791BB);
     //Color color = const Color(0xff526181);
     //Color color = const Color(0xff8D8881);
-    Color color = const Color(0xFF7CA2A5);
-    //Color color = BLACK;
+    //Color color = const Color(0xFF7CA2A5);
+    //Color color = const Color(0xFF6F6D70);
+    Color color = BLACK;
 
     //get the size of the device
     FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
@@ -157,13 +158,13 @@ class _NewMainState extends State<NewMain> {
                                   comfortatext(data.days[0].text, 20, data.settings, color: WHITE),
                                   Spacer(),
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 8, top: 3),
+                                    padding: const EdgeInsets.only(right: 8, top: 3, bottom: 3),
                                     child: Container(
-                                        padding: const EdgeInsets.only(top:9,bottom: 7, left: 9, right: 7),
+                                        padding: const EdgeInsets.only(top:8,bottom: 6, left: 8, right: 6),
                                         decoration: BoxDecoration(
                                           //border: Border.all(color: Colors.blueAccent)
-                                            color: data.current.backcolor,
-                                            borderRadius: BorderRadius.circular(13)
+                                            color: WHITE,
+                                            borderRadius: BorderRadius.circular(12)
                                         ),
                                         child: comfortatext(data.days[0].minmaxtemp, 18,
                                             data.settings, color: color, weight: FontWeight.w500)
