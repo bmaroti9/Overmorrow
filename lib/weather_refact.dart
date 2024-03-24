@@ -257,20 +257,37 @@ Map<String, Color> textBackColor = {
 };
 
 Map<String, Color> accentColors = {
-  'Clear Night': const Color(0xFFEACD63), // Light Gold
-  'Partly Cloudy': const Color(0xFF9E639F), // Lavender
-  'Clear Sky': const Color(0xFF7EA3CC), // Steel Blue
-  'Overcast': const Color(0xFF67878A), // Blue-Gray
-  'Haze': const Color(0xFF7E8C96), // Slate Gray
-  'Rain': const Color(0xFFB58EAC), // Rose Taupe
-  'Sleet': const Color(0xFFD8B7C2), // Misty Rose
-  'Drizzle': const Color(0xFF9FA39D), // Ash Gray
-  'Thunderstorm': const Color(0xFF7F707A), // Old Lavender
-  'Heavy Snow': const Color(0xFFB3C9C7), // Iceberg
-  'Fog': const Color(0xFF445F61), // Raisin Black
-  'Snow': const Color(0xFF6E7270), // Gray
-  'Heavy Rain': const Color(0xFF6F6D70), // Quicksilver
-  'Cloudy Night': const Color(0xFF35424A), // Outer Space
+  'Clear Night': const Color(0xFF8D8F7D),
+  'Partly Cloudy': const Color(0xff526181),
+  'Clear Sky': const Color(0xFFD8C7A9),
+  'Overcast': const Color(0xFF7DA5A8),
+  'Haze': const Color(0xFF7E8C96),
+  'Rain': const Color(0xFF4D3759),
+  'Sleet': const Color(0xFF7A94B9),
+  'Drizzle': const Color(0xFF996865),
+  'Thunderstorm': const Color(0xFF7F707A),
+  'Heavy Snow': const Color(0xFF5D686F),
+  'Fog': const Color(0xFFEABAA3),
+  'Snow': const Color(0xFF6E7270),
+  'Heavy Rain': const Color(0xFF6F6D70),
+  'Cloudy Night': const Color(0xFFA67F91),
+};
+
+Map<String, int> colorPop = {
+  'Clear Night': 0,
+  'Partly Cloudy': 0,
+  'Clear Sky': 0,
+  'Overcast': 0,
+  'Haze': 0,
+  'Rain': 2,
+  'Sleet': 1,
+  'Drizzle': 0,
+  'Thunderstorm': 0,
+  'Heavy Snow': 0,
+  'Fog': 0,
+  'Snow': 0,
+  'Heavy Rain': 0,
+  'Cloudy Night': 0,
 };
 
 Map<int, Color> aqi_colors = {

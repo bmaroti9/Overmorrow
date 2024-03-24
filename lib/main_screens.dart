@@ -57,14 +57,14 @@ class _NewMainState extends State<NewMain> {
     //Color color = const Color(0xff8D8881);
     //Color color = const Color(0xFF7CA2A5);
     //Color color = const Color(0xFF6F6D70);
-    Color color = BLACK;
+    //Color color = BLACK;
 
     //get the size of the device
     FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     Size size = view.physicalSize / view.devicePixelRatio;
 
     return Scaffold(
-      backgroundColor: color,
+      backgroundColor: data.current.backcolor,
       drawer: MyDrawer(color: data.current.backcolor, settings: data.settings),
       body: Stack(
         children: [
@@ -93,7 +93,8 @@ class _NewMainState extends State<NewMain> {
                         const Spacer(),
                         Padding(
                           padding: const EdgeInsets.only(left: 0, bottom: 5),
-                          child: comfortatext("${data.current.temp}°", 65, data.settings, color: color),
+                          child: comfortatext("${data.current.temp}°", 65, data.settings,
+                              color: data.current.colorpop),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 0),
@@ -103,9 +104,9 @@ class _NewMainState extends State<NewMain> {
                     ),
                   ),
                   MySearchParent(updateLocation: updateLocation,
-                    color: color, place: data.place,
+                    color: data.current.backcolor, place: data.place,
                     controller: controller, settings: data.settings, real_loc: data.real_loc,
-                  secondColor: data.current.backcolor,),
+                  secondColor: data.current.primary, textColor: data.current.textcolor,),
                 ],
               )
             ),
@@ -116,9 +117,9 @@ class _NewMainState extends State<NewMain> {
                   child: LayoutBuilder(
                       builder: (BuildContext context, BoxConstraints constraints) {
                         if(constraints.maxWidth > 400.0) {
-                          return Circles(400, data, 0.5, data.current.backcolor);
+                          return Circles(400, data, 0.5, data.current.primary);
                         } else {
-                          return Circles(constraints.maxWidth * 0.95, data, 0.5, data.current.backcolor);
+                          return Circles(constraints.maxWidth * 0.95, data, 0.5, data.current.primary);
                         }
                       }
                   ),
@@ -138,7 +139,7 @@ class _NewMainState extends State<NewMain> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: data.days[0].mm_precip > 0.1 ? darken(color, 0.1) : color,
+                          color: data.days[0].mm_precip > 0.1 ? darken(data.current.backcolor, 0.1) : data.current.backcolor,
                         ),
                         padding: EdgeInsets.only(top: 10),
                         child: SizedBox(
@@ -167,7 +168,7 @@ class _NewMainState extends State<NewMain> {
                                             borderRadius: BorderRadius.circular(12)
                                         ),
                                         child: comfortatext(data.days[0].minmaxtemp, 18,
-                                            data.settings, color: color, weight: FontWeight.w500)
+                                            data.settings, color: data.current.backcolor, weight: FontWeight.w500)
                                     ),
                                   )
                                 ],
@@ -260,7 +261,7 @@ class _NewMainState extends State<NewMain> {
                         ),
                       ),
                     ),
-                    buildHours(data.days[0].hourly, data.settings, data.current.accentcolor),
+                    buildHours(data.days[0].hourly, data.settings, data.current.backcolor),
                   ],
                 ),
               ),
@@ -274,6 +275,8 @@ class _NewMainState extends State<NewMain> {
   }
 
   Widget _buildLoadingWidget() {
+    //Note: this is just a demo refresh and thus doesn't do anything
+    
     return Container(
       color: Colors.black54,
       child: Center(
@@ -363,7 +366,7 @@ Widget PhoneLayout(data, updateLocation, context) {
                     MySearchParent(updateLocation: updateLocation,
                       color: data.current.backcolor, place: data.place,
                       controller: controller, settings: data.settings, real_loc: data.real_loc,
-                    secondColor: WHITE,),
+                    secondColor: WHITE, textColor: data.current.textcolor,),
                   ],
                 ),
               ),
@@ -487,7 +490,8 @@ Widget TabletLayout(data, updateLocation, context) {
                               MySearchParent(updateLocation: updateLocation,
                                   color: data.current.backcolor, place: data.place,
                                   controller: controller, settings: data.settings,
-                                  real_loc: data.real_loc, secondColor: WHITE,),
+                                  real_loc: data.real_loc, secondColor: WHITE,
+                                  textColor: data.current.textcolor,),
                             ],
                           ),
                         ),

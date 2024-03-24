@@ -78,7 +78,7 @@ String oMCurrentTextCorrection(int code, sunstatus, time){
   double a_current = hour + minute / 60;
   double a_up = up_h + up_m / 60;
   double a_down = down_h + donw_m / 60;
-  
+
   if (a_up <= a_current && a_current <= a_down) {
     return OMCodes[code] ?? 'Clear Sky';
   }
@@ -98,14 +98,18 @@ String oMBackdropCorrection(String text) {
 }
 
 Color oMBackColorCorrection(String text) {
-  return textBackColor[text] ?? BLACK;
-}
-
-Color oMAccentColorCorrection(String text) {
   return accentColors[text] ?? WHITE;
 }
 
-List<Color> oMContentColorCorrection(String text) {
+Color oMPrimaryColorCorrection(String text) {
+  return textBackColor[text] ?? BLACK;
+}
+
+int oMColorPopCorrection(String text) {
+  return colorPop[text] ?? 0;
+}
+
+List<Color> oMtextcolorCorrection(String text) {
   return textFontColor[text] ?? [WHITE, WHITE];
 }
 
@@ -118,54 +122,89 @@ class OMCurrent {
   final String text;
   final String backdrop;
   final int temp;
-  final List<Color> contentColor;
   final int humidity;
   final int feels_like;
   final int uv;
   final double precip;
   final int wind;
+
   final Color backcolor;
-  final Color accentcolor;
+  final Color primary;
+  final Color colorpop;
+  final Color textcolor;
 
   const OMCurrent({
     required this.precip,
-    required this.accentcolor,
+    required this.primary,
     required this.backcolor,
     required this.backdrop,
-    required this.contentColor,
+    required this.textcolor,
     required this.humidity,
     required this.feels_like,
     required this.temp,
     required this.text,
     required this.uv,
     required this.wind,
+    required this.colorpop,
   });
 
-  static OMCurrent fromJson(item, settings, sunstatus, timenow) => OMCurrent(
-    text: translation(oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow), settings["Language"]),
-    uv: item["daily"]["uv_index_max"][0].round(),
-    accentcolor: oMAccentColorCorrection(
-      oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
-    ),
-    feels_like: unit_coversion(item["current"]["apparent_temperature"], settings["Temperature"]).round(),
+  static OMCurrent fromJson(item, settings, sunstatus, timenow) {
+    Color back = oMBackColorCorrection(
+      oMCurrentTextCorrection(
+          item["current"]["weather_code"], sunstatus, timenow),
+    );
 
-    backcolor: settings["Color mode"] == "high contrast"
-        ? BLACK
-        :  oMBackColorCorrection(oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),),
+    Color primary = oMPrimaryColorCorrection(
+      oMCurrentTextCorrection(
+          item["current"]["weather_code"], sunstatus, timenow),
+    );
 
-    backdrop: oMBackdropCorrection(
-      oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),
-    ),
+    List<Color> colors = [ //default colorful option
+      back,
+      primary,
+      WHITE,
+      [back, primary, WHITE][oMColorPopCorrection( oMCurrentTextCorrection(
+          item["current"]["weather_code"], sunstatus, timenow),)]
+    ];
 
-    contentColor: settings["Color mode"] == "high contrast"
-        ? [BLACK,WHITE]
-        :  oMContentColorCorrection(oMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow),),
+    if (settings["Color mode"] == "light") {
+      colors = [ //backcolor, primary, text
+        WHITE,
+        primary,
+        BLACK,
+        primary,
+      ];
+    }
 
-    precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][0], settings["Rain"]).toStringAsFixed(1)),
-    wind: unit_coversion(item["current"]["wind_speed_10m"], settings["Wind"]).round(),
-    humidity: item["current"]["relative_humidity_2m"],
-    temp: unit_coversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
-  );
+    return OMCurrent(
+      text: translation(oMCurrentTextCorrection(
+          item["current"]["weather_code"], sunstatus, timenow),
+          settings["Language"]),
+      uv: item["daily"]["uv_index_max"][0].round(),
+      feels_like: unit_coversion(
+          item["current"]["apparent_temperature"], settings["Temperature"])
+          .round(),
+
+      backcolor: colors[0],
+      primary: colors[1],
+      textcolor: colors[2],
+      colorpop: colors[3],
+
+      backdrop: oMBackdropCorrection(
+        oMCurrentTextCorrection(
+            item["current"]["weather_code"], sunstatus, timenow),
+      ),
+
+      precip: double.parse(unit_coversion(
+          item["daily"]["precipitation_sum"][0], settings["Rain"])
+          .toStringAsFixed(1)),
+      wind: unit_coversion(item["current"]["wind_speed_10m"], settings["Wind"])
+          .round(),
+      humidity: item["current"]["relative_humidity_2m"],
+      temp: unit_coversion(
+          item["current"]["temperature_2m"], settings["Temperature"]).round(),
+    );
+  }
 }
 
 

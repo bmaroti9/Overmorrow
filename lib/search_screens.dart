@@ -33,22 +33,23 @@ Widget searchBar(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
     List<String> favorites, Function updateRec, String place, var context,
-    bool prog, Function updateProg, Map<String, String> settings, String real_loc, Color secondColor) {
+    bool prog, Function updateProg, Map<String, String> settings, String real_loc, Color secondColor, 
+    Color textColor) {
 
   return FloatingSearchBar(
       hint: translation('Search...', settings["Language"]!),
       title: Container(
         padding: const EdgeInsets.only(left: 5, top: 3),
-        child: comfortatext(place, 28 * getFontSize(settings["Font size"]!), settings, )
+        child: comfortatext(place, 28 * getFontSize(settings["Font size"]!), settings, color: textColor)
       ),
       hintStyle: GoogleFonts.comfortaa(
-        color: WHITE,
+        color: textColor,
         fontSize: 18 * getFontSize(settings["Font size"]!),
         fontWeight: FontWeight.w100,
       ),
 
       queryStyle: GoogleFonts.comfortaa(
-        color: WHITE,
+        color: textColor,
         fontSize: 22 * getFontSize(settings["Font size"]!),
         fontWeight: FontWeight.w100,
       ),
@@ -122,7 +123,8 @@ Widget searchBar(Color color, List<String> recommend,
             padding: const EdgeInsets.only(top: 3, bottom: 3),
             child: Visibility(
               visible: !Platform.isLinux,
-              child: LocationButton(updateProg, updateLocation, color, real_loc, secondColor)
+              child: LocationButton(updateProg, updateLocation, color, real_loc, secondColor,
+              textColor)
             ),
           ),
         ),
@@ -134,7 +136,7 @@ Widget searchBar(Color color, List<String> recommend,
             child: Padding(
               padding: const EdgeInsets.only(right: 12),
               child: CircularButton(
-                icon: const Icon(Icons.close, color: WHITE,),
+                icon: Icon(Icons.close, color: textColor,),
                 onPressed: () {
                   controller.clear();
                 },
@@ -151,7 +153,7 @@ Widget searchBar(Color color, List<String> recommend,
             },
             child: decideSearch(color, recommend, updateLocation,
                 controller, updateIsEditing, isEditing, updateFav,
-                favorites, controller.query, settings)
+                favorites, controller.query, settings, textColor)
         );
       }
   );
@@ -160,11 +162,11 @@ Widget searchBar(Color color, List<String> recommend,
 Widget decideSearch(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, String entered, Map<String, String> settings) {
+    List<String> favorites, String entered, Map<String, String> settings, textColor) {
 
   if (entered == '') {
     return defaultSearchScreen(color, updateLocation,
-        controller, updateIsEditing, isEditing, updateFav, favorites, settings);
+        controller, updateIsEditing, isEditing, updateFav, favorites, settings, textColor);
   }
   else{
     if (recommend.isNotEmpty) {
@@ -179,7 +181,7 @@ Widget decideSearch(Color color, List<String> recommend,
 Widget defaultSearchScreen(Color color,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, Map<String, String> settings) {
+    List<String> favorites, Map<String, String> settings, textColor) {
 
   List<Icon> Myicon = [
     const Icon(null),
@@ -187,16 +189,14 @@ Widget defaultSearchScreen(Color color,
   ];
 
   Icon editIcon = const Icon(Icons.icecream, color: WHITE,);
-  Color rectColor = WHITE;
-  Color textColor;
+  Color rectColor = textColor;
   List<int> icons = [];
   if (isEditing) {
     for (String _ in favorites) {
       icons.add(1);
     }
     editIcon = Icon(Icons.check, color: color,);
-    rectColor = WHITE;
-    textColor = color;
+    rectColor = textColor;
   }
   else{
     for (String _ in favorites) {
@@ -204,7 +204,6 @@ Widget defaultSearchScreen(Color color,
     }
     editIcon = Icon(Icons.edit, color: color,);
     rectColor = color;
-    textColor = WHITE;
   }
 
   return Column(
@@ -380,7 +379,7 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
 }
 
 Widget LocationButton(Function updateProg, Function updateLocation, Color color, String real_loc,
-    Color secondColor) {
+    Color secondColor, Color textColor) {
   if (real_loc == 'CurrentLocation') {
     return Padding(
       padding: const EdgeInsets.only(right: 6, top: 3, bottom: 3),
@@ -390,13 +389,13 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
           style: ElevatedButton.styleFrom(
               elevation: 0,
               padding: const EdgeInsets.all(10),
-              backgroundColor: secondColor,
+              backgroundColor: textColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)
               )
           ),
           onPressed: () async {},
-          child: Icon(Icons.place_outlined, color: WHITE,),
+          child: Icon(Icons.place_outlined, color: color,),
         ),
       ),
     );
@@ -411,7 +410,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
               elevation: 0,
               padding: const EdgeInsets.all(10),
               backgroundColor: color,
-              side: const BorderSide(width: 1.2, color: WHITE),
+              side: BorderSide(width: 1.2, color: textColor),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20)
             )
@@ -551,7 +550,7 @@ class dumbySearch extends StatelessWidget {
                   ),
                   MySearchParent(updateLocation: updateLocation,
                     color: color, place: place, controller: controller, settings: settings,
-                  real_loc: place, secondColor: WHITE,),
+                  real_loc: place, secondColor: WHITE, textColor: WHITE,),
                 ],
               ),
             ),
