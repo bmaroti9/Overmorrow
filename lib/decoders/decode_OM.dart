@@ -79,6 +79,8 @@ String oMCurrentTextCorrection(int code, sunstatus, time){
   double a_up = up_h + up_m / 60;
   double a_down = down_h + donw_m / 60;
 
+  //return textBackground.keys.toList()[13]; used for testing color combinations
+
   if (a_up <= a_current && a_current <= a_down) {
     return OMCodes[code] ?? 'Clear Sky';
   }
