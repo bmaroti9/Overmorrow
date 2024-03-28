@@ -185,7 +185,7 @@ Widget aqiDataPoints(String name, double value, Color color, var settings) {
                       style: TextStyle(
                         color: color
                       ),
-                      textScaleFactor: getFontSize(settings["Font size"])
+                      textScaleFactor: getFontSize(settings["Font size"]) * 1.2
                   ),
                 )
               ],

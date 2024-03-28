@@ -174,7 +174,15 @@ class OMCurrent {
         WHITE,
         primary,
         BLACK,
+        WHITE,
+      ];
+    }
+    else if (settings["Color mode"] == "dark") {
+      colors = [ //backcolor, primary, text
+        BLACK,
         primary,
+        WHITE,
+        BLACK
       ];
     }
 

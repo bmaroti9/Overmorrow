@@ -70,8 +70,8 @@ class _RadarMapState extends State<RadarMap> {
 
   @override
   Widget build(BuildContext context) {
-    Color main = data.current.contentColor[0] == WHITE? data.current.backcolor : WHITE;
-    Color top = data.current.contentColor[0] == WHITE? WHITE : data.current.backcolor;
+    Color main = data.current.primary;
+    Color top = data.current.textcolor;
     return Column(
       children: [
         Padding(
@@ -119,9 +119,9 @@ class _RadarMapState extends State<RadarMap> {
                       ),
                       children: [
                         TileLayer(
-                          urlTemplate: data.current.contentColor[0] == WHITE
-                              ? 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
-                              : 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',
+                          urlTemplate: data.settings["Color theme"] == "dark"
+                              ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
+                              : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
                         ),
                         TileLayer(
                           urlTemplate: data.radar.images[currentFrameIndex] + "/256/{z}/{x}/{y}/8/1_1.png",
@@ -299,8 +299,8 @@ class _RadarPageState extends State<RadarPage> {
   @override
   Widget build(BuildContext context) {
     double x = MediaQuery.of(context).padding.top;
-    Color main = data.current.contentColor[0] == WHITE ? data.current.backcolor : WHITE;
-    Color top = data.current.contentColor[0] == WHITE ? WHITE : data.current.backcolor;
+    Color main = data.current.textcolor;
+    Color top = data.current.backcolor;
     return Stack(
       children: [
         FlutterMap(
@@ -315,20 +315,20 @@ class _RadarPageState extends State<RadarPage> {
           ),
           children: [
             Container(
-              color: data.current.contentColor[0] == WHITE? const Color(0xffD4DADC) : const Color(0xff262626),
+              color: data.settings["Color theme"] == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
             ),
             TileLayer(
-              urlTemplate: data.current.contentColor[0] == WHITE
-                  ? 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
-                  : 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',
+              urlTemplate: data.settings["Color theme"] == "dark"
+                  ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
+                  : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
             ),
             TileLayer(
               urlTemplate: data.radar.images[currentFrameIndex] + "/256/{z}/{x}/{y}/8/1_1.png",
             ),
             TileLayer(
-              urlTemplate: data.current.contentColor[0] == WHITE
-                  ? 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png'
-                  : 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png',
+              urlTemplate: data.settings["Color theme"] == "dark"
+                  ? 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png'
+                  : 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
             ),
           ],
         ),
@@ -337,7 +337,7 @@ class _RadarPageState extends State<RadarPage> {
           child: Container(
             constraints: const BoxConstraints(maxWidth: 500),
             child: Padding(
-              padding: const EdgeInsets.only(left: 15, bottom: 30, right: 15),
+              padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
               child: Material(
                 borderRadius: BorderRadius.circular(20),
                 elevation: 10,
@@ -429,14 +429,14 @@ class _RadarPageState extends State<RadarPage> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(right: 15, top: x + 15),
+          padding: EdgeInsets.only(right: 20, top: x + 20),
           child: Align(
             alignment: Alignment.topRight,
             child:  Hero(
               tag: 'switch',
               child: SizedBox(
-                height: 48,
-                width: 48,
+                height: 52,
+                width: 52,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 10,
@@ -450,7 +450,7 @@ class _RadarPageState extends State<RadarPage> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Icon(Icons.close_fullscreen, color: main, size: 25,),
+                  child: Icon(Icons.close_fullscreen, color: main, size: 26,),
                 ),
               ),
             ),

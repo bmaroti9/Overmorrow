@@ -174,8 +174,8 @@ Widget Circles(double width, var data, double bottom, color) {
   );
 }
 
-Widget NewTimes(var data, bool divider) => SliverList(
-  delegate: SliverChildListDelegate(
+Widget NewTimes(var data, bool divider) => Column(
+  children:
     [
       Padding(
         padding: const EdgeInsets.all(10),
@@ -356,7 +356,6 @@ Widget NewTimes(var data, bool divider) => SliverList(
         ),
       ),
     ],
-  ),
 );
 
 Widget buildHihiDays(var data) => SliverList(
