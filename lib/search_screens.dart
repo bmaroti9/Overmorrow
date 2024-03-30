@@ -172,7 +172,7 @@ Widget decideSearch(Color color, List<String> recommend,
     if (recommend.isNotEmpty) {
       return recommendSearchScreen(
           color, recommend, updateLocation, controller,
-          favorites, updateFav, settings);
+          favorites, updateFav, settings, textColor);
     }
   }
   return Container();
@@ -190,6 +190,7 @@ Widget defaultSearchScreen(Color color,
 
   Icon editIcon = const Icon(Icons.icecream, color: WHITE,);
   Color rectColor = textColor;
+  Color text = textColor;
   List<int> icons = [];
   if (isEditing) {
     for (String _ in favorites) {
@@ -197,13 +198,15 @@ Widget defaultSearchScreen(Color color,
     }
     editIcon = Icon(Icons.check, color: color,);
     rectColor = textColor;
+    text = color;
   }
   else{
     for (String _ in favorites) {
       icons.add(0);
     }
-    editIcon = Icon(Icons.edit, color: color,);
+    editIcon = Icon(Icons.edit, color: textColor,);
     rectColor = color;
+    text = textColor;
   }
 
   return Column(
@@ -228,8 +231,7 @@ Widget defaultSearchScreen(Color color,
                   style: ElevatedButton.styleFrom(
                       elevation: 0,
                       padding: const EdgeInsets.all(6),
-                      backgroundColor: WHITE,
-                      side: const BorderSide(width: 1.2, color: WHITE),
+                      backgroundColor: rectColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)
                       )
@@ -280,9 +282,10 @@ Widget defaultSearchScreen(Color color,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              comfortatext(split["name"], 25 * getFontSize(settings["Font size"]!), settings, color: textColor),
+                              comfortatext(split["name"], 25 * getFontSize(settings["Font size"]!), settings,
+                                  color: text),
                               comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 18
-                                  * getFontSize(settings["Font size"]!), settings, color: textColor)
+                                  * getFontSize(settings["Font size"]!), settings, color: text)
                             ],
                           ),
                         ),
@@ -309,15 +312,15 @@ Widget defaultSearchScreen(Color color,
 
 Widget recommendSearchScreen(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller, List<String> favorites,
-    Function updateFav, var settings) {
+    Function updateFav, var settings, textColor) {
   List<Icon> icons = [];
 
   for (String n in recommend) {
     if (favorites.contains(n)) {
-      icons.add(const Icon(Icons.favorite, color: WHITE,),);
+      icons.add(Icon(Icons.favorite, color: textColor,),);
     }
     else{
-      icons.add(const Icon(Icons.favorite_border, color: WHITE,),);
+      icons.add(Icon(Icons.favorite_border, color: textColor,),);
     }
   }
 
@@ -350,8 +353,10 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      comfortatext(split["name"], 25 * getFontSize(settings["Font size"]), settings),
-                      comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 18 * getFontSize(settings["Font size"]), settings)
+                      comfortatext(split["name"], 25 * getFontSize(settings["Font size"]),
+                          settings, color: textColor),
+                      comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 18 * getFontSize(settings["Font size"]),
+                          settings, color: textColor)
                       //comfortatext(split[0], 23)
                     ],
                   ),
