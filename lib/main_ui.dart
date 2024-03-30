@@ -352,8 +352,8 @@ Widget NewTimes(var data, bool divider) => Column(
         child: Padding(
             padding: const EdgeInsets.only(top: 6, right: 30, left: 30, bottom: 10),
             child: Container(
-              height: 1.2,
-              color: data.current.textcolor,
+              height: 2,
+              color: data.current.highlight,
             ),
         ),
       ),

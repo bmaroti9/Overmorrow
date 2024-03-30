@@ -244,7 +244,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                             child: Container(
                               decoration: BoxDecoration(
                                 color: secondary,
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(18),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 10, right: 4),
@@ -282,6 +282,9 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
 
     Color d_color = settings["Color mode"] == "colorful" ? darken(color, 0.4) : textcolor;
+    if (settings["Color mode"] == "dark") {
+      d_color = darken(textcolor, 0.4);
+    }
     return Drawer(
       backgroundColor: color,
       elevation: 0,

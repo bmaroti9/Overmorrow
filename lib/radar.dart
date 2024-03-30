@@ -70,15 +70,14 @@ class _RadarMapState extends State<RadarMap> {
 
   @override
   Widget build(BuildContext context) {
-    Color main = data.current.primary;
-    Color top = data.current.textcolor;
     return Column(
       children: [
         Padding(
           padding: EdgeInsets.only(left: 20, bottom: 0),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: comfortatext(translation('radar', data.settings["Language"]), 20, data.settings, color: WHITE),
+            child: comfortatext(translation('radar', data.settings["Language"]), 20, data.settings,
+            color: data.current.textcolor),
           ),
         ),
         Padding(
@@ -89,7 +88,7 @@ class _RadarMapState extends State<RadarMap> {
               decoration: BoxDecoration(
                   color: WHITE,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(width: 1, color: WHITE)
+                  border: Border.all(width: 1.2, color: data.current.secondary)
               ),
               child: Stack(
                 children: [
@@ -142,7 +141,7 @@ class _RadarMapState extends State<RadarMap> {
                             style: ElevatedButton.styleFrom(
                               elevation: 10,
                               padding: const EdgeInsets.all(10),
-                              backgroundColor: top,
+                              backgroundColor: data.current.backcolor,
                               //side: BorderSide(width: 3, color: main),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20)
@@ -154,7 +153,7 @@ class _RadarMapState extends State<RadarMap> {
                                 MaterialPageRoute(builder: (context) => RadarPage(data: data,)),
                               );
                             },
-                            child: Icon(Icons.open_in_full, color: main, size: 25,),
+                            child: Icon(Icons.open_in_full, color: data.current.primary, size: 25,),
                           ),
                         ),
                       ),
@@ -184,8 +183,7 @@ class _RadarMapState extends State<RadarMap> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(10),
-                          backgroundColor: WHITE,
-                          side: const BorderSide(width: 1.2, color: WHITE),
+                          backgroundColor: data.current.secondary,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)
                           )
@@ -210,13 +208,13 @@ class _RadarMapState extends State<RadarMap> {
                             width: constraints.maxWidth,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                border: Border.all(width: 1.2, color: WHITE)),
+                                border: Border.all(width: 1.2, color: data.current.secondary)),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(18),
                               child: Stack(
                                 children: [
                                   Container(
-                                    color: WHITE,
+                                    color: data.current.secondary,
                                     width: constraints.maxWidth *
                                         (max(currentFrameIndex - 1, 0) / data.radar.images.length),
                                   ),
@@ -226,7 +224,7 @@ class _RadarMapState extends State<RadarMap> {
                                         SizeTransition(sizeFactor: animation, axis: Axis.horizontal, child: child),
                                     child: Container(
                                       key: ValueKey<int>(currentFrameIndex),
-                                      color: WHITE,
+                                      color: data.current.secondary,
                                       width: constraints.maxWidth *
                                           (currentFrameIndex / data.radar.images.length),
                                     ),
@@ -300,7 +298,7 @@ class _RadarPageState extends State<RadarPage> {
   Widget build(BuildContext context) {
     double x = MediaQuery.of(context).padding.top;
     Color main = data.current.textcolor;
-    Color top = data.current.backcolor;
+    Color top = lighten(data.current.highlight, 0.1);
     return Stack(
       children: [
         FlutterMap(

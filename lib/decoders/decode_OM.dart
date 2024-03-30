@@ -177,19 +177,19 @@ class OMCurrent {
 
     if (settings["Color mode"] == "light") {
       colors = [ //backcolor, primary, text
-        WHITE,
+        const Color(0xffefeeee),
         primary,
         darken(primary, 0.1),
         WHITE,
         primary,
-        const Color(0xffe6e6e6)
+        const Color(0xffe4e2e2)
       ];
     }
     else if (settings["Color mode"] == "dark") {
       colors = [ //backcolor, primary, text
         BLACK,
         primary,
-        primary,
+        lighten(primary, 0.2),
         BLACK,
         primary,
         const Color(0xff161616)
