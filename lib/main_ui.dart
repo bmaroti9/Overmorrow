@@ -185,7 +185,8 @@ Widget NewTimes(var data, bool divider) => Column(
               padding: const EdgeInsets.only(left: 15, bottom: 10),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: comfortatext(translation('sunrise/sunset', data.settings["Language"]), 20, data.settings, color: WHITE),
+                child: comfortatext(translation('sunrise/sunset', data.settings["Language"]), 20, data.settings,
+                    color: data.current.textcolor),
               ),
             ),
             Center(
@@ -195,30 +196,30 @@ Widget NewTimes(var data, bool divider) => Column(
                   height: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(width: 1.2, color: WHITE)
+                    border: Border.all(width: 1.2, color: data.current.secondary)
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(18),
                     child: Stack(
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
                             padding: EdgeInsets.only(left: 20),
-                            child: Icon(CupertinoIcons.sunrise, color: WHITE,),
+                            child: Icon(CupertinoIcons.sunrise, color: data.current.secondary,),
                           ),
                         ),
-                        const Align(
+                        Align(
                           alignment: Alignment.centerRight,
                           child: Padding(
                             padding: EdgeInsets.only(right: 20),
-                            child: Icon(CupertinoIcons.sunset, color: WHITE,),
+                            child: Icon(CupertinoIcons.sunset, color: data.current.secondary,),
                           ),
                         ),
                         LayoutBuilder(
                           builder: (BuildContext context, BoxConstraints constraints) {
                             return Container(
-                              color: WHITE,
+                              color: data.current.secondary,
                               height: constraints.maxHeight,
                               width: constraints.maxWidth * data.sunstatus.sunstatus,
                               child: Stack(
@@ -255,7 +256,7 @@ Widget NewTimes(var data, bool divider) => Column(
                       width: 90,
                         child: Align(
                           alignment: Alignment.center,
-                            child: comfortatext(data.sunstatus.sunrise, 18, data.settings,  color: WHITE)
+                            child: comfortatext(data.sunstatus.sunrise, 18, data.settings,  color: data.current.textcolor)
                         )
                     )
                   ),
@@ -265,7 +266,7 @@ Widget NewTimes(var data, bool divider) => Column(
                         width: 90,
                           child: Align(
                             alignment: Alignment.center,
-                              child: comfortatext(data.sunstatus.sunset, 18, data.settings, color: WHITE)
+                              child: comfortatext(data.sunstatus.sunset, 18, data.settings, color: data.current.textcolor)
                           )
                       )
                   )
@@ -283,14 +284,15 @@ Widget NewTimes(var data, bool divider) => Column(
               padding: const EdgeInsets.only(bottom: 10),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: comfortatext(translation('air quality', data.settings["Language"]), 20, data.settings, color: WHITE),
+                child: comfortatext(translation('air quality', data.settings["Language"]), 20, data.settings,
+                    color: data.current.textcolor),
               ),
             ),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                //border: Border.all(width: 1.2, color: WHITE)
-                color: darken(data.current.backcolor)
+                //border: Border.all(width: 1.2, color: data.current.textcolor)
+                color: data.current.highlight
               ),
               padding: const EdgeInsets.all(13),
               child: Row(
@@ -301,7 +303,7 @@ Widget NewTimes(var data, bool divider) => Column(
                         height: 85,
                         width: 85,
                         decoration: BoxDecoration(
-                          color: WHITE,
+                          color: data.current.secondary,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Center(
@@ -321,8 +323,8 @@ Widget NewTimes(var data, bool divider) => Column(
                               child: comfortatext(
                             translation(['good', 'moderate', 'slightly unhealthy',
                               'unhealthy', 'very unhealthy',
-                              'hazardous'][data.aqi.aqi_index - 1], data.settings["Language"]), 16, data.settings, color: WHITE,
-                              align: TextAlign.center)
+                              'hazardous'][data.aqi.aqi_index - 1], data.settings["Language"]), 16, data.settings,
+                                  color: data.current.textcolor, align: TextAlign.center)
                           ),
                         ),
                       ),
@@ -331,10 +333,10 @@ Widget NewTimes(var data, bool divider) => Column(
                   Expanded(
                     child: Column(
                       children: [
-                        aqiDataPoints("PM2.5", data.aqi.pm2_5, data.current.backcolor, data.settings),
-                        aqiDataPoints("PM10", data.aqi.pm10, data.current.backcolor, data.settings),
-                        aqiDataPoints("O3", data.aqi.o3, data.current.backcolor, data.settings),
-                        aqiDataPoints("NO2", data.aqi.no2, data.current.backcolor, data.settings),
+                        aqiDataPoints("PM2.5", data.aqi.pm2_5, data),
+                        aqiDataPoints("PM10", data.aqi.pm10, data),
+                        aqiDataPoints("O3", data.aqi.o3, data),
+                        aqiDataPoints("NO2", data.aqi.no2, data),
                       ],
                     ),
                   )
@@ -351,7 +353,7 @@ Widget NewTimes(var data, bool divider) => Column(
             padding: const EdgeInsets.only(top: 6, right: 30, left: 30, bottom: 10),
             child: Container(
               height: 1.2,
-              color: WHITE,
+              color: data.current.textcolor,
             ),
         ),
       ),

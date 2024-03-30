@@ -34,7 +34,7 @@ Map<String, List<String>> settingSwitches = {
   'Rain': ['mm', 'in'],
   'Wind': ['m/s', 'kph', 'mph', 'kn'],
   'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa'],
-  'Color mode' : ['colorfull', 'light', 'dark'],
+  'Color mode' : ['colorful', 'light', 'dark'],
   'Time mode': ['12 hour', '24 hour'],
   'Font size': ['normal', 'small', 'very small', 'big'],
 };
@@ -266,8 +266,9 @@ class MyDrawer extends StatelessWidget {
 
   final color;
   final settings;
+  final textcolor;
 
-  const MyDrawer({super.key, required this.color, required this.settings});
+  const MyDrawer({super.key, required this.color, required this.settings, required this.textcolor});
 
   @override
   Widget build(BuildContext context) {
@@ -279,7 +280,8 @@ class MyDrawer extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: darken(color, 0.5),
+              color: settings["Color mode"] == "colorful" ? darken(color, 0.4)
+              : textcolor,
             ),
             child: Column(
               children: [
@@ -295,8 +297,9 @@ class MyDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: comfortatext(translation('Settings', settings["Language"]), 25, settings),
-            leading: const Icon(Icons.settings, color: WHITE,),
+            title: comfortatext(translation('Settings', settings["Language"]), 25,
+                settings, color: textcolor),
+            leading: Icon(Icons.settings, color: textcolor,),
             onTap: () {
               Navigator.push(
                 context,
@@ -305,8 +308,9 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext(translation('About', settings["Language"]), 25, settings),
-            leading: const Icon(Icons.info_outline, color: WHITE,),
+            title: comfortatext(translation('About', settings["Language"]), 25,
+                settings, color: textcolor),
+            leading: Icon(Icons.info_outline, color: textcolor,),
             onTap: () {
               Navigator.push(
                 context,
@@ -315,8 +319,9 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext(translation('Donate', settings["Language"]), 25, settings),
-            leading: const Icon(Icons.favorite_border, color: WHITE,),
+            title: comfortatext(translation('Donate', settings["Language"]), 25,
+                settings, color: textcolor),
+            leading: Icon(Icons.favorite_border, color: textcolor,),
             onTap: () {
               Navigator.push(
                 context,

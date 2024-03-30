@@ -154,7 +154,7 @@ class DescriptionCircle extends StatelessWidget {
   }
 }
 
-Widget aqiDataPoints(String name, double value, Color color, var settings) {
+Widget aqiDataPoints(String name, double value, var data) {
   return Align(
     alignment: Alignment.centerRight,
     child: LayoutBuilder(
@@ -171,21 +171,21 @@ Widget aqiDataPoints(String name, double value, Color color, var settings) {
             padding: const EdgeInsets.only(left: 10, bottom: 2, top: 2),
             child: Row(
               children: [
-                comfortatext(name, 19, settings),
+                comfortatext(name, 19, data.settings, color: data.current.textcolor),
                 const Spacer(),
                 Container(
                   padding: const EdgeInsets.only(top:3,bottom: 3, left: 3, right: 3),
                   decoration: BoxDecoration(
                       //border: Border.all(color: Colors.blueAccent)
-                    color: WHITE,
+                    color: data.current.textcolor,
                     borderRadius: BorderRadius.circular(10)
                   ),
                   child: Text(
                       value.toString(),
                       style: TextStyle(
-                        color: color
+                        color: data.current.backcolor
                       ),
-                      textScaleFactor: getFontSize(settings["Font size"]) * 1.2
+                      textScaleFactor: getFontSize(data.settings["Font size"]) * 1.2
                   ),
                 )
               ],

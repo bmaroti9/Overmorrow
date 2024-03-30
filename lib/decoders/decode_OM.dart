@@ -134,6 +134,8 @@ class OMCurrent {
   final Color primary;
   final Color colorpop;
   final Color textcolor;
+  final Color secondary;
+  final Color highlight;
 
   const OMCurrent({
     required this.precip,
@@ -148,6 +150,8 @@ class OMCurrent {
     required this.uv,
     required this.wind,
     required this.colorpop,
+    required this.secondary,
+    required this.highlight,
   });
 
   static OMCurrent fromJson(item, settings, sunstatus, timenow) {
@@ -166,23 +170,29 @@ class OMCurrent {
       primary,
       WHITE,
       [back, primary, WHITE][oMColorPopCorrection( oMCurrentTextCorrection(
-          item["current"]["weather_code"], sunstatus, timenow),)]
+          item["current"]["weather_code"], sunstatus, timenow),)],
+      WHITE,
+      darken(back)
     ];
 
     if (settings["Color mode"] == "light") {
       colors = [ //backcolor, primary, text
         WHITE,
         primary,
-        BLACK,
+        darken(primary, 0.1),
         WHITE,
+        primary,
+        const Color(0xffe6e6e6)
       ];
     }
     else if (settings["Color mode"] == "dark") {
       colors = [ //backcolor, primary, text
         BLACK,
         primary,
-        WHITE,
-        BLACK
+        primary,
+        BLACK,
+        primary,
+        const Color(0xff161616)
       ];
     }
 
@@ -199,6 +209,8 @@ class OMCurrent {
       primary: colors[1],
       textcolor: colors[2],
       colorpop: colors[3],
+      secondary:  colors[4],
+      highlight: colors[5],
 
       backdrop: oMBackdropCorrection(
         oMCurrentTextCorrection(

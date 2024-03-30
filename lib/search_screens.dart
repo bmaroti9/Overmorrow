@@ -410,7 +410,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
               elevation: 0,
               padding: const EdgeInsets.all(10),
               backgroundColor: color,
-              side: BorderSide(width: 1.2, color: textColor),
+              side: BorderSide(width: 1.5, color: textColor),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20)
             )
@@ -455,7 +455,8 @@ class dumbySearch extends StatelessWidget {
     //String newStr = newStr2.replaceAll(owm_Key, replacement);
 
     return Scaffold(
-      drawer: MyDrawer(color: color, settings: settings),
+      drawer: MyDrawer(color: color, settings: settings,
+      textcolor: BLACK),
       backgroundColor: color,
       body: RefreshIndicator(
         onRefresh: () async {
