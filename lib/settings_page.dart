@@ -109,7 +109,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
     elevation: 0,
     underline: Container(),
     dropdownColor: bgcolor,
-    borderRadius: BorderRadius.circular(20),
+    borderRadius: BorderRadius.circular(18),
     icon: const Padding(
       padding: EdgeInsets.only(left:5),
       child: Icon(Icons.arrow_drop_down, color: WHITE,),
@@ -136,17 +136,23 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
 
 class SettingsPage extends StatefulWidget {
   final Color color;
+  final Color textcolor;
+  final Color secondary;
 
-  const SettingsPage({Key? key, required this.color}) : super(key: key);
+  const SettingsPage({Key? key, required this.color, required this.textcolor,
+    required this.secondary}) : super(key: key);
 
   @override
-  _SettingsPageState createState() => _SettingsPageState(color: color);
+  _SettingsPageState createState() => _SettingsPageState(color: color, textcolor: textcolor,
+  secondary: secondary);
 }
 
 class _SettingsPageState extends State<SettingsPage> {
 
   final color;
-  _SettingsPageState({required this.color});
+  final textcolor;
+  final secondary;
+  _SettingsPageState({required this.color, required this.textcolor, required this.secondary});
 
   void updatePage(String name, String to) {
     setState(() {
@@ -180,14 +186,14 @@ class _SettingsPageState extends State<SettingsPage> {
           );
         }
         final co = snapshot.data?[5] == 'high contrast' ? BLACK : color;
-        return SettingsMain(co, snapshot.data, updatePage, goBack);
+        return SettingsMain(co, snapshot.data, updatePage, goBack, textcolor, secondary);
       },
     );
   }
 }
 
 Widget SettingsMain(Color color, Map<String, String>? settings, Function updatePage,
-    Function goBack) {
+    Function goBack, Color textColor, Color secondary) {
   return Scaffold(
       appBar: AppBar(
           toolbarHeight: 65,
@@ -196,7 +202,7 @@ Widget SettingsMain(Color color, Map<String, String>? settings, Function updateP
           ),
           elevation: 0,
           leadingWidth: 50,
-          backgroundColor: darken(color, 0.3),
+          backgroundColor: secondary,
           title: comfortatext(translation('Settings', settings!["Language"]!), 25, settings),
           leading:
           IconButton(
@@ -206,11 +212,12 @@ Widget SettingsMain(Color color, Map<String, String>? settings, Function updateP
             icon: const Icon(Icons.arrow_back, color: WHITE,),
           )
       ),
-      body: settingsMain(color, settings, updatePage),
+      body: settingsMain(color, settings, updatePage, textColor, secondary),
   );
 }
 
-Widget settingsMain(Color color, Map<String, String> settings, Function updatePage) {
+Widget settingsMain(Color color, Map<String, String> settings, Function updatePage,
+    Color textcolor, Color secondary) {
   var entryList = settings.entries.toList();
   return Container(
     padding: const EdgeInsets.only(top: 10, left: 20, right: 10),
@@ -226,7 +233,8 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      comfortatext(translation(entryList[index].key, settings["Language"]!), 23, settings),
+                      comfortatext(translation(entryList[index].key, settings["Language"]!), 23,
+                          settings, color: textcolor),
                       const Spacer(),
                       Align(
                         alignment: Alignment.centerRight,
@@ -235,17 +243,17 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                             alignment: Alignment.center,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: darken(color, 0.10),
+                                color: secondary,
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 10, right: 4),
                                 child: dropdown(
-                                    darken(color, 0.2),
+                                    darken(secondary),
                                     entryList[index].key,
                                     updatePage,
                                     entryList[index].value,
-                                    settings
+                                    settings,
                                 ),
                               ),
                             ),
@@ -272,6 +280,8 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Color d_color = settings["Color mode"] == "colorful" ? darken(color, 0.4) : textcolor;
     return Drawer(
       backgroundColor: color,
       elevation: 0,
@@ -280,8 +290,7 @@ class MyDrawer extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: settings["Color mode"] == "colorful" ? darken(color, 0.4)
-              : textcolor,
+              color: d_color,
             ),
             child: Column(
               children: [
@@ -303,7 +312,8 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SettingsPage(color: color,)),
+                MaterialPageRoute(builder: (context) => SettingsPage(color: color, textcolor: textcolor,
+                secondary: d_color,)),
               );
             },
           ),
