@@ -118,6 +118,7 @@ class _NewMainState extends State<NewMain> {
                 ),
               ),
               NewTimes(data, true),
+              buildHihiDays(data),
               Padding(padding: EdgeInsets.only(bottom: 50))
             ],
           ),
@@ -504,7 +505,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                       ),
                                     ),
                                   ),
-                                  buildHours(day.hourly, data.settings, data.current.accentcolor),
+                                  buildHours(day.hourly, data.settings),
                                 ],
                               );
                             }
