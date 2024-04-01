@@ -402,13 +402,13 @@ Widget buildHihiDays(var data) => ListView.builder(
                               Padding(
                                 padding: const EdgeInsets.only(right: 6),
                                 child: Container(
-                                      padding: const EdgeInsets.only(top:7,bottom: 7, left: 5, right: 5),
+                                      padding: const EdgeInsets.only(top:7,bottom: 7, left: 7, right: 5),
                                       decoration: BoxDecoration(
                                         //border: Border.all(color: Colors.blueAccent)
                                           color: data.current.primary,
                                           borderRadius: BorderRadius.circular(10)
                                       ),
-                                    child: comfortatext(day.minmaxtemp, 17, data.settings, color: data.current.backcolor)
+                                    child: comfortatext(day.minmaxtemp, 18, data.settings, color: data.current.backcolor)
                                 ),
                               )
                               ],
@@ -505,7 +505,7 @@ Widget buildHihiDays(var data) => ListView.builder(
                       ),
                     ),
                   ),
-                  buildHours(day.hourly, data.settings),
+                  buildHours(day.hourly, data),
                 ],
               ),
             );
@@ -654,17 +654,17 @@ Widget buildGlanceDay(var data) => SliverPadding(
   ),
 );
 
-Widget buildHours(List<dynamic> data, Map<String, String> settings) => SizedBox(
+Widget buildHours(List<dynamic> hours, data) => SizedBox(
   height: 290,
   child: ListView(
     physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
     scrollDirection: Axis.horizontal,
-    children: data.map<Widget>((hour) {
+    children: hours.map<Widget>((hour) {
       return Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 10),
-            child: comfortatext('${hour.temp}°', 22, settings),
+            child: comfortatext('${hour.temp}°', 22, data.settings, color: data.current.primary),
           ),
           Stack(
             alignment: Alignment.bottomCenter,
@@ -674,16 +674,16 @@ Widget buildHours(List<dynamic> data, Map<String, String> settings) => SizedBox(
                 height: 100,
                 decoration: BoxDecoration(
                     border: Border.all(
-                      color: WHITE,
+                      color: data.current.secondary,
                     ),
                     borderRadius: const BorderRadius.all(Radius.circular(20))
                 ),
               ),
               Container(
                 width: 15,
-                height: temp_multiply_for_scale(hour.temp, settings['Temperature']!),
-                decoration: const BoxDecoration(
-                    color: WHITE,
+                height: temp_multiply_for_scale(hour.temp, data.settings['Temperature']!),
+                decoration: BoxDecoration(
+                    color: data.current.secondary,
                     borderRadius: BorderRadius.all(Radius.circular(20))
                 ),
               ),
@@ -699,7 +699,7 @@ Widget buildHours(List<dynamic> data, Map<String, String> settings) => SizedBox(
           ),
           Padding(
             padding: const EdgeInsets.only(top:20, left: 9, right: 9),
-            child: comfortatext(hour.time, 17, settings)
+            child: comfortatext(hour.time, 17, data.settings, color: data.current.primary)
           )
         ],
       );

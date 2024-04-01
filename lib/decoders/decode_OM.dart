@@ -181,7 +181,7 @@ class OMCurrent {
         primary,
         darken(primary, 0.1),
         WHITE,
-        primary,
+        darken(primary, 0.1),
         const Color(0xffe4e2e2)
       ];
     }
@@ -189,9 +189,9 @@ class OMCurrent {
       colors = [ //backcolor, primary, text
         BLACK,
         primary,
-        lighten(primary, 0.2),
+        lighten(primary, 0.1),
         BLACK,
-        primary,
+        WHITE,
         const Color(0xff161616)
       ];
     }

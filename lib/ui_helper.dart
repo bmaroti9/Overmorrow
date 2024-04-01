@@ -49,7 +49,7 @@ double getFontSize(String set) {
 }
 
 Widget comfortatext(String text, double size, settings,
-    {Color color = WHITE, TextAlign align = TextAlign.left, weight = FontWeight.w300}) {
+    {Color color = WHITE, TextAlign align = TextAlign.left, weight = FontWeight.w400}) {
 
   double x = getFontSize(settings["Font size"]);
   return Text(
@@ -171,7 +171,8 @@ Widget aqiDataPoints(String name, double value, var data) {
             padding: const EdgeInsets.only(left: 10, bottom: 2, top: 2),
             child: Row(
               children: [
-                comfortatext(name, 19, data.settings, color: data.current.textcolor),
+                comfortatext(name, 19, data.settings, color: data.current.textcolor,
+                weight: FontWeight.w500),
                 const Spacer(),
                 Container(
                   padding: const EdgeInsets.only(top:3,bottom: 3, left: 3, right: 3),

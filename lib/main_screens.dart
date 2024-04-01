@@ -86,7 +86,7 @@ class _NewMainState extends State<NewMain> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0, bottom: 5),
                           child: comfortatext("${data.current.temp}°", 65, data.settings,
-                              color: data.current.colorpop),
+                              color: data.current.colorpop, weight: FontWeight.w300),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 0),
@@ -505,7 +505,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                       ),
                                     ),
                                   ),
-                                  buildHours(day.hourly, data.settings),
+                                  buildHours(day.hourly, data),
                                 ],
                               );
                             }
