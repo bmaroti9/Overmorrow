@@ -34,7 +34,7 @@ Map<String, List<String>> settingSwitches = {
   'Rain': ['mm', 'in'],
   'Wind': ['m/s', 'kph', 'mph', 'kn'],
   'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa'],
-  'Color mode' : ['colorful', 'light', 'dark'],
+  'Color mode' : ['original', 'colorful', 'light', 'dark'],
   'Time mode': ['12 hour', '24 hour'],
   'Font size': ['normal', 'small', 'very small', 'big'],
 };
@@ -281,7 +281,9 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    Color d_color = settings["Color mode"] == "colorful" ? darken(color, 0.4) : textcolor;
+    Color d_color = settings["Color mode"] == "colorful" || settings["Color mode"] == "original"
+        ? darken(color, 0.4)
+        : textcolor;
     if (settings["Color mode"] == "dark") {
       d_color = darken(textcolor, 0.4);
     }

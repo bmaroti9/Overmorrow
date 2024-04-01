@@ -165,17 +165,29 @@ class OMCurrent {
           item["current"]["weather_code"], sunstatus, timenow),
     );
 
-    List<Color> colors = [ //default colorful option
-      back,
+    List<Color> colors = [ //original colorful option
       primary,
+      back,
       WHITE,
       [back, primary, WHITE][oMColorPopCorrection( oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),)],
       WHITE,
-      darken(back)
+      darken(primary)
     ];
 
-    if (settings["Color mode"] == "light") {
+    if (settings["Color mode"] == "colorful") {
+      colors = [ //default colorful option
+        back,
+        primary,
+        WHITE,
+        [back, primary, WHITE][oMColorPopCorrection( oMCurrentTextCorrection(
+            item["current"]["weather_code"], sunstatus, timenow),)],
+        WHITE,
+        darken(back)
+      ];
+    }
+
+    else if (settings["Color mode"] == "light") {
       colors = [ //backcolor, primary, text
         const Color(0xffefeeee),
         primary,
