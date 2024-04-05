@@ -204,14 +204,14 @@ Widget aqiDataPoints(String name, double value, var data) {
   );
 }
 
-Widget RainWidget(settings, day) {
+Widget RainWidget(data, day) {
   List<dynamic> hours = day.hourly_for_precip;
 
-  List<double> data = [];
+  List<double> precip = [];
 
   for (var i = 0; i < hours.length; i+= 2) {
     double x = min(round((hours[i].precip + hours[i + 1].precip) * 4, decimals: 0) / 2, 10);
-    data.add(x);
+    precip.add(x);
   }
 
   return Column(
@@ -232,7 +232,7 @@ Widget RainWidget(settings, day) {
                       borderRadius: BorderRadius.circular(18),
                       child: Padding(
                         padding: const EdgeInsets.all(6),
-                        child: MyChart(data),
+                        child: MyChart(precip, data),
                       )
                   ),
                 ),
@@ -246,14 +246,14 @@ Widget RainWidget(settings, day) {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: 3,
                   itemBuilder: (context, index) {
-                    if (settings["Rain"] == 'in') {
+                    if (data.settings["Rain"] == 'in') {
                       return Padding(
                         padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            comfortatext((index * 0.2).toStringAsFixed(1), 17, settings),
-                            comfortatext('in', 12, settings),
+                            comfortatext((index * 0.2).toStringAsFixed(1), 17, data.settings),
+                            comfortatext('in', 12, data.settings),
                           ],
                         ),
                       );
@@ -264,8 +264,8 @@ Widget RainWidget(settings, day) {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            comfortatext((index * 5).toString(), 17, settings),
-                            comfortatext('mm', 12, settings),
+                            comfortatext((index * 5).toString(), 17, data.settings),
+                            comfortatext('mm', 12, data.settings),
                           ],
                         ),
                       );
@@ -278,23 +278,23 @@ Widget RainWidget(settings, day) {
       Padding(
           padding: const EdgeInsets.only(left: 33, top: 0, right: 70, bottom: 15),
           child: Visibility(
-            visible: settings["Time mode"] == "24 hour",
+            visible: data.settings["Time mode"] == "24 hour",
             replacement: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  comfortatext("3am", 14, settings),
-                  comfortatext("9am", 14, settings),
-                  comfortatext("3pm", 14, settings),
-                  comfortatext("9pm", 14, settings),
+                  comfortatext("3am", 14,data. settings),
+                  comfortatext("9am", 14, data.settings),
+                  comfortatext("3pm", 14, data.settings),
+                  comfortatext("9pm", 14, data.settings),
                 ]
             ),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  comfortatext("3:00", 14, settings),
-                  comfortatext("9:00", 14, settings),
-                  comfortatext("15:00", 14, settings),
-                  comfortatext("21:00", 14, settings),
+                  comfortatext("3:00", 14, data.settings),
+                  comfortatext("9:00", 14, data.settings),
+                  comfortatext("15:00", 14, data.settings),
+                  comfortatext("21:00", 14, data.settings),
                 ]
             ),
           )
@@ -304,43 +304,45 @@ Widget RainWidget(settings, day) {
 }
 
 class MyChart extends StatelessWidget {
-  final List<double> data; // Sample data for the chart
+  final List<double> precip; // Sample data for the chart
+  final data;
 
-  const MyChart(this.data, {super.key});
+  const MyChart(this.precip, this.data, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: BarChartPainter(data),
+      painter: BarChartPainter(precip, data),
     );
   }
 }
 
 class BarChartPainter extends CustomPainter {
-  final List<double> data;
+  final List<double> precip;
+  final data;
 
-  BarChartPainter(this.data);
+  BarChartPainter(this.precip, this.data);
 
   @override
   void paint(Canvas canvas, Size size) {
 
     Paint paint = Paint()
-      ..color = WHITE
+      ..color = data.current.primary
       ..style = PaintingStyle.fill;
 
     double maxValue = 10;
     double scaleY = size.height / maxValue;
 
-    int numberOfBars = data.length; // get rid of the extra data points
+    int numberOfBars = precip.length; // get rid of the extra precip points
     double totalWidth = size.width; // Subtract padding
     double barWidth = totalWidth / numberOfBars;
 
     for (int i = 0; i < numberOfBars; i++) {
-      double barHeight = data[i] * scaleY;
+      double barHeight = precip[i] * scaleY;
       double x = i * barWidth; // Add half of the remaining padding
       double y = size.height - barHeight;
 
-      double topRadius = 6.0; // Adjust the radius for the desired rounding
+      double topRadius = 6.0;
 
       RRect roundedRect = RRect.fromLTRBR(
         x + barWidth * 0.1,

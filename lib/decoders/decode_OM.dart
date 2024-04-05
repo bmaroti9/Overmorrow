@@ -193,15 +193,15 @@ class OMCurrent {
         primary,
         lightAccent(primary, 20000),
         WHITE,
-        darken(primary, 0.1),
-        lighten(lightAccent(primary, 80000)),
+        primary,
+        lighten(lightAccent(primary, 40000), 0.3),
       ];
     }
     else if (settings["Color mode"] == "dark") {
       colors = [ //backcolor, primary, text
         BLACK,
         lighten(primary),
-        lightAccent(primary, 40000),
+        lighten(lightAccent(primary, 30000), 0.3),
         BLACK,
         WHITE,
         const Color(0xff161616)
