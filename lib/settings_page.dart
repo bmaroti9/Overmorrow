@@ -285,7 +285,7 @@ class MyDrawer extends StatelessWidget {
         ? darken(color, 0.4)
         : textcolor;
     if (settings["Color mode"] == "dark") {
-      d_color = darken(textcolor, 0.4);
+      d_color = darken(textcolor, 0.1);
     }
     return Drawer(
       backgroundColor: color,

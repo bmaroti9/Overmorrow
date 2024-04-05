@@ -120,7 +120,8 @@ class _NewMainState extends State<NewMain> {
               NewTimes(data, true),
               buildHihiDays(data),
               buildGlanceDay(data),
-              Padding(padding: EdgeInsets.only(bottom: 50))
+              providerSelector(data, updateLocation),
+              Padding(padding: EdgeInsets.only(bottom: 20))
             ],
           ),
           if (isLoading) _buildLoadingWidget()

@@ -20,6 +20,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
 import 'package:overmorrow/main_screens.dart';
 import 'package:overmorrow/radar.dart';
@@ -706,4 +707,52 @@ Widget buildHours(List<dynamic> hours, data) => SizedBox(
   ),
 );
 
-
+Widget providerSelector(data, updateLocation) {
+  return Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: data.current.highlight
+          //border: Border.all(color: WHITE, width: 1.2)
+      ),
+      child: Column(
+        children: [
+          comfortatext(translation('Weather provider', data.settings["Language"]), 18, data.settings),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: DropdownButton(
+              underline: Container(),
+              borderRadius: BorderRadius.circular(20),
+              icon: const Padding(
+                padding: EdgeInsets.only(left:5),
+                child: Icon(Icons.arrow_drop_down_circle, color: WHITE,),
+              ),
+              style: GoogleFonts.comfortaa(
+                color: WHITE,
+                fontSize: 20 * getFontSize(data.settings["Font size"]),
+                fontWeight: FontWeight.w300,
+              ),
+              //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
+              value: data.provider.toString(),
+              items: ['weatherapi.com', 'open-meteo'].map((item) {
+                return DropdownMenuItem(
+                  value: item,
+                  child: Text(item),
+                );
+              }).toList(),
+              onChanged: (String? value) async {
+                SetData('weather_provider', value!);
+                await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
+              },
+              isExpanded: true,
+              dropdownColor: darken(data.current.backcolor, 0.1),
+              elevation: 0,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}

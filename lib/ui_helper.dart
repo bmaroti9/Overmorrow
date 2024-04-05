@@ -83,6 +83,12 @@ Color darken(Color color, [double amount = .1]) {
   return hslDark.toColor();
 }
 
+Color lightAccent(Color color, int intensity) {
+  double x = intensity / (color.red + color.green + color.blue);
+  print((x, (color.red * x).toInt(), (color.green * x).toInt(), (color.blue * x).toInt()));
+  return Color.fromRGBO(sqrt(color.red * x).toInt(), sqrt(color.green * x).toInt(), sqrt(color.blue * x).toInt(), 1);
+}
+
 class DescriptionCircle extends StatelessWidget {
 
   final String text;
