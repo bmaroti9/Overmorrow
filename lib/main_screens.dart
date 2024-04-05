@@ -119,6 +119,7 @@ class _NewMainState extends State<NewMain> {
               ),
               NewTimes(data, true),
               buildHihiDays(data),
+              buildGlanceDay(data),
               Padding(padding: EdgeInsets.only(bottom: 50))
             ],
           ),

@@ -89,7 +89,7 @@ Widget searchBar(Color color, List<String> recommend,
       iconColor: secondColor,
       backdropColor: darken(color, 0.2),
       closeOnBackdropTap: true,
-      transition: CircularFloatingSearchBarTransition(),
+      transition: SlideFadeFloatingSearchBarTransition(),
       automaticallyImplyBackButton: false,
       leadingActions: [
         FloatingSearchBarAction(
