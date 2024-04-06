@@ -148,10 +148,10 @@ class DescriptionCircle extends StatelessWidget {
           ),
         Center(
           child: Container(
-            padding: const EdgeInsets.only(top:5),
+            padding: const EdgeInsets.only(top:7),
             width: width + 8,
             height: height * bottom,
-            child: comfortatext(undercaption, small_font, settings, align: TextAlign.center, color: color, weight: FontWeight.w500)
+            child: comfortatext(undercaption, size / 28, settings, align: TextAlign.center, color: color, weight: FontWeight.w500)
           )
         )
       ]
@@ -181,19 +181,14 @@ Widget aqiDataPoints(String name, double value, var data) {
                 weight: FontWeight.w500),
                 const Spacer(),
                 Container(
-                  padding: const EdgeInsets.only(top:3,bottom: 3, left: 3, right: 3),
+                  padding: const EdgeInsets.only(top:5,bottom: 3, left: 4, right: 4),
                   decoration: BoxDecoration(
                       //border: Border.all(color: Colors.blueAccent)
-                    color: data.current.textcolor,
+                    color: data.current.primary,
                     borderRadius: BorderRadius.circular(10)
                   ),
-                  child: Text(
-                      value.toString(),
-                      style: TextStyle(
-                        color: data.current.backcolor
-                      ),
-                      textScaleFactor: getFontSize(data.settings["Font size"]) * 1.2
-                  ),
+                  child: comfortatext(value.toString(), 16, data.settings,
+                      color: data.current.highlight)
                 )
               ],
             ),

@@ -257,7 +257,8 @@ Widget NewTimes(var data, bool divider) => Column(
                       width: 90,
                         child: Align(
                           alignment: Alignment.center,
-                            child: comfortatext(data.sunstatus.sunrise, 18, data.settings,  color: data.current.textcolor)
+                            child: comfortatext(data.sunstatus.sunrise, 18, data.settings,
+                                color: data.current.textcolor)
                         )
                     )
                   ),
@@ -267,7 +268,8 @@ Widget NewTimes(var data, bool divider) => Column(
                         width: 90,
                           child: Align(
                             alignment: Alignment.center,
-                              child: comfortatext(data.sunstatus.sunset, 18, data.settings, color: data.current.textcolor)
+                              child: comfortatext(data.sunstatus.sunset, 18, data.settings,
+                                  color: data.current.textcolor)
                           )
                       )
                   )
@@ -304,7 +306,7 @@ Widget NewTimes(var data, bool divider) => Column(
                         height: 85,
                         width: 85,
                         decoration: BoxDecoration(
-                          color: data.current.secondary,
+                          color: data.current.primary,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Center(

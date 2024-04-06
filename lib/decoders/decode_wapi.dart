@@ -37,6 +37,10 @@ String amPmTime(String time) {
   if (splited[1] == 'PM') {
     atEnd = 'pm';
   }
+  if (minute < 10) {
+    return "$hour:0$minute$atEnd";
+  }
+
   return "$hour:$minute$atEnd";
 }
 
