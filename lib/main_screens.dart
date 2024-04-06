@@ -56,8 +56,8 @@ class _NewMainState extends State<NewMain> {
 
     return Scaffold(
       backgroundColor: data.current.backcolor,
-      drawer: MyDrawer(color: data.current.backcolor, settings: data.settings,
-        textcolor: data.current.textcolor,),
+      drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
+      settings: data.settings),
       body: Stack(
         children: [
           StretchyHeader.listView(
@@ -160,8 +160,8 @@ Widget PhoneLayout(data, updateLocation, context) {
 
   return Scaffold(
     backgroundColor: data.current.backcolor,
-    drawer: MyDrawer(color: data.current.backcolor, settings: data.settings,
-    textcolor: data.current.textcolor,),
+    drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
+        settings: data.settings),
     body: RefreshIndicator(
       onRefresh: () async {
         await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
@@ -303,8 +303,8 @@ Widget TabletLayout(data, updateLocation, context) {
 
   return Scaffold(
     backgroundColor: data.current.backcolor,
-    drawer: MyDrawer(color: data.current.backcolor, settings: data.settings,
-    textcolor: data.current.textcolor,),
+    drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
+        settings: data.settings),
     body: RefreshIndicator(
       onRefresh: () async {
         await updateLocation("${data.lat}, ${data.lng}", data.real_loc);

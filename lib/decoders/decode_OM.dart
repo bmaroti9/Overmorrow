@@ -137,6 +137,9 @@ class OMCurrent {
   final Color secondary;
   final Color highlight;
 
+  final Color backup_primary;
+  final Color backup_backcolor;
+
   const OMCurrent({
     required this.precip,
     required this.primary,
@@ -152,6 +155,8 @@ class OMCurrent {
     required this.colorpop,
     required this.secondary,
     required this.highlight,
+    required this.backup_backcolor,
+    required this.backup_primary,
   });
 
   static OMCurrent fromJson(item, settings, sunstatus, timenow) {
@@ -224,6 +229,9 @@ class OMCurrent {
       colorpop: colors[3],
       secondary:  colors[4],
       highlight: colors[5],
+
+      backup_backcolor: back,
+      backup_primary: primary,
 
       backdrop: oMBackdropCorrection(
         oMCurrentTextCorrection(

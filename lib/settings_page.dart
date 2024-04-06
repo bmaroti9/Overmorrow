@@ -45,6 +45,31 @@ String translation(String text, String language) {
   return translated;
 }
 
+List<Color> getColors(primary, back, settings) {
+  Color textcolor = WHITE;
+  Color color = primary;
+  Color d_color = darken(primary, 0.2);
+
+  if (settings?["Color mode"] == "colorful") {
+    color = back;
+    d_color = darken(back, 0.2);
+  }
+
+  if (settings?["Color mode"] == "light") {
+    textcolor = lightAccent(primary, 20000);
+    color = const Color(0xffeeeeee);
+    d_color = primary;
+  }
+
+  else if (settings?["Color mode"] == "dark") {
+    textcolor = lighten(lightAccent(primary, 30000), 0.3);
+    color = BLACK;
+    d_color = primary;
+  }
+
+  return [color, d_color, textcolor];
+}
+
 Future<Map<String, String>> getSettingsUsed() async {
   Map<String, String> settings = {};
   for (var v in settingSwitches.entries) {
@@ -135,24 +160,22 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
 
 
 class SettingsPage extends StatefulWidget {
-  final Color color;
-  final Color textcolor;
-  final Color secondary;
 
-  const SettingsPage({Key? key, required this.color, required this.textcolor,
-    required this.secondary}) : super(key: key);
+  final primary;
+  final back;
+
+  const SettingsPage({Key? key, required this.back, required this.primary,}) : super(key: key);
 
   @override
-  _SettingsPageState createState() => _SettingsPageState(color: color, textcolor: textcolor,
-  secondary: secondary);
+  _SettingsPageState createState() => _SettingsPageState(back: back, primary: primary);
 }
 
 class _SettingsPageState extends State<SettingsPage> {
 
-  final color;
-  final textcolor;
-  final secondary;
-  _SettingsPageState({required this.color, required this.textcolor, required this.secondary});
+  final primary;
+  final back;
+
+  _SettingsPageState({required this.primary, required this.back});
 
   void updatePage(String name, String to) {
     setState(() {
@@ -178,22 +201,24 @@ class _SettingsPageState extends State<SettingsPage> {
       builder: (BuildContext context,
           AsyncSnapshot<Map<String, String>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return Scaffold(backgroundColor: color,);
+          return Scaffold(backgroundColor: WHITE,);
         } else if (snapshot.hasError) {
           print(snapshot.error);
           return Center(
             child: ErrorWidget(snapshot.error as Object),
           );
         }
-        final co = snapshot.data?[5] == 'high contrast' ? BLACK : color;
-        return SettingsMain(co, snapshot.data, updatePage, goBack, textcolor, secondary);
+        return SettingsMain(primary, snapshot.data, updatePage, goBack, back);
       },
     );
   }
 }
 
-Widget SettingsMain(Color color, Map<String, String>? settings, Function updatePage,
-    Function goBack, Color textColor, Color secondary) {
+Widget SettingsMain(Color primary, Map<String, String>? settings, Function updatePage,
+    Function goBack, Color back) {
+
+  List<Color> colors = getColors(primary, back, settings);
+
   return Scaffold(
       appBar: AppBar(
           toolbarHeight: 65,
@@ -202,7 +227,7 @@ Widget SettingsMain(Color color, Map<String, String>? settings, Function updateP
           ),
           elevation: 0,
           leadingWidth: 50,
-          backgroundColor: secondary,
+          backgroundColor: colors[1],
           title: comfortatext(translation('Settings', settings!["Language"]!), 25, settings),
           leading:
           IconButton(
@@ -212,7 +237,7 @@ Widget SettingsMain(Color color, Map<String, String>? settings, Function updateP
             icon: const Icon(Icons.arrow_back, color: WHITE,),
           )
       ),
-      body: settingsMain(color, settings, updatePage, textColor, secondary),
+      body: settingsMain(colors[0], settings, updatePage, colors[2], colors[1]),
   );
 }
 
@@ -272,75 +297,71 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
 
 class MyDrawer extends StatelessWidget {
 
-  final color;
+  final primary;
+  final back;
   final settings;
-  final textcolor;
 
-  const MyDrawer({super.key, required this.color, required this.settings, required this.textcolor});
+  const MyDrawer({super.key, required this.settings, required this.primary, required this.back});
 
   @override
   Widget build(BuildContext context) {
 
-    Color d_color = settings["Color mode"] == "colorful" || settings["Color mode"] == "original"
-        ? darken(color, 0.4)
-        : textcolor;
-    if (settings["Color mode"] == "dark") {
-      d_color = darken(textcolor, 0.1);
-    }
+    List<Color> colors = getColors(primary, back, settings);
+
     return Drawer(
-      backgroundColor: color,
+      backgroundColor: colors[0],
       elevation: 0,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: d_color,
+              color: colors[1],
             ),
             child: Column(
               children: [
                 Align(
                     alignment: Alignment.center,
-                    child: comfortatext('Overmorrow', 30, settings, color: color)
+                    child: comfortatext('Overmorrow', 30, settings, color: colors[0])
                 ),
                 Align(
                   alignment: Alignment.centerRight,
-                    child: comfortatext('Weather', 30, settings, color: color)
+                    child: comfortatext('Weather', 30, settings, color: colors[0])
                 ),
               ],
             ),
           ),
           ListTile(
             title: comfortatext(translation('Settings', settings["Language"]), 25,
-                settings, color: textcolor),
-            leading: Icon(Icons.settings, color: textcolor,),
+                settings, color: colors[2]),
+            leading: Icon(Icons.settings, color: colors[2],),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SettingsPage(color: color, textcolor: textcolor,
-                secondary: d_color,)),
+                MaterialPageRoute(builder: (context) => SettingsPage(primary: primary,
+                    back: back)),
               );
             },
           ),
           ListTile(
             title: comfortatext(translation('About', settings["Language"]), 25,
-                settings, color: textcolor),
-            leading: Icon(Icons.info_outline, color: textcolor,),
+                settings, color: colors[2]),
+            leading: Icon(Icons.info_outline, color: colors[2],),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => InfoPage(color: color, settings: settings,)),
+                MaterialPageRoute(builder: (context) => InfoPage(color: colors[0], settings: settings,)),
               );
             },
           ),
           ListTile(
             title: comfortatext(translation('Donate', settings["Language"]), 25,
-                settings, color: textcolor),
-            leading: Icon(Icons.favorite_border, color: textcolor,),
+                settings, color: colors[2]),
+            leading: Icon(Icons.favorite_border, color: colors[2],),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DonationPage(color: color, settings: settings,)),
+                MaterialPageRoute(builder: (context) => DonationPage(color: colors[0], settings: settings,)),
               );
             },
           ),

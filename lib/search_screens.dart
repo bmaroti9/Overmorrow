@@ -460,8 +460,8 @@ class dumbySearch extends StatelessWidget {
     //String newStr = newStr2.replaceAll(owm_Key, replacement);
 
     return Scaffold(
-      drawer: MyDrawer(color: color, settings: settings,
-      textcolor: BLACK),
+      drawer: MyDrawer(primary: color, settings: settings,
+      back: WHITE),
       backgroundColor: color,
       body: RefreshIndicator(
         onRefresh: () async {
