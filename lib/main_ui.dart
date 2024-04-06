@@ -547,7 +547,7 @@ Widget buildGlanceDay(var data) => Padding(
                     width: 75,
                     decoration: BoxDecoration(
                         color: data.current.highlight,
-                        borderRadius: BorderRadius.circular(20)
+                        borderRadius: BorderRadius.circular(20),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -570,7 +570,7 @@ Widget buildGlanceDay(var data) => Padding(
                       height: 75,
                       width: 50,
                       decoration: BoxDecoration(
-                          color: data.current.textcolor,
+                          color: data.current.primary,
                           borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -725,9 +725,9 @@ Widget providerSelector(data, updateLocation) {
             child: DropdownButton(
               underline: Container(),
               borderRadius: BorderRadius.circular(20),
-              icon: const Padding(
-                padding: EdgeInsets.only(left:5),
-                child: Icon(Icons.arrow_drop_down_circle, color: WHITE,),
+              icon: Padding(
+                padding: const EdgeInsets.only(left:5),
+                child: Icon(Icons.arrow_drop_down_circle, color: data.current.primary,),
               ),
               style: GoogleFonts.comfortaa(
                 color: WHITE,

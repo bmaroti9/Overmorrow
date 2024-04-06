@@ -107,8 +107,8 @@ Color oMPrimaryColorCorrection(String text) {
   return textBackColor[text] ?? BLACK;
 }
 
-int oMColorPopCorrection(String text) {
-  return colorPop[text] ?? 0;
+List<int> oMColorPopCorrection(String text) {
+  return colorPop[text] ?? [0, 0];
 }
 
 List<Color> oMtextcolorCorrection(String text) {
@@ -169,8 +169,8 @@ class OMCurrent {
       primary,
       back,
       WHITE,
-      [back, primary, WHITE][oMColorPopCorrection( oMCurrentTextCorrection(
-          item["current"]["weather_code"], sunstatus, timenow),)],
+      [back, WHITE][oMColorPopCorrection( oMCurrentTextCorrection(
+          item["current"]["weather_code"], sunstatus, timenow),)[0]],
       WHITE,
       darken(primary)
     ];
@@ -180,8 +180,8 @@ class OMCurrent {
         back,
         primary,
         WHITE,
-        [back, primary, WHITE][oMColorPopCorrection( oMCurrentTextCorrection(
-            item["current"]["weather_code"], sunstatus, timenow),)],
+        [back, WHITE][oMColorPopCorrection( oMCurrentTextCorrection(
+            item["current"]["weather_code"], sunstatus, timenow),)[0]],
         WHITE,
         darken(back)
       ];
@@ -200,11 +200,12 @@ class OMCurrent {
     else if (settings["Color mode"] == "dark") {
       colors = [ //backcolor, primary, text
         BLACK,
-        lighten(primary),
+        lighten(primary, 0.15),
         lighten(lightAccent(primary, 30000), 0.3),
-        BLACK,
+        [BLACK, primary, WHITE][oMColorPopCorrection( oMCurrentTextCorrection(
+            item["current"]["weather_code"], sunstatus, timenow),)[1]],
         WHITE,
-        const Color(0xff161616)
+        darken(lightAccent(primary, 30000), 0.3),
       ];
     }
 

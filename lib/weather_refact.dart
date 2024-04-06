@@ -273,21 +273,21 @@ Map<String, Color> accentColors = {
   'Cloudy Night': const Color(0xFF857EA0),
 };
 
-Map<String, int> colorPop = {
-  'Clear Night': 0,
-  'Partly Cloudy': 0,
-  'Clear Sky': 0,
-  'Overcast': 0,
-  'Haze': 0,
-  'Rain': 2,
-  'Sleet': 0,
-  'Drizzle': 0,
-  'Thunderstorm': 0,
-  'Heavy Snow': 0,
-  'Fog': 0,
-  'Snow': 0,
-  'Heavy Rain': 0,
-  'Cloudy Night': 0,
+Map<String, List<int>> colorPop = {
+  'Clear Night': [0, 2],
+  'Partly Cloudy': [0, 0],
+  'Clear Sky': [0, 0],
+  'Overcast': [0, 0],
+  'Haze': [0, 0],
+  'Rain': [2, 0],
+  'Sleet': [0, 0],
+  'Drizzle': [0, 0],
+  'Thunderstorm': [0, 1],
+  'Heavy Snow': [0, 0],
+  'Fog': [0, 0],
+  'Snow': [0, 0],
+  'Heavy Rain': [0, 0],
+  'Cloudy Night': [0, 0],
 };
 
 Map<int, Color> aqi_colors = {
