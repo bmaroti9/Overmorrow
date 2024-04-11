@@ -180,6 +180,17 @@ class OMCurrent {
       darken(primary)
     ];
 
+    if (settings["Color mode"] == "monochrome") {
+      colors = [ //default colorful option
+        primary,
+        WHITE,
+        WHITE,
+        WHITE,
+        WHITE,
+        darken(primary)
+      ];
+    }
+
     if (settings["Color mode"] == "colorful") {
       colors = [ //default colorful option
         back,

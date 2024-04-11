@@ -34,7 +34,7 @@ Map<String, List<String>> settingSwitches = {
   'Rain': ['mm', 'in'],
   'Wind': ['m/s', 'kph', 'mph', 'kn'],
   'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa'],
-  'Color mode' : ['original', 'colorful', 'light', 'dark'],
+  'Color mode' : ['original', 'colorful', 'monochrome', 'light', 'dark'],
   'Time mode': ['12 hour', '24 hour'],
   'Font size': ['normal', 'small', 'very small', 'big'],
 };
@@ -53,6 +53,11 @@ List<Color> getColors(primary, back, settings) {
   if (settings?["Color mode"] == "colorful") {
     color = back;
     d_color = darken(back, 0.2);
+  }
+
+  if (settings?["Color mode"] == "monochrome") {
+    color = primary;
+    d_color = lighten(primary, 0.13);
   }
 
   if (settings?["Color mode"] == "light") {
