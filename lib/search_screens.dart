@@ -34,7 +34,7 @@ Widget searchBar(Color color, List<String> recommend,
     Function updateIsEditing, bool isEditing, Function updateFav,
     List<String> favorites, Function updateRec, String place, var context,
     bool prog, Function updateProg, Map<String, String> settings, String real_loc, Color secondColor, 
-    Color textColor) {
+    Color textColor, Color highlightColor) {
 
   return FloatingSearchBar(
       hint: translation('Search...', settings["Language"]!),
@@ -87,7 +87,7 @@ Widget searchBar(Color color, List<String> recommend,
       automaticallyImplyDrawerHamburger: false,
       padding: const EdgeInsets.only(left: 13),
       iconColor: secondColor,
-      backdropColor: darken(color, 0.2),
+      backdropColor: highlightColor,
       closeOnBackdropTap: true,
       transition: SlideFadeFloatingSearchBarTransition(),
       automaticallyImplyBackButton: false,
@@ -556,7 +556,7 @@ class dumbySearch extends StatelessWidget {
                   ),
                   MySearchParent(updateLocation: updateLocation,
                     color: color, place: place, controller: controller, settings: settings,
-                  real_loc: place, secondColor: WHITE, textColor: WHITE,),
+                  real_loc: place, secondColor: WHITE, textColor: WHITE, highlightColor: color,),
                 ],
               ),
             ),
