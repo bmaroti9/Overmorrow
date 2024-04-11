@@ -197,7 +197,7 @@ Widget NewTimes(var data, bool divider) => Column(
                   height: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(width: 1.2, color: data.current.secondary)
+                    border: Border.all(width: 2, color: data.current.secondary)
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(18),
@@ -712,18 +712,19 @@ Widget buildHours(List<dynamic> hours, data) => SizedBox(
 Widget providerSelector(data, updateLocation) {
   return Padding(
     padding: const EdgeInsets.all(20.0),
-    child: Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: data.current.highlight
-          //border: Border.all(color: WHITE, width: 1.2)
-      ),
-      child: Column(
-        children: [
-          comfortatext(translation('Weather provider', data.settings["Language"]), 18, data.settings),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        comfortatext(translation('Weather provider', data.settings["Language"]), 18, data.settings,
+        color: data.current.textcolor),
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Container(
+            decoration: BoxDecoration(
+              color: data.current.highlight,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
             child: DropdownButton(
               underline: Container(),
               borderRadius: BorderRadius.circular(20),
@@ -749,12 +750,12 @@ Widget providerSelector(data, updateLocation) {
                 await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
               },
               isExpanded: true,
-              dropdownColor: darken(data.current.backcolor, 0.1),
+              dropdownColor: data.current.highlight,
               elevation: 0,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     ),
   );
 }
