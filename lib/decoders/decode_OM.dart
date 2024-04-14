@@ -210,7 +210,7 @@ class OMCurrent {
         lightAccent(primary, 30000),
         WHITE,
         primary,
-        lighten(lightAccent(primary, 40000), 0.35),
+        lighten(lightAccent(primary, 60000), 0.25),
       ];
     }
     else if (settings["Color mode"] == "dark") {
@@ -250,7 +250,7 @@ class OMCurrent {
       ),
 
       precip: double.parse(unit_coversion(
-          item["daily"]["precipitation_sum"][0], settings["Rain"])
+          item["daily"]["precipitation_sum"][0], settings["Precipitation"])
           .toStringAsFixed(1)),
       wind: unit_coversion(item["current"]["wind_speed_10m"], settings["Wind"])
           .round(),
@@ -298,7 +298,7 @@ class OMDay {
       text: translation(oMTextCorrection(item["daily"]["weather_code"][index]), settings["Language"]),
       name: oMGetName(index, settings, item),
       windspeed: unit_coversion(item["daily"]["wind_speed_10m_max"][index], settings["Wind"]).round(),
-      total_precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][index], settings["Rain"]).toStringAsFixed(1)),
+      total_precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][index], settings["Precipitation"]).toStringAsFixed(1)),
       minmaxtemp: "${unit_coversion(item["daily"]["temperature_2m_min"][index], settings["Temperature"]).round().toString()}°"
           "/${unit_coversion(item["daily"]["temperature_2m_max"][index], settings["Temperature"]).round().toString()}°",
       precip_prob: item["daily"]["precipitation_probability_max"][index] ?? 0,
@@ -350,6 +350,6 @@ class OMHour {
     icon: oMIconCorrection(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
         sunstatus, item["hourly"]["time"][index])),
     time: settings["Time mode"] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
-    precip: unit_coversion(item["hourly"]["precipitation"][index], settings["Rain"]),
+    precip: unit_coversion(item["hourly"]["precipitation"][index], settings["Precipitation"]),
   );
 }

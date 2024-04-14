@@ -202,7 +202,7 @@ class _MyAppState extends State<MyApp> {
     updateLocation('40.7128, 74.0060', "New York", time: 1200);
   }
 
-  Future<void> updateLocation(proposedLoc, backupName, {time = 900}) async {
+  Future<void> updateLocation(proposedLoc, backupName, {time = 500}) async {
     setState(() {
       isLoading = true;
     });
@@ -215,6 +215,8 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         w1 = screen;
       });
+
+      await Future.delayed(Duration(milliseconds: (800 - time).toInt()));
 
       setState(() {
         isLoading = false;

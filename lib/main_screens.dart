@@ -260,7 +260,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                                                       const Padding(
                                                                           padding: EdgeInsets.only(right: 10)),
                                                                       comfortatext(day.total_precip.toString() +
-                                                                          data.settings["Rain"], 20, data.settings),
+                                                                          data.settings["Precipitation"], 20, data.settings),
                                                                     ],
                                                                   ),
                                                                 ),

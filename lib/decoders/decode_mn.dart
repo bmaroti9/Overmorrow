@@ -100,7 +100,7 @@ class MetNCurrent {
   static MetNCurrent fromJson(item, settings) => MetNCurrent(
     text: metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"], language: settings["Language"]),
 
-    precip: unit_coversion(item["timeseries"][0]["data"]["next_1_hours"]["details"]["precipitation_amount"], settings["Rain"]),
+    precip: unit_coversion(item["timeseries"][0]["data"]["next_1_hours"]["details"]["precipitation_amount"], settings["Precipitation"]),
     temp: unit_coversion(item["timeseries"][0]["data"]["instant"]["details"]["air_temperature"], settings["Temperature"]).round(),
     humidity: item["timeseries"][0]["data"]["instant"]["details"]["relative_humidity"],
     wind: unit_coversion(item["timeseries"][0]["data"]["instant"]["details"]["wind_speed"] * 3.6, settings["Wind"]).round(),
@@ -223,7 +223,7 @@ class MetNDay {
       minmaxtemp: "${temperatures.reduce(max)}˚/${temperatures.reduce(min)}°",
       hourly: hours,
       hourly_for_precip: hours,
-      total_precip: unit_coversion(precip_mm.reduce((a, b) => a + b), settings["Rain"]),
+      total_precip: unit_coversion(precip_mm.reduce((a, b) => a + b), settings["Precipitation"]),
       windspeed: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
       name: getName(index, settings),
       text: metNTextCorrection(weather_names[BIndex]),

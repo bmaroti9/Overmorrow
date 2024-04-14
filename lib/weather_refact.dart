@@ -253,7 +253,7 @@ Map<String, Color> textBackColor = {
   'Fog': const Color(0xff3B5564),
   'Snow': const Color(0xff949590),
   'Heavy Rain': const Color(0xff314949),
-  'Cloudy Night': const Color(0xff053960)
+  'Cloudy Night': const Color(0xff112f56)
 };
 
 Map<String, Color> accentColors = {

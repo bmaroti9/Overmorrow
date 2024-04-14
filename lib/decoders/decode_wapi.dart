@@ -243,7 +243,7 @@ class WapiCurrent {
 
     uv: item["current"]["uv"].round(),
     humidity: item["current"]["humidity"],
-    precip: double.parse(unit_coversion(item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"], settings["Rain"]).toStringAsFixed(1)),
+    precip: double.parse(unit_coversion(item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"], settings["Precipitation"]).toStringAsFixed(1)),
     wind: unit_coversion(item["current"]["wind_kph"], settings["Wind"]).round(),
   );
 }
@@ -292,7 +292,7 @@ class WapiDay {
     hourly_for_precip: buildWapiHour(item["hour"], settings, index, timenow, false),
 
     mm_precip: item["day"]["totalprecip_mm"] + item["day"]["totalsnow_cm"] / 10,
-    total_precip: double.parse(unit_coversion(item["day"]["totalprecip_mm"], settings["Rain"]).toStringAsFixed(1)),
+    total_precip: double.parse(unit_coversion(item["day"]["totalprecip_mm"], settings["Precipitation"]).toStringAsFixed(1)),
     precip_prob: item["day"]["daily_chance_of_rain"],
     windspeed: unit_coversion(item["day"]["maxwind_kph"], settings["Wind"]).round(),
     uv: item["day"]["uv"].round(),

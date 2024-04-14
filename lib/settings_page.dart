@@ -16,10 +16,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/donation_page.dart';
+import 'package:overmorrow/main_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'languages.dart';
 import 'main.dart';
@@ -31,12 +33,13 @@ Map<String, List<String>> settingSwitches = {
     'Português', 'Русский', '简体中文', '日本語'
   ],
   'Temperature': ['˚C', '˚F'],
-  'Rain': ['mm', 'in'],
+  'Precipitation': ['mm', 'in'],
   'Wind': ['m/s', 'kph', 'mph', 'kn'],
   'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa'],
-  'Color mode' : ['original', 'colorful', 'monochrome', 'light', 'dark'],
   'Time mode': ['12 hour', '24 hour'],
   'Font size': ['normal', 'small', 'very small', 'big'],
+
+  'Color mode' : ['original', 'colorful', 'monochrome', 'light', 'dark'],
 };
 
 String translation(String text, String language) {
@@ -45,34 +48,60 @@ String translation(String text, String language) {
   return translated;
 }
 
-List<Color> getColors(primary, back, settings) {
-  Color textcolor = WHITE;
-  Color color = primary;
-  Color d_color = darken(primary, 0.2);
+List<Color> getColors(primary, back, settings, dif) {
+  List<Color> colors = [ //original colorful option
+    primary,
+    back,
+    WHITE,
+    [back, WHITE][dif],
+    WHITE,
+    darken(primary)
+  ];
 
-  if (settings?["Color mode"] == "colorful") {
-    color = back;
-    d_color = darken(back, 0.2);
+  if (settings["Color mode"] == "monochrome") {
+    colors = [ //default colorful option
+      primary,
+      WHITE,
+      WHITE,
+      WHITE,
+      WHITE,
+      darken(primary)
+    ];
   }
 
-  if (settings?["Color mode"] == "monochrome") {
-    color = primary;
-    d_color = lighten(primary, 0.13);
+  if (settings["Color mode"] == "colorful") {
+    colors = [ //default colorful option
+      back,
+      primary,
+      WHITE,
+      [back, WHITE][dif],
+      WHITE,
+      darken(back)
+    ];
   }
 
-  if (settings?["Color mode"] == "light") {
-    textcolor = lightAccent(primary, 20000);
-    color = const Color(0xffeeeeee);
-    d_color = primary;
+  else if (settings["Color mode"] == "light") {
+    colors = [ //backcolor, primary, text
+      const Color(0xffeeeeee),
+      primary,
+      lightAccent(primary, 30000),
+      WHITE,
+      primary,
+      lighten(lightAccent(primary, 60000), 0.25),
+    ];
+  }
+  else if (settings["Color mode"] == "dark") {
+    colors = [ //backcolor, primary, text
+      BLACK,
+      lighten(primary, 0.15),
+      lighten(lightAccent(primary, 30000), 0.3),
+      [BLACK, primary, WHITE][dif],
+      WHITE,
+      darken(lightAccent(primary, 30000), 0.3),
+    ];
   }
 
-  else if (settings?["Color mode"] == "dark") {
-    textcolor = lighten(lightAccent(primary, 30000), 0.3);
-    color = BLACK;
-    d_color = primary;
-  }
-
-  return [color, d_color, textcolor];
+  return colors;
 }
 
 Future<Map<String, String>> getSettingsUsed() async {
@@ -133,19 +162,19 @@ SetData(String name, String to) async {
   await prefs.setString(name, to);
 }
 
-Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, settings) {
+Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, settings, textcolor) {
   List<String> Items = settingSwitches[name] ?? ['˚C', '˚F'];
   return DropdownButton(
     elevation: 0,
     underline: Container(),
     dropdownColor: bgcolor,
     borderRadius: BorderRadius.circular(18),
-    icon: const Padding(
-      padding: EdgeInsets.only(left:5),
-      child: Icon(Icons.arrow_drop_down, color: WHITE,),
+    icon: Padding(
+      padding: const EdgeInsets.only(left:5),
+      child: Icon(Icons.arrow_drop_down_circle_rounded, color: textcolor,),
     ),
     style: GoogleFonts.comfortaa(
-      color: WHITE,
+      color: textcolor,
       fontSize: 20 * getFontSize(settings["Font size"]),
       fontWeight: FontWeight.w300,
     ),
@@ -163,6 +192,24 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
   );
 }
 
+Widget setingEntry(icon, text, settings, highlight, updatePage, textcolor) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 3, bottom: 3),
+    child: Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 20),
+          child: Icon(icon, color: textcolor, ),
+        ),
+        comfortatext(translation(text, settings["Language"]!), 20, settings, color: textcolor),
+        const Spacer(),
+        dropdown(
+          darken(highlight), text, updatePage, settings[text]!, settings, textcolor
+        ),
+      ],
+    ),
+  );
+}
 
 class SettingsPage extends StatefulWidget {
 
@@ -222,7 +269,7 @@ class _SettingsPageState extends State<SettingsPage> {
 Widget SettingsMain(Color primary, Map<String, String>? settings, Function updatePage,
     Function goBack, Color back) {
 
-  List<Color> colors = getColors(primary, back, settings);
+  List<Color> colors = getColors(primary, back, settings, 0);
 
   return Scaffold(
       appBar: AppBar(
@@ -232,69 +279,176 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
           ),
           elevation: 0,
           leadingWidth: 50,
-          backgroundColor: colors[1],
-          title: comfortatext(translation('Settings', settings!["Language"]!), 25, settings),
+          backgroundColor: colors[0],
+          title: comfortatext(translation('Settings', settings!["Language"]!), 25, settings, color: colors[2]),
           leading:
           IconButton(
             onPressed: (){
               goBack();
             },
-            icon: const Icon(Icons.arrow_back, color: WHITE,),
+            icon: Icon(Icons.arrow_back, color: colors[2],),
           )
       ),
-      body: settingsMain(colors[0], settings, updatePage, colors[2], colors[1]),
+      body: settingsMain(colors[0], settings, updatePage, colors[2], colors[1], colors[5], colors[3]),
   );
 }
 
 Widget settingsMain(Color color, Map<String, String> settings, Function updatePage,
-    Color textcolor, Color secondary) {
-  var entryList = settings.entries.toList();
+    Color textcolor, Color secondary, highlight, Color colorpop) {
+  //var entryList = settings.entries.toList();
   return Container(
-    padding: const EdgeInsets.only(top: 10, left: 20, right: 10),
-    color: color,
-    child: Column(
+    padding: const EdgeInsets.only(left: 20, right: 15),
+    color: highlight,
+    child: ListView(
+      physics: BouncingScrollPhysics(),
         children: [
-            ListView.builder(
-              itemCount: settings.length,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  height: 55,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      comfortatext(translation(entryList[index].key, settings["Language"]!), 23,
-                          settings, color: textcolor),
-                      const Spacer(),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: SizedBox(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: secondary,
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 10, right: 4),
-                                child: dropdown(
-                                    darken(secondary),
-                                    entryList[index].key,
-                                    updatePage,
-                                    entryList[index].value,
-                                    settings,
+          SizedBox(height: 15,),
+          setingEntry(CupertinoIcons.globe, "Language", settings, highlight, updatePage, textcolor),
+          setingEntry(Icons.access_time_filled_sharp, "Time mode", settings, highlight, updatePage, textcolor),
+          setingEntry(CupertinoIcons.textformat_size, "Font size", settings, highlight, updatePage, textcolor),
+
+          Padding(
+            padding: const EdgeInsets.only(top: 10, right: 10, left: 10, bottom: 10),
+            child: Container(
+              height: 2,
+              decoration: BoxDecoration(
+                color: secondary,
+                borderRadius: BorderRadius.circular(2)
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: EdgeInsets.only(top: 20, bottom: 10),
+            child: SizedBox(
+              height: 300,
+              child: Align(
+                alignment: Alignment.center,
+                child: AspectRatio(
+                  aspectRatio: 0.7,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(25),
+                          topRight: Radius.circular(25)),
+                      color: color,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 210,
+                            child: Stack(
+                              children: [
+                                ParrallaxBackground(imagePath1: "sleet.jpg", color: color),
+                                Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Container(
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(13),
+                                        color: color,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10, bottom: 15),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      comfortatext("10°", 32, settings, color: colorpop),
+                                      comfortatext(translation("Partly Cloudy", settings["Language"]!), 19,
+                                          settings, color: WHITE)
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 6, right: 4, left: 4),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(200),
+                                          border: Border.all(width: 2, color: secondary),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(200),
+                                          border: Border.all(width: 2, color: secondary),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(200),
+                                          border: Border.all(width: 2, color: secondary),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(200),
+                                          border: Border.all(width: 2, color: secondary),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                );
-              },
+                ),
+              ),
             ),
+          ),
+
+          setingEntry(CupertinoIcons.color_filter, "Color mode", settings, highlight, updatePage, textcolor),
+
+          setingEntry(CupertinoIcons.thermometer, "Temperature", settings, highlight, updatePage, textcolor),
+          setingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, highlight, updatePage, textcolor),
+          setingEntry(CupertinoIcons.wind, "Wind", settings, highlight, updatePage, textcolor),
+          setingEntry(CupertinoIcons.timelapse, "Pressure", settings, highlight, updatePage, textcolor),
         ]
     ),
   );
@@ -311,7 +465,7 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    List<Color> colors = getColors(primary, back, settings);
+    List<Color> colors = getColors(primary, back, settings, 0);
 
     return Drawer(
       backgroundColor: colors[0],

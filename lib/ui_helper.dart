@@ -241,7 +241,7 @@ Widget RainWidget(data, day) {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: 3,
                   itemBuilder: (context, index) {
-                    if (data.settings["Rain"] == 'in') {
+                    if (data.settings["Precipitation"] == 'in') {
                       return Padding(
                         padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
                         child: Row(

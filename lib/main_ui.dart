@@ -161,7 +161,7 @@ Widget Circles(double width, var data, double bottom, color) {
                     color: color,
                     text: '${data.current.precip}',
                     undercaption: translation('precip.', data.settings["Language"]),
-                    extra: data.settings["Rain"],
+                    extra: data.settings["Precipitation"],
                     size: width,
                     settings: data.settings,
                     bottom: bottom,
@@ -475,7 +475,7 @@ Widget buildHihiDays(var data) => ListView.builder(
                                       const Padding(
                                           padding: EdgeInsets.only(right: 10)),
                                       comfortatext(day.total_precip.toString() +
-                                          data.settings["Rain"], 20, data.settings,
+                                          data.settings["Precipitation"], 20, data.settings,
                                       color: data.current.secondary),
                                     ],
                                   ),
@@ -632,7 +632,7 @@ Widget buildGlanceDay(var data) => Padding(
                                   Padding(
                                     padding: const EdgeInsets.only(left: 2, right: 2),
                                     child: comfortatext(day.total_precip.toString() +
-                                        data.settings["Rain"], 17, data.settings, color: data.current.secondary),
+                                        data.settings["Precipitation"], 17, data.settings, color: data.current.secondary),
                                   ),
                                 ],
                               ),

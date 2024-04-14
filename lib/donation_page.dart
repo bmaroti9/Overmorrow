@@ -82,7 +82,7 @@ class _DonationPageState extends State<DonationPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Color> colors = getColors(primary, back, settings);
+    List<Color> colors = getColors(primary, back, settings, 0);
 
     return Scaffold(
       appBar: AppBar(
@@ -197,7 +197,7 @@ class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
 
-    List<Color> colors = getColors(primary, back, settings);
+    List<Color> colors = getColors(primary, back, settings, 0);
 
     return Scaffold(
         backgroundColor: colors[0],

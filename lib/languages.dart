@@ -175,7 +175,7 @@ Map<String, List<String>> mainTranslate = {
     '言語'
   ],
   'Temperature': [
-    'Temp.',
+    'Temperature',
     'Hőmérséklet',
     'Temperatura',
     'Température',
@@ -197,6 +197,18 @@ Map<String, List<String>> mainTranslate = {
     'Дождь',
     '雨',
     '雨'
+  ],
+  'Precipitation': [
+    'Precipitation',
+    'Csapadék',
+    'Precipitación',
+    'Précipitation',
+    'Niederschlag',
+    'Precipitazione',
+    'Precipitação',
+    'Осадки',
+    '降水量',
+    '降水'
   ],
   'Pressure': [
     'Pressure',
