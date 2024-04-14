@@ -57,22 +57,24 @@ final imageLink = [
 ];
 
 class DonationPage extends StatefulWidget {
-  final Color color;
+  final Color primary;
+  final Color back;
   final settings;
 
-  const DonationPage({Key? key, required this.color, required this.settings})
-      : super(key: key);
+  const DonationPage({Key? key, required this.primary, required this.settings,
+  required this.back}) : super(key: key);
 
   @override
   _DonationPageState createState() =>
-      _DonationPageState(color: color, settings: settings);
+      _DonationPageState(primary: primary, settings: settings, back: back);
 }
 
 class _DonationPageState extends State<DonationPage> {
-  final color;
+  final primary;
   final settings;
+  final back;
 
-  _DonationPageState({required this.color, required this.settings});
+  _DonationPageState({required this.back, required this.settings, required this.primary});
 
   void goBack() {
     Navigator.pop(context);
@@ -80,14 +82,16 @@ class _DonationPageState extends State<DonationPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<Color> colors = getColors(primary, back, settings);
+
     return Scaffold(
       appBar: AppBar(
           toolbarHeight: 65,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
           elevation: 0,
           leadingWidth: 50,
-          backgroundColor: darken(color, 0.3),
-          title: comfortatext(translation('Donate', settings["Language"]), 25, settings),
+          backgroundColor: colors[1],
+          title: comfortatext(translation('Donate', settings["Language"]), 25, settings,),
           leading: IconButton(
             onPressed: () {
               goBack();
@@ -98,7 +102,7 @@ class _DonationPageState extends State<DonationPage> {
             ),
           )),
       body: Container(
-        color: darken(color),
+        color: colors[0],
         child: Padding(
           padding: const EdgeInsets.only(top: 30),
           child: Align(
@@ -120,20 +124,23 @@ class _DonationPageState extends State<DonationPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: comfortatext(translation(
-                            'Overmorrow is a free app. :)', settings["Language"]), 21, settings)
+                            'Overmorrow is a free app. :)', settings["Language"]), 21, settings,
+                            color: colors[2])
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 15),
                         child: comfortatext(translation(
                             'Support me on Patreon, to help me keep it that way!',
-                            settings["Language"]), 21, settings)
+                            settings["Language"]), 21, settings,
+                            color: colors[2])
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 30, bottom: 40),
                           child: comfortatext(translation('Thank You! -Balint',
-                              settings["Language"]), 18, settings)
+                              settings["Language"]), 18, settings,
+                              color: colors[2])
                         ),
                       ),
                     ],
@@ -152,7 +159,7 @@ class _DonationPageState extends State<DonationPage> {
                       await _launchUrl('https://www.patreon.com/MarotiDevel');
                     },
                     child: comfortatext(translation('Support me on Patreon', settings["Language"]),
-                        20, settings),
+                        20, settings, color: colors[2]),
                 ),
               ],
             ),
@@ -164,22 +171,24 @@ class _DonationPageState extends State<DonationPage> {
 }
 
 class InfoPage extends StatefulWidget {
-  final Color color;
+  final Color primary;
+  final Color back;
   final settings;
 
-  const InfoPage({Key? key, required this.color, required this.settings})
+  const InfoPage({Key? key, required this.primary, required this.settings, required this.back})
       : super(key: key);
 
   @override
   _InfoPageState createState() =>
-      _InfoPageState(color: color, settings: settings);
+      _InfoPageState(primary: primary, settings: settings, back: back);
 }
 
 class _InfoPageState extends State<InfoPage> {
-  final color;
+  final primary;
   final settings;
+  final back;
 
-  _InfoPageState({required this.color, required this.settings});
+  _InfoPageState({required this.primary, required this.settings, required this.back});
 
   void goBack() {
     Navigator.pop(context);
@@ -187,15 +196,18 @@ class _InfoPageState extends State<InfoPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    List<Color> colors = getColors(primary, back, settings);
+
     return Scaffold(
-        backgroundColor: color,
+        backgroundColor: colors[0],
         appBar: AppBar(
             toolbarHeight: 65,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
             elevation: 0,
             leadingWidth: 50,
-            backgroundColor: darken(color, 0.3),
+            backgroundColor: colors[1],
             title: comfortatext(translation('About', settings["Language"]), 25, settings),
             leading: IconButton(
               onPressed: () {
@@ -229,13 +241,13 @@ class _InfoPageState extends State<InfoPage> {
                     translation(
                         'Overmorrow is a beautiful minimalist weather app.',
                         settings["Language"]),
-                    26, settings),
+                    26, settings, color: colors[2]),
                 Padding(
                   padding: const EdgeInsets.only(top: 20, bottom: 10),
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        color: darken(color),
+                        color: colors[1],
                         borderRadius: BorderRadius.circular(20)),
                     child: Column(
                       children: [
@@ -294,7 +306,7 @@ class _InfoPageState extends State<InfoPage> {
                   child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                          color: darken(color),
+                          color: colors[1],
                           borderRadius: BorderRadius.circular(20)),
                       child: Column(children: [
                         Align(
@@ -341,7 +353,7 @@ class _InfoPageState extends State<InfoPage> {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        color: darken(color),
+                        color: colors[1],
                         borderRadius: BorderRadius.circular(20)),
                     child: Column(children: [
                       Align(
@@ -381,7 +393,7 @@ class _InfoPageState extends State<InfoPage> {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        color: darken(color),
+                        color: colors[1],
                         borderRadius: BorderRadius.circular(20)),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

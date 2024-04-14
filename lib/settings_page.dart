@@ -355,7 +355,8 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => InfoPage(color: colors[0], settings: settings,)),
+                MaterialPageRoute(builder: (context) => InfoPage(primary: primary, settings: settings,
+                back: back,)),
               );
             },
           ),
@@ -366,7 +367,8 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DonationPage(color: colors[0], settings: settings,)),
+                MaterialPageRoute(builder: (context) => DonationPage(primary: primary, settings: settings,
+                back: back,)),
               );
             },
           ),
