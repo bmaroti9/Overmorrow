@@ -63,29 +63,32 @@ class WeatherPage extends StatelessWidget {
   }
 }
 
-class ParallaxBackground extends StatelessWidget {
-  final data;
-  const ParallaxBackground({super.key, required this.data});
+
+class ParrallaxBackground extends StatelessWidget {
+  final String imagePath1;
+
+  const ParrallaxBackground({Key? key, required this.imagePath1}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (data.settings["Color mode"] == 'normal') {
-      return Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/backdrops/${data!.current.backdrop}'),
+    return TweenAnimationBuilder<double>(
+      duration: const Duration(milliseconds: 1000),
+      tween: Tween<double>(begin: 0, end: 1),
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Image.asset(
+            'assets/backdrops/$imagePath1',
             fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
-        ),
-      );
-    }
-    else {
-      return Container(
-        color: darken(data.current.backcolor, 0.05),
-      );
-    }
+        );
+      },
+    );
   }
 }
+
 
 Widget buildCurrent(var data, double height, double bottom) => Column(
   mainAxisAlignment: MainAxisAlignment.end,

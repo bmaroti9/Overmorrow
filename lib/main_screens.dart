@@ -14,8 +14,6 @@ Widget NewMain(data, updateLocation, context) {
   FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
   Size size = view.physicalSize / view.devicePixelRatio;
 
-  print("temphihi:${data.current.temp}");
-
   final FloatingSearchBarController controller = FloatingSearchBarController();
 
   return Scaffold(
@@ -28,16 +26,12 @@ Widget NewMain(data, updateLocation, context) {
           displacement: 150,
           onRefresh: () async {
             await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
-            //await widget.loadWeatherData();
           },
           headerData: HeaderData(
             //backgroundColor: WHITE,
               blurContent: false,
               headerHeight: max(size.height * 0.6, 400), //we don't want it to be smaller than 400
-              header: Image.asset(
-                'assets/backdrops/${data!.current.backdrop}',
-                fit: BoxFit.cover,
-              ),
+              header: ParrallaxBackground(imagePath1: data.current.backdrop, key: Key(data.place),),
               overlay: Stack(
                 children: [
                   Padding(
@@ -142,7 +136,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                 padding: const EdgeInsets.only(top: 100),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
-                                  child: ParallaxBackground(data: data)
+                                  child: Container()//ParallaxBackground(data: data)
                                 ),
                               ),
                               Padding(

@@ -203,7 +203,7 @@ class _MyAppState extends State<MyApp> {
     updateLocation('40.7128, 74.0060', "New York", time: 1200);
   }
 
-  Future<void> updateLocation(proposedLoc, backupName, {time = 500}) async {
+  Future<void> updateLocation(proposedLoc, backupName, {time = 700}) async {
     setState(() {
       isLoading = true;
     });
