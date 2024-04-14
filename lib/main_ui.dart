@@ -27,8 +27,6 @@ import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'ui_helper.dart';
 
-Color instantBackColor = Colors.white;
-
 class WeatherPage extends StatelessWidget {
   final data;
   final updateLocation;
@@ -42,8 +40,6 @@ class WeatherPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    instantBackColor = data.current.backcolor;
 
     // Build the ui for phones
 
@@ -59,7 +55,10 @@ class WeatherPage extends StatelessWidget {
     // note: some things might be broken in the old one
 
     //return PhoneLayout(data, updateLocation, context);
-    return NewMain(data: data, updateLocation: updateLocation,);
+
+    print("temphehe:${data.current.temp}");
+
+    return NewMain(data, updateLocation, context,);
 
   }
 }

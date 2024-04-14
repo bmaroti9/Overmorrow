@@ -78,8 +78,7 @@ Widget searchBar(Color color, List<String> recommend,
         updateRec(result);
       },
       onSubmitted: (submission) {
-        isEditing = false;
-        updateLocation('search', submission); // Call the callback to update the location
+        updateLocation('search', submission);
         controller.close();
       },
 
@@ -443,7 +442,7 @@ class dumbySearch extends StatelessWidget {
     required this.updateLocation, required this.icon, required this.place,
   required this.settings, required this.provider, required this.latlng});
 
-  final Color color = instantBackColor == WHITE ? const Color(0xff201F2D) : instantBackColor;
+  final Color color = const Color(0xff7a9dbc);
 
   final FloatingSearchBarController controller = FloatingSearchBarController();
 

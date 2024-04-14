@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -43,7 +44,7 @@ void main() {
 
   if (data.shortestSide / ratio < 600) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-        .then((value) => runApp(MyApp()));
+        .then((value) => runApp(const MyApp()));
   } else {
     runApp(const MyApp());
   }
@@ -58,19 +59,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  String proposedLoc = '40.7128, 74.0060';
-  String backupName = "New York";
-
   bool startup = true;
 
-  void updateLocation(String coordinates, String backup_name) {
-    setState(() {
-      proposedLoc = coordinates;
-      backupName = backup_name;
-    });
-  }
-
-  Future<List<dynamic>> getDays(bool recall) async {
+  Future<Widget> getDays(bool recall, proposedLoc, backupName) async {
 
     try {
 
@@ -102,18 +93,18 @@ class _MyAppState extends State<MyApp> {
             try {
               position = (await Geolocator.getLastKnownPosition())!;
             } on Error {
-              return [dumbySearch(errorMessage: translation(
+              return dumbySearch(errorMessage: translation(
                   "Unable to locate device", settings["Language"]!),
                 updateLocation: updateLocation,
                 icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
                 place: backupName,
-                settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
+                settings: settings, provider: weather_provider, latlng: absoluteProposed);
             }
           } on LocationServiceDisabledException {
-            return [dumbySearch(errorMessage: translation("location services are disabled.", settings["Language"]!),
+            return dumbySearch(errorMessage: translation("location services are disabled.", settings["Language"]!),
               updateLocation: updateLocation,
               icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-              place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
+              place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
           }
 
           backupName = '${position.latitude},${position.longitude}';
@@ -122,10 +113,10 @@ class _MyAppState extends State<MyApp> {
           print('True');
         }
         else {
-          return [dumbySearch(errorMessage: translation(loc_status, settings["Language"]!),
+          return dumbySearch(errorMessage: translation(loc_status, settings["Language"]!),
             updateLocation: updateLocation,
             icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
-            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
+            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
         }
       }
       if (proposedLoc == 'search') {
@@ -135,11 +126,11 @@ class _MyAppState extends State<MyApp> {
           absoluteProposed = "${split["lat"]},${split["lon"]}";
           backupName = split["name"];
         } else {
-          return [dumbySearch(
+          return dumbySearch(
             errorMessage: '${translation('Place not found', settings["Language"]!)}: $backupName',
             updateLocation: updateLocation,
             icon: const Icon(Icons.location_disabled, color: WHITE, size: 30,),
-            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
+            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
         }
       }
 
@@ -154,32 +145,33 @@ class _MyAppState extends State<MyApp> {
         weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weather_provider);
 
       } on TimeoutException {
-        return [dumbySearch(errorMessage: translation("Weak or no wifi connection", settings["Language"]!),
+        return dumbySearch(errorMessage: translation("Weak or no wifi connection", settings["Language"]!),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on HttpExceptionWithStatus catch (hihi){
         print(hihi.toString());
-        return [dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
+        return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on SocketException {
-        return [dumbySearch(errorMessage: translation("Not connected to the internet", settings["Language"]!),
+        return dumbySearch(errorMessage: translation("Not connected to the internet", settings["Language"]!),
           updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on Error catch (e, stacktrace) {
         print(stacktrace);
-        return [dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
+        return dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       }
+
+      print("temp:${weatherdata.current.temp}");
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
                                 // then this will be the new startup
 
-      return [WeatherPage(data: weatherdata,
-          updateLocation: updateLocation), weatherdata.current.backcolor];
+      return WeatherPage(data: weatherdata, updateLocation: updateLocation);
 
     } catch (e, stacktrace) {
       Map<String, String> settings = await getSettingsUsed();
@@ -191,98 +183,75 @@ class _MyAppState extends State<MyApp> {
       cacheManager2.emptyCache();
 
       if (recall) {
-        return [dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
+        return dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
           icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
-          place: backupName, settings: settings, provider: weather_provider, latlng: 'search',), instantBackColor == WHITE ? const Color(0xff7a9dbc) : instantBackColor];
+          place: backupName, settings: settings, provider: weather_provider, latlng: 'search',);
       }
       else {
-        return getDays(true);
+        return getDays(true, proposedLoc, backupName);
       }
     }
   }
 
-  Future<Widget> fillTime(var data) async {
-    await Future.delayed(const Duration(seconds: 1));
+  late Widget w1;
+  bool isLoading = false;
 
-    return data[0];
+  @override
+  void initState() {
+    super.initState();
+    w1 = Container();
+    updateLocation('40.7128, 74.0060', "New York", time: 1200);
+  }
+
+  Future<void> updateLocation(proposedLoc, backupName, {time = 500}) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await Future.delayed(Duration(milliseconds: time));
+
+    try {
+      Widget screen = await getDays(false, proposedLoc, backupName);
+
+      setState(() {
+        w1 = screen;
+      });
+
+      await Future.delayed(Duration(milliseconds: (max(1000 - time, 0)).toInt()));
+
+      setState(() {
+        isLoading = false;
+      });
+
+    } catch (error) {
+
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: FutureBuilder<List<dynamic>>(
-          future: getDays(false),
-          builder: (BuildContext context,
-              AsyncSnapshot<List<dynamic>> snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return Container(
-                color: instantBackColor,
-                child: Center(
-                  child: LoadingAnimationWidget.staggeredDotsWave(
-                    color: instantBackColor == WHITE ? const Color(0xff7a9dbc) : WHITE,
-                    size: 40,
-                  ),
+        backgroundColor: WHITE,
+        body: Stack(
+          children: [
+            w1,
+            if (isLoading) Container(
+              color: startup ? WHITE :const Color.fromRGBO(0, 0, 0, 0.2),
+              child: Center(
+                child: LoadingAnimationWidget.staggeredDotsWave(
+                  color: startup ? const Color.fromRGBO(0, 0, 0, 0.6) : WHITE,
+                  size: 40,
                 ),
-              );
-            } else if (snapshot.hasError) {
-              print(snapshot.error);
-              return Center(
-                child: ErrorWidget(snapshot.error as Object),
-              );
-              //return comfortatext('Error fetching data', 20);
-            }
-            //return buildWholeThing(snapshot.data);
-            //return snapshot.data![0];
-            return FutureBuilder<Widget>(
-                future: fillTime(snapshot.data),
-                builder: (BuildContext context,
-                    AsyncSnapshot<Widget> snapshot2) {
-                  if (snapshot2.connectionState != ConnectionState.done) {
-                    return TweenBackgroundAnimation(
-                      color1: instantBackColor,
-                      color2: snapshot.data?[1],
-                    );
-                  } else if (snapshot2.hasError) {
-                    print(snapshot.error);
-                    return Center(
-                      child: ErrorWidget(snapshot.error as Object),
-                    );
-                    //return comfortatext('Error fetching data', 20);
-                  }
-                  return snapshot2.data!;
-                }
-            );
-          },
-        )),
-    );
-  }
-}
-
-class TweenBackgroundAnimation extends StatelessWidget {
-  final Color color1;
-  final Color color2;
-
-  const TweenBackgroundAnimation({Key? key, required this.color1, required this.color2}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder<Color?>(
-      duration: const Duration(seconds: 1),
-      tween: ColorTween(begin: color1, end: color2),
-      builder: (context, color, child) {
-        return Container(
-          color: color,
-          child: Center(
-            child: LoadingAnimationWidget.staggeredDotsWave(
-              color: WHITE,
-              size: 40,
+              ),
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }

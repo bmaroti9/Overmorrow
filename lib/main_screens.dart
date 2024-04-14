@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/settings_page.dart';
@@ -13,60 +12,28 @@ import 'package:stretchy_header/stretchy_header.dart';
 import 'main_ui.dart';
 import 'ui_helper.dart';
 
-class NewMain extends StatefulWidget {
-  final data;
-  final updateLocation;
+Widget NewMain(data, updateLocation, context) {
+  FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+  Size size = view.physicalSize / view.devicePixelRatio;
 
-  const NewMain({required this.data, required this.updateLocation});
-
-  @override
-  _NewMainState createState() => _NewMainState(data: data,
-  updateLocation: updateLocation);
-}
-
-class _NewMainState extends State<NewMain> {
-  bool isLoading = false;
-  bool numbers = true;
+  print("temphihi:${data.current.temp}");
 
   final FloatingSearchBarController controller = FloatingSearchBarController();
 
-  final data;
-  final updateLocation;
-
-  _NewMainState({required this.data, required this.updateLocation});
-
-  void _loadFakeData() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    await Future.delayed(const Duration(seconds: 1));
-    numbers = !numbers;
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    //get the size of the device
-    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-    Size size = view.physicalSize / view.devicePixelRatio;
-
-    return Scaffold(
-      backgroundColor: data.current.backcolor,
-      drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
-      settings: data.settings),
-      body: Stack(
-        children: [
-          StretchyHeader.listView(
-            displacement: 150,
-            onRefresh: () {
-              _loadFakeData();
-            },
-            headerData: HeaderData(
-              //backgroundColor: WHITE,
+  return Scaffold(
+    backgroundColor: data.current.backcolor,
+    drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
+        settings: data.settings),
+    body: Stack(
+      children: [
+        StretchyHeader.listView(
+          displacement: 150,
+          onRefresh: () async {
+            await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
+            //await widget.loadWeatherData();
+          },
+          headerData: HeaderData(
+            //backgroundColor: WHITE,
               blurContent: false,
               headerHeight: max(size.height * 0.6, 400), //we don't want it to be smaller than 400
               header: Image.asset(
@@ -98,194 +65,34 @@ class _NewMainState extends State<NewMain> {
                   MySearchParent(updateLocation: updateLocation,
                     color: data.current.backcolor, place: data.place,
                     controller: controller, settings: data.settings, real_loc: data.real_loc,
-                  secondColor: data.current.primary, textColor: data.current.textcolor,
-                  highlightColor: data.current.highlight,),
+                    secondColor: data.current.primary, textColor: data.current.textcolor,
+                    highlightColor: data.current.highlight, key: Key(data.place),),
                 ],
               )
-            ),
-            children: [
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
-                  child: LayoutBuilder(
-                      builder: (BuildContext context, BoxConstraints constraints) {
-                        if(constraints.maxWidth > 400.0) {
-                          return Circles(400, data, 0.5, data.current.primary);
-                        } else {
-                          return Circles(constraints.maxWidth * 0.95, data, 0.5, data.current.primary);
-                        }
+          ),
+          children: [
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Container(
+                child: LayoutBuilder(
+                    builder: (BuildContext context, BoxConstraints constraints) {
+                      if(constraints.maxWidth > 400.0) {
+                        return Circles(400, data, 0.5, data.current.primary);
+                      } else {
+                        return Circles(constraints.maxWidth * 0.95, data, 0.5, data.current.primary);
                       }
-                  ),
+                    }
                 ),
               ),
-              NewTimes(data, true),
-              buildHihiDays(data),
-              buildGlanceDay(data),
-              providerSelector(data, updateLocation),
-              Padding(padding: EdgeInsets.only(bottom: 20))
-            ],
-          ),
-          if (isLoading) _buildLoadingWidget()
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLoadingWidget() {
-    //Note: this is just a demo refresh and thus doesn't do anything
-    
-    return Container(
-      color: Colors.black54,
-      child: Center(
-        child: LoadingAnimationWidget.staggeredDotsWave(
-          color: WHITE,
-          size: 40,
-        ),
-      ),
-    );
-  }
-}
-
-Widget PhoneLayout(data, updateLocation, context) {
-
-  final FloatingSearchBarController controller = FloatingSearchBarController();
-
-  FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-
-  Size size = view.physicalSize / view.devicePixelRatio;
-  double safeHeight = size.height;
-  final availableHeight = MediaQuery.of(context).size.height -
-      AppBar().preferredSize.height -
-      MediaQuery.of(context).padding.top -
-      MediaQuery.of(context).padding.bottom;
-
-  return Scaffold(
-    backgroundColor: data.current.backcolor,
-    drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
-        settings: data.settings),
-    body: RefreshIndicator(
-      onRefresh: () async {
-        await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
-      },
-      backgroundColor: WHITE,
-      color: data.current.backcolor,
-      child: Stack(
-        children: [
-          Container(
-          decoration: BoxDecoration(
-          color: data.current.backcolor,
-              border: const Border.symmetric(vertical: BorderSide(
-                  width: 1.2,
-                  color: WHITE
-                )
-              )
             ),
-          ),
-          CustomScrollView(
-            physics: Platform.isLinux? const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast)
-                : const BouncingScrollPhysics(),
-            slivers: <Widget>[
-              SliverAppBar(
-                automaticallyImplyLeading: false, // remove the hamburger-menu
-                backgroundColor: Colors.transparent, // Set background to transparent
-                bottom: PreferredSize(
-                  preferredSize: const Size(0, 380),
-                  child: Container(),
-                ),
-                pinned: false,
-
-                expandedHeight: availableHeight + 43,
-                flexibleSpace: Stack(
-                  children: [
-                    ParallaxBackground(data: data,),
-                    Positioned(
-                      bottom: 25,
-                      left: 0,
-                      right: 0,
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: SingleChildScrollView(
-                          child: buildCurrent(data, safeHeight - 100, 1),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: -3,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                      height: 35,
-                      decoration: BoxDecoration(
-                      border: Border.all(width: 1.2, color: WHITE),
-                      color: data.current.backcolor,
-                      borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(27),)
-                    ),),),
-                    MySearchParent(updateLocation: updateLocation,
-                      color: data.current.backcolor, place: data.place,
-                      controller: controller, settings: data.settings, real_loc: data.real_loc,
-                    secondColor: WHITE, textColor: data.current.textcolor,
-                    highlightColor: data.current.highlight,),
-                  ],
-                ),
-              ),
-              const SliverPadding(padding: EdgeInsets.only(top: 30)),
-              NewTimes(data, true),
-              buildHihiDays(data),
-              buildGlanceDay(data),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20, top:20, right: 20),
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: WHITE, width: 1.2)
-                    ),
-                    child: Column(
-                      children: [
-                        comfortatext(translation('Weather provider', data.settings["Language"]), 18, data.settings),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: DropdownButton(
-                            underline: Container(),
-                            borderRadius: BorderRadius.circular(20),
-                            icon: const Padding(
-                              padding: EdgeInsets.only(left:5),
-                              child: Icon(Icons.arrow_drop_down_circle, color: WHITE,),
-                            ),
-                            style: GoogleFonts.comfortaa(
-                              color: WHITE,
-                              fontSize: 20 * getFontSize(data.settings["Font size"]),
-                              fontWeight: FontWeight.w300,
-                            ),
-                            //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
-                            value: data.provider.toString(),
-                            items: ['weatherapi.com', 'open-meteo'].map((item) {
-                              return DropdownMenuItem(
-                                value: item,
-                                child: Text(item),
-                              );
-                            }).toList(),
-                            onChanged: (String? value) async {
-                              SetData('weather_provider', value!);
-                              await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
-                            },
-                            isExpanded: true,
-                            dropdownColor: darken(data.current.backcolor, 0.1),
-                            elevation: 0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SliverPadding(padding: EdgeInsets.only(bottom: 30))
-            ],
-          ),
-        ],
-      ),
+            NewTimes(data, true),
+            buildHihiDays(data),
+            buildGlanceDay(data),
+            providerSelector(data, updateLocation),
+            Padding(padding: EdgeInsets.only(bottom: 20))
+          ],
+        ),
+      ],
     ),
   );
 }
