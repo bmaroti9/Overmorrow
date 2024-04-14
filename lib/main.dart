@@ -241,10 +241,10 @@ class _MyAppState extends State<MyApp> {
           children: [
             w1,
             if (isLoading) Container(
-              color: startup ? WHITE :const Color.fromRGBO(0, 0, 0, 0.2),
+              color: startup ? WHITE :const Color.fromRGBO(0, 0, 0, 0.7),
               child: Center(
                 child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: startup ? const Color.fromRGBO(0, 0, 0, 0.6) : WHITE,
+                  color: startup ? const Color.fromRGBO(0, 0, 0, 0.3) : WHITE,
                   size: 40,
                 ),
               ),
