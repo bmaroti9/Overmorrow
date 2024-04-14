@@ -31,7 +31,8 @@ Widget NewMain(data, updateLocation, context) {
             //backgroundColor: WHITE,
               blurContent: false,
               headerHeight: max(size.height * 0.6, 400), //we don't want it to be smaller than 400
-              header: ParrallaxBackground(imagePath1: data.current.backdrop, key: Key(data.place),),
+              header: ParrallaxBackground(imagePath1: data.current.backdrop, key: Key(data.place),
+              color: darken(data.current.backcolor, 0.1),),
               overlay: Stack(
                 children: [
                   Padding(

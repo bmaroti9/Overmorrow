@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -203,7 +202,7 @@ class _MyAppState extends State<MyApp> {
     updateLocation('40.7128, 74.0060', "New York", time: 1200);
   }
 
-  Future<void> updateLocation(proposedLoc, backupName, {time = 700}) async {
+  Future<void> updateLocation(proposedLoc, backupName, {time = 900}) async {
     setState(() {
       isLoading = true;
     });
@@ -216,8 +215,6 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         w1 = screen;
       });
-
-      await Future.delayed(Duration(milliseconds: (max(1000 - time, 0)).toInt()));
 
       setState(() {
         isLoading = false;
