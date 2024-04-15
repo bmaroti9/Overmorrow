@@ -90,15 +90,16 @@ class _DonationPageState extends State<DonationPage> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
           elevation: 0,
           leadingWidth: 50,
-          backgroundColor: colors[1],
-          title: comfortatext(translation('Donate', settings["Language"]), 25, settings,),
+          backgroundColor: colors[0],
+          title: comfortatext(translation('Donate', settings["Language"]), 25, settings,
+          color: colors[2]),
           leading: IconButton(
             onPressed: () {
               goBack();
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back,
-              color: WHITE,
+              color: colors[2],
             ),
           )),
       body: Container(
@@ -149,7 +150,7 @@ class _DonationPageState extends State<DonationPage> {
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       elevation: 6,
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(15),
                       backgroundColor: Color(0xfff96854),
                       //side: BorderSide(width: 3, color: main),
                       shape: RoundedRectangleBorder(
@@ -159,7 +160,7 @@ class _DonationPageState extends State<DonationPage> {
                       await _launchUrl('https://www.patreon.com/MarotiDevel');
                     },
                     child: comfortatext(translation('Support me on Patreon', settings["Language"]),
-                        20, settings, color: colors[2]),
+                        20, settings, color: WHITE),
                 ),
               ],
             ),
@@ -207,15 +208,16 @@ class _InfoPageState extends State<InfoPage> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
             elevation: 0,
             leadingWidth: 50,
-            backgroundColor: colors[1],
-            title: comfortatext(translation('About', settings["Language"]), 25, settings),
+            backgroundColor: colors[0],
+            title: comfortatext(translation('About', settings["Language"]), 25, settings,
+            color: colors[2]),
             leading: IconButton(
               onPressed: () {
                 goBack();
               },
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back,
-                color: WHITE,
+                color: colors[2],
               ),
             )),
         body: Padding(
@@ -226,14 +228,14 @@ class _InfoPageState extends State<InfoPage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 40),
                   child: Container(
-                    height: 200.0,
-                    width: 200.0,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/backdrops/very_clear_a.jpg'),
+                    height: 150.0,
+                    width: 150.0,
+                    decoration: BoxDecoration(
+                      image: const DecorationImage(
+                        image: AssetImage('assets/icons/Overmorrow_white_classic.png'),
                         fit: BoxFit.cover,
                       ),
-                      shape: BoxShape.circle
+                      borderRadius: BorderRadius.circular(40),
                     ),
                   ),
                 ),
@@ -241,22 +243,22 @@ class _InfoPageState extends State<InfoPage> {
                     translation(
                         'Overmorrow is a beautiful minimalist weather app.',
                         settings["Language"]),
-                    26, settings, color: colors[2]),
+                    22, settings, color: colors[2], align: TextAlign.center),
                 Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 10),
+                  padding: const EdgeInsets.only(top: 40, bottom: 10),
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        color: colors[1],
+                        color: colors[5],
                         borderRadius: BorderRadius.circular(20)),
                     child: Column(
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10),
                             child: comfortatext(
-                                translation('Features:', settings["Language"]), 20, settings),
+                                translation('Features:', settings["Language"]), 20, settings, color: colors[2]),
                           ),
                         ),
                         Padding(
@@ -266,34 +268,34 @@ class _InfoPageState extends State<InfoPage> {
                             children: [
                               comfortatext(
                                   '\u2022${translation('accurate weather forecast', settings["Language"])}',
-                                  22, settings),
+                                  22, settings, color: colors[2]),
                               comfortatext(
                                   '\u2022${translation('open source', settings["Language"])}',
-                                  22, settings),
+                                  22, settings, color: colors[2]),
                               comfortatext(
                                   '\u2022${translation('no ads', settings["Language"])}',
-                                  22, settings),
+                                  22, settings, color: colors[2]),
                               comfortatext(
                                   '\u2022${translation('no data collected', settings["Language"])}',
-                                  22, settings),
+                                  22, settings, color: colors[2]),
                               comfortatext(
                                   '\u2022${translation('minimalist design', settings["Language"])}',
-                                  22, settings),
+                                  22, settings, color: colors[2]),
                               comfortatext(
                                   '\u2022${translation('dynamically adapting color scheme', settings["Language"])}',
-                                  22, settings),
+                                  22, settings, color: colors[2]),
                               comfortatext(
                                   '\u2022${translation('languages support', settings["Language"])}',
-                                  22, settings),
+                                  22, settings, color: colors[2]),
                               comfortatext(
                                   '\u2022${translation('place search', settings["Language"])}',
-                                  22, settings),
+                                  22, settings, color: colors[2]),
                               comfortatext(
                                   '\u2022${translation('weather for current location', settings["Language"])}',
-                                  22, settings),
+                                  22, settings, color: colors[2]),
                               comfortatext(
                                   '\u2022${translation('unit swapping', settings["Language"])}',
-                                  22, settings),
+                                  22, settings, color: colors[2]),
                             ],
                           ),
                         ),
@@ -306,15 +308,16 @@ class _InfoPageState extends State<InfoPage> {
                   child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                          color: colors[1],
+                          color: colors[5],
                           borderRadius: BorderRadius.circular(20)),
                       child: Column(children: [
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 20, bottom: 10),
+                            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10),
                             child: comfortatext(
-                                translation('Developed by:', settings["Language"]), 20, settings),
+                                translation('Developed by:', settings["Language"]), 20, settings,
+                                color: colors[2]),
                           ),
                         ),
                         Padding(
@@ -323,12 +326,12 @@ class _InfoPageState extends State<InfoPage> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(right: 20),
-                                child: comfortatext('Balint', 22, settings),
+                                child: comfortatext('Balint', 22, settings, color: colors[2]),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 20),
                                 child: comfortatext(
-                                    '(maroti.devel@gmail.com)', 18, settings),
+                                    '(maroti.devel@gmail.com)', 18, settings, color: colors[2]),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 10),
@@ -353,16 +356,16 @@ class _InfoPageState extends State<InfoPage> {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        color: colors[1],
+                        color: colors[5],
                         borderRadius: BorderRadius.circular(20)),
                     child: Column(children: [
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 20, bottom: 10),
+                          padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10),
                           child: comfortatext(
                               translation('Weather data from:', settings["Language"]),
-                              20, settings),
+                              20, settings, color: colors[2]),
                         ),
                       ),
                       TextButton(
@@ -393,7 +396,7 @@ class _InfoPageState extends State<InfoPage> {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        color: colors[1],
+                        color: colors[5],
                         borderRadius: BorderRadius.circular(20)),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,9 +405,10 @@ class _InfoPageState extends State<InfoPage> {
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding:
-                                  const EdgeInsets.only(top: 20, bottom: 10),
+                                  const EdgeInsets.only(top: 10, bottom: 10, left: 10),
                               child: comfortatext(
-                                  translation('Images used:', settings["Language"]), 20, settings),
+                                  translation('Images used:', settings["Language"]), 20, settings,
+                                  color: colors[2]),
                             ),
                           ),
                           ListView.builder(

@@ -459,7 +459,7 @@ class dumbySearch extends StatelessWidget {
 
     return Scaffold(
       drawer: MyDrawer(primary: color, settings: settings,
-      back: WHITE),
+      back: WHITE, image: "sleet.jpg"),
       backgroundColor: color,
       body: RefreshIndicator(
         onRefresh: () async {

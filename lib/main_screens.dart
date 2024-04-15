@@ -19,7 +19,7 @@ Widget NewMain(data, updateLocation, context) {
   return Scaffold(
     backgroundColor: data.current.backcolor,
     drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
-        settings: data.settings),
+        settings: data.settings, image: data.current.backdrop,),
     body: Stack(
       children: [
         StretchyHeader.listView(
@@ -106,7 +106,7 @@ Widget TabletLayout(data, updateLocation, context) {
   return Scaffold(
     backgroundColor: data.current.backcolor,
     drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
-        settings: data.settings),
+        settings: data.settings, image: data.current.backdrop),
     body: RefreshIndicator(
       onRefresh: () async {
         await updateLocation("${data.lat}, ${data.lng}", data.real_loc);

@@ -48,7 +48,10 @@ String translation(String text, String language) {
   return translated;
 }
 
-List<Color> getColors(primary, back, settings, dif) {
+List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
+
+  String x = force == "-1" ? settings["Color mode"] : force;
+
   List<Color> colors = [ //original colorful option
     primary,
     back,
@@ -58,7 +61,7 @@ List<Color> getColors(primary, back, settings, dif) {
     darken(primary)
   ];
 
-  if (settings["Color mode"] == "monochrome") {
+  if (x == "monochrome") {
     colors = [ //default colorful option
       primary,
       WHITE,
@@ -69,7 +72,7 @@ List<Color> getColors(primary, back, settings, dif) {
     ];
   }
 
-  if (settings["Color mode"] == "colorful") {
+  if (x == "colorful") {
     colors = [ //default colorful option
       back,
       primary,
@@ -80,7 +83,7 @@ List<Color> getColors(primary, back, settings, dif) {
     ];
   }
 
-  else if (settings["Color mode"] == "light") {
+  else if (x == "light") {
     colors = [ //backcolor, primary, text
       const Color(0xffeeeeee),
       primary,
@@ -90,7 +93,7 @@ List<Color> getColors(primary, back, settings, dif) {
       lighten(lightAccent(primary, 60000), 0.25),
     ];
   }
-  else if (settings["Color mode"] == "dark") {
+  else if (x == "dark") {
     colors = [ //backcolor, primary, text
       BLACK,
       lighten(primary, 0.15),
@@ -162,7 +165,8 @@ SetData(String name, String to) async {
   await prefs.setString(name, to);
 }
 
-Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, settings, textcolor) {
+Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, settings, textcolor,
+    Color primary) {
   List<String> Items = settingSwitches[name] ?? ['˚C', '˚F'];
   return DropdownButton(
     elevation: 0,
@@ -171,7 +175,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
     borderRadius: BorderRadius.circular(18),
     icon: Padding(
       padding: const EdgeInsets.only(left:5),
-      child: Icon(Icons.arrow_drop_down_circle_rounded, color: textcolor,),
+      child: Icon(Icons.arrow_drop_down_circle_rounded, color: primary,),
     ),
     style: GoogleFonts.comfortaa(
       color: textcolor,
@@ -192,7 +196,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
   );
 }
 
-Widget setingEntry(icon, text, settings, highlight, updatePage, textcolor) {
+Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primary) {
   return Padding(
     padding: const EdgeInsets.only(top: 3, bottom: 3),
     child: Row(
@@ -204,9 +208,46 @@ Widget setingEntry(icon, text, settings, highlight, updatePage, textcolor) {
         comfortatext(translation(text, settings["Language"]!), 20, settings, color: textcolor),
         const Spacer(),
         dropdown(
-          darken(highlight), text, updatePage, settings[text]!, settings, textcolor
+          darken(highlight), text, updatePage, settings[text]!, settings, textcolor, primary
         ),
       ],
+    ),
+  );
+}
+
+Widget ColorCircle(name, primary, back, settings, updatePage, {w = 2, tap = 0}) {
+
+  List<Color> colors = getColors(primary, back, settings, 0, force: name);
+
+  return Expanded(
+    child: GestureDetector(
+      onTap: () {
+        if (tap == 0) {
+          return;
+        }
+        else {
+          updatePage("Color mode", name);
+        }
+      },
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 4, right: 4, bottom: 10),
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(200),
+                  border: Border.all(width: w * 1.0, color: colors[1]),
+                  color: colors[0]
+                ),
+                child: tap == 1 ? Center(child: comfortatext(name[0], 20, settings, color: colors[2]))
+                : Container(),
+              ),
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -215,19 +256,22 @@ class SettingsPage extends StatefulWidget {
 
   final primary;
   final back;
+  final image;
 
-  const SettingsPage({Key? key, required this.back, required this.primary,}) : super(key: key);
+  const SettingsPage({Key? key, required this.back, required this.primary,
+  required this.image}) : super(key: key);
 
   @override
-  _SettingsPageState createState() => _SettingsPageState(back: back, primary: primary);
+  _SettingsPageState createState() => _SettingsPageState(back: back, primary: primary, image: image);
 }
 
 class _SettingsPageState extends State<SettingsPage> {
 
   final primary;
   final back;
+  final image;
 
-  _SettingsPageState({required this.primary, required this.back});
+  _SettingsPageState({required this.primary, required this.back, required this.image});
 
   void updatePage(String name, String to) {
     setState(() {
@@ -253,21 +297,21 @@ class _SettingsPageState extends State<SettingsPage> {
       builder: (BuildContext context,
           AsyncSnapshot<Map<String, String>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return Scaffold(backgroundColor: WHITE,);
+          return Container();
         } else if (snapshot.hasError) {
           print(snapshot.error);
           return Center(
             child: ErrorWidget(snapshot.error as Object),
           );
         }
-        return SettingsMain(primary, snapshot.data, updatePage, goBack, back);
+        return SettingsMain(primary, snapshot.data, updatePage, goBack, back, image);
       },
     );
   }
 }
 
 Widget SettingsMain(Color primary, Map<String, String>? settings, Function updatePage,
-    Function goBack, Color back) {
+    Function goBack, Color back, String image) {
 
   List<Color> colors = getColors(primary, back, settings, 0);
 
@@ -279,7 +323,7 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
           ),
           elevation: 0,
           leadingWidth: 50,
-          backgroundColor: colors[0],
+          backgroundColor: colors[5],
           title: comfortatext(translation('Settings', settings!["Language"]!), 25, settings, color: colors[2]),
           leading:
           IconButton(
@@ -289,12 +333,15 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
             icon: Icon(Icons.arrow_back, color: colors[2],),
           )
       ),
-      body: settingsMain(colors[0], settings, updatePage, colors[2], colors[1], colors[5], colors[3]),
+      body: settingsMain(colors[0], settings, updatePage, colors[2], colors[1], colors[5], colors[3],
+      image, primary, back),
   );
 }
 
 Widget settingsMain(Color color, Map<String, String> settings, Function updatePage,
-    Color textcolor, Color secondary, highlight, Color colorpop) {
+    Color textcolor, Color secondary, highlight, Color colorpop, String image, Color primary,
+    Color back) {
+
   //var entryList = settings.entries.toList();
   return Container(
     padding: const EdgeInsets.only(left: 20, right: 15),
@@ -303,66 +350,54 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
       physics: BouncingScrollPhysics(),
         children: [
           SizedBox(height: 15,),
-          setingEntry(CupertinoIcons.globe, "Language", settings, highlight, updatePage, textcolor),
-          setingEntry(Icons.access_time_filled_sharp, "Time mode", settings, highlight, updatePage, textcolor),
-          setingEntry(CupertinoIcons.textformat_size, "Font size", settings, highlight, updatePage, textcolor),
-
           Padding(
-            padding: const EdgeInsets.only(top: 10, right: 10, left: 10, bottom: 10),
-            child: Container(
-              height: 2,
-              decoration: BoxDecoration(
-                color: secondary,
-                borderRadius: BorderRadius.circular(2)
-              ),
+            padding: EdgeInsets.only(left: 10, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Icon(CupertinoIcons.circle_lefthalf_fill, color: textcolor, ),
+                ),
+                comfortatext(translation('Color mode', settings["Language"]!), 20, settings,
+                color: textcolor),
+                const Spacer(),
+                comfortatext(settings["Color mode"]!, 20, settings, color: textcolor)
+              ],
             ),
           ),
-
           Padding(
-            padding: EdgeInsets.only(top: 20, bottom: 10),
+            padding: EdgeInsets.only(top: 20, bottom: 30),
             child: SizedBox(
               height: 300,
               child: Align(
                 alignment: Alignment.center,
                 child: AspectRatio(
-                  aspectRatio: 0.7,
+                  aspectRatio: 0.72,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          topRight: Radius.circular(25)),
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20)),
                       color: color,
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(25),
+                      borderRadius: BorderRadius.circular(20),
                       child: Column(
                         children: [
                           SizedBox(
-                            height: 210,
+                            height: 220,
                             child: Stack(
                               children: [
-                                ParrallaxBackground(imagePath1: "sleet.jpg", color: color),
-                                Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Container(
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(13),
-                                        color: color,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                ParrallaxBackground(imagePath1: image, color: color),
                                 Padding(
                                   padding: EdgeInsets.only(left: 10, bottom: 15),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      comfortatext("10°", 32, settings, color: colorpop),
-                                      comfortatext(translation("Partly Cloudy", settings["Language"]!), 19,
+                                      comfortatext("10°", 36, settings, color: colorpop),
+                                      comfortatext(translation("Partly Cloudy", settings["Language"]!), 20,
                                           settings, color: WHITE)
                                     ],
                                   ),
@@ -371,66 +406,14 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 6, right: 4, left: 4),
+                            padding: const EdgeInsets.only(top: 10, right: 4, left: 4),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: AspectRatio(
-                                      aspectRatio: 1,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(200),
-                                          border: Border.all(width: 2, color: secondary),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: AspectRatio(
-                                      aspectRatio: 1,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(200),
-                                          border: Border.all(width: 2, color: secondary),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: AspectRatio(
-                                      aspectRatio: 1,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(200),
-                                          border: Border.all(width: 2, color: secondary),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: AspectRatio(
-                                      aspectRatio: 1,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(200),
-                                          border: Border.all(width: 2, color: secondary),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
+                                ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
+                                ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
+                                ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
                               ],
                             ),
                           )
@@ -443,12 +426,50 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
             ),
           ),
 
-          setingEntry(CupertinoIcons.color_filter, "Color mode", settings, highlight, updatePage, textcolor),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ColorCircle("original", primary, back, settings, updatePage, w: 4, tap: 1),
+                ColorCircle("colorful", primary, back, settings, updatePage, w: 4, tap: 1),
+                ColorCircle("monochrome", primary, back, settings, updatePage, w: 4, tap: 1),
+                ColorCircle("light", primary, back, settings, updatePage, w : 4, tap: 1),
+                ColorCircle("dark", primary, back, settings, updatePage, w : 4, tap: 1),
+              ]
+            ),
+          ),
 
-          setingEntry(CupertinoIcons.thermometer, "Temperature", settings, highlight, updatePage, textcolor),
-          setingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, highlight, updatePage, textcolor),
-          setingEntry(CupertinoIcons.wind, "Wind", settings, highlight, updatePage, textcolor),
-          setingEntry(CupertinoIcons.timelapse, "Pressure", settings, highlight, updatePage, textcolor),
+          settingEntry(CupertinoIcons.globe, "Language", settings, highlight, updatePage,
+              textcolor, secondary),
+          settingEntry(Icons.access_time_filled_sharp, "Time mode", settings, highlight, updatePage,
+              textcolor, secondary),
+          settingEntry(CupertinoIcons.textformat_size, "Font size", settings, highlight, updatePage,
+              textcolor, secondary),
+
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Container(
+              height: 2,
+              decoration: BoxDecoration(
+                  color: secondary,
+                  borderRadius: BorderRadius.circular(2)
+              ),
+            ),
+          ),
+
+          settingEntry(CupertinoIcons.thermometer, "Temperature", settings, highlight, updatePage,
+              textcolor, secondary),
+          settingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, highlight, updatePage,
+              textcolor, secondary),
+          settingEntry(CupertinoIcons.wind, "Wind", settings, highlight, updatePage,
+              textcolor, secondary),
+          settingEntry(CupertinoIcons.timelapse, "Pressure", settings, highlight, updatePage,
+              textcolor, secondary),
+
+          const SizedBox(
+            height: 40,
+          )
         ]
     ),
   );
@@ -459,8 +480,10 @@ class MyDrawer extends StatelessWidget {
   final primary;
   final back;
   final settings;
+  final image;
 
-  const MyDrawer({super.key, required this.settings, required this.primary, required this.back});
+  const MyDrawer({super.key, required this.settings, required this.primary, required this.back,
+  required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -498,7 +521,7 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SettingsPage(primary: primary,
-                    back: back)),
+                    back: back, image: image,)),
               );
             },
           ),
