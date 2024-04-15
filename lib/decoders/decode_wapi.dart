@@ -23,6 +23,7 @@ import '../settings_page.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart' as weather_refactor;
+import 'extra_info.dart';
 
 //decodes the whole response from the weatherapi.com api_call
 
@@ -160,11 +161,12 @@ String getName(index, settings) {
 
 String backdropCorrection(name, isday) {
   String text = textCorrection(name, isday);
+  print((name, text));
   String backdrop = weather_refactor.textBackground[text] ?? "haze.jpg";
   return backdrop;
 }
 
-String textCorrection(name, isday, {settings = 'English'}) {
+String textCorrection(name, isday, {language = 'English'}) {
   String x = weather_refactor.weatherTextMap[name] ?? 'Clear Sky';
   if (x == 'Clear Sky'){
     if (isday == 1) {
@@ -182,7 +184,8 @@ String textCorrection(name, isday, {settings = 'English'}) {
       x =  'Cloudy Night';
     }
   }
-  String p = translation(x, settings["Language"]);
+
+  String p = translation(x, language);
   return p;
 }
 
@@ -196,56 +199,91 @@ class WapiCurrent {
   final String text;
   final String backdrop;
   final int temp;
-  final List<Color> contentColor;
   final int humidity;
   final int feels_like;
   final int uv;
   final double precip;
   final int wind;
+
   final Color backcolor;
-  final Color accentcolor;
+  final Color primary;
+  final Color colorpop;
+  final Color textcolor;
+  final Color secondary;
+  final Color highlight;
+
+  final Color backup_primary;
+  final Color backup_backcolor;
 
   const WapiCurrent({
     required this.feels_like,
     required this.precip,
-    required this.accentcolor,
     required this.backcolor,
     required this.backdrop,
-    required this.contentColor,
     required this.humidity,
     required this.temp,
     required this.text,
     required this.uv,
     required this.wind,
+    required this.textcolor,
+    required this.secondary,
+    required this.primary,
+    required this.highlight,
+    required this.backup_primary,
+    required this.backup_backcolor,
+    required this.colorpop,
   });
 
-  static WapiCurrent fromJson(item, settings) => WapiCurrent(
-    text: textCorrection(
-        item["current"]["condition"]["code"], item["current"]["is_day"], settings: settings
-    ),
-    backdrop: backdropCorrection(
-        item["current"]["condition"]["code"], item["current"]["is_day"]
-    ),
-    temp: unit_coversion(item["current"]["temp_c"], settings["Temperature"]).round(),
-    feels_like: unit_coversion(item["current"]["feelslike_c"], settings["Temperature"]).round(),
+  static WapiCurrent fromJson(item, settings) {
+    Color back = BackColorCorrection(
+      textCorrection(
+          item["current"]["weather_code"], item["current"]["is_day"]),
+    );
 
-    contentColor: settings["Color mode"] == "high contrast"
-        ? [BLACK,WHITE]
-        :  contentColorCorrection(item["current"]["condition"]["code"], item["current"]["is_day"]),
+    Color primary = PrimaryColorCorrection(
+      textCorrection(
+          item["current"]["weather_code"], item["current"]["is_day"]),
+    );
 
-    backcolor: settings["Color mode"] == "high contrast"
-        ? BLACK
-        :  backroundColorCorrection(item["current"]["condition"]["code"], item["current"]["is_day"]),
+    List<Color> colors = getColors(primary, back, settings,
+        ColorPopCorrection(textCorrection(
+            item["current"]["weather_code"], item["current"]["is_day"]),)[
+        settings["Color mode"] == "dark" ? 1 : 0
+        ]);
 
-    accentcolor: accentColorCorrection(
-        item["current"]["condition"]["code"], item["current"]["is_day"]
-    ),
+    return WapiCurrent(
 
-    uv: item["current"]["uv"].round(),
-    humidity: item["current"]["humidity"],
-    precip: double.parse(unit_coversion(item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"], settings["Precipitation"]).toStringAsFixed(1)),
-    wind: unit_coversion(item["current"]["wind_kph"], settings["Wind"]).round(),
-  );
+      backcolor: colors[0],
+      primary: colors[1],
+      textcolor: colors[2],
+      colorpop: colors[3],
+      secondary:  colors[4],
+      highlight: colors[5],
+
+      backup_backcolor: back,
+      backup_primary: primary,
+
+      text: textCorrection(
+          item["current"]["condition"]["code"], item["current"]["is_day"],
+          language: settings["Language"]
+      ),
+      backdrop: backdropCorrection(
+          item["current"]["condition"]["code"], item["current"]["is_day"]
+      ),
+      temp: unit_coversion(item["current"]["temp_c"], settings["Temperature"])
+          .round(),
+      feels_like: unit_coversion(
+          item["current"]["feelslike_c"], settings["Temperature"]).round(),
+
+      uv: item["current"]["uv"].round(),
+      humidity: item["current"]["humidity"],
+      precip: double.parse(unit_coversion(
+          item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"],
+          settings["Precipitation"]).toStringAsFixed(1)),
+      wind: unit_coversion(item["current"]["wind_kph"], settings["Wind"])
+          .round(),
+    );
+  }
 }
 
 class WapiDay {
@@ -279,7 +317,7 @@ class WapiDay {
 
   static WapiDay fromJson(item, index, settings, timenow) => WapiDay(
     text: textCorrection(
-        item["day"]["condition"]["code"], 1, settings: settings
+        item["day"]["condition"]["code"], 1, language: settings["Language"]
     ),
     icon: iconCorrection(
         item["day"]["condition"]["code"], 1
@@ -334,7 +372,7 @@ class WapiHour {
 
   static WapiHour fromJson(item, settings) => WapiHour(
     text: textCorrection(
-        item["condition"]["code"], item["is_day"], settings: settings
+        item["condition"]["code"], item["is_day"], language: settings["Language"]
     ),
     icon: iconCorrection(
         item["condition"]["code"], item["is_day"]

@@ -20,6 +20,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:overmorrow/decoders/decode_wapi.dart';
 import 'package:overmorrow/donation_page.dart';
 import 'package:overmorrow/main_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,7 +57,7 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
     primary,
     back,
     WHITE,
-    [back, WHITE][dif],
+    [back, WHITE, WHITE][dif],
     WHITE,
     darken(primary)
   ];
@@ -77,7 +78,7 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
       back,
       primary,
       WHITE,
-      [back, WHITE][dif],
+      [back, WHITE, WHITE][dif],
       WHITE,
       darken(back)
     ];
@@ -396,7 +397,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      comfortatext("10°", 36, settings, color: colorpop),
+                                      comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 36, settings, color: colorpop),
                                       comfortatext(translation("Partly Cloudy", settings["Language"]!), 20,
                                           settings, color: WHITE)
                                     ],

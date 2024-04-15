@@ -25,6 +25,7 @@ import '../settings_page.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart';
+import 'extra_info.dart';
 
 String oMGetName(index, settings, item) {
   if (index < 3) {
@@ -79,7 +80,7 @@ String oMCurrentTextCorrection(int code, sunstatus, time){
   double a_up = up_h + up_m / 60;
   double a_down = down_h + donw_m / 60;
 
-  //return textBackground.keys.toList()[13]; used for testing color combinations
+  //return textBackground.keys.toList()[6]; // used for testing color combinations
 
   if (a_up <= a_current && a_current <= a_down) {
     return OMCodes[code] ?? 'Clear Sky';
@@ -97,18 +98,6 @@ String oMCurrentTextCorrection(int code, sunstatus, time){
 
 String oMBackdropCorrection(String text) {
   return textBackground[text] ?? 'very_clear_a.jpg';
-}
-
-Color oMBackColorCorrection(String text) {
-  return accentColors[text] ?? WHITE;
-}
-
-Color oMPrimaryColorCorrection(String text) {
-  return textBackColor[text] ?? BLACK;
-}
-
-List<int> oMColorPopCorrection(String text) {
-  return colorPop[text] ?? [0, 0];
 }
 
 List<Color> oMtextcolorCorrection(String text) {
@@ -160,70 +149,21 @@ class OMCurrent {
   });
 
   static OMCurrent fromJson(item, settings, sunstatus, timenow) {
-    Color back = oMBackColorCorrection(
+    Color back = BackColorCorrection(
       oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),
     );
 
-    Color primary = oMPrimaryColorCorrection(
+    Color primary = PrimaryColorCorrection(
       oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),
     );
 
-    List<Color> colors = [ //original colorful option
-      primary,
-      back,
-      WHITE,
-      [back, WHITE][oMColorPopCorrection( oMCurrentTextCorrection(
-          item["current"]["weather_code"], sunstatus, timenow),)[0]],
-      WHITE,
-      darken(primary)
-    ];
-
-    if (settings["Color mode"] == "monochrome") {
-      colors = [ //default colorful option
-        primary,
-        WHITE,
-        WHITE,
-        WHITE,
-        WHITE,
-        darken(primary)
-      ];
-    }
-
-    if (settings["Color mode"] == "colorful") {
-      colors = [ //default colorful option
-        back,
-        primary,
-        WHITE,
-        [back, WHITE][oMColorPopCorrection( oMCurrentTextCorrection(
-            item["current"]["weather_code"], sunstatus, timenow),)[0]],
-        WHITE,
-        darken(back)
-      ];
-    }
-
-    else if (settings["Color mode"] == "light") {
-      colors = [ //backcolor, primary, text
-        const Color(0xffeeeeee),
-        primary,
-        lightAccent(primary, 30000),
-        WHITE,
-        primary,
-        lighten(lightAccent(primary, 60000), 0.25),
-      ];
-    }
-    else if (settings["Color mode"] == "dark") {
-      colors = [ //backcolor, primary, text
-        BLACK,
-        lighten(primary, 0.15),
-        lighten(lightAccent(primary, 30000), 0.3),
-        [BLACK, primary, WHITE][oMColorPopCorrection( oMCurrentTextCorrection(
-            item["current"]["weather_code"], sunstatus, timenow),)[1]],
-        WHITE,
-        darken(lightAccent(primary, 30000), 0.3),
-      ];
-    }
+    List<Color> colors = getColors(primary, back, settings,
+        ColorPopCorrection( oMCurrentTextCorrection(
+            item["current"]["weather_code"], sunstatus, timenow),)[
+              settings["Color mode"] == "dark" ? 1 : 0
+        ]);
 
     return OMCurrent(
       text: translation(oMCurrentTextCorrection(

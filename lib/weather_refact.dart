@@ -279,7 +279,7 @@ Map<String, List<int>> colorPop = {
   'Clear Sky': [0, 0],
   'Overcast': [0, 0],
   'Haze': [0, 0],
-  'Rain': [2, 0],
+  'Rain': [1, 0],
   'Sleet': [0, 0],
   'Drizzle': [0, 0],
   'Thunderstorm': [0, 1],

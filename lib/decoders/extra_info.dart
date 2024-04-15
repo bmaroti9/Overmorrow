@@ -17,13 +17,29 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:overmorrow/decoders/decode_OM.dart';
 
 import '../api_key.dart';
 import '../caching.dart';
 
+import '../ui_helper.dart';
+import '../weather_refact.dart';
 import 'decode_wapi.dart';
+
+
+Color BackColorCorrection(String text) {
+  return accentColors[text] ?? WHITE;
+}
+
+Color PrimaryColorCorrection(String text) {
+  return textBackColor[text] ?? BLACK;
+}
+
+List<int> ColorPopCorrection(String text) {
+  return colorPop[text] ?? [0, 0];
+}
 
 class WeatherData {
   final Map<String, String> settings;
@@ -98,7 +114,7 @@ class WeatherData {
         lat: lat,
         lng: lng,
 
-        current: WapiCurrent.fromJson(wapi_body, settings),
+        current: WapiCurrent.fromJson(wapi_body, settings,),
         days: days,
         sunstatus: sunstatus,
         aqi: WapiAqi.fromJson(wapi_body),
