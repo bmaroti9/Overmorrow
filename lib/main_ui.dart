@@ -356,7 +356,7 @@ Widget NewTimes(var data, bool divider) => Column(
           ],
         ),
       ),
-      RadarMap(data),
+      RadarMap(data: data, key: Key(data.place),),
       Visibility(
         visible: divider,
         child: Padding(

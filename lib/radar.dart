@@ -28,7 +28,8 @@ import 'package:latlong2/latlong.dart';
 class RadarMap extends StatefulWidget {
 
   final data;
-  RadarMap(this.data);
+
+  const RadarMap({Key? key, required this.data}) : super(key: key);
 
   @override
   _RadarMapState createState() => _RadarMapState(data);
