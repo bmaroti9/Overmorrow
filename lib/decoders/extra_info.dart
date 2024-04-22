@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:convert';
 import 'dart:ui';
+import 'dart:math' as math;
 
 import 'package:overmorrow/decoders/decode_OM.dart';
 
@@ -30,6 +31,7 @@ import 'decode_wapi.dart';
 
 
 Color BackColorCorrection(String text) {
+  //return Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
   return accentColors[text] ?? WHITE;
 }
 

@@ -187,8 +187,8 @@ Widget aqiDataPoints(String name, double value, var data) {
                     color: data.current.primary,
                     borderRadius: BorderRadius.circular(10)
                   ),
-                  child: comfortatext(value.toString(), 16, data.settings,
-                      color: data.current.highlight)
+                  child: comfortatext(value.toString(), 18, data.settings,
+                      color: data.current.highlight, weight: FontWeight.w600)
                 )
               ],
             ),

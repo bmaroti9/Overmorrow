@@ -208,7 +208,7 @@ Map<int, String> OMCodes = {
 Map<String, String> textBackground = {
   'Clear Night': 'clear_night.jpg',
   'Partly Cloudy': 'cloudy13.jpg',
-  'Clear Sky': 'very_clear_a.jpg',
+  'Clear Sky': 'clear_sky3.jpg',
   'Overcast': 'overcast2.jpg',
   'Haze': 'haze.jpg',
   'Rain': 'rainy_colorfull.jpg',
@@ -242,7 +242,7 @@ Map<String, List<Color>> textFontColor = {
 Map<String, Color> textBackColor = {
   'Clear Night': const Color(0xff201F2D),
   'Partly Cloudy': const Color(0xffc3beb2),
-  'Clear Sky': const Color(0xff7a9dbc),
+  'Clear Sky': const Color(0xff3570A7),
   'Overcast': const Color(0xff567286),
   'Haze': const Color(0xff3C5261),
   'Rain': const Color(0xff807699),
@@ -259,7 +259,7 @@ Map<String, Color> textBackColor = {
 Map<String, Color> accentColors = {
   'Clear Night': const Color(0xFF8D8F7D),
   'Partly Cloudy': const Color(0xff526181),
-  'Clear Sky': const Color(0xFFE5C5A3),
+  'Clear Sky': const Color(0xFFB1CEDD),
   'Overcast': const Color(0xFFD9BBAA),
   'Haze': const Color(0xFF7E8C96),
   'Rain': const Color(0xFF3B5D70),

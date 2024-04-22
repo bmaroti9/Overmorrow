@@ -33,7 +33,7 @@ String metNTextCorrection(String text, {language = 'English'}) {
 }
 
 String metNBackdropCorrection(String text) {
-  return textBackground[text] ?? 'very_clear_a.jpg';
+  return textBackground[text] ?? 'clear_sky3.jpg';
 }
 
 Color metNBackColorCorrection(String text) {
