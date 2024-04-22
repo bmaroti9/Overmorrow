@@ -204,19 +204,18 @@ Map<int, String> OMCodes = {
   99: 'thunderstorm',
 };
 
-
 Map<String, String> textBackground = {
   'Clear Night': 'clear_night.jpg',
   'Partly Cloudy': 'cloudy13.jpg',
   'Clear Sky': 'clear_sky3.jpg',
-  'Overcast': 'overcast2.jpg',
+  'Overcast': 'overcast3.jpg',
   'Haze': 'haze.jpg',
   'Rain': 'rainy_colorfull.jpg',
   'Sleet': 'sleet.jpg',
   'Drizzle': 'drizzle.jpg',
-  'Thunderstorm': 'thunderstorm.jpg',
+  'Thunderstorm': 'thunderstoms2.jpg',
   'Heavy Snow': 'heavy_snow.jpg',
-  'Fog': 'haze.jpg',
+  'Fog': 'fog2.jpg',
   'Snow': 'snowy_sky.jpg',
   'Heavy Rain': 'heavy_rainy_sky.jpg',
   'Cloudy Night' : 'clear_night_color.jpg'
@@ -243,15 +242,15 @@ Map<String, Color> textBackColor = {
   'Clear Night': const Color(0xff201F2D),
   'Partly Cloudy': const Color(0xffc3beb2),
   'Clear Sky': const Color(0xff3570A7),
-  'Overcast': const Color(0xff567286),
-  'Haze': const Color(0xff3C5261),
+  'Overcast': const Color(0xff1C293A),
+  'Haze': const Color(0xff18374A),
   'Rain': const Color(0xff807699),
   'Sleet': const Color(0xff7A94B9),
   'Drizzle': const Color(0xff959f9c),
-  'Thunderstorm': const Color(0xff654463),
+  'Thunderstorm': const Color(0xff994970),
   'Heavy Snow': const Color(0xffb0c4ba),
-  'Fog': const Color(0xff3B5564),
-  'Snow': const Color(0xff949590),
+  'Fog': const Color(0xff151E1B),
+  'Snow': const Color(0xffcfd0c9),
   'Heavy Rain': const Color(0xff314949),
   'Cloudy Night': const Color(0xff112f56)
 };
@@ -259,18 +258,18 @@ Map<String, Color> textBackColor = {
 Map<String, Color> accentColors = {
   'Clear Night': const Color(0xFF8D8F7D),
   'Partly Cloudy': const Color(0xff526181),
-  'Clear Sky': const Color(0xFFB1CEDD),
-  'Overcast': const Color(0xFFD9BBAA),
-  'Haze': const Color(0xFF7E8C96),
-  'Rain': const Color(0xFF3B5D70),
-  'Sleet': const Color(0xFFCCB3C8),
-  'Drizzle': const Color(0xFF706D7E),
-  'Thunderstorm': const Color(0xFF799477),
-  'Heavy Snow': const Color(0xFF5D686F),
-  'Fog': const Color(0xFFAB9587),
-  'Snow': const Color(0xFFB1BAB5),
+  'Clear Sky': const Color(0xFFA1C1D2),
+  'Overcast': const Color(0xFFDAA892),
+  'Haze': const Color(0xFF968C82),
+  'Rain': const Color(0xFF262A3D),
+  'Sleet': const Color(0xFFD2B1C5),
+  'Drizzle': const Color(0xFF45516D),
+  'Thunderstorm': const Color(0xFF709CB9),
+  'Heavy Snow': const Color(0xFF4A5258),
+  'Fog': const Color(0xFF4C6381),
+  'Snow': const Color(0xFF83A6A0),
   'Heavy Rain': const Color(0xFF8A8667),
-  'Cloudy Night': const Color(0xFF857EA0),
+  'Cloudy Night': const Color(0xFF998BB5),
 };
 
 Map<String, List<int>> colorPop = {
