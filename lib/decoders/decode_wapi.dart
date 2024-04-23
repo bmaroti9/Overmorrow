@@ -237,12 +237,14 @@ class WapiCurrent {
   static WapiCurrent fromJson(item, settings) {
     Color back = BackColorCorrection(
       textCorrection(
-          item["current"]["weather_code"], item["current"]["is_day"]),
+          item["current"]["condition"]["code"], item["current"]["is_day"],
+      ),
     );
 
     Color primary = PrimaryColorCorrection(
       textCorrection(
-          item["current"]["weather_code"], item["current"]["is_day"]),
+        item["current"]["condition"]["code"], item["current"]["is_day"],
+      ),
     );
 
     List<Color> colors = getColors(primary, back, settings,

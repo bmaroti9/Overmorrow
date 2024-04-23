@@ -264,7 +264,7 @@ Map<String, Color> accentColors = {
   'Rain': const Color(0xFF262A3D),
   'Sleet': const Color(0xFFD2B1C5),
   'Drizzle': const Color(0xFF45516D),
-  'Thunderstorm': const Color(0xFF709CB9),
+  'Thunderstorm': const Color(0xFFC4BA8E),
   'Heavy Snow': const Color(0xFF4A5258),
   'Fog': const Color(0xFF4C6381),
   'Snow': const Color(0xFF83A6A0),
