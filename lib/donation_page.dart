@@ -36,24 +36,26 @@ final imageText = [
   'Fog',
   'Snow',
   'Heavy Rain',
-  'Cloudy Night'
+  'Cloudy Night',
+  'Error Screen'
 ];
 
 final imageLink = [
   'https://unsplash.com/photos/time-lapse-photography-of-stars-at-nighttime-YvOT1lJ0NPQ',
   'https://unsplash.com/photos/ocean-under-clouds-Plkff-dVfNM',
   'https://unsplash.com/photos/blue-and-white-sky-d12K_FkCUN8',
-  'https://unsplash.com/photos/a-cloudy-sky-with-some-clouds-UT5FSjTrhEQ',
+  'https://unsplash.com/photos/view-of-calm-sea-nQM2oClouhY',
   'https://unsplash.com/photos/silhouette-of-trees-and-sea-L-HxY2XlaaY',
   'https://unsplash.com/photos/water-droplets-on-clear-glass-1YHXFeOYpN0',
   'https://unsplash.com/photos/snow-covered-trees-and-road-during-daytime-wyM1KmMUSbA',
   'https://unsplash.com/photos/a-view-of-a-plane-through-a-rain-covered-window-UsYOap7yIMg',
-  'https://unsplash.com/photos/selective-photography-of-white-thunder-nbqlWhOVu6k',
+  'https://unsplash.com/photos/lightning-strike-on-the-sky-ley4Kf2iG7Y',
   'https://unsplash.com/photos/snowy-forest-on-mountainside-during-daytime-t4hA-zCALUQ',
   'https://unsplash.com/photos/green-trees-on-mountain-under-white-clouds-during-daytime-obQacWYxB1I',
   'https://unsplash.com/photos/bokeh-photography-of-snows-SH4GNXNj1RA',
   'https://unsplash.com/photos/dew-drops-on-glass-panel-bWtd1ZyEy6w',
-  'https://unsplash.com/photos/blue-and-white-starry-night-sky-NpF9JLGYfeQ'
+  'https://unsplash.com/photos/blue-and-white-starry-night-sky-NpF9JLGYfeQ',
+  'https://unsplash.com/photos/snow-covered-grass-at-daytime-KQWEuSh_VR0',
 ];
 
 class DonationPage extends StatefulWidget {

@@ -17,14 +17,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:convert';
+import 'dart:math';
 import 'dart:ui';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:overmorrow/main_ui.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
+import 'package:stretchy_header/stretchy_header.dart';
 
 import 'api_key.dart';
 
@@ -441,8 +444,6 @@ class dumbySearch extends StatelessWidget {
     required this.updateLocation, required this.icon, required this.place,
   required this.settings, required this.provider, required this.latlng});
 
-  final Color color = const Color(0xff7a9dbc);
-
   final FloatingSearchBarController controller = FloatingSearchBarController();
 
   @override
@@ -451,115 +452,57 @@ class dumbySearch extends StatelessWidget {
     FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
 
     Size size = view.physicalSize / view.devicePixelRatio;
-    double safeHeight = size.height;
 
     const replacement = "<api_key>";
     String newStr = errorMessage.toString().replaceAll(wapi_Key, replacement);
     //String newStr = newStr2.replaceAll(owm_Key, replacement);
 
+    Color primary = Color(0xffc2b9c2);
+    Color back = Color(0xff847F83);
+
+    List<Color> colors = getColors(primary, back, settings, 0);
+
     return Scaffold(
-      drawer: MyDrawer(primary: color, settings: settings,
-      back: WHITE, image: "sleet.jpg"),
-      backgroundColor: color,
-      body: RefreshIndicator(
+      drawer: MyDrawer(primary: primary, settings: settings, back: back, image: "grayscale_snow2.jpg"),
+      backgroundColor: colors[0],
+      body: StretchyHeader.singleChild(
+        displacement: 150,
         onRefresh: () async {
           await updateLocation(latlng, place);
         },
-        backgroundColor: WHITE,
-        color: BLACK,
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              automaticallyImplyLeading: false, // remove the hamburger-menu
-              bottom: PreferredSize(
-                preferredSize: Size(0, 70),
-                child: Container(),
-              ),
-              expandedHeight: safeHeight - 100,
-              backgroundColor: Colors.transparent,
-              pinned: false,
-              flexibleSpace: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 200),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(20),
-                            child: icon,
-                          ),
-                          SizedBox(
-                            width: 250,
-                            child: Center(child: Text(
-                              newStr,
-                              style: const TextStyle(
-                                color: WHITE,
-                                fontSize: 21,
-                              ),
-                              textAlign: TextAlign.center,
-                            ))
-                          ),
-                          const Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Container(
-                              constraints: const BoxConstraints(maxWidth: 800),
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: WHITE, width: 1.2)
-                              ),
-                              child: Column(
-                                children: [
-                                  comfortatext(translation('Weather provider', settings["Language"]), 18, settings),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20, right: 20),
-                                    child: DropdownButton(
-                                      underline: Container(),
-                                      borderRadius: BorderRadius.circular(20),
-                                      icon: const Padding(
-                                        padding: EdgeInsets.only(left:5),
-                                        child: Icon(Icons.arrow_drop_down_circle, color: WHITE,),
-                                      ),
-                                      style: GoogleFonts.comfortaa(
-                                        color: WHITE,
-                                        fontSize: 20 * getFontSize(settings["Font size"]),
-                                        fontWeight: FontWeight.w300,
-                                      ),
-                                      //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
-                                      value: provider.toString(),
-                                      items: ['weatherapi.com', 'open-meteo'].map((item) {
-                                        return DropdownMenuItem(
-                                          value: item,
-                                          child: Text(item),
-                                        );
-                                      }).toList(),
-                                      onChanged: (String? value) async {
-                                        SetData('weather_provider', value!);
-                                        await updateLocation(latlng, place);
-                                      },
-                                      isExpanded: true,
-                                      dropdownColor: darken(color, 0.1),
-                                      elevation: 0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+        headerData: HeaderData(
+            blurContent: false,
+            headerHeight: max(size.height * 0.6, 400), //we don't want it to be smaller than 400
+            header: ParrallaxBackground(imagePath1: "grayscale_snow2.jpg", key: Key(place),
+              color: darken(colors[0], 0.1),),
+            overlay: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 50, bottom: 20),
+                          child: Icon(icon, color: Colors.black54, size: 25),
+                        ),
+                        comfortatext(newStr, 20, settings, color: Colors.black54, weight: FontWeight.w300,
+                        align: TextAlign.center),
+                      ],
                     ),
                   ),
-                  MySearchParent(updateLocation: updateLocation,
-                    color: color, place: place, controller: controller, settings: settings,
-                  real_loc: place, secondColor: WHITE, textColor: WHITE, highlightColor: color,),
-                ],
-              ),
-            ),
-          ],
+                ),
+                MySearchParent(updateLocation: updateLocation,
+                    color: colors[0], place: place, controller: controller, settings: settings,
+                  real_loc: place, secondColor: colors[1], textColor: colors[2], highlightColor: colors[5],),
+              ],
+            )
         ),
+        child:
+          providerSelector(settings, updateLocation, colors[2], colors[5],
+              colors[1], provider, latlng, place),
       ),
     );
   }

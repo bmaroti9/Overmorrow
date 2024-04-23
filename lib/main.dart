@@ -95,14 +95,14 @@ class _MyAppState extends State<MyApp> {
               return dumbySearch(errorMessage: translation(
                   "Unable to locate device", settings["Language"]!),
                 updateLocation: updateLocation,
-                icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
+                icon: Icons.gps_off,
                 place: backupName,
                 settings: settings, provider: weather_provider, latlng: absoluteProposed);
             }
           } on LocationServiceDisabledException {
             return dumbySearch(errorMessage: translation("location services are disabled.", settings["Language"]!),
               updateLocation: updateLocation,
-              icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
+              icon: Icons.gps_off,
               place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
           }
 
@@ -114,7 +114,7 @@ class _MyAppState extends State<MyApp> {
         else {
           return dumbySearch(errorMessage: translation(loc_status, settings["Language"]!),
             updateLocation: updateLocation,
-            icon: const Icon(Icons.gps_off, color: WHITE, size: 30,),
+            icon: Icons.gps_off,
             place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
         }
       }
@@ -126,9 +126,9 @@ class _MyAppState extends State<MyApp> {
           backupName = split["name"];
         } else {
           return dumbySearch(
-            errorMessage: '${translation('Place not found', settings["Language"]!)}: $backupName',
+            errorMessage: '${translation('Place not found', settings["Language"]!)}: \n $backupName',
             updateLocation: updateLocation,
-            icon: const Icon(Icons.location_disabled, color: WHITE, size: 30,),
+            icon: Icons.location_disabled,
             place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
         }
       }
@@ -146,22 +146,22 @@ class _MyAppState extends State<MyApp> {
       } on TimeoutException {
         return dumbySearch(errorMessage: translation("Weak or no wifi connection", settings["Language"]!),
           updateLocation: updateLocation,
-          icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
+          icon: Icons.wifi_off,
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on HttpExceptionWithStatus catch (hihi){
         print(hihi.toString());
         return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
-          icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
+          icon: Icons.bug_report,
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on SocketException {
         return dumbySearch(errorMessage: translation("Not connected to the internet", settings["Language"]!),
           updateLocation: updateLocation,
-          icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
+          icon: Icons.wifi_off,
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on Error catch (e, stacktrace) {
         print(stacktrace);
         return dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
-          icon: const Icon(Icons.wifi_off, color: WHITE, size: 30,),
+          icon: Icons.bug_report,
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       }
 
@@ -183,7 +183,7 @@ class _MyAppState extends State<MyApp> {
 
       if (recall) {
         return dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
-          icon: const Icon(Icons.bug_report, color: WHITE, size: 30,),
+          icon: Icons.bug_report,
           place: backupName, settings: settings, provider: weather_provider, latlng: 'search',);
       }
       else {

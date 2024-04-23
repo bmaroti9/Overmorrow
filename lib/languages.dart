@@ -1001,6 +1001,18 @@ Map<String, List<String>> mainTranslate = {
     'Размер шрифта',
     '字体大小',
     'フォントサイズ'
+  ],
+  'Error Screen': [
+    'Error Screen',
+    'Hiba képernyő',
+    'Pantalla de error',
+    'Écran d erreur',
+    'Fehlerbildschirm',
+    'Schermata di errore',
+    'Tela de erro',
+    'Экран ошибки',
+    '错误屏幕',
+    'エラースクリーン'
   ]
 };
 

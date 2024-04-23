@@ -20,71 +20,68 @@ Widget NewMain(data, updateLocation, context) {
     backgroundColor: data.current.backcolor,
     drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
         settings: data.settings, image: data.current.backdrop,),
-    body: Stack(
-      children: [
-        StretchyHeader.listView(
-          displacement: 150,
-          onRefresh: () async {
-            await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
-          },
-          headerData: HeaderData(
-            //backgroundColor: WHITE,
-              blurContent: false,
-              headerHeight: max(size.height * 0.6, 400), //we don't want it to be smaller than 400
-              header: ParrallaxBackground(imagePath1: data.current.backdrop, key: Key(data.place),
-              color: darken(data.current.backcolor, 0.1),),
-              overlay: Stack(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 25,
-                        top: MediaQuery.of(context).padding.top + 20, right: 25, bottom: 30
+    body: StretchyHeader.listView(
+      displacement: 150,
+      onRefresh: () async {
+        await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
+      },
+      headerData: HeaderData(
+        //backgroundColor: WHITE,
+          blurContent: false,
+          headerHeight: max(size.height * 0.6, 400), //we don't want it to be smaller than 400
+          header: ParrallaxBackground(imagePath1: data.current.backdrop, key: Key(data.place),
+          color: darken(data.current.backcolor, 0.1),),
+          overlay: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 25,
+                    top: MediaQuery.of(context).padding.top + 20, right: 25, bottom: 30
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0, bottom: 5),
+                      child: comfortatext("${data.current.temp}°", 65, data.settings,
+                          color: data.current.colorpop, weight: FontWeight.w300),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0, bottom: 5),
-                          child: comfortatext("${data.current.temp}°", 65, data.settings,
-                              color: data.current.colorpop, weight: FontWeight.w300),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0),
-                          child: comfortatext(data.current.text, 32, data.settings),
-                        )
-                      ],
-                    ),
-                  ),
-                  MySearchParent(updateLocation: updateLocation,
-                    color: data.current.backcolor, place: data.place,
-                    controller: controller, settings: data.settings, real_loc: data.real_loc,
-                    secondColor: data.current.primary, textColor: data.current.textcolor,
-                    highlightColor: data.current.highlight, key: Key(data.place),),
-                ],
-              )
-          ),
-          children: [
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Container(
-                child: LayoutBuilder(
-                    builder: (BuildContext context, BoxConstraints constraints) {
-                      if(constraints.maxWidth > 400.0) {
-                        return Circles(400, data, 0.5, data.current.primary);
-                      } else {
-                        return Circles(constraints.maxWidth * 0.95, data, 0.5, data.current.primary);
-                      }
-                    }
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0),
+                      child: comfortatext(data.current.text, 32, data.settings),
+                    )
+                  ],
                 ),
               ),
+              MySearchParent(updateLocation: updateLocation,
+                color: data.current.backcolor, place: data.place,
+                controller: controller, settings: data.settings, real_loc: data.real_loc,
+                secondColor: data.current.primary, textColor: data.current.textcolor,
+                highlightColor: data.current.highlight, key: Key(data.place),),
+            ],
+          )
+      ),
+      children: [
+        Align(
+          alignment: Alignment.bottomLeft,
+          child: Container(
+            child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  if(constraints.maxWidth > 400.0) {
+                    return Circles(400, data, 0.5, data.current.primary);
+                  } else {
+                    return Circles(constraints.maxWidth * 0.95, data, 0.5, data.current.primary);
+                  }
+                }
             ),
-            NewTimes(data, true),
-            buildHihiDays(data),
-            buildGlanceDay(data),
-            providerSelector(data, updateLocation),
-            Padding(padding: EdgeInsets.only(bottom: 20))
-          ],
+          ),
         ),
+        NewTimes(data, true),
+        buildHihiDays(data),
+        buildGlanceDay(data),
+        providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
+        data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
+        Padding(padding: EdgeInsets.only(bottom: 20))
       ],
     ),
   );

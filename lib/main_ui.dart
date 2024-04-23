@@ -716,19 +716,20 @@ Widget buildHours(List<dynamic> hours, data) => SizedBox(
   ),
 );
 
-Widget providerSelector(data, updateLocation) {
+Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
+    provider, latlng, real_loc) {
   return Padding(
     padding: const EdgeInsets.all(20.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        comfortatext(translation('Weather provider', data.settings["Language"]), 18, data.settings,
-        color: data.current.textcolor),
+        comfortatext(translation('Weather provider', settings["Language"]), 18, settings,
+        color: textcolor),
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Container(
             decoration: BoxDecoration(
-              color: data.current.highlight,
+              color: highlight,
               borderRadius: BorderRadius.circular(20),
             ),
             padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
@@ -737,15 +738,15 @@ Widget providerSelector(data, updateLocation) {
               borderRadius: BorderRadius.circular(20),
               icon: Padding(
                 padding: const EdgeInsets.only(left:5),
-                child: Icon(Icons.arrow_drop_down_circle, color: data.current.primary,),
+                child: Icon(Icons.arrow_drop_down_circle, color: primary,),
               ),
               style: GoogleFonts.comfortaa(
                 color: WHITE,
-                fontSize: 20 * getFontSize(data.settings["Font size"]),
+                fontSize: 20 * getFontSize(settings["Font size"]),
                 fontWeight: FontWeight.w300,
               ),
               //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
-              value: data.provider.toString(),
+              value: provider.toString(),
               items: ['weatherapi.com', 'open-meteo'].map((item) {
                 return DropdownMenuItem(
                   value: item,
@@ -754,10 +755,10 @@ Widget providerSelector(data, updateLocation) {
               }).toList(),
               onChanged: (String? value) async {
                 SetData('weather_provider', value!);
-                await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
+                await updateLocation(latlng, real_loc);
               },
               isExpanded: true,
-              dropdownColor: data.current.highlight,
+              dropdownColor: highlight,
               elevation: 0,
             ),
           ),

@@ -53,7 +53,14 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
 
   String x = force == "-1" ? settings["Color mode"] : force;
 
-  List<Color> colors = [ //original colorful option
+  //0 BACKCOLOR
+  //1 PRIMARY
+  //2 TEXT COLOR
+  //3 COLOR POP
+  //4 SECONDARY
+  //5 HIGHLIGHT
+
+  List<Color> colors = [
     primary,
     back,
     WHITE,
