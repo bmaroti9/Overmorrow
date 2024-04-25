@@ -354,131 +354,149 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
   return Container(
     padding: const EdgeInsets.only(left: 20, right: 15),
     color: highlight,
-    child: ListView(
+    child: SingleChildScrollView(
       physics: BouncingScrollPhysics(),
-        children: [
-          SizedBox(height: 15,),
-          Padding(
-            padding: EdgeInsets.only(left: 10, right: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+      child: Center(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 800),
+          child: Column(
               children: [
+                SizedBox(height: 15,),
                 Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: Icon(CupertinoIcons.circle_lefthalf_fill, color: textcolor, ),
+                  padding: EdgeInsets.only(left: 10, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Icon(CupertinoIcons.circle_lefthalf_fill, color: textcolor, ),
+                      ),
+                      comfortatext(translation('Color mode', settings["Language"]!), 20, settings,
+                      color: textcolor),
+                      const Spacer(),
+                      comfortatext(settings["Color mode"]!, 20, settings, color: textcolor)
+                    ],
+                  ),
                 ),
-                comfortatext(translation('Color mode', settings["Language"]!), 20, settings,
-                color: textcolor),
-                const Spacer(),
-                comfortatext(settings["Color mode"]!, 20, settings, color: textcolor)
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 20, bottom: 30),
-            child: SizedBox(
-              height: 300,
-              child: Align(
-                alignment: Alignment.center,
-                child: AspectRatio(
-                  aspectRatio: 0.72,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20)),
-                      color: color,
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 220,
-                            child: Stack(
+                Padding(
+                  padding: EdgeInsets.only(top: 20, bottom: 30),
+                  child: SizedBox(
+                    height: 300,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: AspectRatio(
+                        aspectRatio: 0.72,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20)),
+                            color: color,
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Column(
                               children: [
-                                ParrallaxBackground(imagePath1: image, color: color),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 10, bottom: 15),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                SizedBox(
+                                  height: 220,
+                                  child: Stack(
                                     children: [
-                                      comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 36, settings, color: colorpop),
-                                      comfortatext(translation("Partly Cloudy", settings["Language"]!), 20,
-                                          settings, color: WHITE)
+                                      ParrallaxBackground(imagePath1: image, color: color),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 10, bottom: 15),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 36, settings, color: colorpop),
+                                            comfortatext(translation("Partly Cloudy", settings["Language"]!), 20,
+                                                settings, color: WHITE)
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10, right: 4, left: 4),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
+                                      ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
+                                      ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
+                                      ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, right: 4, left: 4),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
-                                ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
-                                ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
-                                ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
-                              ],
-                            ),
-                          )
-                        ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
-          ),
 
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ColorCircle("original", primary, back, settings, updatePage, w: 4, tap: 1),
-                ColorCircle("colorful", primary, back, settings, updatePage, w: 4, tap: 1),
-                ColorCircle("monochrome", primary, back, settings, updatePage, w: 4, tap: 1),
-                ColorCircle("light", primary, back, settings, updatePage, w : 4, tap: 1),
-                ColorCircle("dark", primary, back, settings, updatePage, w : 4, tap: 1),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                  //somehow this was the only way i found to limit the width.
+                  //otherwise the row would disregard the max size and expand beyond
+                  child: Container(
+                    constraints: BoxConstraints(maxHeight: 120),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: AspectRatio(
+                        aspectRatio: 4,
+                        child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ColorCircle("original", primary, back, settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("colorful", primary, back, settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("monochrome", primary, back, settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("light", primary, back, settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("dark", primary, back, settings, updatePage, w: 4, tap: 1),
+                            ]
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                settingEntry(CupertinoIcons.globe, "Language", settings, highlight, updatePage,
+                    textcolor, secondary),
+                settingEntry(Icons.access_time_filled_sharp, "Time mode", settings, highlight, updatePage,
+                    textcolor, secondary),
+                settingEntry(CupertinoIcons.textformat_size, "Font size", settings, highlight, updatePage,
+                    textcolor, secondary),
+
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Container(
+                    height: 2,
+                    decoration: BoxDecoration(
+                        color: secondary,
+                        borderRadius: BorderRadius.circular(2)
+                    ),
+                  ),
+                ),
+
+                settingEntry(CupertinoIcons.thermometer, "Temperature", settings, highlight, updatePage,
+                    textcolor, secondary),
+                settingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, highlight, updatePage,
+                    textcolor, secondary),
+                settingEntry(CupertinoIcons.wind, "Wind", settings, highlight, updatePage,
+                    textcolor, secondary),
+                settingEntry(CupertinoIcons.timelapse, "Pressure", settings, highlight, updatePage,
+                    textcolor, secondary),
+
+                const SizedBox(
+                  height: 40,
+                )
               ]
-            ),
           ),
-
-          settingEntry(CupertinoIcons.globe, "Language", settings, highlight, updatePage,
-              textcolor, secondary),
-          settingEntry(Icons.access_time_filled_sharp, "Time mode", settings, highlight, updatePage,
-              textcolor, secondary),
-          settingEntry(CupertinoIcons.textformat_size, "Font size", settings, highlight, updatePage,
-              textcolor, secondary),
-
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Container(
-              height: 2,
-              decoration: BoxDecoration(
-                  color: secondary,
-                  borderRadius: BorderRadius.circular(2)
-              ),
-            ),
-          ),
-
-          settingEntry(CupertinoIcons.thermometer, "Temperature", settings, highlight, updatePage,
-              textcolor, secondary),
-          settingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, highlight, updatePage,
-              textcolor, secondary),
-          settingEntry(CupertinoIcons.wind, "Wind", settings, highlight, updatePage,
-              textcolor, secondary),
-          settingEntry(CupertinoIcons.timelapse, "Pressure", settings, highlight, updatePage,
-              textcolor, secondary),
-
-          const SizedBox(
-            height: 40,
-          )
-        ]
+        ),
+      ),
     ),
   );
 }

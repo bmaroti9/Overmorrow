@@ -56,7 +56,8 @@ Widget searchBar(Color color, List<String> recommend,
         fontWeight: FontWeight.w100,
       ),
 
-      margins: EdgeInsets.only(left: 10, right: 10, top: MediaQuery.of(context).padding.top + 15),
+      margins: secondColor == highlightColor ? EdgeInsets.only(left: 10, right: 10, top: 20)
+                    :  EdgeInsets.only(left: 10, right: 10, top: MediaQuery.of(context).padding.top + 15),
 
       borderRadius: BorderRadius.circular(23),
       backgroundColor: color,

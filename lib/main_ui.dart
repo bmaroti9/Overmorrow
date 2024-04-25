@@ -130,8 +130,9 @@ Widget buildCurrent(var data, double height, double bottom) => Column(
   ],
 );
 
-Widget Circles(double width, var data, double bottom, color) {
-  return Center(
+Widget Circles(double width, var data, double bottom, color, {align = Alignment.center}) {
+  return Align(
+    alignment: align,
     child: SizedBox(
       width: width,
         child: Container(
