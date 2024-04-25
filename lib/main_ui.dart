@@ -95,41 +95,6 @@ class ParrallaxBackground extends StatelessWidget {
 }
 
 
-Widget buildCurrent(var data, double height, double bottom) => Column(
-  mainAxisAlignment: MainAxisAlignment.end,
-  children: [
-    Padding(
-      padding: const EdgeInsets.only(top: 0.0, left: 30),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: comfortatext("${data.current.temp}°", 70, data.settings)
-      ),
-    ),
-    Padding(
-      padding: const EdgeInsets.only(left: 30),
-      child: Align(
-          alignment: Alignment.topLeft,
-          child: comfortatext(data.current.text, 40, data.settings),
-      ),
-    ),
-
-  Align(
-    alignment: Alignment.bottomLeft,
-    child: Container(
-      child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            if(constraints.maxWidth > 400.0) {
-              return Circles(400, data, bottom, WHITE);
-            } else {
-              return Circles(constraints.maxWidth * 0.93, data, bottom, WHITE);
-            }
-          }
-      ),
-    ),
-  ),
-  ],
-);
-
 Widget Circles(double width, var data, double bottom, color, {align = Alignment.center}) {
   return Align(
     alignment: align,

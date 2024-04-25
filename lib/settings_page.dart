@@ -30,8 +30,8 @@ import 'ui_helper.dart';
 
 Map<String, List<String>> settingSwitches = {
   'Language' : [
-    'English', 'Magyar', 'Español', 'Français', 'Deutsch', 'Italiano',
-    'Português', 'Русский', '简体中文', '日本語'
+    'English', 'Español', 'Français', 'Deutsch', 'Italiano',
+    'Português', 'Русский', 'Magyar', '简体中文', '日本語'
   ],
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
@@ -439,13 +439,13 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                  padding: const EdgeInsets.only(left: 20, right: 20),
                   //somehow this was the only way i found to limit the width.
                   //otherwise the row would disregard the max size and expand beyond
                   child: Container(
                     constraints: BoxConstraints(maxHeight: 120),
                     child: Align(
-                      alignment: Alignment.topCenter,
+                      alignment: Alignment.center,
                       child: AspectRatio(
                         aspectRatio: 4,
                         child: Row(

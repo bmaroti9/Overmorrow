@@ -29,7 +29,7 @@ Widget NewMain(data, updateLocation, context) {
           blurContent: false,
           headerHeight: max(size.height * 0.6, 400), //we don't want it to be smaller than 400
           header: ParrallaxBackground(imagePath1: data.current.backdrop, key: Key(data.place),
-          color: darken(data.current.backcolor, 0.1),),
+          color: lightAccent(data.current.backcolor, 5000)),
           overlay: Stack(
             children: [
               Padding(
@@ -42,12 +42,13 @@ Widget NewMain(data, updateLocation, context) {
                     const Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(left: 0, bottom: 5),
-                      child: comfortatext("${data.current.temp}°", 65, data.settings,
+                      child: comfortatext("${data.current.temp}°", 68, data.settings,
                           color: data.current.colorpop, weight: FontWeight.w300),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 0),
-                      child: comfortatext(data.current.text, 32, data.settings),
+                      child: comfortatext(data.current.text, 32, data.settings,
+                      weight: FontWeight.w400),
                     ),
                   ],
                 ),
