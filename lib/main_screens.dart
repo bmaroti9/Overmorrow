@@ -26,7 +26,7 @@ Widget NewMain(data, updateLocation, context) {
       headerData: HeaderData(
         //backgroundColor: WHITE,
           blurContent: false,
-          headerHeight: max(size.height * 0.55, 400), //we don't want it to be smaller than 400
+          headerHeight: max(size.height * 0.58, 400), //we don't want it to be smaller than 400
           header: ParrallaxBackground(imagePath1: data.current.backdrop, key: Key(data.place),
           color: data.current.backcolor == BLACK ? BLACK
               : lightAccent(data.current.backcolor, 5000)),
@@ -67,10 +67,10 @@ Widget NewMain(data, updateLocation, context) {
           child: Container(
             child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-                  if(constraints.maxWidth > 400.0) {
-                    return Circles(400, data, 0.5, data.current.primary);
+                  if(constraints.maxWidth > 500.0) {
+                    return Circles(500, data, 0.5, data.current.primary);
                   } else {
-                    return Circles(constraints.maxWidth * 0.95, data, 0.5, data.current.primary);
+                    return Circles(constraints.maxWidth * 0.97, data, 0.5, data.current.primary);
                   }
                 }
             ),
