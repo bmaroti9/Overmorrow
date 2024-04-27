@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
@@ -27,7 +26,7 @@ Widget NewMain(data, updateLocation, context) {
       headerData: HeaderData(
         //backgroundColor: WHITE,
           blurContent: false,
-          headerHeight: max(size.height * 0.6, 400), //we don't want it to be smaller than 400
+          headerHeight: max(size.height * 0.55, 400), //we don't want it to be smaller than 400
           header: ParrallaxBackground(imagePath1: data.current.backdrop, key: Key(data.place),
           color: data.current.backcolor == BLACK ? BLACK
               : lightAccent(data.current.backcolor, 5000)),
@@ -58,7 +57,7 @@ Widget NewMain(data, updateLocation, context) {
                 color: data.current.backcolor, place: data.place,
                 controller: controller, settings: data.settings, real_loc: data.real_loc,
                 secondColor: data.current.primary, textColor: data.current.textcolor,
-                highlightColor: data.current.highlight, key: Key(data.place),),
+                highlightColor: data.current.highlight, key: Key("${data.place}, ${data.current.backdrop}"),),
             ],
           )
       ),

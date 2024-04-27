@@ -105,7 +105,7 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
     colors = [ //backcolor, primary, text
       BLACK,
       lighten(primary, 0.15),
-      lighten(lightAccent(primary, 30000), 0.3),
+      lighten(lightAccent(primary, 50000), 0.3),
       [BLACK, primary, WHITE][dif],
       WHITE,
       darken(lightAccent(primary, 30000), 0.3),
