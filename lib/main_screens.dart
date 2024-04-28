@@ -19,7 +19,7 @@ Widget NewMain(data, updateLocation, context) {
     drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
         settings: data.settings, image: data.current.backdrop,),
     body: StretchyHeader.listView(
-      displacement: 150,
+      displacement: 130,
       onRefresh: () async {
         await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
       },

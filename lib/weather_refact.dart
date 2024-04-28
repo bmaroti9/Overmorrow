@@ -250,7 +250,7 @@ Map<String, Color> textBackColor = {
   'Thunderstorm': const Color(0xff776475),
   'Heavy Snow': const Color(0xffb0c4ba),
   'Fog': const Color(0xff151E1B),
-  'Snow': const Color(0xffcfd0c9),
+  'Snow': const Color(0xff919186),
   'Heavy Rain': const Color(0xff314949),
   'Cloudy Night': const Color(0xff112f56)
 };
@@ -267,7 +267,7 @@ Map<String, Color> accentColors = {
   'Thunderstorm': const Color(0xFF889B8A),
   'Heavy Snow': const Color(0xFF4A5258),
   'Fog': const Color(0xFF4C6381),
-  'Snow': const Color(0xFF83A6A0),
+  'Snow': const Color(0xFF9BC5BD),
   'Heavy Rain': const Color(0xFF8A8667),
   'Cloudy Night': const Color(0xFF998BB5),
 };

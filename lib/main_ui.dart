@@ -632,7 +632,7 @@ Widget buildGlanceDay(var data) => Padding(
 Widget buildHours(List<dynamic> hours, data) => SizedBox(
   height: 290,
   child: ListView(
-    physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
+    physics: const BouncingScrollPhysics(),
     scrollDirection: Axis.horizontal,
     children: hours.map<Widget>((hour) {
       return Column(
