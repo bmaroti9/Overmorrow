@@ -64,7 +64,7 @@ String oMTextCorrection(int code) {
   return OMCodes[code] ?? 'Clear Sky';
 }
 
-String oMCurrentTextCorrection(int code, sunstatus, time){
+String oMCurrentTextCorrection(int code, sunstatus, time) {
   String t = time.contains("T") ? time.split("T")[1] : time.split(" ")[1];
   int minute = int.parse(t.split(":")[1]);
   int hour = int.parse(t.split(":")[0]);
@@ -80,7 +80,7 @@ String oMCurrentTextCorrection(int code, sunstatus, time){
   double a_up = up_h + up_m / 60;
   double a_down = down_h + donw_m / 60;
 
-  //return textBackground.keys.toList()[12]; // used for testing color combinations
+  //return textBackground.keys.toList()[0]; // used for testing color combinations
 
   if (a_up <= a_current && a_current <= a_down) {
     return OMCodes[code] ?? 'Clear Sky';
