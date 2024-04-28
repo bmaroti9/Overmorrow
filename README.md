@@ -1,12 +1,12 @@
 ![app_screens](Screenshots/Overmorrow_white_circle_mini.png)
 
-# Overmorrow Weather
+# Overmorrow weather
 
-![app_gallery](Screenshots/feature_gallery_insane_3.png)
+![app_gallery](Screenshots/new_preview.png)
 
 ### Beautiful minimalist weather app. 
 
-![app_screens](Screenshots/app_gallery_round.png)
+![app_screens](Screenshots/app_gallery3.png)
 
 [![Download on Google Play](/Screenshots/play_badge4.png 'Download')](https://play.google.com/store/apps/details?id=com.marotidev.Overmorrow)
 
@@ -30,18 +30,18 @@ And all the radar images are from rainviewer's radar 💧.
 - open source
 - no ads
 - no data collected
-- minimalist design
+- minimalist colorful design
 - detailed forecast
 - sunrise sunset times
 - air quality insights
 - full screen radar
 - 14 days of forecast
-- hourly weather for every day
 - dynamically adapting color scheme
+- 5 color themes (original, colorful, monochrome, light, dark)
 - languages support
 
 ## Why make Overmorrow? ❓
-I am 14 and i have been programing since the age of 7. I started small (Scratch and NetsBlox) 
+I am 15 and i have been programing since the age of 7. I started small (Scratch and NetsBlox) 
 went to Python... and then to Flutter. This is my first ever project that can actually be downloaded by anyone. So I hope you like it 😉!
 
 I have always wanted to make a weather app 🌩️. At first the concept was just to make an app that 
@@ -56,11 +56,12 @@ So instead here is my take on the weather app ui (but i did kep it free and ad f
 - ✅ Add translations
 - ✅ 14 day forecast 
 - ✅ Settings/Info/Donate pages
+- ✅ Tablet mode
+- ✅ more than one weather provider
 
 #### hope to add in the near-future:
  
 - ❌ Add widgets (I have been trying but it's just so complicated 😑)
-- ❌ Add better support for tablets
 - ❌ Maybe add notifications
 - ❌ Maybe add to Iphone (right now Android only)
 - ❌ More weather providers
@@ -69,11 +70,8 @@ So instead here is my take on the weather app ui (but i did kep it free and ad f
 
 ## Support me! ❤️
 
-Overmorrow is a relatively early stage and therefore the user base is relatively low. This way I am able to keep it up with $0 in revenue 💰.
-However at larger audience sizes unfortunately i won't be able to do it for free anymore 😥.
-
-So if you want to help, or just simply want to support me.
+If you want to help, or just simply want to support me.
 this is my patreon: https://www.patreon.com/MarotiDevel.
 Thank you so much! ❤️
 
-also if you liked this app please consider leaving it a star on github ⭐.
+also if you like this app please consider leaving it a star on github ⭐.
