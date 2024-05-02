@@ -1013,6 +1013,18 @@ Map<String, List<String>> mainTranslate = {
     'Экран ошибки',
     '错误屏幕',
     'エラースクリーン'
+  ],
+  'Daily': [
+    'Daily',
+    'Napi',
+    'Diario',
+    'Quotidien',
+    'Täglich',
+    'Giornaliero',
+    'Diário',
+    'Ежедневно',
+    '每日',
+    'デイリー'
   ]
 };
 

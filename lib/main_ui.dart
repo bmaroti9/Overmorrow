@@ -391,7 +391,11 @@ Widget buildHihiDays(var data) => ListView.builder(
                             ),
                             Visibility(
                               visible: day.mm_precip > 0.1,
-                              child: RainWidget(data, day)
+                              child: Column(
+                                children: [
+                                  RainWidget(data, day),
+                                ],
+                              )
                             ),
                           ],
                         ),
@@ -498,7 +502,7 @@ Widget buildGlanceDay(var data) => Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: Align(
           alignment: Alignment.centerLeft,
-          child: comfortatext('Daily', 20, data.settings, color: data.current.textcolor),
+          child: comfortatext(translation('Daily', data.settings["Language"]), 20, data.settings, color: data.current.textcolor),
         ),
       ),
       Container(
@@ -508,118 +512,137 @@ Widget buildGlanceDay(var data) => Padding(
         ),
         child: ListView.builder(
           shrinkWrap: true,
-          padding: const EdgeInsets.only(top: 8, bottom: 8),
+          padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
           physics: const NeverScrollableScrollPhysics(),
           itemCount: data.days.length - 3,
           itemBuilder: (context, index) {
             final day = data.days[index + 3];
+            const int rain_limit = 2;
             return Padding(
-              padding: const EdgeInsets.only(left: 12, right: 12, bottom: 4, top: 4),
-              child: Row(
-                children: [
-                  Container(
-                    height: 75,
-                    width: 75,
-                    decoration: BoxDecoration(
-                        color: data.current.highlight,
-                        borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+              padding: const EdgeInsets.only(top: 5, bottom: 5),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(21),
+                  color: day.mm_precip > rain_limit ? data.current.highlight : data.current.backcolor,
+                ),
+                padding: EdgeInsets.all(day.mm_precip > rain_limit ? 8 : 0),
+                child: Column(
+                  children: [
+                    Row(
                       children: [
-                        comfortatext(day.name, 18, data.settings, color: data.current.secondary),
                         Container(
-                          padding: const EdgeInsets.all(5),
-                          child: Image.asset(
-                            'assets/icons/' + day.icon,
-                            fit: BoxFit.contain,
-                            height: 28,
+                          height: 75,
+                          width: 75,
+                          decoration: BoxDecoration(
+                              color: day.mm_precip > rain_limit ? data.current.backcolor : data.current.highlight,
+                              borderRadius: BorderRadius.circular(20),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Container(
-                      height: 75,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          color: data.current.primary,
-                          borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.arrow_drop_up, color: data.current.backcolor, size: 20,),
-                              Icon(Icons.arrow_drop_down, color: data.current.backcolor, size: 20,),
+                              comfortatext(day.name, 18, data.settings, color: data.current.secondary),
+                              Container(
+                                padding: const EdgeInsets.all(5),
+                                child: Image.asset(
+                                  'assets/icons/' + day.icon,
+                                  fit: BoxFit.contain,
+                                  height: 28,
+                                ),
+                              ),
                             ],
                           ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Container(
+                            height: 75,
+                            width: 52,
+                            decoration: BoxDecoration(
+                                color: data.current.primary,
+                                borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
                               children: [
-                                comfortatext(day.minmaxtemp.split("/")[1], 16, data.settings, color: data.current.backcolor),
-                                comfortatext(day.minmaxtemp.split("/")[0], 16, data.settings,color: data.current.backcolor),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.arrow_drop_up, color: data.current.backcolor, size: 20,),
+                                    Icon(Icons.arrow_drop_down, color: data.current.backcolor, size: 20,),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      comfortatext(day.minmaxtemp.split("/")[1], 16, data.settings, color: data.current.backcolor),
+                                      comfortatext(day.minmaxtemp.split("/")[0], 16, data.settings,color: data.current.backcolor),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Container(
-                          height: 75,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: data.current.secondary, width: 1.2)
-                          ),
-                          padding: const EdgeInsets.all(3),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.water_drop_outlined,
-                                    color: data.current.secondary, size: 18,),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 2, right: 5),
-                                    child: comfortatext('${day.precip_prob}%', 17, data.settings,
-                                    color: data.current.secondary),
-                                  ),
-                                  Icon(
-                                    Icons.water_drop, color: data.current.secondary, size: 18,),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 2, right: 2),
-                                    child: comfortatext(day.total_precip.toString() +
-                                        data.settings["Precipitation"], 17, data.settings, color: data.current.secondary),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    CupertinoIcons.wind, color: data.current.secondary, size: 18,),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 2, right: 2),
-                                    child: comfortatext('${day.windspeed} ${data
-                                        .settings["Wind"]}', 17, data.settings, color: data.current.secondary),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
                         ),
-                      ),
-                  )
-                ],
+                        Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Container(
+                                height: 75,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: data.current.secondary, width: 1.2)
+                                ),
+                                padding: const EdgeInsets.all(3),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.water_drop_outlined,
+                                          color: data.current.secondary, size: 18,),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 2, right: 5),
+                                          child: comfortatext('${day.precip_prob}%', 17, data.settings,
+                                          color: data.current.secondary),
+                                        ),
+                                        Icon(
+                                          Icons.water_drop, color: data.current.secondary, size: 18,),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 2, right: 2),
+                                          child: comfortatext(day.total_precip.toString() +
+                                              data.settings["Precipitation"], 17, data.settings, color: data.current.secondary),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          CupertinoIcons.wind, color: data.current.secondary, size: 18,),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 2, right: 2),
+                                          child: comfortatext('${day.windspeed} ${data
+                                              .settings["Wind"]}', 17, data.settings, color: data.current.secondary),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                        )
+                      ],
+                    ),
+                    Visibility(
+                        visible: day.mm_precip > rain_limit,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: RainWidget(data, day),
+                        )
+                    ),
+                  ],
+                ),
               ),
             );
           }
