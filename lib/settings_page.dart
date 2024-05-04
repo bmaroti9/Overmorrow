@@ -472,6 +472,9 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                 settingEntry(CupertinoIcons.textformat_size, "Font size", settings, highlight, updatePage,
                     textcolor, secondary),
 
+                settingEntry(Icons.manage_search_outlined, "Search provider", settings, highlight, updatePage,
+                    textcolor, secondary),
+
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Container(
@@ -490,20 +493,6 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                 settingEntry(CupertinoIcons.wind, "Wind", settings, highlight, updatePage,
                     textcolor, secondary),
                 settingEntry(CupertinoIcons.timelapse, "Pressure", settings, highlight, updatePage,
-                    textcolor, secondary),
-
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Container(
-                    height: 2,
-                    decoration: BoxDecoration(
-                        color: secondary,
-                        borderRadius: BorderRadius.circular(2)
-                    ),
-                  ),
-                ),
-
-                settingEntry(CupertinoIcons.search, "Search provider", settings, highlight, updatePage,
                     textcolor, secondary),
 
                 const SizedBox(

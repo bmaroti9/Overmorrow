@@ -996,7 +996,7 @@ Map<String, List<String>> mainTranslate = {
     'Tamaño de fuente',
     'Taille de police',
     'Schriftgröße',
-    'Dimensione del carattere',
+    'Carattere',
     'Tamanho da fonte',
     'Размер шрифта',
     '字体大小',
