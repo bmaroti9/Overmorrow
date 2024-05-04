@@ -1038,6 +1038,19 @@ Map<String, List<String>> mainTranslate = {
     'Поставщик поиска',
     '搜索提供商',
     '検索プロバイダー'
+  ],
+
+  'Search translation': [ //used for getting the codes used for translation
+    'en',
+    'en',
+    'sp',
+    'fr',
+    'de',
+    'it',
+    'pt',
+    'ru',
+    'en',
+    'en',
   ]
 };
 

@@ -119,7 +119,11 @@ class _MyAppState extends State<MyApp> {
         }
       }
       if (proposedLoc == 'search') {
-        List<dynamic> x = await getRecommend(backupName, settings);
+        //unfortunately when i made the setting to change search providers i thought that
+        //open-meteo also does coordinates. unfortunately no. so it was kind of useless but now
+        //i made it i don't want to remove it. so i can only use it when searching for places
+        // and not for current location. so i have to use weatherapi for this
+        List<dynamic> x = await getRecommend(backupName, "weatherapi", settings);
         if (x.length > 0) {
           var split = json.decode(x[0]);
           absoluteProposed = "${split["lat"]},${split["lon"]}";

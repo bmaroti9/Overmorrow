@@ -25,6 +25,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:overmorrow/settings_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_key.dart';
@@ -406,19 +407,24 @@ Future<List<String>> getWapiRecomend(String query) async {
   return recomendations;
 }
 
-Future<List<String>> getOMReccomend(String query) async {
+Future<List<String>> getOMReccomend(String query, settings) async {
   var params = {
     'name': query,
-    'count': '5',
-    'language': 'en',
+    'count': '4',
+    'language': translation('Search translation', settings["Language"]),
   };
+
   var url = Uri.http('geocoding-api.open-meteo.com', 'v1/search', params);
 
   var jsonbody = [];
-  var file = await cacheManager.getSingleFile(url.toString(), headers: {'cache-control': 'private, max-age=120'});
-  var response = await file.readAsString();
-  print(("return", response));
-  jsonbody = jsonDecode(response)["results"];
+  try {
+    var file = await cacheManager.getSingleFile(
+        url.toString(), headers: {'cache-control': 'private, max-age=120'});
+    var response = await file.readAsString();
+    jsonbody = jsonDecode(response)["results"];
+  } on SocketException{
+    return [];
+  }
 
   //jsonbody = jsonDecode(response.body);
 
@@ -449,17 +455,17 @@ Future<List<String>> getOMReccomend(String query) async {
   return recomendations;
 }
 
-Future<List<String>> getRecommend(String query, settings) async {
+Future<List<String>> getRecommend(String query, searchProvider, settings) async {
 
   if (query == '') {
     return [];
   }
 
-  if (settings["Search provider"] == "weatherapi") {
+  if (searchProvider == "weatherapi") {
     return getWapiRecomend(query);
   }
   else {
-    return getOMReccomend(query);
+    return getOMReccomend(query, settings);
   }
 }
 class MySearchParent extends StatefulWidget{
