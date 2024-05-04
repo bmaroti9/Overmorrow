@@ -387,6 +387,7 @@ Future<List<String>> getRecommend(String query) async {
     return [];
   }
 
+
   var params = {
     'key': wapi_Key,
     'q': query,
@@ -403,16 +404,57 @@ Future<List<String>> getRecommend(String query) async {
     return [];
   }
 
-  //var jsonbody = jsonDecode(response.body);
-
   List<String> recomendations = [];
   for (var item in jsonbody) {
-    //recomendations.add(item["name"] + "/" + item["region"] + ", " + generateAbbreviation(item["country"]));
-    //recomendations.add(item["name"]);
     recomendations.add(json.encode(item));
   }
 
   return recomendations;
+
+
+  /*
+  var params = {
+    'name': query,
+    'count': '5',
+    'language': 'en',
+  };
+  var url = Uri.http('geocoding-api.open-meteo.com', 'v1/search', params);
+
+  var jsonbody = [];
+  var file = await cacheManager.getSingleFile(url.toString(), headers: {'cache-control': 'private, max-age=120'});
+  var response = await file.readAsString();
+  print(("return", response));
+  jsonbody = jsonDecode(response)["results"];
+
+  //jsonbody = jsonDecode(response.body);
+
+  List<String> recomendations = [];
+  for (var item in jsonbody) {
+    String pre = json.encode(item);
+
+    if (!pre.contains('"admin1"')) {
+      item["region"] = "";
+    }
+    else {
+      item["region"] = item['admin1'];
+    }
+
+    if (!pre.contains('"country"')) {
+      item["country"] = "";
+    }
+
+    String x = json.encode(item);
+
+    x = x.replaceAll('latitude', "lat");
+    x = x.replaceAll('longitude', "lon");
+
+    print(('got here', x));
+
+    recomendations.add(x);
+  }
+  return recomendations;
+
+   */
 }
 class MySearchParent extends StatefulWidget{
   final updateLocation;
