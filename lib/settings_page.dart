@@ -41,6 +41,8 @@ Map<String, List<String>> settingSwitches = {
   'Font size': ['normal', 'small', 'very small', 'big'],
 
   'Color mode' : ['original', 'colorful', 'monochrome', 'light', 'dark'],
+
+  'Search provider' : ['weatherapi', 'open-meteo'],
 };
 
 String translation(String text, String language) {
@@ -488,6 +490,20 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                 settingEntry(CupertinoIcons.wind, "Wind", settings, highlight, updatePage,
                     textcolor, secondary),
                 settingEntry(CupertinoIcons.timelapse, "Pressure", settings, highlight, updatePage,
+                    textcolor, secondary),
+
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Container(
+                    height: 2,
+                    decoration: BoxDecoration(
+                        color: secondary,
+                        borderRadius: BorderRadius.circular(2)
+                    ),
+                  ),
+                ),
+
+                settingEntry(CupertinoIcons.search, "Search provider", settings, highlight, updatePage,
                     textcolor, secondary),
 
                 const SizedBox(

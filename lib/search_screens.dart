@@ -77,7 +77,7 @@ Widget searchBar(Color color, List<String> recommend,
 
       onQueryChanged: (query) async {
         isEditing = false;
-        var result = await getRecommend(query);
+        var result = await getRecommend(query, settings);
         updateRec(result);
       },
       onSubmitted: (submission) {

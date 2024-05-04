@@ -381,13 +381,7 @@ String generateAbbreviation(String countryName) {
   }
 }
 
-Future<List<String>> getRecommend(String query) async {
-
-  if (query == '') {
-    return [];
-  }
-
-
+Future<List<String>> getWapiRecomend(String query) async {
   var params = {
     'key': wapi_Key,
     'q': query,
@@ -410,9 +404,9 @@ Future<List<String>> getRecommend(String query) async {
   }
 
   return recomendations;
+}
 
-
-  /*
+Future<List<String>> getOMReccomend(String query) async {
   var params = {
     'name': query,
     'count': '5',
@@ -453,8 +447,20 @@ Future<List<String>> getRecommend(String query) async {
     recomendations.add(x);
   }
   return recomendations;
+}
 
-   */
+Future<List<String>> getRecommend(String query, settings) async {
+
+  if (query == '') {
+    return [];
+  }
+
+  if (settings["Search provider"] == "weatherapi") {
+    return getWapiRecomend(query);
+  }
+  else {
+    return getOMReccomend(query);
+  }
 }
 class MySearchParent extends StatefulWidget{
   final updateLocation;

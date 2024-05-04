@@ -119,7 +119,7 @@ class _MyAppState extends State<MyApp> {
         }
       }
       if (proposedLoc == 'search') {
-        List<dynamic> x = await getRecommend(backupName);
+        List<dynamic> x = await getRecommend(backupName, settings);
         if (x.length > 0) {
           var split = json.decode(x[0]);
           absoluteProposed = "${split["lat"]},${split["lon"]}";

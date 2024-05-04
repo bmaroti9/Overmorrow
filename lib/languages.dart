@@ -1025,6 +1025,19 @@ Map<String, List<String>> mainTranslate = {
     'Ежедневно',
     '每日',
     'デイリー'
+  ],
+
+  'Search provider': [
+    'Search provider',
+    'Keresési szolgáltató',
+    'Proveedor de búsqueda',
+    'Fournisseur de recherche',
+    'Suchanbieter',
+    'Provider di ricerca',
+    'Provedor de pesquisa',
+    'Поставщик поиска',
+    '搜索提供商',
+    '検索プロバイダー'
   ]
 };
 
