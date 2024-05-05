@@ -361,6 +361,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
       child: Center(
         child: Container(
           constraints: BoxConstraints(maxWidth: 800),
+          padding: EdgeInsets.all(5),
           child: Column(
               children: [
                 SizedBox(height: 15,),
@@ -476,7 +477,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                     textcolor, secondary),
 
                 Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.only(top: 20, bottom: 20, left: 12, right: 12),
                   child: Container(
                     height: 2,
                     decoration: BoxDecoration(
