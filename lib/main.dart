@@ -21,11 +21,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'dart:convert';
 import 'caching.dart';
 import 'decoders/extra_info.dart';
 import 'main_ui.dart';
@@ -119,16 +119,21 @@ class _MyAppState extends State<MyApp> {
         }
       }
       if (proposedLoc == 'search') {
-        //unfortunately when i made the setting to change search providers i thought that
-        //open-meteo also does coordinates. unfortunately no. so it was kind of useless but now
-        //i made it i don't want to remove it. so i can only use it when searching for places
-        // and not for current location. so i have to use weatherapi for this
-        List<dynamic> x = await getRecommend(backupName, "weatherapi", settings);
-        if (x.length > 0) {
-          var split = json.decode(x[0]);
-          absoluteProposed = "${split["lat"]},${split["lon"]}";
-          backupName = split["name"];
-        } else {
+        
+        //List<dynamic> x = await getRecommend(backupName, "weatherapi", settings);
+
+        try {
+          List<String> s_cord = backupName.split(",");
+
+          List<Placemark> placemarks = await placemarkFromCoordinates(
+              double.parse(s_cord[0]), double.parse(s_cord[1]));
+          Placemark place = placemarks[0];
+
+          String city = '${place.locality}';
+
+          absoluteProposed = s_cord.join(', ');
+          backupName = city;
+        } on Error {
           return dumbySearch(
             errorMessage: '${translation('Place not found', settings["Language"]!)}: \n $backupName',
             updateLocation: updateLocation,
