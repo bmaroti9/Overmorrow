@@ -200,6 +200,92 @@ Widget aqiDataPoints(String name, double value, var data) {
   );
 }
 
+Widget WindWidget(data, day) {
+  List<dynamic> hours = day.hourly_for_precip;
+
+  List<double> wind = [];
+
+  for (var i = 0; i < hours.length; i+= 2) {
+    double x = min(round((hours[i].wind + hours[i + 1].wind) * 0.5, decimals: 0) / 2, 10);
+    print((hours[i].wind, x));
+    wind.add(x);
+  }
+
+  return Column(
+    children: [
+      Flex(
+          direction: Axis.horizontal,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 5, bottom: 5, top: 5),
+                child: Container(
+                  height: 150,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(width: 1.2, color: WHITE)
+                  ),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(18),
+                      child: Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: MyChart(wind, data),
+                      )
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 165,
+              width: 55,
+              child: ListView.builder(
+                  reverse: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 3,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          comfortatext((index * 10).round().toString(), 17, data.settings),
+                          comfortatext('m/s', 12, data.settings),
+                        ],
+                      ),
+                    );
+                  }
+              ),
+            )
+          ]
+      ),
+      Padding(
+          padding: const EdgeInsets.only(left: 33, top: 0, right: 70, bottom: 15),
+          child: Visibility(
+            visible: data.settings["Time mode"] == "24 hour",
+            replacement: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  comfortatext("3am", 14,data. settings),
+                  comfortatext("9am", 14, data.settings),
+                  comfortatext("3pm", 14, data.settings),
+                  comfortatext("9pm", 14, data.settings),
+                ]
+            ),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  comfortatext("3:00", 14, data.settings),
+                  comfortatext("9:00", 14, data.settings),
+                  comfortatext("15:00", 14, data.settings),
+                  comfortatext("21:00", 14, data.settings),
+                ]
+            ),
+          )
+      )
+    ],
+  );
+}
+
 Widget RainWidget(data, day) {
   List<dynamic> hours = day.hourly_for_precip;
 
@@ -422,7 +508,7 @@ Future<List<String>> getOMReccomend(String query, settings) async {
         url.toString(), headers: {'cache-control': 'private, max-age=120'});
     var response = await file.readAsString();
     jsonbody = jsonDecode(response)["results"];
-  } on SocketException{
+  } on Error {
     return [];
   }
 

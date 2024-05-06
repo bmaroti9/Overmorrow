@@ -391,11 +391,7 @@ Widget buildHihiDays(var data) => ListView.builder(
                             ),
                             Visibility(
                               visible: day.mm_precip > 0.1,
-                              child: Column(
-                                children: [
-                                  RainWidget(data, day),
-                                ],
-                              )
+                              child: RainWidget(data, day)
                             ),
                           ],
                         ),

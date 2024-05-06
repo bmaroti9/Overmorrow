@@ -81,7 +81,7 @@ Widget searchBar(Color color, List<String> recommend,
         updateRec(result);
       },
       onSubmitted: (submission) {
-        updateLocation('search', submission);
+        updateLocation('query', submission);
         controller.close();
       },
 

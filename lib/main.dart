@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -133,7 +134,23 @@ class _MyAppState extends State<MyApp> {
 
           absoluteProposed = s_cord.join(', ');
           backupName = city;
-        } on Error {
+        } on FormatException {
+          return dumbySearch(
+            errorMessage: '${translation('Place not found', settings["Language"]!)}: \n $backupName',
+            updateLocation: updateLocation,
+            icon: Icons.location_disabled,
+            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+        }
+      }
+
+      if (proposedLoc == 'query') {
+        List<dynamic> x = await getRecommend(backupName, settings["Search provider"], settings);
+        if (x.length > 0) {
+          var split = json.decode(x[0]);
+          absoluteProposed = "${split["lat"]},${split["lon"]}";
+          backupName = split["name"];
+        }
+        else {
           return dumbySearch(
             errorMessage: '${translation('Place not found', settings["Language"]!)}: \n $backupName',
             updateLocation: updateLocation,
