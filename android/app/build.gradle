@@ -26,6 +26,19 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+
+
+    //required by IzzyDroid
+    android {
+        dependenciesInfo {
+            // Disables dependency metadata when building APKs.
+            includeInApk = false
+            // Disables dependency metadata when building Android App Bundles.
+            includeInBundle = false
+        }
+    }
+
+
     namespace "com.example.overmorrow"
     compileSdkVersion 34
     // compileSdkVersion flutter.compileSdkVersion <- this vas the original one but
@@ -52,8 +65,8 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 32
-        versionName "2.3.5"
+        versionCode 33
+        versionName "2.3.6"
     }
 
     buildTypes {
