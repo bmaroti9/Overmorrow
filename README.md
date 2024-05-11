@@ -7,8 +7,9 @@
 ### Beautiful minimalist weather app. 
 
 ![app_screens](Screenshots/app_gallery3.png)
+| [![Download on Google Play](/Screenshots/play_badge4.png 'Download')](https://play.google.com/store/apps/details?id=com.marotidev.Overmorrow) | [![Download on IzzyOnDroid](/Screenshots/IzzyOnDroid_c.png 'Download')](https://apt.izzysoft.de/fdroid/index/apk/com.marotidev.Overmorrow/) |
+|---|---|
 
-[![Download on Google Play](/Screenshots/play_badge4.png 'Download')](https://play.google.com/store/apps/details?id=com.marotidev.Overmorrow)
 
 ## Weather providers 🌨️
 - [open-meteo](https://open-meteo.com)
