@@ -208,7 +208,7 @@ Map<String, String> textBackground = {
   'Clear Night': 'clear_night.jpg',
   'Partly Cloudy': 'cloudy13.jpg',
   'Clear Sky': 'clear_sky3.jpg',
-  'Overcast': 'overcast3.jpg',
+  'Overcast': 'overcast4.jpg',
   'Haze': 'haze.jpg',
   'Rain': 'rainy_colorfull.jpg',
   'Sleet': 'sleet.jpg',
@@ -259,7 +259,7 @@ Map<String, Color> accentColors = {
   'Clear Night': const Color(0xFF8D8F7D),
   'Partly Cloudy': const Color(0xff526181),
   'Clear Sky': const Color(0xFFA1C1D2),
-  'Overcast': const Color(0xFFCFA390),
+  'Overcast': const Color(0xFFE3BC9D),
   'Haze': const Color(0xFF968C82),
   'Rain': const Color(0xFF262A3D),
   'Sleet': const Color(0xFFD2B1C5),
@@ -287,15 +287,6 @@ Map<String, List<int>> colorPop = {
   'Snow': [0, 0],
   'Heavy Rain': [0, 0],
   'Cloudy Night': [0, 0],
-};
-
-Map<int, Color> aqi_colors = {
-  1: const Color(0xFFb5cbbb),
-  2: const Color(0xFFFAC898),
-  3: const Color(0xffE0B4D0),
-  4: const Color(0xffEE8591),
-  5: const Color(0xffA0025C),
-  6: const Color(0xff121212),
 };
 
 Map<String, List<double>> conversionTable = {
