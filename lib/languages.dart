@@ -757,7 +757,7 @@ Map<String, List<String>> mainTranslate = {
     'Сервисы определения местоположения отключены.',
     '位置服务已禁用。',
     '位置サービスは無効です。',
-    'Lokalizacja wyłączona.
+    'Lokalizacja wyłączona'
   ],
   'location permission is denied': [
     'location permission is denied',
@@ -1135,6 +1135,7 @@ Map<String, List<String>> mainTranslate = {
     'it',
     'pt',
     'ru',
+    'en',
     'en',
     'en',
   ]

@@ -31,7 +31,7 @@ import 'ui_helper.dart';
 Map<String, List<String>> settingSwitches = {
   'Language' : [
     'English', 'Español', 'Français', 'Deutsch', 'Italiano',
-    'Português', 'Русский', 'Magyar', '简体中文', '日本語'
+    'Português', 'Русский', 'Magyar', 'Polski', '简体中文', '日本語'
   ],
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
@@ -205,7 +205,6 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
     }
   );
 }
-
 Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primary) {
   return Padding(
     padding: const EdgeInsets.only(top: 3, bottom: 3),
@@ -213,12 +212,20 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 20),
-          child: Icon(icon, color: textcolor, ),
+          child: Icon(icon, color: textcolor),
         ),
-        comfortatext(translation(text, settings["Language"]!), 20, settings, color: textcolor),
+        Expanded(
+          flex: 10,
+          child: comfortatext(
+            translation(text, settings["Language"]!),
+            20,
+            settings,
+            color: textcolor,
+          ),
+        ),
         const Spacer(),
         dropdown(
-          darken(highlight), text, updatePage, settings[text]!, settings, textcolor, primary
+            darken(highlight), text, updatePage, settings[text]!, settings, textcolor, primary
         ),
       ],
     ),
