@@ -123,8 +123,9 @@ class _MyAppState extends State<MyApp> {
         
         //List<dynamic> x = await getRecommend(backupName, "weatherapi", settings);
 
+        List<String> s_cord = backupName.split(",");
+
         try {
-          List<String> s_cord = backupName.split(",");
 
           List<Placemark> placemarks = await placemarkFromCoordinates(
               double.parse(s_cord[0]), double.parse(s_cord[1]));
@@ -140,7 +141,11 @@ class _MyAppState extends State<MyApp> {
             updateLocation: updateLocation,
             icon: Icons.location_disabled,
             place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+        } on PlatformException {
+          absoluteProposed = backupName;
+          backupName = "${double.parse(s_cord[0]).toStringAsFixed(2)}, ${double.parse(s_cord[1]).toStringAsFixed(2)}";
         }
+
       }
 
       if (proposedLoc == 'query') {
