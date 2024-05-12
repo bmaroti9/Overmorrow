@@ -16,7 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-Map<String, int> languageIndex = {
+Map<String, int> languageIndex = { //the index of the language used in the mainTranslate and
   'English' : 0,
   'Magyar' : 1,
   'Español' : 2,
@@ -1026,7 +1026,6 @@ Map<String, List<String>> mainTranslate = {
     '每日',
     'デイリー'
   ],
-
   'Search provider': [
     'Search provider',
     'Keresési szolgáltató',
@@ -1040,7 +1039,9 @@ Map<String, List<String>> mainTranslate = {
     '検索プロバイダー'
   ],
 
-  'Search translation': [ //used for getting the codes used for translation
+  'Search translation': [ //used for getting the codes used for translation of city names
+                          //If none are available then en (english) is the default
+                          // for more info visit https://open-meteo.com/en/docs/geocoding-api
     'en',
     'en',
     'sp',
