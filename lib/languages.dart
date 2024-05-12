@@ -27,6 +27,7 @@ Map<String, int> languageIndex = { //the index of the language used in the mainT
   'Русский' : 7,
   '简体中文' : 8,
   '日本語' : 9,
+  'Polski' : 10,
 };
 
 Map<String, List<String>> mainTranslate = {
@@ -40,7 +41,8 @@ Map<String, List<String>> mainTranslate = {
     'Umidade',
     'влажность',
     '湿度',
-    '湿度'
+    '湿度',
+    'Wilgotność'
   ],
   'UV': [
     'UV',
@@ -52,6 +54,7 @@ Map<String, List<String>> mainTranslate = {
     'UV',
     'УФ',
     '紫外线',
+    'UV',
     'UV'
   ],
   'precip.': [
@@ -64,7 +67,8 @@ Map<String, List<String>> mainTranslate = {
     'Precip.',
     'Осадки',
     '降水',
-    '降水量'
+    '降水量',
+    'Opady'
   ],
   'Settings': [
     'Settings',
@@ -76,7 +80,8 @@ Map<String, List<String>> mainTranslate = {
     'Configurações',
     'Настройки',
     '设置',
-    '設定'
+    '設定',
+    'Ustawienia'
   ],
   'Feels like': [
     'Feels like',
@@ -88,7 +93,8 @@ Map<String, List<String>> mainTranslate = {
     'Sente-se como',
     'Чувствуется как',
     '感觉像',
-    '感じる'
+    '感じる',
+    'Odczuwalna'
   ],
   'Donate': [
     'Donate',
@@ -100,7 +106,8 @@ Map<String, List<String>> mainTranslate = {
     'Doar',
     'Пожертвовать',
     '捐赠',
-    '寄付'
+    '寄付',
+    'Wesprzyj'
   ],
   'About': [
     'About',
@@ -112,7 +119,8 @@ Map<String, List<String>> mainTranslate = {
     'Sobre',
     'О программе',
     '关于',
-    '紹介'
+    '紹介',
+    'Info'
   ],
   'Wind': [
     'Wind',
@@ -124,7 +132,8 @@ Map<String, List<String>> mainTranslate = {
     'Vento',
     'Ветер',
     '风',
-    '風'
+    '風',
+    'Wiatr'
   ],
   'Today': [
     'Today',
@@ -136,7 +145,8 @@ Map<String, List<String>> mainTranslate = {
     'Hoje',
     'Сегодня',
     '今天',
-    '今日'
+    '今日',
+    'Dzisiaj'
   ],
   'Tomorrow': [
     'Tomorrow',
@@ -148,7 +158,8 @@ Map<String, List<String>> mainTranslate = {
     'Amanhã',
     'Завтра',
     '明天',
-    '明日'
+    '明日',
+    'Jutro'
   ],
   'Overmorrow': [
     'Overmorrow',
@@ -160,7 +171,8 @@ Map<String, List<String>> mainTranslate = {
     'Depois de Amanhã',
     'Послезавтра',
     '后天',
-    '明後日'
+    '明後日',
+    'Pojutrze'
   ],
   'Language': [
     'Language',
@@ -172,7 +184,8 @@ Map<String, List<String>> mainTranslate = {
     'Língua',
     'Язык',
     '语言',
-    '言語'
+    '言語',
+    'Język'
   ],
   'Temperature': [
     'Temperature',
@@ -184,7 +197,8 @@ Map<String, List<String>> mainTranslate = {
     'Temperatura',
     'Температура',
     '温度',
-    '気温'
+    '気温',
+    'Temperatura'
   ],
   'Rain': [
     'Rain',
@@ -196,7 +210,8 @@ Map<String, List<String>> mainTranslate = {
     'Chuva',
     'Дождь',
     '雨',
-    '雨'
+    '雨',
+    'Deszcz'
   ],
   'Precipitation': [
     'Precipitation',
@@ -208,7 +223,8 @@ Map<String, List<String>> mainTranslate = {
     'Precipitação',
     'Осадки',
     '降水量',
-    '降水'
+    '降水',
+    'Opady'
   ],
   'Pressure': [
     'Pressure',
@@ -220,7 +236,8 @@ Map<String, List<String>> mainTranslate = {
     'Pressão',
     'Давление',
     '压力',
-    '圧力'
+    '圧力',
+    'Ciśnienie'
   ],
   'Favorites': [
     'Favorites',
@@ -232,7 +249,8 @@ Map<String, List<String>> mainTranslate = {
     'Favoritos',
     'Избранное',
     '收藏夹',
-    'お気に入り'
+    'お気に入り',
+    'Ulubione'
   ],
   'Clear Night': [
     'Clear Night',
@@ -244,7 +262,8 @@ Map<String, List<String>> mainTranslate = {
     'Noite limpa',
     'Чистая ночь',
     '晴朗的夜晚',
-    '快晴の夜'
+    '快晴の夜',
+    'Bezchmurna noc'
   ],
   'Partly Cloudy': [
     'Partly Cloudy',
@@ -256,7 +275,8 @@ Map<String, List<String>> mainTranslate = {
     'Parcialmente nublado',
     'Частичная облачность',
     '局部多云',
-    '一部曇り'
+    '一部曇り',
+    'Częściowe zachmurzenie'
   ],
   'Clear Sky': [
     'Clear Sky',
@@ -268,7 +288,8 @@ Map<String, List<String>> mainTranslate = {
     'Céu limpo',
     'Чистое небо',
     '晴朗的天空',
-    '快晴'
+    '快晴',
+    'Bezchmurnie'
   ],
   'Overcast': [
     'Overcast',
@@ -280,7 +301,8 @@ Map<String, List<String>> mainTranslate = {
     'Nublado',
     'Пасмурно',
     '阴天',
-    '曇り'
+    '曇り',
+    'Zachmurzenie'
   ],
   'Haze': [
     'Haze',
@@ -292,7 +314,8 @@ Map<String, List<String>> mainTranslate = {
     'Neblina',
     'Туман',
     '雾霾',
-    '霧'
+    '霧',
+    'Mglisto'
   ],
   'Sleet': [
     'Sleet',
@@ -304,7 +327,8 @@ Map<String, List<String>> mainTranslate = {
     'Chuva congelada',
     'Мокрый снег',
     '雨夹雪',
-    'みぞれ'
+    'みぞれ',
+    'Deszcz ze śniegiem'
   ],
   'Drizzle': [
     'Drizzle',
@@ -316,7 +340,8 @@ Map<String, List<String>> mainTranslate = {
     'Chuvisco',
     'Морось',
     '毛毛雨',
-    '霧雨'
+    '霧雨',
+    'Mżawka'
   ],
   'Thunderstorm': [
     'Thunderstorm',
@@ -328,7 +353,8 @@ Map<String, List<String>> mainTranslate = {
     'Tempestade',
     'Гроза',
     '雷暴',
-    '雷雨'
+    '雷雨',
+    'Burza'
   ],
   'Heavy Snow': [
     'Heavy Snow',
@@ -340,7 +366,8 @@ Map<String, List<String>> mainTranslate = {
     'Neve intensa',
     'Сильный снег',
     '大雪',
-    '大雪'
+    '大雪',
+    'Śnieżyca'
   ],
   'Fog': [
     'Fog',
@@ -352,7 +379,8 @@ Map<String, List<String>> mainTranslate = {
     'Nevoeiro',
     'Туман',
     '雾',
-    '霧'
+    '霧',
+    'Mgła'
   ],
   'Snow': [
     'Snow',
@@ -364,7 +392,8 @@ Map<String, List<String>> mainTranslate = {
     'Neve',
     'Снег',
     '雪',
-    '雪'
+    '雪',
+    'Opady śniegu'
   ],
   'Heavy Rain': [
     'Heavy Rain',
@@ -376,7 +405,8 @@ Map<String, List<String>> mainTranslate = {
     'Chuva intensa',
     'Сильный дождь',
     '大雨',
-    '大雨'
+    '大雨',
+    'Ulewa'
   ],
   'Cloudy Night': [
     'Cloudy Night',
@@ -388,7 +418,8 @@ Map<String, List<String>> mainTranslate = {
     'Noite nublada',
     'Облачная ночь',
     '多云的夜晚',
-    '多云の夜'
+    '多云の夜',
+    'Pochmurna noc'
   ],
   'Overmorrow is a free app. :)': [
     'Overmorrow is a free app. :)',
@@ -400,7 +431,8 @@ Map<String, List<String>> mainTranslate = {
     'O Overmorrow é um aplicativo gratuito. :)',
     'Overmorrow - бесплатное приложение. :)',
     'Overmorrow是一款免费应用程序。:)',
-    'Overmorrowは無料のアプリです。:)'
+    'Overmorrowは無料のアプリです。:)',
+    'Overmorrow to darmowa aplikacja. :)'
   ],
   'Support me on Patreon, to help me keep it that way!': [
   'Support me on Patreon, to help me keep it that way!',
@@ -412,7 +444,8 @@ Map<String, List<String>> mainTranslate = {
   'Apoie-me no Patreon para me ajudar a mantê-lo assim! :)',
   'Поддержите меня на Patreon, чтобы помочь мне сохранить это так! :)',
   '在Patreon上支持我，以帮助我保持这种方式！:)',
-  'これを維持するのを助けるためにPatreonで私をサポートしてください！:)'
+  'これを維持するのを助けるためにPatreonで私をサポートしてください！:)',
+  'Wesprzyj mnie, wspomóż rozwój aplikacji! :)'
   ],
   'Thank You! -Balint': [
     'Thank You! -Balint',
@@ -424,7 +457,8 @@ Map<String, List<String>> mainTranslate = {
     'Obrigado! -Balint',
     'Спасибо! -Балинт',
     '谢谢！ -巴林特',
-    'ありがとうございます！ -バリント'
+    'ありがとうございます！ -バリント',
+    'Dziękuję! -Balint'
   ],
   'Support me on Patreon': [
     'Support me on Patreon',
@@ -436,7 +470,8 @@ Map<String, List<String>> mainTranslate = {
     'Apoie-me no Patreon',
     'Поддержите меня на Patreon',
     '在Patreon上支持我',
-    'Patreonでサポートしてください'
+    'Patreonでサポートしてください',
+    'Wspieraj na Patreon'
   ],
   'Overmorrow is a beautiful minimalist weather app.': [
     '"Overmorrow is a beautiful minimalist weather app."',
@@ -448,7 +483,8 @@ Map<String, List<String>> mainTranslate = {
     '"Overmorrow é um lindo aplicativo de clima minimalista."',
     '"Overmorrow - красивое минималистичное приложение погоды."',
     '"Overmorrow是一个美丽的极简天气应用程序。"',
-    '"Overmorrowは美しいミニマリストの天気アプリです。"'
+    '"Overmorrowは美しいミニマリストの天気アプリです。"',
+    '"Overmorrow to piękna minimalistyczna aplikacja pogodowa"'
   ],
   'Features:': [
     'Features:',
@@ -460,7 +496,8 @@ Map<String, List<String>> mainTranslate = {
     'Recursos:',
     'Функции:',
     '特点：',
-    '特徴：'
+    '特徴：',
+    'Funkcje'
   ],
   'accurate weather forecast': [
     'accurate weather forecast',
@@ -472,7 +509,8 @@ Map<String, List<String>> mainTranslate = {
     'previsão do tempo precisa',
     'точный прогноз погоды',
     '准确的天气预报',
-    '正確な天気予報'
+    '正確な天気予報',
+    'dokładna prognoza pogody'
   ],
   'open source': [
     'open source',
@@ -484,7 +522,8 @@ Map<String, List<String>> mainTranslate = {
     'código aberto',
     'открытый исходный код',
     '开源',
-    'オープンソース'
+    'オープンソース',
+    'otwarte źródła'
   ],
   'no ads': [
     'no ads',
@@ -496,7 +535,8 @@ Map<String, List<String>> mainTranslate = {
     'sem anúncios',
     'без рекламы',
     '没有广告',
-    '広告なし'
+    '広告なし',
+    'bez reklam'
   ],
   'no data collected': [
     'no data collected',
@@ -508,7 +548,8 @@ Map<String, List<String>> mainTranslate = {
     'não são coletados dados',
     'нет сбора данных',
     '不收集数据',
-    'データは収集されません'
+    'データは収集されません',
+    'nie zbiera danych'
   ],
   'minimalist design': [
     'minimalist design',
@@ -520,7 +561,8 @@ Map<String, List<String>> mainTranslate = {
     'design minimalista',
     'минималистический дизайн',
     '极简设计',
-    'ミニマリストデザイン'
+    'ミニマリストデザイン',
+    'minimalistyczny wygląd'
   ],
   'dynamically adapting color scheme': [
     'dynamically adapting color scheme',
@@ -532,7 +574,8 @@ Map<String, List<String>> mainTranslate = {
     'esquema de cores que se adapta dinamicamente',
     'динамически адаптирующаяся цветовая схема',
     '动态适应颜色方案',
-    '動的に適応するカラースキーム'
+    '動的に適応するカラースキーム',
+    'dynamiczny schemat kolorów'
   ],
   'languages support': [
     'languages support',
@@ -544,7 +587,8 @@ Map<String, List<String>> mainTranslate = {
     'suporte de idiomas',
     'поддержка языков',
     '语言支持',
-    '言語サポート'
+    '言語サポート',
+    'wsparcie językowe'
   ],
   'place search': [
     'place search',
@@ -556,7 +600,8 @@ Map<String, List<String>> mainTranslate = {
     'pesquisa de lugares',
     'поиск места',
     '地点搜索',
-    '場所検索'
+    '場所検索',
+    'wyszukiwarka miejscowości'
   ],
   'weather for current location': [
     'weather for current location',
@@ -568,7 +613,8 @@ Map<String, List<String>> mainTranslate = {
     'tempo para a localização atual',
     'погода для текущего местоположения',
     '当前位置的天气',
-    '現在地の天気'
+    '現在地の天気',
+    'pogoda dla wybranej lokalizacji'
   ],
   'unit swapping': [
     'unit swapping',
@@ -580,7 +626,8 @@ Map<String, List<String>> mainTranslate = {
     'troca de unidade',
     'смена единиц измерения',
     '单位切换',
-    '単位切替'
+    '単位切替',
+    'zmiana jednostek'
   ],
   'Developed by:': [
     'Developed by:',
@@ -592,7 +639,8 @@ Map<String, List<String>> mainTranslate = {
     'Desenvolvido por:',
     'Разработано:',
     '由...开发',
-    '開発者：'
+    '開発者：',
+    'Stworzona przez:'
   ],
   'contact me': [
     'contact me',
@@ -604,7 +652,8 @@ Map<String, List<String>> mainTranslate = {
     'contacte-me',
     'свяжитесь со мной',
     '联系我',
-    'お問い合わせ'
+    'お問い合わせ',
+    'napisz do mnie'
   ],
   'Weather data from:': [
     'Weather data from:',
@@ -616,7 +665,8 @@ Map<String, List<String>> mainTranslate = {
     'Dados meteorológicos de:',
     'Данные о погоде от:',
     '天气数据来自：',
-    '天気情報提供元：'
+    '天気情報提供元：',
+    'Dane dostarcza:'
   ],
   'Images used:': [
     'Images used:',
@@ -628,7 +678,8 @@ Map<String, List<String>> mainTranslate = {
     'Imagens usadas:',
     'Используемые изображения:',
     '使用的图片：',
-    '使用された画像：'
+    '使用された画像：',
+    'Użyte grafiki:'
   ],
   'Source Code:': [
     'Source Code:',
@@ -640,7 +691,8 @@ Map<String, List<String>> mainTranslate = {
     'Código-fonte:',
     'Исходный код:',
     '源代码：',
-    'ソースコード：'
+    'ソースコード：',
+    'Kod źródłowy'
   ],
   'Weak or no wifi connection': [
     'Weak or no wifi connection',
@@ -652,7 +704,8 @@ Map<String, List<String>> mainTranslate = {
     'Conexão Wi-Fi fraca ou inexistente',
     'Слабое или отсутствующее подключение Wi-Fi',
     '无线网络信号弱或无连接',
-    'Wi-Fi接続が弱いかありません'
+    'Wi-Fi接続が弱いかありません',
+    'Słabe połączenie lub brak Wi-Fi'
   ],
   'Not connected to the internet': [
     'Not connected to the internet',
@@ -664,7 +717,8 @@ Map<String, List<String>> mainTranslate = {
     'Não conectado à internet',
     'Нет подключения к Интернету',
     '未连接到互联网',
-    'インターネットに接続されていません'
+    'インターネットに接続されていません',
+    'Brak internetu'
   ],
   'Place not found': [
     'Place not found',
@@ -676,7 +730,8 @@ Map<String, List<String>> mainTranslate = {
     'Local não encontrado',
     'Место не найдено',
     '未找到地点',
-    '場所が見つかりません'
+    '場所が見つかりません',
+    'Nie znaleziono lokalizacji'
   ],
   'Unable to locate device': [
     'Unable to locate device',
@@ -688,7 +743,8 @@ Map<String, List<String>> mainTranslate = {
     'Não é possível localizar o dispositivo',
     'Не удается найти устройство',
     '无法定位设备',
-    'デバイスを特定できません'
+    'デバイスを特定できません',
+    'Brak możliwości zlokalizowania urządzenia'
   ],
   'location services are disabled.': [
     'location services are disabled.',
@@ -700,7 +756,8 @@ Map<String, List<String>> mainTranslate = {
     'Os serviços de localização estão desativados.',
     'Сервисы определения местоположения отключены.',
     '位置服务已禁用。',
-    '位置サービスは無効です。'
+    '位置サービスは無効です。',
+    'Lokalizacja wyłączona.
   ],
   'location permission is denied': [
     'location permission is denied',
@@ -712,7 +769,8 @@ Map<String, List<String>> mainTranslate = {
     'Permissão de localização negada',
     'Отказано в разрешении на местоположение',
     '位置权限已拒绝',
-    '位置許可が拒否されました'
+    '位置許可が拒否されました',
+    'Odmowa pozwolenia na lokalizację'
   ],
   'location permission denied forever': [
     'location permission denied forever',
@@ -724,7 +782,8 @@ Map<String, List<String>> mainTranslate = {
     'Permissão de localização negada para sempre',
     'Разрешение на местоположение отклонено навсегда',
     '位置权限已永久拒绝',
-    '位置許可が永久に拒否されました'
+    '位置許可が永久に拒否されました',
+    'Trwała odmowa pozwolenia na lokalizację'
   ],
   'failed to access gps': [
     'failed to access gps',
@@ -736,7 +795,8 @@ Map<String, List<String>> mainTranslate = {
     'Falha ao acessar o GPS',
     'Не удалось получить доступ к GPS',
     '无法访问 GPS',
-    'GPSにアクセスできませんでした'
+    'GPSにアクセスできませんでした',
+    'gps niedostępny'
   ],
   'Search...': [
     'Search...',
@@ -748,7 +808,8 @@ Map<String, List<String>> mainTranslate = {
     'Buscar...',
     'Поиск...',
     '搜索...',
-    '検索...'
+    '検索...',
+    'szukam...'
   ],
   'sunrise/sunset': [
     'sunrise/sunset',
@@ -760,7 +821,8 @@ Map<String, List<String>> mainTranslate = {
     'nascer do sol/pôr do sol',
     'восход/заход солнца',
     '日出/日落',
-    '日の出/日没'
+    '日の出/日没',
+    'wschód/zachód'
   ],
   'air quality': [
     'air quality',
@@ -772,7 +834,8 @@ Map<String, List<String>> mainTranslate = {
     'qualidade do ar',
     'качество воздуха',
     '空气质量',
-    '空気の質'
+    '空気の質',
+    'jakość powietrza'
   ],
   'good': [
     'good',
@@ -784,7 +847,8 @@ Map<String, List<String>> mainTranslate = {
     'bom',
     'хорошо',
     '好',
-    '良好'
+    '良好',
+    'dobra'
   ],
   'moderate': [
     'moderate',
@@ -796,7 +860,8 @@ Map<String, List<String>> mainTranslate = {
     'moderado',
     'умеренный',
     '适度',
-    '適度'
+    '適度',
+    'średnia'
   ],
   'slightly unhealthy': [
     'slightly unhealthy',
@@ -808,7 +873,8 @@ Map<String, List<String>> mainTranslate = {
     'levemente insalubre',
     'слегка нездоровый',
     '轻微不健康',
-    '軽度不健康'
+    '軽度不健康',
+    'lekko szkodliwa'
   ],
   'unhealthy': [
     'unhealthy',
@@ -820,7 +886,8 @@ Map<String, List<String>> mainTranslate = {
     'não saudável',
     'нездоровый',
     '不健康',
-    '不健康'
+    '不健康',
+    'szkodliwa'
   ],
   'very unhealthy': [
     'very unhealthy',
@@ -832,7 +899,8 @@ Map<String, List<String>> mainTranslate = {
     'muito insalubre',
     'очень нездоровый',
     '非常不健康',
-    '非常に不健康'
+    '非常に不健康',
+    'bardzo szkodliwa'
   ],
   'hazardous': [
     'hazardous',
@@ -844,7 +912,8 @@ Map<String, List<String>> mainTranslate = {
     'perigoso',
     'опасный',
     '危险',
-    '有害'
+    '有害',
+    'niebezpieczna'
   ],
   'precipitation': [
     'precipitation',
@@ -856,7 +925,8 @@ Map<String, List<String>> mainTranslate = {
     'precipitação',
     'осадки',
     '降水',
-    '降水'
+    '降水',
+    'opady'
   ],
   'radar': [
     'radar',
@@ -868,7 +938,8 @@ Map<String, List<String>> mainTranslate = {
     'radar',
     'радар',
     '雷达',
-    'レーダー'
+    'レーダー',
+    'radar'
   ],
   'Color mode': [
     'Color mode',
@@ -880,7 +951,8 @@ Map<String, List<String>> mainTranslate = {
     'Modo de cor',
     'Режим цвета',
     '彩色模式',
-    'カラーモード'
+    'カラーモード',
+    'Schemat kolorów'
   ],
   'Weather provider': [
     'Weather provider',
@@ -892,7 +964,8 @@ Map<String, List<String>> mainTranslate = {
     'Provedor de clima',
     'Поставщик погоды',
     '天气服务提供商',
-    '天気プロバイダ'
+    '天気プロバイダ',
+    'Dostawca pogody'
   ],
   'Time mode': [
     'Time mode',
@@ -904,7 +977,8 @@ Map<String, List<String>> mainTranslate = {
     'Modo de tempo',
     'Режим времени',
     '时间模式',
-    '時間モード'
+    '時間モード',
+    'Format czasu'
   ],
   'Mon': [
     'Mon',
@@ -916,7 +990,8 @@ Map<String, List<String>> mainTranslate = {
     'Seg',
     'Пн',
     '一',
-    '月'
+    '月',
+    'Pon'
   ],
   'Tue': [
     'Tue',
@@ -928,7 +1003,8 @@ Map<String, List<String>> mainTranslate = {
     'Ter',
     'Вт',
     '二',
-    '火'
+    '火',
+    'Wt'
   ],
   'Wed': [
     'Wed',
@@ -940,7 +1016,8 @@ Map<String, List<String>> mainTranslate = {
     'Qua',
     'Ср',
     '三',
-    '水'
+    '水',
+    'Śr'
   ],
   'Thu': [
     'Thu',
@@ -952,7 +1029,8 @@ Map<String, List<String>> mainTranslate = {
     'Qui',
     'Чт',
     '四',
-    '木'
+    '木',
+    'Czw'
   ],
   'Fri': [
     'Fri',
@@ -964,7 +1042,8 @@ Map<String, List<String>> mainTranslate = {
     'Sex',
     'Пт',
     '五',
-    '金'
+    '金',
+    'Pt'
   ],
   'Sat': [
     'Sat',
@@ -976,7 +1055,8 @@ Map<String, List<String>> mainTranslate = {
     'Sáb',
     'Сб',
     '六',
-    '土'
+    '土',
+    'Sob'
   ],
   'Sun': [
     'Sun',
@@ -988,7 +1068,8 @@ Map<String, List<String>> mainTranslate = {
     'Dom',
     'Вс',
     '日',
-    '日'
+    '日',
+    'Nd'
   ],
   'Font size': [
     'Font size',
@@ -1000,7 +1081,8 @@ Map<String, List<String>> mainTranslate = {
     'Tamanho da fonte',
     'Размер шрифта',
     '字体大小',
-    'フォントサイズ'
+    'フォントサイズ',
+    'Rozmiar czcionki'
   ],
   'Error Screen': [
     'Error Screen',
@@ -1012,7 +1094,8 @@ Map<String, List<String>> mainTranslate = {
     'Tela de erro',
     'Экран ошибки',
     '错误屏幕',
-    'エラースクリーン'
+    'エラースクリーン',
+    'Ekran błędu'
   ],
   'Daily': [
     'Daily',
@@ -1024,7 +1107,8 @@ Map<String, List<String>> mainTranslate = {
     'Diário',
     'Ежедневно',
     '每日',
-    'デイリー'
+    'デイリー',
+    'Nastepne dni'
   ],
   'Search provider': [
     'Search provider',
@@ -1036,7 +1120,8 @@ Map<String, List<String>> mainTranslate = {
     'Provedor de pesquisa',
     'Поставщик поиска',
     '搜索提供商',
-    '検索プロバイダー'
+    '検索プロバイダー',
+    'Dostawca wyszukiwania'
   ],
 
   'Search translation': [ //used for getting the codes used for translation of city names
