@@ -27,18 +27,6 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
 
-
-    //required by IzzyDroid
-    android {
-        dependenciesInfo {
-            // Disables dependency metadata when building APKs.
-            includeInApk = false
-            // Disables dependency metadata when building Android App Bundles.
-            includeInBundle = false
-        }
-    }
-
-
     namespace "com.example.overmorrow"
     compileSdkVersion 34
     // compileSdkVersion flutter.compileSdkVersion <- this vas the original one but

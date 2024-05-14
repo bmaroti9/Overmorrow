@@ -36,8 +36,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   url_launcher: ^6.1.14
 
-  # geolocator: ^10.1.0
-  geolocator: ^7.7.1
+  geolocator: ^10.1.0
   geocoding: ^3.0.0
 
   flutter_cache_manager: ^3.3.1
@@ -51,12 +50,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   google_fonts: ^5.1.0
-
-dependency_overrides:
-  geolocator_android:
-    hosted:
-      name: geolocator_android
-      url: https://hanntech-gmbh.gitlab.io/free2pass/flutter-geolocator-floss
 
 flutter_launcher_icons:
   image_path_android: "assets/icons/Overmorrow_white_circle.png"
