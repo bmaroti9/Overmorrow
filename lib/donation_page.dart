@@ -201,7 +201,6 @@ class _InfoPageState extends State<InfoPage> {
   Widget build(BuildContext context) {
 
     List<Color> colors = getColors(primary, back, settings, 0);
-    Color link = colors[1];
 
     return Scaffold(
         backgroundColor: colors[0],
@@ -346,7 +345,7 @@ class _InfoPageState extends State<InfoPage> {
                                             'https://github.com/bmaroti9/Overmorrow');
                                       },
                                       child: comfortatext('source code', 20, settings,
-                                          color: link)),
+                                          color: Colors.orange)),
                                 ),
                               )
                             ],
@@ -377,20 +376,20 @@ class _InfoPageState extends State<InfoPage> {
                                 'https://open-meteo.com');
                           },
                           child: comfortatext('open-meteo.com', 20, settings,
-                              color: link)),
+                              color: Colors.orange)),
                       TextButton(
                           onPressed: () async {
                             await _launchUrl(
                                 'https://www.rainviewer.com/api.html');
                           },
                           child: comfortatext('www.rainviewer.com', 20, settings,
-                              color: link)),
+                              color: Colors.orange)),
                       TextButton(
                           onPressed: () async {
                             await _launchUrl('https://www.weatherapi.com/');
                           },
                           child: comfortatext('www.weatherapi.com', 20, settings,
-                              color: link))
+                              color: Colors.orange))
                     ]),
                   ),
                 ),
@@ -432,7 +431,7 @@ class _InfoPageState extends State<InfoPage> {
                                         translation(
                                             imageText[index], settings["Language"]),
                                         20, settings,
-                                        color: link),
+                                        color: Colors.orange),
                                   ),
                                 ),
                               );
