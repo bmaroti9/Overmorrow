@@ -101,21 +101,28 @@ class FadingWidget extends StatefulWidget {
 }
 
 class _FadingWidgetState extends State<FadingWidget> {
-  bool _isVisible = false;
+  bool _isVisible = true;
+  Timer? _timer;
+  bool shouldsee = true;
 
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(milliseconds: 200), () {
-      setState(() {
-        _isVisible = true;
-      });
+    _timer = Timer(Duration(milliseconds: 3500), () {
+      if (mounted) {
+        setState(() {
+          _isVisible = false;
+        });
+      }
     });
-    Timer(const Duration(milliseconds: 3500), () {
-      setState(() {
-        _isVisible = false;
-      });
-    });
+  }
+
+  @override
+  void dispose() {
+    // Cancel the timer in the dispose method
+    _timer?.cancel();
+    shouldsee = false;
+    super.dispose();
   }
 
   @override
@@ -133,6 +140,8 @@ class _FadingWidgetState extends State<FadingWidget> {
     }
 
     List<String> split = text.split(',');
+
+    print(('shouldsee', shouldsee));
 
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 400),
