@@ -125,8 +125,10 @@ class _FadingWidgetState extends State<FadingWidget> {
 
     String text = translation('updated, just now', widget.data.settings["Language"]);
 
+    print(dif);
+
     if (dif > 0) {
-      String text = translation('updated, x min ago', widget.data.settings["Language"]);
+      text = translation('updated, x min ago', widget.data.settings["Language"]);
       text = text.replaceAll('x', dif.toString());
     }
 
