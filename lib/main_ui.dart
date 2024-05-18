@@ -536,7 +536,7 @@ Widget buildGlanceDay(var data) => Padding(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              comfortatext(day.name, 18, data.settings, color: data.current.backcolor),
+                              comfortatext(day.name, 18, data.settings, color: data.current.textcolor),
                               Container(
                                 padding: const EdgeInsets.all(5),
                                 child: Image.asset(

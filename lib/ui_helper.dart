@@ -111,7 +111,7 @@ class _FadingWidgetState extends State<FadingWidget> {
         _isVisible = true;
       });
     });
-    Timer(const Duration(seconds: 4), () {
+    Timer(const Duration(milliseconds: 3500), () {
       setState(() {
         _isVisible = false;
       });
@@ -132,6 +132,8 @@ class _FadingWidgetState extends State<FadingWidget> {
       text = text.replaceAll('x', dif.toString());
     }
 
+    List<String> split = text.split(',');
+
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 400),
       opacity: _isVisible ? 1.0 : 0.0,
@@ -144,8 +146,11 @@ class _FadingWidgetState extends State<FadingWidget> {
               padding: const EdgeInsets.only(right: 3),
               child: Icon(Icons.access_time, color: widget.data.current.textcolor, size: 13,),
             ),
-            comfortatext(text, 13, widget.data.settings,
+            comfortatext('${split[0]},', 13, widget.data.settings,
                 color: widget.data.current.textcolor, weight: FontWeight.w500),
+
+            comfortatext(split[1], 13, widget.data.settings,
+                color: widget.data.current.primary, weight: FontWeight.w500),
           ],
         ),
       ),
