@@ -56,7 +56,7 @@ Widget searchBar(Color color, List<String> recommend,
         fontWeight: FontWeight.w100,
       ),
 
-      margins: secondColor == highlightColor ? EdgeInsets.only(left: 10, right: 10, top: 20)
+      margins: secondColor == highlightColor ? const EdgeInsets.only(left: 10, right: 10, top: 20)
                     :  EdgeInsets.only(left: 10, right: 10, top: MediaQuery.of(context).padding.top + 15),
 
       borderRadius: BorderRadius.circular(23),
@@ -458,8 +458,8 @@ class dumbySearch extends StatelessWidget {
     String newStr = errorMessage.toString().replaceAll(wapi_Key, replacement);
     //String newStr = newStr2.replaceAll(owm_Key, replacement);
 
-    Color primary = Color(0xffc2b9c2);
-    Color back = Color(0xff847F83);
+    Color primary = const Color(0xffc2b9c2);
+    Color back = const Color(0xff847F83);
 
     List<Color> colors = getColors(primary, back, settings, 0);
 

@@ -57,6 +57,8 @@ class WeatherData {
   final sunstatus;
   final radar;
 
+  final fetch_datetime;
+
   WeatherData({
     required this.place,
     required this.settings,
@@ -69,6 +71,7 @@ class WeatherData {
     required this.radar,
     required this.days,
     required this.current,
+    required this.fetch_datetime,
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
@@ -89,6 +92,9 @@ class WeatherData {
 
     var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com")
         .timeout(const Duration(seconds: 6));
+
+    DateTime fetch_datetime = await file.lastModified();
+
     var response = await file.readAsString();
 
     var wapi_body = jsonDecode(response);
@@ -120,6 +126,8 @@ class WeatherData {
         sunstatus: sunstatus,
         aqi: WapiAqi.fromJson(wapi_body),
         radar: await RainviewerRadar.getData(),
+
+        fetch_datetime: fetch_datetime,
       );
     }
     else {
@@ -159,6 +167,8 @@ class WeatherData {
         settings: settings,
         provider: "open-meteo",
         real_loc: real_loc,
+
+        fetch_datetime: fetch_datetime,
       );
     }
   }

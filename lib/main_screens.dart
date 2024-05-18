@@ -62,10 +62,10 @@ Widget NewMain(data, updateLocation, context) {
           )
       ),
       children: [
-        Align(
-          alignment: Alignment.bottomLeft,
-          child: Container(
-            child: LayoutBuilder(
+        Stack(
+          children: [
+            FadingWidget(data: data, time: DateTime.now(), key: Key(DateTime.now().toString()),),
+            LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   if(constraints.maxWidth > 500.0) {
                     return Circles(500, data, 0.5, data.current.primary);
@@ -74,14 +74,14 @@ Widget NewMain(data, updateLocation, context) {
                   }
                 }
             ),
-          ),
+          ],
         ),
         NewTimes(data, true),
         buildHihiDays(data),
         buildGlanceDay(data),
         providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
         data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
-        Padding(padding: EdgeInsets.only(bottom: 20))
+        const Padding(padding: EdgeInsets.only(bottom: 20))
       ],
     ),
   );

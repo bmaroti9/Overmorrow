@@ -90,6 +90,55 @@ Color lightAccent(Color color, int intensity) {
   return Color.fromRGBO(sqrt(color.red * x).toInt(), sqrt(color.green * x).toInt(), sqrt(color.blue * x).toInt(), 1);
 }
 
+class FadingWidget extends StatefulWidget {
+  final data;
+  final time;
+
+  const FadingWidget({super.key, required this.data, required this.time});
+
+  @override
+  _FadingWidgetState createState() => _FadingWidgetState();
+}
+
+class _FadingWidgetState extends State<FadingWidget> {
+  bool _isVisible = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Timer(Duration(seconds: 3), () {
+      setState(() {
+        _isVisible = false;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    final dif = widget.time.difference(widget.data.fetch_datetime).inMinutes;
+
+    return AnimatedOpacity(
+      duration: Duration(milliseconds: 300),
+      opacity: _isVisible ? 1.0 : 0.0,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 6, right: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(right: 3),
+              child: Icon(Icons.access_time, color: WHITE, size: 13,),
+            ),
+            comfortatext('updated ${dif}m ago', 13, widget.data.settings, color: WHITE,
+                weight: FontWeight.w400),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class DescriptionCircle extends StatelessWidget {
 
   final String text;
@@ -108,8 +157,8 @@ class DescriptionCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     final double fontsize = size / 18;
     final double small_font = size / 25;
-    final double width = size / 5;
-    final double height = size / 5;
+    final double width = size / 4.9;
+    final double height = size / 4.9;
     return Container(
       //padding: const EdgeInsets.all(5),
       child: Column(
