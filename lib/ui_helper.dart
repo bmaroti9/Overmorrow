@@ -101,12 +101,17 @@ class FadingWidget extends StatefulWidget {
 }
 
 class _FadingWidgetState extends State<FadingWidget> {
-  bool _isVisible = true;
+  bool _isVisible = false;
 
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
+    Timer(const Duration(milliseconds: 200), () {
+      setState(() {
+        _isVisible = true;
+      });
+    });
+    Timer(const Duration(seconds: 4), () {
       setState(() {
         _isVisible = false;
       });
@@ -117,21 +122,23 @@ class _FadingWidgetState extends State<FadingWidget> {
   Widget build(BuildContext context) {
 
     final dif = widget.time.difference(widget.data.fetch_datetime).inMinutes;
+    String text = translation('updated, x min ago', widget.data.settings["Language"]);
+    text = text.replaceAll('x', dif.toString());
 
     return AnimatedOpacity(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 400),
       opacity: _isVisible ? 1.0 : 0.0,
       child: Padding(
         padding: const EdgeInsets.only(top: 6, right: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const Padding(
-              padding: EdgeInsets.only(right: 3),
-              child: Icon(Icons.access_time, color: WHITE, size: 13,),
+            Padding(
+              padding: const EdgeInsets.only(right: 3),
+              child: Icon(Icons.access_time, color: widget.data.current.textcolor, size: 13,),
             ),
-            comfortatext('updated ${dif}m ago', 13, widget.data.settings, color: WHITE,
-                weight: FontWeight.w400),
+            comfortatext(text, 13, widget.data.settings,
+                color: widget.data.current.textcolor, weight: FontWeight.w400),
           ],
         ),
       ),
@@ -289,7 +296,7 @@ Widget WindWidget(data, day) {
               width: 55,
               child: ListView.builder(
                   reverse: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 3,
                   itemBuilder: (context, index) {
                     return Padding(
@@ -374,7 +381,7 @@ Widget RainWidget(data, day) {
               width: 55,
               child: ListView.builder(
                   reverse: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 3,
                   itemBuilder: (context, index) {
                     if (data.settings["Precipitation"] == 'in') {

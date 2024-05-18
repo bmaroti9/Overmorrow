@@ -1123,6 +1123,19 @@ Map<String, List<String>> mainTranslate = {
     '検索プロバイダー',
     'Dostawca wyszukiwania'
   ],
+  'updated, x min ago': [
+    'updated, x min ago',
+    'frissítve, x percel ezelőtt',
+    'actualizado, x min hace',
+    'mis à jour, il y a x min',
+    'aktualisiert, vor x min',
+    'aggiornato, x min fa',
+    'atualizado, x min atrás',
+    'обновлено, x мин назад',
+    '更新于 x 分钟前',
+    'x 分前に更新されました',
+    'zaktualizowane, x min temu'
+  ],
 
   'Search translation': [ //used for getting the codes used for translation of city names
                           //If none are available then en (english) is the default

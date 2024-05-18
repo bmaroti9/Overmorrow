@@ -97,7 +97,7 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
     colors = [ //backcolor, primary, text
       const Color(0xffeeeeee),
       primary,
-      lightAccent(primary, 30000),
+      BLACK,
       WHITE,
       primary,
       lighten(lightAccent(primary, 60000), 0.25),
@@ -389,7 +389,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20, bottom: 30),
+                  padding: EdgeInsets.only(top: 40, bottom: 30),
                   child: SizedBox(
                     height: 300,
                     child: Align(
@@ -453,7 +453,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                   //somehow this was the only way i found to limit the width.
                   //otherwise the row would disregard the max size and expand beyond
                   child: Container(
-                    constraints: BoxConstraints(maxHeight: 120),
+                    constraints: const BoxConstraints(maxHeight: 90),
                     child: Align(
                       alignment: Alignment.center,
                       child: AspectRatio(
