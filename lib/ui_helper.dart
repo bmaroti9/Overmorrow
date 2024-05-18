@@ -122,8 +122,13 @@ class _FadingWidgetState extends State<FadingWidget> {
   Widget build(BuildContext context) {
 
     final dif = widget.time.difference(widget.data.fetch_datetime).inMinutes;
-    String text = translation('updated, x min ago', widget.data.settings["Language"]);
-    text = text.replaceAll('x', dif.toString());
+
+    String text = translation('updated, just now', widget.data.settings["Language"]);
+
+    if (dif > 0) {
+      String text = translation('updated, x min ago', widget.data.settings["Language"]);
+      text = text.replaceAll('x', dif.toString());
+    }
 
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 400),
@@ -138,7 +143,7 @@ class _FadingWidgetState extends State<FadingWidget> {
               child: Icon(Icons.access_time, color: widget.data.current.textcolor, size: 13,),
             ),
             comfortatext(text, 13, widget.data.settings,
-                color: widget.data.current.textcolor, weight: FontWeight.w400),
+                color: widget.data.current.textcolor, weight: FontWeight.w500),
           ],
         ),
       ),

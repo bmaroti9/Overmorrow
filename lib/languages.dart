@@ -1136,6 +1136,19 @@ Map<String, List<String>> mainTranslate = {
     'x 分前に更新されました',
     'zaktualizowane, x min temu'
   ],
+  'updated, just now': [
+    'updated, just now',
+    'frissítve, épp most',
+    'actualizado, justo ahora',
+    'mis à jour, juste maintenant',
+    'aktualisiert, gerade jetzt',
+    'aggiornato, proprio adesso',
+    'atualizado, agora mesmo',
+    'обновлено, прямо сейчас',
+    '刚刚更新',
+    'ちょうど今更新',
+    'zaktualizowane, właśnie teraz'
+  ],
 
   'Search translation': [ //used for getting the codes used for translation of city names
                           //If none are available then en (english) is the default
