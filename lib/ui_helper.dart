@@ -90,39 +90,20 @@ Color lightAccent(Color color, int intensity) {
   return Color.fromRGBO(sqrt(color.red * x).toInt(), sqrt(color.green * x).toInt(), sqrt(color.blue * x).toInt(), 1);
 }
 
-class FadeWidget extends StatelessWidget {
+class FadeWidget extends StatefulWidget {
   final data;
   final time;
 
-  bool show = true;
-
-  FadeWidget({super.key, required this.data, required this.time});
+  FadeWidget({Key? key, required this.data, required this.time}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    if (show) {
-      show = false;
-      return FadingWidget(data: data, time: time);
-    }
-    return Container();
-  }
-
+  _FadeWidgetState createState() => _FadeWidgetState();
 }
 
-class FadingWidget extends StatefulWidget {
-  final data;
-  final time;
-
-  const FadingWidget({super.key, required this.data, required this.time});
-
-  @override
-  _FadingWidgetState createState() => _FadingWidgetState();
-}
-
-class _FadingWidgetState extends State<FadingWidget> {
+class _FadeWidgetState extends State<FadeWidget> with AutomaticKeepAliveClientMixin<FadeWidget> {
+  bool _hasBeenShown = false;
   bool _isVisible = true;
   Timer? _timer;
-  bool shouldsee = true;
 
   @override
   void initState() {
@@ -140,49 +121,54 @@ class _FadingWidgetState extends State<FadingWidget> {
   void dispose() {
     // Cancel the timer in the dispose method
     _timer?.cancel();
-    shouldsee = false;
     super.dispose();
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
 
-    final dif = widget.time.difference(widget.data.fetch_datetime).inMinutes;
+    if (!_hasBeenShown) {
+      _hasBeenShown = true;
+      final dif = widget.time.difference(widget.data.fetch_datetime).inMinutes;
 
-    String text = translation('updated, just now', widget.data.settings["Language"]);
+      String text = translation('updated, just now', widget.data.settings["Language"]);
 
-    print(dif);
+      print(dif);
 
-    if (dif > 0) {
-      text = translation('updated, x min ago', widget.data.settings["Language"]);
-      text = text.replaceAll('x', dif.toString());
-    }
+      if (dif > 0) {
+        text = translation('updated, x min ago', widget.data.settings["Language"]);
+        text = text.replaceAll('x', dif.toString());
+      }
 
-    List<String> split = text.split(',');
+      List<String> split = text.split(',');
 
-    print(('shouldsee', shouldsee));
+      return AnimatedOpacity(
+        duration: const Duration(milliseconds: 400),
+        opacity: _isVisible ? 1.0 : 0.0,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 6, right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 3),
+                child: Icon(Icons.access_time, color: widget.data.current.textcolor, size: 13,),
+              ),
+              comfortatext('${split[0]},', 13, widget.data.settings,
+                  color: widget.data.current.textcolor, weight: FontWeight.w500),
 
-    return AnimatedOpacity(
-      duration: const Duration(milliseconds: 400),
-      opacity: _isVisible ? 1.0 : 0.0,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 6, right: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 3),
-              child: Icon(Icons.access_time, color: widget.data.current.textcolor, size: 13,),
-            ),
-            comfortatext('${split[0]},', 13, widget.data.settings,
-                color: widget.data.current.textcolor, weight: FontWeight.w500),
-
-            comfortatext(split[1], 13, widget.data.settings,
-                color: widget.data.current.primary, weight: FontWeight.w500),
-          ],
+              comfortatext(split[1], 13, widget.data.settings,
+                  color: widget.data.current.primary, weight: FontWeight.w500),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
+    return Container();
   }
 }
 
