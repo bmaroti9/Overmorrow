@@ -15,12 +15,6 @@ Widget NewMain(data, updateLocation, context) {
 
   final FloatingSearchBarController controller = FloatingSearchBarController();
 
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      systemNavigationBarColor: data.current.backcolor,
-    ),
-  );
-
   return Scaffold(
     backgroundColor: data.current.backcolor,
     drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,

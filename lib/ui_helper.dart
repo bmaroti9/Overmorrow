@@ -688,9 +688,12 @@ class _MySearchParentState extends State<MySearchParent> {
   required this.controller, required this.settings, required this.real_loc, required this.secondColor,
   required this.textColor, required this.highlightColor});
 
-  Future<SharedPreferences> getPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs;
+  late Future<SharedPreferences> _prefsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _prefsFuture = SharedPreferences.getInstance();
   }
 
   List<String> getFavorites(SharedPreferences? prefs){
@@ -711,7 +714,7 @@ class _MySearchParentState extends State<MySearchParent> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<SharedPreferences>(
-      future: getPrefs(),
+      future: _prefsFuture,
       builder: (BuildContext context,
           AsyncSnapshot<SharedPreferences> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
