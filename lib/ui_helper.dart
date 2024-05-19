@@ -90,6 +90,25 @@ Color lightAccent(Color color, int intensity) {
   return Color.fromRGBO(sqrt(color.red * x).toInt(), sqrt(color.green * x).toInt(), sqrt(color.blue * x).toInt(), 1);
 }
 
+class FadeWidget extends StatelessWidget {
+  final data;
+  final time;
+
+  bool show = true;
+
+  FadeWidget({super.key, required this.data, required this.time});
+
+  @override
+  Widget build(BuildContext context) {
+    if (show) {
+      show = false;
+      return FadingWidget(data: data, time: time);
+    }
+    return Container();
+  }
+
+}
+
 class FadingWidget extends StatefulWidget {
   final data;
   final time;

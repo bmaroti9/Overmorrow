@@ -71,7 +71,7 @@ Widget NewMain(data, updateLocation, context) {
       children: [
         Stack(
           children: [
-            FadingWidget(data: data, time: DateTime.now(), key: Key(DateTime.now().toString()),),
+            FadeWidget(data: data, time: DateTime.now(), key: Key(DateTime.now().toString()),),
             LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   if(constraints.maxWidth > 500.0) {
