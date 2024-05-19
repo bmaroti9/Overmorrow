@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
@@ -13,6 +14,12 @@ Widget NewMain(data, updateLocation, context) {
   Size size = view.physicalSize / view.devicePixelRatio;
 
   final FloatingSearchBarController controller = FloatingSearchBarController();
+
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      systemNavigationBarColor: data.current.backcolor,
+    ),
+  );
 
   return Scaffold(
     backgroundColor: data.current.backcolor,
