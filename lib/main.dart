@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -271,6 +272,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    List<Color> colors = getStartBackColor();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -279,10 +281,10 @@ class _MyAppState extends State<MyApp> {
           children: [
             w1,
             if (isLoading) Container(
-              color: startup ? WHITE :const Color.fromRGBO(0, 0, 0, 0.7),
+              color: startup ? colors[0] : const Color.fromRGBO(0, 0, 0, 0.7),
               child: Center(
                 child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: startup ? const Color.fromRGBO(0, 0, 0, 0.3) : WHITE,
+                  color: startup ? colors[1] : WHITE,
                   size: 40,
                 ),
               ),
@@ -292,4 +294,13 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}
+
+List<Color> getStartBackColor() {
+  var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+  print(brightness);
+  bool isDarkMode = brightness == Brightness.dark;
+  Color back = isDarkMode ? BLACK : WHITE;
+  Color front = isDarkMode ? const Color.fromRGBO(250, 250, 250, 0.7) : const Color.fromRGBO(0, 0, 0, 0.3);
+  return [back, front];
 }
