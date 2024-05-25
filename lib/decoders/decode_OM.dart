@@ -117,7 +117,9 @@ class OMCurrent {
   final int feels_like;
   final int uv;
   final double precip;
+
   final int wind;
+  final int wind_dir;
 
   final Color backcolor;
   final Color primary;
@@ -146,6 +148,7 @@ class OMCurrent {
     required this.highlight,
     required this.backup_backcolor,
     required this.backup_primary,
+    required this.wind_dir,
   });
 
   static OMCurrent fromJson(item, settings, sunstatus, timenow) {
@@ -197,6 +200,7 @@ class OMCurrent {
       humidity: item["current"]["relative_humidity_2m"],
       temp: unit_coversion(
           item["current"]["temperature_2m"], settings["Temperature"]).round(),
+      wind_dir: item["current"]["wind_direction_10m"],
     );
   }
 }

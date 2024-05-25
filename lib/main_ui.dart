@@ -113,6 +113,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                     size: width,
                     settings: data.settings,
                     bottom: bottom,
+                    dir: -1,
                   ),
                   DescriptionCircle(
                     color: color,
@@ -122,6 +123,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                     size: width,
                     settings: data.settings,
                     bottom: bottom,
+                    dir: -1,
                   ),
                   DescriptionCircle(
                     color: color,
@@ -131,6 +133,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                     size: width,
                     settings: data.settings,
                     bottom: bottom,
+                    dir: -1,
                   ),
                   DescriptionCircle(
                     color: color,
@@ -140,6 +143,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                     size: width,
                     settings: data.settings,
                     bottom: bottom,
+                    dir: data.current.wind_dir,
                   ),
                 ]
             )
@@ -462,10 +466,10 @@ Widget buildHihiDays(var data) => ListView.builder(
                                         color: data.current.secondary),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 5, right: 3, bottom: 1),
+                                        padding: const EdgeInsets.only(left: 5, right: 3),
                                         child: RotationTransition(
                                           turns: AlwaysStoppedAnimation(day.wind_dir / 360),
-                                          child: Icon(CupertinoIcons.arrow_up_right_circle_fill, color: data.current.secondary, size: 18,)
+                                          child: Icon(CupertinoIcons.arrow_up_circle_fill, color: data.current.secondary, size: 18,)
                                         )
                                       ),
                                     ],
@@ -636,7 +640,7 @@ Widget buildGlanceDay(var data) => Padding(
                                             padding: const EdgeInsets.only(left: 3, right: 3, bottom: 1),
                                             child: RotationTransition(
                                                 turns: AlwaysStoppedAnimation(day.wind_dir / 360),
-                                                child: Icon(CupertinoIcons.arrow_up_right_circle_fill,
+                                                child: Icon(CupertinoIcons.arrow_up_circle_fill,
                                                   color: data.current.secondary, size: 16,)
                                             )
                                         ),

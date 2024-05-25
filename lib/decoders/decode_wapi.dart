@@ -212,7 +212,9 @@ class WapiCurrent {
   final int feels_like;
   final int uv;
   final double precip;
+
   final int wind;
+  final int wind_dir;
 
   final Color backcolor;
   final Color primary;
@@ -241,6 +243,7 @@ class WapiCurrent {
     required this.backup_primary,
     required this.backup_backcolor,
     required this.colorpop,
+    required this.wind_dir,
   });
 
   static WapiCurrent fromJson(item, settings) {
@@ -293,6 +296,7 @@ class WapiCurrent {
           settings["Precipitation"]).toStringAsFixed(1)),
       wind: unit_coversion(item["current"]["wind_kph"], settings["Wind"])
           .round(),
+      wind_dir: item["current"]["wind_degree"]
     );
   }
 }

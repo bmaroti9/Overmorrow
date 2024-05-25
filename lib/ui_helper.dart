@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/search_screens.dart';
@@ -207,10 +208,11 @@ class DescriptionCircle extends StatelessWidget {
   final double size;
   final settings;
   final bottom;
+  final dir;
 
   const DescriptionCircle({super.key, required this.text,
       required this.undercaption, required this.color, required this.extra,
-    required this.size, required this.settings, required this.bottom});
+    required this.size, required this.settings, required this.bottom, required this.dir});
 
   @override
   Widget build(BuildContext context) {
@@ -251,6 +253,18 @@ class DescriptionCircle extends StatelessWidget {
                       ],
                     ),
                   )
+                ),
+                Visibility(
+                  visible: dir != -1,
+                  child:   Center(
+                      child: RotationTransition(
+                          turns: AlwaysStoppedAnimation(dir / 360),
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: height * 0.75),
+                            child: Icon(Icons.keyboard_arrow_up_outlined, color: color, size: 17,)
+                          )
+                      ),
+                    )
                 ),
               ],
             ),
