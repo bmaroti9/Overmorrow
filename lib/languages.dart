@@ -16,7 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-Map<String, int> languageIndex = { //the index of the language used in the mainTranslate and
+Map<String, int> languageIndex = { //the index of the language used in the mainTranslate
   'English' : 0,
   'Magyar' : 1,
   'Español' : 2,
@@ -100,7 +100,7 @@ Map<String, List<String>> mainTranslate = {
     '感觉像',
     '感じる',
     'Odczuwalna',
-    'Έχει την αίσθηση των'
+    'Αισθάνεται'
   ],
   'Donate': [
     'Donate',
