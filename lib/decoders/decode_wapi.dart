@@ -29,6 +29,15 @@ import 'extra_info.dart';
 
 bool RandomSwitch = false;
 
+int wapiGetWindDir(var data) {
+  int total = 0;
+  for (var i = 0; i < data.length; i++) {
+    int x = data[i]["wind_degree"];
+    total += x;
+  }
+  return (total / data.length).round();
+}
+
 String amPmTime(String time) {
   List<String> splited = time.split(" ");
   List<String> num = splited[0].split(":");
@@ -302,6 +311,8 @@ class WapiDay {
   final int uv;
   final mm_precip;
 
+  final int wind_dir;
+
   const WapiDay({
     required this.text,
     required this.icon,
@@ -315,6 +326,7 @@ class WapiDay {
     required this.windspeed,
     required this.hourly_for_precip,
     required this.mm_precip,
+    required this.wind_dir,
   });
 
   static WapiDay fromJson(item, index, settings, timenow) => WapiDay(
@@ -336,6 +348,7 @@ class WapiDay {
     precip_prob: item["day"]["daily_chance_of_rain"],
     windspeed: unit_coversion(item["day"]["maxwind_kph"], settings["Wind"]).round(),
     uv: item["day"]["uv"].round(),
+    wind_dir: wapiGetWindDir(item["hour"])
   );
 
   static List<WapiHour> buildWapiHour(data, settings, int index, int timenow, bool get_rid_first) {
