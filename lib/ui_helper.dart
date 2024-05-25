@@ -190,7 +190,7 @@ class _FadingWidgetState extends State<FadingWidget> {
             comfortatext('${split[0]},', 13, widget.data.settings,
                 color: widget.data.current.textcolor, weight: FontWeight.w500),
 
-            comfortatext(split[1], 13, widget.data.settings,
+            comfortatext(split.length > 1 ?split[1] : "", 13, widget.data.settings,
                 color: widget.data.current.primary, weight: FontWeight.w500),
           ],
         ),
