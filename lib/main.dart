@@ -43,13 +43,6 @@ void main() {
   final data = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
   final ratio = WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
 
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent,
-    ),
-  );
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-
   if (data.shortestSide / ratio < 600) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((value) => runApp(const MyApp()));
@@ -273,6 +266,18 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     List<Color> colors = getStartBackColor();
+
+    final EdgeInsets systemGestureInsets = MediaQuery.of(context).systemGestureInsets;
+    print(('hihi', systemGestureInsets.left));
+    if (systemGestureInsets.left > 0) {
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.transparent,
+        ),
+      );
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
