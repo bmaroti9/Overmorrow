@@ -77,7 +77,7 @@ class _RadarMapState extends State<RadarMap> {
           padding: EdgeInsets.only(left: 20, bottom: 0),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: comfortatext(translation('radar', data.settings["Language"]), 20, data.settings,
+            child: comfortatext(translation('radar', data.settings["Language"]), 19, data.settings,
             color: data.current.textcolor),
           ),
         ),

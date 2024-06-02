@@ -101,7 +101,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
     child: SizedBox(
       width: width,
         child: Container(
-            padding: const EdgeInsets.only(top:30, left: 5, right: 5),
+            padding: const EdgeInsets.only(top: 30, left: 4, right: 4),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -113,6 +113,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                     size: width,
                     settings: data.settings,
                     bottom: bottom,
+                    dir: -1,
                   ),
                   DescriptionCircle(
                     color: color,
@@ -122,6 +123,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                     size: width,
                     settings: data.settings,
                     bottom: bottom,
+                    dir: -1,
                   ),
                   DescriptionCircle(
                     color: color,
@@ -131,6 +133,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                     size: width,
                     settings: data.settings,
                     bottom: bottom,
+                    dir: -1,
                   ),
                   DescriptionCircle(
                     color: color,
@@ -140,6 +143,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                     size: width,
                     settings: data.settings,
                     bottom: bottom,
+                    dir: data.current.wind_dir,
                   ),
                 ]
             )
@@ -159,7 +163,7 @@ Widget NewTimes(var data, bool divider) => Column(
               padding: const EdgeInsets.only(left: 15, bottom: 10),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: comfortatext(translation('sunrise/sunset', data.settings["Language"]), 20, data.settings,
+                child: comfortatext(translation('sunrise/sunset', data.settings["Language"]), 19, data.settings,
                     color: data.current.textcolor),
               ),
             ),
@@ -253,7 +257,7 @@ Widget NewTimes(var data, bool divider) => Column(
         ),
       ),
       Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 5),
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 19, top: 5),
         child: Column(
           children: [
             Padding(
@@ -343,13 +347,13 @@ Widget buildHihiDays(var data) => ListView.builder(
         if (index < 3) {
           final day = data.days[index];
             return Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 0),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 0, bottom: 10),
-                    child: comfortatext(day.name, 20, data.settings, color: data.current.textcolor)
+                    child: comfortatext(day.name, 19, data.settings, color: data.current.textcolor)
                   ),
                   Padding(
                     padding: const EdgeInsets.all(2.0),
@@ -399,7 +403,7 @@ Widget buildHihiDays(var data) => ListView.builder(
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 30),
+                    padding: const EdgeInsets.only(left: 6, right: 6, top: 15, bottom: 30),
                     child: Container(
                       height: 85,
                       padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
@@ -423,11 +427,12 @@ Widget buildHihiDays(var data) => ListView.builder(
                                   child: Row(
                                     children: [
                                       Icon(Icons.water_drop_outlined,
-                                        color: data.current.secondary,),
-                                      const Padding(
-                                          padding: EdgeInsets.only(right: 10)),
-                                      comfortatext('${day.precip_prob}%', 20, data.settings,
-                                      color: data.current.secondary),
+                                        color: data.current.secondary, size: 21),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 10, top: 2),
+                                        child: comfortatext('${day.precip_prob}%', 19, data.settings,
+                                        color: data.current.secondary),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -437,12 +442,13 @@ Widget buildHihiDays(var data) => ListView.builder(
                                   child: Row(
                                     children: [
                                       Icon(
-                                        Icons.water_drop, color: data.current.secondary,),
-                                      const Padding(
-                                          padding: EdgeInsets.only(right: 10)),
-                                      comfortatext(day.total_precip.toString() +
-                                          data.settings["Precipitation"], 20, data.settings,
-                                      color: data.current.secondary),
+                                        Icons.water_drop, color: data.current.secondary, size: 21),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 2, left: 10),
+                                        child: comfortatext(day.total_precip.toString() +
+                                            data.settings["Precipitation"], 19, data.settings,
+                                        color: data.current.secondary),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -452,12 +458,20 @@ Widget buildHihiDays(var data) => ListView.builder(
                                   child: Row(
                                     children: [
                                       Icon(
-                                        CupertinoIcons.wind, color: data.current.secondary,),
-                                      const Padding(
-                                          padding: EdgeInsets.only(right: 10)),
-                                      comfortatext('${day.windspeed} ${data
-                                          .settings["Wind"]}', 20, data.settings,
-                                      color: data.current.secondary),
+                                        CupertinoIcons.wind, color: data.current.secondary, size: 21,),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 2, left: 10),
+                                        child: comfortatext('${day.windspeed} ${data
+                                            .settings["Wind"]}', 19, data.settings,
+                                        color: data.current.secondary),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 5, right: 3),
+                                        child: RotationTransition(
+                                          turns: AlwaysStoppedAnimation(day.wind_dir / 360),
+                                          child: Icon(CupertinoIcons.arrow_up_circle_fill, color: data.current.secondary, size: 18,)
+                                        )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -467,11 +481,12 @@ Widget buildHihiDays(var data) => ListView.builder(
                                   child: Row(
                                     children: [
                                       Icon(CupertinoIcons.sun_min,
-                                        color: data.current.secondary,),
-                                      const Padding(
-                                          padding: EdgeInsets.only(right: 10)),
-                                      comfortatext('${day.uv} UV', 20, data.settings,
-                                      color: data.current.secondary),
+                                        color: data.current.secondary, size: 21),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 2, left: 10),
+                                        child: comfortatext('${day.uv} UV', 19, data.settings,
+                                        color: data.current.secondary),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -495,10 +510,10 @@ Widget buildGlanceDay(var data) => Padding(
   child: Column(
     children: [
       Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.only(bottom: 15),
         child: Align(
           alignment: Alignment.centerLeft,
-          child: comfortatext(translation('Daily', data.settings["Language"]), 20, data.settings, color: data.current.textcolor),
+          child: comfortatext(translation('Daily', data.settings["Language"]), 19, data.settings, color: data.current.textcolor),
         ),
       ),
       Container(
@@ -536,7 +551,7 @@ Widget buildGlanceDay(var data) => Padding(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              comfortatext(day.name, 18, data.settings, color: data.current.secondary),
+                              comfortatext(day.name, 18, data.settings, color: data.current.textcolor),
                               Container(
                                 padding: const EdgeInsets.all(5),
                                 child: Image.asset(
@@ -621,6 +636,14 @@ Widget buildGlanceDay(var data) => Padding(
                                           child: comfortatext('${day.windspeed} ${data
                                               .settings["Wind"]}', 17, data.settings, color: data.current.secondary),
                                         ),
+                                        Padding(
+                                            padding: const EdgeInsets.only(left: 3, right: 3, bottom: 1),
+                                            child: RotationTransition(
+                                                turns: AlwaysStoppedAnimation(day.wind_dir / 360),
+                                                child: Icon(CupertinoIcons.arrow_up_circle_fill,
+                                                  color: data.current.secondary, size: 16,)
+                                            )
+                                        ),
                                       ],
                                     )
                                   ],
@@ -649,10 +672,11 @@ Widget buildGlanceDay(var data) => Padding(
 );
 
 Widget buildHours(List<dynamic> hours, data) => SizedBox(
-  height: 290,
+  height: 285,
   child: ListView(
     physics: const BouncingScrollPhysics(),
     scrollDirection: Axis.horizontal,
+    shrinkWrap: true,
     children: hours.map<Widget>((hour) {
       return Column(
         children: [
@@ -708,7 +732,7 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        comfortatext(translation('Weather provider', settings["Language"]), 18, settings,
+        comfortatext(translation('Weather provider', settings["Language"]), 19, settings,
         color: textcolor),
         Padding(
           padding: const EdgeInsets.only(top: 10),

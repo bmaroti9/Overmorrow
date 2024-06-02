@@ -31,7 +31,7 @@ import 'ui_helper.dart';
 Map<String, List<String>> settingSwitches = {
   'Language' : [
     'English', 'Español', 'Français', 'Deutsch', 'Italiano',
-    'Português', 'Русский', 'Magyar', 'Polski', '简体中文', '日本語'
+    'Português', 'Русский', 'Magyar', 'Polski', 'Ελληνικά', '简体中文', '日本語',
   ],
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
@@ -97,7 +97,7 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
     colors = [ //backcolor, primary, text
       const Color(0xffeeeeee),
       primary,
-      lightAccent(primary, 30000),
+      BLACK,
       WHITE,
       primary,
       lighten(lightAccent(primary, 60000), 0.25),
@@ -189,10 +189,9 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
     ),
     style: GoogleFonts.comfortaa(
       color: textcolor,
-      fontSize: 20 * getFontSize(settings["Font size"]),
+      fontSize: 19 * getFontSize(settings["Font size"]),
       fontWeight: FontWeight.w300,
     ),
-    //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
     value: unit,
     items: Items.map((item) {
       return DropdownMenuItem(
@@ -381,15 +380,18 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                         padding: const EdgeInsets.only(right: 20),
                         child: Icon(CupertinoIcons.circle_lefthalf_fill, color: textcolor, ),
                       ),
-                      comfortatext(translation('Color mode', settings["Language"]!), 20, settings,
-                      color: textcolor),
+                      Expanded(
+                        flex: 10,
+                        child: comfortatext(translation('Color mode', settings["Language"]!), 20, settings,
+                        color: textcolor),
+                      ),
                       const Spacer(),
                       comfortatext(settings["Color mode"]!, 20, settings, color: textcolor)
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20, bottom: 30),
+                  padding: EdgeInsets.only(top: 40, bottom: 30),
                   child: SizedBox(
                     height: 300,
                     child: Align(
@@ -453,7 +455,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                   //somehow this was the only way i found to limit the width.
                   //otherwise the row would disregard the max size and expand beyond
                   child: Container(
-                    constraints: BoxConstraints(maxHeight: 120),
+                    constraints: const BoxConstraints(maxHeight: 90),
                     child: Align(
                       alignment: Alignment.center,
                       child: AspectRatio(

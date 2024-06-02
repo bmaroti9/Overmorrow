@@ -16,7 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-Map<String, int> languageIndex = { //the index of the language used in the mainTranslate and
+Map<String, int> languageIndex = { //the index of the language used in the mainTranslate
   'English' : 0,
   'Magyar' : 1,
   'Español' : 2,
@@ -28,6 +28,7 @@ Map<String, int> languageIndex = { //the index of the language used in the mainT
   '简体中文' : 8,
   '日本語' : 9,
   'Polski' : 10,
+  'Ελληνικά' : 11
 };
 
 Map<String, List<String>> mainTranslate = {
@@ -42,7 +43,8 @@ Map<String, List<String>> mainTranslate = {
     'влажность',
     '湿度',
     '湿度',
-    'Wilgotność'
+    'Wilgotność',
+    'Υγρασία'
   ],
   'UV': [
     'UV',
@@ -54,6 +56,7 @@ Map<String, List<String>> mainTranslate = {
     'UV',
     'УФ',
     '紫外线',
+    'UV',
     'UV',
     'UV'
   ],
@@ -68,7 +71,8 @@ Map<String, List<String>> mainTranslate = {
     'Осадки',
     '降水',
     '降水量',
-    'Opady'
+    'Opady',
+    'Βροχόπτωση'
   ],
   'Settings': [
     'Settings',
@@ -81,7 +85,8 @@ Map<String, List<String>> mainTranslate = {
     'Настройки',
     '设置',
     '設定',
-    'Ustawienia'
+    'Ustawienia',
+    'Ρυθμίσεις'
   ],
   'Feels like': [
     'Feels like',
@@ -94,7 +99,8 @@ Map<String, List<String>> mainTranslate = {
     'Чувствуется как',
     '感觉像',
     '感じる',
-    'Odczuwalna'
+    'Odczuwalna',
+    'Αισθάνεται'
   ],
   'Donate': [
     'Donate',
@@ -107,7 +113,8 @@ Map<String, List<String>> mainTranslate = {
     'Пожертвовать',
     '捐赠',
     '寄付',
-    'Wesprzyj'
+    'Wesprzyj',
+    'Κάντε Δωρεά'
   ],
   'About': [
     'About',
@@ -120,7 +127,8 @@ Map<String, List<String>> mainTranslate = {
     'О программе',
     '关于',
     '紹介',
-    'Info'
+    'Info',
+    'Σχετικά με'
   ],
   'Wind': [
     'Wind',
@@ -133,7 +141,8 @@ Map<String, List<String>> mainTranslate = {
     'Ветер',
     '风',
     '風',
-    'Wiatr'
+    'Wiatr',
+    'Άνεμος'
   ],
   'Today': [
     'Today',
@@ -146,7 +155,8 @@ Map<String, List<String>> mainTranslate = {
     'Сегодня',
     '今天',
     '今日',
-    'Dzisiaj'
+    'Dzisiaj',
+    'Σήμερα'
   ],
   'Tomorrow': [
     'Tomorrow',
@@ -159,7 +169,8 @@ Map<String, List<String>> mainTranslate = {
     'Завтра',
     '明天',
     '明日',
-    'Jutro'
+    'Jutro',
+    'Άυριο'
   ],
   'Overmorrow': [
     'Overmorrow',
@@ -172,7 +183,8 @@ Map<String, List<String>> mainTranslate = {
     'Послезавтра',
     '后天',
     '明後日',
-    'Pojutrze'
+    'Pojutrze',
+    'Μεθαύριο'
   ],
   'Language': [
     'Language',
@@ -185,7 +197,8 @@ Map<String, List<String>> mainTranslate = {
     'Язык',
     '语言',
     '言語',
-    'Język'
+    'Język',
+    'Γλώσσα'
   ],
   'Temperature': [
     'Temperature',
@@ -198,7 +211,8 @@ Map<String, List<String>> mainTranslate = {
     'Температура',
     '温度',
     '気温',
-    'Temperatura'
+    'Temperatura',
+    'Θερμοκρασία'
   ],
   'Rain': [
     'Rain',
@@ -211,7 +225,8 @@ Map<String, List<String>> mainTranslate = {
     'Дождь',
     '雨',
     '雨',
-    'Deszcz'
+    'Deszcz',
+    'Βροχή'
   ],
   'Precipitation': [
     'Precipitation',
@@ -224,7 +239,8 @@ Map<String, List<String>> mainTranslate = {
     'Осадки',
     '降水量',
     '降水',
-    'Opady'
+    'Opady',
+    'Βροχόπτωση'
   ],
   'Pressure': [
     'Pressure',
@@ -237,7 +253,8 @@ Map<String, List<String>> mainTranslate = {
     'Давление',
     '压力',
     '圧力',
-    'Ciśnienie'
+    'Ciśnienie',
+    'Πίεση'
   ],
   'Favorites': [
     'Favorites',
@@ -250,7 +267,8 @@ Map<String, List<String>> mainTranslate = {
     'Избранное',
     '收藏夹',
     'お気に入り',
-    'Ulubione'
+    'Ulubione',
+    'Αγαπημένα'
   ],
   'Clear Night': [
     'Clear Night',
@@ -263,7 +281,8 @@ Map<String, List<String>> mainTranslate = {
     'Чистая ночь',
     '晴朗的夜晚',
     '快晴の夜',
-    'Bezchmurna noc'
+    'Bezchmurna noc',
+    'Καθαρή Βραδυά'
   ],
   'Partly Cloudy': [
     'Partly Cloudy',
@@ -276,7 +295,8 @@ Map<String, List<String>> mainTranslate = {
     'Частичная облачность',
     '局部多云',
     '一部曇り',
-    'Częściowe zachmurzenie'
+    'Częściowe zachmurzenie',
+    'Αραιή Συννεφιά'
   ],
   'Clear Sky': [
     'Clear Sky',
@@ -289,7 +309,8 @@ Map<String, List<String>> mainTranslate = {
     'Чистое небо',
     '晴朗的天空',
     '快晴',
-    'Bezchmurnie'
+    'Bezchmurnie',
+    'Καθαρός Ουρανός'
   ],
   'Overcast': [
     'Overcast',
@@ -302,7 +323,8 @@ Map<String, List<String>> mainTranslate = {
     'Пасмурно',
     '阴天',
     '曇り',
-    'Zachmurzenie'
+    'Zachmurzenie',
+    'Νεφελώδης'
   ],
   'Haze': [
     'Haze',
@@ -315,7 +337,8 @@ Map<String, List<String>> mainTranslate = {
     'Туман',
     '雾霾',
     '霧',
-    'Mglisto'
+    'Mglisto',
+    'Ομίχλη'
   ],
   'Sleet': [
     'Sleet',
@@ -328,7 +351,8 @@ Map<String, List<String>> mainTranslate = {
     'Мокрый снег',
     '雨夹雪',
     'みぞれ',
-    'Deszcz ze śniegiem'
+    'Deszcz ze śniegiem',
+    'Χιονόνερο'
   ],
   'Drizzle': [
     'Drizzle',
@@ -341,7 +365,8 @@ Map<String, List<String>> mainTranslate = {
     'Морось',
     '毛毛雨',
     '霧雨',
-    'Mżawka'
+    'Mżawka',
+    'Ψιχάλα'
   ],
   'Thunderstorm': [
     'Thunderstorm',
@@ -354,7 +379,8 @@ Map<String, List<String>> mainTranslate = {
     'Гроза',
     '雷暴',
     '雷雨',
-    'Burza'
+    'Burza',
+    'Καταιγίδα'
   ],
   'Heavy Snow': [
     'Heavy Snow',
@@ -367,7 +393,8 @@ Map<String, List<String>> mainTranslate = {
     'Сильный снег',
     '大雪',
     '大雪',
-    'Śnieżyca'
+    'Śnieżyca',
+    'Βαριά Χιονόπτωση'
   ],
   'Fog': [
     'Fog',
@@ -380,7 +407,8 @@ Map<String, List<String>> mainTranslate = {
     'Туман',
     '雾',
     '霧',
-    'Mgła'
+    'Mgła',
+    'Ομίχλη'
   ],
   'Snow': [
     'Snow',
@@ -393,7 +421,8 @@ Map<String, List<String>> mainTranslate = {
     'Снег',
     '雪',
     '雪',
-    'Opady śniegu'
+    'Opady śniegu',
+    'Χιονόπτωση'
   ],
   'Heavy Rain': [
     'Heavy Rain',
@@ -406,7 +435,8 @@ Map<String, List<String>> mainTranslate = {
     'Сильный дождь',
     '大雨',
     '大雨',
-    'Ulewa'
+    'Ulewa',
+    'Δυνατή Βροχή'
   ],
   'Cloudy Night': [
     'Cloudy Night',
@@ -419,7 +449,8 @@ Map<String, List<String>> mainTranslate = {
     'Облачная ночь',
     '多云的夜晚',
     '多云の夜',
-    'Pochmurna noc'
+    'Pochmurna noc',
+    'Συννεφιασμένη Νύχτα'
   ],
   'Overmorrow is a free app. :)': [
     'Overmorrow is a free app. :)',
@@ -432,7 +463,8 @@ Map<String, List<String>> mainTranslate = {
     'Overmorrow - бесплатное приложение. :)',
     'Overmorrow是一款免费应用程序。:)',
     'Overmorrowは無料のアプリです。:)',
-    'Overmorrow to darmowa aplikacja. :)'
+    'Overmorrow to darmowa aplikacja. :)',
+    'Το Overmorrow είναι μία δωρεάν εφαρμογή. :)'
   ],
   'Support me on Patreon, to help me keep it that way!': [
   'Support me on Patreon, to help me keep it that way!',
@@ -445,7 +477,8 @@ Map<String, List<String>> mainTranslate = {
   'Поддержите меня на Patreon, чтобы помочь мне сохранить это так! :)',
   '在Patreon上支持我，以帮助我保持这种方式！:)',
   'これを維持するのを助けるためにPatreonで私をサポートしてください！:)',
-  'Wesprzyj mnie, wspomóż rozwój aplikacji! :)'
+  'Wesprzyj mnie, wspomóż rozwój aplikacji! :)',
+  'Στήριξέ με στο Patreon ώστε να συνεχίσει να είναι έτσι! :)'
   ],
   'Thank You! -Balint': [
     'Thank You! -Balint',
@@ -458,7 +491,8 @@ Map<String, List<String>> mainTranslate = {
     'Спасибо! -Балинт',
     '谢谢！ -巴林特',
     'ありがとうございます！ -バリント',
-    'Dziękuję! -Balint'
+    'Dziękuję! -Balint',
+    'Σας ευχαριστώ! -Μπαλίντ'
   ],
   'Support me on Patreon': [
     'Support me on Patreon',
@@ -471,7 +505,8 @@ Map<String, List<String>> mainTranslate = {
     'Поддержите меня на Patreon',
     '在Patreon上支持我',
     'Patreonでサポートしてください',
-    'Wspieraj na Patreon'
+    'Wspieraj na Patreon',
+    'Υποστήριξέ με στο Patreon'
   ],
   'Overmorrow is a beautiful minimalist weather app.': [
     '"Overmorrow is a beautiful minimalist weather app."',
@@ -484,7 +519,8 @@ Map<String, List<String>> mainTranslate = {
     '"Overmorrow - красивое минималистичное приложение погоды."',
     '"Overmorrow是一个美丽的极简天气应用程序。"',
     '"Overmorrowは美しいミニマリストの天気アプリです。"',
-    '"Overmorrow to piękna minimalistyczna aplikacja pogodowa"'
+    '"Overmorrow to piękna minimalistyczna aplikacja pogodowa."',
+    '"Το Overmorrow είναι μία πανέμορφη μινιμαλιστική εφαρμογή καιρού."'
   ],
   'Features:': [
     'Features:',
@@ -497,7 +533,8 @@ Map<String, List<String>> mainTranslate = {
     'Функции:',
     '特点：',
     '特徴：',
-    'Funkcje'
+    'Funkcje:',
+    'Χαρακτηρηστικά:'
   ],
   'accurate weather forecast': [
     'accurate weather forecast',
@@ -510,7 +547,8 @@ Map<String, List<String>> mainTranslate = {
     'точный прогноз погоды',
     '准确的天气预报',
     '正確な天気予報',
-    'dokładna prognoza pogody'
+    'dokładna prognoza pogody',
+    'ακριβής πρόγνωση καιρού'
   ],
   'open source': [
     'open source',
@@ -523,7 +561,8 @@ Map<String, List<String>> mainTranslate = {
     'открытый исходный код',
     '开源',
     'オープンソース',
-    'otwarte źródła'
+    'otwarte źródła',
+    'εφαρμογή ανοιχτού κώδικα'
   ],
   'no ads': [
     'no ads',
@@ -536,7 +575,8 @@ Map<String, List<String>> mainTranslate = {
     'без рекламы',
     '没有广告',
     '広告なし',
-    'bez reklam'
+    'bez reklam',
+    'χωρίς διαφημίσεις'
   ],
   'no data collected': [
     'no data collected',
@@ -549,7 +589,8 @@ Map<String, List<String>> mainTranslate = {
     'нет сбора данных',
     '不收集数据',
     'データは収集されません',
-    'nie zbiera danych'
+    'nie zbiera danych',
+    'χωρίς συλλογή δεδομένων'
   ],
   'minimalist design': [
     'minimalist design',
@@ -562,7 +603,8 @@ Map<String, List<String>> mainTranslate = {
     'минималистический дизайн',
     '极简设计',
     'ミニマリストデザイン',
-    'minimalistyczny wygląd'
+    'minimalistyczny wygląd',
+    'μινιμαλιστικός σχεδιασμός'
   ],
   'dynamically adapting color scheme': [
     'dynamically adapting color scheme',
@@ -575,7 +617,8 @@ Map<String, List<String>> mainTranslate = {
     'динамически адаптирующаяся цветовая схема',
     '动态适应颜色方案',
     '動的に適応するカラースキーム',
-    'dynamiczny schemat kolorów'
+    'dynamiczny schemat kolorów',
+    'δυναμικά προσαρμόσιμος συνδυασμός χρωμάτων'
   ],
   'languages support': [
     'languages support',
@@ -588,7 +631,8 @@ Map<String, List<String>> mainTranslate = {
     'поддержка языков',
     '语言支持',
     '言語サポート',
-    'wsparcie językowe'
+    'wsparcie językowe',
+    'υποστήριξη γλώσσεων'
   ],
   'place search': [
     'place search',
@@ -601,7 +645,8 @@ Map<String, List<String>> mainTranslate = {
     'поиск места',
     '地点搜索',
     '場所検索',
-    'wyszukiwarka miejscowości'
+    'wyszukiwarka miejscowości',
+    'αναζήτηση τοποθεσιών'
   ],
   'weather for current location': [
     'weather for current location',
@@ -614,7 +659,8 @@ Map<String, List<String>> mainTranslate = {
     'погода для текущего местоположения',
     '当前位置的天气',
     '現在地の天気',
-    'pogoda dla wybranej lokalizacji'
+    'pogoda dla wybranej lokalizacji',
+    'καιρός της τρέχουσας τοποθεσίας'
   ],
   'unit swapping': [
     'unit swapping',
@@ -627,7 +673,8 @@ Map<String, List<String>> mainTranslate = {
     'смена единиц измерения',
     '单位切换',
     '単位切替',
-    'zmiana jednostek'
+    'zmiana jednostek',
+    'αλλαγή μονάδων'
   ],
   'Developed by:': [
     'Developed by:',
@@ -640,7 +687,8 @@ Map<String, List<String>> mainTranslate = {
     'Разработано:',
     '由...开发',
     '開発者：',
-    'Stworzona przez:'
+    'Stworzona przez:',
+    'Αναπτύχθηκε από:'
   ],
   'contact me': [
     'contact me',
@@ -653,7 +701,8 @@ Map<String, List<String>> mainTranslate = {
     'свяжитесь со мной',
     '联系我',
     'お問い合わせ',
-    'napisz do mnie'
+    'napisz do mnie',
+    'επικοινώνησε μου'
   ],
   'Weather data from:': [
     'Weather data from:',
@@ -666,7 +715,8 @@ Map<String, List<String>> mainTranslate = {
     'Данные о погоде от:',
     '天气数据来自：',
     '天気情報提供元：',
-    'Dane dostarcza:'
+    'Dane dostarcza:',
+    'Δεδομένα καιρού από:'
   ],
   'Images used:': [
     'Images used:',
@@ -679,7 +729,8 @@ Map<String, List<String>> mainTranslate = {
     'Используемые изображения:',
     '使用的图片：',
     '使用された画像：',
-    'Użyte grafiki:'
+    'Użyte grafiki:',
+    'Εικόνες από:'
   ],
   'Source Code:': [
     'Source Code:',
@@ -692,7 +743,8 @@ Map<String, List<String>> mainTranslate = {
     'Исходный код:',
     '源代码：',
     'ソースコード：',
-    'Kod źródłowy'
+    'Kod źródłowy',
+    'Πηγαίος Κώδικας:'
   ],
   'Weak or no wifi connection': [
     'Weak or no wifi connection',
@@ -705,7 +757,8 @@ Map<String, List<String>> mainTranslate = {
     'Слабое или отсутствующее подключение Wi-Fi',
     '无线网络信号弱或无连接',
     'Wi-Fi接続が弱いかありません',
-    'Słabe połączenie lub brak Wi-Fi'
+    'Słabe połączenie lub brak Wi-Fi',
+    'Αδύναμη ή χωρίς σύνδεση Wi-Fi'
   ],
   'Not connected to the internet': [
     'Not connected to the internet',
@@ -718,7 +771,8 @@ Map<String, List<String>> mainTranslate = {
     'Нет подключения к Интернету',
     '未连接到互联网',
     'インターネットに接続されていません',
-    'Brak internetu'
+    'Brak internetu',
+    'Χωρίς σύνδεση στο διαδίκτυο'
   ],
   'Place not found': [
     'Place not found',
@@ -731,7 +785,8 @@ Map<String, List<String>> mainTranslate = {
     'Место не найдено',
     '未找到地点',
     '場所が見つかりません',
-    'Nie znaleziono lokalizacji'
+    'Nie znaleziono lokalizacji',
+    'Δεν βρέθηκε η τοποθεσία'
   ],
   'Unable to locate device': [
     'Unable to locate device',
@@ -744,7 +799,8 @@ Map<String, List<String>> mainTranslate = {
     'Не удается найти устройство',
     '无法定位设备',
     'デバイスを特定できません',
-    'Brak możliwości zlokalizowania urządzenia'
+    'Brak możliwości zlokalizowania urządzenia',
+    'Η συσκευή δεν εντοπίστηκε'
   ],
   'location services are disabled.': [
     'location services are disabled.',
@@ -757,7 +813,8 @@ Map<String, List<String>> mainTranslate = {
     'Сервисы определения местоположения отключены.',
     '位置服务已禁用。',
     '位置サービスは無効です。',
-    'Lokalizacja wyłączona'
+    'Lokalizacja wyłączona.',
+    'Οι υπηρεσίες τοποθεσίας είναι απενεργοποιημένες.'
   ],
   'location permission is denied': [
     'location permission is denied',
@@ -770,7 +827,8 @@ Map<String, List<String>> mainTranslate = {
     'Отказано в разрешении на местоположение',
     '位置权限已拒绝',
     '位置許可が拒否されました',
-    'Odmowa pozwolenia na lokalizację'
+    'Odmowa pozwolenia na lokalizację',
+    'Έχει απαγορευθεί η άδεια τοποθεσίας'
   ],
   'location permission denied forever': [
     'location permission denied forever',
@@ -783,7 +841,8 @@ Map<String, List<String>> mainTranslate = {
     'Разрешение на местоположение отклонено навсегда',
     '位置权限已永久拒绝',
     '位置許可が永久に拒否されました',
-    'Trwała odmowa pozwolenia na lokalizację'
+    'Trwała odmowa pozwolenia na lokalizację',
+    'Έχει απαγορευθεί η άδεια τοποθεσίας επ αόριστον'
   ],
   'failed to access gps': [
     'failed to access gps',
@@ -796,7 +855,8 @@ Map<String, List<String>> mainTranslate = {
     'Не удалось получить доступ к GPS',
     '无法访问 GPS',
     'GPSにアクセスできませんでした',
-    'gps niedostępny'
+    'gps niedostępny',
+    'Αποτυχία σύνδεσης στο GPS'
   ],
   'Search...': [
     'Search...',
@@ -809,7 +869,8 @@ Map<String, List<String>> mainTranslate = {
     'Поиск...',
     '搜索...',
     '検索...',
-    'szukam...'
+    'Szukam...',
+    'Αναζήτηση...'
   ],
   'sunrise/sunset': [
     'sunrise/sunset',
@@ -822,7 +883,8 @@ Map<String, List<String>> mainTranslate = {
     'восход/заход солнца',
     '日出/日落',
     '日の出/日没',
-    'wschód/zachód'
+    'wschód/zachód',
+    'ανατολή/δύση ηλίου'
   ],
   'air quality': [
     'air quality',
@@ -835,7 +897,8 @@ Map<String, List<String>> mainTranslate = {
     'качество воздуха',
     '空气质量',
     '空気の質',
-    'jakość powietrza'
+    'jakość powietrza',
+    'ποιότητα αέρος'
   ],
   'good': [
     'good',
@@ -848,7 +911,8 @@ Map<String, List<String>> mainTranslate = {
     'хорошо',
     '好',
     '良好',
-    'dobra'
+    'dobra',
+    'καλή'
   ],
   'moderate': [
     'moderate',
@@ -861,7 +925,8 @@ Map<String, List<String>> mainTranslate = {
     'умеренный',
     '适度',
     '適度',
-    'średnia'
+    'średnia',
+    'μέτρια'
   ],
   'slightly unhealthy': [
     'slightly unhealthy',
@@ -874,7 +939,8 @@ Map<String, List<String>> mainTranslate = {
     'слегка нездоровый',
     '轻微不健康',
     '軽度不健康',
-    'lekko szkodliwa'
+    'lekko szkodliwa',
+    'ελαφρώς επιβλαβής'
   ],
   'unhealthy': [
     'unhealthy',
@@ -887,7 +953,8 @@ Map<String, List<String>> mainTranslate = {
     'нездоровый',
     '不健康',
     '不健康',
-    'szkodliwa'
+    'szkodliwa',
+    'επιβλαβής'
   ],
   'very unhealthy': [
     'very unhealthy',
@@ -900,7 +967,8 @@ Map<String, List<String>> mainTranslate = {
     'очень нездоровый',
     '非常不健康',
     '非常に不健康',
-    'bardzo szkodliwa'
+    'bardzo szkodliwa',
+    'πολύ επιβλαβής'
   ],
   'hazardous': [
     'hazardous',
@@ -913,7 +981,8 @@ Map<String, List<String>> mainTranslate = {
     'опасный',
     '危险',
     '有害',
-    'niebezpieczna'
+    'niebezpieczna',
+    'επικίνδυνος'
   ],
   'precipitation': [
     'precipitation',
@@ -926,7 +995,8 @@ Map<String, List<String>> mainTranslate = {
     'осадки',
     '降水',
     '降水',
-    'opady'
+    'opady',
+    'βροχόπτωση'
   ],
   'radar': [
     'radar',
@@ -939,7 +1009,8 @@ Map<String, List<String>> mainTranslate = {
     'радар',
     '雷达',
     'レーダー',
-    'radar'
+    'radar',
+    'ραντάρ'
   ],
   'Color mode': [
     'Color mode',
@@ -952,7 +1023,8 @@ Map<String, List<String>> mainTranslate = {
     'Режим цвета',
     '彩色模式',
     'カラーモード',
-    'Schemat kolorów'
+    'Schemat kolorów',
+    'Λειτουργεία χρώματος'
   ],
   'Weather provider': [
     'Weather provider',
@@ -965,7 +1037,8 @@ Map<String, List<String>> mainTranslate = {
     'Поставщик погоды',
     '天气服务提供商',
     '天気プロバイダ',
-    'Dostawca pogody'
+    'Dostawca pogody',
+    'Πάροχος καιρού'
   ],
   'Time mode': [
     'Time mode',
@@ -978,7 +1051,8 @@ Map<String, List<String>> mainTranslate = {
     'Режим времени',
     '时间模式',
     '時間モード',
-    'Format czasu'
+    'Format czasu',
+    'Μορφή ώρας'
   ],
   'Mon': [
     'Mon',
@@ -991,7 +1065,8 @@ Map<String, List<String>> mainTranslate = {
     'Пн',
     '一',
     '月',
-    'Pon'
+    'Pon',
+    'Δευ'
   ],
   'Tue': [
     'Tue',
@@ -1004,7 +1079,8 @@ Map<String, List<String>> mainTranslate = {
     'Вт',
     '二',
     '火',
-    'Wt'
+    'Wt',
+    'Τρι'
   ],
   'Wed': [
     'Wed',
@@ -1017,7 +1093,8 @@ Map<String, List<String>> mainTranslate = {
     'Ср',
     '三',
     '水',
-    'Śr'
+    'Śr',
+    'Τετ'
   ],
   'Thu': [
     'Thu',
@@ -1030,7 +1107,8 @@ Map<String, List<String>> mainTranslate = {
     'Чт',
     '四',
     '木',
-    'Czw'
+    'Czw',
+    'Πεμ'
   ],
   'Fri': [
     'Fri',
@@ -1043,7 +1121,8 @@ Map<String, List<String>> mainTranslate = {
     'Пт',
     '五',
     '金',
-    'Pt'
+    'Pt',
+    'Παρ'
   ],
   'Sat': [
     'Sat',
@@ -1056,7 +1135,8 @@ Map<String, List<String>> mainTranslate = {
     'Сб',
     '六',
     '土',
-    'Sob'
+    'Sob',
+    'Σαβ'
   ],
   'Sun': [
     'Sun',
@@ -1069,7 +1149,8 @@ Map<String, List<String>> mainTranslate = {
     'Вс',
     '日',
     '日',
-    'Nd'
+    'Nd',
+    'Κυρ'
   ],
   'Font size': [
     'Font size',
@@ -1082,7 +1163,8 @@ Map<String, List<String>> mainTranslate = {
     'Размер шрифта',
     '字体大小',
     'フォントサイズ',
-    'Rozmiar czcionki'
+    'Rozmiar czcionki',
+    'Μέγεθος γραμματοσειράς'
   ],
   'Error Screen': [
     'Error Screen',
@@ -1095,7 +1177,9 @@ Map<String, List<String>> mainTranslate = {
     'Экран ошибки',
     '错误屏幕',
     'エラースクリーン',
-    'Ekran błędu'
+    'Ekran błędu',
+    'Οθόνη Σφάλματος'
+
   ],
   'Daily': [
     'Daily',
@@ -1108,7 +1192,8 @@ Map<String, List<String>> mainTranslate = {
     'Ежедневно',
     '每日',
     'デイリー',
-    'Nastepne dni'
+    'Nastepne dni',
+    'Καθημερινά'
   ],
   'Search provider': [
     'Search provider',
@@ -1121,7 +1206,36 @@ Map<String, List<String>> mainTranslate = {
     'Поставщик поиска',
     '搜索提供商',
     '検索プロバイダー',
-    'Dostawca wyszukiwania'
+    'Dostawca wyszukiwania',
+    'Πάροχος αναζήτησης'
+  ],
+  'updated, x min ago': [
+    'updated, x min ago',
+    'frissítve, x percel ezelőtt',
+    'actualizado, x min hace',
+    'mis à jour, il y a x min',
+    'aktualisiert, vor x min',
+    'aggiornato, x min fa',
+    'atualizado, x min atrás',
+    'обновлено, x мин назад',
+    '更新于 x 分钟前',
+    'x 分前に更新されました',
+    'zaktualizowane, x min temu',
+    'ανανεώθηκε, x λεπτά πρίν'
+  ],
+  'updated, just now': [
+    'updated, just now',
+    'frissítve, épp most',
+    'actualizado, justo ahora',
+    'mis à jour, juste maintenant',
+    'aktualisiert, gerade jetzt',
+    'aggiornato, proprio adesso',
+    'atualizado, agora mesmo',
+    'обновлено, прямо сейчас',
+    '刚刚更新',
+    'ちょうど今更新',
+    'zaktualizowane, właśnie teraz',
+    'ανανεώθηκε, μόλις τώρα'
   ],
 
   'Search translation': [ //used for getting the codes used for translation of city names
@@ -1138,6 +1252,7 @@ Map<String, List<String>> mainTranslate = {
     'en',
     'en',
     'en',
+    'en'
   ]
 };
 

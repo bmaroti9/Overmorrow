@@ -117,7 +117,9 @@ class OMCurrent {
   final int feels_like;
   final int uv;
   final double precip;
+
   final int wind;
+  final int wind_dir;
 
   final Color backcolor;
   final Color primary;
@@ -146,6 +148,7 @@ class OMCurrent {
     required this.highlight,
     required this.backup_backcolor,
     required this.backup_primary,
+    required this.wind_dir,
   });
 
   static OMCurrent fromJson(item, settings, sunstatus, timenow) {
@@ -197,6 +200,7 @@ class OMCurrent {
       humidity: item["current"]["relative_humidity_2m"],
       temp: unit_coversion(
           item["current"]["temperature_2m"], settings["Temperature"]).round(),
+      wind_dir: item["current"]["wind_direction_10m"],
     );
   }
 }
@@ -212,7 +216,10 @@ class OMDay {
 
   final int precip_prob;
   final double total_precip;
+
   final int windspeed;
+  final int wind_dir;
+
   final double mm_precip;
   final int uv;
 
@@ -229,6 +236,7 @@ class OMDay {
     required this.hourly_for_precip,
     required this.mm_precip,
     required this.uv,
+    required this.wind_dir,
   });
 
   static OMDay build(item, settings, index, sunstatus) {
@@ -245,6 +253,7 @@ class OMDay {
       mm_precip: item["daily"]["precipitation_sum"][index],
       hourly_for_precip: buildHours(index, false, item, settings, sunstatus),
       hourly: buildHours(index, true, item, settings, sunstatus),
+      wind_dir: item["daily"]["wind_direction_10m_dominant"][index] ?? 0,
     );
   }
 
@@ -275,7 +284,6 @@ class OMHour {
   final String text;
   final double precip;
   final double wind;
-  final int wind_dir;
 
   const OMHour({
     required this.temp,
@@ -284,7 +292,6 @@ class OMHour {
     required this.text,
     required this.precip,
     required this.wind,
-    required this.wind_dir,
   });
 
   static OMHour fromJson(item, index, settings, sunstatus) => OMHour(
@@ -296,6 +303,5 @@ class OMHour {
     time: settings["Time mode"] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
     precip: unit_coversion(item["hourly"]["precipitation"][index], settings["Precipitation"]),
     wind: unit_coversion(item["hourly"]["wind_speed_10m"][index], settings["Wind"]),
-    wind_dir: item["hourly"]["wind_direction_10m"][index],
   );
 }

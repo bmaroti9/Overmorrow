@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/search_screens.dart';
@@ -90,6 +91,114 @@ Color lightAccent(Color color, int intensity) {
   return Color.fromRGBO(sqrt(color.red * x).toInt(), sqrt(color.green * x).toInt(), sqrt(color.blue * x).toInt(), 1);
 }
 
+class UpdatedNotifier extends StatefulWidget {
+  final data;
+  final time;
+
+  UpdatedNotifier({Key? key, required this.data, required this.time}) : super(key: key);
+
+  @override
+  _FadeWidgetState createState() => _FadeWidgetState();
+}
+
+class _FadeWidgetState extends State<UpdatedNotifier> with AutomaticKeepAliveClientMixin<UpdatedNotifier> {
+  bool _hasBeenShown = false;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    if (!_hasBeenShown) {
+      _hasBeenShown = true;
+      return FadingWidget(data: widget.data, time: widget.time);
+    }
+    return Container();
+  }
+}
+
+class FadingWidget extends StatefulWidget  {
+  final data;
+  final time;
+
+  const FadingWidget({super.key, required this.data, required this.time});
+
+  @override
+  _FadingWidgetState createState() => _FadingWidgetState();
+}
+
+class _FadingWidgetState extends State<FadingWidget> {
+  bool _isVisible = false;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer(Duration(milliseconds: 400), () {
+      if (mounted) {
+        setState(() {
+          _isVisible = true;
+        });
+      }
+    });
+    _timer = Timer(Duration(milliseconds: 3500), () {
+      if (mounted) {
+        setState(() {
+          _isVisible = false;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // Cancel the timer in the dispose method
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    final dif = widget.time.difference(widget.data.fetch_datetime).inMinutes;
+
+    String text = translation('updated, just now', widget.data.settings["Language"]);
+
+    print(dif);
+
+    if (dif > 0) {
+      text = translation('updated, x min ago', widget.data.settings["Language"]);
+      text = text.replaceAll('x', dif.toString());
+    }
+
+    List<String> split = text.split(',');
+
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 400),
+      opacity: _isVisible ? 1.0 : 0.0,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 6, right: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 3),
+              child: Icon(Icons.access_time, color: widget.data.current.textcolor, size: 13,),
+            ),
+            comfortatext('${split[0]},', 13, widget.data.settings,
+                color: widget.data.current.textcolor, weight: FontWeight.w500),
+
+            comfortatext(split.length > 1 ?split[1] : "", 13, widget.data.settings,
+                color: widget.data.current.primary, weight: FontWeight.w500),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class DescriptionCircle extends StatelessWidget {
 
   final String text;
@@ -99,17 +208,18 @@ class DescriptionCircle extends StatelessWidget {
   final double size;
   final settings;
   final bottom;
+  final dir;
 
   const DescriptionCircle({super.key, required this.text,
       required this.undercaption, required this.color, required this.extra,
-    required this.size, required this.settings, required this.bottom});
+    required this.size, required this.settings, required this.bottom, required this.dir});
 
   @override
   Widget build(BuildContext context) {
     final double fontsize = size / 18;
     final double small_font = size / 25;
-    final double width = size / 5;
-    final double height = size / 5;
+    final double width = size / 4.9;
+    final double height = size / 4.9;
     return Container(
       //padding: const EdgeInsets.all(5),
       child: Column(
@@ -143,6 +253,18 @@ class DescriptionCircle extends StatelessWidget {
                       ],
                     ),
                   )
+                ),
+                Visibility(
+                  visible: dir != -1,
+                  child:   Center(
+                      child: RotationTransition(
+                          turns: AlwaysStoppedAnimation(dir / 360),
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: height * 0.75),
+                            child: Icon(Icons.keyboard_arrow_up_outlined, color: color, size: 17,)
+                          )
+                      ),
+                    )
                 ),
               ],
             ),
@@ -240,7 +362,7 @@ Widget WindWidget(data, day) {
               width: 55,
               child: ListView.builder(
                   reverse: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 3,
                   itemBuilder: (context, index) {
                     return Padding(
@@ -325,7 +447,7 @@ Widget RainWidget(data, day) {
               width: 55,
               child: ListView.builder(
                   reverse: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 3,
                   itemBuilder: (context, index) {
                     if (data.settings["Precipitation"] == 'in') {
@@ -592,9 +714,12 @@ class _MySearchParentState extends State<MySearchParent> {
   required this.controller, required this.settings, required this.real_loc, required this.secondColor,
   required this.textColor, required this.highlightColor});
 
-  Future<SharedPreferences> getPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs;
+  late Future<SharedPreferences> _prefsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _prefsFuture = SharedPreferences.getInstance();
   }
 
   List<String> getFavorites(SharedPreferences? prefs){
@@ -615,7 +740,7 @@ class _MySearchParentState extends State<MySearchParent> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<SharedPreferences>(
-      future: getPrefs(),
+      future: _prefsFuture,
       builder: (BuildContext context,
           AsyncSnapshot<SharedPreferences> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {

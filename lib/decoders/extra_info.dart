@@ -57,6 +57,8 @@ class WeatherData {
   final sunstatus;
   final radar;
 
+  final fetch_datetime;
+
   WeatherData({
     required this.place,
     required this.settings,
@@ -69,6 +71,7 @@ class WeatherData {
     required this.radar,
     required this.days,
     required this.current,
+    required this.fetch_datetime,
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
@@ -89,6 +92,9 @@ class WeatherData {
 
     var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com")
         .timeout(const Duration(seconds: 6));
+
+    DateTime fetch_datetime = await file.lastModified();
+
     var response = await file.readAsString();
 
     var wapi_body = jsonDecode(response);
@@ -120,15 +126,17 @@ class WeatherData {
         sunstatus: sunstatus,
         aqi: WapiAqi.fromJson(wapi_body),
         radar: await RainviewerRadar.getData(),
+
+        fetch_datetime: fetch_datetime,
       );
     }
     else {
       final oMParams = {
         "latitude": lat.toString(),
         "longitude": lng.toString(),
-        "current": ["temperature_2m", "relative_humidity_2m", "apparent_temperature", "weather_code", "wind_speed_10m"],
-        "hourly": ["temperature_2m", "precipitation", "weather_code", "wind_speed_10m", "wind_direction_10m"],
-        "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "uv_index_max", "precipitation_sum", "precipitation_probability_max", "wind_speed_10m_max"],
+        "current": ["temperature_2m", "relative_humidity_2m", "apparent_temperature", "weather_code", "wind_speed_10m", 'wind_direction_10m'],
+        "hourly": ["temperature_2m", "precipitation", "weather_code", "wind_speed_10m"],
+        "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "uv_index_max", "precipitation_sum", "precipitation_probability_max", "wind_speed_10m_max", "wind_direction_10m_dominant"],
         "timezone": "auto",
         "forecast_days": "14"
       };
@@ -159,6 +167,8 @@ class WeatherData {
         settings: settings,
         provider: "open-meteo",
         real_loc: real_loc,
+
+        fetch_datetime: fetch_datetime,
       );
     }
   }
