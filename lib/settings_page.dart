@@ -235,10 +235,10 @@ Widget NavButton(text, settings, textcolor, icon) {
   return Row(
     children: [
       Padding(
-        padding: const EdgeInsets.only(left: 8, right: 12, top: 13, bottom: 13),
+        padding: const EdgeInsets.only(left: 8, right: 12, top: 15, bottom: 15),
         child: Icon(icon, color: textcolor, size: 26,),
       ),
-      comfortatext(text, 22, settings, color: textcolor),
+      comfortatext(text, 21, settings, color: textcolor),
     ],
   );
 }
@@ -390,7 +390,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                 ),
                 NavButton('Appearance', settings, textcolor, Icons.color_lens),
                 NavButton('Language', settings, textcolor, Icons.language),
-                NavButton('Units', settings, textcolor, Icons.cached),
+                NavButton('Units', settings, textcolor, Icons.graphic_eq),
                 NavButton('Advanced', settings, textcolor, Icons.code),
 
                 /*
