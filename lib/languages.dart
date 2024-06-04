@@ -100,7 +100,7 @@ Map<String, List<String>> mainTranslate = {
     '感觉像',
     '感じる',
     'Odczuwalna',
-    'Αισθάνεται'
+    'Αισθητή'
   ],
   'Donate': [
     'Donate',
@@ -114,7 +114,7 @@ Map<String, List<String>> mainTranslate = {
     '捐赠',
     '寄付',
     'Wesprzyj',
-    'Κάντε Δωρεά'
+    'Κάντε δωρεά'
   ],
   'About': [
     'About',
@@ -170,7 +170,7 @@ Map<String, List<String>> mainTranslate = {
     '明天',
     '明日',
     'Jutro',
-    'Άυριο'
+    'Αύριο'
   ],
   'Overmorrow': [
     'Overmorrow',
