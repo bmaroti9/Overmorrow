@@ -231,6 +231,18 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
   );
 }
 
+Widget NavButton(text, settings, textcolor, icon) {
+  return Row(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 8, right: 12, top: 13, bottom: 13),
+        child: Icon(icon, color: textcolor, size: 26,),
+      ),
+      comfortatext(text, 22, settings, color: textcolor),
+    ],
+  );
+}
+
 Widget ColorCircle(name, primary, back, settings, updatePage, {w = 2, tap = 0}) {
 
   List<Color> colors = getColors(primary, back, settings, 0, force: name);
@@ -300,7 +312,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) {
-          return MyApp();
+          return const MyApp();
         },
       ),
     );
@@ -332,6 +344,7 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
   List<Color> colors = getColors(primary, back, settings, 0);
 
   return Scaffold(
+    backgroundColor: colors[5],
       appBar: AppBar(
           toolbarHeight: 65,
           shape: RoundedRectangleBorder(
@@ -340,7 +353,6 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
           elevation: 0,
           leadingWidth: 50,
           backgroundColor: colors[5],
-          title: comfortatext(translation('Settings', settings!["Language"]!), 25, settings, color: colors[2]),
           leading:
           IconButton(
             onPressed: (){
@@ -349,7 +361,7 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
             icon: Icon(Icons.arrow_back, color: colors[2],),
           )
       ),
-      body: settingsMain(colors[0], settings, updatePage, colors[2], colors[1], colors[5], colors[3],
+      body: settingsMain(colors[0], settings!, updatePage, colors[2], colors[1], colors[5], colors[3],
       image, primary, back),
   );
 }
@@ -363,16 +375,27 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
     padding: const EdgeInsets.only(left: 20, right: 15),
     color: highlight,
     child: SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       child: Center(
         child: Container(
-          constraints: BoxConstraints(maxWidth: 800),
-          padding: EdgeInsets.all(2),
+          constraints: const BoxConstraints(maxWidth: 800),
+          padding: const EdgeInsets.all(2),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 15,),
+                const SizedBox(height: 15,),
                 Padding(
-                  padding: EdgeInsets.only(left: 10, right: 20),
+                    padding: const EdgeInsets.only(top: 0, bottom: 30, left: 10),
+                  child: comfortatext(translation('Settings', settings["Language"]!), 30, settings, color: textcolor),
+                ),
+                NavButton('Appearance', settings, textcolor, Icons.color_lens),
+                NavButton('Language', settings, textcolor, Icons.language),
+                NavButton('Units', settings, textcolor, Icons.cached),
+                NavButton('Advanced', settings, textcolor, Icons.code),
+
+                /*
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -391,7 +414,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 40, bottom: 30),
+                  padding: const EdgeInsets.only(top: 40, bottom: 30),
                   child: SizedBox(
                     height: 300,
                     child: Align(
@@ -415,7 +438,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                                     children: [
                                       ParrallaxBackground(imagePath1: image, color: color),
                                       Padding(
-                                        padding: EdgeInsets.only(left: 10, bottom: 15),
+                                        padding: const EdgeInsets.only(left: 10, bottom: 15),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.end,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -508,6 +531,8 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                 const SizedBox(
                   height: 40,
                 )
+
+                 */
               ]
           ),
         ),
