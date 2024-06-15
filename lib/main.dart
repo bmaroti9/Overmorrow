@@ -224,15 +224,14 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  late Widget w1;
+  Widget w1 = Container();
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    w1 = Container();
     //defaults to new york when no previous location was found
-    updateLocation('40.7128, 74.0060', "New York", time: 0);
+    updateLocation('40.7128, 74.0060', "New York", time: 500);
   }
 
   Future<void> updateLocation(proposedLoc, backupName, {time = 500}) async {
