@@ -1238,6 +1238,21 @@ Map<String, List<String>> mainTranslate = {
     'ανανεώθηκε, μόλις τώρα'
   ],
 
+  'Finding place...': [
+    'Finding place...',
+    'Hely keresése...',
+    'Buscando lugar...',
+    'Recherche de lieu...',
+    'Ort finden...',
+    'Ricerca del posto...',
+    'Encontrando lugar...',
+    'Поиск места...',
+    '寻找位置...',
+    '場所を見つけています...',
+    'Szukanie miejsca...',
+    'Εύρεση τοποθεσίας...'
+  ],
+
   'Search translation': [ //used for getting the codes used for translation of city names
                           //If none are available then en (english) is the default
                           // for more info visit https://open-meteo.com/en/docs/geocoding-api

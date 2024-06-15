@@ -322,10 +322,10 @@ Widget getTitle(String place, settings, textColor) {
       builder: (BuildContext context,
           AsyncSnapshot<String> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return comfortatext('Searching...', 18, settings, color: textColor);
+          return comfortatext(translation('Finding place...', settings["Language"]), 18, settings, color: textColor);
         } else if (snapshot.hasError) {
           print(snapshot.error);
-          return comfortatext('Error', 18, settings, color: textColor);
+          return comfortatext(translation('Place not found', settings["Language"]), 18, settings, color: textColor);
         }
         return comfortatext(snapshot.data!, 24, settings, color: textColor);
       },
