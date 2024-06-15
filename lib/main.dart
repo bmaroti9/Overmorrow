@@ -23,7 +23,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/ui_helper.dart';
@@ -72,7 +71,6 @@ class _MyAppState extends State<MyApp> {
 
       if (startup) {
         List<String> n = await getLastPlace();  //loads the last place you visited
-        print(n);
         proposedLoc = n[1];
         backupName = n[0];
         startup = false;
@@ -109,9 +107,9 @@ class _MyAppState extends State<MyApp> {
           }
 
           backupName = '${position.latitude},${position.longitude}';
-          proposedLoc = 'search';
           isItCurrentLocation = true;
-          print('True');
+          absoluteProposed = backupName;
+
         }
         else {
           return dumbySearch(errorMessage: translation(loc_status, settings["Language"]!),
@@ -119,34 +117,6 @@ class _MyAppState extends State<MyApp> {
             icon: Icons.gps_off,
             place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
         }
-      }
-      if (proposedLoc == 'search') {
-        
-        //List<dynamic> x = await getRecommend(backupName, "weatherapi", settings);
-
-        List<String> s_cord = backupName.split(",");
-
-        try {
-
-          List<Placemark> placemarks = await placemarkFromCoordinates(
-              double.parse(s_cord[0]), double.parse(s_cord[1]));
-          Placemark place = placemarks[0];
-
-          String city = '${place.locality}';
-
-          absoluteProposed = s_cord.join(', ');
-          backupName = city;
-        } on FormatException {
-          return dumbySearch(
-            errorMessage: '${translation('Place not found', settings["Language"]!)}: \n $backupName',
-            updateLocation: updateLocation,
-            icon: Icons.location_disabled,
-            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
-        } on PlatformException {
-          absoluteProposed = backupName;
-          backupName = "${double.parse(s_cord[0]).toStringAsFixed(2)}, ${double.parse(s_cord[1]).toStringAsFixed(2)}";
-        }
-
       }
 
       if (proposedLoc == 'query') {
@@ -189,11 +159,6 @@ class _MyAppState extends State<MyApp> {
         return dumbySearch(errorMessage: translation("Not connected to the internet", settings["Language"]!),
           updateLocation: updateLocation,
           icon: Icons.wifi_off,
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
-      } on Error catch (e, stacktrace) {
-        print(stacktrace);
-        return dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
-          icon: Icons.bug_report,
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       }
 

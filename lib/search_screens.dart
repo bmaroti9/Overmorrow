@@ -22,6 +22,8 @@ import 'dart:ui';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/main_ui.dart';
 import 'package:overmorrow/settings_page.dart';
@@ -42,7 +44,7 @@ Widget searchBar(Color color, List<String> recommend,
       hint: translation('Search...', settings["Language"]!),
       title: Container(
         padding: const EdgeInsets.only(left: 5, top: 3),
-        child: comfortatext(place, 28 * getFontSize(settings["Font size"]!), settings, color: textColor)
+        child: getTitle(place, settings, textColor)
       ),
       hintStyle: GoogleFonts.comfortaa(
         color: textColor,
@@ -310,6 +312,44 @@ Widget defaultSearchScreen(Color color,
       ),
     ],
   );
+}
+
+Widget getTitle(String place, settings, textColor) {
+  List<String> split = place.split(',');
+  if (split.length > 1) {
+    return FutureBuilder<String>(
+      future: getName(place),
+      builder: (BuildContext context,
+          AsyncSnapshot<String> snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return comfortatext('Searching...', 18, settings, color: textColor);
+        } else if (snapshot.hasError) {
+          print(snapshot.error);
+          return comfortatext('Error', 18, settings, color: textColor);
+        }
+        return comfortatext(snapshot.data!, 23, settings, color: textColor);
+      },
+    );
+
+  }
+  return comfortatext(place, 23, settings, color: textColor);
+}
+
+Future<String> getName(latlon) async {
+  List<String> s_cord = latlon.split(",");
+
+  try {
+
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        double.parse(s_cord[0]), double.parse(s_cord[1]));
+    Placemark place = placemarks[0];
+
+    return '${place.locality}';
+  } on FormatException {
+    return "${double.parse(s_cord[0]).toStringAsFixed(2)}, ${double.parse(s_cord[1]).toStringAsFixed(2)}";
+  } on PlatformException {
+    return "${double.parse(s_cord[0]).toStringAsFixed(2)}, ${double.parse(s_cord[1]).toStringAsFixed(2)}";
+  }
 }
 
 Widget recommendSearchScreen(Color color, List<String> recommend,
