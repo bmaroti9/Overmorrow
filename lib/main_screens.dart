@@ -64,7 +64,7 @@ Widget NewMain(data, updateLocation, context) {
       children: [
         Stack(
           children: [
-            UpdatedNotifier(data: data, time: DateTime.now(), key: Key(DateTime.now().toString()),),
+            UpdatedNotifier(data: data, time: data.updatedTime, key: Key(data.updatedTime.toString())),
             LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   if(constraints.maxWidth > 500.0) {

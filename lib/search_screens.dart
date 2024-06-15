@@ -327,12 +327,12 @@ Widget getTitle(String place, settings, textColor) {
           print(snapshot.error);
           return comfortatext('Error', 18, settings, color: textColor);
         }
-        return comfortatext(snapshot.data!, 23, settings, color: textColor);
+        return comfortatext(snapshot.data!, 24, settings, color: textColor);
       },
     );
 
   }
-  return comfortatext(place, 23, settings, color: textColor);
+  return comfortatext(place, 24, settings, color: textColor);
 }
 
 Future<String> getName(latlon) async {

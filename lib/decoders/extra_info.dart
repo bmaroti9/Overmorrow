@@ -51,6 +51,8 @@ class WeatherData {
   final double lat;
   final double lng;
 
+  final updatedTime;
+
   final days;
   final current;
   final aqi;
@@ -72,6 +74,7 @@ class WeatherData {
     required this.days,
     required this.current,
     required this.fetch_datetime,
+    required this.updatedTime,
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
@@ -128,6 +131,7 @@ class WeatherData {
         radar: await RainviewerRadar.getData(),
 
         fetch_datetime: fetch_datetime,
+        updatedTime: DateTime.now(),
       );
     }
     else {
@@ -169,6 +173,7 @@ class WeatherData {
         real_loc: real_loc,
 
         fetch_datetime: fetch_datetime,
+        updatedTime: DateTime.now(),
       );
     }
   }
