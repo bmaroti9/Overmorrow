@@ -23,6 +23,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/ui_helper.dart';
@@ -59,9 +60,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  bool startup = true;
-
-  Future<Widget> getDays(bool recall, proposedLoc, backupName) async {
+  Future<Widget> getDays(bool recall, proposedLoc, backupName, startup) async {
 
     try {
 
@@ -106,9 +105,22 @@ class _MyAppState extends State<MyApp> {
               place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
           }
 
-          backupName = '${position.latitude},${position.longitude}';
           isItCurrentLocation = true;
-          absoluteProposed = backupName;
+
+          try {
+
+            List<Placemark> placemarks = await placemarkFromCoordinates(
+                position.latitude, position.longitude);
+            Placemark place = placemarks[0];
+
+            backupName = place.locality;
+
+
+          } on FormatException {
+            backupName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
+          } on PlatformException {
+            backupName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
+          }
 
         }
         else {
@@ -184,33 +196,41 @@ class _MyAppState extends State<MyApp> {
           place: backupName, settings: settings, provider: weather_provider, latlng: 'search',);
       }
       else {
-        return getDays(true, proposedLoc, backupName);
+        return getDays(true, proposedLoc, backupName, startup);
       }
     }
   }
 
   Widget w1 = Container();
   bool isLoading = false;
+  bool startup2 = false;
 
   @override
   void initState() {
     super.initState();
+
     //defaults to new york when no previous location was found
-    updateLocation('40.7128, 74.0060', "New York", time: 500);
+    updateLocation('40.7128, 74.0060', "New York", time: 300, startup: true);
   }
 
-  Future<void> updateLocation(proposedLoc, backupName, {time = 500}) async {
+  Future<void> updateLocation(proposedLoc, backupName, {time = 500, startup = false}) async {
     setState(() {
+      if (startup) {
+        startup2 = true;
+      }
       isLoading = true;
     });
 
     await Future.delayed(Duration(milliseconds: time));
 
     try {
-      Widget screen = await getDays(false, proposedLoc, backupName);
+      Widget screen = await getDays(false, proposedLoc, backupName, startup);
 
       setState(() {
         w1 = screen;
+        if (startup) {
+          startup2 = false;
+        }
       });
 
       await Future.delayed(Duration(milliseconds: (800 - time).toInt()));
@@ -225,6 +245,10 @@ class _MyAppState extends State<MyApp> {
         isLoading = false;
       });
     }
+
+    if (startup) {
+      startup2 = false;
+    }
   }
 
   @override
@@ -232,7 +256,6 @@ class _MyAppState extends State<MyApp> {
     List<Color> colors = getStartBackColor();
 
     final EdgeInsets systemGestureInsets = MediaQuery.of(context).systemGestureInsets;
-    print(('hihi', systemGestureInsets.left));
     if (systemGestureInsets.left > 0) {
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
@@ -250,10 +273,10 @@ class _MyAppState extends State<MyApp> {
           children: [
             w1,
             if (isLoading) Container(
-              color: startup ? colors[0] : const Color.fromRGBO(0, 0, 0, 0.7),
+              color: startup2 ? colors[0] : const Color.fromRGBO(0, 0, 0, 0.7),
               child: Center(
                 child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: startup ? colors[1] : WHITE,
+                  color: startup2 ? colors[1] : WHITE,
                   size: 40,
                 ),
               ),
