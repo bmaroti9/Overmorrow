@@ -151,7 +151,7 @@ class OMCurrent {
     required this.wind_dir,
   });
 
-  static OMCurrent fromJson(item, settings, sunstatus, timenow) {
+  static OMCurrent fromJson(item, settings, sunstatus, timenow, currentcolor) {
     Color back = BackColorCorrection(
       oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),
@@ -177,7 +177,7 @@ class OMCurrent {
           item["current"]["apparent_temperature"], settings["Temperature"])
           .round(),
 
-      backcolor: colors[0],
+      backcolor: currentcolor,
       primary: colors[1],
       textcolor: colors[2],
       colorpop: colors[3],

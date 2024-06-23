@@ -65,7 +65,7 @@ class WeatherPage extends StatelessWidget {
 
 
 class ParrallaxBackground extends StatelessWidget {
-  final String imagePath1;
+  final Image imagePath1;
   final Color color;
 
   const ParrallaxBackground({Key? key, required this.imagePath1, required this.color}) : super(key: key);
@@ -81,12 +81,7 @@ class ParrallaxBackground extends StatelessWidget {
           color: color,
           child: Opacity(
             opacity: value,
-            child: Image.asset(
-              'assets/backdrops/$imagePath1',
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
-            ),
+            child: imagePath1,
           ),
         );
       },

@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 
 import '../api_key.dart';
@@ -27,6 +28,7 @@ import '../caching.dart';
 import '../ui_helper.dart';
 import '../weather_refact.dart';
 import 'decode_wapi.dart';
+import 'package:http/http.dart' as http;
 
 
 Color BackColorCorrection(String text) {
@@ -61,6 +63,8 @@ class WeatherData {
 
   final fetch_datetime;
 
+  final image;
+
   WeatherData({
     required this.place,
     required this.settings,
@@ -75,6 +79,7 @@ class WeatherData {
     required this.current,
     required this.fetch_datetime,
     required this.updatedTime,
+    required this.image,
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
@@ -107,6 +112,22 @@ class WeatherData {
 
     WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
 
+    final params2 = {
+      'client_id': access_key,
+      'count' : '1'
+
+    };
+    final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
+    final response2 = await http.get(Uri.parse(url2.toString()));
+
+    var wapi_body2 = jsonDecode(response2.body)[0];
+    String image_path = wapi_body2["urls"]["regular"];
+    Image hihi = Image.network(image_path, fit: BoxFit.cover);
+
+    String color = wapi_body2["color"].replaceAll('#', '0xff');
+
+    Color otherColor = Color(int.parse(color));
+
     if (provider == 'weatherapi.com') {
       List<WapiDay> days = [];
 
@@ -132,6 +153,7 @@ class WeatherData {
 
         fetch_datetime: fetch_datetime,
         updatedTime: DateTime.now(),
+        image: hihi
       );
     }
     else {
@@ -161,7 +183,7 @@ class WeatherData {
         aqi: WapiAqi.fromJson(wapi_body),
         sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
 
-        current: OMCurrent.fromJson(oMBody, settings, sunstatus, real_time),
+        current: OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, otherColor),
         days: days,
 
         lat: lat,
@@ -174,6 +196,7 @@ class WeatherData {
 
         fetch_datetime: fetch_datetime,
         updatedTime: DateTime.now(),
+        image: hihi
       );
     }
   }

@@ -20,12 +20,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:overmorrow/decoders/decode_wapi.dart';
 import 'package:overmorrow/donation_page.dart';
-import 'package:overmorrow/main_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'decoders/decode_wapi.dart';
 import 'languages.dart';
 import 'main.dart';
+import 'main_ui.dart';
 import 'ui_helper.dart';
 
 Map<String, List<String>> settingSwitches = {
@@ -393,7 +393,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                 NavButton('Units', settings, textcolor, Icons.graphic_eq),
                 NavButton('Advanced', settings, textcolor, Icons.code),
 
-                /*
+
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 20),
                   child: Row(
@@ -436,7 +436,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                                   height: 220,
                                   child: Stack(
                                     children: [
-                                      ParrallaxBackground(imagePath1: image, color: color),
+                                      ParrallaxBackground(imagePath1: Image.asset(image, fit: BoxFit.cover,), color: color),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 10, bottom: 15),
                                         child: Column(
@@ -532,7 +532,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                   height: 40,
                 )
 
-                 */
+
               ]
           ),
         ),

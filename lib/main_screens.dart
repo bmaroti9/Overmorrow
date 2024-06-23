@@ -27,7 +27,7 @@ Widget NewMain(data, updateLocation, context) {
         //backgroundColor: WHITE,
           blurContent: false,
           headerHeight: max(size.height * 0.57, 400), //we don't want it to be smaller than 400
-          header: ParrallaxBackground(imagePath1: data.current.backdrop, key: Key(data.place),
+          header: ParrallaxBackground(imagePath1: data.image, key: Key(data.place),
           color: data.current.backcolor == BLACK ? BLACK
               : lightAccent(data.current.backcolor, 5000)),
           overlay: Stack(
