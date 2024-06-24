@@ -117,6 +117,61 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
   return colors;
 }
 
+List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
+  String x = force == "-1" ? settings["Color mode"] : force;
+
+  List<Color> colors = [
+    palette.primaryContainer,
+    palette.secondary,
+    palette.onPrimaryContainer,
+    palette.primaryContainer,
+    palette.onPrimaryContainer,
+    darken(palette.primaryContainer, 0.07)
+  ];
+
+  if (x == "monochrome") {
+    colors = [
+      palette.secondaryContainer,
+      palette.secondary,
+      palette.onSecondaryContainer,
+      palette.secondaryContainer,
+      palette.onSecondaryContainer,
+      darken(palette.secondaryContainer, 0.07)
+    ];
+  }
+  else if (x == "colorful") {
+    colors = [
+      palette.secondaryContainer,
+      palette.primaryContainer,
+      palette.onSecondaryContainer,
+      palette.secondaryContainer,
+      palette.onSecondaryContainer,
+      darken(palette.secondaryContainer, 0.07)
+    ];
+  }
+  else if (x == "light") {
+    colors = [
+      palette.surface,
+      palette.primary,
+      palette.onSecondaryContainer,
+      palette.primary,
+      palette.onSurface,
+      darken(palette.surface, 0.07)
+    ];
+  }
+  else if (x == "dark") {
+    colors = [
+      darken(palette.surface, 0.02),
+      palette.primaryContainer,
+      palette.onSecondaryContainer,
+      palette.surface,
+      palette.onSecondaryContainer,
+      darken(palette.surface, 0.08)
+    ];
+  }
+  return colors;
+}
+
 
 Future<Map<String, String>> getSettingsUsed() async {
   Map<String, String> settings = {};

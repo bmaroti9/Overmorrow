@@ -163,11 +163,16 @@ class OMCurrent {
           item["current"]["weather_code"], sunstatus, timenow),
     );
 
+    /*
     List<Color> colors = getColors(primary, back, settings,
         ColorPopCorrection( oMCurrentTextCorrection(
             item["current"]["weather_code"], sunstatus, timenow),)[
               settings["Color mode"] == "dark" ? 1 : 0
         ]);
+
+     */
+
+    List<Color> colors = getNetworkColors(palette, settings);
 
     return OMCurrent(
       text: translation(oMCurrentTextCorrection(
@@ -178,21 +183,14 @@ class OMCurrent {
           item["current"]["apparent_temperature"], settings["Temperature"])
           .round(),
 
-      /*
+
       backcolor: colors[0],
       primary: colors[1],
       textcolor: colors[2],
       colorpop: colors[3],
       secondary:  colors[4],
       highlight: colors[5],
-       */
 
-      backcolor: palette.secondaryContainer,
-      primary: palette.primary,
-      textcolor: palette.onSecondaryContainer,
-      colorpop: palette.secondaryContainer,
-      secondary: palette.onSecondaryContainer,
-      highlight: darken(palette.secondaryContainer, 0.07),
 
       backup_backcolor: back,
       backup_primary: primary,

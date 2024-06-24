@@ -55,15 +55,17 @@ Widget comfortatext(String text, double size, settings,
 
   double x = getFontSize(settings["Font size"]);
   return Text(
-  text,
-  style: GoogleFonts.comfortaa(
-    color: color,
-    fontSize: size * x,
-    fontWeight: weight,
-  ),
-  overflow: TextOverflow.ellipsis,
-  maxLines: 3,
-  textAlign: align,
+    text,
+    style: GoogleFonts.comfortaa(
+      color: color,
+      fontSize: size * x,
+      fontWeight: weight,
+      height: 1.1,
+    ),
+    overflow: TextOverflow.ellipsis,
+    maxLines: 3,
+    textAlign: align,
+
 );
 }
 

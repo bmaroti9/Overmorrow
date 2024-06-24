@@ -37,14 +37,13 @@ Color BackColorCorrection(String text) {
   return accentColors[text] ?? WHITE;
 }
 
-
-Future<ColorScheme> _materialPalette(Image imageWidget) async {
+Future<ColorScheme> _materialPalette(Image imageWidget, theme) async {
   final ImageProvider imageProvider = imageWidget.image;
 
   return ColorScheme.fromImageProvider(
     provider: imageProvider,
-    brightness: Brightness.dark,
-
+    brightness: theme == 'light' ? Brightness.light : Brightness.dark,
+    dynamicSchemeVariant: DynamicSchemeVariant.expressive,
   );
 }
 
@@ -212,7 +211,8 @@ class WeatherData {
         aqi: WapiAqi.fromJson(wapi_body),
         sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
 
-        current: OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, await _materialPalette(hihi)),
+        current: OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, await _materialPalette(hihi,
+        settings["Color mode"])),
         days: days,
 
         lat: lat,

@@ -41,7 +41,7 @@ Widget NewMain(data, updateLocation, context) {
                   children: [
                     const Spacer(),
                     Padding(
-                      padding: const EdgeInsets.only(left: 0, bottom: 5),
+                      padding: const EdgeInsets.only(left: 0, bottom: 0),
                       child: comfortatext("${data.current.temp}°", 68, data.settings,
                           color: data.current.colorpop, weight: FontWeight.w300),
                     ),
