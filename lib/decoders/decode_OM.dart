@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
 
 import '../settings_page.dart';
@@ -151,7 +152,7 @@ class OMCurrent {
     required this.wind_dir,
   });
 
-  static OMCurrent fromJson(item, settings, sunstatus, timenow, currentcolor) {
+  static OMCurrent fromJson(item, settings, sunstatus, timenow, ColorScheme palette) {
     Color back = BackColorCorrection(
       oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),
@@ -177,12 +178,21 @@ class OMCurrent {
           item["current"]["apparent_temperature"], settings["Temperature"])
           .round(),
 
-      backcolor: currentcolor,
+      /*
+      backcolor: colors[0],
       primary: colors[1],
       textcolor: colors[2],
       colorpop: colors[3],
       secondary:  colors[4],
       highlight: colors[5],
+       */
+
+      backcolor: palette.secondaryContainer,
+      primary: palette.primary,
+      textcolor: palette.onSecondaryContainer,
+      colorpop: palette.secondaryContainer,
+      secondary: palette.onSecondaryContainer,
+      highlight: darken(palette.secondaryContainer, 0.07),
 
       backup_backcolor: back,
       backup_primary: primary,

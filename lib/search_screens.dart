@@ -43,7 +43,7 @@ Widget searchBar(Color color, List<String> recommend,
       hint: translation('Search...', settings["Language"]!),
       title: Container(
         padding: const EdgeInsets.only(left: 5, top: 3),
-        child: comfortatext(place, 25, settings)
+        child: comfortatext(place, 25, settings, color: textColor)
       ),
       hintStyle: GoogleFonts.comfortaa(
         color: textColor,

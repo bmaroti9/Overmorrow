@@ -117,6 +117,7 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
   return colors;
 }
 
+
 Future<Map<String, String>> getSettingsUsed() async {
   Map<String, String> settings = {};
   for (var v in settingSwitches.entries) {
@@ -436,7 +437,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                                   height: 220,
                                   child: Stack(
                                     children: [
-                                      ParrallaxBackground(imagePath1: Image.asset(image, fit: BoxFit.cover,), color: color),
+                                      ParrallaxBackground(imagePath1: Image.asset("assets/backdrops/$image", fit: BoxFit.cover,), color: color),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 10, bottom: 15),
                                         child: Column(

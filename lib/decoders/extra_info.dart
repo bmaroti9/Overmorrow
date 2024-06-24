@@ -19,7 +19,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 
 import '../api_key.dart';
@@ -28,12 +30,22 @@ import '../caching.dart';
 import '../ui_helper.dart';
 import '../weather_refact.dart';
 import 'decode_wapi.dart';
-import 'package:http/http.dart' as http;
 
 
 Color BackColorCorrection(String text) {
   //return Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
   return accentColors[text] ?? WHITE;
+}
+
+
+Future<ColorScheme> _materialPalette(Image imageWidget) async {
+  final ImageProvider imageProvider = imageWidget.image;
+
+  return ColorScheme.fromImageProvider(
+    provider: imageProvider,
+    brightness: Brightness.dark,
+
+  );
 }
 
 Color PrimaryColorCorrection(String text) {
@@ -112,21 +124,38 @@ class WeatherData {
 
     WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
 
+    String text_query = textCorrection(
+        wapi_body["current"]["condition"]["code"], wapi_body["current"]["is_day"],
+        language: settings["Language"]
+    );
+
+    String addon = wapi_body["current"]["is_day"] == 1 ? 'daytime' : 'nighttime';
+    print(addon);
+
     final params2 = {
       'client_id': access_key,
-      'count' : '1'
-
+      'count' : '1',
+      'query' : "$text_query $text_query $real_loc  weather $addon",
+      'content_filter' : 'high',
     };
+
     final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
-    final response2 = await http.get(Uri.parse(url2.toString()));
 
-    var wapi_body2 = jsonDecode(response2.body)[0];
-    String image_path = wapi_body2["urls"]["regular"];
-    Image hihi = Image.network(image_path, fit: BoxFit.cover);
+    var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query, unsplash")
+        .timeout(const Duration(seconds: 6));
 
-    String color = wapi_body2["color"].replaceAll('#', '0xff');
+    var response2 = await file2.readAsString();
 
-    Color otherColor = Color(int.parse(color));
+    var wapi_body2 = jsonDecode(response2);
+
+    String image_path = wapi_body2[0]["urls"]["regular"];
+
+    Image hihi = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,);
+    //Image hihi = Image.network(image_path, fit: BoxFit.cover);
+
+    //String color = wapi_body2["color"].replaceAll('#', '0xff');
+
+    //Color otherColor = Color(int.parse(color));
 
     if (provider == 'weatherapi.com') {
       List<WapiDay> days = [];
@@ -183,7 +212,7 @@ class WeatherData {
         aqi: WapiAqi.fromJson(wapi_body),
         sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
 
-        current: OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, otherColor),
+        current: OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, await _materialPalette(hihi)),
         days: days,
 
         lat: lat,
