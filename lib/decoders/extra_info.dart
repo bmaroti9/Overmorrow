@@ -43,7 +43,8 @@ Future<ColorScheme> _materialPalette(Image imageWidget, theme) async {
   return ColorScheme.fromImageProvider(
     provider: imageProvider,
     brightness: theme == 'light' ? Brightness.light : Brightness.dark,
-    dynamicSchemeVariant: DynamicSchemeVariant.expressive,
+    dynamicSchemeVariant: theme == 'original' ? DynamicSchemeVariant.tonalSpot :
+    DynamicSchemeVariant.tonalSpot,
   );
 }
 

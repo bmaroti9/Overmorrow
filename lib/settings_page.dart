@@ -142,7 +142,7 @@ List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
   else if (x == "colorful") {
     colors = [
       palette.secondaryContainer,
-      palette.primaryContainer,
+      palette.primary,
       palette.onSecondaryContainer,
       palette.secondaryContainer,
       palette.onSecondaryContainer,
