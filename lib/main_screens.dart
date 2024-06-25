@@ -34,14 +34,14 @@ Widget NewMain(data, updateLocation, context) {
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 25,
-                    top: MediaQuery.of(context).padding.top + 20, right: 25, bottom: 30
+                    top: MediaQuery.of(context).padding.top + 20, right: 25, bottom: 25
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Spacer(),
                     Padding(
-                      padding: const EdgeInsets.only(left: 0, bottom: 0),
+                      padding: const EdgeInsets.only(left: 0, bottom: 2),
                       child: comfortatext("${data.current.temp}°", 68, data.settings,
                           color: data.current.colorpop, weight: FontWeight.w300),
                     ),

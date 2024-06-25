@@ -121,12 +121,12 @@ List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
   String x = force == "-1" ? settings["Color mode"] : force;
 
   List<Color> colors = [
-    palette.primaryContainer,
-    palette.secondary,
+    palette.primary,
+    palette.secondaryContainer,
+    palette.onPrimary,
+    palette.primary,
     palette.onPrimaryContainer,
-    palette.primaryContainer,
-    palette.onPrimaryContainer,
-    darken(palette.primaryContainer, 0.07)
+    darken(palette.primary, 0.07)
   ];
 
   if (x == "monochrome") {
@@ -141,12 +141,12 @@ List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
   }
   else if (x == "colorful") {
     colors = [
-      palette.secondaryContainer,
-      palette.primary,
-      palette.onSecondaryContainer,
-      palette.secondaryContainer,
-      palette.onSecondaryContainer,
-      darken(palette.secondaryContainer, 0.07)
+      palette.primaryContainer,
+      palette.secondary,
+      palette.onPrimaryContainer,
+      palette.primaryContainer,
+      palette.onPrimaryContainer,
+      darken(palette.primaryContainer, 0.07)
     ];
   }
   else if (x == "light") {
