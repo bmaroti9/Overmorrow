@@ -28,6 +28,8 @@ import '../ui_helper.dart';
 import '../weather_refact.dart';
 import 'extra_info.dart';
 
+
+
 String oMGetName(index, settings, item) {
   if (index < 3) {
     const names = ['Today', 'Tomorrow', 'Overmorrow'];
@@ -173,6 +175,8 @@ class OMCurrent {
      */
 
     List<Color> colors = getNetworkColors(palette, settings);
+
+    //List<Color> colors = palette.colors.toList();
 
     return OMCurrent(
       text: translation(oMCurrentTextCorrection(

@@ -23,6 +23,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 import '../api_key.dart';
 import '../caching.dart';
@@ -30,6 +31,16 @@ import '../caching.dart';
 import '../ui_helper.dart';
 import '../weather_refact.dart';
 import 'decode_wapi.dart';
+
+Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
+  final ImageProvider imageProvider = imageWidget.image;
+
+  PaletteGenerator _paletteGenerator = await PaletteGenerator.fromImageProvider(
+    imageProvider,
+    maximumColorCount: 6,
+  );
+  return _paletteGenerator;
+}
 
 
 Color BackColorCorrection(String text) {
@@ -42,9 +53,9 @@ Future<ColorScheme> _materialPalette(Image imageWidget, theme) async {
 
   return ColorScheme.fromImageProvider(
     provider: imageProvider,
-    brightness: theme == 'light' || theme == 'original' ? Brightness.light : Brightness.dark,
-    dynamicSchemeVariant: theme == 'original' ? DynamicSchemeVariant.tonalSpot :
-    DynamicSchemeVariant.content,
+    brightness: theme == 'light' ? Brightness.light : Brightness.dark,
+    dynamicSchemeVariant: theme == 'original' ? DynamicSchemeVariant.expressive :
+    DynamicSchemeVariant.expressive,
   );
 }
 
@@ -212,8 +223,9 @@ class WeatherData {
         aqi: WapiAqi.fromJson(wapi_body),
         sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
 
-        current: OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, await _materialPalette(hihi,
-        settings["Color mode"])),
+        current: OMCurrent.fromJson(oMBody, settings, sunstatus, real_time,
+            await _materialPalette(hihi, settings["Color mode"])),
+            //await _generatorPalette(hihi)),
         days: days,
 
         lat: lat,
