@@ -347,7 +347,7 @@ Widget WindWidget(data, day) {
                   height: 150,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 1.2, color: WHITE)
+                      border: Border.all(width: 1.2, color: data.current.secondary)
                   ),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(18),
@@ -432,7 +432,7 @@ Widget RainWidget(data, day) {
                   height: 150,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 1.2, color: WHITE)
+                      border: Border.all(width: 1.2, color: data.current.secondary)
                   ),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(18),
@@ -458,8 +458,9 @@ Widget RainWidget(data, day) {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            comfortatext((index * 0.2).toStringAsFixed(1), 17, data.settings),
-                            comfortatext('in', 12, data.settings),
+                            comfortatext((index * 0.2).toStringAsFixed(1), 17, data.settings,
+                                color: data.current.secondary),
+                            comfortatext('in', 12, data.settings, color: data.current.secondary),
                           ],
                         ),
                       );
@@ -470,8 +471,9 @@ Widget RainWidget(data, day) {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            comfortatext((index * 5).toString(), 17, data.settings),
-                            comfortatext('mm', 12, data.settings),
+                            comfortatext((index * 5).toString(), 17, data.settings,
+                                color: data.current.secondary),
+                            comfortatext('mm', 12, data.settings, color: data.current.secondary),
                           ],
                         ),
                       );
@@ -488,19 +490,19 @@ Widget RainWidget(data, day) {
             replacement: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  comfortatext("3am", 14,data. settings),
-                  comfortatext("9am", 14, data.settings),
-                  comfortatext("3pm", 14, data.settings),
-                  comfortatext("9pm", 14, data.settings),
+                  comfortatext("3am", 14,data. settings, color: data.current.secondary),
+                  comfortatext("9am", 14, data.settings, color: data.current.secondary),
+                  comfortatext("3pm", 14, data.settings, color: data.current.secondary),
+                  comfortatext("9pm", 14, data.settings, color: data.current.secondary),
                 ]
             ),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  comfortatext("3:00", 14, data.settings),
-                  comfortatext("9:00", 14, data.settings),
-                  comfortatext("15:00", 14, data.settings),
-                  comfortatext("21:00", 14, data.settings),
+                  comfortatext("3:00", 14, data.settings, color: data.current.secondary),
+                  comfortatext("9:00", 14, data.settings, color: data.current.secondary),
+                  comfortatext("15:00", 14, data.settings, color: data.current.secondary),
+                  comfortatext("21:00", 14, data.settings, color: data.current.secondary),
                 ]
             ),
           )
