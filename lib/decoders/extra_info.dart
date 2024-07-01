@@ -54,7 +54,7 @@ Future<ColorScheme> _materialPalette(Image imageWidget, theme) async {
   return ColorScheme.fromImageProvider(
     provider: imageProvider,
     brightness: theme == 'light' ? Brightness.light : Brightness.dark,
-    dynamicSchemeVariant: theme == 'original' ? DynamicSchemeVariant.expressive :
+    dynamicSchemeVariant: theme == 'original' || theme == 'monochrome' ? DynamicSchemeVariant.fruitSalad :
     DynamicSchemeVariant.expressive,
   );
 }
@@ -146,7 +146,7 @@ class WeatherData {
     final params2 = {
       'client_id': access_key,
       'count' : '1',
-      'query' : "$text_query $text_query $real_loc  weather $addon",
+      'query' : "$text_query $real_loc",
       'content_filter' : 'high',
     };
 
