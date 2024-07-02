@@ -55,7 +55,7 @@ Future<ColorScheme> _materialPalette(Image imageWidget, theme) async {
     provider: imageProvider,
     brightness: theme == 'light' ? Brightness.light : Brightness.dark,
     dynamicSchemeVariant: theme == 'original' || theme == 'monochrome' ? DynamicSchemeVariant.fruitSalad :
-    DynamicSchemeVariant.expressive,
+    DynamicSchemeVariant.tonalSpot,
   );
 }
 

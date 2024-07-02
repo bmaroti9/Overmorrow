@@ -134,6 +134,8 @@ class OMCurrent {
   final Color backup_primary;
   final Color backup_backcolor;
 
+  final palette;
+
   const OMCurrent({
     required this.precip,
     required this.primary,
@@ -152,6 +154,7 @@ class OMCurrent {
     required this.backup_backcolor,
     required this.backup_primary,
     required this.wind_dir,
+    required this.palette,
   });
 
   static OMCurrent fromJson(item, settings, sunstatus, timenow, ColorScheme palette) {
@@ -186,6 +189,8 @@ class OMCurrent {
       feels_like: unit_coversion(
           item["current"]["apparent_temperature"], settings["Temperature"])
           .round(),
+
+      palette: palette,
 
 
       backcolor: colors[0],

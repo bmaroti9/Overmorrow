@@ -151,10 +151,10 @@ List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
   else if (x == "light") {
     colors = [
       palette.surface,
-      palette.secondary,
+      palette.primary,
       palette.onSurface,
-      palette.secondary,
-      palette.onSecondaryFixed,
+      palette.primary,
+      palette.onPrimaryFixed,
       palette.surfaceContainer
     ];
   }
@@ -387,37 +387,39 @@ class _SettingsPageState extends State<SettingsPage> {
             child: ErrorWidget(snapshot.error as Object),
           );
         }
-        return SettingsMain(primary, snapshot.data, updatePage, goBack, back, image);
+        return SettingsMain(primary, snapshot.data, updatePage, goBack, back, image, context);
       },
     );
   }
 }
 
 Widget SettingsMain(Color primary, Map<String, String>? settings, Function updatePage,
-    Function goBack, Color back, String image) {
+    Function goBack, Color back, String image, context) {
 
   List<Color> colors = getColors(primary, back, settings, 0);
 
-  return Scaffold(
-    backgroundColor: colors[5],
-      appBar: AppBar(
-          toolbarHeight: 65,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0)
-          ),
-          elevation: 0,
-          leadingWidth: 50,
-          backgroundColor: colors[5],
+  return  Material(
+    color: colors[5],
+    child: CustomScrollView(
+      slivers: <Widget>[
+        SliverAppBar.large(
           leading:
-          IconButton(
-            onPressed: (){
-              goBack();
-            },
-            icon: Icon(Icons.arrow_back, color: colors[2],),
-          )
-      ),
-      body: settingsMain(colors[0], settings!, updatePage, colors[2], colors[1], colors[5], colors[3],
-      image, primary, back),
+          IconButton(icon: Icon(Icons.menu, color: colors[2],), onPressed: () {}),
+          title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[2]),
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.more_vert, color: colors[2],), onPressed: () {}),
+          ],
+          backgroundColor: colors[5],
+        ),
+        // Just some content big enough to have something to scroll.
+        SliverToBoxAdapter(
+          child: Container(
+            color: colors[0],
+            child: settingsMain(colors[0], settings, updatePage, colors[2], colors[4], colors[5], colors[3], image, primary, back),
+          ),
+        ),
+      ],
+    ),
   );
 }
 
@@ -438,11 +440,6 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 15,),
-                Padding(
-                    padding: const EdgeInsets.only(top: 0, bottom: 30, left: 10),
-                  child: comfortatext(translation('Settings', settings["Language"]!), 30, settings, color: textcolor),
-                ),
                 NavButton('Appearance', settings, textcolor, Icons.color_lens),
                 NavButton('Language', settings, textcolor, Icons.language),
                 NavButton('Units', settings, textcolor, Icons.graphic_eq),
@@ -491,7 +488,8 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                                   height: 220,
                                   child: Stack(
                                     children: [
-                                      ParrallaxBackground(imagePath1: Image.asset("assets/backdrops/$image", fit: BoxFit.cover,), color: color),
+                                      ParrallaxBackground(image: Image.asset("assets/backdrops/$image",
+                                          fit: BoxFit.fill, width: double.infinity, height: double.infinity,), color: color),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 10, bottom: 15),
                                         child: Column(

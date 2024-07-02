@@ -1,7 +1,26 @@
+/*
+Copyright (C) <2024>  <Balint Maroti>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+*/
+
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:overmorrow/new_displays.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
@@ -26,8 +45,8 @@ Widget NewMain(data, updateLocation, context) {
       headerData: HeaderData(
         //backgroundColor: WHITE,
           blurContent: false,
-          headerHeight: max(size.height * 0.57, 400), //we don't want it to be smaller than 400
-          header: ParrallaxBackground(imagePath1: data.image, key: Key(data.place),
+          headerHeight: max(size.height * 0.56, 400), //we don't want it to be smaller than 400
+          header: ParrallaxBackground(image: data.image, key: Key(data.place),
           color: data.current.backcolor == BLACK ? BLACK
               : lightAccent(data.current.backcolor, 5000)),
           overlay: Stack(
@@ -76,12 +95,17 @@ Widget NewMain(data, updateLocation, context) {
             ),
           ],
         ),
+
+        NewSunriseSunset(data, data.current.palette),
+        /*
         NewTimes(data, true),
         buildHihiDays(data),
         buildGlanceDay(data),
         providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
         data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
         const Padding(padding: EdgeInsets.only(bottom: 20))
+
+         */
       ],
     ),
   );
@@ -134,7 +158,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                 padding: const EdgeInsets.only(top: 100),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
-                                  child: ParrallaxBackground(imagePath1: data.current.backdrop, key: Key(data.place),
+                                  child: ParrallaxBackground(image: data.current.backdrop, key: Key(data.place),
                                     color: darken(data.current.backcolor, 0.1),),
                                 ),
                               ),
