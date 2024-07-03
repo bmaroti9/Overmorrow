@@ -87,6 +87,7 @@ class WeatherData {
   final fetch_datetime;
 
   final image;
+  final localtime;
 
   WeatherData({
     required this.place,
@@ -103,6 +104,7 @@ class WeatherData {
     required this.fetch_datetime,
     required this.updatedTime,
     required this.image,
+    required this.localtime,
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
@@ -157,9 +159,9 @@ class WeatherData {
 
     var response2 = await file2.readAsString();
 
-    var wapi_body2 = jsonDecode(response2);
+    var unsplash_body = jsonDecode(response2);
 
-    String image_path = wapi_body2[0]["urls"]["regular"];
+    String image_path = unsplash_body[0]["urls"]["regular"];
 
     Image hihi = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,);
     //Image hihi = Image.network(image_path, fit: BoxFit.cover);
@@ -167,6 +169,8 @@ class WeatherData {
     //String color = wapi_body2["color"].replaceAll('#', '0xff');
 
     //Color otherColor = Color(int.parse(color));
+
+    final loctime = wapi_body["location"]["localtime"].split(" ")[1];
 
     if (provider == 'weatherapi.com') {
       List<WapiDay> days = [];
@@ -193,7 +197,8 @@ class WeatherData {
 
         fetch_datetime: fetch_datetime,
         updatedTime: DateTime.now(),
-        image: hihi
+        image: hihi,
+        localtime: loctime
       );
     }
     else {
@@ -238,7 +243,8 @@ class WeatherData {
 
         fetch_datetime: fetch_datetime,
         updatedTime: DateTime.now(),
-        image: hihi
+        image: hihi,
+        localtime: loctime
       );
     }
   }
