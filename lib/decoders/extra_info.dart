@@ -89,6 +89,8 @@ class WeatherData {
   final image;
   final localtime;
 
+  final palette;
+
   WeatherData({
     required this.place,
     required this.settings,
@@ -105,6 +107,7 @@ class WeatherData {
     required this.updatedTime,
     required this.image,
     required this.localtime,
+    required this.palette,
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
@@ -171,6 +174,7 @@ class WeatherData {
     //Color otherColor = Color(int.parse(color));
 
     final loctime = wapi_body["location"]["localtime"].split(" ")[1];
+    final ColorScheme palette = await _materialPalette(hihi, settings["Color mode"]);
 
     if (provider == 'weatherapi.com') {
       List<WapiDay> days = [];
@@ -198,7 +202,8 @@ class WeatherData {
         fetch_datetime: fetch_datetime,
         updatedTime: DateTime.now(),
         image: hihi,
-        localtime: loctime
+        localtime: loctime,
+        palette: palette,
       );
     }
     else {
@@ -228,8 +233,7 @@ class WeatherData {
         aqi: WapiAqi.fromJson(wapi_body),
         sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
 
-        current: OMCurrent.fromJson(oMBody, settings, sunstatus, real_time,
-            await _materialPalette(hihi, settings["Color mode"])),
+        current: OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, palette),
             //await _generatorPalette(hihi)),
         days: days,
 
@@ -244,7 +248,8 @@ class WeatherData {
         fetch_datetime: fetch_datetime,
         updatedTime: DateTime.now(),
         image: hihi,
-        localtime: loctime
+        localtime: loctime,
+        palette: palette,
       );
     }
   }

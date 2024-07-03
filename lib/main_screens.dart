@@ -45,7 +45,7 @@ Widget NewMain(data, updateLocation, context) {
       headerData: HeaderData(
         //backgroundColor: WHITE,
           blurContent: false,
-          headerHeight: max(size.height * 0.56, 400), //we don't want it to be smaller than 400
+          headerHeight: max(size.height * 0.55, 400), //we don't want it to be smaller than 400
           header: ParrallaxBackground(image: data.image, key: Key(data.place),
           color: data.current.backcolor == BLACK ? BLACK
               : lightAccent(data.current.backcolor, 5000)),
@@ -62,12 +62,12 @@ Widget NewMain(data, updateLocation, context) {
                     Padding(
                       padding: const EdgeInsets.only(left: 0, bottom: 2),
                       child: comfortatext("${data.current.temp}°", 68, data.settings,
-                          color: data.current.palette.primaryFixedDim, weight: FontWeight.w300),
+                          color: data.palette.primaryFixedDim, weight: FontWeight.w300),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 0),
                       child: comfortatext(data.current.text, 32, data.settings,
-                      weight: FontWeight.w400),
+                      weight: FontWeight.w400, color: data.palette.surface),
                     ),
                   ],
                 ),
@@ -96,7 +96,7 @@ Widget NewMain(data, updateLocation, context) {
           ],
         ),
 
-        NewSunriseSunset(data, data.current.palette),
+        NewSunriseSunset(data: data, key: Key(data.place), size: size,)
         /*
         NewTimes(data, true),
         buildHihiDays(data),

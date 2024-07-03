@@ -21,29 +21,36 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:overmorrow/ui_helper.dart';
 
 class WavePainter extends CustomPainter {
   final double waveValue;
-  final Color color;
-  double hihi;
+  final Color firstColor;
+  final Color secondColor;
+  final double hihi;
 
-  WavePainter(this.waveValue, this.color, this.hihi);
+  WavePainter(this.waveValue, this.firstColor, this.secondColor, this.hihi);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 2.3
+    final firstPaint = Paint()
+      ..color = firstColor
+      ..strokeWidth = 2.4
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
+    final secondPaint = Paint()
+      ..color = secondColor
+      ..strokeWidth = 2.4
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
 
     final path = Path();
+    final amplitude = 2.45;
+    final frequency = 24.0;
+    final splitPoint = hihi * size.width;
 
-    final amplitude = 2.2;
-    final frequency = 20.0;
-
-    for (double x = 0; x <= hihi * size.width; x++) {
+    for (double x = 0; x <= splitPoint; x++) {
       final y = size.height / 2 + amplitude * sin((x / frequency * 2 * pi) + (waveValue * 2 * pi));
       if (x == 0) {
         path.moveTo(x, y);
@@ -51,8 +58,18 @@ class WavePainter extends CustomPainter {
         path.lineTo(x, y);
       }
     }
+    canvas.drawPath(path, firstPaint);
 
-    canvas.drawPath(path, paint);
+    path.reset();
+    for (double x = splitPoint; x <= size.width; x++) {
+      final y = size.height / 2 + amplitude * sin((x / frequency * 2 * pi) + (waveValue * 2 * pi));
+      if (x == splitPoint) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
+    }
+    canvas.drawPath(path, secondPaint);
   }
 
   @override
@@ -61,22 +78,22 @@ class WavePainter extends CustomPainter {
   }
 }
 
-class WavySlider extends StatefulWidget {
-  final Color color;
+class NewSunriseSunset extends StatefulWidget {
   final data;
+  final size;
 
   @override
-  const WavySlider({super.key, required this.color, required this.data});
+  const NewSunriseSunset({super.key, required this.data, required this.size});
 
   @override
-  _WavySliderState createState() => _WavySliderState();
+  _NewSunriseSunsetState createState() => _NewSunriseSunsetState();
 }
 
-class _WavySliderState extends State<WavySlider> with SingleTickerProviderStateMixin {
+class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerProviderStateMixin {
 
   late DateTime riseDT;
-  late int offset;
   late int total;
+  late int hourdif;
 
   late AnimationController _controller;
 
@@ -95,7 +112,8 @@ class _WavySliderState extends State<WavySlider> with SingleTickerProviderStateM
     final setDT = currentTime.copyWith(hour: int.parse(absoluteSet[0]), minute: int.parse(absoluteSet[1]));
 
     final localtimeOld = currentTime.copyWith(hour: int.parse(absoluteLocalTime[0]), minute: int.parse(absoluteLocalTime[1]));
-    offset = currentTime.difference(localtimeOld).inSeconds;
+
+    hourdif = localtimeOld.hour - currentTime.hour;
 
     total = setDT.difference(riseDT).inSeconds;
 
@@ -118,26 +136,56 @@ class _WavySliderState extends State<WavySlider> with SingleTickerProviderStateM
       animation: _controller,
       builder: (context, child) {
 
-        final thisdif = DateTime.now().difference(riseDT).inSeconds - offset;
+        DateTime now = DateTime.now();
+        DateTime localTime = now.add(Duration(hours: hourdif));
+
+        final thisdif = localTime.difference(riseDT).inSeconds;
         final double progress = min(max(thisdif, 0) / total, 1);
 
-        print(progress);
-
-        return CustomPaint(
-          painter: WavePainter(_controller.value, widget.color, progress),
-          child: Container(
-            width: double.infinity,
-            height: 8.0,
+        return Padding(
+          padding: const EdgeInsets.only(left: 25, right: 25, top: 7),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: max(progress * (widget.size.width - 50) - 30, 0)),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: SizedBox(
+                    width: 50,
+                    child: Center(
+                      child: comfortatext("${now.hour + hourdif}:${now.minute}", 15, widget.data.settings,
+                        color: widget.data.palette.primary),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: CustomPaint(
+                  painter: WavePainter(_controller.value, widget.data.palette.primaryFixedDim,
+                      widget.data.palette.surfaceContainerHigh, progress),
+                  child: Container(
+                    width: double.infinity,
+                    height: 8.0,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    comfortatext(widget.data.sunstatus.sunrise, 15, widget.data.settings,
+                        color: widget.data.palette.onSurface),
+                    Spacer(),
+                    comfortatext(widget.data.sunstatus.sunset, 15, widget.data.settings,
+                        color: widget.data.palette.onSurface),
+                  ],
+                ),
+              )
+            ],
           ),
         );
       },
     );
   }
-}
-
-Widget NewSunriseSunset(var data, ColorScheme palette) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-    child: WavySlider(color: palette.primaryFixedDim, data: data, key: Key(data.place),),
-  );
 }
