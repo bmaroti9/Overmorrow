@@ -23,6 +23,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/ui_helper.dart';
 
+import 'decoders/decode_wapi.dart';
+
 class WavePainter extends CustomPainter {
   final double waveValue;
   final Color firstColor;
@@ -140,22 +142,25 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         DateTime localTime = now.add(Duration(hours: hourdif));
 
         final thisdif = localTime.difference(riseDT).inSeconds;
-        final double progress = min(max(thisdif, 0) / total, 1);
+        final double progress = min(max(thisdif / total, 0), 1);
+
+        print((progress, thisdif, total));
+
+        String write = widget.data.settings["Time mode"] == "24 hour"
+            ? convertTime("${localTime.hour}:${localTime.minute} j") //the j is just added so when splitting
+            : amPmTime("${localTime.hour}:${localTime.minute} j"); //it can grab the first item
+
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, top: 7),
+          padding: const EdgeInsets.only(left: 25, right: 25, top: 4),
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: max(progress * (widget.size.width - 50) - 30, 0)),
+                padding: EdgeInsets.only(left: max(progress * (widget.size.width - 50), 0)), //because the width is 70
                 child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: SizedBox(
-                    width: 50,
-                    child: Center(
-                      child: comfortatext("${now.hour + hourdif}:${now.minute}", 15, widget.data.settings,
-                        color: widget.data.palette.primary),
-                    ),
+                  alignment: Alignment.center,
+                  child: FractionallySizedBox(
+                    child: comfortatext(write, 15, widget.data.settings, color: widget.data.palette.primary),
                   ),
                 ),
               ),
