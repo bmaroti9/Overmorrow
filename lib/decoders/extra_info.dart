@@ -151,7 +151,7 @@ class WeatherData {
     final params2 = {
       'client_id': access_key,
       'count' : '1',
-      'query' : "$text_query $real_loc",
+      'query' : "$text_query $real_loc day",
       'content_filter' : 'high',
     };
 

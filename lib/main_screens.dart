@@ -87,9 +87,9 @@ Widget NewMain(data, updateLocation, context) {
             LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   if(constraints.maxWidth > 500.0) {
-                    return Circles(500, data, 0.5, data.current.primary);
+                    return Circles(500, data, 0.5, data.palette.primary);
                   } else {
-                    return Circles(constraints.maxWidth * 0.97, data, 0.5, data.current.primary);
+                    return Circles(constraints.maxWidth * 0.97, data, 0.5, data.palette.primary);
                   }
                 }
             ),

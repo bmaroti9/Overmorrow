@@ -151,9 +151,9 @@ List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
   else if (x == "light") {
     colors = [
       palette.surface,
+      palette.primaryFixedDim,
       palette.primary,
-      palette.onSurface,
-      palette.primary,
+      palette.primaryFixedDim,
       palette.onPrimaryFixed,
       palette.surfaceContainer
     ];

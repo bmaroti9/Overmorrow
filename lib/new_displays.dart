@@ -21,6 +21,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/ui_helper.dart';
 
 import 'decoders/decode_wapi.dart';
@@ -144,31 +145,40 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         final thisdif = localTime.difference(riseDT).inSeconds;
         final double progress = min(max(thisdif / total, 0), 1);
 
-        print((progress, thisdif, total));
-
         String write = widget.data.settings["Time mode"] == "24 hour"
             ? convertTime("${localTime.hour}:${localTime.minute} j") //the j is just added so when splitting
             : amPmTime("${localTime.hour}:${localTime.minute} j"); //it can grab the first item
 
+
+
+        //this is all so that the text will be right above the progress
+        final textPainter = TextPainter(
+          text: TextSpan(text: write, style: GoogleFonts.comfortaa(
+            fontSize: 15.0 * getFontSize(widget.data.settings["Font size"]),
+            height: 1.1,
+          ),),
+          textDirection: TextDirection.ltr
+        );
+        textPainter.layout();
+
+        final textWidth = textPainter.width;
 
         return Padding(
           padding: const EdgeInsets.only(left: 25, right: 25, top: 4),
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: max(progress * (widget.size.width - 50), 0)), //because the width is 70
+                padding: EdgeInsets.only(left: max((progress * (widget.size.width - 50)) - textWidth / 2, 0)),
                 child: Align(
-                  alignment: Alignment.center,
-                  child: FractionallySizedBox(
-                    child: comfortatext(write, 15, widget.data.settings, color: widget.data.palette.primary),
-                  ),
+                  alignment: Alignment.centerLeft,
+                  child: comfortatext(write, 15, widget.data.settings, color: widget.data.palette.primary),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: CustomPaint(
                   painter: WavePainter(_controller.value, widget.data.palette.primaryFixedDim,
-                      widget.data.palette.surfaceContainerHigh, progress),
+                      widget.data.palette.surfaceDim, progress),
                   child: Container(
                     width: double.infinity,
                     height: 8.0,
@@ -179,11 +189,19 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4),
+                      child: Icon(Icons.wb_sunny_outlined, color: widget.data.palette.primaryFixedDim, size: 14,),
+                    ),
                     comfortatext(widget.data.sunstatus.sunrise, 15, widget.data.settings,
-                        color: widget.data.palette.onSurface),
+                        color: widget.data.palette.primaryFixedDim),
                     Spacer(),
                     comfortatext(widget.data.sunstatus.sunset, 15, widget.data.settings,
-                        color: widget.data.palette.onSurface),
+                        color: widget.data.palette.outline),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4),
+                      child: Icon(Icons.nightlight_outlined, color: widget.data.palette.outline, size: 14),
+                    ),
                   ],
                 ),
               )
