@@ -17,13 +17,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 import '../api_key.dart';
 import '../caching.dart';
@@ -31,16 +28,6 @@ import '../caching.dart';
 import '../ui_helper.dart';
 import '../weather_refact.dart';
 import 'decode_wapi.dart';
-
-Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
-  final ImageProvider imageProvider = imageWidget.image;
-
-  PaletteGenerator _paletteGenerator = await PaletteGenerator.fromImageProvider(
-    imageProvider,
-    maximumColorCount: 6,
-  );
-  return _paletteGenerator;
-}
 
 
 Color BackColorCorrection(String text) {
@@ -150,21 +137,21 @@ class WeatherData {
 
     final params2 = {
       'client_id': access_key,
-      'count' : '1',
-      'query' : "$text_query $real_loc day",
+      'query' : "$text_query, $real_loc",
       'content_filter' : 'high',
+      //'collections' : '893395, 1319040, 583204, 11649432, 162468, 1492135',
     };
 
     final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
 
-    var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query, unsplash")
+    var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query unsplash")
         .timeout(const Duration(seconds: 6));
 
     var response2 = await file2.readAsString();
 
     var unsplash_body = jsonDecode(response2);
 
-    String image_path = unsplash_body[0]["urls"]["regular"];
+    String image_path = unsplash_body["urls"]["regular"];
 
     Image hihi = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,);
     //Image hihi = Image.network(image_path, fit: BoxFit.cover);

@@ -38,13 +38,13 @@ class WavePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final firstPaint = Paint()
       ..color = firstColor
-      ..strokeWidth = 2.4
+      ..strokeWidth = 2.5
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
     final secondPaint = Paint()
       ..color = secondColor
-      ..strokeWidth = 2.4
+      ..strokeWidth = 2.5
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
@@ -155,7 +155,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         final textPainter = TextPainter(
           text: TextSpan(text: write, style: GoogleFonts.comfortaa(
             fontSize: 15.0 * getFontSize(widget.data.settings["Font size"]),
-            height: 1.1,
+            fontWeight: FontWeight.w500
           ),),
           textDirection: TextDirection.ltr
         );
@@ -164,18 +164,37 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         final textWidth = textPainter.width;
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, top: 4),
+          padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: max((progress * (widget.size.width - 50)) - textWidth / 2, 0)),
+                padding: EdgeInsets.only(left:
+                min(max((progress * (widget.size.width - 50)) - textWidth / 2 - 3, 0),
+                    widget.size.width - 55 - textWidth)),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: comfortatext(write, 15, widget.data.settings, color: widget.data.palette.primary),
+                  child: comfortatext(write, 15, widget.data.settings, color: widget.data.palette.onPrimaryFixedVariant,
+                  weight: FontWeight.w500),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(5.0),
+                padding: EdgeInsets.only(top: 6,
+                    left: min(max((progress * (widget.size.width - 50)) - 5, 2), widget.size.width - 52)
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    height: 4,
+                    width: 4,
+                    decoration: BoxDecoration(
+                      color: widget.data.palette.primaryFixedDim,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 5),
                 child: CustomPaint(
                   painter: WavePainter(_controller.value, widget.data.palette.primaryFixedDim,
                       widget.data.palette.surfaceDim, progress),
@@ -194,10 +213,10 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                       child: Icon(Icons.wb_sunny_outlined, color: widget.data.palette.primaryFixedDim, size: 14,),
                     ),
                     comfortatext(widget.data.sunstatus.sunrise, 15, widget.data.settings,
-                        color: widget.data.palette.primaryFixedDim),
+                        color: widget.data.palette.primaryFixedDim, weight: FontWeight.w500),
                     Spacer(),
                     comfortatext(widget.data.sunstatus.sunset, 15, widget.data.settings,
-                        color: widget.data.palette.outline),
+                        color: widget.data.palette.outline, weight: FontWeight.w500),
                     Padding(
                       padding: const EdgeInsets.only(left: 4),
                       child: Icon(Icons.nightlight_outlined, color: widget.data.palette.outline, size: 14),

@@ -418,7 +418,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
               elevation: 0,
               padding: const EdgeInsets.all(10),
               backgroundColor: color,
-              side: BorderSide(width: 1.5, color: textColor),
+              side: BorderSide(width: 1.7, color: textColor),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20)
             )

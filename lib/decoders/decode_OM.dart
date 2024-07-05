@@ -195,7 +195,6 @@ class OMCurrent {
       secondary:  colors[4],
       highlight: colors[5],
 
-
       backup_backcolor: back,
       backup_primary: primary,
 

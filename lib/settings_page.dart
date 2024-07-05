@@ -155,7 +155,7 @@ List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
       palette.primary,
       palette.primaryFixedDim,
       palette.onPrimaryFixed,
-      palette.surfaceContainer
+      palette.primaryContainer
     ];
   }
   else if (x == "dark") {

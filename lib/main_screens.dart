@@ -76,7 +76,7 @@ Widget NewMain(data, updateLocation, context) {
                 color: data.current.backcolor, place: data.place,
                 controller: controller, settings: data.settings, real_loc: data.real_loc,
                 secondColor: data.current.primary, textColor: data.current.textcolor,
-                highlightColor: data.current.highlight, key: Key("${data.place}, ${data.current.backdrop}"),),
+                highlightColor: data.current.highlight, key: Key("${data.place}, ${data.image}"),),
             ],
           )
       ),
