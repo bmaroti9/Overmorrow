@@ -173,7 +173,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                     widget.size.width - 55 - textWidth)),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: comfortatext(write, 15, widget.data.settings, color: widget.data.palette.onPrimaryFixedVariant,
+                  child: comfortatext(write, 15, widget.data.settings, color: widget.data.palette.secondary,
                   weight: FontWeight.w500),
                 ),
               ),
@@ -197,7 +197,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                 padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 5),
                 child: CustomPaint(
                   painter: WavePainter(_controller.value, widget.data.palette.primaryFixedDim,
-                      widget.data.palette.surfaceDim, progress),
+                      darken(widget.data.palette.surfaceVariant, 0.03), progress),
                   child: Container(
                     width: double.infinity,
                     height: 8.0,

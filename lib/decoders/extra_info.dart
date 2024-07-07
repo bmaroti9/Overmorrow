@@ -127,10 +127,12 @@ class WeatherData {
 
     WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
 
-    String text_query = textCorrection(
+    String _text = textCorrection(
         wapi_body["current"]["condition"]["code"], wapi_body["current"]["is_day"],
-        language: settings["Language"]
+        language: 'english'
     );
+
+    String text_query = textToUnsplashText[_text]!;
 
     String addon = wapi_body["current"]["is_day"] == 1 ? 'daytime' : 'nighttime';
     print(addon);
@@ -144,7 +146,7 @@ class WeatherData {
 
     final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
 
-    var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query unsplash")
+    var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query")
         .timeout(const Duration(seconds: 6));
 
     var response2 = await file2.readAsString();

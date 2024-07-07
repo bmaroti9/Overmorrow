@@ -304,6 +304,25 @@ Map<String, List<double>> conversionTable = {
   'hPa': [0, 33.863886],
 };
 
+//I am trying to convert conditions to text that unsplash better understands
+//for example: blue sky instead of clear sky tends to help a lot
+Map<String, String> textToUnsplashText = {
+  'Clear Night': 'night', //somehow just 'night' always gives you clear skies: stars or moon
+  'Partly Cloudy': 'cloudy', //this is also some simplification which improves a lot
+  'Clear Sky': 'blue sky', //it doesn't understand clear as much so i use blue instead
+  'Overcast': 'overcast',
+  'Haze': 'haze',
+  'Rain': 'rain',
+  'Sleet': 'freezing rain',//this works much better
+  'Drizzle': 'light rain', //somehow understands it more though still not perfect
+  'Thunderstorm': 'thunderstorm',
+  'Heavy Snow': 'heavy snow',
+  'Fog': 'fog',
+  'Snow': 'snow',
+  'Heavy Rain': 'heavy rain',
+  'Cloudy Night' : 'cloudy night' //if you specify cloudy then it gives cloudy results
+};
+
 //if i have to get the average of two weather conditions then the condition
 // with the highest value will be chosen
 Map<String, int> weatherConditionBiassTable = {

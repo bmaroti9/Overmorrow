@@ -67,7 +67,7 @@ Widget NewMain(data, updateLocation, context) {
                     Padding(
                       padding: const EdgeInsets.only(left: 0),
                       child: comfortatext(data.current.text, 32, data.settings,
-                      weight: FontWeight.w400, color: data.palette.surface),
+                      weight: data.settings["Color mode"] == "dark" ? FontWeight.w600 : FontWeight.w400, color: data.palette.surface),
                     ),
                   ],
                 ),
@@ -76,7 +76,7 @@ Widget NewMain(data, updateLocation, context) {
                 color: data.current.backcolor, place: data.place,
                 controller: controller, settings: data.settings, real_loc: data.real_loc,
                 secondColor: data.current.primary, textColor: data.current.textcolor,
-                highlightColor: data.current.highlight, key: Key("${data.place}, ${data.image}"),),
+                highlightColor: data.current.highlight, key: Key("${data.place}, ${data.image} ${data.settings}"),),
             ],
           )
       ),
