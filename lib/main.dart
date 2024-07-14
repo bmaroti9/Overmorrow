@@ -210,7 +210,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
     //defaults to new york when no previous location was found
-    updateLocation('40.7128, 74.0060', "New York", time: 300, startup: true);
+    updateLocation('40.7128, 74.0060', "New York", time: 300, startup: true); //just for testing
   }
 
   Future<void> updateLocation(proposedLoc, backupName, {time = 500, startup = false}) async {

@@ -62,7 +62,7 @@ Widget NewMain(data, updateLocation, context) {
                     Padding(
                       padding: const EdgeInsets.only(left: 0, bottom: 2),
                       child: comfortatext("${data.current.temp}°", 68, data.settings,
-                          color: data.palette.primaryFixedDim, weight: FontWeight.w300),
+                          color: data.colorpopdemo, weight: FontWeight.w300),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 0),
@@ -94,6 +94,53 @@ Widget NewMain(data, updateLocation, context) {
                 }
             ),
           ],
+        ),
+
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            height: 35,
+            width: 35,
+            decoration: BoxDecoration(
+                color: data.backcolordemo,
+                borderRadius: BorderRadius.circular(5)
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            height: 35,
+            width: 35,
+            decoration: BoxDecoration(
+                color: data.colorpopdemo,
+                borderRadius: BorderRadius.circular(5)
+            ),
+          ),
+        ),
+
+        Container(
+          padding: EdgeInsets.all(6),
+          height: 47,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemExtent: 35,
+            itemBuilder: (BuildContext context, int index) {
+              if (index < data.colorlistdemo.length) {
+                return Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Container(
+                    height: 35,
+                    width: 35,
+                    decoration: BoxDecoration(
+                      color: data.colorlistdemo[index],
+                      borderRadius: BorderRadius.circular(5)
+                    ),
+                  ),
+                );
+              }
+            }
+          ),
         ),
 
         NewSunriseSunset(data: data, key: Key(data.place), size: size,)

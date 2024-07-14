@@ -63,7 +63,7 @@ Widget comfortatext(String text, double size, settings,
       height: 1.1,
     ),
     overflow: TextOverflow.ellipsis,
-    maxLines: 3,
+    maxLines: 40,
     textAlign: align,
 
 );

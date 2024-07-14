@@ -16,11 +16,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 import '../api_key.dart';
 import '../caching.dart';
@@ -29,11 +32,52 @@ import '../ui_helper.dart';
 import '../weather_refact.dart';
 import 'decode_wapi.dart';
 
+int difBetweenTwoColors(Color color1, Color color2) {
+  int r = (color1.red - color2.red).abs();
+  int g = (color1.green - color2.green).abs();
+  int b = (color1.blue - color2.blue).abs();
+  return r + g + b;
+}
 
 Color BackColorCorrection(String text) {
   //return Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
   return accentColors[text] ?? WHITE;
 }
+
+Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
+  final ImageProvider imageProvider = imageWidget.image;
+
+  final Completer<ImageInfo> completer = Completer();
+  final ImageStreamListener listener = ImageStreamListener((ImageInfo info, bool _) {
+    if (!completer.isCompleted) {
+      completer.complete(info);
+    }
+  });
+
+  imageProvider.resolve(const ImageConfiguration()).addListener(listener);
+
+  final ImageInfo imageInfo = await completer.future;
+  final int imageHeight = imageInfo.image.height;
+
+  final double regionWidth = imageHeight / 4.5;
+  final double regionHeight = imageHeight / 4.5;
+  final Rect region = Rect.fromLTWH(
+    regionWidth * 0.3,
+    imageHeight - regionHeight * 2.2,
+    regionWidth,
+    regionHeight,
+  );
+
+  PaletteGenerator _paletteGenerator = await PaletteGenerator.fromImage(
+    imageInfo.image,
+    region: region,
+  );
+
+  imageProvider.resolve(const ImageConfiguration()).removeListener(listener);
+
+  return _paletteGenerator;
+}
+
 
 Future<ColorScheme> _materialPalette(Image imageWidget, theme) async {
   final ImageProvider imageProvider = imageWidget.image;
@@ -77,6 +121,9 @@ class WeatherData {
   final localtime;
 
   final palette;
+  final colorpopdemo;
+  final colorlistdemo;
+  final backcolordemo;
 
   WeatherData({
     required this.place,
@@ -95,6 +142,10 @@ class WeatherData {
     required this.image,
     required this.localtime,
     required this.palette,
+    required this.colorpopdemo,
+    required this.colorlistdemo,
+    required this.backcolordemo,
+
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
@@ -141,6 +192,7 @@ class WeatherData {
       'client_id': access_key,
       'query' : "$text_query, $real_loc",
       'content_filter' : 'high',
+      'count': '3',
       //'collections' : '893395, 1319040, 583204, 11649432, 162468, 1492135',
     };
 
@@ -152,8 +204,10 @@ class WeatherData {
     var response2 = await file2.readAsString();
 
     var unsplash_body = jsonDecode(response2);
+    
+    var rng = Random();
 
-    String image_path = unsplash_body["urls"]["regular"];
+    String image_path = unsplash_body[rng.nextInt(3)]["urls"]["regular"];
 
     Image hihi = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,);
     //Image hihi = Image.network(image_path, fit: BoxFit.cover);
@@ -164,6 +218,25 @@ class WeatherData {
 
     final loctime = wapi_body["location"]["localtime"].split(" ")[1];
     final ColorScheme palette = await _materialPalette(hihi, settings["Color mode"]);
+
+    final PaletteGenerator pali = await _generatorPalette(hihi);
+
+    final Color dominant = pali.dominantColor!.color;
+
+    Color bestcolor = palette.primaryFixedDim;
+    int bestDif = difBetweenTwoColors(bestcolor, dominant);
+
+    print(("bestdif", bestDif));
+
+    if (bestDif < 250) {
+      for (int i = 0; i < pali.colors.length; i++) {
+        int newdif = difBetweenTwoColors(pali.colors.toList()[i], dominant);
+        if (newdif > bestDif) {
+          bestDif = newdif;
+          bestcolor = pali.colors.toList()[i];
+        }
+      }
+    }
 
     if (provider == 'weatherapi.com') {
       List<WapiDay> days = [];
@@ -193,6 +266,9 @@ class WeatherData {
         image: hihi,
         localtime: loctime,
         palette: palette,
+        colorpopdemo: bestcolor,
+        colorlistdemo: pali.colors.toList(),
+        backcolordemo: pali.dominantColor!.color,
       );
     }
     else {
@@ -222,7 +298,7 @@ class WeatherData {
         aqi: WapiAqi.fromJson(wapi_body),
         sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
 
-        current: OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, palette),
+        current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, palette),
             //await _generatorPalette(hihi)),
         days: days,
 
@@ -239,6 +315,9 @@ class WeatherData {
         image: hihi,
         localtime: loctime,
         palette: palette,
+        colorpopdemo: bestcolor,
+        colorlistdemo: pali.colors.toList(),
+        backcolordemo: pali.dominantColor!.color,
       );
     }
   }
