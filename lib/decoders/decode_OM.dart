@@ -17,18 +17,36 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
 
+import '../caching.dart';
 import '../settings_page.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart';
 import 'extra_info.dart';
 
+Future<dynamic> OMRequestData(double lat, double lng, String real_loc) async {
+  final oMParams = {
+    "latitude": lat.toString(),
+    "longitude": lng.toString(),
+    "current": ["temperature_2m", "relative_humidity_2m", "apparent_temperature", "weather_code", "wind_speed_10m", 'wind_direction_10m'],
+    "hourly": ["temperature_2m", "precipitation", "weather_code", "wind_speed_10m"],
+    "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "uv_index_max", "precipitation_sum", "precipitation_probability_max", "wind_speed_10m_max", "wind_direction_10m_dominant"],
+    "timezone": "auto",
+    "forecast_days": "14"
+  };
+  final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
 
+  var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
+  var oMResponse = await oMFile.readAsString();
+  final OMData = jsonDecode(oMResponse);
+  return OMData;
+}
 
 String oMGetName(index, settings, item) {
   if (index < 3) {

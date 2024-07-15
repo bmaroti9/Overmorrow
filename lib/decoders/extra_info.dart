@@ -32,11 +32,111 @@ import '../ui_helper.dart';
 import '../weather_refact.dart';
 import 'decode_wapi.dart';
 
+Future<Image> getUnsplashImage(var wapi_body, String real_loc) async {
+  String _text = textCorrection(
+      wapi_body["current"]["condition"]["code"], wapi_body["current"]["is_day"],
+      language: 'english'
+  );
+
+  String text_query = textToUnsplashText[_text]!;
+
+  String addon = wapi_body["current"]["is_day"] == 1 ? 'daytime' : 'nighttime';
+  print(addon);
+
+  final params2 = {
+    'client_id': access_key,
+    'query' : "$text_query, $real_loc",
+    'content_filter' : 'high',
+    'count': '3',
+    //'collections' : '893395, 1319040, 583204, 11649432, 162468, 1492135',
+  };
+
+  final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
+
+  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query")
+      .timeout(const Duration(seconds: 6));
+
+  var response2 = await file2.readAsString();
+
+  var unsplash_body = jsonDecode(response2);
+
+  var rng = Random();
+
+  String image_path = unsplash_body[rng.nextInt(3)]["urls"]["regular"];
+
+  print(image_path);
+
+  return Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,);
+}
+
+Future<dynamic> getImageColors(Image Uimage, color_mode) async {
+  final ColorScheme palette = await _materialPalette(Uimage, color_mode);
+  final PaletteGenerator pali = await _generatorPalette(Uimage);
+
+  final Color dominant = averageColor(pali.colors.toList());
+
+  Color startcolor = palette.primaryFixedDim;
+
+  Color bestcolor = palette.primaryFixedDim;
+  int bestDif = difBetweenTwoColors(bestcolor, dominant);
+
+  List<Color> colorsdemo = [];
+
+  print(("bestdif", bestDif));
+
+  if (bestDif < 300) {
+    for (int i = 1; i < 4; i++) {
+      //LIGHT
+      Color newcolor = lighten(startcolor, i / 20);
+      int newdif = difBetweenTwoColors(newcolor, dominant);
+      if (newdif > bestDif && newdif < 500) {
+        bestDif = newdif;
+        bestcolor = newcolor;
+      }
+      colorsdemo.add(newcolor);
+
+      //DARK
+      newcolor = darken(startcolor, i / 20);
+      newdif = difBetweenTwoColors(newcolor, dominant);
+      if (newdif > bestDif && newdif < 500) {
+        bestDif = newdif;
+        bestcolor = newcolor;
+      }
+      colorsdemo.add(newcolor);
+    }
+  }
+
+  Color desc_color = palette.surface;
+  int desc_dif = difBetweenTwoColors(desc_color, dominant);
+
+  if (desc_dif < 220) {
+    desc_color = bestcolor;
+  }
+
+  return [palette, bestcolor, desc_color];
+}
+
 int difBetweenTwoColors(Color color1, Color color2) {
   int r = (color1.red - color2.red).abs();
   int g = (color1.green - color2.green).abs();
   int b = (color1.blue - color2.blue).abs();
   return r + g + b;
+}
+
+Color averageColor(List<Color> colors) {
+  if (colors.length > 0) {
+    int r = 0;
+    int g = 0;
+    int b = 0;
+    for (int i = 0; i < colors.length; i++) {
+      r += colors[i].red; g += colors[i].green; b += colors[i].blue;
+    }
+    r = r ~/ colors.length;
+    g = g ~/ colors.length;
+    b = b ~/ colors.length;
+    return Color.fromARGB(255, r, g, b);
+  }
+  return Colors.grey;
 }
 
 Color BackColorCorrection(String text) {
@@ -75,11 +175,11 @@ Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
 
   print((new_left, new_top, crop_absolute, (desiredSquare / 2) / crop_absolute));
 
-  final double regionWidth = 100;
-  final double regionHeight = 100;
+  final double regionWidth = 50;
+  final double regionHeight = 50;
   final Rect region = Rect.fromLTWH(
-    new_left + (30 / crop_absolute),
-    new_top + (280 / crop_absolute),
+    new_left + (40 / crop_absolute),
+    new_top + (300 / crop_absolute),
     (regionWidth / crop_absolute),
     (regionHeight / crop_absolute),
   );
@@ -90,6 +190,7 @@ Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
   PaletteGenerator _paletteGenerator = await PaletteGenerator.fromImage(
     imageInfo.image,
     region: region,
+    maximumColorCount: 3
   );
 
   imageProvider.resolve(const ImageConfiguration()).removeListener(listener);
@@ -140,9 +241,7 @@ class WeatherData {
   final localtime;
 
   final palette;
-  final colorpopdemo;
-  final colorlistdemo;
-  final backcolordemo;
+  final colorpop;
   final desc_color;
 
   WeatherData({
@@ -161,10 +260,9 @@ class WeatherData {
     required this.updatedTime,
     required this.image,
     required this.localtime,
+
     required this.palette,
-    required this.colorpopdemo,
-    required this.colorlistdemo,
-    required this.backcolordemo,
+    required this.colorpop,
     required this.desc_color,
   });
 
@@ -174,98 +272,25 @@ class WeatherData {
     double lat = double.parse(split[0]);
     double lng = double.parse(split[1]);
 
-    //gets the json response for weatherapi.com
-    final params = {
-      'key': wapi_Key,
-      'q': latlong,
-      'days': '3',
-      'aqi': 'yes',
-      'alerts': 'no',
-    };
-    final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
+    //GET WEATHERAPI DATA
+    var wapi = await WapiMakeRequest(latlong, real_loc);
 
-    var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com")
-        .timeout(const Duration(seconds: 6));
+    var wapi_body = wapi[0];
+    DateTime fetch_datetime = wapi[1];
 
-    DateTime fetch_datetime = await file.lastModified();
 
-    var response = await file.readAsString();
+    //GET IMAGE
+    Image Uimage = await getUnsplashImage(wapi_body, real_loc);
 
-    var wapi_body = jsonDecode(response);
+    final loctime = wapi_body["location"]["localtime"].split(" ")[1];
+
+    //GET COLORS
+    List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
+
 
     var timenow = wapi_body["location"]["localtime_epoch"];
     String real_time = wapi_body["location"]["localtime"];
-
     WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
-
-    String _text = textCorrection(
-        wapi_body["current"]["condition"]["code"], wapi_body["current"]["is_day"],
-        language: 'english'
-    );
-
-    String text_query = textToUnsplashText[_text]!;
-
-    String addon = wapi_body["current"]["is_day"] == 1 ? 'daytime' : 'nighttime';
-    print(addon);
-
-    final params2 = {
-      'client_id': access_key,
-      'query' : "$text_query, $real_loc",
-      'content_filter' : 'high',
-      'count': '3',
-      //'collections' : '893395, 1319040, 583204, 11649432, 162468, 1492135',
-    };
-
-    final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
-
-    var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query")
-        .timeout(const Duration(seconds: 6));
-
-    var response2 = await file2.readAsString();
-
-    var unsplash_body = jsonDecode(response2);
-    
-    var rng = Random();
-
-    String image_path = unsplash_body[rng.nextInt(3)]["urls"]["regular"];
-
-    print(image_path);
-
-    Image hihi = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,);
-    //Image hihi = Image.network(image_path, fit: BoxFit.cover);
-
-    //String color = wapi_body2["color"].replaceAll('#', '0xff');
-
-    //Color otherColor = Color(int.parse(color));
-
-    final loctime = wapi_body["location"]["localtime"].split(" ")[1];
-    final ColorScheme palette = await _materialPalette(hihi, settings["Color mode"]);
-
-    final PaletteGenerator pali = await _generatorPalette(hihi);
-
-    final Color dominant = pali.dominantColor!.color;
-
-    Color bestcolor = palette.primaryFixedDim;
-    int bestDif = difBetweenTwoColors(bestcolor, dominant);
-
-    print(("bestdif", bestDif));
-
-    if (bestDif < 280) {
-      for (int i = 0; i < pali.colors.length; i++) {
-        int newdif = difBetweenTwoColors(pali.colors.toList()[i], dominant);
-        if (newdif > bestDif && newdif < 450) {
-          bestDif = newdif;
-          bestcolor = pali.colors.toList()[i];
-        }
-      }
-    }
-
-    Color desc_color = palette.surface;
-    int desc_dif = difBetweenTwoColors(desc_color, dominant);
-
-    if (desc_dif < 220) {
-      desc_color = bestcolor;
-    }
 
     if (provider == 'weatherapi.com') {
       List<WapiDay> days = [];
@@ -292,30 +317,16 @@ class WeatherData {
 
         fetch_datetime: fetch_datetime,
         updatedTime: DateTime.now(),
-        image: hihi,
+        image: Uimage,
         localtime: loctime,
-        palette: palette,
-        colorpopdemo: bestcolor,
-        colorlistdemo: pali.colors.toList(),
-        backcolordemo: pali.dominantColor!.color,
-        desc_color: desc_color,
+        palette: imageColors[0],
+        colorpop: imageColors[1],
+        desc_color: imageColors[2],
       );
     }
     else {
-      final oMParams = {
-        "latitude": lat.toString(),
-        "longitude": lng.toString(),
-        "current": ["temperature_2m", "relative_humidity_2m", "apparent_temperature", "weather_code", "wind_speed_10m", 'wind_direction_10m'],
-        "hourly": ["temperature_2m", "precipitation", "weather_code", "wind_speed_10m"],
-        "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "uv_index_max", "precipitation_sum", "precipitation_probability_max", "wind_speed_10m_max", "wind_direction_10m_dominant"],
-        "timezone": "auto",
-        "forecast_days": "14"
-      };
-      final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
-
-      var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
-      var oMResponse = await oMFile.readAsString();
-      var oMBody = jsonDecode(oMResponse);
+      //GET OM data
+      var oMBody = await OMRequestData(lat, lng, real_loc);
 
       List<OMDay> days = [];
       for (int n = 0; n < 14; n++) {
@@ -328,7 +339,7 @@ class WeatherData {
         aqi: WapiAqi.fromJson(wapi_body),
         sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
 
-        current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, palette),
+        current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, imageColors[0]),
             //await _generatorPalette(hihi)),
         days: days,
 
@@ -342,13 +353,11 @@ class WeatherData {
 
         fetch_datetime: fetch_datetime,
         updatedTime: DateTime.now(),
-        image: hihi,
+        image: Uimage,
         localtime: loctime,
-        palette: palette,
-        colorpopdemo: bestcolor,
-        colorlistdemo: pali.colors.toList(),
-        backcolordemo: pali.dominantColor!.color,
-        desc_color: desc_color,
+        palette: imageColors[0],
+        colorpop: imageColors[1],
+        desc_color: imageColors[2],
       );
     }
   }

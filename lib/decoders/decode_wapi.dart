@@ -16,9 +16,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 
+import '../api_key.dart';
+import '../caching.dart';
 import '../settings_page.dart';
 import '../ui_helper.dart';
 
@@ -28,6 +32,29 @@ import 'extra_info.dart';
 //decodes the whole response from the weatherapi.com api_call
 
 bool RandomSwitch = false;
+
+Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
+  //gets the json response for weatherapi.com
+  final params = {
+    'key': wapi_Key,
+    'q': latlong,
+    'days': '3',
+    'aqi': 'yes',
+    'alerts': 'no',
+  };
+  final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
+
+  var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com")
+      .timeout(const Duration(seconds: 6));
+
+  DateTime fetch_datetime = await file.lastModified();
+
+  var response = await file.readAsString();
+
+  var wapi_body = jsonDecode(response);
+
+  return [wapi_body, fetch_datetime];
+}
 
 int wapiGetWindDir(var data) {
   int total = 0;
