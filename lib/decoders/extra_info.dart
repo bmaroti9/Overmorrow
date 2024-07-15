@@ -58,15 +58,34 @@ Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
 
   final ImageInfo imageInfo = await completer.future;
   final int imageHeight = imageInfo.image.height;
+  final int imageWidth = imageInfo.image.height;
 
-  final double regionWidth = imageHeight / 4.5;
-  final double regionHeight = imageHeight / 4.5;
+  final int desiredSquare = 400; //approximation because the top half image cropped is almost a square
+
+  final double crop_x = desiredSquare / imageWidth;
+  final double crop_y = desiredSquare / imageHeight;
+
+  final double crop_absolute = max(crop_y, crop_x);
+
+  final double center_x = imageWidth / 2;
+  final double center_y = imageHeight / 2;
+
+  final new_left = center_x - ((desiredSquare / 2) / crop_absolute);
+  final new_top = center_y - ((desiredSquare / 2) / crop_absolute);
+
+  print((new_left, new_top, crop_absolute, (desiredSquare / 2) / crop_absolute));
+
+  final double regionWidth = 100;
+  final double regionHeight = 100;
   final Rect region = Rect.fromLTWH(
-    regionWidth * 0.3,
-    imageHeight - regionHeight * 2.2,
-    regionWidth,
-    regionHeight,
+    new_left + (30 / crop_absolute),
+    new_top + (280 / crop_absolute),
+    (regionWidth / crop_absolute),
+    (regionHeight / crop_absolute),
   );
+
+  print(("original image", imageWidth, imageHeight));
+  print(("cropped image",new_left + 30, new_top + 330, regionWidth, regionHeight,));
 
   PaletteGenerator _paletteGenerator = await PaletteGenerator.fromImage(
     imageInfo.image,
@@ -124,6 +143,7 @@ class WeatherData {
   final colorpopdemo;
   final colorlistdemo;
   final backcolordemo;
+  final desc_color;
 
   WeatherData({
     required this.place,
@@ -145,7 +165,7 @@ class WeatherData {
     required this.colorpopdemo,
     required this.colorlistdemo,
     required this.backcolordemo,
-
+    required this.desc_color,
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
@@ -209,6 +229,8 @@ class WeatherData {
 
     String image_path = unsplash_body[rng.nextInt(3)]["urls"]["regular"];
 
+    print(image_path);
+
     Image hihi = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,);
     //Image hihi = Image.network(image_path, fit: BoxFit.cover);
 
@@ -228,14 +250,21 @@ class WeatherData {
 
     print(("bestdif", bestDif));
 
-    if (bestDif < 250) {
+    if (bestDif < 280) {
       for (int i = 0; i < pali.colors.length; i++) {
         int newdif = difBetweenTwoColors(pali.colors.toList()[i], dominant);
-        if (newdif > bestDif) {
+        if (newdif > bestDif && newdif < 450) {
           bestDif = newdif;
           bestcolor = pali.colors.toList()[i];
         }
       }
+    }
+
+    Color desc_color = palette.surface;
+    int desc_dif = difBetweenTwoColors(desc_color, dominant);
+
+    if (desc_dif < 220) {
+      desc_color = bestcolor;
     }
 
     if (provider == 'weatherapi.com') {
@@ -269,6 +298,7 @@ class WeatherData {
         colorpopdemo: bestcolor,
         colorlistdemo: pali.colors.toList(),
         backcolordemo: pali.dominantColor!.color,
+        desc_color: desc_color,
       );
     }
     else {
@@ -318,6 +348,7 @@ class WeatherData {
         colorpopdemo: bestcolor,
         colorlistdemo: pali.colors.toList(),
         backcolordemo: pali.dominantColor!.color,
+        desc_color: desc_color,
       );
     }
   }
