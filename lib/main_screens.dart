@@ -67,7 +67,7 @@ Widget NewMain(data, updateLocation, context) {
                     Padding(
                       padding: const EdgeInsets.only(left: 0),
                       child: comfortatext(data.current.text, 32, data.settings,
-                      weight: data.settings["Color mode"] == "dark" ? FontWeight.w600 : FontWeight.w400, color: data.palette.surface),
+                      weight: data.settings["Color mode"] == "dark" ? FontWeight.w600 : FontWeight.w400, color: data.desc_color),
                     ),
                   ],
                 ),
@@ -96,7 +96,8 @@ Widget NewMain(data, updateLocation, context) {
           ],
         ),
 
-        NewSunriseSunset(data: data, key: Key(data.place), size: size,)
+        NewSunriseSunset(data: data, key: Key(data.place), size: size,),
+        NewAirQuality(data),
         /*
         NewTimes(data, true),
         buildHihiDays(data),

@@ -22,6 +22,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 
 import 'decoders/decode_wapi.dart';
@@ -230,4 +231,77 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
       },
     );
   }
+}
+
+Widget NewAirQuality(var data) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 22, right: 22, bottom: 19, top: 15),
+    child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10, left: 5),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: comfortatext(translation('air quality', data.settings["Language"]), 16, data.settings,
+                color: data.palette.primary),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              //border: Border.all(width: 1.2, color: data.current.textcolor)
+              color: data.palette.surfaceContainer
+          ),
+          padding: const EdgeInsets.all(11),
+          child: Row(
+            children: [
+              Column(
+                children: [
+                  Container(
+                    height: 85,
+                    width: 85,
+                    decoration: BoxDecoration(
+                      color: data.current.primary,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: comfortatext(data.aqi.aqi_index.toString(), 38, data.settings,
+                            color: data.current.backcolor),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                          width: 120,
+                          child: comfortatext(
+                              translation(['good', 'moderate', 'slightly unhealthy',
+                                'unhealthy', 'very unhealthy',
+                                'hazardous'][data.aqi.aqi_index - 1], data.settings["Language"]), 15, data.settings,
+                              color: data.current.textcolor, align: TextAlign.center)
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    NewAqiDataPoints("PM2.5", data.aqi.pm2_5, data),
+                    NewAqiDataPoints("PM10", data.aqi.pm10, data),
+                    NewAqiDataPoints("O3", data.aqi.o3, data),
+                    NewAqiDataPoints("NO2", data.aqi.no2, data),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 }

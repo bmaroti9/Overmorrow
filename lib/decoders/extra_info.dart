@@ -80,7 +80,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
   Color bestcolor = palette.primaryFixedDim;
   int bestDif = difBetweenTwoColors(bestcolor, dominant);
 
-  List<Color> colorsdemo = [];
+  print(dominant);
 
   print(("bestdif", bestDif));
 
@@ -93,7 +93,6 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
         bestDif = newdif;
         bestcolor = newcolor;
       }
-      colorsdemo.add(newcolor);
 
       //DARK
       newcolor = darken(startcolor, i / 20);
@@ -102,18 +101,37 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
         bestDif = newdif;
         bestcolor = newcolor;
       }
-      colorsdemo.add(newcolor);
     }
   }
 
   Color desc_color = palette.surface;
   int desc_dif = difBetweenTwoColors(desc_color, dominant);
 
-  if (desc_dif < 220) {
+  print(("desc_dif", desc_dif));
+
+  if (desc_dif < 200) {
     desc_color = bestcolor;
   }
 
-  return [palette, bestcolor, desc_color];
+  List<Color> gradientColors = getGradientColors(palette.primaryFixedDim, palette.error, 10);
+
+  return [palette, bestcolor, desc_color, gradientColors, dominant];
+}
+
+List<Color> getGradientColors(Color color1, Color color2, int number) {
+  int r = color1.red; int g = color1.green; int b = color1.blue;
+  int dif_r = (color2.red - color1.red) ~/ number;
+  int dif_g = (color2.green - color1.green) ~/ number;
+  int dif_b = (color2.blue - color1.blue) ~/ number;
+
+  List<Color> colors = [];
+
+  for (int i = 0; i < number; i++) {
+    r += dif_r; b += dif_b; g += dif_g;
+    colors.add(Color.fromARGB(255, r, g, b));
+  }
+
+  return colors;
 }
 
 int difBetweenTwoColors(Color color1, Color color2) {
@@ -243,6 +261,7 @@ class WeatherData {
   final palette;
   final colorpop;
   final desc_color;
+  final gradientColors;
 
   WeatherData({
     required this.place,
@@ -264,6 +283,7 @@ class WeatherData {
     required this.palette,
     required this.colorpop,
     required this.desc_color,
+    required this.gradientColors,
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
@@ -322,6 +342,7 @@ class WeatherData {
         palette: imageColors[0],
         colorpop: imageColors[1],
         desc_color: imageColors[2],
+        gradientColors: imageColors[3],
       );
     }
     else {
@@ -358,6 +379,7 @@ class WeatherData {
         palette: imageColors[0],
         colorpop: imageColors[1],
         desc_color: imageColors[2],
+        gradientColors: imageColors[3],
       );
     }
   }
