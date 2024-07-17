@@ -152,7 +152,7 @@ List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
     colors = [
       palette.surface,
       palette.primaryFixedDim,
-      palette.primary,
+      palette.secondary,
       palette.primaryFixedDim,
       palette.onPrimaryFixed,
       palette.primaryContainer
@@ -161,11 +161,11 @@ List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
   else if (x == "dark") {
     colors = [
       palette.surface,
+      palette.primaryFixedDim,
       palette.secondary,
-      palette.onSecondaryContainer,
-      palette.secondary,
-      palette.onSurface,
-      palette.surfaceContainer
+      palette.primaryFixedDim,
+      palette.onPrimaryFixed,
+      palette.primaryContainer
     ];
   }
   return colors;

@@ -286,57 +286,25 @@ class DescriptionCircle extends StatelessWidget {
 }
 
 Widget NewAqiDataPoints(String name, double value, var data) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 10, bottom: 4, top: 4),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: 60,
-            child: comfortatext(name, 17, data.settings, color: data.palette.primary,
-            align: TextAlign.end)
-        ),
-        Container(
-          height: 12,
-          padding: EdgeInsets.only(left: 5),
-          child: ListView.builder(
-              itemExtent: 9.3,
-              scrollDirection: Axis.horizontal,
-              itemCount: 10,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                if (index < value / 13) {
-                  return Center(
-                    child: Container(
-                      width: 3,
-                      height: 11,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: data.gradientColors[index],
-                      ),
-                    ),
-                  );
-                }
-                return Center(
-                  child: Container(
-                    width: 4,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: data.palette.primaryFixedDim,
-                    ),
-                  ),
-                );
-              }
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      comfortatext(name, 15, data.settings, color: data.palette.secondary,
+      align: TextAlign.end),
+      Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Container(
+          width: 2.5,
+          height: 2.5,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: data.palette.primaryFixedDim,
           ),
         ),
-        SizedBox(
-          width: 40,
-          child: comfortatext(value.toString(), 18, data.settings, color: data.palette.primary,
-              align: TextAlign.end, weight: FontWeight.w600),
-        ),
-      ],
-    ),
+      ),
+      comfortatext(value.toString(), 15, data.settings, color: data.palette.primaryFixedDim,
+          align: TextAlign.end, weight: FontWeight.w600),
+    ],
   );
 }
 

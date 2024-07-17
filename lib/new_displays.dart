@@ -165,7 +165,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         final textWidth = textPainter.width;
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
+          padding: const EdgeInsets.only(left: 25, right: 25, top: 8),
           child: Column(
             children: [
               Padding(
@@ -235,72 +235,72 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
 
 Widget NewAirQuality(var data) {
   return Padding(
-    padding: const EdgeInsets.only(left: 22, right: 22, bottom: 19, top: 15),
+    padding: const EdgeInsets.only(left: 22, right: 22, bottom: 19, top: 20),
     child: Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 10, left: 5),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: comfortatext(translation('air quality', data.settings["Language"]), 16, data.settings,
-                color: data.palette.primary),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              //border: Border.all(width: 1.2, color: data.current.textcolor)
-              color: data.palette.surfaceContainer
-          ),
-          padding: const EdgeInsets.all(11),
+          padding: const EdgeInsets.only(bottom: 6, left: 5),
           child: Row(
             children: [
-              Column(
-                children: [
-                  Container(
-                    height: 85,
-                    width: 85,
-                    decoration: BoxDecoration(
-                      color: data.current.primary,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: comfortatext(data.aqi.aqi_index.toString(), 38, data.settings,
-                            color: data.current.backcolor),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: SizedBox(
-                          width: 120,
-                          child: comfortatext(
-                              translation(['good', 'moderate', 'slightly unhealthy',
-                                'unhealthy', 'very unhealthy',
-                                'hazardous'][data.aqi.aqi_index - 1], data.settings["Language"]), 15, data.settings,
-                              color: data.current.textcolor, align: TextAlign.center)
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    NewAqiDataPoints("PM2.5", data.aqi.pm2_5, data),
-                    NewAqiDataPoints("PM10", data.aqi.pm10, data),
-                    NewAqiDataPoints("O3", data.aqi.o3, data),
-                    NewAqiDataPoints("NO2", data.aqi.no2, data),
-                  ],
-                ),
+              comfortatext(translation('air quality', data.settings["Language"]), 16, data.settings,
+                  color: data.palette.secondary),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Icon(Icons.arrow_forward, size: 16, color: data.palette.secondary,),
               )
             ],
           ),
         ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 5, top: 5, right: 14),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: data.palette.surfaceContainerLow
+                ),
+                width: 65,
+                height: 65,
+                child: Center(
+                  child: comfortatext(data.aqi.aqi_index.toString(), 32, data.settings, color: data.palette.primaryFixedDim)
+                ),
+              ),
+            ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: comfortatext(
+                    translation(data.aqi.aqi_title, data.settings["Language"]), 20, data.settings,
+                    color: data.palette.primaryFixedDim, align: TextAlign.left, weight: FontWeight.w600,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: comfortatext(data.aqi.aqi_desc, 14, data.settings, color: data.palette.secondary,
+                  weight: FontWeight.w600),
+                ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 12, left: 13, right: 13),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              NewAqiDataPoints("PM2.5", data.aqi.pm2_5, data),
+              NewAqiDataPoints("PM10", data.aqi.pm10, data),
+              NewAqiDataPoints("O3", data.aqi.o3, data),
+              NewAqiDataPoints("NO2", data.aqi.no2, data),
+            ],
+          ),
+        )
       ],
     ),
   );

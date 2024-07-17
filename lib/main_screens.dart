@@ -45,7 +45,7 @@ Widget NewMain(data, updateLocation, context) {
       headerData: HeaderData(
         //backgroundColor: WHITE,
           blurContent: false,
-          headerHeight: max(size.height * 0.55, 400), //we don't want it to be smaller than 400
+          headerHeight: max(size.height * 0.54, 400), //we don't want it to be smaller than 400
           header: ParrallaxBackground(image: data.image, key: Key(data.place),
           color: data.current.backcolor == BLACK ? BLACK
               : lightAccent(data.current.backcolor, 5000)),

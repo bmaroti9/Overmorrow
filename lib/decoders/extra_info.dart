@@ -53,7 +53,7 @@ Future<Image> getUnsplashImage(var wapi_body, String real_loc) async {
 
   final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
 
-  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query")
+  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query ")
       .timeout(const Duration(seconds: 6));
 
   var response2 = await file2.readAsString();
@@ -196,7 +196,7 @@ Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
   final double regionWidth = 50;
   final double regionHeight = 50;
   final Rect region = Rect.fromLTWH(
-    new_left + (40 / crop_absolute),
+    new_left + (50 / crop_absolute),
     new_top + (300 / crop_absolute),
     (regionWidth / crop_absolute),
     (regionHeight / crop_absolute),
@@ -468,6 +468,8 @@ class WapiAqi {
   final double pm10;
   final double o3;
   final double no2;
+  final String aqi_title;
+  final String aqi_desc;
 
   const WapiAqi({
     required this.no2,
@@ -475,6 +477,8 @@ class WapiAqi {
     required this.pm2_5,
     required this.pm10,
     required this.aqi_index,
+    required this.aqi_desc,
+    required this.aqi_title,
   });
 
   static WapiAqi fromJson(item) => WapiAqi(
@@ -483,5 +487,18 @@ class WapiAqi {
     pm2_5: item["current"]["air_quality"]["pm2_5"],
     o3: item["current"]["air_quality"]["o3"],
     no2: item["current"]["air_quality"]["no2"],
+
+    aqi_title: ['good', 'moderate', 'slightly unhealthy',
+      'unhealthy', 'very unhealthy',
+      'hazardous'][item["current"]["air_quality"]["us-epa-index"] - 1],
+
+    aqi_desc: ['Air quality is excellent; no health risk.',
+    'Acceptable air quality; minor risk for sensitive people.',
+    'Sensitive individuals may experience mild effects.',
+    'Health effects possible for everyone, serious for sensitive groups.',
+    'Serious health effects for everyone.',
+    'Emergency conditions; severe health effects for all.']
+    [item["current"]["air_quality"]["us-epa-index"] - 1],
+
   );
 }
