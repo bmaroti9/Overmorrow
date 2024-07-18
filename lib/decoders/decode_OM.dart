@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 import 'dart:convert';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -34,11 +35,13 @@ Future<dynamic> OMRequestData(double lat, double lng, String real_loc) async {
   final oMParams = {
     "latitude": lat.toString(),
     "longitude": lng.toString(),
+    "minutely_15" : ["precipitation"],
     "current": ["temperature_2m", "relative_humidity_2m", "apparent_temperature", "weather_code", "wind_speed_10m", 'wind_direction_10m'],
     "hourly": ["temperature_2m", "precipitation", "weather_code", "wind_speed_10m"],
     "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "uv_index_max", "precipitation_sum", "precipitation_probability_max", "wind_speed_10m_max", "wind_direction_10m_dominant"],
     "timezone": "auto",
-    "forecast_days": "14"
+    "forecast_days": "14",
+    "forecast_minutely_15" : "24",
   };
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
 
@@ -303,6 +306,72 @@ class OMDay {
       }
       return hourly;
     }
+  }
+}
+
+class OM15MinutePrecip {
+  final String t_minus;
+  final int precip_sum;
+  final List<double> precips;
+
+  const OM15MinutePrecip({
+    required this.t_minus,
+    required this.precip_sum,
+    required this.precips,
+  });
+
+  static OM15MinutePrecip fromJson(item, settings) {
+
+    int closest = 100;
+    int end = 0;
+    double sum = 0;
+
+    List<double> precips = [];
+
+    for (int i = 0; i < item["minutely_15"]["precipitation"].length; i++) {
+      double x = item["minutely_15"]["precipitation"][i];
+      print(x);
+      if (x > 0.2) {
+        if (closest == 100) {
+          closest = i + 1;
+        }
+        if (i > end) {
+          end = i + 1;
+        }
+      }
+      sum += x;
+
+      precips.add(x);
+    }
+
+    String t_minus = "";
+    if (closest != 100) {
+      if (closest <= 2) {
+        if (end == 2) {
+          t_minus = "the next half an hour";
+        }
+        else if (end <= 4) {
+          t_minus = "the next ${[15, 30, 45][closest]} minutes";
+        }
+        else {
+          t_minus = "the next ${closest ~/ 4} hours";
+        }
+      }
+      else if (closest < 4) {
+        t_minus = "${[15, 30, 45][closest - 1]} minutes";
+      }
+      else {
+        t_minus = "${closest ~/ 4} hours";
+      }
+    }
+
+    sum = max(sum, 1); // if there is rain then it shouldn't write 0
+
+    return OM15MinutePrecip(
+      t_minus: t_minus,
+      precip_sum: unit_coversion(sum, settings["Precipitation"]).toInt(),
+      precips: precips,
+    );
   }
 }
 

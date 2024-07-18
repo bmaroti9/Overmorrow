@@ -289,7 +289,7 @@ Widget NewAqiDataPoints(String name, double value, var data) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      comfortatext(name, 15, data.settings, color: data.palette.secondary,
+      comfortatext(name, 15, data.settings, color: data.palette.primary,
       align: TextAlign.end),
       Padding(
         padding: const EdgeInsets.all(3.0),

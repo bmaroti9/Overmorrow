@@ -73,12 +73,12 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
   final ColorScheme palette = await _materialPalette(Uimage, color_mode);
   final PaletteGenerator pali = await _generatorPalette(Uimage);
 
-  final Color dominant = averageColor(pali.colors.toList());
+  final List<Color> dominant = pali.colors.toList();
 
   Color startcolor = palette.primaryFixedDim;
 
   Color bestcolor = palette.primaryFixedDim;
-  int bestDif = difBetweenTwoColors(bestcolor, dominant);
+  int bestDif = difFromBackColors(bestcolor, dominant);
 
   print(dominant);
 
@@ -88,7 +88,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
     for (int i = 1; i < 4; i++) {
       //LIGHT
       Color newcolor = lighten(startcolor, i / 20);
-      int newdif = difBetweenTwoColors(newcolor, dominant);
+      int newdif = difFromBackColors(newcolor, dominant);
       if (newdif > bestDif && newdif < 500) {
         bestDif = newdif;
         bestcolor = newcolor;
@@ -96,7 +96,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
 
       //DARK
       newcolor = darken(startcolor, i / 20);
-      newdif = difBetweenTwoColors(newcolor, dominant);
+      newdif = difFromBackColors(newcolor, dominant);
       if (newdif > bestDif && newdif < 500) {
         bestDif = newdif;
         bestcolor = newcolor;
@@ -105,7 +105,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
   }
 
   Color desc_color = palette.surface;
-  int desc_dif = difBetweenTwoColors(desc_color, dominant);
+  int desc_dif = difFromBackColors(desc_color, dominant);
 
   print(("desc_dif", desc_dif));
 
@@ -132,6 +132,14 @@ List<Color> getGradientColors(Color color1, Color color2, int number) {
   }
 
   return colors;
+}
+
+int difFromBackColors(Color frontColor, List<Color> backcolors) {
+  int smallest = 2000;
+  for (int i = 0; i < backcolors.length; i++) {
+    smallest = min(smallest, difBetweenTwoColors(frontColor, backcolors[i]));
+  }
+  return smallest;
 }
 
 int difBetweenTwoColors(Color color1, Color color2) {
@@ -252,6 +260,7 @@ class WeatherData {
   final aqi;
   final sunstatus;
   final radar;
+  final minutely_15_precip;
 
   final fetch_datetime;
 
@@ -284,6 +293,7 @@ class WeatherData {
     required this.colorpop,
     required this.desc_color,
     required this.gradientColors,
+    required this.minutely_15_precip,
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
@@ -343,6 +353,9 @@ class WeatherData {
         colorpop: imageColors[1],
         desc_color: imageColors[2],
         gradientColors: imageColors[3],
+        minutely_15_precip: const OM15MinutePrecip(t_minus: "", precip_sum: 0,
+        precips: []), //because wapi doesn't have 15 minutely
+
       );
     }
     else {
@@ -359,6 +372,7 @@ class WeatherData {
         radar: await RainviewerRadar.getData(),
         aqi: WapiAqi.fromJson(wapi_body),
         sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
+        minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
 
         current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, imageColors[0]),
             //await _generatorPalette(hihi)),

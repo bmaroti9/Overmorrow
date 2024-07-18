@@ -152,7 +152,7 @@ List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
     colors = [
       palette.surface,
       palette.primaryFixedDim,
-      palette.secondary,
+      palette.primary,
       palette.primaryFixedDim,
       palette.onPrimaryFixed,
       palette.primaryContainer

@@ -97,10 +97,13 @@ Widget NewMain(data, updateLocation, context) {
         ),
 
         NewSunriseSunset(data: data, key: Key(data.place), size: size,),
+        NewRain15MinuteIndicator(data),
         NewAirQuality(data),
+
+        buildHihiDays(data),
         /*
         NewTimes(data, true),
-        buildHihiDays(data),
+
         buildGlanceDay(data),
         providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
         data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
