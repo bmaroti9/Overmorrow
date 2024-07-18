@@ -52,7 +52,7 @@ Future<Image> getUnsplashImage(var wapi_body, String real_loc) async {
 
   final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
 
-  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query ")
+  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query")
       .timeout(const Duration(seconds: 6));
 
   var response2 = await file2.readAsString();

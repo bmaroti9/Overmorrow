@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 import 'dart:convert';
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -311,7 +310,7 @@ class OMDay {
 
 class OM15MinutePrecip {
   final String t_minus;
-  final int precip_sum;
+  final double precip_sum;
   final List<double> precips;
 
   const OM15MinutePrecip({
@@ -330,7 +329,7 @@ class OM15MinutePrecip {
 
     for (int i = 0; i < item["minutely_15"]["precipitation"].length; i++) {
       double x = item["minutely_15"]["precipitation"][i];
-      if (x > 0.2) {
+      if (x > 0.0) {
         if (closest == 100) {
           closest = i + 1;
         }
@@ -343,32 +342,38 @@ class OM15MinutePrecip {
       precips.add(x);
     }
 
+    print(("closest", closest));
+
     String t_minus = "";
     if (closest != 100) {
       if (closest <= 2) {
         if (end == 2) {
           t_minus = "the next half an hour";
         }
-        else if (end <= 4) {
-          t_minus = "the next ${[15, 30, 45][closest]} minutes";
+        else if (end < 4) {
+          t_minus = "the next ${[15, 30, 45][end - 1]} minutes";
+        }
+        else if (end ~/ 4 == 1) {
+          t_minus = "the next 1 hour";
         }
         else {
-          t_minus = "the next ${closest ~/ 4} hours";
+          t_minus = "the next ${end ~/ 4} hours";
         }
       }
       else if (closest < 4) {
         t_minus = "${[15, 30, 45][closest - 1]} minutes";
+      }
+      else if (closest ~/ 4 == 1) {
+        t_minus = "1 hour";
       }
       else {
         t_minus = "${closest ~/ 4} hours";
       }
     }
 
-    sum = max(sum, 1); // if there is rain then it shouldn't write 0
-
     return OM15MinutePrecip(
       t_minus: t_minus,
-      precip_sum: unit_coversion(sum, settings["Precipitation"]).toInt(),
+      precip_sum: unit_coversion(sum, settings["Precipitation"]),
       precips: precips,
     );
   }
