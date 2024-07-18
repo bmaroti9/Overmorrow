@@ -310,7 +310,7 @@ Map<String, String> textToUnsplashText = {
   'Clear Night': 'night', //somehow just 'night' always gives you clear skies: stars or moon
   'Partly Cloudy': 'cloudy', //this is also some simplification which improves a lot
   'Clear Sky': 'blue sky', //it doesn't understand clear as much so i use blue instead
-  'Overcast': 'overcast',
+  'Overcast': 'dark clouds', //kinda works
   'Haze': 'haze',
   'Rain': 'rain shower',
   'Sleet': 'freezing rain',//this works much better

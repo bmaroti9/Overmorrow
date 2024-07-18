@@ -363,7 +363,7 @@ Widget NewRain15MinuteIndicator(var data) {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 5, bottom: 2, right: 5),
+                      const EdgeInsets.only(left: 5, bottom: 2, right: 3),
                   child: Icon(
                     Icons.water_drop_outlined,
                     color: data.palette.primary,
@@ -372,7 +372,7 @@ Widget NewRain15MinuteIndicator(var data) {
                 ),
                 comfortatext(data.minutely_15_precip.precip_sum.toString(),
                     20, data.settings,
-                    color: data.palette.primary),
+                    color: data.palette.primary, weight: FontWeight.w500),
                 comfortatext(
                     data.settings["Precipitation"], 20, data.settings,
                     color: data.palette.primary),
