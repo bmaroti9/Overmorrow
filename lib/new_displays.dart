@@ -112,8 +112,6 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
     final List<String> absoluteSet = absoluteSunriseSunset[1].split(':');
     final List<String> absoluteLocalTime = widget.data.localtime.split(':');
 
-    print(("riseSet", absoluteRise, absoluteSet, absoluteLocalTime));
-
     final currentTime = DateTime.now();
     riseDT = currentTime.copyWith(
         hour: int.parse(absoluteRise[0]), minute: int.parse(absoluteRise[1]));

@@ -89,7 +89,6 @@ Color darken(Color color, [double amount = .1]) {
 
 Color lightAccent(Color color, int intensity) {
   double x = intensity / (color.red + color.green + color.blue);
-  print((x, (color.red * x).toInt(), (color.green * x).toInt(), (color.blue * x).toInt()));
   return Color.fromRGBO(sqrt(color.red * x).toInt(), sqrt(color.green * x).toInt(), sqrt(color.blue * x).toInt(), 1);
 }
 
@@ -354,7 +353,6 @@ Widget WindWidget(data, day) {
 
   for (var i = 0; i < hours.length; i+= 2) {
     double x = min(round((hours[i].wind + hours[i + 1].wind) * 0.5, decimals: 0) / 2, 10);
-    print((hours[i].wind, x));
     wind.add(x);
   }
 
@@ -682,8 +680,6 @@ Future<List<String>> getOMReccomend(String query, settings) async {
 
     x = x.replaceAll('latitude', "lat");
     x = x.replaceAll('longitude', "lon");
-
-    print(('got here', x));
 
     recomendations.add(x);
   }

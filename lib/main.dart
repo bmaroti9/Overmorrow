@@ -66,7 +66,6 @@ class _MyAppState extends State<MyApp> {
 
       Map<String, String> settings = await getSettingsUsed();
       String weather_provider = await getWeatherProvider();
-      //print(weather_provider);
 
       if (startup) {
         List<String> n = await getLastPlace();  //loads the last place you visited
@@ -79,9 +78,7 @@ class _MyAppState extends State<MyApp> {
       bool isItCurrentLocation = false;
 
       if (backupName == 'CurrentLocation') {
-        print("almost therre");
         String loc_status = await isLocationSafe();
-        print("got past");
         if (loc_status == "enabled") {
           Position position;
           try {
@@ -163,7 +160,6 @@ class _MyAppState extends State<MyApp> {
           icon: Icons.wifi_off,
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on HttpExceptionWithStatus catch (hihi){
-        print(hihi.toString());
         return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
           icon: Icons.bug_report,
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
@@ -173,8 +169,6 @@ class _MyAppState extends State<MyApp> {
           icon: Icons.wifi_off,
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       }
-
-      print("temp:${weatherdata.current.temp}");
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
                                 // then this will be the new startup
@@ -290,7 +284,6 @@ class _MyAppState extends State<MyApp> {
 
 List<Color> getStartBackColor() {
   var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-  print(brightness);
   bool isDarkMode = brightness == Brightness.dark;
   Color back = isDarkMode ? BLACK : WHITE;
   Color front = isDarkMode ? const Color.fromRGBO(250, 250, 250, 0.7) : const Color.fromRGBO(0, 0, 0, 0.3);

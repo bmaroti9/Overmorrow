@@ -180,8 +180,6 @@ class MetNDay {
       index += 1;
     }
 
-    print(("hihihihihih", begin, end));
-
     //now we know the timestamps for the beginning and the end of the day
     
     List<int> temperatures = [];

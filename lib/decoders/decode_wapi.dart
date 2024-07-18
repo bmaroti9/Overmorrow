@@ -197,7 +197,6 @@ String getName(index, settings) {
 
 String backdropCorrection(name, isday) {
   String text = textCorrection(name, isday);
-  print((name, text));
   String backdrop = weather_refactor.textBackground[text] ?? "haze.jpg";
   return backdrop;
 }

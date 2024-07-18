@@ -330,7 +330,6 @@ class OM15MinutePrecip {
 
     for (int i = 0; i < item["minutely_15"]["precipitation"].length; i++) {
       double x = item["minutely_15"]["precipitation"][i];
-      print(x);
       if (x > 0.2) {
         if (closest == 100) {
           closest = i + 1;

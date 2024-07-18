@@ -40,8 +40,7 @@ Future<Image> getUnsplashImage(var wapi_body, String real_loc) async {
 
   String text_query = textToUnsplashText[_text]!;
 
-  String addon = wapi_body["current"]["is_day"] == 1 ? 'daytime' : 'nighttime';
-  print(addon);
+  //String addon = wapi_body["current"]["is_day"] == 1 ? 'daytime' : 'nighttime';
 
   final params2 = {
     'client_id': access_key,
@@ -79,10 +78,6 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
 
   Color bestcolor = palette.primaryFixedDim;
   int bestDif = difFromBackColors(bestcolor, dominant);
-
-  print(dominant);
-
-  print(("bestdif", bestDif));
 
   if (bestDif < 300) {
     for (int i = 1; i < 4; i++) {
@@ -199,8 +194,6 @@ Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
   final new_left = center_x - ((desiredSquare / 2) / crop_absolute);
   final new_top = center_y - ((desiredSquare / 2) / crop_absolute);
 
-  print((new_left, new_top, crop_absolute, (desiredSquare / 2) / crop_absolute));
-
   final double regionWidth = 50;
   final double regionHeight = 50;
   final Rect region = Rect.fromLTWH(
@@ -209,9 +202,6 @@ Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
     (regionWidth / crop_absolute),
     (regionHeight / crop_absolute),
   );
-
-  print(("original image", imageWidth, imageHeight));
-  print(("cropped image",new_left + 30, new_top + 330, regionWidth, regionHeight,));
 
   PaletteGenerator _paletteGenerator = await PaletteGenerator.fromImage(
     imageInfo.image,
@@ -432,8 +422,6 @@ class RainviewerRadar {
 
   for (var x in past) {
     DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"]);
-    //print("${time.hour}h ${time.minute}m");
-    //print(host + x["path"]);
     images.add(host + x["path"]);
     times.add("${time.hour}h ${time.minute}m");
   }

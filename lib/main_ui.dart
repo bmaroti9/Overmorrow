@@ -56,8 +56,6 @@ class WeatherPage extends StatelessWidget {
 
     //return PhoneLayout(data, updateLocation, context);
 
-    print("temphehe:${data.current.temp}");
-
     return NewMain(data, updateLocation, context,);
 
   }
