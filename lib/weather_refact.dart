@@ -201,7 +201,7 @@ Map<int, String> OMCodes = {
   86: 'Heavy Snow',
   95: 'Thunderstorm',
   96: 'Thunderstorm',
-  99: 'thunderstorm',
+  99: 'Thunderstorm',
 };
 
 Map<String, String> textBackground = {

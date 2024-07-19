@@ -370,7 +370,7 @@ Widget NewRain15MinuteIndicator(var data) {
                     size: 20,
                   ),
                 ),
-                comfortatext(data.minutely_15_precip.precip_sum.toString(),
+                comfortatext(data.minutely_15_precip.precip_sum.toStringAsFixed(1),
                     20, data.settings,
                     color: data.palette.primary, weight: FontWeight.w500),
                 comfortatext(

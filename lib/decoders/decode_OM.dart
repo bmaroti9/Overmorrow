@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 import 'dart:convert';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -271,6 +272,7 @@ class OMDay {
   });
 
   static OMDay build(item, settings, index, sunstatus) {
+
     return OMDay(
       uv: item["daily"]["uv_index_max"][0].round(),
       icon: oMIconCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
@@ -322,7 +324,7 @@ class OM15MinutePrecip {
   static OM15MinutePrecip fromJson(item, settings) {
 
     int closest = 100;
-    int end = 0;
+    int end = -1;
     double sum = 0;
 
     List<double> precips = [];
@@ -343,6 +345,8 @@ class OM15MinutePrecip {
     }
 
     print(("closest", closest));
+
+    sum = max(sum, 0.1); //if there is rain then it shouldn't write 0
 
     String t_minus = "";
     if (closest != 100) {
