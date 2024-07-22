@@ -528,13 +528,14 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
   List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
 
   String real_time = wapi_body["location"]["localtime"];
+  int epoch = wapi_body["location"]["localtime_epoch"];
   WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
 
   List<WapiDay> days = [];
 
   for (int n = 0; n < wapi_body["forecast"]["forecastday"].length; n++) {
     days.add(WapiDay.fromJson(
-        wapi_body["forecast"]["forecastday"][n], n, settings, real_time));
+        wapi_body["forecast"]["forecastday"][n], n, settings, epoch));
   }
 
   return WeatherData(

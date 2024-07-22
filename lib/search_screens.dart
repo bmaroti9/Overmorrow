@@ -473,7 +473,7 @@ class dumbySearch extends StatelessWidget {
         },
         headerData: HeaderData(
             blurContent: false,
-            headerHeight: max(size.height * 0.6, 400), //we don't want it to be smaller than 400
+            headerHeight: max(size.height * 0.54, 400), //we don't want it to be smaller than 400
             header: ParrallaxBackground(image: Image.asset("assets/backdrops/grayscale_snow2.jpg", fit: BoxFit.cover,), key: Key(place),
               color: darken(colors[0], 0.1),),
             overlay: Stack(

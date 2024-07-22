@@ -21,7 +21,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:overmorrow/new_displays.dart';
-import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
@@ -100,13 +99,16 @@ Widget NewMain(data, updateLocation, context) {
         NewSunriseSunset(data: data, key: Key(data.place), size: size,),
         NewRain15MinuteIndicator(data),
         NewAirQuality(data),
-        RadarMap(data: data, key: Key(data.place),),
-        providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
-            data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
+
+        Padding(
+          padding: const EdgeInsets.only(top: 10, bottom: 30),
+          child: providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
+              data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
+        ),
 
         /*
         NewTimes(data, true),
-
+        RadarMap(data: data, key: Key(data.place),),
         buildGlanceDay(data),
         providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
         data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),

@@ -43,14 +43,10 @@ String OMamPmTime(String time) {
   int hour = int.parse(num[0]);
 
   if (hour > 12) {
-    int x = hour - 12;
-    if (x < 10) {
-      return "0${hour - 12}:${num[1]}";
-    }
-    return "${hour - 12}:${num[1]}";
+    return "${hour - 12}:${num[1]}pm";
   }
 
-  return "${num[0]}:${num[1]}";
+  return "$hour:${num[1]}am";
 }
 
 int AqiIndexCorrection(int aqi) {
@@ -496,7 +492,7 @@ class OMSunstatus {
         ? OMConvertTime(item["daily"]["sunrise"][0])
         : OMamPmTime(item["daily"]["sunset"][0]),
     absoluteSunriseSunset: "${OMConvertTime(item["daily"]["sunrise"][0])}/"
-        "${OMConvertTime(item["daily"]["sunrise"][0])}",
+        "${OMConvertTime(item["daily"]["sunset"][0])}",
     sunstatus: OMGetSunStatus(item)
   );
 }
@@ -580,29 +576,29 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
 
   return WeatherData(
-      radar: await RainviewerRadar.getData(),
-  aqi: await OMAqi.fromJson(oMBody, lat, lng),
-  sunstatus: sunstatus,
-  minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
+    radar: await RainviewerRadar.getData(),
+    aqi: await OMAqi.fromJson(oMBody, lat, lng),
+    sunstatus: sunstatus,
+    minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
 
-  current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, imageColors[0]),
-  days: days,
+    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, imageColors[0]),
+    days: days,
 
-  lat: lat,
-  lng: lng,
+    lat: lat,
+    lng: lng,
 
-  place: placeName,
-  settings: settings,
-  provider: "open-meteo",
-  real_loc: real_loc,
+    place: placeName,
+    settings: settings,
+    provider: "open-meteo",
+    real_loc: real_loc,
 
-  fetch_datetime: fetch_datetime,
-  updatedTime: DateTime.now(),
-  image: Uimage,
-  localtime: real_time.split("T")[1],
-  palette: imageColors[0],
-  colorpop: imageColors[1],
-  desc_color: imageColors[2],
-  gradientColors: imageColors[3],
-  );
+    fetch_datetime: fetch_datetime,
+    updatedTime: DateTime.now(),
+    image: Uimage,
+    localtime: real_time.split("T")[1],
+    palette: imageColors[0],
+    colorpop: imageColors[1],
+    desc_color: imageColors[2],
+    gradientColors: imageColors[3],
+    );
 }

@@ -110,6 +110,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
 
     final List<String> absoluteRise = absoluteSunriseSunset[0].split(':');
     final List<String> absoluteSet = absoluteSunriseSunset[1].split(':');
+
     final List<String> absoluteLocalTime = widget.data.localtime.split(':');
 
     final currentTime = DateTime.now();
@@ -148,6 +149,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
         DateTime localTime = now.add(Duration(hours: hourdif));
 
         final thisdif = localTime.difference(riseDT).inSeconds;
+
         final double progress = min(max(thisdif / total, 0), 1);
 
         String write = widget.data.settings["Time mode"] == "24 hour"
@@ -308,8 +310,7 @@ Widget NewAirQuality(var data) {
                   Align(
                     alignment: Alignment.topLeft,
                     child: comfortatext(
-                      translation(
-                          data.aqi.aqi_title, data.settings["Language"]),
+                      data.aqi.aqi_title,
                       20,
                       data.settings,
                       color: data.palette.primaryFixedDim,
