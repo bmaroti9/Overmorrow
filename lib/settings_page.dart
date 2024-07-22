@@ -404,12 +404,12 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
       slivers: <Widget>[
         SliverAppBar.large(
           leading:
-          IconButton(icon: Icon(Icons.menu, color: colors[2],), onPressed: () {}),
+          IconButton(icon: Icon(Icons.arrow_back, color: colors[2],), onPressed: () {
+            goBack();
+          }),
           title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[2]),
-          actions: <Widget>[
-            IconButton(icon: Icon(Icons.more_vert, color: colors[2],), onPressed: () {}),
-          ],
           backgroundColor: colors[5],
+          pinned: false,
         ),
         // Just some content big enough to have something to scroll.
         SliverToBoxAdapter(
@@ -440,10 +440,14 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
+                /*
                 NavButton('Appearance', settings, textcolor, Icons.color_lens),
                 NavButton('Language', settings, textcolor, Icons.language),
                 NavButton('Units', settings, textcolor, Icons.graphic_eq),
                 NavButton('Advanced', settings, textcolor, Icons.code),
+
+                 */
 
 
                 Padding(

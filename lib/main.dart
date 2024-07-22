@@ -162,7 +162,8 @@ class _MyAppState extends State<MyApp> {
       } on HttpExceptionWithStatus catch (hihi){
         return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
           icon: Icons.bug_report,
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,
+          shouldAdd: "Please try another weather provider",);
       } on SocketException {
         return dumbySearch(errorMessage: translation("Not connected to the internet", settings["Language"]!),
           updateLocation: updateLocation,
@@ -187,7 +188,8 @@ class _MyAppState extends State<MyApp> {
       if (recall) {
         return dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
           icon: Icons.bug_report,
-          place: backupName, settings: settings, provider: weather_provider, latlng: 'query',);
+          place: backupName, settings: settings, provider: weather_provider, latlng: 'query',
+          shouldAdd: "Please try another weather provider",);
       }
       else {
         return getDays(true, proposedLoc, backupName, startup);

@@ -440,10 +440,11 @@ class dumbySearch extends StatelessWidget {
   final settings;
   final provider;
   final latlng;
+  final shouldAdd;
 
   dumbySearch({super.key, required this.errorMessage,
     required this.updateLocation, required this.icon, required this.place,
-  required this.settings, required this.provider, required this.latlng});
+  required this.settings, required this.provider, required this.latlng, this.shouldAdd});
 
   final FloatingSearchBarController controller = FloatingSearchBarController();
 
@@ -491,6 +492,11 @@ class dumbySearch extends StatelessWidget {
                         ),
                         comfortatext(newStr, 20, settings, color: Colors.black54, weight: FontWeight.w300,
                         align: TextAlign.center),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: comfortatext(shouldAdd, 20, settings, color: Colors.black54, weight: FontWeight.w500,
+                              align: TextAlign.center),
+                        ),
                       ],
                     ),
                   ),

@@ -234,7 +234,7 @@ class OMCurrent {
     required this.wind_dir,
   });
 
-  static OMCurrent fromJson(item, settings, sunstatus, timenow, palette) {
+  static OMCurrent fromJson(item, settings, sunstatus, timenow) {
     Color back = BackColorCorrection(
       oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),
@@ -245,16 +245,16 @@ class OMCurrent {
           item["current"]["weather_code"], sunstatus, timenow),
     );
 
-    /*
+
     List<Color> colors = getColors(primary, back, settings,
         ColorPopCorrection( oMCurrentTextCorrection(
             item["current"]["weather_code"], sunstatus, timenow),)[
               settings["Color mode"] == "dark" ? 1 : 0
         ]);
 
-     */
 
-    List<Color> colors = getNetworkColors(palette, settings);
+
+    //List<Color> colors = getNetworkColors(palette, settings);
 
     //List<Color> colors = palette.colors.toList();
 
@@ -523,7 +523,6 @@ class OMAqi{
       "current": ["european_aqi", "pm10", "pm2_5", "nitrogen_dioxide", 'ozone'],
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
-    print(url);
     var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 6));
     var response = await file.readAsString();
     final item = jsonDecode(response)["current"];
@@ -569,11 +568,11 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   String real_time = "jT${localtime.hour}:${localtime.minute}";
 
   //GET IMAGE
-  Image Uimage = await getUnsplashImage(oMCurrentTextCorrection(
-      oMBody["current"]["weather_code"], sunstatus, real_time), real_loc);
+  //Image Uimage = await getUnsplashImage(oMCurrentTextCorrection(
+  //    oMBody["current"]["weather_code"], sunstatus, real_time), real_loc);
 
   //GET COLORS
-  List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
+  //List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
 
   return WeatherData(
     radar: await RainviewerRadar.getData(),
@@ -581,7 +580,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     sunstatus: sunstatus,
     minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
 
-    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, imageColors[0]),
+    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time),
     days: days,
 
     lat: lat,
@@ -594,11 +593,6 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
 
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
-    image: Uimage,
     localtime: real_time.split("T")[1],
-    palette: imageColors[0],
-    colorpop: imageColors[1],
-    desc_color: imageColors[2],
-    gradientColors: imageColors[3],
     );
 }

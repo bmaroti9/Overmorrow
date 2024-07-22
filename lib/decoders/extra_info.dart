@@ -250,13 +250,13 @@ class WeatherData {
 
   final fetch_datetime;
 
-  final image;
+  //final image;
   final localtime;
 
-  final palette;
-  final colorpop;
-  final desc_color;
-  final gradientColors;
+  //final palette;
+  //final colorpop;
+  //final desc_color;
+  //final gradientColors;
 
   WeatherData({
     required this.place,
@@ -272,13 +272,13 @@ class WeatherData {
     required this.current,
     required this.fetch_datetime,
     required this.updatedTime,
-    required this.image,
+    //required this.image,
     required this.localtime,
 
-    required this.palette,
-    required this.colorpop,
-    required this.desc_color,
-    required this.gradientColors,
+    //required this.palette,
+    //required this.colorpop,
+    //required this.desc_color,
+    //required this.gradientColors,
     required this.minutely_15_precip,
   });
 

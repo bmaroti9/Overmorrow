@@ -516,18 +516,18 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
   var wapi_body = wapi[0];
   DateTime fetch_datetime = wapi[1];
 
-  final text = textCorrection(
-      wapi_body["current"]["condition"]["code"], wapi_body["current"]["is_day"],
-      language: "English");
+  //final text = textCorrection(
+  //    wapi_body["current"]["condition"]["code"], wapi_body["current"]["is_day"],
+  //    language: "English");
 
   //GET IMAGE
 
-  Image Uimage = await getUnsplashImage(text, real_loc);
+  //Image Uimage = await getUnsplashImage(text, real_loc);
 
   //GET COLORS
-  List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
+  //List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
 
-  String real_time = wapi_body["location"]["localtime"];
+  //String real_time = wapi_body["location"]["localtime"];
   int epoch = wapi_body["location"]["localtime_epoch"];
   WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
 
@@ -555,12 +555,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
   fetch_datetime: fetch_datetime,
   updatedTime: DateTime.now(),
-  image: Uimage,
   localtime: WapiGetLocalTime(wapi_body),
-  palette: imageColors[0],
-  colorpop: imageColors[1],
-  desc_color: imageColors[2],
-  gradientColors: imageColors[3],
   minutely_15_precip: const OM15MinutePrecip(t_minus: "", precip_sum: 0, precips: []), //because wapi doesn't have 15 minutely
   );
 }

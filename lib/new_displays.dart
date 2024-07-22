@@ -49,7 +49,8 @@ class WavePainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
-    final path = Path();
+    final path1 = Path();
+
     final amplitude = 2.45;
     final frequency = 24.0;
     final splitPoint = hihi * size.width;
@@ -58,24 +59,26 @@ class WavePainter extends CustomPainter {
       final y = size.height / 2 +
           amplitude * sin((x / frequency * 2 * pi) + (waveValue * 2 * pi));
       if (x == 0) {
-        path.moveTo(x, y);
+        path1.moveTo(x, y);
       } else {
-        path.lineTo(x, y);
+        path1.lineTo(x, y);
       }
     }
-    canvas.drawPath(path, firstPaint);
 
-    path.reset();
+    final path2 = Path();
+
     for (double x = splitPoint; x <= size.width; x++) {
       final y = size.height / 2 +
           amplitude * sin((x / frequency * 2 * pi) + (waveValue * 2 * pi));
       if (x == splitPoint) {
-        path.moveTo(x, y);
+        path2.moveTo(x, y);
       } else {
-        path.lineTo(x, y);
+        path2.lineTo(x, y);
       }
     }
-    canvas.drawPath(path, secondPaint);
+
+    canvas.drawPath(path2, secondPaint);
+    canvas.drawPath(path1, firstPaint);
   }
 
   @override
