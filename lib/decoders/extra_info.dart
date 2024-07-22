@@ -78,7 +78,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
   if (bestDif < 300) {
     for (int i = 1; i < 4; i++) {
       //LIGHT
-      Color newcolor = lighten(startcolor, i / 20);
+      Color newcolor = lighten2(startcolor, i / 20);
       int newdif = difFromBackColors(newcolor, dominant);
       if (newdif > bestDif && newdif < 400) {
         bestDif = newdif;
@@ -86,7 +86,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
       }
 
       //DARK
-      newcolor = darken(startcolor, i / 20);
+      newcolor = darken2(startcolor, i / 20);
       newdif = difFromBackColors(newcolor, dominant);
       if (newdif > bestDif && newdif < 400) {
         bestDif = newdif;

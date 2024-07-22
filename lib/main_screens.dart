@@ -75,7 +75,7 @@ Widget NewMain(data, updateLocation, context) {
                 color: data.current.backcolor, place: data.place,
                 controller: controller, settings: data.settings, real_loc: data.real_loc,
                 secondColor: data.current.primary, textColor: data.current.textcolor,
-                highlightColor: data.current.highlight, key: Key("${data.place}, ${data.settings}"),),
+                highlightColor: data.current.highlight, key: Key("${data.place}, ${data.current.backcolor}"),),
             ],
           )
       ),
@@ -210,7 +210,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                 color: data.current.highlight, place: data.place,
                                 controller: controller, settings: data.settings, real_loc: data.real_loc,
                                 secondColor: data.current.primary, textColor: data.current.textcolor,
-                                highlightColor: data.current.primary, key: Key(data.place),),
+                                highlightColor: data.current.primary, key: Key("${data.place}, ${data.current.backcolor}"),),
                             ],
                           ),
                         ),
