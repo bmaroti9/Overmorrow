@@ -32,11 +32,7 @@ import '../ui_helper.dart';
 import '../weather_refact.dart';
 import 'decode_wapi.dart';
 
-Future<Image> getUnsplashImage(var wapi_body, String real_loc) async {
-  String _text = textCorrection(
-      wapi_body["current"]["condition"]["code"], wapi_body["current"]["is_day"],
-      language: 'english'
-  );
+Future<Image> getUnsplashImage(String _text, String real_loc) async {
 
   String text_query = textToUnsplashText[_text]!;
 
@@ -52,7 +48,7 @@ Future<Image> getUnsplashImage(var wapi_body, String real_loc) async {
 
   final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
 
-  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query")
+  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query ")
       .timeout(const Duration(seconds: 6));
 
   var response2 = await file2.readAsString();
@@ -84,7 +80,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
       //LIGHT
       Color newcolor = lighten(startcolor, i / 20);
       int newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < 500) {
+      if (newdif > bestDif && newdif < 400) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
@@ -92,7 +88,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
       //DARK
       newcolor = darken(startcolor, i / 20);
       newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < 500) {
+      if (newdif > bestDif && newdif < 400) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
@@ -292,99 +288,11 @@ class WeatherData {
     double lat = double.parse(split[0]);
     double lng = double.parse(split[1]);
 
-    //GET WEATHERAPI DATA
-    var wapi = await WapiMakeRequest(latlong, real_loc);
-
-    var wapi_body = wapi[0];
-    DateTime fetch_datetime = wapi[1];
-
-
-    //GET IMAGE
-    Image Uimage = await getUnsplashImage(wapi_body, real_loc);
-
-    final loctime = wapi_body["location"]["localtime"].split(" ")[1];
-
-    //GET COLORS
-    List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
-
-
-    var timenow = wapi_body["location"]["localtime_epoch"];
-    String real_time = wapi_body["location"]["localtime"];
-    WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
-
     if (provider == 'weatherapi.com') {
-      List<WapiDay> days = [];
-
-      for (int n = 0; n < wapi_body["forecast"]["forecastday"].length; n++) {
-        days.add(WapiDay.fromJson(
-            wapi_body["forecast"]["forecastday"][n], n, settings, timenow));
-      }
-
-      return WeatherData(
-        place: placeName,
-        settings: settings,
-        provider: "weatherapi.com",
-        real_loc: real_loc,
-
-        lat: lat,
-        lng: lng,
-
-        current: WapiCurrent.fromJson(wapi_body, settings,),
-        days: days,
-        sunstatus: sunstatus,
-        aqi: WapiAqi.fromJson(wapi_body),
-        radar: await RainviewerRadar.getData(),
-
-        fetch_datetime: fetch_datetime,
-        updatedTime: DateTime.now(),
-        image: Uimage,
-        localtime: loctime,
-        palette: imageColors[0],
-        colorpop: imageColors[1],
-        desc_color: imageColors[2],
-        gradientColors: imageColors[3],
-        minutely_15_precip: const OM15MinutePrecip(t_minus: "", precip_sum: 0,
-        precips: []), //because wapi doesn't have 15 minutely
-
-      );
+      return WapiGetWeatherData(lat, lng, real_loc, settings, placeName);
     }
     else {
-      //GET OM data
-      var oMBody = await OMRequestData(lat, lng, real_loc);
-
-      List<OMDay> days = [];
-      for (int n = 0; n < 14; n++) {
-        OMDay x = OMDay.build(oMBody, settings, n, sunstatus);
-        days.add(x);
-      }
-
-      return WeatherData(
-        radar: await RainviewerRadar.getData(),
-        aqi: WapiAqi.fromJson(wapi_body),
-        sunstatus: WapiSunstatus.fromJson(wapi_body, settings),
-        minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
-
-        current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, imageColors[0]),
-            //await _generatorPalette(hihi)),
-        days: days,
-
-        lat: lat,
-        lng: lng,
-
-        place: placeName,
-        settings: settings,
-        provider: "open-meteo",
-        real_loc: real_loc,
-
-        fetch_datetime: fetch_datetime,
-        updatedTime: DateTime.now(),
-        image: Uimage,
-        localtime: loctime,
-        palette: imageColors[0],
-        colorpop: imageColors[1],
-        desc_color: imageColors[2],
-        gradientColors: imageColors[3],
-      );
+      return OMGetWeatherData(lat, lng, real_loc, settings, placeName);
     }
   }
 }
@@ -435,72 +343,4 @@ class RainviewerRadar {
 
   return RainviewerRadar.fromJson(images, times);
   }
-}
-
-class WapiSunstatus {
-  final String sunrise;
-  final String sunset;
-  final double sunstatus;
-  final String absoluteSunriseSunset;
-
-  const WapiSunstatus({
-    required this.sunrise,
-    required this.sunstatus,
-    required this.sunset,
-    required this.absoluteSunriseSunset,
-  });
-
-  static WapiSunstatus fromJson(item, settings) => WapiSunstatus(
-    sunrise: settings["Time mode"] == "24 hour"
-        ? convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"])
-        : amPmTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"]),
-    sunset: settings["Time mode"] == "24 hour"
-        ? convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"])
-        : amPmTime(item["forecast"]["forecastday"][0]["astro"]["sunset"]),
-    absoluteSunriseSunset: "${convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"])}/"
-        "${convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"])}",
-    sunstatus: getSunStatus(item["forecast"]["forecastday"][0]["astro"]["sunrise"],
-        item["forecast"]["forecastday"][0]["astro"]["sunset"], item["current"]["last_updated"]),
-  );
-}
-
-class WapiAqi {
-  final int aqi_index;
-  final double pm2_5;
-  final double pm10;
-  final double o3;
-  final double no2;
-  final String aqi_title;
-  final String aqi_desc;
-
-  const WapiAqi({
-    required this.no2,
-    required this.o3,
-    required this.pm2_5,
-    required this.pm10,
-    required this.aqi_index,
-    required this.aqi_desc,
-    required this.aqi_title,
-  });
-
-  static WapiAqi fromJson(item) => WapiAqi(
-    aqi_index: item["current"]["air_quality"]["us-epa-index"],
-    pm10: item["current"]["air_quality"]["pm10"],
-    pm2_5: item["current"]["air_quality"]["pm2_5"],
-    o3: item["current"]["air_quality"]["o3"],
-    no2: item["current"]["air_quality"]["no2"],
-
-    aqi_title: ['good', 'moderate', 'slightly unhealthy',
-      'unhealthy', 'very unhealthy',
-      'hazardous'][item["current"]["air_quality"]["us-epa-index"] - 1],
-
-    aqi_desc: ['Air quality is excellent; no health risk.',
-    'Acceptable air quality; minor risk for sensitive people.',
-    'Sensitive individuals may experience mild effects.',
-    'Health effects possible for everyone, serious for sensitive groups.',
-    'Serious health effects for everyone.',
-    'Emergency conditions; severe health effects for all.']
-    [item["current"]["air_quality"]["us-epa-index"] - 1],
-
-  );
 }

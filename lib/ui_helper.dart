@@ -69,24 +69,26 @@ Widget comfortatext(String text, double size, settings,
 );
 }
 
-Color lighten(Color color, [double amount = .1]) {
-  assert(amount >= 0 && amount <= 1);
-
-  final hsl = HSLColor.fromColor(color);
-  final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
-
-  return hslLight.toColor();
+Color darken(Color c, [double amount = 0.1]) {
+  assert(0 <= amount && amount <= 1);
+  var f = 1 - amount;
+  return Color.fromARGB(
+      c.alpha,
+      (c.red * f).round(),
+      (c.green  * f).round(),
+      (c.blue * f).round()
+  );
 }
 
-Color darken(Color color, [double amount = .1]) {
-  assert(amount >= 0 && amount <= 1);
-
-  final hsl = HSLColor.fromColor(color);
-  final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
-
-  return hslDark.toColor();
+Color lighten(Color c, [double amount = 0.1]) {
+  assert(0 <= amount && amount <= 1);
+  return Color.fromARGB(
+      c.alpha,
+      c.red + ((255 - c.red) * amount).round(),
+      c.green + ((255 - c.green) * amount).round(),
+      c.blue + ((255 - c.blue) * amount).round()
+  );
 }
-
 Color lightAccent(Color color, int intensity) {
   double x = intensity / (color.red + color.green + color.blue);
   return Color.fromRGBO(sqrt(color.red * x).toInt(), sqrt(color.green * x).toInt(), sqrt(color.blue * x).toInt(), 1);

@@ -261,7 +261,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
 
 Widget NewAirQuality(var data) {
   return Padding(
-    padding: const EdgeInsets.only(left: 22, right: 22, bottom: 19, top: 20),
+    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 19, top: 20),
     child: Column(
       children: [
         Padding(
@@ -429,5 +429,12 @@ Widget NewRain15MinuteIndicator(var data) {
         ),
       ),
     )
+  );
+}
+
+Widget newRadar(var data) {
+  return Padding(
+    padding: EdgeInsets.only(left: 20, right: 20, top: 10),
+    child: Container(),
   );
 }

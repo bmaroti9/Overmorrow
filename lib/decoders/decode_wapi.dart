@@ -27,11 +27,20 @@ import '../settings_page.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart' as weather_refactor;
+import 'decode_OM.dart';
 import 'extra_info.dart';
+
+import 'package:flutter/material.dart';
 
 //decodes the whole response from the weatherapi.com api_call
 
 bool RandomSwitch = false;
+
+DateTime WapiGetLocalTime(item) {
+  DateTime now = DateTime.now();
+  List<String> loctime = item["location"]["localtime"].split(" ")[1].split();
+  return now.copyWith(hour: int.parse(loctime[0]), minute: int.parse(loctime[1]));
+}
 
 Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   //gets the json response for weatherapi.com
@@ -44,7 +53,9 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   };
   final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
 
-  var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com")
+  print(url);
+
+  var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
       .timeout(const Duration(seconds: 6));
 
   DateTime fetch_datetime = await file.lastModified();
@@ -52,6 +63,8 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   var response = await file.readAsString();
 
   var wapi_body = jsonDecode(response);
+
+  print(wapi_body["current"]["air_quality"]);
 
   return [wapi_body, fetch_datetime];
 }
@@ -81,8 +94,8 @@ String amPmTime(String time) {
   return "$hour:$minute$atEnd";
 }
 
-String convertTime(String input) {
-  List<String> splited = input.split(" ");
+String convertTime(String input, {by = " "}) {
+  List<String> splited = input.split(by);
   List<String> num = splited[0].split(":");
   int hour = int.parse(num[0]);
   int minute = int.parse(num[1]);
@@ -101,8 +114,8 @@ String convertTime(String input) {
   return "$hour:$minute";
 }
 
-double getSunStatus(String sunrise, String sunset, String time) {
-  List<String> splited1 = sunrise.split(" ");
+double getSunStatus(String sunrise, String sunset, String time, {by = " "}) {
+  List<String> splited1 = sunrise.split(by);
   List<String> num1 = splited1[0].split(":");
   int hour1 = int.parse(num1[0]);
   int minute1 = int.parse(num1[1]);
@@ -426,5 +439,127 @@ class WapiHour {
     temp: unit_coversion(item["temp_c"], settings["Temperature"]).round(),
     time: getTime(item["time"], settings["Time mode"] == '12 hour'),
     precip: item["precip_mm"] + (item["snow_cm"] / 10),
+  );
+}
+
+class WapiSunstatus {
+  final String sunrise;
+  final String sunset;
+  final double sunstatus;
+  final String absoluteSunriseSunset;
+
+  const WapiSunstatus({
+    required this.sunrise,
+    required this.sunstatus,
+    required this.sunset,
+    required this.absoluteSunriseSunset,
+  });
+
+  static WapiSunstatus fromJson(item, settings) => WapiSunstatus(
+    sunrise: settings["Time mode"] == "24 hour"
+        ? convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"])
+        : amPmTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"]),
+    sunset: settings["Time mode"] == "24 hour"
+        ? convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"])
+        : amPmTime(item["forecast"]["forecastday"][0]["astro"]["sunset"]),
+    absoluteSunriseSunset: "${convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"])}/"
+        "${convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"])}",
+    sunstatus: getSunStatus(item["forecast"]["forecastday"][0]["astro"]["sunrise"],
+        item["forecast"]["forecastday"][0]["astro"]["sunset"], item["current"]["last_updated"]),
+  );
+}
+
+class WapiAqi {
+  final int aqi_index;
+  final double pm2_5;
+  final double pm10;
+  final double o3;
+  final double no2;
+  final String aqi_title;
+  final String aqi_desc;
+
+  const WapiAqi({
+    required this.no2,
+    required this.o3,
+    required this.pm2_5,
+    required this.pm10,
+    required this.aqi_index,
+    required this.aqi_desc,
+    required this.aqi_title,
+  });
+
+  static WapiAqi fromJson(item) => WapiAqi(
+    aqi_index: item["current"]["air_quality"]["us-epa-index"],
+    pm10: item["current"]["air_quality"]["pm10"],
+    pm2_5: item["current"]["air_quality"]["pm2_5"],
+    o3: item["current"]["air_quality"]["o3"],
+    no2: item["current"]["air_quality"]["no2"],
+
+    aqi_title: ['good', 'fair', 'moderate', 'poor', 'very poor', 'unhealthy']
+    [item["current"]["air_quality"]["us-epa-index"] - 1],
+
+    aqi_desc: ['Air quality is excellent; no health risk.',
+      'Acceptable air quality; minor risk for sensitive people.',
+      'Sensitive individuals may experience mild effects.',
+      'Health effects possible for everyone, serious for sensitive groups.',
+      'Serious health effects for everyone.',
+      'Emergency conditions; severe health effects for all.']
+    [item["current"]["air_quality"]["us-epa-index"] - 1],
+
+  );
+}
+
+Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) async {
+
+  var wapi = await WapiMakeRequest("$lat,$lng", real_loc);
+
+  var wapi_body = wapi[0];
+  DateTime fetch_datetime = wapi[1];
+
+  final text = textCorrection(
+      wapi_body["current"]["condition"]["code"], wapi_body["current"]["is_day"],
+      language: "English");
+
+  //GET IMAGE
+
+  Image Uimage = await getUnsplashImage(text, real_loc);
+
+  //GET COLORS
+  List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
+
+  String real_time = wapi_body["location"]["localtime"];
+  WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
+
+  List<WapiDay> days = [];
+
+  for (int n = 0; n < wapi_body["forecast"]["forecastday"].length; n++) {
+    days.add(WapiDay.fromJson(
+        wapi_body["forecast"]["forecastday"][n], n, settings, real_time));
+  }
+
+  return WeatherData(
+      place: placeName,
+      settings: settings,
+      provider: "weatherapi.com",
+      real_loc: real_loc,
+
+      lat: lat,
+      lng: lng,
+
+      current: WapiCurrent.fromJson(wapi_body, settings,),
+      days: days,
+      sunstatus: sunstatus,
+      aqi: WapiAqi.fromJson(wapi_body),
+      radar: await RainviewerRadar.getData(),
+
+  fetch_datetime: fetch_datetime,
+  updatedTime: DateTime.now(),
+  image: Uimage,
+  localtime: WapiGetLocalTime(wapi_body),
+  palette: imageColors[0],
+  colorpop: imageColors[1],
+  desc_color: imageColors[2],
+  gradientColors: imageColors[3],
+  minutely_15_precip: const OM15MinutePrecip(t_minus: "", precip_sum: 0, precips: []), //because wapi doesn't have 15 minutely
   );
 }

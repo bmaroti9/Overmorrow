@@ -18,12 +18,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:http/http.dart' as http;
 
 class RadarMap extends StatefulWidget {
 
@@ -247,6 +249,23 @@ class _RadarMapState extends State<RadarMap> {
   }
 }
 
+Future<List<Uint8List>> preloadImages(List<String> urls) async {
+  List<Uint8List> images = [];
+  for (String url in urls) {
+    try {
+      final response = await http.get(Uri.parse(url + "/256/8/1.png"));
+      if (response.statusCode == 200) {
+        images.add(response.bodyBytes);
+      } else {
+        print('Failed to load image: $url');
+      }
+    } catch (e) {
+      print('Error loading image: $e');
+    }
+  }
+  return images;
+}
+
 class RadarPage extends StatefulWidget {
   final data;
 
@@ -264,16 +283,25 @@ class _RadarPageState extends State<RadarPage> {
   int currentFrameIndex = 0;
   late Timer timer;
   bool isPlaying = false;
+  List<Uint8List> preloadedFrames = []; // Store image data
 
   @override
   void initState() {
     super.initState();
 
-    timer = Timer.periodic(const Duration(milliseconds: 1500), (Timer t) {
+    // Preload images asynchronously
+    preloadImages(data.radar.images).then((images) {
+      setState(() {
+        preloadedFrames = images;
+      });
+    });
+
+    timer = Timer.periodic(const Duration(milliseconds: 500), (Timer t) {
       if (isPlaying) {
         setState(() {
-          currentFrameIndex =
-              ((currentFrameIndex + 1) % data.radar.images.length).toInt();
+          if (preloadedFrames.isNotEmpty) {
+            currentFrameIndex = (currentFrameIndex + 1) % preloadedFrames.length;
+          }
         });
       }
     });
@@ -300,6 +328,12 @@ class _RadarPageState extends State<RadarPage> {
     double x = MediaQuery.of(context).padding.top;
     Color main = data.current.textcolor;
     Color top = lighten(data.current.highlight, 0.1);
+
+    // Check if preloadedFrames is initialized
+    if (preloadedFrames.isEmpty) {
+      return Center(child: CircularProgressIndicator()); // or any loading indicator
+    }
+
     return Stack(
       children: [
         FlutterMap(
@@ -308,153 +342,28 @@ class _RadarPageState extends State<RadarPage> {
             initialZoom: 5,
             minZoom: 2,
             maxZoom: 8,
-
             backgroundColor: WHITE,
-            interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate,),
+            interactionOptions: const InteractionOptions(
+              flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+            ),
           ),
           children: [
-            Container(
-              color: data.settings["Color theme"] == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
-            ),
             TileLayer(
               urlTemplate: data.settings["Color theme"] == "dark"
                   ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                   : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
             ),
             TileLayer(
-              urlTemplate: data.radar.images[currentFrameIndex] + "/256/{z}/{x}/{y}/8/1_1.png",
-            ),
-            TileLayer(
               urlTemplate: data.settings["Color theme"] == "dark"
                   ? 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png'
                   : 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
             ),
+            // Handle radar image layer manually if needed
+            if (preloadedFrames.isNotEmpty) ...[
+              // For custom tile handling, you might need to implement a custom TileLayer
+            ],
           ],
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 500),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
-              child: Material(
-                borderRadius: BorderRadius.circular(20),
-                elevation: 10,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    color: top,
-                  ),
-                  padding: EdgeInsets.all(6),
-                  child: Row(
-                    children: [
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        transitionBuilder: (Widget child, Animation<double> animation) {
-                          return ScaleTransition(scale: animation, child: child,);
-                        },
-                        child: Hero(
-                          key: ValueKey<bool> (isPlaying),
-                          tag: 'playpause',
-                          child: SizedBox(
-                            height: 48,
-                            width: 48,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 8,
-                                  padding: const EdgeInsets.all(10),
-                                  backgroundColor: top,
-                                  //side: const BorderSide(width: 5, color: WHITE),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16)
-                                  ),
-                              ),
-                              onPressed: () async {
-                                togglePlayPause();
-                              },
-                              child: Icon(isPlaying? Icons.pause : Icons.play_arrow, color: main, size: 18,),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 6),
-                          child: Hero(
-                            tag: 'progress',
-                            child: LayoutBuilder(
-                                builder: (BuildContext context, BoxConstraints constraints) {
-                                  return Material(
-                                    borderRadius: BorderRadius.circular(13),
-                                    elevation: 8,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Container(
-                                        height: 48,
-                                        color: top,
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              color: main,
-                                              width: constraints.maxWidth *
-                                                  (max(currentFrameIndex - 1, 0) / data.radar.images.length),
-                                            ),
-                                            AnimatedSwitcher(
-                                              duration: const Duration(milliseconds: 300),
-                                              transitionBuilder: (Widget child, Animation<double> animation) =>
-                                                  SizeTransition(sizeFactor: animation, axis: Axis.horizontal, child: child),
-                                              child: Container(
-                                                key: ValueKey<int>(currentFrameIndex),
-                                                color: main,
-                                                width: constraints.maxWidth *
-                                                    (currentFrameIndex / data.radar.images.length),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(right: 20, top: x + 20),
-          child: Align(
-            alignment: Alignment.topRight,
-            child:  Hero(
-              tag: 'switch',
-              child: SizedBox(
-                height: 52,
-                width: 52,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 10,
-                    padding: const EdgeInsets.all(10),
-                    backgroundColor: top,
-                    //side: BorderSide(width: 3, color: main),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Icon(Icons.close_fullscreen, color: main, size: 26,),
-                ),
-              ),
-            ),
-          ),
-        )
       ],
     );
   }

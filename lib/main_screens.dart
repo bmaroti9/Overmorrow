@@ -21,6 +21,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:overmorrow/new_displays.dart';
+import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
@@ -99,8 +100,8 @@ Widget NewMain(data, updateLocation, context) {
         NewSunriseSunset(data: data, key: Key(data.place), size: size,),
         NewRain15MinuteIndicator(data),
         NewAirQuality(data),
+        RadarMap(data: data, key: Key(data.place),),
 
-        buildHihiDays(data),
         /*
         NewTimes(data, true),
 
