@@ -187,7 +187,7 @@ class _MyAppState extends State<MyApp> {
       if (recall) {
         return dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
           icon: Icons.bug_report,
-          place: backupName, settings: settings, provider: weather_provider, latlng: 'search',);
+          place: backupName, settings: settings, provider: weather_provider, latlng: 'query',);
       }
       else {
         return getDays(true, proposedLoc, backupName, startup);

@@ -101,6 +101,8 @@ Widget NewMain(data, updateLocation, context) {
         NewRain15MinuteIndicator(data),
         NewAirQuality(data),
         RadarMap(data: data, key: Key(data.place),),
+        providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
+            data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
 
         /*
         NewTimes(data, true),
