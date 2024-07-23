@@ -20,10 +20,12 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'main_ui.dart';
+import 'new_displays.dart';
 import 'ui_helper.dart';
 
 Widget NewMain(data, updateLocation, context) {
@@ -44,8 +46,8 @@ Widget NewMain(data, updateLocation, context) {
       headerData: HeaderData(
         //backgroundColor: WHITE,
           blurContent: false,
-          headerHeight: max(size.height * 0.54, 400), //we don't want it to be smaller than 400
-          header: ParrallaxBackground(image: Image.asset("assets/backdrops/${data.current.backdrop}", fit: BoxFit.cover,), key: Key(data.place),
+          headerHeight: max(size.height * 0.53, 400), //we don't want it to be smaller than 400
+          header: ParrallaxBackground(image: data.image, key: Key(data.place),
           color: data.current.backcolor == BLACK ? BLACK
               : lightAccent(data.current.backcolor, 5000)),
           overlay: Stack(
@@ -61,12 +63,13 @@ Widget NewMain(data, updateLocation, context) {
                     Padding(
                       padding: const EdgeInsets.only(left: 0, bottom: 2),
                       child: comfortatext("${data.current.temp}°", 68, data.settings,
-                          color: data.current.colorpop, weight: FontWeight.w300),
+                          color: data.colorpop, weight: FontWeight.w300),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 0),
                       child: comfortatext(data.current.text, 32, data.settings,
-                      weight: data.settings["Color mode"] == "dark" ? FontWeight.w600 : FontWeight.w400, color: WHITE),
+                      weight: data.settings["Color mode"] == "dark" ? FontWeight.w600 : FontWeight.w400,
+                          color: data.desc_color),
                     )
                   ],
                 ),
@@ -86,19 +89,20 @@ Widget NewMain(data, updateLocation, context) {
             LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   if(constraints.maxWidth > 500.0) {
-                    return Circles(500, data, 0.5, data.current.primary);
+                    return Circles(500, data, 0.5, data.palette.primary);
                   } else {
-                    return Circles(constraints.maxWidth * 0.97, data, 0.5, data.current.primary);
+                    return Circles(constraints.maxWidth * 0.97, data, 0.5, data.palette.primary);
                   }
                 }
             ),
           ],
         ),
 
-        /*
+
         NewSunriseSunset(data: data, key: Key(data.place), size: size,),
         NewRain15MinuteIndicator(data),
         NewAirQuality(data),
+        RadarSmall(data: data, key: Key("${data.place}, ${data.current.backcolor}")),
 
         Padding(
           padding: const EdgeInsets.only(top: 10, bottom: 30),
@@ -106,14 +110,15 @@ Widget NewMain(data, updateLocation, context) {
               data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
         ),
 
-         */
 
+        /*
         NewTimes(data, true),
-        //RadarMap(data: data, key: Key(data.place),),
         buildHihiDays(data),
         buildGlanceDay(data),
         providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
         data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
+
+         */
         const Padding(padding: EdgeInsets.only(bottom: 20))
 
 

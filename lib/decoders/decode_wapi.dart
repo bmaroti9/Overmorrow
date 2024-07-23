@@ -36,10 +36,8 @@ import 'package:flutter/material.dart';
 
 bool RandomSwitch = false;
 
-DateTime WapiGetLocalTime(item) {
-  DateTime now = DateTime.now();
-  List<String> loctime = item["location"]["localtime"].split(" ")[1].split();
-  return now.copyWith(hour: int.parse(loctime[0]), minute: int.parse(loctime[1]));
+String WapiGetLocalTime(item) {
+  return item["location"]["localtime"].split(" ")[1];
 }
 
 Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
@@ -516,16 +514,15 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
   var wapi_body = wapi[0];
   DateTime fetch_datetime = wapi[1];
 
-  //final text = textCorrection(
-  //    wapi_body["current"]["condition"]["code"], wapi_body["current"]["is_day"],
-  //    language: "English");
+  final text = textCorrection(
+      wapi_body["current"]["condition"]["code"], wapi_body["current"]["is_day"],
+      language: "English");
 
   //GET IMAGE
-
-  //Image Uimage = await getUnsplashImage(text, real_loc);
+  Image Uimage = await getUnsplashImage(text, real_loc);
 
   //GET COLORS
-  //List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
+  List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
 
   //String real_time = wapi_body["location"]["localtime"];
   int epoch = wapi_body["location"]["localtime_epoch"];
@@ -539,23 +536,29 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
   }
 
   return WeatherData(
-      place: placeName,
-      settings: settings,
-      provider: "weatherapi.com",
-      real_loc: real_loc,
+    place: placeName,
+    settings: settings,
+    provider: "weatherapi.com",
+    real_loc: real_loc,
 
-      lat: lat,
-      lng: lng,
+    lat: lat,
+    lng: lng,
 
-      current: WapiCurrent.fromJson(wapi_body, settings,),
-      days: days,
-      sunstatus: sunstatus,
-      aqi: WapiAqi.fromJson(wapi_body),
-      radar: await RainviewerRadar.getData(),
+    current: WapiCurrent.fromJson(wapi_body, settings,),
+    days: days,
+    sunstatus: sunstatus,
+    aqi: WapiAqi.fromJson(wapi_body),
+    radar: await RainviewerRadar.getData(),
 
-  fetch_datetime: fetch_datetime,
-  updatedTime: DateTime.now(),
-  localtime: WapiGetLocalTime(wapi_body),
-  minutely_15_precip: const OM15MinutePrecip(t_minus: "", precip_sum: 0, precips: []), //because wapi doesn't have 15 minutely
+    fetch_datetime: fetch_datetime,
+    updatedTime: DateTime.now(),
+    localtime: WapiGetLocalTime(wapi_body),
+    minutely_15_precip: const OM15MinutePrecip(t_minus: "", precip_sum: 0, precips: []), //because wapi doesn't have 15 minutely
+
+    image: Uimage,
+
+    palette: imageColors[0],
+    colorpop: imageColors[1],
+    desc_color: imageColors[2],
   );
 }

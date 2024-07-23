@@ -19,8 +19,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:latlong2/latlong.dart';
@@ -74,7 +76,7 @@ class _RadarMapState extends State<RadarMap> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 20, bottom: 0),
+          padding: const EdgeInsets.only(left: 20, bottom: 0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: comfortatext(translation('radar', data.settings["Language"]), 19, data.settings,
@@ -345,7 +347,7 @@ class _RadarPageState extends State<RadarPage> {
                     borderRadius: BorderRadius.circular(18),
                     color: top,
                   ),
-                  padding: EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(6),
                   child: Row(
                     children: [
                       AnimatedSwitcher(
@@ -455,6 +457,240 @@ class _RadarPageState extends State<RadarPage> {
             ),
           ),
         )
+      ],
+    );
+  }
+}
+
+
+class RadarSmall extends StatefulWidget {
+
+  final data;
+
+  const RadarSmall({Key? key, required this.data}) : super(key: key);
+
+  @override
+  _RadarSmallState createState() => _RadarSmallState(data);
+}
+
+class _RadarSmallState extends State<RadarSmall> {
+  double currentFrameIndex = 12;
+  late Timer timer;
+
+  final data;
+
+  _RadarSmallState(this.data);
+
+  bool isPlaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    timer = Timer.periodic(const Duration(milliseconds: 1500), (Timer t) {
+      if (isPlaying) {
+        setState(() {
+          currentFrameIndex =
+          ((currentFrameIndex + 1) % (data.radar.images.length - 1));
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
+  void togglePlayPause() {
+    setState(() {
+      isPlaying = !isPlaying;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 25, top: 20),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: comfortatext(
+                translation('radar', data.settings["Language"]), 16,
+                data.settings,
+                color: data.palette.primary),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+              left: 25, right: 25, top: 12, bottom: 10),
+          child: AspectRatio(
+            aspectRatio: 1.57,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: data.palette.surfaceContainerHigh,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(
+                      width: 2.2, color: data.palette.surfaceContainerHigh)
+              ),
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(17),
+                    child: FlutterMap(
+                      options: MapOptions(
+                        onTap: (tapPosition, point) =>
+                        {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RadarPage(data: data,)),
+                          )
+                        },
+                        initialCenter: LatLng(data.lat, data.lng),
+                        initialZoom: 6,
+                        backgroundColor: WHITE,
+                        keepAlive: true,
+                        maxZoom: 6,
+                        minZoom: 6,
+                        interactionOptions: const InteractionOptions(
+                            flags: InteractiveFlag.drag | InteractiveFlag
+                                .flingAnimation),
+                        cameraConstraint: CameraConstraint.containCenter(
+                          bounds: LatLngBounds(
+                            LatLng(data.lat - 3, data.lng - 3),
+                            LatLng(data.lat + 3, data.lng + 3),
+                          ),
+                        ),
+                      ),
+                      children: [
+                        TileLayer(
+                          urlTemplate: data.settings["Color theme"] == "dark"
+                              ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
+                              : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
+                        ),
+                        TileLayer(
+                          urlTemplate: data.radar.images[currentFrameIndex
+                              .toInt()] + "/256/{z}/{x}/{y}/8/1_1.png",
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8, top: 8),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Hero(
+                        tag: 'switch',
+                        child: SizedBox(
+                          height: 45,
+                          width: 45,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(10),
+                              elevation: 0.0,
+                              backgroundColor: data.palette.surfaceContainer,
+                              //side: BorderSide(width: 3, color: main),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) =>
+                                    RadarPage(data: data,)),
+                              );
+                            },
+                            child: Icon(CupertinoIcons.fullscreen,
+                              color: data.palette.primaryFixedDim, size: 20,),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 40, right: 25, bottom: 20, top: 10),
+          child: Row(
+            children: [
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return ScaleTransition(scale: animation, child: child,);
+                },
+                child: Hero(
+                  tag: 'playpause',
+                  key: ValueKey<bool>(isPlaying),
+                  child: SizedBox(
+                    height: 46,
+                    width: 46,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0.0,
+                          padding: const EdgeInsets.all(10),
+                          backgroundColor: data.palette.primaryFixedDim,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18)
+                          )
+                      ),
+                      onPressed: () async {
+                        togglePlayPause();
+                      },
+                      child: Icon(isPlaying ? Icons.pause : Icons.play_arrow,
+                        color: data.palette.surface, size: 18,),
+
+                    ),
+                  ),
+                ),
+              ),
+
+              Expanded(
+                child: SliderTheme(
+                  data: SliderTheme.of(context).copyWith(
+                    trackHeight: 18,
+                    valueIndicatorTextStyle: GoogleFonts.comfortaa(
+                      color: WHITE,
+                      fontSize: 12,
+                    ),
+
+                    thumbShape: const RoundSliderThumbShape(
+                        enabledThumbRadius: 10, elevation: 0.0,
+                        pressedElevation: 0),
+
+                    tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2),
+
+                  ),
+                  child: Slider(
+                    value: currentFrameIndex,
+                    min: 0,
+                    max: data.radar.times.length - 1.0,
+                    divisions: data.radar.times.length,
+                    label: data.radar.times[currentFrameIndex.toInt()]
+                        .toString(),
+
+                    activeColor: data.palette.primaryFixedDim,
+                    inactiveColor: data.palette.surface,
+                    //thumbColor: data.palette.primary,
+
+                    onChanged: (double value) {
+                      setState(() {
+                        currentFrameIndex = value;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
       ],
     );
   }

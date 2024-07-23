@@ -250,13 +250,12 @@ class WeatherData {
 
   final fetch_datetime;
 
-  //final image;
+  final image;
   final localtime;
 
-  //final palette;
-  //final colorpop;
-  //final desc_color;
-  //final gradientColors;
+  final palette;
+  final colorpop;
+  final desc_color;
 
   WeatherData({
     required this.place,
@@ -272,14 +271,14 @@ class WeatherData {
     required this.current,
     required this.fetch_datetime,
     required this.updatedTime,
-    //required this.image,
+    required this.image,
     required this.localtime,
 
-    //required this.palette,
-    //required this.colorpop,
-    //required this.desc_color,
-    //required this.gradientColors,
     required this.minutely_15_precip,
+
+    required this.palette,
+    required this.colorpop,
+    required this.desc_color,
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
@@ -320,7 +319,7 @@ class RainviewerRadar {
 
   final String host = data["host"];
 
-  int timenow = DateTime.now().toUtc().microsecond;
+  //int timenow = DateTime.now().toUtc().microsecond;
 
   List<String> images = [];
   List<String> times = [];
@@ -329,14 +328,14 @@ class RainviewerRadar {
   final future = data["radar"]["nowcast"];
 
   for (var x in past) {
-    DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"]);
+    DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"] * 1000);
     images.add(host + x["path"]);
     times.add("${time.hour}h ${time.minute}m");
   }
 
   for (var x in future) {
-    int dif = x["time"] * 1000 - timenow;
-    DateTime time = DateTime.fromMicrosecondsSinceEpoch(dif);
+    //int dif = x["time"] * 1000 - timenow;
+    DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"] * 1000);
     images.add(host + x["path"]);
     times.add("${time.hour}h ${time.minute}m");
   }

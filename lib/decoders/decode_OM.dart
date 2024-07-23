@@ -234,7 +234,7 @@ class OMCurrent {
     required this.wind_dir,
   });
 
-  static OMCurrent fromJson(item, settings, sunstatus, timenow) {
+  static OMCurrent fromJson(item, settings, sunstatus, timenow, palette) {
     Color back = BackColorCorrection(
       oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),
@@ -246,15 +246,15 @@ class OMCurrent {
     );
 
 
-    List<Color> colors = getColors(primary, back, settings,
-        ColorPopCorrection( oMCurrentTextCorrection(
-            item["current"]["weather_code"], sunstatus, timenow),)[
-              settings["Color mode"] == "dark" ? 1 : 0
-        ]);
+    //List<Color> colors = getColors(primary, back, settings,
+    //    ColorPopCorrection( oMCurrentTextCorrection(
+    //        item["current"]["weather_code"], sunstatus, timenow),)[
+    //          settings["Color mode"] == "dark" ? 1 : 0
+    //    ]);
 
 
 
-    //List<Color> colors = getNetworkColors(palette, settings);
+    List<Color> colors = getNetworkColors(palette, settings);
 
     //List<Color> colors = palette.colors.toList();
 
@@ -567,12 +567,12 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   DateTime localtime = OMGetLocalTime(oMBody);
   String real_time = "jT${localtime.hour}:${localtime.minute}";
 
-  //GET IMAGE
-  //Image Uimage = await getUnsplashImage(oMCurrentTextCorrection(
-  //    oMBody["current"]["weather_code"], sunstatus, real_time), real_loc);
+  // GET IMAGE
+  Image Uimage = await getUnsplashImage(oMCurrentTextCorrection(
+      oMBody["current"]["weather_code"], sunstatus, real_time), real_loc);
 
   //GET COLORS
-  //List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
+  List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
 
   return WeatherData(
     radar: await RainviewerRadar.getData(),
@@ -580,7 +580,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     sunstatus: sunstatus,
     minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
 
-    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time),
+    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, imageColors[0]),
     days: days,
 
     lat: lat,
@@ -594,5 +594,11 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
     localtime: real_time.split("T")[1],
+
+    image: Uimage,
+
+    palette: imageColors[0],
+    colorpop: imageColors[1],
+    desc_color: imageColors[2],
     );
 }
