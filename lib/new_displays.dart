@@ -176,7 +176,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
         final textWidth = textPainter.width;
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, top: 8),
+          padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
           child: Column(
             children: [
               Padding(
@@ -266,7 +266,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
 
 Widget NewAirQuality(var data) {
   return Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 19, top: 20),
+    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 19, top: 24),
     child: Column(
       children: [
         Padding(
@@ -324,7 +324,7 @@ Widget NewAirQuality(var data) {
                   Padding(
                     padding: const EdgeInsets.all(3.0),
                     child: comfortatext(data.aqi.aqi_desc, 14, data.settings,
-                        color: data.palette.primary, weight: FontWeight.w600),
+                        color: data.palette.primary, weight: FontWeight.w500),
                   ),
                 ],
               ),
@@ -352,7 +352,7 @@ Widget NewRain15MinuteIndicator(var data) {
   return Visibility(
     visible: data.minutely_15_precip.t_minus != "",
     child: Padding(
-      padding: const EdgeInsets.only(left: 21, right: 21, top: 18, bottom: 10),
+      padding: const EdgeInsets.only(left: 21, right: 21, top: 20, bottom: 10),
       child: Container(
         decoration: BoxDecoration(
           color: data.palette.surfaceContainerLow,
@@ -387,7 +387,7 @@ Widget NewRain15MinuteIndicator(var data) {
                         "rain expected in ${data.minutely_15_precip.t_minus}",
                         14,
                         data.settings,
-                        color: data.palette.onPrimaryContainer),
+                        color: data.palette.onPrimaryContainer, weight: FontWeight.w500),
                   ),
                 ),
               ],

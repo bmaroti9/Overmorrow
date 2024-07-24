@@ -494,7 +494,7 @@ class dumbySearch extends StatelessWidget {
                         align: TextAlign.center),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
-                          child: comfortatext(shouldAdd, 20, settings, color: Colors.black54, weight: FontWeight.w500,
+                          child: comfortatext(shouldAdd ?? "", 20, settings, color: Colors.black54, weight: FontWeight.w500,
                               align: TextAlign.center),
                         ),
                       ],
