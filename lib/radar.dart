@@ -494,8 +494,6 @@ class _RadarSmallState extends State<RadarSmall> {
 
     int offset = precived_hour - real;
 
-    String x;
-
     for (int i = 0; i < data.radar.times.length; i++) {
       List<String> split = data.radar.times[i].split("h");
       String minute = split[1].replaceAll(RegExp(r"\D"), "");
@@ -632,7 +630,7 @@ class _RadarSmallState extends State<RadarSmall> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 38, right: 25, bottom: 20, top: 10),
+          padding: const EdgeInsets.only(left: 38, right: 25, bottom: 0, top: 10),
           child: Row(
             children: [
               AnimatedSwitcher(
@@ -684,8 +682,8 @@ class _RadarSmallState extends State<RadarSmall> {
                               enabledThumbRadius: 10, elevation: 0.0,
                               pressedElevation: 0),
 
+                          overlayColor: BLACK,
                           tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2),
-                          overlayShape: SliderComponentShape.noOverlay
 
                         ),
                         child: Slider(
@@ -779,8 +777,6 @@ class _RadarBigState extends State<RadarBig> {
 
     int offset = precived_hour - real;
 
-    String x;
-
     for (int i = 0; i < data.radar.times.length; i++) {
       List<String> split = data.radar.times[i].split("h");
       String minute = split[1].replaceAll(RegExp(r"\D"), "");
@@ -813,8 +809,6 @@ class _RadarBigState extends State<RadarBig> {
   @override
   Widget build(BuildContext context) {
     double x = MediaQuery.of(context).padding.top;
-    Color main = data.current.textcolor;
-    Color top = lighten(data.current.highlight, 0.1);
     return Scaffold(
       body: Stack(
         children: [

@@ -17,6 +17,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:ui';
+import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
+import 'package:flutter/material.dart';
+
 import 'ui_helper.dart';
 
 Map<String, String> textIconMap = {
@@ -34,6 +37,41 @@ Map<String, String> textIconMap = {
   'Snow': 'snow.png',
   'Heavy Rain': 'heavy_rain.png',
   'Cloudy Night' : 'cloudy_night.png',
+};
+
+Map<String, IconData> textMaterialIcon = {
+  'Clear Night': OvermorrowWeatherIcons.moon2,
+  'Partly Cloudy': OvermorrowWeatherIcons.partly_cloudy,
+  'Clear Sky': OvermorrowWeatherIcons.sun,
+  'Overcast': OvermorrowWeatherIcons.cloudy2,
+  'Haze': OvermorrowWeatherIcons.haze2,
+  'Rain': OvermorrowWeatherIcons.rain2,
+  'Sleet': OvermorrowWeatherIcons.sleet2,
+  'Drizzle': OvermorrowWeatherIcons.drizzle2,
+  'Thunderstorm': OvermorrowWeatherIcons.lightning2,
+  'Heavy Snow': OvermorrowWeatherIcons.heavy_snow2,
+  'Fog': OvermorrowWeatherIcons.fog2,
+  'Snow': OvermorrowWeatherIcons.snow2,
+  'Heavy Rain': OvermorrowWeatherIcons.heavy_rain2,
+  'Cloudy Night' : OvermorrowWeatherIcons.cloudy_night2,
+};
+
+
+Map<String, double> textIconSizeNormalize = {
+  'Clear Night': 1,
+  'Partly Cloudy': 1,
+  'Clear Sky': 1,
+  'Overcast': 0.72,
+  'Haze': 1,
+  'Rain': 1,
+  'Sleet': 1,
+  'Drizzle': 1,
+  'Thunderstorm': 1,
+  'Heavy Snow': 1,
+  'Fog': 1,
+  'Snow': 1,
+  'Heavy Rain': 1,
+  'Cloudy Night' : 1,
 };
 
 Map<int, String> weatherTextMap = {

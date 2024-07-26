@@ -332,7 +332,7 @@ Widget NewAirQuality(var data) {
           ],
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 12, left: 13, right: 13),
+          padding: const EdgeInsets.only(top: 15, left: 14, right: 14),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -20,6 +20,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:overmorrow/new_forecast.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
@@ -103,6 +104,7 @@ Widget NewMain(data, updateLocation, context) {
         NewRain15MinuteIndicator(data),
         NewAirQuality(data),
         RadarSmall(data: data, key: Key("${data.place}, ${data.current.backcolor}")),
+        buildNewDays(data),
 
         Padding(
           padding: const EdgeInsets.only(top: 10, bottom: 30),

@@ -22,6 +22,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
 
 import '../caching.dart';
@@ -187,8 +188,15 @@ List<Color> oMtextcolorCorrection(String text) {
   return textFontColor[text] ?? [WHITE, WHITE];
 }
 
-String oMIconCorrection(String text) {
-  return textIconMap[text] ?? 'sun.png';
+IconData oMIconCorrection(String text) {
+  //return textIconMap[text] ?? 'sun.png';
+  return textMaterialIcon[text] ?? OvermorrowWeatherIcons.sun;
+}
+
+
+double oMIconSizeCorrection(String text) {
+  //return textIconMap[text] ?? 'sun.png';
+  return textIconSizeNormalize[text] ?? 1;
 }
 
 
@@ -299,7 +307,10 @@ class OMCurrent {
 
 class OMDay {
   final String text;
-  final String icon;
+
+  final IconData icon;
+  final double iconSize;
+
   final String name;
   final String minmaxtemp;
   final List<OMHour> hourly;
@@ -316,7 +327,10 @@ class OMDay {
 
   const OMDay({
     required this.text,
+
     required this.icon,
+    required this.iconSize,
+
     required this.name,
     required this.minmaxtemp,
     required this.hourly,
@@ -335,6 +349,7 @@ class OMDay {
     return OMDay(
       uv: item["daily"]["uv_index_max"][0].round(),
       icon: oMIconCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
+      iconSize: oMIconSizeCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
       text: translation(oMTextCorrection(item["daily"]["weather_code"][index]), settings["Language"]),
       name: oMGetName(index, settings, item),
       windspeed: unit_coversion(item["daily"]["wind_speed_10m_max"][index], settings["Wind"]).round(),
@@ -444,7 +459,7 @@ class OM15MinutePrecip {
 
 class OMHour {
   final int temp;
-  final String icon;
+  final IconData icon;
   final String time;
   final String text;
   final double precip;
