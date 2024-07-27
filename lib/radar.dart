@@ -684,6 +684,7 @@ class _RadarSmallState extends State<RadarSmall> {
 
                           overlayColor: BLACK,
                           tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2),
+                          overlayShape: SliderComponentShape.noOverlay
 
                         ),
                         child: Slider(

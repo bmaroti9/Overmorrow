@@ -61,7 +61,7 @@ class _NewDayState extends State<NewDay> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20, left: 15, right: 20),
+            padding: const EdgeInsets.only(top: 20, left: 25, right: 25),
             child: Row(
               children: [
                 Icon(day.icon, size: 37.0 * day.iconSize, color: data.palette.primary,),
