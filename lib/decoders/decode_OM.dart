@@ -33,7 +33,6 @@ import '../weather_refact.dart';
 import 'extra_info.dart';
 
 String OMConvertTime(String time) {
-  print(("time", time));
   return time.split("T")[1];
 }
 

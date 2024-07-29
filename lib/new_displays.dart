@@ -25,7 +25,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 
-import 'decoders/decode_wapi.dart';
+import 'decoders/decode_OM.dart';
 
 class WavePainter extends CustomPainter {
   final double waveValue;
@@ -156,10 +156,10 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
         final double progress = min(max(thisdif / total, 0), 1);
 
         String write = widget.data.settings["Time mode"] == "24 hour"
-            ? convertTime(
-                "${localTime.hour}:${localTime.minute} j") //the j is just added so when splitting
-            : amPmTime(
-                "${localTime.hour}:${localTime.minute} j"); //it can grab the first item
+            ? OMConvertTime(
+                "j T${localTime.hour}:${localTime.minute}") //the j is just added so when splitting
+            : OMamPmTime(
+                "j T${localTime.hour}:${localTime.minute}"); //it can grab the second item
 
         //this is all so that the text will be right above the progress
         final textPainter = TextPainter(
