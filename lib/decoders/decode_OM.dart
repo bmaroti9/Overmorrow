@@ -459,7 +459,10 @@ class OM15MinutePrecip {
 
 class OMHour {
   final int temp;
+
   final IconData icon;
+  final double iconSize;
+
   final String time;
   final String text;
   final double precip;
@@ -472,6 +475,7 @@ class OMHour {
     required this.text,
     required this.precip,
     required this.wind,
+    required this.iconSize,
   });
 
   static OMHour fromJson(item, index, settings, sunstatus) => OMHour(
@@ -479,6 +483,8 @@ class OMHour {
     text: translation(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
         sunstatus, item["hourly"]["time"][index]), settings["Language"]),
     icon: oMIconCorrection(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
+        sunstatus, item["hourly"]["time"][index])),
+    iconSize: oMIconSizeCorrection(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
         sunstatus, item["hourly"]["time"][index])),
     time: settings["Time mode"] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
     precip: unit_coversion(item["hourly"]["precipitation"][index], settings["Precipitation"]),

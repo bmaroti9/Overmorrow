@@ -64,7 +64,9 @@ class _NewDayState extends State<NewDay> {
             padding: const EdgeInsets.only(top: 20, left: 25, right: 25),
             child: Row(
               children: [
-                Icon(day.icon, size: 37.0 * day.iconSize, color: data.palette.primary,),
+                SizedBox(
+                    width: 35,
+                    child: Icon(day.icon, size: 37.0 * day.iconSize, color: data.palette.primary,)),
                 Padding(
                   padding: EdgeInsets.only(left: 12.0 / day.iconSize, top: 3),
                   child: comfortatext(day.text, 20, data.settings, color: data.palette.onSurface,
@@ -72,9 +74,18 @@ class _NewDayState extends State<NewDay> {
                 ),
                 Spacer(),
                 Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: comfortatext(day.minmaxtemp, 19, data.settings, color: data.palette.primary),
-                ),
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Row(
+                    children: [
+                      comfortatext(day.minmaxtemp.split("/")[0], 19, data.settings, color: data.palette.primary),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5, right: 4),
+                        child: comfortatext("/", 19, data.settings, color: data.palette.onSurface),
+                      ),
+                      comfortatext(day.minmaxtemp.split("/")[1], 19, data.settings, color: data.palette.primary),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
@@ -179,19 +190,20 @@ class _NewDayState extends State<NewDay> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
             child: Wrap(
               spacing: 5.0,
               children: List<Widget>.generate(
                 4,
                     (int index) {
                   return ChoiceChip(
-                    checkmarkColor: data.palette.onPrimaryContainer,
+                    elevation: 0.0,
+                    checkmarkColor: data.palette.onPrimaryFixed,
                     selectedColor: data.palette.primaryFixedDim,
                     backgroundColor: data.palette.surfaceContainerLow,
-                    side: BorderSide(color: data.palette.surfaceContainerLow),
+                    side: BorderSide(color: data.palette.surfaceContainerLow, width: 0),
                     label: comfortatext(['temp', 'precip', 'wind', 'uv'][index], 14, data.settings,
-                        color: data.palette.onSurface),
+                        color: _value == index ? data.palette.onPrimaryFixed : data.palette.onSurface),
                     selected: _value == index,
                     onSelected: (bool selected) {
                       setState(() {
@@ -203,7 +215,7 @@ class _NewDayState extends State<NewDay> {
               ).toList(),
             ),
           ),
-          SizedBox(height: 200,),
+          buildNewHours(day.hourly, data),
         ],
       ),
     );
@@ -222,54 +234,61 @@ Widget buildNewDays(data) {
 }
 
 
-Widget buildNewHours(List<dynamic> hours, data) => SizedBox(
-  height: 285,
-  child: ListView(
-    physics: const BouncingScrollPhysics(),
-    scrollDirection: Axis.horizontal,
-    shrinkWrap: true,
-    children: hours.map<Widget>((hour) {
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            child: comfortatext('${hour.temp}°', 22, data.settings, color: data.current.primary),
-          ),
-          Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Container(
-                width: 15,
-                height: 100,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      color: data.current.secondary,
-                    ),
-                    borderRadius: const BorderRadius.all(Radius.circular(20))
+Widget buildNewHours(List<dynamic> hours, data) => Padding(
+  padding: const EdgeInsets.only(top: 15),
+  child: SizedBox(
+    height: 270,
+    child: ListView(
+      physics: const BouncingScrollPhysics(),
+      scrollDirection: Axis.horizontal,
+      shrinkWrap: true,
+      children: hours.map<Widget>((hour) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: comfortatext('${hour.temp}°', 19, data.settings, color: data.palette.primary),
+            ),
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Container(
+                  width: 15,
+                  height: 105,
+                  decoration: BoxDecoration(
+                    color: data.palette.surfaceContainer,
+                      //border: Border.all(color: data.palette.outline,),
+                      borderRadius: const BorderRadius.all(Radius.circular(20))
+                  ),
                 ),
-              ),
-              Container(
-                width: 15,
-                height: temp_multiply_for_scale(hour.temp, data.settings['Temperature']!),
-                decoration: BoxDecoration(
-                    color: data.current.secondary,
-                    borderRadius: const BorderRadius.all(Radius.circular(20))
+                Container(
+                  width: 15,
+                  height: temp_multiply_for_scale(hour.temp, data.settings['Temperature']!),
+                  decoration: BoxDecoration(
+                      color: data.palette.primaryFixedDim,
+                      borderRadius: const BorderRadius.all(Radius.circular(20))
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, left: 3, right: 3),
-            child: Icon(
-              hour.icon
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15, left: 3, right: 3),
+              child: SizedBox(
+                height: 30,
+                child: Icon(
+                  hour.icon,
+                  color: data.palette.primary,
+                  size: 30.0 * hour.iconSize,
+                ),
+              )
+            ),
+            Padding(
+                padding: const EdgeInsets.only(top:15, left: 9, right: 9),
+                child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
             )
-          ),
-          Padding(
-              padding: const EdgeInsets.only(top:20, left: 9, right: 9),
-              child: comfortatext(hour.time, 17, data.settings, color: data.current.primary)
-          )
-        ],
-      );
-    }).toList(),
+          ],
+        );
+      }).toList(),
+    ),
   ),
 );

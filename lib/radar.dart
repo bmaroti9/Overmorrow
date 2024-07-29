@@ -121,7 +121,7 @@ class _RadarMapState extends State<RadarMap> {
                       ),
                       children: [
                         TileLayer(
-                          urlTemplate: data.settings["Color theme"] == "dark"
+                          urlTemplate: data.settings["Color mode"] == "dark"
                               ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                               : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
                         ),
@@ -316,10 +316,10 @@ class _RadarPageState extends State<RadarPage> {
           ),
           children: [
             Container(
-              color: data.settings["Color theme"] == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
+              color: data.settings["Color mode"] == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
             ),
             TileLayer(
-              urlTemplate: data.settings["Color theme"] == "dark"
+              urlTemplate: data.settings["Color mode"] == "dark"
                   ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                   : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
             ),
@@ -327,7 +327,7 @@ class _RadarPageState extends State<RadarPage> {
               urlTemplate: data.radar.images[currentFrameIndex] + "/256/{z}/{x}/{y}/8/1_1.png",
             ),
             TileLayer(
-              urlTemplate: data.settings["Color theme"] == "dark"
+              urlTemplate: data.settings["Color mode"] == "dark"
                   ? 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png'
                   : 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
             ),
@@ -580,7 +580,7 @@ class _RadarSmallState extends State<RadarSmall> {
                       ),
                       children: [
                         TileLayer(
-                          urlTemplate: data.settings["Color theme"] == "dark"
+                          urlTemplate: data.settings["Color mode"] == "dark"
                               ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                               : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
                         ),
@@ -674,8 +674,9 @@ class _RadarSmallState extends State<RadarSmall> {
                         data: SliderTheme.of(context).copyWith(
                           trackHeight: 18,
                           valueIndicatorTextStyle: GoogleFonts.comfortaa(
-                            color: WHITE,
+                            color: data.palette.surface,
                             fontSize: 12,
+                            fontWeight: FontWeight.w500,
                           ),
 
                           thumbShape: const RoundSliderThumbShape(
@@ -810,6 +811,7 @@ class _RadarBigState extends State<RadarBig> {
   @override
   Widget build(BuildContext context) {
     double x = MediaQuery.of(context).padding.top;
+    
     return Scaffold(
       body: Stack(
         children: [
@@ -825,10 +827,10 @@ class _RadarBigState extends State<RadarBig> {
             ),
             children: [
               Container(
-                color: data.settings["Color theme"] == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
+                color: data.settings["Color mode"] == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
               ),
               TileLayer(
-                urlTemplate: data.settings["Color theme"] == "dark"
+                urlTemplate: data.settings["Color mode"] == "dark"
                     ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                     : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
               ),
@@ -836,7 +838,7 @@ class _RadarBigState extends State<RadarBig> {
                 urlTemplate: data.radar.images[currentFrameIndex.toInt()] + "/256/{z}/{x}/{y}/8/1_1.png",
               ),
               TileLayer(
-                urlTemplate: data.settings["Color theme"] == "dark"
+                urlTemplate: data.settings["Color mode"] == "dark"
                     ? 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png'
                     : 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
               ),
@@ -899,8 +901,9 @@ class _RadarBigState extends State<RadarBig> {
                                 data: SliderTheme.of(context).copyWith(
                                     trackHeight: 18,
                                     valueIndicatorTextStyle: GoogleFonts.comfortaa(
-                                      color: WHITE,
+                                      color: data.palette.surface,
                                       fontSize: 12,
+                                      fontWeight: FontWeight.w500,
                                     ),
 
                                     thumbShape: const RoundSliderThumbShape(
@@ -908,7 +911,7 @@ class _RadarBigState extends State<RadarBig> {
                                         pressedElevation: 0),
 
                                     tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2),
-                                    overlayShape: SliderComponentShape.noOverlay
+                                    overlayShape: SliderComponentShape.noOverlay,
 
                                 ),
                                 child: Slider(

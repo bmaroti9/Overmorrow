@@ -149,10 +149,10 @@ double unit_coversion(double value, String unit) {
 
 double temp_multiply_for_scale(int temp, String unit) {
   if (unit == '˚C') {
-    return max(0, min(100, 17 + temp * 2.4));
+    return max(0, min(105, 17 + temp * 2.4));
   }
   else{
-    return max(0, min(100, (0 + temp).toDouble()));
+    return max(0, min(105, (0 + temp).toDouble()));
   }
 }
 

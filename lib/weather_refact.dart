@@ -56,14 +56,13 @@ Map<String, IconData> textMaterialIcon = {
   'Cloudy Night' : OvermorrowWeatherIcons.cloudy_night2,
 };
 
-
 Map<String, double> textIconSizeNormalize = {
-  'Clear Night': 1,
-  'Partly Cloudy': 1,
+  'Clear Night': 0.8,
+  'Partly Cloudy': 0.8,
   'Clear Sky': 0.8,
-  'Overcast': 0.72,
+  'Overcast': 0.74,
   'Haze': 1,
-  'Rain': 1,
+  'Rain': 0.95,
   'Sleet': 1,
   'Drizzle': 1,
   'Thunderstorm': 1,
@@ -71,7 +70,7 @@ Map<String, double> textIconSizeNormalize = {
   'Fog': 1,
   'Snow': 1,
   'Heavy Rain': 1,
-  'Cloudy Night' : 1,
+  'Cloudy Night' : 0.8,
 };
 
 Map<int, String> weatherTextMap = {
