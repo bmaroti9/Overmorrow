@@ -57,7 +57,7 @@ class _NewDayState extends State<NewDay> {
               child: comfortatext(
                   translation(day.name, data.settings["Language"]), 16,
                   data.settings,
-                  color: data.palette.primary),
+                  color: data.palette.onSurface),
             ),
           ),
           Padding(
@@ -67,13 +67,13 @@ class _NewDayState extends State<NewDay> {
                 Icon(day.icon, size: 37.0 * day.iconSize, color: data.palette.primary,),
                 Padding(
                   padding: EdgeInsets.only(left: 12.0 / day.iconSize, top: 3),
-                  child: comfortatext(day.text, 22, data.settings, color: data.palette.primaryFixedDim,
+                  child: comfortatext(day.text, 20, data.settings, color: data.palette.onSurface,
                       weight: FontWeight.w400),
                 ),
                 Spacer(),
                 Padding(
                   padding: const EdgeInsets.only(top: 5),
-                  child: comfortatext(day.minmaxtemp, 20, data.settings, color: data.palette.primary),
+                  child: comfortatext(day.minmaxtemp, 19, data.settings, color: data.palette.primary),
                 ),
               ],
             ),
@@ -84,7 +84,7 @@ class _NewDayState extends State<NewDay> {
               height: 85,
               padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
               decoration: BoxDecoration(
-                //border: Border.all(width: 1.2, color: data.palette.primary),
+                //border: Border.all(width: 1, color: data.palette.outline),
                 color: data.palette.surfaceContainerLow,
                 borderRadius: BorderRadius.circular(18),
               ),
@@ -189,9 +189,9 @@ class _NewDayState extends State<NewDay> {
                     checkmarkColor: data.palette.onPrimaryContainer,
                     selectedColor: data.palette.primaryFixedDim,
                     backgroundColor: data.palette.surfaceContainerLow,
-                    side: BorderSide.none,
+                    side: BorderSide(color: data.palette.surfaceContainerLow),
                     label: comfortatext(['temp', 'precip', 'wind', 'uv'][index], 14, data.settings,
-                        color: data.palette.onPrimaryContainer),
+                        color: data.palette.onSurface),
                     selected: _value == index,
                     onSelected: (bool selected) {
                       setState(() {

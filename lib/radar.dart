@@ -533,7 +533,7 @@ class _RadarSmallState extends State<RadarSmall> {
             child: comfortatext(
                 translation('radar', data.settings["Language"]), 16,
                 data.settings,
-                color: data.palette.primary),
+                color: data.palette.onSurface),
           ),
         ),
         Padding(
@@ -711,26 +711,26 @@ class _RadarSmallState extends State<RadarSmall> {
                       padding: const EdgeInsets.only(left: 16, right: 16, top: 9),
                       child: Row(
                         children: <Widget>[
-                          comfortatext('-2hr', 13, data.settings, color: data.palette.onPrimaryContainer),
+                          comfortatext('-2hr', 13, data.settings, color: data.palette.onSurface),
                           Expanded(
                             flex: 6,
                             child: Align(
                                 alignment: Alignment.centerRight,
-                                child: comfortatext('-1hr', 13, data.settings, color: data.palette.onPrimaryContainer)
+                                child: comfortatext('-1hr', 13, data.settings, color: data.palette.onSurface)
                             ),
                           ),
                           Expanded(
                             flex: 6,
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: comfortatext('now', 13, data.settings, color: data.palette.onPrimaryContainer)
+                              child: comfortatext('now', 13, data.settings, color: data.palette.onSurface)
                             ),
                           ),
                           Expanded(
                             flex: 3,
                             child: Align(
                                 alignment: Alignment.centerRight,
-                                child: comfortatext('30m', 13, data.settings, color: data.palette.onPrimaryContainer)
+                                child: comfortatext('30m', 13, data.settings, color: data.palette.onSurface)
                             ),
                           ),
                         ],

@@ -190,7 +190,7 @@ List<Color> oMtextcolorCorrection(String text) {
 
 IconData oMIconCorrection(String text) {
   //return textIconMap[text] ?? 'sun.png';
-  return textMaterialIcon[text] ?? OvermorrowWeatherIcons.sun;
+  return textMaterialIcon[text] ?? OvermorrowWeatherIcons.sun2;
 }
 
 

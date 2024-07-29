@@ -30,9 +30,9 @@ class OvermorrowWeatherIcons {
   static const IconData heavy_snow2 = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData lightning2 = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData moon2 = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData partly_cloudy = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData partly_cloudy2 = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData rain2 = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData sleet2 = IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData snow2 = IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData sun = IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData sun2 = IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

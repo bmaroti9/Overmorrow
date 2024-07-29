@@ -191,7 +191,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: comfortatext(write, 15, widget.data.settings,
-                      color: widget.data.palette.secondary,
+                      color: widget.data.palette.onSurface,
                       weight: FontWeight.w500),
                 ),
               ),
@@ -277,14 +277,14 @@ Widget NewAirQuality(var data) {
                   translation('air quality', data.settings["Language"]),
                   16,
                   data.settings,
-                  color: data.palette.primary),
+                  color: data.palette.onSurface),
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(right: 5),
                 child: Icon(
                   Icons.arrow_forward,
                   size: 16,
-                  color: data.palette.primary,
+                  color: data.palette.onSurface,
                 ),
               )
             ],
@@ -324,7 +324,7 @@ Widget NewAirQuality(var data) {
                   Padding(
                     padding: const EdgeInsets.all(3.0),
                     child: comfortatext(data.aqi.aqi_desc, 14, data.settings,
-                        color: data.palette.primary, weight: FontWeight.w500),
+                        color: data.palette.onSurface, weight: FontWeight.w500),
                   ),
                 ],
               ),

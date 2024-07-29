@@ -236,10 +236,10 @@ packages:
     dependency: transitive
     description:
       name: geolocator_android
-      sha256: "00c7177a95823dd3ee35ef42fd8666cd27d219ae14cea472ac76a21dff43000b"
+      sha256: "7aefc530db47d90d0580b552df3242440a10fe60814496a979aa67aa98b1fd47"
       url: "https://pub.dev"
     source: hosted
-    version: "4.6.0"
+    version: "4.6.1"
   geolocator_apple:
     dependency: transitive
     description:
@@ -468,10 +468,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: "30c5aa827a6ae95ce2853cdc5fe3971daaac00f6f081c419c013f7f57bff2f5e"
+      sha256: e84c8a53fe1510ef4582f118c7b4bdf15b03002b51d7c2b66983c65843d61193
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.7"
+    version: "2.2.8"
   path_provider_foundation:
     dependency: transitive
     description:
@@ -564,10 +564,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_android
-      sha256: "93d0ec9dd902d85f326068e6a899487d1f65ffcd5798721a95330b26c8131577"
+      sha256: "3d4571b3c5eb58ce52a419d86e655493d0bc3020672da79f72fa0c16ca3a8ec1"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.3"
+    version: "2.2.4"
   shared_preferences_foundation:
     dependency: transitive
     description:
@@ -729,10 +729,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_android
-      sha256: "95d8027db36a0e52caf55680f91e33ea6aa12a3ce608c90b06f4e429a21067ac"
+      sha256: c24484594a8dea685610569ab0f2547de9c7a1907500a9bc5e37e4c9a3cbfb23
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.5"
+    version: "6.3.6"
   url_launcher_ios:
     dependency: transitive
     description:
