@@ -21,7 +21,6 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:overmorrow/settings_page.dart';
 import 'ui_helper.dart';
 
 
@@ -56,7 +55,7 @@ class _NewDayState extends State<NewDay> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: comfortatext(
-                  translation(day.name, data.settings["Language"]), 16,
+                  day.name, 16,
                   data.settings,
                   color: data.palette.onSurface),
             ),
@@ -216,8 +215,17 @@ class _NewDayState extends State<NewDay> {
               ).toList(),
             ),
           ),
-          if (_value == 0)(buildNewHours(day.hourly, data)),
-          if (_value == 2)(WindReport(hours: day.hourly, data: data,))
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+              transitionBuilder: (child, animation) {
+                return ScaleTransition(
+                scale: animation,
+                child: child,
+                );
+              },
+            child: _value == 0 ? buildNewHours(day.hourly, data)
+                : WindReport(hours: day.hourly, data: data,)
+          ),
         ],
       ),
     );
@@ -235,7 +243,8 @@ Widget buildNewDays(data) {
   );
 }
 
-Widget buildNewHours(List<dynamic> hours, data) => SizedBox(
+Widget buildNewHours(List<dynamic> hours, data) => Container(
+  color: data.palette.surface,
   height: 270,
   child: ListView(
     physics: const BouncingScrollPhysics(),
@@ -308,7 +317,7 @@ class WindChartPainter extends CustomPainter {
     this.dotRadius = 7.0,
     this.smallDotRadius = 1.8,
     this.spacing = 55.0,
-    this.maxHeight = 140.0,
+    this.maxHeight = 110.0,
   });
 
   @override
@@ -380,8 +389,9 @@ class WindReport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 270,
+      color: data.palette.surface,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
@@ -390,7 +400,7 @@ class WindReport extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 45, bottom: 20),
               child: CustomPaint(
-                size: Size(hours.length * 55.0, 145.0),
+                size: Size(hours.length * 55.0, 110.0),
                 painter: WindChartPainter(hours: hours, data: data),
               ),
             ),
@@ -418,7 +428,18 @@ class WindReport extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 152,
+                          height: 112,
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(left: 3, right: 3),
+                            child: SizedBox(
+                              height: 30,
+                              child: Icon(
+                                hour.icon,
+                                color: data.palette.primary,
+                                size: 30.0 * hour.iconSize,
+                              ),
+                            )
                         ),
                         Padding(
                             padding: const EdgeInsets.only(top:15),
