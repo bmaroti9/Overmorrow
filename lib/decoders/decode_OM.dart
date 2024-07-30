@@ -37,7 +37,6 @@ String OMConvertTime(String time) {
 }
 
 String OMamPmTime(String time) {
-  print(("time", time));
   String a = time.split("T")[1];
   List<String> num = a.split(":");
   int hour = int.parse(num[0]);
@@ -93,7 +92,7 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
     "longitude": lng.toString(),
     "minutely_15" : ["precipitation"],
     "current": ["temperature_2m", "relative_humidity_2m", "apparent_temperature", "weather_code", "wind_speed_10m", 'wind_direction_10m'],
-    "hourly": ["temperature_2m", "precipitation", "weather_code", "wind_speed_10m"],
+    "hourly": ["temperature_2m", "precipitation", "weather_code", "wind_speed_10m", "wind_direction_10m"],
     "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "uv_index_max", "precipitation_sum", "precipitation_probability_max", "wind_speed_10m_max", "wind_direction_10m_dominant", "sunrise", "sunset"],
     "timezone": "auto",
     "forecast_days": "14",
@@ -258,7 +257,6 @@ class OMCurrent {
     //        item["current"]["weather_code"], sunstatus, timenow),)[
     //          settings["Color mode"] == "dark" ? 1 : 0
     //    ]);
-
 
 
     List<Color> colors = getNetworkColors(palette, settings);
@@ -466,6 +464,11 @@ class OMHour {
   final String text;
   final double precip;
   final double wind;
+  final int wind_dir;
+
+  final double raw_temp;
+  final double raw_precip;
+  final double raw_wind;
 
   const OMHour({
     required this.temp,
@@ -475,6 +478,10 @@ class OMHour {
     required this.precip,
     required this.wind,
     required this.iconSize,
+    required this.raw_precip,
+    required this.raw_temp,
+    required this.raw_wind,
+    required this.wind_dir,
   });
 
   static OMHour fromJson(item, index, settings, sunstatus) => OMHour(
@@ -486,8 +493,15 @@ class OMHour {
     iconSize: oMIconSizeCorrection(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
         sunstatus, item["hourly"]["time"][index])),
     time: settings["Time mode"] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
+
     precip: unit_coversion(item["hourly"]["precipitation"][index], settings["Precipitation"]),
-    wind: unit_coversion(item["hourly"]["wind_speed_10m"][index], settings["Wind"]),
+    wind: double.parse(
+        unit_coversion(item["hourly"]["wind_speed_10m"][index], settings["Wind"]).toStringAsFixed(1)),
+    wind_dir: item["hourly"]["wind_direction_10m"][index],
+
+    raw_precip: item["hourly"]["precipitation"][index],
+    raw_temp: item["hourly"]["temperature_2m"][index],
+    raw_wind: item["hourly"]["wind_speed_10m"][index],
   );
 }
 

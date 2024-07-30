@@ -17,10 +17,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/settings_page.dart';
-import 'decoders/decode_wapi.dart';
 import 'ui_helper.dart';
 
 
@@ -61,18 +62,18 @@ class _NewDayState extends State<NewDay> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20, left: 25, right: 25),
+            padding: const EdgeInsets.only(top: 20, left: 23, right: 25),
             child: Row(
               children: [
                 SizedBox(
                     width: 35,
                     child: Icon(day.icon, size: 37.0 * day.iconSize, color: data.palette.primary,)),
                 Padding(
-                  padding: EdgeInsets.only(left: 12.0 / day.iconSize, top: 3),
+                  padding: const EdgeInsets.only(left: 12.0, top: 3),
                   child: comfortatext(day.text, 20, data.settings, color: data.palette.onSurface,
                       weight: FontWeight.w400),
                 ),
-                Spacer(),
+                const Spacer(),
                 Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Row(
@@ -190,7 +191,7 @@ class _NewDayState extends State<NewDay> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 15),
             child: Wrap(
               spacing: 5.0,
               children: List<Widget>.generate(
@@ -215,7 +216,8 @@ class _NewDayState extends State<NewDay> {
               ).toList(),
             ),
           ),
-          buildNewHours(day.hourly, data),
+          if (_value == 0)(buildNewHours(day.hourly, data)),
+          if (_value == 2)(WindReport(hours: day.hourly, data: data,))
         ],
       ),
     );
@@ -228,22 +230,21 @@ Widget buildNewDays(data) {
     shrinkWrap: true,
     itemCount: 3,
     itemBuilder: (BuildContext context, int index) {
-      return NewDay(data: data, index: index);
+      return NewDay(data: data, index: index, key: Key("${data.place}, ${data.current.backcolor}"),);
     },
   );
 }
 
-
-Widget buildNewHours(List<dynamic> hours, data) => Padding(
-  padding: const EdgeInsets.only(top: 15),
-  child: SizedBox(
-    height: 270,
-    child: ListView(
-      physics: const BouncingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      shrinkWrap: true,
-      children: hours.map<Widget>((hour) {
-        return Column(
+Widget buildNewHours(List<dynamic> hours, data) => SizedBox(
+  height: 270,
+  child: ListView(
+    physics: const BouncingScrollPhysics(),
+    scrollDirection: Axis.horizontal,
+    shrinkWrap: true,
+    children: hours.map<Widget>((hour) {
+      return SizedBox(
+        width: 55, //this is all to ensure that nothing shifts when you switch categories
+        child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -253,7 +254,7 @@ Widget buildNewHours(List<dynamic> hours, data) => Padding(
               alignment: Alignment.bottomCenter,
               children: [
                 Container(
-                  width: 15,
+                  width: 14,
                   height: 105,
                   decoration: BoxDecoration(
                     color: data.palette.surfaceContainer,
@@ -262,8 +263,8 @@ Widget buildNewHours(List<dynamic> hours, data) => Padding(
                   ),
                 ),
                 Container(
-                  width: 15,
-                  height: temp_multiply_for_scale(hour.temp, data.settings['Temperature']!),
+                  width: 14,
+                  height: hour.raw_temp * 1.8 + 30,
                   decoration: BoxDecoration(
                       color: data.palette.primaryFixedDim,
                       borderRadius: const BorderRadius.all(Radius.circular(20))
@@ -283,12 +284,155 @@ Widget buildNewHours(List<dynamic> hours, data) => Padding(
               )
             ),
             Padding(
-                padding: const EdgeInsets.only(top:15, left: 9, right: 9),
+                padding: const EdgeInsets.only(top:15),
                 child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
             )
           ],
-        );
-      }).toList(),
-    ),
+        ),
+      );
+    }).toList(),
   ),
 );
+
+class WindChartPainter extends CustomPainter {
+  final List<dynamic> hours;
+  final data;
+  final double dotRadius;
+  final double smallDotRadius;
+  final double spacing;
+  final double maxHeight;
+
+  WindChartPainter({
+    required this.hours,
+    required this.data,
+    this.dotRadius = 7.0,
+    this.smallDotRadius = 1.8,
+    this.spacing = 55.0,
+    this.maxHeight = 140.0,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = data.palette.primaryFixedDim
+      ..strokeWidth = 2.0;
+
+    final smallDotPaint = Paint()
+      ..color = data.palette.primaryContainer
+      ..strokeWidth = 1.0;
+
+    final textPainter = TextPainter(
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    );
+
+    for (int i = 0; i < hours.length; i++) {
+      final x = 27.5 + i * spacing;
+      final y = maxHeight - max(min(hours[i].raw_wind * 1.5, maxHeight), 0);
+
+      canvas.drawCircle(Offset(x, y), dotRadius, paint);
+
+      textPainter.text = TextSpan(
+        text: String.fromCharCode(Icons.arrow_forward.codePoint),
+        style: TextStyle(
+          fontSize: dotRadius * 2,
+          fontFamily: Icons.arrow_forward.fontFamily,
+          color: data.palette.primary,
+        ),
+      );
+      textPainter.layout();
+
+      //this is all so it can be rotated
+      canvas.save();
+      canvas.translate(x, (y < 30) ? y + dotRadius * 2.4 : y - dotRadius * 2.4);
+      canvas.rotate(pi / 180 * hours[i].wind_dir);
+      textPainter.paint(canvas, Offset(-dotRadius, -dotRadius));
+      canvas.restore();
+
+      if (i < hours.length - 1) {
+        final nextX = 27.5 + (i + 1) * spacing;
+        final nextY = maxHeight - max(min(hours[i + 1].raw_wind * 1.5, maxHeight), 0);
+
+        int numDots = 4;
+        double dx = (nextX - x) / numDots;
+        double dy = (nextY - y) / numDots;
+
+        for (int j = 1; j < numDots; j++) {
+          double startX = x + dx * j;
+          double startY = y + dy * j;
+          canvas.drawCircle(Offset(startX, startY), smallDotRadius, smallDotPaint);
+        }
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
+class WindReport extends StatelessWidget {
+  final hours;
+  final data;
+
+  WindReport({required this.hours, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 270,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 45, bottom: 20),
+              child: CustomPaint(
+                size: Size(hours.length * 55.0, 145.0),
+                painter: WindChartPainter(hours: hours, data: data),
+              ),
+            ),
+            SizedBox(
+              height: 250,
+              child: ListView(
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                children: hours.map<Widget>((hour) {
+                  return SizedBox(
+                    width: 55,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              comfortatext('${hour.wind}', 18, data.settings, color: data.palette.primary,
+                              weight: FontWeight.w500),
+                              comfortatext('${data.settings["Wind"]}', 9, data.settings, color: data.palette.primary),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 152,
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(top:15),
+                            child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
+                        )
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

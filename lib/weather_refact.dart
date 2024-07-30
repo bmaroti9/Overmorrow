@@ -67,9 +67,9 @@ Map<String, double> textIconSizeNormalize = {
   'Drizzle': 1,
   'Thunderstorm': 1,
   'Heavy Snow': 1,
-  'Fog': 1,
-  'Snow': 1,
-  'Heavy Rain': 1,
+  'Fog': 0.8,
+  'Snow': 0.8,
+  'Heavy Rain': 0.95,
   'Cloudy Night' : 0.8,
 };
 

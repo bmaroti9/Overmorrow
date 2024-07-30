@@ -543,7 +543,7 @@ class _RadarSmallState extends State<RadarSmall> {
             aspectRatio: 1.57,
             child: Container(
               decoration: BoxDecoration(
-                  color: data.palette.surfaceContainerHigh,
+                  color: data.palette.surface,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(
                       width: 2.2, color: data.palette.surfaceContainerHigh)
@@ -564,7 +564,7 @@ class _RadarSmallState extends State<RadarSmall> {
                         },
                         initialCenter: LatLng(data.lat, data.lng),
                         initialZoom: 6,
-                        backgroundColor: WHITE,
+                        backgroundColor: data.settings["Color mode"] == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
                         keepAlive: true,
                         maxZoom: 6,
                         minZoom: 6,
@@ -822,7 +822,7 @@ class _RadarBigState extends State<RadarBig> {
               minZoom: 2,
               maxZoom: 8,
 
-              backgroundColor: WHITE,
+              backgroundColor: data.settings["Color mode"] == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
               interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate,),
             ),
             children: [

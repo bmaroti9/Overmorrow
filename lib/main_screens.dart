@@ -99,7 +99,6 @@ Widget NewMain(data, updateLocation, context) {
           ],
         ),
 
-
         NewSunriseSunset(data: data, key: Key(data.place), size: size,),
         NewRain15MinuteIndicator(data),
         NewAirQuality(data),
