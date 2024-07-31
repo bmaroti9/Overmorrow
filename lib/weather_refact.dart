@@ -57,7 +57,7 @@ Map<String, IconData> textMaterialIcon = {
 };
 
 Map<String, double> textIconSizeNormalize = {
-  'Clear Night': 0.8,
+  'Clear Night': 0.77,
   'Partly Cloudy': 0.8,
   'Clear Sky': 0.8,
   'Overcast': 0.74,

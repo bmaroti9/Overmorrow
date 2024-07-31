@@ -231,9 +231,10 @@ class _NewDayState extends State<NewDay> {
             child: PageView(
               controller: _pageController,
               children: <Widget>[
-                buildNewHours(day.hourly, data),
+                buildTemp(day.hourly, data),
                 WindReport(hours: day.hourly, data: data,),
                 WindReport(hours: day.hourly, data: data,),
+                buildUV(day.hourly, data),
               ],
             ),
           ),
@@ -254,7 +255,7 @@ Widget buildNewDays(data) {
   );
 }
 
-Widget buildNewHours(List<dynamic> hours, data) => ListView(
+Widget buildTemp(List<dynamic> hours, data) => ListView(
   physics: const BouncingScrollPhysics(),
   scrollDirection: Axis.horizontal,
   shrinkWrap: true,
@@ -461,3 +462,72 @@ class WindReport extends StatelessWidget {
     );
   }
 }
+
+
+Widget buildUV(List<dynamic> hours, data) => ListView(
+  physics: const BouncingScrollPhysics(),
+  scrollDirection: Axis.horizontal,
+  shrinkWrap: true,
+  children: hours.map<Widget>((hour) {
+    return SizedBox(
+      width: 55, //this is all to ensure that nothing shifts when you switch categories
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 15),
+            child: comfortatext('${hour.uv}', 19, data.settings, color: data.palette.primary),
+          ),
+          SizedBox(
+            height: 105,
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 10,
+                itemExtent: 10,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index < min(max(10 - hour.uv, 0), 10)) {
+                    return Center(
+                      child: Container(
+                        width: 5,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: data.palette.primaryFixedDim,
+                        ),
+                      ),
+                    );
+                  }
+                  else {
+                    return Center(
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: data.palette.primary,
+                        ),
+                      ),
+                    );
+                  }
+                }
+            ),
+          ),
+          Padding(
+              padding: const EdgeInsets.only(top: 12, left: 3, right: 3),
+              child: SizedBox(
+                height: 30,
+                child: Icon(
+                  hour.icon,
+                  color: data.palette.primary,
+                  size: 31.0 * hour.iconSize,
+                ),
+              )
+          ),
+          Padding(
+              padding: const EdgeInsets.only(top:13),
+              child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
+          )
+        ],
+      ),
+    );
+  }).toList(),
+);
