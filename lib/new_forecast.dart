@@ -38,6 +38,16 @@ class _NewDayState extends State<NewDay> {
   final data;
 
   int _value = 0;
+
+  PageController _pageController = PageController();
+
+  void _onItemTapped(int index) {
+    _pageController.animateToPage(
+      index,
+      duration: Duration(milliseconds: 400),
+      curve: Curves.fastEaseInToSlowEaseOut,
+    );
+  }
   
   _NewDayState(this.data);
 
@@ -208,6 +218,7 @@ class _NewDayState extends State<NewDay> {
                     onSelected: (bool selected) {
                       setState(() {
                         _value = (selected ? index : null)!;
+                        _onItemTapped(index);
                       });
                     },
                   );
@@ -215,16 +226,16 @@ class _NewDayState extends State<NewDay> {
               ).toList(),
             ),
           ),
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 500),
-              transitionBuilder: (child, animation) {
-                return ScaleTransition(
-                scale: animation,
-                child: child,
-                );
-              },
-            child: _value == 0 ? buildNewHours(day.hourly, data)
-                : WindReport(hours: day.hourly, data: data,)
+          SizedBox(
+            height: 260,
+            child: PageView(
+              controller: _pageController,
+              children: <Widget>[
+                buildNewHours(day.hourly, data),
+                WindReport(hours: day.hourly, data: data,),
+                WindReport(hours: day.hourly, data: data,),
+              ],
+            ),
           ),
         ],
       ),
@@ -243,64 +254,61 @@ Widget buildNewDays(data) {
   );
 }
 
-Widget buildNewHours(List<dynamic> hours, data) => Container(
-  color: data.palette.surface,
-  height: 270,
-  child: ListView(
-    physics: const BouncingScrollPhysics(),
-    scrollDirection: Axis.horizontal,
-    shrinkWrap: true,
-    children: hours.map<Widget>((hour) {
-      return SizedBox(
-        width: 55, //this is all to ensure that nothing shifts when you switch categories
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: comfortatext('${hour.temp}°', 19, data.settings, color: data.palette.primary),
-            ),
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Container(
-                  width: 14,
-                  height: 105,
-                  decoration: BoxDecoration(
-                    color: data.palette.surfaceContainer,
-                      //border: Border.all(color: data.palette.outline,),
-                      borderRadius: const BorderRadius.all(Radius.circular(20))
-                  ),
+Widget buildNewHours(List<dynamic> hours, data) => ListView(
+  physics: const BouncingScrollPhysics(),
+  scrollDirection: Axis.horizontal,
+  shrinkWrap: true,
+  children: hours.map<Widget>((hour) {
+    return SizedBox(
+      width: 55, //this is all to ensure that nothing shifts when you switch categories
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            child: comfortatext('${hour.temp}°', 19, data.settings, color: data.palette.primary),
+          ),
+          Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Container(
+                width: 14,
+                height: 105,
+                decoration: BoxDecoration(
+                  color: data.palette.surfaceContainer,
+                    //border: Border.all(color: data.palette.outline,),
+                    borderRadius: const BorderRadius.all(Radius.circular(20))
                 ),
-                Container(
-                  width: 14,
-                  height: hour.raw_temp * 1.8 + 30,
-                  decoration: BoxDecoration(
-                      color: data.palette.primaryFixedDim,
-                      borderRadius: const BorderRadius.all(Radius.circular(20))
-                  ),
+              ),
+              Container(
+                width: 13,
+                height: hour.raw_temp * 1.8 + 30,
+                decoration: BoxDecoration(
+                    color: data.palette.primaryFixedDim,
+                  //border: Border.all(color: data.palette.primaryFixedDim, width: 2),
+                    borderRadius: const BorderRadius.all(Radius.circular(20))
                 ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15, left: 3, right: 3),
-              child: SizedBox(
-                height: 30,
-                child: Icon(
-                  hour.icon,
-                  color: data.palette.primary,
-                  size: 31.0 * hour.iconSize,
-                ),
-              )
-            ),
-            Padding(
-                padding: const EdgeInsets.only(top:15),
-                child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 17, left: 3, right: 3),
+            child: SizedBox(
+              height: 30,
+              child: Icon(
+                hour.icon,
+                color: data.palette.primary,
+                size: 31.0 * hour.iconSize,
+              ),
             )
-          ],
-        ),
-      );
-    }).toList(),
-  ),
+          ),
+          Padding(
+              padding: const EdgeInsets.only(top:13),
+              child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
+          )
+        ],
+      ),
+    );
+  }).toList(),
 );
 
 class WindChartPainter extends CustomPainter {
@@ -317,7 +325,7 @@ class WindChartPainter extends CustomPainter {
     this.dotRadius = 7.0,
     this.smallDotRadius = 1.8,
     this.spacing = 55.0,
-    this.maxHeight = 110.0,
+    this.maxHeight = 105.0,
   });
 
   @override
@@ -389,70 +397,66 @@ class WindReport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 270,
-      color: data.palette.surface,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 45, bottom: 20),
-              child: CustomPaint(
-                size: Size(hours.length * 55.0, 110.0),
-                painter: WindChartPainter(hours: hours, data: data),
-              ),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 45, bottom: 20),
+            child: CustomPaint(
+              size: Size(hours.length * 55.0, 105.0),
+              painter: WindChartPainter(hours: hours, data: data),
             ),
-            SizedBox(
-              height: 250,
-              child: ListView(
-                physics: const NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                children: hours.map<Widget>((hour) {
-                  return SizedBox(
-                    width: 55,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10, bottom: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              comfortatext('${hour.wind}', 18, data.settings, color: data.palette.primary,
-                              weight: FontWeight.w500),
-                              comfortatext('${data.settings["Wind"]}', 9, data.settings, color: data.palette.primary),
-                            ],
-                          ),
+          ),
+          SizedBox(
+            height: 250,
+            child: ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              children: hours.map<Widget>((hour) {
+                return SizedBox(
+                  width: 55,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            comfortatext('${hour.wind}', 18, data.settings, color: data.palette.primary,
+                            weight: FontWeight.w500),
+                            comfortatext('${data.settings["Wind"]}', 9, data.settings, color: data.palette.primary),
+                          ],
                         ),
-                        const SizedBox(
-                          height: 112,
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 3, right: 3),
-                            child: SizedBox(
-                              height: 30,
-                              child: Icon(
-                                hour.icon,
-                                color: data.palette.primary,
-                                size: 31.0 * hour.iconSize,
-                              ),
-                            )
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.only(top:15),
-                            child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
-                        )
-                      ],
-                    ),
-                  );
-                }).toList(),
-              ),
+                      ),
+                      const SizedBox(
+                        height: 114,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 3, right: 3),
+                          child: SizedBox(
+                            height: 30,
+                            child: Icon(
+                              hour.icon,
+                              color: data.palette.primary,
+                              size: 31.0 * hour.iconSize,
+                            ),
+                          )
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(top:13),
+                          child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
+                      )
+                    ],
+                  ),
+                );
+              }).toList(),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

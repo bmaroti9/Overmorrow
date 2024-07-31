@@ -47,7 +47,6 @@ Map<String, List<String>> settingSwitches = {
 
 String translation(String text, String language) {
   int index = languageIndex[language] ?? 0;
-  print((text, language));
   String translated = mainTranslate[text]![index];
   return translated;
 }
