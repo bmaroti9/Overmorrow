@@ -66,7 +66,7 @@ class _NewDayState extends State<NewDay> {
               children: [
                 SizedBox(
                     width: 35,
-                    child: Icon(day.icon, size: 37.0 * day.iconSize, color: data.palette.primary,)),
+                    child: Icon(day.icon, size: 38.0 * day.iconSize, color: data.palette.primary,)),
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0, top: 3),
                   child: comfortatext(day.text, 20, data.settings, color: data.palette.onSurface,
@@ -288,7 +288,7 @@ Widget buildNewHours(List<dynamic> hours, data) => Container(
                 child: Icon(
                   hour.icon,
                   color: data.palette.primary,
-                  size: 30.0 * hour.iconSize,
+                  size: 31.0 * hour.iconSize,
                 ),
               )
             ),
@@ -437,7 +437,7 @@ class WindReport extends StatelessWidget {
                               child: Icon(
                                 hour.icon,
                                 color: data.palette.primary,
-                                size: 30.0 * hour.iconSize,
+                                size: 31.0 * hour.iconSize,
                               ),
                             )
                         ),
