@@ -206,12 +206,17 @@ class _NewDayState extends State<NewDay> {
               children: List<Widget>.generate(
                 4,
                     (int index) {
+
                   return ChoiceChip(
                     elevation: 0.0,
                     checkmarkColor: data.palette.onPrimaryFixed,
-                    selectedColor: data.palette.primaryFixedDim,
-                    backgroundColor: data.palette.surfaceContainerLow,
-                    side: BorderSide(color: data.palette.surfaceContainerLow, width: 0),
+                    color: WidgetStateProperty.resolveWith((states) {
+                      if (index == _value) {
+                        return data.palette.primaryFixedDim;
+                      }
+                      return data.palette.surface;
+                    }),
+                    side: BorderSide(color: data.palette.primaryFixedDim, width: 1.0),
                     label: comfortatext(['temp', 'precip', 'wind', 'uv'][index], 14, data.settings,
                         color: _value == index ? data.palette.onPrimaryFixed : data.palette.onSurface),
                     selected: _value == index,
@@ -232,7 +237,7 @@ class _NewDayState extends State<NewDay> {
               controller: _pageController,
               children: <Widget>[
                 buildTemp(day.hourly, data),
-                WindReport(hours: day.hourly, data: data,),
+                buildPrecip(day.hourly, data),
                 WindReport(hours: day.hourly, data: data,),
                 buildUV(day.hourly, data),
               ],
@@ -463,7 +468,6 @@ class WindReport extends StatelessWidget {
   }
 }
 
-
 Widget buildUV(List<dynamic> hours, data) => ListView(
   physics: const BouncingScrollPhysics(),
   scrollDirection: Axis.horizontal,
@@ -487,11 +491,11 @@ Widget buildUV(List<dynamic> hours, data) => ListView(
                   if (index < min(max(10 - hour.uv, 0), 10)) {
                     return Center(
                       child: Container(
-                        width: 5,
-                        height: 5,
+                        width: 10,
+                        height: 4,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: data.palette.primaryFixedDim,
+                          color: data.palette.surfaceContainerHigh,
                         ),
                       ),
                     );
@@ -499,11 +503,91 @@ Widget buildUV(List<dynamic> hours, data) => ListView(
                   else {
                     return Center(
                       child: Container(
-                        width: 8,
-                        height: 8,
+                        width: 10,
+                        height: 4,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: data.palette.primary,
+                          color: data.palette.primaryFixedDim,
+                        ),
+                      ),
+                    );
+                  }
+                }
+            ),
+          ),
+          Padding(
+              padding: const EdgeInsets.only(top: 12, left: 3, right: 3),
+              child: SizedBox(
+                height: 30,
+                child: Icon(
+                  hour.icon,
+                  color: data.palette.primary,
+                  size: 31.0 * hour.iconSize,
+                ),
+              )
+          ),
+          Padding(
+              padding: const EdgeInsets.only(top:13),
+              child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
+          )
+        ],
+      ),
+    );
+  }).toList(),
+);
+
+
+Widget buildPrecip(List<dynamic> hours, data) => ListView(
+  physics: const BouncingScrollPhysics(),
+  scrollDirection: Axis.horizontal,
+  shrinkWrap: true,
+  children: hours.map<Widget>((hour) {
+    return SizedBox(
+      width: 55, //this is all to ensure that nothing shifts when you switch categories
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                comfortatext('${hour.precip}', 18, data.settings, color: data.palette.primary,
+                    weight: FontWeight.w500),
+                comfortatext('${data.settings["Precipitation"]}', 9, data.settings, color: data.palette.primary),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 101,
+            width: 15.5,
+            child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: 26,
+                reverse: true,
+                itemBuilder: (BuildContext context, int index) {
+                  double prec = hour.precip > 0 ? 1 : 0;
+                  prec += hour.precip * 2.0;
+                  if (index >= prec) {
+                    return Padding(
+                      padding: const EdgeInsets.all(1.5),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: data.palette.surfaceContainerHigh,
+                        ),
+                      ),
+                    );
+                  }
+                  else {
+                    return Padding(
+                      padding: const EdgeInsets.all(1.5),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: data.palette.primaryFixedDim,
                         ),
                       ),
                     );

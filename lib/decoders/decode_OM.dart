@@ -40,12 +40,18 @@ String OMamPmTime(String time) {
   String a = time.split("T")[1];
   List<String> num = a.split(":");
   int hour = int.parse(num[0]);
+  int minute = int.parse(num[1]);
 
   if (hour > 12) {
-    return "${hour - 12}:${num[1]}pm";
+    if (minute < 10) {
+      return "${hour - 12}:0${minute}pm";
+    }
+    return "${hour - 12}:${minute}pm";
   }
-
-  return "$hour:${num[1]}am";
+  if (minute < 10) {
+    return "$hour:0${minute}am";
+  }
+  return "$hour:${minute}am";
 }
 
 int AqiIndexCorrection(int aqi) {
