@@ -27,17 +27,21 @@ import 'ui_helper.dart';
 class NewDay extends StatefulWidget {
   final data;
   final index;
+  final value;
+  final updateChip;
 
-  NewDay({Key? key, required this.data, required this.index}) : super(key: key);
+  NewDay({Key? key, required this.data, required this.index, required this.value,
+  required this.updateChip}) : super(key: key);
 
   @override
-  _NewDayState createState() => _NewDayState(data);
+  _NewDayState createState() => _NewDayState(data, value, updateChip, index);
 }
 
 class _NewDayState extends State<NewDay> {
   final data;
-
-  int _value = 0;
+  final _value;
+  final Function updateChip;
+  final myIndex;
 
   PageController _pageController = PageController();
 
@@ -48,8 +52,8 @@ class _NewDayState extends State<NewDay> {
       curve: Curves.fastEaseInToSlowEaseOut,
     );
   }
-  
-  _NewDayState(this.data);
+
+  _NewDayState(this.data, this._value, this.updateChip, this.myIndex);
 
   @override
   Widget build(BuildContext context) {
@@ -217,12 +221,13 @@ class _NewDayState extends State<NewDay> {
                       return data.palette.surface;
                     }),
                     side: BorderSide(color: data.palette.primaryFixedDim, width: 1.0),
-                    label: comfortatext(['temp', 'precip', 'wind', 'uv'][index], 14, data.settings,
+                    label: comfortatext(
+                        ['temp', 'precip', 'wind', 'uv'][index], 14, data.settings,
                         color: _value == index ? data.palette.onPrimaryFixed : data.palette.onSurface),
                     selected: _value == index,
                     onSelected: (bool selected) {
+                      updateChip(myIndex, selected);
                       setState(() {
-                        _value = (selected ? index : null)!;
                         _onItemTapped(index);
                       });
                     },
@@ -249,13 +254,14 @@ class _NewDayState extends State<NewDay> {
   }
 }
 
-Widget buildNewDays(data) {
+Widget buildNewDays(data, chips, updateChip) {
   return ListView.builder(
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
     itemCount: 3,
     itemBuilder: (BuildContext context, int index) {
-      return NewDay(data: data, index: index, key: Key("${data.place}, ${data.current.backcolor}"),);
+      return NewDay(data: data, index: index, key: Key("${data.place}, ${data.current.backcolor} $chips"),
+      value: chips[index], updateChip: updateChip,);
     },
   );
 }
@@ -341,7 +347,7 @@ class WindChartPainter extends CustomPainter {
       ..strokeWidth = 2.0;
 
     final smallDotPaint = Paint()
-      ..color = data.palette.primaryContainer
+      ..color = data.palette.surfaceContainerHigh
       ..strokeWidth = 1.0;
 
     final textPainter = TextPainter(
@@ -351,7 +357,7 @@ class WindChartPainter extends CustomPainter {
 
     for (int i = 0; i < hours.length; i++) {
       final x = 27.5 + i * spacing;
-      final y = maxHeight - max(min(hours[i].raw_wind * 1.5, maxHeight), 0);
+      final y = maxHeight - max(min(hours[i].raw_wind * 1.8, maxHeight), 0);
 
       canvas.drawCircle(Offset(x, y), dotRadius, paint);
 
@@ -374,7 +380,7 @@ class WindChartPainter extends CustomPainter {
 
       if (i < hours.length - 1) {
         final nextX = 27.5 + (i + 1) * spacing;
-        final nextY = maxHeight - max(min(hours[i + 1].raw_wind * 1.5, maxHeight), 0);
+        final nextY = maxHeight - max(min(hours[i + 1].raw_wind * 1.8, maxHeight), 0);
 
         int numDots = 4;
         double dx = (nextX - x) / numDots;
@@ -492,7 +498,7 @@ Widget buildUV(List<dynamic> hours, data) => ListView(
                     return Center(
                       child: Container(
                         width: 10,
-                        height: 4,
+                        height: 5,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: data.palette.surfaceContainerHigh,
@@ -504,7 +510,7 @@ Widget buildUV(List<dynamic> hours, data) => ListView(
                     return Center(
                       child: Container(
                         width: 10,
-                        height: 4,
+                        height: 5,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: data.palette.primaryFixedDim,
@@ -614,4 +620,40 @@ Widget buildPrecip(List<dynamic> hours, data) => ListView(
       ),
     );
   }).toList(),
+);
+
+
+Widget buildNewGlanceDay(var data) => Padding(
+  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+  child: Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 5, top: 0),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: comfortatext(
+              "daily", 16,
+              data.settings,
+              color: data.palette.onSurface),
+        ),
+      ),
+      ListView.builder(
+          shrinkWrap: true,
+          padding: const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: data.days.length - 3,
+          itemBuilder: (context, index) {
+            final day = data.days[index + 3];
+            return Padding(
+              padding: const EdgeInsets.only(top: 5, bottom: 5),
+              child: Column(
+                children: [
+
+                  ]
+              )
+            );
+          }
+      ),
+    ],
+  ),
 );

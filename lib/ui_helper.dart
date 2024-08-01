@@ -268,9 +268,9 @@ class DescriptionCircle extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        comfortatext(text, fontsize, settings, color: color, weight: FontWeight.w500),
+                        comfortatext(text, fontsize, settings, color: color, weight: FontWeight.w400),
                         Flexible(
-                          child: comfortatext(extra, small_font, settings, color: color, weight: FontWeight.w500)
+                          child: comfortatext(extra, small_font, settings, color: color, weight: FontWeight.w400)
                         ),
                       ],
                     ),

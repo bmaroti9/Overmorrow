@@ -182,11 +182,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
               Padding(
                 padding: EdgeInsets.only(
                     left: min(
-                        max(
-                            (progress * (widget.size.width - 50)) -
-                                textWidth / 2 -
-                                3,
-                            0),
+                        max((progress * (widget.size.width - 50)) - textWidth / 2 + 2, 0),
                         widget.size.width - 55 - textWidth)),
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -198,7 +194,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
               Padding(
                 padding: EdgeInsets.only(
                     top: 6,
-                    left: min(max((progress * (widget.size.width - 50)) - 5, 2),
+                    left: min(max((progress * (widget.size.width - 50)), 2),
                         widget.size.width - 52)),
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -433,12 +429,5 @@ Widget NewRain15MinuteIndicator(var data) {
         ),
       ),
     )
-  );
-}
-
-Widget newRadar(var data) {
-  return Padding(
-    padding: EdgeInsets.only(left: 20, right: 20, top: 10),
-    child: Container(),
   );
 }

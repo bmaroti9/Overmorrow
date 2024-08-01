@@ -29,103 +29,159 @@ import 'main_ui.dart';
 import 'new_displays.dart';
 import 'ui_helper.dart';
 
-Widget NewMain(data, updateLocation, context) {
-  FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-  Size size = view.physicalSize / view.devicePixelRatio;
 
-  final FloatingSearchBarController controller = FloatingSearchBarController();
+class NewMain extends StatefulWidget {
+  final data;
+  final updateLocation;
+  final context;
 
-  return Scaffold(
-    backgroundColor: data.current.backcolor,
-    drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
-        settings: data.settings, image: data.current.backdrop,),
-    body: StretchyHeader.listView(
-      displacement: 130,
-      onRefresh: () async {
-        await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
-      },
-      headerData: HeaderData(
-        //backgroundColor: WHITE,
-          blurContent: false,
-          headerHeight: max(size.height * 0.53, 400), //we don't want it to be smaller than 400
-          header: ParrallaxBackground(image: data.image, key: Key(data.place),
-          color: data.current.backcolor == BLACK ? BLACK
-              : lightAccent(data.current.backcolor, 5000)),
-          overlay: Stack(
+  NewMain({Key? key, required this.data, required this.updateLocation, required this.context}) : super(key: key);
+
+  @override
+  _NewMainState createState() => _NewMainState(data, updateLocation, context);
+}
+
+class _NewMainState extends State<NewMain> {
+  final data;
+  final updateLocation;
+  final context;
+
+  List<int> chips = [0, 0, 0];
+
+  void updateChip(int index, int to) {
+    setState(() {
+      chips[index] = to;
+    });
+  }
+
+  _NewMainState(this.data, this.updateLocation, this.context);
+
+  @override
+  Widget build(BuildContext context) {
+    final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+    final Size size = view.physicalSize / view.devicePixelRatio;
+
+    final FloatingSearchBarController controller = FloatingSearchBarController();
+
+    return Scaffold(
+      backgroundColor: data.current.backcolor,
+      drawer: MyDrawer(primary: data.current.backup_primary,
+        back: data.current.backup_backcolor,
+        settings: data.settings,
+        image: data.current.backdrop,),
+      body: StretchyHeader.listView(
+        displacement: 130,
+        onRefresh: () async {
+          await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
+        },
+        headerData: HeaderData(
+          //backgroundColor: WHITE,
+            blurContent: false,
+            headerHeight: max(size.height * 0.525, 400),
+            //we don't want it to be smaller than 400
+            header: ParrallaxBackground(image: data.image, key: Key(data.place),
+                color: data.current.backcolor == BLACK ? BLACK
+                    : lightAccent(data.current.backcolor, 5000)),
+            overlay: Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 25,
+                      top: MediaQuery
+                          .of(context)
+                          .padding
+                          .top + 20, right: 25, bottom: 25
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 0, bottom: 2),
+                        child: comfortatext(
+                            "${data.current.temp}°", 68, data.settings,
+                            color: data.colorpop, weight: FontWeight.w300),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 0),
+                        child: comfortatext(
+                            data.current.text, 32, data.settings,
+                            weight: data.settings["Color mode"] == "dark"
+                                ? FontWeight.w600
+                                : FontWeight.w400,
+                            color: data.desc_color),
+                      )
+                    ],
+                  ),
+                ),
+                MySearchParent(updateLocation: updateLocation,
+                  color: data.current.backcolor,
+                  place: data.place,
+                  controller: controller,
+                  settings: data.settings,
+                  real_loc: data.real_loc,
+                  secondColor: data.current.primary,
+                  textColor: data.current.textcolor,
+                  highlightColor: data.current.highlight,
+                  key: Key("${data.place}, ${data.current.backcolor}"),),
+              ],
+            )
+        ),
+        children: [
+          Stack(
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 25,
-                    top: MediaQuery.of(context).padding.top + 20, right: 25, bottom: 25
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 0, bottom: 2),
-                      child: comfortatext("${data.current.temp}°", 68, data.settings,
-                          color: data.colorpop, weight: FontWeight.w300),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 0),
-                      child: comfortatext(data.current.text, 32, data.settings,
-                      weight: data.settings["Color mode"] == "dark" ? FontWeight.w600 : FontWeight.w400,
-                          color: data.desc_color),
-                    )
-                  ],
-                ),
-              ),
-              MySearchParent(updateLocation: updateLocation,
-                color: data.current.backcolor, place: data.place,
-                controller: controller, settings: data.settings, real_loc: data.real_loc,
-                secondColor: data.current.primary, textColor: data.current.textcolor,
-                highlightColor: data.current.highlight, key: Key("${data.place}, ${data.current.backcolor}"),),
-            ],
-          )
-      ),
-      children: [
-        Stack(
-          children: [
-            UpdatedNotifier(data: data, time: data.updatedTime, key: Key(data.updatedTime.toString())),
-            LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  if(constraints.maxWidth > 500.0) {
-                    return Circles(500, data, 0.5, data.palette.primary);
-                  } else {
-                    return Circles(constraints.maxWidth * 0.97, data, 0.5, data.palette.primary);
+              UpdatedNotifier(data: data,
+                  time: data.updatedTime,
+                  key: Key(data.updatedTime.toString())),
+              LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    if (constraints.maxWidth > 500.0) {
+                      return Circles(500, data, 0.5, data.palette.primary);
+                    } else {
+                      return Circles(constraints.maxWidth * 0.97, data, 0.5,
+                          data.palette.primary);
+                    }
                   }
-                }
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
 
-        NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-        NewRain15MinuteIndicator(data),
-        NewAirQuality(data),
-        RadarSmall(data: data, key: Key("${data.place}, ${data.current.backcolor}")),
-        buildNewDays(data),
+          NewSunriseSunset(data: data, key: Key(data.place), size: size,),
+          NewRain15MinuteIndicator(data),
+          NewAirQuality(data),
+          RadarSmall(
+              data: data, key: Key("${data.place}, ${data.current.backcolor}")),
+          buildNewDays(data, chips, updateChip),
+          buildNewGlanceDay(data),
 
-        Padding(
-          padding: const EdgeInsets.only(top: 10, bottom: 30),
-          child: providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
-              data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
-        ),
-
-
-        /*
-        NewTimes(data, true),
-        buildHihiDays(data),
-        buildGlanceDay(data),
-        providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
-        data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
-
-         */
-        const Padding(padding: EdgeInsets.only(bottom: 20))
+          Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 30),
+            child: providerSelector(
+                data.settings,
+                updateLocation,
+                data.current.textcolor,
+                data.current.highlight,
+                data.current.primary,
+                data.provider,
+                "${data.lat}, ${data.lng}",
+                data.real_loc),
+          ),
 
 
-      ],
-    ),
-  );
+          /*
+          NewTimes(data, true),
+          buildHihiDays(data),
+          buildGlanceDay(data),
+          providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
+          data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
+
+           */
+          const Padding(padding: EdgeInsets.only(bottom: 20))
+
+
+        ],
+      ),
+    );
+  }
 }
 
 Widget TabletLayout(data, updateLocation, context) {
