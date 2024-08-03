@@ -21,12 +21,14 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 
+import '../Icons/overmorrow_weather_icons_icons.dart';
 import '../api_key.dart';
 import '../caching.dart';
 import '../settings_page.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart' as weather_refactor;
+import '../weather_refact.dart';
 import 'decode_OM.dart';
 import 'extra_info.dart';
 
@@ -156,10 +158,10 @@ double temp_multiply_for_scale(int temp, String unit) {
   }
 }
 
-String iconCorrection(name, isday) {
+IconData iconCorrection(name, isday) {
   String text = textCorrection(name, isday);
-  String p = weather_refactor.textIconMap[text] ?? 'clear_night.png';
-  return p;
+  //String p = weather_refactor.textIconMap[text] ?? 'clear_night.png';
+  return textMaterialIcon[text] ?? OvermorrowWeatherIcons.sun2;
 }
 
 String getTime(date, bool ampm) {
@@ -340,7 +342,7 @@ class WapiCurrent {
 
 class WapiDay {
   final String text;
-  final String icon;
+  final IconData icon;
   final String name;
   final String minmaxtemp;
   final List<WapiHour> hourly;
@@ -412,7 +414,7 @@ class WapiDay {
 
 class WapiHour {
   final int temp;
-  final String icon;
+  final IconData icon;
   final String time;
   final String text;
   final double precip;

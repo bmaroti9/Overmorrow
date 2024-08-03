@@ -22,23 +22,6 @@ import 'package:flutter/material.dart';
 
 import 'ui_helper.dart';
 
-Map<String, String> textIconMap = {
-  'Clear Night': 'moon.png',
-  'Partly Cloudy': 'partly_cloudy.png',
-  'Clear Sky': 'sun.png',
-  'Overcast': 'cloudy.png',
-  'Haze': 'haze.png',
-  'Rain': 'rainy.png',
-  'Sleet': 'sleet.png',
-  'Drizzle': 'drizzle.png',
-  'Thunderstorm': 'lightning.png',
-  'Heavy Snow': 'heavy_snow.png',
-  'Fog': 'fog.png',
-  'Snow': 'snow.png',
-  'Heavy Rain': 'heavy_rain.png',
-  'Cloudy Night' : 'cloudy_night.png',
-};
-
 Map<String, IconData> textMaterialIcon = {
   'Clear Night': OvermorrowWeatherIcons.moon2,
   'Partly Cloudy': OvermorrowWeatherIcons.partly_cloudy2,
@@ -61,7 +44,7 @@ Map<String, double> textIconSizeNormalize = {
   'Partly Cloudy': 0.8,
   'Clear Sky': 0.8,
   'Overcast': 0.74,
-  'Haze': 1,
+  'Haze': 0.8,
   'Rain': 0.95,
   'Sleet': 1,
   'Drizzle': 1,
