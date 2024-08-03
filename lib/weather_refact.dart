@@ -374,6 +374,7 @@ Map<String, int> textFilter = {
   'bubble': -10000,
   'instagram': -10000,
   'ring': -10000,
+  'during': 10000,
   'fabric': -10000,
   'texture': -10000,
   'pattern': -10000,
@@ -388,7 +389,7 @@ Map<String, int> textFilter = {
   'person': -10000000,
   'child': -10000000,
   'crowd': -10000,
-  'people': 100000,
+  'people': -100000,
   'hand': -100000,
   'feet': -100000,
 };

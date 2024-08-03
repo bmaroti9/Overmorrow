@@ -70,42 +70,37 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
       unaccuracy -= 1000;
     }
 
-    var desc = unsplash_body[i]["description"];
+    var desc1 = unsplash_body[i]["description"] ?? " ";
+    var desc2 = unsplash_body[i]["links"]["html"];
 
-    if (desc != null) {
-      desc = desc.toLowerCase();
-      List<String> keys = textToUnsplashText.keys.toList();
-      for (int x = 0; x < textToUnsplashText.length; x ++) {
-        for (int y = 0; y < textToUnsplashText[keys[x]]!.length; y ++) {
-          int reward = keys[x] == _text ? -3000 : 1000;
-          if (desc.contains(textToUnsplashText[keys[x]]![y])) {
-            print(("punished", textToUnsplashText[keys[x]]![y], reward));
-            unaccuracy += reward; // i had to reverse it
-          }
+    var desc = desc1.toLowerCase() + " " +  desc2.toLowerCase();
+    List<String> keys = textToUnsplashText.keys.toList();
+    for (int x = 0; x < textToUnsplashText.length; x ++) {
+      for (int y = 0; y < textToUnsplashText[keys[x]]!.length; y ++) {
+        int reward = keys[x] == _text ? -3000 : 1000;
+        if (desc.contains(textToUnsplashText[keys[x]]![y])) {
+          print(("punished", textToUnsplashText[keys[x]]![y], reward));
+          unaccuracy += reward; // i had to reverse it
         }
-      }
-
-      keys = textFilter.keys.toList();
-      for (int x = 0; x < textFilter.length; x ++) {
-        if (desc.contains(keys[x])) {
-          print(("punished", keys[x]));
-          unaccuracy -= textFilter[keys[x]]!; // i had to reverse it
-        }
-      }
-
-      if (desc.contains(real_loc.toLowerCase())) {
-        unaccuracy -= 3000;
       }
     }
-    else {
-      unaccuracy += 100; //if there is a description then there is a chance that we determine the value more.
-                              //therefore not having one must be punished
+
+    keys = textFilter.keys.toList();
+    for (int x = 0; x < textFilter.length; x ++) {
+      if (desc.contains(keys[x])) {
+        print(("punished", keys[x]));
+        unaccuracy -= textFilter[keys[x]]!; // i had to reverse it
+      }
+    }
+
+    if (desc.contains(real_loc.toLowerCase())) {
+      unaccuracy -= 3000;
     }
 
     unaccuracy -= unsplash_body[i]["likes"] * 0.01 ?? 0;
     unaccuracy -= unsplash_body[i]["downloads"] * 0.005 ?? 0;
 
-    print((i, unaccuracy.toStringAsFixed(6), (desc ?? "null").trim(), unsplash_body[i]["likes"], unsplash_body[i]["downloads"]));
+    print((i, unaccuracy.toStringAsFixed(6), (desc1 ?? "null").trim() + ", " +  desc2, unsplash_body[i]["likes"], unsplash_body[i]["downloads"]));
     if (unaccuracy < best) {
       index = i;
       best = unaccuracy;

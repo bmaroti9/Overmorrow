@@ -176,7 +176,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
         final textWidth = textPainter.width;
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
+          padding: const EdgeInsets.only(left: 25, right: 25, top: 13),
           child: Column(
             children: [
               Padding(
@@ -262,7 +262,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
 
 Widget NewAirQuality(var data) {
   return Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 19, top: 24),
+    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 19, top: 26),
     child: Column(
       children: [
         Padding(
@@ -348,7 +348,7 @@ Widget NewRain15MinuteIndicator(var data) {
   return Visibility(
     visible: data.minutely_15_precip.t_minus != "",
     child: Padding(
-      padding: const EdgeInsets.only(left: 21, right: 21, top: 20, bottom: 10),
+      padding: const EdgeInsets.only(left: 21, right: 21, top: 23, bottom: 15),
       child: Container(
         decoration: BoxDecoration(
           color: data.palette.surfaceContainerLow,
