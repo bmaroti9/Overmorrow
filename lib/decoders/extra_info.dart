@@ -64,10 +64,10 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
   for (int i = 0; i < unsplash_body.length; i++) {
     double lat_dif = pow((lat - (unsplash_body[i]["location"]["position"]["latitude"] ?? 9999)).abs(), 2) * 1.0;
     double lng_dif = pow((lng - (unsplash_body[i]["location"]["position"]["longitude"] ?? 9999)).abs(), 2) * 1.0;
-    double unaccuracy = min(lat_dif + lng_dif, 50);
+    double unaccuracy = min(lat_dif + lng_dif, 100) * 10;
 
     if (unsplash_body[i]["location"]["position"]["city"] == real_loc) {
-      unaccuracy -= 10000;
+      unaccuracy -= 1000;
     }
 
     var desc = unsplash_body[i]["description"];
@@ -77,8 +77,9 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
       List<String> keys = textToUnsplashText.keys.toList();
       for (int x = 0; x < textToUnsplashText.length; x ++) {
         for (int y = 0; y < textToUnsplashText[keys[x]]!.length; y ++) {
-          int reward = keys[x] == _text ? -3000 : 10000;
+          int reward = keys[x] == _text ? -3000 : 1000;
           if (desc.contains(textToUnsplashText[keys[x]]![y])) {
+            print(("punished", textToUnsplashText[keys[x]]![y], reward));
             unaccuracy += reward; // i had to reverse it
           }
         }
@@ -87,6 +88,7 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
       keys = textFilter.keys.toList();
       for (int x = 0; x < textFilter.length; x ++) {
         if (desc.contains(keys[x])) {
+          print(("punished", keys[x]));
           unaccuracy -= textFilter[keys[x]]!; // i had to reverse it
         }
       }
@@ -100,10 +102,10 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
                               //therefore not having one must be punished
     }
 
-    unaccuracy -= unsplash_body[i]["likes"] * 0.02 ?? 0;
-    unaccuracy -= unsplash_body[i]["downloads"] * 0.01 ?? 0;
+    unaccuracy -= unsplash_body[i]["likes"] * 0.01 ?? 0;
+    unaccuracy -= unsplash_body[i]["downloads"] * 0.005 ?? 0;
 
-    print((unaccuracy.toStringAsFixed(6), (desc ?? "null").trim(), unsplash_body[i]["likes"], unsplash_body[i]["downloads"]));
+    print((i, unaccuracy.toStringAsFixed(6), (desc ?? "null").trim(), unsplash_body[i]["likes"], unsplash_body[i]["downloads"]));
     if (unaccuracy < best) {
       index = i;
       best = unaccuracy;

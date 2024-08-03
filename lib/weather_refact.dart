@@ -345,15 +345,15 @@ Map<String, List<double>> conversionTable = {
 //for example: blue sky instead of clear sky tends to help a lot
 Map<String, List<String>> textToUnsplashText = {
   'Clear Night': ['night', 'clear', 'night'], //somehow just 'night' always gives you clear skies: stars or moon
-  'Partly Cloudy': ['cloudy', 'cloud', 'clouds', 'day'], //this is also some simplification which improves a lot
-  'Clear Sky': ['blue sky', 'sunny', 'sun', 'clear', 'day'], //it doesn't understand clear as much so i use blue instead
-  'Overcast': ['overcast', 'clouds', 'day'],
+  'Partly Cloudy': ['cloudy', 'cloud', 'clouds',], //this is also some simplification which improves a lot
+  'Clear Sky': ['blue sky', 'sunny', 'sun', 'clear',], //it doesn't understand clear as much so i use blue instead
+  'Overcast': ['overcast', 'clouds'],
   'Haze': ['haze', 'fog', 'mist'],
   'Rain': ['rain', 'drop', 'rainy', 'raining', 'drops'],
   'Sleet': ['freezing rain', 'sleet', 'ice'],//this works much better
   'Drizzle': ['light rain', 'rain', 'rainy', 'raining', 'drop', 'drops'], //somehow understands it more though still not perfect
-  'Thunderstorm': ['thunderstorm', 'lighting', 'storm'],
-  'Heavy Snow': ['heavy snow', 'snow', 'snowing', 'snows', 'day'],
+  'Thunderstorm': ['thunderstorm', 'lightning', 'storm'],
+  'Heavy Snow': ['heavy snow', 'snow', 'snowing', 'snows'],
   'Fog': ['fog', 'mist', 'haze'],
   'Snow': ['snow', 'snowing', 'snows'],
   'Heavy Rain': ['heavy rain', 'rain', 'drop', 'rainy', 'raining'],
@@ -369,10 +369,17 @@ Map<String, int> textFilter = {
   'flower': 1000,
   'cliff': 1000,
   'mountain': 10000,
+  'ice': -10000,
+  'icy': -10000,
   'bubble': -10000,
+  'instagram': -10000,
   'ring': -10000,
+  'fabric': -10000,
+  'texture': -10000,
+  'pattern': -10000,
   'man': -10000000, //trying to not have people in images
   'male': -1000000,
+  'couple': -1000000,
   'female': -1000000,
   'human': -1000000,
   'girl': -1000000,
