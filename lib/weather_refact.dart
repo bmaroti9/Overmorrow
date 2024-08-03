@@ -343,21 +343,47 @@ Map<String, List<double>> conversionTable = {
 
 //I am trying to convert conditions to text that unsplash better understands
 //for example: blue sky instead of clear sky tends to help a lot
-Map<String, String> textToUnsplashText = {
-  'Clear Night': 'night', //somehow just 'night' always gives you clear skies: stars or moon
-  'Partly Cloudy': 'cloudy', //this is also some simplification which improves a lot
-  'Clear Sky': 'blue sky', //it doesn't understand clear as much so i use blue instead
-  'Overcast': 'dark clouds', //kinda works
-  'Haze': 'haze',
-  'Rain': 'rain',
-  'Sleet': 'freezing rain',//this works much better
-  'Drizzle': 'light rain', //somehow understands it more though still not perfect
-  'Thunderstorm': 'thunderstorm',
-  'Heavy Snow': 'heavy snow',
-  'Fog': 'fog',
-  'Snow': 'snow',
-  'Heavy Rain': 'heavy rain',
-  'Cloudy Night' : 'cloudy night' //if you specify cloudy then it gives cloudy results
+Map<String, List<String>> textToUnsplashText = {
+  'Clear Night': ['night', 'clear', 'night'], //somehow just 'night' always gives you clear skies: stars or moon
+  'Partly Cloudy': ['cloudy', 'cloud', 'clouds', 'day'], //this is also some simplification which improves a lot
+  'Clear Sky': ['blue sky', 'sunny', 'sun', 'clear', 'day'], //it doesn't understand clear as much so i use blue instead
+  'Overcast': ['overcast', 'clouds', 'day'],
+  'Haze': ['haze', 'fog', 'mist'],
+  'Rain': ['rain', 'drop', 'rainy', 'raining', 'drops'],
+  'Sleet': ['freezing rain', 'sleet', 'ice'],//this works much better
+  'Drizzle': ['light rain', 'rain', 'rainy', 'raining', 'drop', 'drops'], //somehow understands it more though still not perfect
+  'Thunderstorm': ['thunderstorm', 'lighting', 'storm'],
+  'Heavy Snow': ['heavy snow', 'snow', 'snowing', 'snows', 'day'],
+  'Fog': ['fog', 'mist', 'haze'],
+  'Snow': ['snow', 'snowing', 'snows'],
+  'Heavy Rain': ['heavy rain', 'rain', 'drop', 'rainy', 'raining'],
+  'Cloudy Night' : ['cloudy night', 'night'] //if you specify cloudy then it gives cloudy results
+};
+
+//trying to assign values for words (for example sky will be rewarded)
+Map<String, int> textFilter = {
+  'sky' : 3300,
+  'weather': 5000,
+  'tree': 1000,
+  'plant': 1000,
+  'flower': 1000,
+  'cliff': 1000,
+  'mountain': 10000,
+  'bubble': -10000,
+  'ring': -10000,
+  'man': -10000000, //trying to not have people in images
+  'male': -1000000,
+  'female': -1000000,
+  'human': -1000000,
+  'girl': -1000000,
+  'boy': -1000000,
+  'woman': -10000000,
+  'person': -10000000,
+  'child': -10000000,
+  'crowd': -10000,
+  'people': 100000,
+  'hand': -100000,
+  'feet': -100000,
 };
 
 //if i have to get the average of two weather conditions then the condition

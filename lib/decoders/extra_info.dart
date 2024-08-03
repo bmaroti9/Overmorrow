@@ -32,9 +32,9 @@ import '../ui_helper.dart';
 import '../weather_refact.dart';
 import 'decode_wapi.dart';
 
-Future<Image> getUnsplashImage(String _text, String real_loc) async {
+Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double lng) async {
 
-  String text_query = textToUnsplashText[_text]!;
+  String text_query = textToUnsplashText[_text]![0];
 
   //String addon = wapi_body["current"]["is_day"] == 1 ? 'daytime' : 'nighttime';
 
@@ -42,24 +42,77 @@ Future<Image> getUnsplashImage(String _text, String real_loc) async {
     'client_id': access_key,
     'query' : "$text_query, $real_loc",
     'content_filter' : 'high',
-    'count': '3',
-    //'collections' : '893395, 1319040, 583204, 11649432, 162468, 1492135',
+    'count': '6',
+    //'collections' : '893395, 583204, 11649432, 162468, 1492135, 42478673, 8253647, 461360'
+    //'collections' : '893395, 162468, 461360'
   };
 
   final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
 
-  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query ")
+  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query")
       .timeout(const Duration(seconds: 6));
 
   var response2 = await file2.readAsString();
 
   var unsplash_body = jsonDecode(response2);
 
-  var rng = Random();
+  //var rng = Random();
+  //int index = rng.nextInt(3);
+  int index = 0;
+  double best = 99999999999;
 
-  String image_path = unsplash_body[rng.nextInt(3)]["urls"]["regular"];
+  for (int i = 0; i < unsplash_body.length; i++) {
+    double lat_dif = pow((lat - (unsplash_body[i]["location"]["position"]["latitude"] ?? 9999)).abs(), 2) * 1.0;
+    double lng_dif = pow((lng - (unsplash_body[i]["location"]["position"]["longitude"] ?? 9999)).abs(), 2) * 1.0;
+    double unaccuracy = min(lat_dif + lng_dif, 50);
 
-  print(image_path);
+    if (unsplash_body[i]["location"]["position"]["city"] == real_loc) {
+      unaccuracy -= 10000;
+    }
+
+    var desc = unsplash_body[i]["description"];
+
+    if (desc != null) {
+      desc = desc.toLowerCase();
+      List<String> keys = textToUnsplashText.keys.toList();
+      for (int x = 0; x < textToUnsplashText.length; x ++) {
+        for (int y = 0; y < textToUnsplashText[keys[x]]!.length; y ++) {
+          int reward = keys[x] == _text ? -3000 : 10000;
+          if (desc.contains(textToUnsplashText[keys[x]]![y])) {
+            unaccuracy += reward; // i had to reverse it
+          }
+        }
+      }
+
+      keys = textFilter.keys.toList();
+      for (int x = 0; x < textFilter.length; x ++) {
+        if (desc.contains(keys[x])) {
+          unaccuracy -= textFilter[keys[x]]!; // i had to reverse it
+        }
+      }
+
+      if (desc.contains(real_loc.toLowerCase())) {
+        unaccuracy -= 3000;
+      }
+    }
+    else {
+      unaccuracy += 100; //if there is a description then there is a chance that we determine the value more.
+                              //therefore not having one must be punished
+    }
+
+    unaccuracy -= unsplash_body[i]["likes"] * 0.02 ?? 0;
+    unaccuracy -= unsplash_body[i]["downloads"] * 0.01 ?? 0;
+
+    print((unaccuracy.toStringAsFixed(6), (desc ?? "null").trim(), unsplash_body[i]["likes"], unsplash_body[i]["downloads"]));
+    if (unaccuracy < best) {
+      index = i;
+      best = unaccuracy;
+    }
+  }
+
+  String image_path = unsplash_body[index]["urls"]["regular"];
+  print(index);
+  print(unsplash_body[index]["links"]["html"]);
 
   return Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,);
 }
@@ -75,20 +128,32 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
   Color bestcolor = palette.primaryFixedDim;
   int bestDif = difFromBackColors(bestcolor, dominant);
 
-  if (bestDif < 300) {
+  if (bestDif <= 330) {
     for (int i = 1; i < 4; i++) {
       //LIGHT
-      Color newcolor = lighten2(startcolor, i / 20);
+      Color newcolor = lighten(startcolor, i / 25);
       int newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < 400) {
+      if (newdif > bestDif && newdif < 440) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
 
       //DARK
-      newcolor = darken2(startcolor, i / 20);
+      newcolor = darken(startcolor, i / 25);
       newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < 400) {
+      if (newdif > bestDif && newdif < 440) {
+        bestDif = newdif;
+        bestcolor = newcolor;
+      }
+    }
+  }
+
+  //if the contrast is still low then we need to choose another color
+  if (bestDif <= 330) {
+    for (int i = 0; i < dominant.length; i++) {
+      Color newcolor = dominant[i];
+      int newdif = difFromBackColors(newcolor, dominant);
+      if (newdif > bestDif && newdif < 440) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
@@ -97,6 +162,8 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
 
   Color desc_color = palette.surface;
   int desc_dif = difFromBackColors(desc_color, dominant);
+
+  print(("diffs", bestDif, desc_dif));
 
   print(("desc_dif", desc_dif));
 

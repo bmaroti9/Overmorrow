@@ -107,6 +107,7 @@ Color lighten2(Color c, [double amount = 0.1]) {
       c.blue + ((255 - c.blue) * amount).round()
   );
 }
+
 Color lightAccent(Color color, int intensity) {
   double x = intensity / (color.red + color.green + color.blue);
   return Color.fromRGBO(sqrt(color.red * x).toInt(), sqrt(color.green * x).toInt(), sqrt(color.blue * x).toInt(), 1);

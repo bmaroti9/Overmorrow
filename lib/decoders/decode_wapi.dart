@@ -519,7 +519,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
       language: "English");
 
   //GET IMAGE
-  Image Uimage = await getUnsplashImage(text, real_loc);
+  Image Uimage = await getUnsplashImage(text, real_loc, lat, lng);
 
   //GET COLORS
   List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
