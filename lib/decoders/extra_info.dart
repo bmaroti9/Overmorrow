@@ -34,13 +34,23 @@ import 'decode_wapi.dart';
 
 Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double lng) async {
 
+  List<String> keys1 = textFilter.keys.toList();
+  //this is all to make sure that none
+  // of the banned words get somehow into the search query
+  String loc = real_loc;
+  for (int i = 0; i < keys1.length; i++) {
+    if (loc.contains(keys1[i])) {
+      loc = "";
+    }
+  }
+
   String text_query = textToUnsplashText[_text]![0];
 
   //String addon = wapi_body["current"]["is_day"] == 1 ? 'daytime' : 'nighttime';
 
   final params2 = {
     'client_id': access_key,
-    'query' : "$text_query, $real_loc",
+    'query' : "$text_query, $loc",
     'content_filter' : 'high',
     'count': '6',
     //'collections' : '893395, 583204, 11649432, 162468, 1492135, 42478673, 8253647, 461360'
@@ -74,22 +84,21 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
     var desc2 = unsplash_body[i]["links"]["html"];
 
     var desc = desc1.toLowerCase() + " " +  desc2.toLowerCase();
-    List<String> keys = textToUnsplashText.keys.toList();
+    List<String> keys2 = textToUnsplashText.keys.toList();
     for (int x = 0; x < textToUnsplashText.length; x ++) {
-      for (int y = 0; y < textToUnsplashText[keys[x]]!.length; y ++) {
-        int reward = keys[x] == _text ? -3000 : 1000;
-        if (desc.contains(textToUnsplashText[keys[x]]![y])) {
-          print(("punished", textToUnsplashText[keys[x]]![y], reward));
+      for (int y = 0; y < textToUnsplashText[keys2[x]]!.length; y ++) {
+        int reward = keys2[x] == _text ? -3000 : 1000;
+        if (desc.contains(textToUnsplashText[keys2[x]]![y])) {
+          print(("punished", textToUnsplashText[keys2[x]]![y], reward));
           unaccuracy += reward; // i had to reverse it
         }
       }
     }
 
-    keys = textFilter.keys.toList();
     for (int x = 0; x < textFilter.length; x ++) {
-      if (desc.contains(keys[x])) {
-        print(("punished", keys[x]));
-        unaccuracy -= textFilter[keys[x]]!; // i had to reverse it
+      if (desc.contains(keys1[x])) {
+        print(("punished", keys1[x]));
+        unaccuracy -= textFilter[keys1[x]]!; // i had to reverse it
       }
     }
 

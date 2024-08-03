@@ -392,6 +392,8 @@ Map<String, int> textFilter = {
   'people': -100000,
   'hand': -100000,
   'feet': -100000,
+  'bikini': -1000000,
+  'swimsuit': -1000000,
 };
 
 //if i have to get the average of two weather conditions then the condition
