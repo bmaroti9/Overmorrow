@@ -345,13 +345,13 @@ Map<String, List<String>> textToUnsplashText = {
 
 //trying to assign values for words (for example sky will be rewarded)
 Map<String, int> textFilter = {
-  'sky' : 3300,
-  'weather': 5000,
+  'sky' : 2000,
+  'weather': 2000,
   'tree': 1000,
   'plant': 1000,
   'flower': 1000,
   'cliff': 1000,
-  'mountain': 10000,
+  'mountain': 1000,
   'ice': -10000,
   'icy': -10000,
   'bubble': -10000,

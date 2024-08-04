@@ -182,7 +182,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
               Padding(
                 padding: EdgeInsets.only(
                     left: min(
-                        max((progress * (widget.size.width - 50)) - textWidth / 2 + 2, 0),
+                        max((progress * (widget.size.width - 53)) - textWidth / 2 + 2, 0),
                         widget.size.width - 55 - textWidth)),
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -194,7 +194,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
               Padding(
                 padding: EdgeInsets.only(
                     top: 6,
-                    left: min(max((progress * (widget.size.width - 50)), 2),
+                    left: min(max((progress * (widget.size.width - 53)), 2),
                         widget.size.width - 52)),
                 child: Align(
                   alignment: Alignment.centerLeft,

@@ -27,21 +27,16 @@ import 'ui_helper.dart';
 class NewDay extends StatefulWidget {
   final data;
   final index;
-  final value;
-  final updateChip;
 
-  NewDay({Key? key, required this.data, required this.index, required this.value,
-  required this.updateChip}) : super(key: key);
+  NewDay({Key? key, required this.data, required this.index}) : super(key: key);
 
   @override
-  _NewDayState createState() => _NewDayState(data, value, updateChip, index);
+  _NewDayState createState() => _NewDayState(data);
 }
 
-class _NewDayState extends State<NewDay> {
+class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
   final data;
-  final _value;
-  final Function updateChip;
-  final myIndex;
+  int _value = 0;
 
   PageController _pageController = PageController();
 
@@ -53,10 +48,15 @@ class _NewDayState extends State<NewDay> {
     );
   }
 
-  _NewDayState(this.data, this._value, this.updateChip, this.myIndex);
+  @override
+  bool get wantKeepAlive => true;
+
+  _NewDayState(this.data);
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+    print(("here", _value));
     final day = data.days[widget.index];
 
     return Padding(
@@ -210,6 +210,7 @@ class _NewDayState extends State<NewDay> {
               children: List<Widget>.generate(
                 4,
                     (int index) {
+                  print((_value, index));
 
                   return ChoiceChip(
                     elevation: 0.0,
@@ -226,10 +227,18 @@ class _NewDayState extends State<NewDay> {
                         color: _value == index ? data.palette.onPrimaryFixed : data.palette.onSurface),
                     selected: _value == index,
                     onSelected: (bool selected) {
-                      updateChip(myIndex, selected);
+                      //setState(() {
+                      //  updateChip(index);
+                      //});
+                      _value = index;
                       setState(() {
                         _onItemTapped(index);
                       });
+                      /*
+                      setState(() {
+                        _onItemTapped(index);
+                      });
+                       */
                     },
                   );
                 },
@@ -254,14 +263,13 @@ class _NewDayState extends State<NewDay> {
   }
 }
 
-Widget buildNewDays(data, chips, updateChip) {
+Widget buildNewDays(data) {
   return ListView.builder(
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
     itemCount: 3,
     itemBuilder: (BuildContext context, int index) {
-      return NewDay(data: data, index: index, key: Key("${data.place}, ${data.current.backcolor} $chips"),
-      value: chips[index], updateChip: updateChip,);
+      return NewDay(data: data, index: index);
     },
   );
 }

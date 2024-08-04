@@ -74,7 +74,7 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
   for (int i = 0; i < unsplash_body.length; i++) {
     double lat_dif = pow((lat - (unsplash_body[i]["location"]["position"]["latitude"] ?? 9999)).abs(), 2) * 1.0;
     double lng_dif = pow((lng - (unsplash_body[i]["location"]["position"]["longitude"] ?? 9999)).abs(), 2) * 1.0;
-    double unaccuracy = min(lat_dif + lng_dif, 100) * 10;
+    double unaccuracy = min(lat_dif + lng_dif, 100) * 20;
 
     if (unsplash_body[i]["location"]["position"]["city"] == real_loc) {
       unaccuracy -= 1000;
@@ -97,7 +97,7 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
 
     for (int x = 0; x < textFilter.length; x ++) {
       if (desc.contains(keys1[x])) {
-        print(("punished", keys1[x]));
+        print(("punished", keys1[x], -textFilter[keys1[x]]!));
         unaccuracy -= textFilter[keys1[x]]!; // i had to reverse it
       }
     }
@@ -106,8 +106,11 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
       unaccuracy -= 3000;
     }
 
-    unaccuracy -= unsplash_body[i]["likes"] * 0.01 ?? 0;
-    unaccuracy -= unsplash_body[i]["downloads"] * 0.005 ?? 0;
+    double ratings = unsplash_body[i]["likes"] * 0.02 ?? 0;
+    ratings += unsplash_body[i]["downloads"] * 0.01 ?? 0;
+    print(("ratings", ratings));
+
+    unaccuracy -= min(ratings, 4000);
 
     print((i, unaccuracy.toStringAsFixed(6), (desc1 ?? "null").trim() + ", " +  desc2, unsplash_body[i]["likes"], unsplash_body[i]["downloads"]));
     if (unaccuracy < best) {

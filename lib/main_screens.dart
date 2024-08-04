@@ -46,14 +46,6 @@ class _NewMainState extends State<NewMain> {
   final updateLocation;
   final context;
 
-  List<int> chips = [0, 0, 0];
-
-  void updateChip(int index, int to) {
-    setState(() {
-      chips[index] = to;
-    });
-  }
-
   _NewMainState(this.data, this.updateLocation, this.context);
 
   @override
@@ -98,7 +90,7 @@ class _NewMainState extends State<NewMain> {
                       Padding(
                         padding: const EdgeInsets.only(left: 0, bottom: 2),
                         child: comfortatext(
-                            "${data.current.temp}°", 68, data.settings,
+                            "${data.current.temp}°", 69, data.settings,
                             color: data.colorpop, weight: FontWeight.w300),
                       ),
                       Padding(
@@ -107,7 +99,7 @@ class _NewMainState extends State<NewMain> {
                             data.current.text, 32, data.settings,
                             weight: data.settings["Color mode"] == "dark"
                                 ? FontWeight.w600
-                                : FontWeight.w400,
+                                : FontWeight.w500,
                             color: data.desc_color),
                       )
                     ],
@@ -150,7 +142,7 @@ class _NewMainState extends State<NewMain> {
           NewAirQuality(data),
           RadarSmall(
               data: data, key: Key("${data.place}, ${data.current.backcolor}")),
-          buildNewDays(data, chips, updateChip),
+          buildNewDays(data),
           buildNewGlanceDay(data),
 
           Padding(
