@@ -653,17 +653,20 @@ Widget buildNewGlanceDay(var data) => Padding(
           itemBuilder: (context, index) {
             final day = data.days[index + 3];
             return Padding(
-              padding: const EdgeInsets.only(top: 5, bottom: 5),
+              padding: const EdgeInsets.only(top: 3, bottom: 3),
               child: Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius:
+                        index == 0 ? const BorderRadius.vertical(top: Radius.circular(18.0), bottom: Radius.circular(8))
+                        : index == data.days.length - 4 ? const BorderRadius.vertical(bottom: Radius.circular(18.0), top: Radius.circular(8))
+                        : BorderRadius.circular(8),
                     color: data.palette.surfaceContainerLow),
                 child: Column(
                   children: [
                     Row(
                       children: [
                         SizedBox(
-                          width: 65,
+                          width: 63,
                           height: 73,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 18),
@@ -672,14 +675,14 @@ Widget buildNewGlanceDay(var data) => Padding(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 comfortatext(day.name.split(", ")[0], 18, data.settings, color: data.palette.primary),
-                                comfortatext(day.name.split(", ")[1], 14, data.settings, color: data.palette.primaryFixedDim),
+                                comfortatext(day.name.split(", ")[1], 14, data.settings, color: data.palette.onSurface),
                               ],
                             ),
                           ),
                         ),
                         SizedBox(
                           height: 30,
-                          width: 40,
+                          width: 43,
                           child: Icon(
                             day.icon,
                             color: data.palette.primary,
@@ -692,23 +695,31 @@ Widget buildNewGlanceDay(var data) => Padding(
                             height: 58,
                             width: 43,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: data.palette.primaryFixedDim),
+                                borderRadius: BorderRadius.circular(13),
+                                //border: Border.all(width: 1.5, color: data.palette.primaryFixedDim)
+                                color: data.palette.primaryFixedDim
+                              ),
                             child: Row(
                               children: [
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.arrow_drop_up, color: data.palette.primary, size: 14,),
-                                    Icon(Icons.arrow_drop_down, color: data.palette.primary, size: 14,),
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 2),
+                                      child: Icon(Icons.keyboard_arrow_up, color: data.palette.shadow, size: 14,),
+                                    ),
+                                    Icon(Icons.keyboard_arrow_down, color: data.palette.shadow, size: 14,),
                                   ],
                                 ),
                                 Expanded(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      comfortatext(day.minmaxtemp.split("/")[1], 14, data.settings, color: data.palette.primary),
-                                      comfortatext(day.minmaxtemp.split("/")[0], 14, data.settings,color: data.palette.primary),
+                                      Padding(
+                                        padding: const EdgeInsets.only(bottom: 2),
+                                        child: comfortatext(day.minmaxtemp.split("/")[1], 14, data.settings, color: data.palette.shadow),
+                                      ),
+                                      comfortatext(day.minmaxtemp.split("/")[0], 14, data.settings,color: data.palette.shadow),
                                     ],
                                   ),
                                 ),
@@ -720,41 +731,44 @@ Widget buildNewGlanceDay(var data) => Padding(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.water_drop_outlined,
-                                    color: data.current.secondary, size: 18,),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 2, right: 5),
-                                    child: comfortatext('${day.precip_prob}%', 17, data.settings,
-                                        color: data.current.secondary),
-                                  ),
-                                  Icon(
-                                    Icons.water_drop, color: data.current.secondary, size: 18,),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 2, right: 2),
-                                    child: comfortatext(day.total_precip.toString() +
-                                        data.settings["Precipitation"], 17, data.settings, color: data.current.secondary),
-                                  ),
-                                ],
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 4),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.water_drop_outlined,
+                                      color: data.palette.primaryFixedDim, size: 18,),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 2, right: 8),
+                                      child: comfortatext('${day.precip_prob}%', 17, data.settings,
+                                          color: data.palette.onSurface),
+                                    ),
+                                    Icon(
+                                      Icons.water_drop, color: data.palette.primaryFixedDim, size: 18,),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 2, right: 2),
+                                      child: comfortatext(day.total_precip.toString() +
+                                          data.settings["Precipitation"], 17, data.settings, color: data.palette.onSurface),
+                                    ),
+                                  ],
+                                ),
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    CupertinoIcons.wind, color: data.current.secondary, size: 18,),
+                                    CupertinoIcons.wind, color: data.palette.primaryFixedDim, size: 18,),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 2, right: 2),
                                     child: comfortatext('${day.windspeed} ${data
-                                        .settings["Wind"]}', 17, data.settings, color: data.current.secondary),
+                                        .settings["Wind"]}', 17, data.settings, color: data.palette.onSurface),
                                   ),
                                   Padding(
                                       padding: const EdgeInsets.only(left: 3, right: 3, bottom: 1),
                                       child: RotationTransition(
                                           turns: AlwaysStoppedAnimation(day.wind_dir / 360),
                                           child: Icon(CupertinoIcons.arrow_down_circle,
-                                            color: data.current.secondary, size: 16,)
+                                            color: data.palette.primary, size: 16,)
                                       )
                                   ),
                                 ],
