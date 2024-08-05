@@ -348,7 +348,6 @@ Map<String, int> textFilter = {
   'sky' : 2000,
   'weather': 2000,
   'tree': 1000,
-  'plant': 1000,
   'flower': 1000,
   'cliff': 1000,
   'mountain': 1000,
