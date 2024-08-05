@@ -137,7 +137,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                     size: width,
                     settings: data.settings,
                     bottom: bottom,
-                    dir: data.current.wind_dir,
+                    dir: data.current.wind_dir + 180,
                   ),
                 ]
             )

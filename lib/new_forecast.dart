@@ -174,7 +174,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                                     padding: const EdgeInsets.only(left: 5, right: 3),
                                     child: RotationTransition(
                                         turns: AlwaysStoppedAnimation(day.wind_dir / 360),
-                                        child: Icon(CupertinoIcons.arrow_up_circle,
+                                        child: Icon(CupertinoIcons.arrow_down_circle,
                                           color: data.palette.primaryFixedDim, size: 18,)
                                     )
                                 ),
@@ -370,7 +370,7 @@ class WindChartPainter extends CustomPainter {
       canvas.drawCircle(Offset(x, y), dotRadius, paint);
 
       textPainter.text = TextSpan(
-        text: String.fromCharCode(Icons.arrow_forward.codePoint),
+        text: String.fromCharCode(Icons.arrow_downward.codePoint),
         style: TextStyle(
           fontSize: dotRadius * 2,
           fontFamily: Icons.arrow_forward.fontFamily,
@@ -753,7 +753,7 @@ Widget buildNewGlanceDay(var data) => Padding(
                                       padding: const EdgeInsets.only(left: 3, right: 3, bottom: 1),
                                       child: RotationTransition(
                                           turns: AlwaysStoppedAnimation(day.wind_dir / 360),
-                                          child: Icon(CupertinoIcons.arrow_up_circle_fill,
+                                          child: Icon(CupertinoIcons.arrow_down_circle,
                                             color: data.current.secondary, size: 16,)
                                       )
                                   ),
