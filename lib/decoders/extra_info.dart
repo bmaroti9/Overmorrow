@@ -137,20 +137,24 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
   Color bestcolor = palette.primaryFixedDim;
   int bestDif = difFromBackColors(bestcolor, dominant);
 
-  if (bestDif <= 330) {
+  int base = diffBetweenBackColors(dominant);
+  print(("base", base));
+
+  if (bestDif <= base + 100) {
+    print("trying");
     for (int i = 1; i < 4; i++) {
       //LIGHT
-      Color newcolor = lighten(startcolor, i / 25);
+      Color newcolor = lighten(startcolor, i / 7);
       int newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < 440) {
+      if (newdif > bestDif && newdif < base + 250) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
 
       //DARK
-      newcolor = darken(startcolor, i / 25);
+      newcolor = darken(startcolor, i / 7);
       newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < 440) {
+      if (newdif > bestDif && newdif < base + 250) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
@@ -158,11 +162,12 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
   }
 
   //if the contrast is still low then we need to choose another color
-  if (bestDif <= 330) {
+  if (bestDif <= base + 100) {
+    print("plan b");
     for (int i = 0; i < dominant.length; i++) {
       Color newcolor = dominant[i];
       int newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < 440) {
+      if (newdif > bestDif && newdif < base + 250) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
@@ -180,25 +185,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
     desc_color = bestcolor;
   }
 
-  List<Color> gradientColors = getGradientColors(palette.primaryFixedDim, palette.error, 10);
-
-  return [palette, bestcolor, desc_color, gradientColors, dominant];
-}
-
-List<Color> getGradientColors(Color color1, Color color2, int number) {
-  int r = color1.red; int g = color1.green; int b = color1.blue;
-  int dif_r = (color2.red - color1.red) ~/ number;
-  int dif_g = (color2.green - color1.green) ~/ number;
-  int dif_b = (color2.blue - color1.blue) ~/ number;
-
-  List<Color> colors = [];
-
-  for (int i = 0; i < number; i++) {
-    r += dif_r; b += dif_b; g += dif_g;
-    colors.add(Color.fromARGB(255, r, g, b));
-  }
-
-  return colors;
+  return [palette, bestcolor, desc_color, dominant];
 }
 
 int difFromBackColors(Color frontColor, List<Color> backcolors) {
@@ -207,6 +194,18 @@ int difFromBackColors(Color frontColor, List<Color> backcolors) {
     smallest = min(smallest, difBetweenTwoColors(frontColor, backcolors[i]));
   }
   return smallest;
+}
+
+int diffBetweenBackColors(List<Color> backcolors) {
+  int diff_sum = 0;
+  for (int a = 0; a < backcolors.length; a ++) {
+    for (int b = 0; b < backcolors.length; b ++) {
+      if (a != b) {
+        diff_sum += difBetweenTwoColors(backcolors[a], backcolors[b]);
+      }
+    }
+  }
+  return diff_sum ~/ (backcolors.length * (backcolors.length - 1));
 }
 
 int difBetweenTwoColors(Color color1, Color color2) {
@@ -278,7 +277,7 @@ Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
   PaletteGenerator _paletteGenerator = await PaletteGenerator.fromImage(
     imageInfo.image,
     region: region,
-    maximumColorCount: 3
+    maximumColorCount: 4
   );
 
   imageProvider.resolve(const ImageConfiguration()).removeListener(listener);
