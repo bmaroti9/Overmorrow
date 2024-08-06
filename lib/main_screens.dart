@@ -143,7 +143,7 @@ class _NewMainState extends State<NewMain> {
           RadarSmall(
               data: data, key: Key("${data.place}, ${data.current.backcolor}")),
           buildNewDays(data),
-          buildNewGlanceDay(data),
+          buildNewGlanceDay(data: data),
 
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 30),

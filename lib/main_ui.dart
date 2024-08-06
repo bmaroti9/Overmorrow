@@ -722,12 +722,20 @@ Widget buildHours(List<dynamic> hours, data) => SizedBox(
 Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
     provider, latlng, real_loc) {
   return Padding(
-    padding: const EdgeInsets.all(20.0),
+    padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 30),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        comfortatext(translation('Weather provider', settings["Language"]), 19, settings,
-        color: textcolor),
+        Padding(
+          padding: const EdgeInsets.only(left: 5, top: 0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: comfortatext(
+                translation('Weather provider', settings["Language"]), 16,
+                settings,
+                color: textcolor),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Container(

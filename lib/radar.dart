@@ -674,7 +674,7 @@ class _RadarSmallState extends State<RadarSmall> {
                         data: SliderTheme.of(context).copyWith(
                           trackHeight: 18,
                           valueIndicatorTextStyle: GoogleFonts.comfortaa(
-                            color: data.palette.surface,
+                            color: data.palette.shadow,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
@@ -683,7 +683,6 @@ class _RadarSmallState extends State<RadarSmall> {
                               enabledThumbRadius: 10, elevation: 0.0,
                               pressedElevation: 0),
 
-                          overlayColor: BLACK,
                           tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2),
                           overlayShape: SliderComponentShape.noOverlay
 
@@ -901,7 +900,7 @@ class _RadarBigState extends State<RadarBig> {
                                 data: SliderTheme.of(context).copyWith(
                                     trackHeight: 18,
                                     valueIndicatorTextStyle: GoogleFonts.comfortaa(
-                                      color: data.palette.surface,
+                                      color: data.palette.shadow,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                     ),
