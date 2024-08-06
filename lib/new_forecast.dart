@@ -29,16 +29,18 @@ class NewDay extends StatefulWidget {
   final index;
   final state;
   final onExpandTapped;
+  final day;
 
   NewDay({Key? key, required this.data, required this.index, required this.state,
-  required this.onExpandTapped}) : super(key: key);
+  required this.onExpandTapped, required this.day}) : super(key: key);
 
   @override
-  _NewDayState createState() => _NewDayState(data, index, state, onExpandTapped);
+  _NewDayState createState() => _NewDayState(data, index, state, onExpandTapped, day);
 }
 
 class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
   final data;
+  final day;
   final index;
   final bool state;
   final onExpandTapped;
@@ -57,13 +59,11 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
-  _NewDayState(this.data, this.index, this.state, this.onExpandTapped);
+  _NewDayState(this.data, this.index, this.state, this.onExpandTapped, this.day);
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    print(("here", _value));
-    final day = data.days[widget.index];
 
     Color highlight = state ? data.palette.surfaceContainerHigh : data.palette.surfaceContainer;
 
@@ -71,7 +71,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(left: state ? 10 : 5, top: 0),
+          padding: EdgeInsets.only(left: state ? 15 : 5, top: 0),
           child: Row(
             children: [
               comfortatext(
@@ -79,21 +79,24 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                   data.settings,
                   color: data.palette.onSurface),
               const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(right: 14),
-                child: IconButton(
-                  icon: Icon(Icons.expand_less, color: data
-                      .palette.primaryFixedDim, size: 20,),
-                  onPressed: () {
-                    onExpandTapped(index);
-                  },
+              Visibility(
+                visible: state,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 13),
+                  child: GestureDetector(
+                    child: Icon(Icons.expand_less, color: data
+                        .palette.primaryFixedDim, size: 20),
+                    onTap: () {
+                      onExpandTapped(index);
+                    },
+                  ),
                 ),
               ),
             ],
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 13, left: 23, right: 25),
+          padding: const EdgeInsets.only(top: 15, left: 23, right: 25),
           child: Row(
             children: [
               SizedBox(
@@ -287,8 +290,9 @@ Widget buildNewDays(data) {
     shrinkWrap: true,
     itemCount: 3,
     itemBuilder: (BuildContext context, int index) {
+      final day = data.days[index];
       return NewDay(data: data, index: index, key: Key("${data.place}, ${data.current.backcolor}"),
-      state: false, onExpandTapped: null,);
+      state: false, onExpandTapped: null, day: day,);
     },
   );
 }
@@ -386,7 +390,7 @@ class WindChartPainter extends CustomPainter {
 
     for (int i = 0; i < hours.length; i++) {
       final x = 27.5 + i * spacing;
-      final y = maxHeight - max(min(hours[i].raw_wind * 1.8, maxHeight), 0);
+      final y = maxHeight - max(min(hours[i].raw_wind * 1.4, maxHeight), 0);
 
       canvas.drawCircle(Offset(x, y), dotRadius, paint);
 
@@ -409,7 +413,7 @@ class WindChartPainter extends CustomPainter {
 
       if (i < hours.length - 1) {
         final nextX = 27.5 + (i + 1) * spacing;
-        final nextY = maxHeight - max(min(hours[i + 1].raw_wind * 1.8, maxHeight), 0);
+        final nextY = maxHeight - max(min(hours[i + 1].raw_wind * 1.4, maxHeight), 0);
 
         int numDots = 4;
         double dx = (nextX - x) / numDots;
@@ -668,25 +672,18 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
   final data;
 
   late List<bool> expand = [];
-  late List<PageController> controllers = [];
 
   @override
   void initState() {
     super.initState();
     for (int i = 0; i < data.days.length; i++) {
       expand.add(false);
-      controllers.add(PageController());
     }
   }
 
   void _onExpandTapped(int index) {
     setState(() {
       expand[index] = !expand[index];
-      controllers[index].animateToPage(
-        expand[index] ? 1 : 0,
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.fastEaseInToSlowEaseOut,
-      );
     });
   }
 
@@ -720,60 +717,34 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
               itemCount: data.days.length - 3,
               itemBuilder: (context, index) {
                 final day = data.days[index + 3];
-                return SizedBox(
-                  height: expand[index] ? 80 : 600,
-                  child: PageView(
-                    physics: NeverScrollableScrollPhysics(),
-                    //scrollDirection: Axis.vertical,
-                    controller: controllers[index],
-                    children: [
-                      Padding(
-                      padding: const EdgeInsets.only(top: 3, bottom: 3),
-                        child: Container(
-                          decoration: BoxDecoration(
+                return Padding(
+                  padding: const EdgeInsets.only(top: 3, bottom: 3),
+                  child: AnimatedContainer(
+                    height: expand[index] ? 520.0 : 70.0,
+                    duration: const Duration(milliseconds:250),
+                    child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: expand[index] ? Container(
+                        decoration: BoxDecoration(
                             borderRadius:
                             index == 0 ? const BorderRadius.vertical(
-                              top: Radius.circular(18.0),
-                              bottom: Radius.circular(8))
+                                top: Radius.circular(18.0),
+                                bottom: Radius.circular(8))
                                 : index == data.days.length - 4 ? const BorderRadius
                                 .vertical(bottom: Radius.circular(18.0),
-                            top: Radius.circular(8))
+                                top: Radius.circular(8))
                                 : BorderRadius.circular(8),
                             color: data.palette.surfaceContainerLow),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 5, left: 3, right: 3),
-                              child: NewDay(data: data, index: index, state: true,
-                              onExpandTapped: _onExpandTapped,),
-                            ),
-                          ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 25, left: 3, right: 3),
+                          child: NewDay(data: data, index: index, state: true,
+                            onExpandTapped: _onExpandTapped, day: day,),
                         ),
-                        GlanceDayEntry(data, index, day, _onExpandTapped),
-                      ],
+                      )
+                          : GlanceDayEntry(data, index, day, _onExpandTapped),
+                    ),
                   ),
                 );
-                if (expand[index]) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 3, bottom: 3),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius:
-                          index == 0 ? const BorderRadius.vertical(
-                              top: Radius.circular(18.0),
-                              bottom: Radius.circular(8))
-                              : index == data.days.length - 4 ? const BorderRadius
-                              .vertical(bottom: Radius.circular(18.0),
-                              top: Radius.circular(8))
-                              : BorderRadius.circular(8),
-                          color: data.palette.surfaceContainerLow),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 3, right: 3),
-                        child: NewDay(data: data, index: index, state: true,
-                          onExpandTapped: _onExpandTapped,),
-                      ),
-                    ),
-                  );
-                }
-                return GlanceDayEntry(data, index, day, _onExpandTapped);
               }
           ),
         ],
@@ -784,104 +755,102 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
 
 
 Widget GlanceDayEntry(data, index, day, onExpandTapped) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 3, bottom: 3),
-    child: Container(
-      decoration: BoxDecoration(
-          borderRadius:
-          index == 0 ? const BorderRadius.vertical(
-              top: Radius.circular(18.0),
-              bottom: Radius.circular(8))
-              : index == data.days.length - 4 ? const BorderRadius
-              .vertical(bottom: Radius.circular(18.0),
-              top: Radius.circular(8))
-              : BorderRadius.circular(8),
-          color: data.palette.surfaceContainerLow),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              SizedBox(
-                width: 60,
-                height: 73,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      comfortatext(day.name.split(", ")[0], 18,
-                          data.settings,
-                          color: data.palette.primary),
-                      comfortatext(day.name.split(", ")[1], 14,
-                          data.settings,
-                          color: data.palette.onSurface),
-                    ],
-                  ),
+  return Container(
+    decoration: BoxDecoration(
+        borderRadius:
+        index == 0 ? const BorderRadius.vertical(
+            top: Radius.circular(18.0),
+            bottom: Radius.circular(8))
+            : index == data.days.length - 4 ? const BorderRadius
+            .vertical(bottom: Radius.circular(18.0),
+            top: Radius.circular(8))
+            : BorderRadius.circular(8),
+        color: data.palette.surfaceContainerLow),
+    child: Column(
+      children: [
+        Row(
+          children: [
+            SizedBox(
+              width: 60,
+              height: 73,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 18),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    comfortatext(day.name.split(", ")[0], 18,
+                        data.settings,
+                        color: data.palette.primary),
+                    comfortatext(day.name.split(", ")[1], 14,
+                        data.settings,
+                        color: data.palette.onSurface),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: 30,
+            ),
+            SizedBox(
+              height: 30,
+              width: 43,
+              child: Icon(
+                day.icon,
+                color: data.palette.primary,
+                size: 31.0 * day.iconSize,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 10, top: 2, bottom: 2),
+              child: Container(
+                height: 56,
                 width: 43,
-                child: Icon(
-                  day.icon,
-                  color: data.palette.primary,
-                  size: 31.0 * day.iconSize,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(13),
+                    //border: Border.all(width: 1.5, color: data.palette.primaryFixedDim)
+                    color: data.palette.primaryFixedDim
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 10, top: 2, bottom: 2),
-                child: Container(
-                  height: 56,
-                  width: 43,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(13),
-                      //border: Border.all(width: 1.5, color: data.palette.primaryFixedDim)
-                      color: data.palette.primaryFixedDim
-                  ),
-                  child: Row(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                child: Row(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: 2),
+                          child: Icon(Icons.keyboard_arrow_up,
+                            color: data.palette.shadow,
+                            size: 14,),
+                        ),
+                        Icon(Icons.keyboard_arrow_down,
+                          color: data.palette.shadow, size: 14,),
+                      ],
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment
+                            .center,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(
                                 bottom: 2),
-                            child: Icon(Icons.keyboard_arrow_up,
-                              color: data.palette.shadow,
-                              size: 14,),
-                          ),
-                          Icon(Icons.keyboard_arrow_down,
-                            color: data.palette.shadow, size: 14,),
-                        ],
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment
-                              .center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: 2),
-                              child: comfortatext(
-                                  day.minmaxtemp.split("/")[1], 14,
-                                  data.settings,
-                                  color: data.palette.shadow),
-                            ),
-                            comfortatext(
-                                day.minmaxtemp.split("/")[0], 14,
+                            child: comfortatext(
+                                day.minmaxtemp.split("/")[1], 14,
                                 data.settings,
                                 color: data.palette.shadow),
-                          ],
-                        ),
+                          ),
+                          comfortatext(
+                              day.minmaxtemp.split("/")[0], 14,
+                              data.settings,
+                              color: data.palette.shadow),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              Spacer(),
-              Column(
+            ),
+            Expanded(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Padding(
@@ -948,21 +917,20 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                   )
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: Icon(Icons.arrow_forward_ios, color: data
-                      .palette.primaryFixedDim, size: 14,),
-                  onPressed: () {
-                    onExpandTapped(index);
-                  },
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 17),
+              child: GestureDetector(
+                child: Icon(Icons.expand_more, color: data
+                    .palette.primaryFixedDim, size: 20,),
+                onTap: () {
+                  onExpandTapped(index);
+                },
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ],
     ),
   );
 }
