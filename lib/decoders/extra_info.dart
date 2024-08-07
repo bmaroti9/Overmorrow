@@ -21,7 +21,9 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -126,9 +128,33 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
   return Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,);
 }
 
+Future<ColorScheme> MaterialYouColor(String theme) async {
+  final corePalette = await DynamicColorPlugin.getCorePalette();
+
+  Color? mainColor;
+  if (corePalette != null) {
+    mainColor = corePalette.toColorScheme().primary;
+  } else {
+    mainColor = Colors.blue;
+  }
+  final ColorScheme palette = ColorScheme.fromSeed(
+    seedColor: mainColor,
+    brightness: theme == 'light' ? Brightness.light : Brightness.dark,
+    dynamicSchemeVariant: theme == 'original' || theme == 'monochrome' ? DynamicSchemeVariant.fruitSalad :
+    DynamicSchemeVariant.tonalSpot,
+  );
+
+  return palette;
+}
+
 Future<dynamic> getImageColors(Image Uimage, color_mode) async {
-  final ColorScheme palette = await _materialPalette(Uimage, color_mode);
   final PaletteGenerator pali = await _generatorPalette(Uimage);
+
+  //var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+  //color_mode = brightness == Brightness.dark ? "dark" : "light";
+  //final ColorScheme palette = await MaterialYouColor(color_mode);
+
+  final ColorScheme palette = (await _materialPalette(Uimage, color_mode));
 
   final List<Color> dominant = pali.colors.toList();
 
@@ -140,13 +166,13 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
   int base = diffBetweenBackColors(dominant);
   print(("base", base));
 
-  if (bestDif <= base + 100) {
+  if (bestDif <= base + 50) {
     print("trying");
     for (int i = 1; i < 4; i++) {
       //LIGHT
-      Color newcolor = lighten(startcolor, i / 7);
+      Color newcolor = lighten(startcolor, i / 13);
       int newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < base + 250) {
+      if (newdif > bestDif && newdif < base + 200) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
@@ -154,7 +180,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
       //DARK
       newcolor = darken(startcolor, i / 7);
       newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < base + 250) {
+      if (newdif > bestDif && newdif < base + 200) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
@@ -162,7 +188,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
   }
 
   //if the contrast is still low then we need to choose another color
-  if (bestDif <= base + 100) {
+  if (bestDif <= base + 50) {
     print("plan b");
     for (int i = 0; i < dominant.length; i++) {
       Color newcolor = dominant[i];

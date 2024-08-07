@@ -47,6 +47,7 @@ dependencies:
   stretchy_header: ^2.0.0
   cached_network_image: ^3.3.1
   palette_generator: ^0.3.3+4
+  dynamic_color: ^1.7.0
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -267,7 +267,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
           ),
         ),
         SizedBox(
-          height: 260,
+          height: 250,
           child: PageView(
             controller: _pageController,
             children: <Widget>[
@@ -291,8 +291,11 @@ Widget buildNewDays(data) {
     itemCount: 3,
     itemBuilder: (BuildContext context, int index) {
       final day = data.days[index];
-      return NewDay(data: data, index: index, key: Key("${data.place}, ${data.current.backcolor}"),
-      state: false, onExpandTapped: null, day: day,);
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: NewDay(data: data, index: index, key: Key("${data.place}, ${data.current.backcolor}"),
+        state: false, onExpandTapped: null, day: day,),
+      );
     },
   );
 }
@@ -720,7 +723,7 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
                 return Padding(
                   padding: const EdgeInsets.only(top: 3, bottom: 3),
                   child: AnimatedContainer(
-                    height: expand[index] ? 520.0 : 70.0,
+                    height: expand[index] ? 540.0 : 73.0,
                     duration: const Duration(milliseconds:250),
                     child: SingleChildScrollView(
                       physics: const NeverScrollableScrollPhysics(),
