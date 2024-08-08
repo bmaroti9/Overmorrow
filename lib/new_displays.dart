@@ -187,7 +187,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: comfortatext(write, 15, widget.data.settings,
-                      color: widget.data.palette.onSurface,
+                      color: widget.data.current.onSurface,
                       weight: FontWeight.w500),
                 ),
               ),
@@ -202,7 +202,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
                     height: 4,
                     width: 4,
                     decoration: BoxDecoration(
-                      color: widget.data.palette.primaryFixedDim,
+                      color: widget.data.current.primaryLight,
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
@@ -214,8 +214,8 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
                 child: CustomPaint(
                   painter: WavePainter(
                       _controller.value,
-                      widget.data.palette.primaryFixedDim,
-                      darken(widget.data.palette.surfaceVariant, 0.03),
+                      widget.data.current.primaryLight,
+                      darken(widget.data.current.surfaceVariant, 0.03),
                       progress),
                   child: Container(
                     width: double.infinity,
@@ -231,23 +231,23 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
                       padding: const EdgeInsets.only(right: 4),
                       child: Icon(
                         Icons.wb_sunny_outlined,
-                        color: widget.data.palette.primaryFixedDim,
+                        color: widget.data.current.primaryLight,
                         size: 14,
                       ),
                     ),
                     comfortatext(
                         widget.data.sunstatus.sunrise, 15, widget.data.settings,
-                        color: widget.data.palette.primaryFixedDim,
+                        color: widget.data.current.primaryLight,
                         weight: FontWeight.w500),
                     const Spacer(),
                     comfortatext(
                         widget.data.sunstatus.sunset, 15, widget.data.settings,
-                        color: widget.data.palette.outline,
+                        color: widget.data.current.outline,
                         weight: FontWeight.w500),
                     Padding(
                       padding: const EdgeInsets.only(left: 4),
                       child: Icon(Icons.nightlight_outlined,
-                          color: widget.data.palette.outline, size: 14),
+                          color: widget.data.current.outline, size: 14),
                     ),
                   ],
                 ),
@@ -273,14 +273,14 @@ Widget NewAirQuality(var data) {
                   translation('air quality', data.settings["Language"]),
                   16,
                   data.settings,
-                  color: data.palette.onSurface),
+                  color: data.current.onSurface),
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(right: 5),
                 child: Icon(
                   Icons.arrow_forward,
                   size: 16,
-                  color: data.palette.onSurface,
+                  color: data.current.onSurface,
                 ),
               )
             ],
@@ -293,13 +293,13 @@ Widget NewAirQuality(var data) {
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: data.palette.surfaceContainerLow),
+                    color: data.current.containerLow),
                 width: 65,
                 height: 65,
                 child: Center(
                     child: comfortatext(
                         data.aqi.aqi_index.toString(), 32, data.settings,
-                        color: data.palette.primaryFixedDim)),
+                        color: data.current.primaryLight)),
               ),
             ),
             Expanded(
@@ -312,7 +312,7 @@ Widget NewAirQuality(var data) {
                       data.aqi.aqi_title,
                       20,
                       data.settings,
-                      color: data.palette.primaryFixedDim,
+                      color: data.current.primaryLight,
                       align: TextAlign.left,
                       weight: FontWeight.w600,
                     ),
@@ -320,7 +320,7 @@ Widget NewAirQuality(var data) {
                   Padding(
                     padding: const EdgeInsets.all(3.0),
                     child: comfortatext(data.aqi.aqi_desc, 14, data.settings,
-                        color: data.palette.onSurface, weight: FontWeight.w500),
+                        color: data.current.onSurface, weight: FontWeight.w500),
                   ),
                 ],
               ),
@@ -351,7 +351,7 @@ Widget NewRain15MinuteIndicator(var data) {
       padding: const EdgeInsets.only(left: 21, right: 21, top: 23, bottom: 15),
       child: Container(
         decoration: BoxDecoration(
-          color: data.palette.surfaceContainerLow,
+          color: data.current.containerLow,
           borderRadius: BorderRadius.circular(18),
         ),
         padding: const EdgeInsets.all(18),
@@ -366,16 +366,16 @@ Widget NewRain15MinuteIndicator(var data) {
                       const EdgeInsets.only(left: 5, bottom: 2, right: 3),
                   child: Icon(
                     Icons.water_drop_outlined,
-                    color: data.palette.primary,
+                    color: data.current.primary,
                     size: 20,
                   ),
                 ),
                 comfortatext(data.minutely_15_precip.precip_sum.toStringAsFixed(1),
                     20, data.settings,
-                    color: data.palette.primary, weight: FontWeight.w500),
+                    color: data.current.primary, weight: FontWeight.w500),
                 comfortatext(
                     data.settings["Precipitation"], 20, data.settings,
-                    color: data.palette.primary),
+                    color: data.current.primary),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8),
@@ -383,7 +383,7 @@ Widget NewRain15MinuteIndicator(var data) {
                         "rain expected in ${data.minutely_15_precip.t_minus}",
                         14,
                         data.settings,
-                        color: data.palette.onPrimaryContainer, weight: FontWeight.w500),
+                        color: data.current.outline, weight: FontWeight.w500),
                   ),
                 ),
               ],
@@ -405,7 +405,7 @@ Widget NewRain15MinuteIndicator(var data) {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: data.minutely_15_precip.precips[index] == 0
-                              ? data.palette.primaryFixedDim : data.palette.primary,
+                              ? data.current.primaryLight : data.current.primary,
                         ),
                       ),
                     );
@@ -419,9 +419,9 @@ Widget NewRain15MinuteIndicator(var data) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  comfortatext('now', 13, data.settings, color: data.palette.onPrimaryContainer),
-                  comfortatext('3hr', 13, data.settings, color: data.palette.onPrimaryContainer),
-                  comfortatext('6hr', 13, data.settings, color: data.palette.onPrimaryContainer)
+                  comfortatext('now', 13, data.settings, color: data.current.outline),
+                  comfortatext('3hr', 13, data.settings, color: data.current.outline),
+                  comfortatext('6hr', 13, data.settings, color: data.current.outline)
                 ],
               ),
             )

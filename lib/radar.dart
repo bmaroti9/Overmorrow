@@ -80,7 +80,7 @@ class _RadarMapState extends State<RadarMap> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: comfortatext(translation('radar', data.settings["Language"]), 19, data.settings,
-                color: data.current.textcolor),
+                color: data.current.onSurface),
           ),
         ),
         Padding(
@@ -156,7 +156,7 @@ class _RadarMapState extends State<RadarMap> {
                                 MaterialPageRoute(builder: (context) => RadarPage(data: data,)),
                               );
                             },
-                            child: Icon(Icons.open_in_full, color: data.current.primary, size: 25,),
+                            child: Icon(Icons.open_in_full, color: data.current.surface, size: 25,),
                           ),
                         ),
                       ),
@@ -300,8 +300,8 @@ class _RadarPageState extends State<RadarPage> {
   @override
   Widget build(BuildContext context) {
     double x = MediaQuery.of(context).padding.top;
-    Color main = data.current.textcolor;
-    Color top = lighten(data.current.highlight, 0.1);
+    Color main = data.current.onSurface;
+    Color top = lighten(data.current.container, 0.1);
     return Stack(
       children: [
         FlutterMap(
@@ -533,7 +533,7 @@ class _RadarSmallState extends State<RadarSmall> {
             child: comfortatext(
                 translation('radar', data.settings["Language"]), 16,
                 data.settings,
-                color: data.palette.onSurface),
+                color: data.current.onSurface),
           ),
         ),
         Padding(
@@ -543,10 +543,10 @@ class _RadarSmallState extends State<RadarSmall> {
             aspectRatio: 1.57,
             child: Container(
               decoration: BoxDecoration(
-                  color: data.palette.surface,
+                  color: data.current.surface,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(
-                      width: 2.2, color: data.palette.surfaceContainerHigh)
+                      width: 2.2, color: data.current.containerHigh)
               ),
               child: Stack(
                 children: [
@@ -604,7 +604,7 @@ class _RadarSmallState extends State<RadarSmall> {
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(10),
                               elevation: 0.0,
-                              backgroundColor: data.palette.surfaceContainer,
+                              backgroundColor: data.current.container,
                               //side: BorderSide(width: 3, color: main),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15)
@@ -618,7 +618,7 @@ class _RadarSmallState extends State<RadarSmall> {
                               );
                             },
                             child: Icon(CupertinoIcons.fullscreen,
-                              color: data.palette.primaryFixedDim, size: 20,),
+                              color: data.current.primaryLight, size: 20,),
                           ),
                         ),
                       ),
@@ -648,17 +648,17 @@ class _RadarSmallState extends State<RadarSmall> {
                       style: ElevatedButton.styleFrom(
                           elevation: 0.0,
                           padding: const EdgeInsets.all(10),
-                          backgroundColor: data.palette.surfaceContainer,
+                          backgroundColor: data.current.container,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
-                            //side: BorderSide(width: 2, color: data.palette.primaryFixed)
+                            //side: BorderSide(width: 2, color: data.current.primaryLighter)
                           )
                       ),
                       onPressed: () async {
                         togglePlayPause();
                       },
                       child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
-                        color: data.palette.primaryFixedDim, size: 18,),
+                        color: data.current.primaryLight, size: 18,),
 
                     ),
                   ),
@@ -674,7 +674,7 @@ class _RadarSmallState extends State<RadarSmall> {
                         data: SliderTheme.of(context).copyWith(
                           trackHeight: 18,
                           valueIndicatorTextStyle: GoogleFonts.comfortaa(
-                            color: data.palette.shadow,
+                            color: data.current.onSurface,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
@@ -695,9 +695,9 @@ class _RadarSmallState extends State<RadarSmall> {
                           label: times[currentFrameIndex.toInt()]
                               .toString(),
 
-                          activeColor: data.palette.primaryFixed,
-                          inactiveColor: data.palette.surface,
-                          //thumbColor: data.palette.primary,
+                          activeColor: data.current.primaryLighter,
+                          inactiveColor: data.current.surface,
+                          //thumbColor: data.current.primary,
 
                           onChanged: (double value) {
                             setState(() {
@@ -711,26 +711,26 @@ class _RadarSmallState extends State<RadarSmall> {
                       padding: const EdgeInsets.only(left: 16, right: 16, top: 9),
                       child: Row(
                         children: <Widget>[
-                          comfortatext('-2hr', 13, data.settings, color: data.palette.onSurface),
+                          comfortatext('-2hr', 13, data.settings, color: data.current.onSurface),
                           Expanded(
                             flex: 6,
                             child: Align(
                                 alignment: Alignment.centerRight,
-                                child: comfortatext('-1hr', 13, data.settings, color: data.palette.onSurface)
+                                child: comfortatext('-1hr', 13, data.settings, color: data.current.onSurface)
                             ),
                           ),
                           Expanded(
                             flex: 6,
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: comfortatext('now', 13, data.settings, color: data.palette.onSurface)
+                              child: comfortatext('now', 13, data.settings, color: data.current.onSurface)
                             ),
                           ),
                           Expanded(
                             flex: 3,
                             child: Align(
                                 alignment: Alignment.centerRight,
-                                child: comfortatext('30m', 13, data.settings, color: data.palette.onSurface)
+                                child: comfortatext('30m', 13, data.settings, color: data.current.onSurface)
                             ),
                           ),
                         ],
@@ -851,7 +851,7 @@ class _RadarBigState extends State<RadarBig> {
                 height: 100,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
-                  color: data.palette.surface,
+                  color: data.current.surface,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 24, right: 12),
@@ -873,17 +873,17 @@ class _RadarBigState extends State<RadarBig> {
                               style: ElevatedButton.styleFrom(
                                   elevation: 0.0,
                                   padding: const EdgeInsets.all(10),
-                                  backgroundColor: data.palette.surfaceContainer,
+                                  backgroundColor: data.current.container,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16),
-                                    //side: BorderSide(width: 2, color: data.palette.primaryFixed)
+                                    //side: BorderSide(width: 2, color: data.current.primaryLighter)
                                   )
                               ),
                               onPressed: () async {
                                 togglePlayPause();
                               },
                               child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
-                                color: data.palette.primaryFixedDim, size: 18,),
+                                color: data.current.primaryLight, size: 18,),
 
                             ),
                           ),
@@ -900,7 +900,7 @@ class _RadarBigState extends State<RadarBig> {
                                 data: SliderTheme.of(context).copyWith(
                                     trackHeight: 18,
                                     valueIndicatorTextStyle: GoogleFonts.comfortaa(
-                                      color: data.palette.shadow,
+                                      color: data.current.onSurface,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -921,9 +921,9 @@ class _RadarBigState extends State<RadarBig> {
                                   label: times[currentFrameIndex.toInt()]
                                       .toString(),
 
-                                  activeColor: data.palette.primaryFixed,
-                                  inactiveColor: data.palette.surface,
-                                  //thumbColor: data.palette.primary,
+                                  activeColor: data.current.primaryLighter,
+                                  inactiveColor: data.current.surface,
+                                  //thumbColor: data.current.primary,
 
                                   onChanged: (double value) {
                                     setState(() {
@@ -937,26 +937,26 @@ class _RadarBigState extends State<RadarBig> {
                               padding: const EdgeInsets.only(left: 16, right: 16, top: 9),
                               child: Row(
                                 children: <Widget>[
-                                  comfortatext('-2hr', 13, data.settings, color: data.palette.onPrimaryContainer),
+                                  comfortatext('-2hr', 13, data.settings, color: data.current.onSurface),
                                   Expanded(
                                     flex: 6,
                                     child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: comfortatext('-1hr', 13, data.settings, color: data.palette.onPrimaryContainer)
+                                        child: comfortatext('-1hr', 13, data.settings, color: data.current.onSurface)
                                     ),
                                   ),
                                   Expanded(
                                     flex: 6,
                                     child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: comfortatext('now', 13, data.settings, color: data.palette.onPrimaryContainer)
+                                        child: comfortatext('now', 13, data.settings, color: data.current.onSurface)
                                     ),
                                   ),
                                   Expanded(
                                     flex: 3,
                                     child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: comfortatext('30m', 13, data.settings, color: data.palette.onPrimaryContainer)
+                                        child: comfortatext('30m', 13, data.settings, color: data.current.onSurface)
                                     ),
                                   ),
                                 ],
@@ -984,7 +984,7 @@ class _RadarBigState extends State<RadarBig> {
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(10),
                       elevation: 0.0,
-                      backgroundColor: data.palette.surface,
+                      backgroundColor: data.current.surface,
                       //side: BorderSide(width: 3, color: main),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)
@@ -994,7 +994,7 @@ class _RadarBigState extends State<RadarBig> {
                       Navigator.of(context).pop();
                     },
                     child: Icon(CupertinoIcons.fullscreen_exit,
-                      color: data.palette.primaryFixedDim, size: 21,),
+                      color: data.current.primaryLight, size: 21,),
                   ),
                 ),
               ),

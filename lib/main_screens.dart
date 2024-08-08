@@ -56,7 +56,7 @@ class _NewMainState extends State<NewMain> {
     final FloatingSearchBarController controller = FloatingSearchBarController();
 
     return Scaffold(
-      backgroundColor: data.current.backcolor,
+      backgroundColor: data.current.surface,
       drawer: MyDrawer(primary: data.current.backup_primary,
         back: data.current.backup_backcolor,
         settings: data.settings,
@@ -72,8 +72,8 @@ class _NewMainState extends State<NewMain> {
             headerHeight: max(size.height * 0.53, 400),
             //we don't want it to be smaller than 400
             header: ParrallaxBackground(image: data.image, key: Key(data.place),
-                color: data.current.backcolor == BLACK ? BLACK
-                    : lightAccent(data.current.backcolor, 5000)),
+                color: data.current.surface == BLACK ? BLACK
+                    : lightAccent(data.current.surface, 5000)),
             overlay: Stack(
               children: [
                 Padding(
@@ -91,7 +91,7 @@ class _NewMainState extends State<NewMain> {
                         padding: const EdgeInsets.only(left: 0, bottom: 2),
                         child: comfortatext(
                             "${data.current.temp}°", 69, data.settings,
-                            color: data.colorpop, weight: FontWeight.w300),
+                            color: data.current.colorPop, weight: FontWeight.w300),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 0),
@@ -100,21 +100,21 @@ class _NewMainState extends State<NewMain> {
                             weight: data.settings["Color mode"] == "dark"
                                 ? FontWeight.w600
                                 : FontWeight.w500,
-                            color: data.desc_color),
+                            color: data.current.descColor),
                       )
                     ],
                   ),
                 ),
                 MySearchParent(updateLocation: updateLocation,
-                  color: data.current.backcolor,
+                  color: data.current.surface,
                   place: data.place,
                   controller: controller,
                   settings: data.settings,
                   real_loc: data.real_loc,
-                  secondColor: data.current.primary,
-                  textColor: data.current.textcolor,
-                  highlightColor: data.current.highlight,
-                  key: Key("${data.place}, ${data.current.backcolor}"),),
+                  secondColor: data.current.primaryLight,
+                  textColor: data.current.primary,
+                  highlightColor: data.current.containerLow,
+                  key: Key("${data.place}, ${data.current.surface}"),),
               ],
             )
         ),
@@ -127,10 +127,10 @@ class _NewMainState extends State<NewMain> {
               LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     if (constraints.maxWidth > 500.0) {
-                      return Circles(500, data, 0.5, data.palette.primary);
+                      return Circles(500, data, 0.5, data.current.primary);
                     } else {
                       return Circles(constraints.maxWidth * 0.97, data, 0.5,
-                          data.palette.primary);
+                          data.current.primary);
                     }
                   }
               ),
@@ -141,7 +141,7 @@ class _NewMainState extends State<NewMain> {
           NewRain15MinuteIndicator(data),
           NewAirQuality(data),
           RadarSmall(
-              data: data, key: Key("${data.place}, ${data.current.backcolor}")),
+              data: data, key: Key("${data.place}, ${data.current.surface}")),
           buildNewDays(data),
           buildNewGlanceDay(data: data),
 
@@ -150,9 +150,9 @@ class _NewMainState extends State<NewMain> {
             child: providerSelector(
                 data.settings,
                 updateLocation,
-                data.current.textcolor,
-                data.current.highlight,
-                data.current.primary,
+                data.current.outline,
+                data.current.container,
+                data.current.surface,
                 data.provider,
                 "${data.lat}, ${data.lng}",
                 data.real_loc),
@@ -163,8 +163,8 @@ class _NewMainState extends State<NewMain> {
           NewTimes(data, true),
           buildHihiDays(data),
           buildGlanceDay(data),
-          providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight,
-          data.current.primary, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
+          providerSelector(data.settings, updateLocation, data.current.outline, data.current.container,
+          data.current.surface, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
 
            */
           const Padding(padding: EdgeInsets.only(bottom: 20))
@@ -190,7 +190,7 @@ Widget TabletLayout(data, updateLocation, context) {
   double heigth = min(max(width / 1.5, 450), 510);
 
   return Scaffold(
-    backgroundColor: data.current.backcolor,
+    backgroundColor: data.current.surface,
     drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
         settings: data.settings, image: data.current.backdrop),
     body: RefreshIndicator(
@@ -198,7 +198,7 @@ Widget TabletLayout(data, updateLocation, context) {
         await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
       },
       backgroundColor: WHITE,
-      color: data.current.backcolor,
+      color: data.current.surface,
       displacement: 100,
       child: Padding(
         padding: EdgeInsets.only(left: 20, right: 10, bottom: 10, top: toppad + 10),
@@ -224,7 +224,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: ParrallaxBackground(image: data.current.backdrop, key: Key(data.place),
-                                    color: darken(data.current.backcolor, 0.1),),
+                                    color: darken(data.current.surface, 0.1),),
                                 ),
                               ),
                               Padding(
@@ -256,15 +256,15 @@ Widget TabletLayout(data, updateLocation, context) {
                                         child: Circles(400, data, 0.6, data.current.colorpop, align: Alignment.centerRight),
                                       );
                                     } else {
-                                      return Circles(constraints.maxWidth * 0.90, data, 1, data.current.primary);
+                                      return Circles(constraints.maxWidth * 0.90, data, 1, data.current.surface);
                                     }
                                   }
                               ),
                               MySearchParent(updateLocation: updateLocation,
-                                color: data.current.highlight, place: data.place,
+                                color: data.current.container, place: data.place,
                                 controller: controller, settings: data.settings, real_loc: data.real_loc,
-                                secondColor: data.current.primary, textColor: data.current.textcolor,
-                                highlightColor: data.current.primary, key: Key("${data.place}, ${data.current.backcolor}"),),
+                                secondColor: data.current.surface, textColor: data.current.outline,
+                                highlightColor: data.current.surface, key: Key("${data.place}, ${data.current.surface}"),),
                             ],
                           ),
                         ),
@@ -281,7 +281,7 @@ Widget TabletLayout(data, updateLocation, context) {
                     children: [
                       NewTimes(data, false),
                       buildGlanceDay(data),
-                      providerSelector(data.settings, updateLocation, data.current.textcolor, data.current.highlight, data.current.primary,
+                      providerSelector(data.settings, updateLocation, data.current.outline, data.current.container, data.current.surface,
                           data.provider, "${data.lat}, ${data.lng}", data.real_loc),
                     ],
                   ),

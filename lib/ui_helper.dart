@@ -208,13 +208,13 @@ class _FadingWidgetState extends State<FadingWidget> {
           children: [
             Padding(
               padding: const EdgeInsets.only(right: 3),
-              child: Icon(Icons.access_time, color: widget.data.current.textcolor, size: 13,),
+              child: Icon(Icons.access_time, color: widget.data.current.primary, size: 13,),
             ),
             comfortatext('${split[0]},', 13, widget.data.settings,
-                color: widget.data.current.textcolor, weight: FontWeight.w500),
+                color: widget.data.current.primary, weight: FontWeight.w500),
 
             comfortatext(split.length > 1 ?split[1] : "", 13, widget.data.settings,
-                color: widget.data.current.primary, weight: FontWeight.w500),
+                color: widget.data.current.onSurface, weight: FontWeight.w500),
           ],
         ),
       ),
@@ -310,7 +310,7 @@ Widget NewAqiDataPoints(String name, double value, var data) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      comfortatext(name, 15, data.settings, color: data.palette.primary,
+      comfortatext(name, 15, data.settings, color: data.current.primary,
       align: TextAlign.end),
       Padding(
         padding: const EdgeInsets.all(3.0),
@@ -319,11 +319,11 @@ Widget NewAqiDataPoints(String name, double value, var data) {
           height: 2.5,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: data.palette.primaryFixedDim,
+            color: data.current.primaryLight,
           ),
         ),
       ),
-      comfortatext(value.toString(), 15, data.settings, color: data.palette.primaryFixedDim,
+      comfortatext(value.toString(), 15, data.settings, color: data.current.primaryLight,
           align: TextAlign.end, weight: FontWeight.w600),
     ],
   );
@@ -346,18 +346,18 @@ Widget aqiDataPoints(String name, double value, var data) {
             padding: const EdgeInsets.only(left: 10, bottom: 1.5, top: 1.5),
             child: Row(
               children: [
-                comfortatext(name, 18, data.settings, color: data.current.textcolor,
+                comfortatext(name, 18, data.settings, color: data.current.outline,
                 weight: FontWeight.w400),
                 const Spacer(),
                 Container(
                   padding: const EdgeInsets.only(top:4,bottom: 3, left: 4, right: 4),
                   decoration: BoxDecoration(
                       //border: Border.all(color: Colors.blueAccent)
-                    color: data.current.primary,
+                    color: data.current.surface,
                     borderRadius: BorderRadius.circular(10)
                   ),
                   child: comfortatext(value.toString(), 17, data.settings,
-                      color: data.current.highlight, weight: FontWeight.w600)
+                      color: data.current.container, weight: FontWeight.w600)
                 )
               ],
             ),
@@ -578,7 +578,7 @@ class BarChartPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
 
     Paint paint = Paint()
-      ..color = data.current.primary
+      ..color = data.current.surface
       ..style = PaintingStyle.fill;
 
     double maxValue = 10;

@@ -120,52 +120,89 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
 List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
   String x = force == "-1" ? settings["Color mode"] : force;
 
+  //surface
+  //primary
+  //primaryLight
+  //primaryLighter
+  //onSurface
+  //outline
+  //containerLow
+  //container
+  //containerHigh
+  //surfaceVariant
+  //onPrimaryLight
+
   List<Color> colors = [
     palette.onPrimaryFixedVariant,
     palette.tertiary,
-    WHITE,
-    palette.onPrimaryFixedVariant,
-    WHITE,
-    darken(palette.onPrimaryFixedVariant, 0.07)
+    palette.tertiaryFixed,
+    palette.secondaryFixed,
+    palette.onSurface,
+    palette.outline,
+    darken2(palette.onPrimaryFixedVariant, 0.09),
+    darken2(palette.onPrimaryFixedVariant, 0.15),
+    darken2(palette.onPrimaryFixedVariant, 0.2),
+    darken2(palette.onPrimaryFixedVariant, 0.1),
+    palette.onTertiaryFixed,
   ];
   if (x == "monochrome") {
     colors = [
-      palette.onPrimaryFixedVariant,
-      WHITE,
-      WHITE,
-      palette.onPrimaryFixedVariant,
-      WHITE,
-      darken(palette.onPrimaryFixedVariant, 0.07)
+      palette.surface,
+      palette.primary,
+      palette.primaryFixedDim,
+      palette.primaryFixed,
+      palette.onSurface,
+      palette.outline,
+      palette.surfaceContainerLow,
+      palette.surfaceContainer,
+      palette.surfaceContainerHigh,
+      palette.surfaceContainerHighest,
+      palette.onPrimaryFixed,
     ];
   }
   else if (x == "colorful") {
     colors = [
-      palette.primaryContainer,
-      palette.tertiary,
-      palette.onPrimaryContainer,
-      palette.primaryContainer,
-      palette.onPrimaryContainer,
-      darken(palette.primaryContainer, 0.1)
+      palette.surface,
+      palette.primary,
+      palette.primaryFixedDim,
+      palette.primaryFixed,
+      palette.onSurface,
+      palette.outline,
+      palette.surfaceContainerLow,
+      palette.surfaceContainer,
+      palette.surfaceContainerHigh,
+      palette.surfaceContainerHighest,
+      palette.onPrimaryFixed,
     ];
   }
   else if (x == "light") {
     colors = [
       palette.surface,
-      palette.primaryFixedDim,
       palette.primary,
       palette.primaryFixedDim,
+      palette.primaryFixed,
+      palette.onSurface,
+      palette.outline,
+      palette.surfaceContainerLow,
+      palette.surfaceContainer,
+      palette.surfaceContainerHigh,
+      palette.surfaceContainerHighest,
       palette.onPrimaryFixed,
-      palette.primaryContainer
     ];
   }
   else if (x == "dark") {
     colors = [
       palette.surface,
-      palette.primaryFixedDim,
-      palette.secondary,
-      palette.primaryFixedDim,
+      palette.primary,
+      palette.primaryFixed,
+      palette.primaryFixed,
+      palette.onSurface,
+      palette.outline,
+      palette.surfaceContainerLow,
+      palette.surfaceContainer,
+      palette.surfaceContainerHigh,
+      palette.surfaceContainerHighest,
       palette.onPrimaryFixed,
-      palette.primaryContainer
     ];
   }
   return colors;

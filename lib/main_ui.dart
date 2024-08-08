@@ -57,7 +57,7 @@ class WeatherPage extends StatelessWidget {
     //return PhoneLayout(data, updateLocation, context);
 
     return NewMain(data: data, updateLocation: updateLocation, context: context,
-        key: Key("${data.place}, ${data.current.primary} ${data.image}"),);
+        key: Key("${data.place}, ${data.current.surface} ${data.image}"),);
 
   }
 }
@@ -158,7 +158,7 @@ Widget NewTimes(var data, bool divider) => Column(
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: comfortatext(translation('sunrise/sunset', data.settings["Language"]), 19, data.settings,
-                    color: data.current.textcolor),
+                    color: data.current.outline),
               ),
             ),
             Center(
@@ -229,7 +229,7 @@ Widget NewTimes(var data, bool divider) => Column(
                         child: Align(
                           alignment: Alignment.center,
                             child: comfortatext(data.sunstatus.sunrise, 18, data.settings,
-                                color: data.current.textcolor)
+                                color: data.current.outline)
                         )
                     )
                   ),
@@ -240,7 +240,7 @@ Widget NewTimes(var data, bool divider) => Column(
                           child: Align(
                             alignment: Alignment.center,
                               child: comfortatext(data.sunstatus.sunset, 18, data.settings,
-                                  color: data.current.textcolor)
+                                  color: data.current.outline)
                           )
                       )
                   )
@@ -259,14 +259,14 @@ Widget NewTimes(var data, bool divider) => Column(
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: comfortatext(translation('air quality', data.settings["Language"]), 20, data.settings,
-                    color: data.current.textcolor),
+                    color: data.current.outline),
               ),
             ),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                //border: Border.all(width: 1.2, color: data.current.textcolor)
-                color: data.current.highlight
+                //border: Border.all(width: 1.2, color: data.current.outline)
+                color: data.current.container
               ),
               padding: const EdgeInsets.all(13),
               child: Row(
@@ -277,7 +277,7 @@ Widget NewTimes(var data, bool divider) => Column(
                         height: 85,
                         width: 85,
                         decoration: BoxDecoration(
-                          color: data.current.primary,
+                          color: data.current.surface,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Center(
@@ -298,7 +298,7 @@ Widget NewTimes(var data, bool divider) => Column(
                             translation(['good', 'moderate', 'slightly unhealthy',
                               'unhealthy', 'very unhealthy',
                               'hazardous'][data.aqi.aqi_index - 1], data.settings["Language"]), 16, data.settings,
-                                  color: data.current.textcolor, align: TextAlign.center)
+                                  color: data.current.outline, align: TextAlign.center)
                           ),
                         ),
                       ),
@@ -327,7 +327,7 @@ Widget NewTimes(var data, bool divider) => Column(
             padding: const EdgeInsets.only(top: 6, right: 30, left: 30),
             child: Container(
               height: 2,
-              color: data.current.highlight,
+              color: data.current.container,
             ),
         ),
       ),
@@ -347,14 +347,14 @@ Widget buildHihiDays(var data) => ListView.builder(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 0, bottom: 10),
-                    child: comfortatext(day.name, 19, data.settings, color: data.current.textcolor)
+                    child: comfortatext(day.name, 19, data.settings, color: data.current.outline)
                   ),
                   Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: day.mm_precip > 0.1 ? data.current.highlight : data.current.backcolor,
+                        color: day.mm_precip > 0.1 ? data.current.container : data.current.backcolor,
                       ),
                       padding: const EdgeInsets.only(top: 8, left: 3, right: 5, bottom: 3),
                       child: SizedBox(
@@ -371,7 +371,7 @@ Widget buildHihiDays(var data) => ListView.builder(
                                     height: 40,
                                   ),
                                 ),
-                              comfortatext(day.text, 22, data.settings, color: data.current.textcolor),
+                              comfortatext(day.text, 22, data.settings, color: data.current.outline),
                               const Spacer(),
                               Padding(
                                 padding: const EdgeInsets.only(right: 6),
@@ -379,7 +379,7 @@ Widget buildHihiDays(var data) => ListView.builder(
                                       padding: const EdgeInsets.only(top:7,bottom: 7, left: 7, right: 5),
                                       decoration: BoxDecoration(
                                         //border: Border.all(color: Colors.blueAccent)
-                                          color: data.current.primary,
+                                          color: data.current.surface,
                                           borderRadius: BorderRadius.circular(10)
                                       ),
                                     child: comfortatext(day.minmaxtemp, 18, data.settings, color: data.current.backcolor)
@@ -507,7 +507,7 @@ Widget buildGlanceDay(var data) => Padding(
         padding: const EdgeInsets.only(bottom: 15),
         child: Align(
           alignment: Alignment.centerLeft,
-          child: comfortatext(translation('Daily', data.settings["Language"]), 19, data.settings, color: data.current.textcolor),
+          child: comfortatext(translation('Daily', data.settings["Language"]), 19, data.settings, color: data.current.outline),
         ),
       ),
       Container(
@@ -528,7 +528,7 @@ Widget buildGlanceDay(var data) => Padding(
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(21),
-                  color: day.mm_precip > rain_limit ? data.current.highlight : data.current.backcolor,
+                  color: day.mm_precip > rain_limit ? data.current.container : data.current.backcolor,
                 ),
                 padding: EdgeInsets.all(day.mm_precip > rain_limit ? 8 : 0),
                 child: Column(
@@ -539,13 +539,13 @@ Widget buildGlanceDay(var data) => Padding(
                           height: 75,
                           width: 75,
                           decoration: BoxDecoration(
-                              color: day.mm_precip > rain_limit ? data.current.backcolor : data.current.highlight,
+                              color: day.mm_precip > rain_limit ? data.current.backcolor : data.current.container,
                               borderRadius: BorderRadius.circular(20),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              comfortatext(day.name, 18, data.settings, color: data.current.textcolor),
+                              comfortatext(day.name, 18, data.settings, color: data.current.outline),
                               Container(
                                 padding: const EdgeInsets.all(5),
                                 child: Image.asset(
@@ -563,7 +563,7 @@ Widget buildGlanceDay(var data) => Padding(
                             height: 75,
                             width: 52,
                             decoration: BoxDecoration(
-                                color: data.current.primary,
+                                color: data.current.surface,
                                 borderRadius: BorderRadius.circular(20),
                             ),
                             child: Row(
@@ -676,7 +676,7 @@ Widget buildHours(List<dynamic> hours, data) => SizedBox(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 10),
-            child: comfortatext('${hour.temp}°', 22, data.settings, color: data.current.primary),
+            child: comfortatext('${hour.temp}°', 22, data.settings, color: data.current.surface),
           ),
           Stack(
             alignment: Alignment.bottomCenter,
@@ -711,7 +711,7 @@ Widget buildHours(List<dynamic> hours, data) => SizedBox(
           ),
           Padding(
             padding: const EdgeInsets.only(top:20, left: 9, right: 9),
-            child: comfortatext(hour.time, 17, data.settings, color: data.current.primary)
+            child: comfortatext(hour.time, 17, data.settings, color: data.current.surface)
           )
         ],
       );

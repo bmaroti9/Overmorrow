@@ -558,9 +558,5 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
     minutely_15_precip: const OM15MinutePrecip(t_minus: "", precip_sum: 0, precips: []), //because wapi doesn't have 15 minutely
 
     image: Uimage,
-
-    palette: imageColors[0],
-    colorpop: imageColors[1],
-    desc_color: imageColors[2],
   );
 }

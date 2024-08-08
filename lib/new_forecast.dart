@@ -65,7 +65,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
 
-    Color highlight = state ? data.palette.surfaceContainerHigh : data.palette.surfaceContainer;
+    Color highlight = state ? data.current.containerHigh : data.current.container;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +77,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
               comfortatext(
                   day.name, 16,
                   data.settings,
-                  color: data.palette.onSurface),
+                  color: data.current.onSurface),
               const Spacer(),
               Visibility(
                 visible: state,
@@ -85,7 +85,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                   padding: const EdgeInsets.only(right: 13),
                   child: GestureDetector(
                     child: Icon(Icons.expand_less, color: data
-                        .palette.primaryFixedDim, size: 20),
+                        .current.primaryLight, size: 20),
                     onTap: () {
                       onExpandTapped(index);
                     },
@@ -101,10 +101,10 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
             children: [
               SizedBox(
                   width: 35,
-                  child: Icon(day.icon, size: 38.0 * day.iconSize, color: data.palette.primary,)),
+                  child: Icon(day.icon, size: 38.0 * day.iconSize, color: data.current.primary,)),
               Padding(
                 padding: const EdgeInsets.only(left: 12.0, top: 3),
-                child: comfortatext(day.text, 20, data.settings, color: data.palette.onSurface,
+                child: comfortatext(day.text, 20, data.settings, color: data.current.onSurface,
                     weight: FontWeight.w400),
               ),
               const Spacer(),
@@ -112,12 +112,12 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                 padding: const EdgeInsets.only(top: 4),
                 child: Row(
                   children: [
-                    comfortatext(day.minmaxtemp.split("/")[0], 19, data.settings, color: data.palette.primary),
+                    comfortatext(day.minmaxtemp.split("/")[0], 19, data.settings, color: data.current.primary),
                     Padding(
                       padding: const EdgeInsets.only(left: 5, right: 4),
-                      child: comfortatext("/", 19, data.settings, color: data.palette.onSurface),
+                      child: comfortatext("/", 19, data.settings, color: data.current.onSurface),
                     ),
-                    comfortatext(day.minmaxtemp.split("/")[1], 19, data.settings, color: data.palette.primary),
+                    comfortatext(day.minmaxtemp.split("/")[1], 19, data.settings, color: data.current.primary),
                   ],
                 ),
               )
@@ -130,8 +130,8 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
             height: 85,
             padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
             decoration: BoxDecoration(
-              //border: Border.all(width: 1, color: data.palette.outline),
-              color: state ? data.palette.surfaceContainer : data.palette.surfaceContainerLow,
+              //border: Border.all(width: 1, color: data.current.outline),
+              color: state ? data.current.container : data.current.containerLow,
               borderRadius: BorderRadius.circular(18),
             ),
             child:  LayoutBuilder(
@@ -151,11 +151,11 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.water_drop_outlined,
-                                  color: data.palette.primaryFixedDim, size: 21),
+                                  color: data.current.primaryLight, size: 21),
                               Padding(
                                 padding: const EdgeInsets.only(left: 10, top: 3),
                                 child: comfortatext('${day.precip_prob}%', 18, data.settings,
-                                    color: data.palette.primary),
+                                    color: data.current.primary),
                               ),
                             ],
                           ),
@@ -167,12 +167,12 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
-                                  Icons.water_drop, color: data.palette.primaryFixedDim, size: 21),
+                                  Icons.water_drop, color: data.current.primaryLight, size: 21),
                               Padding(
                                 padding: const EdgeInsets.only(top: 3, left: 10),
                                 child: comfortatext(day.total_precip.toString() +
                                     data.settings["Precipitation"], 18, data.settings,
-                                    color: data.palette.primary),
+                                    color: data.current.primary),
                               ),
                             ],
                           ),
@@ -184,19 +184,19 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
-                                CupertinoIcons.wind, color: data.palette.primaryFixedDim, size: 21,),
+                                CupertinoIcons.wind, color: data.current.primaryLight, size: 21,),
                               Padding(
                                 padding: const EdgeInsets.only(top: 3, left: 10),
                                 child: comfortatext('${day.windspeed} ${data
                                     .settings["Wind"]}', 18, data.settings,
-                                    color: data.palette.primary),
+                                    color: data.current.primary),
                               ),
                               Padding(
                                   padding: const EdgeInsets.only(left: 5, right: 3),
                                   child: RotationTransition(
                                       turns: AlwaysStoppedAnimation(day.wind_dir / 360),
                                       child: Icon(CupertinoIcons.arrow_down_circle,
-                                        color: data.palette.primaryFixedDim, size: 18,)
+                                        color: data.current.primaryLight, size: 18,)
                                   )
                               ),
                             ],
@@ -209,11 +209,11 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(CupertinoIcons.sun_max,
-                                  color: data.palette.primaryFixedDim, size: 21),
+                                  color: data.current.primaryLight, size: 21),
                               Padding(
                                 padding: const EdgeInsets.only(top: 3, left: 10),
                                 child: comfortatext('${day.uv} UV', 18, data.settings,
-                                    color: data.palette.primary),
+                                    color: data.current.primary),
                               ),
                             ],
                           ),
@@ -235,31 +235,23 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
 
                 return ChoiceChip(
                   elevation: 0.0,
-                  checkmarkColor: data.palette.onPrimaryFixed,
+                  checkmarkColor: data.current.onPrimaryLight,
                   color: WidgetStateProperty.resolveWith((states) {
                     if (index == _value) {
-                      return data.palette.primaryFixedDim;
+                      return data.current.primaryLight;
                     }
-                    return state ? data.palette.surfaceContainerLow : data.palette.surface;
+                    return state ? data.current.containerLow : data.current.surface;
                   }),
-                  side: BorderSide(color: data.palette.primaryFixedDim, width: 1.0),
+                  side: BorderSide(color: data.current.primaryLight, width: 1.0),
                   label: comfortatext(
                       ['temp', 'precip', 'wind', 'uv'][index], 14, data.settings,
-                      color: _value == index ? data.palette.onPrimaryFixed : data.palette.onSurface),
+                      color: _value == index ? data.current.onPrimaryLight : data.current.onSurface),
                   selected: _value == index,
                   onSelected: (bool selected) {
-                    //setState(() {
-                    //  updateChip(index);
-                    //});
                     _value = index;
                     setState(() {
                       _onItemTapped(index);
                     });
-                    /*
-                    setState(() {
-                      _onItemTapped(index);
-                    });
-                     */
                   },
                 );
               },
@@ -272,8 +264,8 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
             controller: _pageController,
             children: <Widget>[
               buildTemp(day.hourly, data, highlight),
-              buildPrecip(day.hourly, data, data.palette.surfaceContainerHigh),
-              WindReport(hours: day.hourly, data: data, highlight: data.palette.surfaceContainerHigh,),
+              buildPrecip(day.hourly, data, data.current.containerHigh),
+              WindReport(hours: day.hourly, data: data, highlight: data.current.containerHigh,),
               buildUV(day.hourly, data, highlight),
             ],
           ),
@@ -293,7 +285,7 @@ Widget buildNewDays(data) {
       final day = data.days[index];
       return Padding(
         padding: const EdgeInsets.only(bottom: 10),
-        child: NewDay(data: data, index: index, key: Key("${data.place}, ${data.current.backcolor}"),
+        child: NewDay(data: data, index: index, key: Key("${data.place}, ${data.current.surface}"),
         state: false, onExpandTapped: null, day: day,),
       );
     },
@@ -311,7 +303,7 @@ Widget buildTemp(List<dynamic> hours, data, Color highlight) => ListView(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 10),
-            child: comfortatext('${hour.temp}°', 19, data.settings, color: data.palette.primary),
+            child: comfortatext('${hour.temp}°', 19, data.settings, color: data.current.primary),
           ),
           Stack(
             alignment: Alignment.bottomCenter,
@@ -321,7 +313,7 @@ Widget buildTemp(List<dynamic> hours, data, Color highlight) => ListView(
                 height: 105,
                 decoration: BoxDecoration(
                   color: highlight,
-                    //border: Border.all(color: data.palette.outline,),
+                    //border: Border.all(color: data.current..outline,),
                     borderRadius: const BorderRadius.all(Radius.circular(20))
                 ),
               ),
@@ -329,8 +321,8 @@ Widget buildTemp(List<dynamic> hours, data, Color highlight) => ListView(
                 width: 13,
                 height: hour.raw_temp * 1.8 + 30,
                 decoration: BoxDecoration(
-                    color: data.palette.primaryFixedDim,
-                  //border: Border.all(color: data.palette.primaryFixedDim, width: 2),
+                    color: data.current.primaryLight,
+                  //border: Border.all(color: data.current.primaryLight, width: 2),
                     borderRadius: const BorderRadius.all(Radius.circular(20))
                 ),
               ),
@@ -342,14 +334,14 @@ Widget buildTemp(List<dynamic> hours, data, Color highlight) => ListView(
               height: 30,
               child: Icon(
                 hour.icon,
-                color: data.palette.primary,
+                color: data.current.primary,
                 size: 31.0 * hour.iconSize,
               ),
             )
           ),
           Padding(
               padding: const EdgeInsets.only(top:13),
-              child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
+              child: comfortatext(hour.time, 15, data.settings, color: data.current.onSurface)
           )
         ],
       ),
@@ -379,7 +371,7 @@ class WindChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = data.palette.primaryFixedDim
+      ..color = data.current.primaryLight
       ..strokeWidth = 2.0;
 
     final smallDotPaint = Paint()
@@ -402,7 +394,7 @@ class WindChartPainter extends CustomPainter {
         style: TextStyle(
           fontSize: dotRadius * 2,
           fontFamily: Icons.arrow_forward.fontFamily,
-          color: data.palette.primary,
+          color: data.current.primary,
         ),
       );
       textPainter.layout();
@@ -475,9 +467,9 @@ class WindReport extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            comfortatext('${hour.wind}', 18, data.settings, color: data.palette.primary,
+                            comfortatext('${hour.wind}', 18, data.settings, color: data.current.primary,
                             weight: FontWeight.w500),
-                            comfortatext('${data.settings["Wind"]}', 9, data.settings, color: data.palette.primary),
+                            comfortatext('${data.settings["Wind"]}', 9, data.settings, color: data.current.primary),
                           ],
                         ),
                       ),
@@ -490,14 +482,14 @@ class WindReport extends StatelessWidget {
                             height: 30,
                             child: Icon(
                               hour.icon,
-                              color: data.palette.primary,
+                              color: data.current.primary,
                               size: 31.0 * hour.iconSize,
                             ),
                           )
                       ),
                       Padding(
                           padding: const EdgeInsets.only(top:13),
-                          child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
+                          child: comfortatext(hour.time, 15, data.settings, color: data.current.onSurface)
                       )
                     ],
                   ),
@@ -522,7 +514,7 @@ Widget buildUV(List<dynamic> hours, data, highlight) => ListView(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 15),
-            child: comfortatext('${hour.uv}', 19, data.settings, color: data.palette.primary),
+            child: comfortatext('${hour.uv}', 19, data.settings, color: data.current.primary),
           ),
           SizedBox(
             height: 105,
@@ -551,7 +543,7 @@ Widget buildUV(List<dynamic> hours, data, highlight) => ListView(
                         height: 5,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: data.palette.primaryFixedDim,
+                          color: data.current.primaryLight,
                         ),
                       ),
                     );
@@ -565,14 +557,14 @@ Widget buildUV(List<dynamic> hours, data, highlight) => ListView(
                 height: 30,
                 child: Icon(
                   hour.icon,
-                  color: data.palette.primary,
+                  color: data.current.primary,
                   size: 31.0 * hour.iconSize,
                 ),
               )
           ),
           Padding(
               padding: const EdgeInsets.only(top:13),
-              child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
+              child: comfortatext(hour.time, 15, data.settings, color: data.current.onSurface)
           )
         ],
       ),
@@ -595,9 +587,9 @@ Widget buildPrecip(List<dynamic> hours, data, Color highlight) => ListView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                comfortatext('${hour.precip}', 18, data.settings, color: data.palette.primary,
+                comfortatext('${hour.precip}', 18, data.settings, color: data.current.primary,
                     weight: FontWeight.w500),
-                comfortatext('${data.settings["Precipitation"]}', 9, data.settings, color: data.palette.primary),
+                comfortatext('${data.settings["Precipitation"]}', 9, data.settings, color: data.current.primary),
               ],
             ),
           ),
@@ -632,7 +624,7 @@ Widget buildPrecip(List<dynamic> hours, data, Color highlight) => ListView(
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: data.palette.primaryFixedDim,
+                          color: data.current.primaryLight,
                         ),
                       ),
                     );
@@ -646,14 +638,14 @@ Widget buildPrecip(List<dynamic> hours, data, Color highlight) => ListView(
                 height: 30,
                 child: Icon(
                   hour.icon,
-                  color: data.palette.primary,
+                  color: data.current.primary,
                   size: 31.0 * hour.iconSize,
                 ),
               )
           ),
           Padding(
               padding: const EdgeInsets.only(top:13),
-              child: comfortatext(hour.time, 15, data.settings, color: data.palette.onSurface)
+              child: comfortatext(hour.time, 15, data.settings, color: data.current.onSurface)
           )
         ],
       ),
@@ -709,7 +701,7 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
               child: comfortatext(
                   "daily", 16,
                   data.settings,
-                  color: data.palette.onSurface),
+                  color: data.current.onSurface),
             ),
           ),
           ListView.builder(
@@ -723,7 +715,7 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
                 return Padding(
                   padding: const EdgeInsets.only(top: 3, bottom: 3),
                   child: AnimatedContainer(
-                    height: expand[index] ? 540.0 : 73.0,
+                    height: expand[index] ? 528.0 : 73.0,
                     duration: const Duration(milliseconds:250),
                     child: SingleChildScrollView(
                       physics: const NeverScrollableScrollPhysics(),
@@ -737,7 +729,7 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
                                 .vertical(bottom: Radius.circular(18.0),
                                 top: Radius.circular(8))
                                 : BorderRadius.circular(8),
-                            color: data.palette.surfaceContainerLow),
+                            color: data.current.containerLow),
                         child: Padding(
                           padding: const EdgeInsets.only(top: 25, left: 3, right: 3),
                           child: NewDay(data: data, index: index, state: true,
@@ -768,7 +760,7 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
             .vertical(bottom: Radius.circular(18.0),
             top: Radius.circular(8))
             : BorderRadius.circular(8),
-        color: data.palette.surfaceContainerLow),
+        color: data.current.containerLow),
     child: Column(
       children: [
         Row(
@@ -784,10 +776,10 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                   children: [
                     comfortatext(day.name.split(", ")[0], 18,
                         data.settings,
-                        color: data.palette.primary),
+                        color: data.current.primary),
                     comfortatext(day.name.split(", ")[1], 14,
                         data.settings,
-                        color: data.palette.onSurface),
+                        color: data.current.onSurface),
                   ],
                 ),
               ),
@@ -797,7 +789,7 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
               width: 43,
               child: Icon(
                 day.icon,
-                color: data.palette.primary,
+                color: data.current.primary,
                 size: 31.0 * day.iconSize,
               ),
             ),
@@ -809,8 +801,8 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                 width: 43,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(13),
-                    //border: Border.all(width: 1.5, color: data.palette.primaryFixedDim)
-                    color: data.palette.primaryFixedDim
+                    //border: Border.all(width: 1.5, color: data.current.primaryLight)
+                    color: data.current.primaryLight
                 ),
                 child: Row(
                   children: [
@@ -821,11 +813,11 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                           padding: const EdgeInsets.only(
                               bottom: 2),
                           child: Icon(Icons.keyboard_arrow_up,
-                            color: data.palette.shadow,
+                            color: data.current.onPrimaryLight,
                             size: 14,),
                         ),
                         Icon(Icons.keyboard_arrow_down,
-                          color: data.palette.shadow, size: 14,),
+                          color: data.current.onPrimaryLight, size: 14,),
                       ],
                     ),
                     Expanded(
@@ -839,12 +831,12 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                             child: comfortatext(
                                 day.minmaxtemp.split("/")[1], 14,
                                 data.settings,
-                                color: data.palette.shadow),
+                                color: data.current.onPrimaryLight),
                           ),
                           comfortatext(
                               day.minmaxtemp.split("/")[0], 14,
                               data.settings,
-                              color: data.palette.shadow),
+                              color: data.current.onPrimaryLight),
                         ],
                       ),
                     ),
@@ -862,7 +854,7 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.water_drop_outlined,
-                          color: data.palette.primaryFixedDim,
+                          color: data.current.primaryLight,
                           size: 18,),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -870,11 +862,11 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                           child: comfortatext(
                               '${day.precip_prob}%', 17,
                               data.settings,
-                              color: data.palette.onSurface),
+                              color: data.current.onSurface),
                         ),
                         Icon(
                           Icons.water_drop,
-                          color: data.palette.primaryFixedDim,
+                          color: data.current.primaryLight,
                           size: 18,),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -883,7 +875,7 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                               day.total_precip.toString() +
                                   data.settings["Precipitation"],
                               17, data.settings,
-                              color: data.palette.onSurface),
+                              color: data.current.onSurface),
                         ),
                       ],
                     ),
@@ -893,7 +885,7 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                     children: [
                       Icon(
                         CupertinoIcons.wind,
-                        color: data.palette.primaryFixedDim,
+                        color: data.current.primaryLight,
                         size: 18,),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -902,7 +894,7 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                             '${day.windspeed} ${data
                                 .settings["Wind"]}', 17,
                             data.settings,
-                            color: data.palette.onSurface),
+                            color: data.current.onSurface),
                       ),
                       Padding(
                           padding: const EdgeInsets.only(
@@ -912,7 +904,7 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                                   day.wind_dir / 360),
                               child: Icon(
                                 CupertinoIcons.arrow_down_circle,
-                                color: data.palette.primary,
+                                color: data.current.primary,
                                 size: 16,)
                           )
                       ),
@@ -925,7 +917,7 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
               padding: const EdgeInsets.only(right: 17),
               child: GestureDetector(
                 child: Icon(Icons.expand_more, color: data
-                    .palette.primaryFixedDim, size: 20,),
+                    .current.primaryLight, size: 20,),
                 onTap: () {
                   onExpandTapped(index);
                 },

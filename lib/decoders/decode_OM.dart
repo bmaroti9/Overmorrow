@@ -217,34 +217,49 @@ class OMCurrent {
   final int wind;
   final int wind_dir;
 
-  final Color backcolor;
+  final Color surface;
   final Color primary;
-  final Color colorpop;
-  final Color textcolor;
-  final Color secondary;
-  final Color highlight;
+  final Color primaryLight;
+  final Color primaryLighter;
+  final Color onSurface;
+  final Color outline;
+  final Color containerLow;
+  final Color container;
+  final Color containerHigh;
+  final Color colorPop;
+  final Color descColor;
+  final Color surfaceVariant;
+  final Color onPrimaryLight;
 
   final Color backup_primary;
   final Color backup_backcolor;
 
   const OMCurrent({
     required this.precip,
-    required this.primary,
-    required this.backcolor,
     required this.backdrop,
-    required this.textcolor,
     required this.humidity,
     required this.feels_like,
     required this.temp,
     required this.text,
     required this.uv,
     required this.wind,
-    required this.colorpop,
-    required this.secondary,
-    required this.highlight,
     required this.backup_backcolor,
     required this.backup_primary,
     required this.wind_dir,
+
+    required this.surface,
+    required this.primary,
+    required this.primaryLight,
+    required this.primaryLighter,
+    required this.onSurface,
+    required this.outline,
+    required this.containerLow,
+    required this.container,
+    required this.containerHigh,
+    required this.colorPop,
+    required this.descColor,
+    required this.surfaceVariant,
+    required this.onPrimaryLight,
   });
 
   static OMCurrent fromJson(item, settings, sunstatus, timenow, palette) {
@@ -266,7 +281,7 @@ class OMCurrent {
     //    ]);
 
 
-    List<Color> colors = getNetworkColors(palette, settings);
+    List<Color> colors = getNetworkColors(palette[0], settings);
 
     //List<Color> colors = palette.colors.toList();
 
@@ -279,13 +294,20 @@ class OMCurrent {
           item["current"]["apparent_temperature"], settings["Temperature"])
           .round(),
 
-
-      backcolor: colors[0],
+      surface: colors[0],
       primary: colors[1],
-      textcolor: colors[2],
-      colorpop: colors[3],
-      secondary:  colors[4],
-      highlight: colors[5],
+      primaryLight: colors[2],
+      primaryLighter: colors[3],
+      onSurface: colors[4],
+      outline: colors[5],
+      containerLow: colors[6],
+      container: colors[7],
+      containerHigh: colors[8],
+      surfaceVariant: colors[9],
+      onPrimaryLight: colors[10],
+
+      colorPop: palette[1],
+      descColor: palette[2],
 
       backup_backcolor: back,
       backup_primary: primary,
@@ -624,7 +646,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     sunstatus: sunstatus,
     minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
 
-    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, imageColors[0]),
+    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, imageColors),
     days: days,
 
     lat: lat,
@@ -640,9 +662,5 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     localtime: real_time.split("T")[1],
 
     image: Uimage,
-
-    palette: imageColors[0],
-    colorpop: imageColors[1],
-    desc_color: imageColors[2],
     );
 }

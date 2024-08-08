@@ -23,7 +23,6 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -158,9 +157,9 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
 
   final List<Color> dominant = pali.colors.toList();
 
-  Color startcolor = palette.primaryFixedDim;
+  Color startcolor = palette.tertiaryFixedDim;
 
-  Color bestcolor = palette.primaryFixedDim;
+  Color bestcolor = palette.tertiaryFixedDim;
   int bestDif = difFromBackColors(bestcolor, dominant);
 
   int base = diffBetweenBackColors(dominant);
@@ -200,7 +199,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
     }
   }
 
-  Color desc_color = palette.surface;
+  Color desc_color = palette.onPrimaryFixedVariant;
   int desc_dif = difFromBackColors(desc_color, dominant);
 
   print(("diffs", bestDif, desc_dif));
@@ -211,7 +210,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
     desc_color = bestcolor;
   }
 
-  return [palette, bestcolor, desc_color, dominant];
+  return [palette, bestcolor, desc_color];
 }
 
 int difFromBackColors(Color frontColor, List<Color> backcolors) {
@@ -231,7 +230,8 @@ int diffBetweenBackColors(List<Color> backcolors) {
       }
     }
   }
-  return diff_sum ~/ (backcolors.length * (backcolors.length - 1));
+  return 1;
+  //return (diff_sum / (backcolors.length * (backcolors.length - 1))).round();
 }
 
 int difBetweenTwoColors(Color color1, Color color2) {
@@ -318,7 +318,7 @@ Future<ColorScheme> _materialPalette(Image imageWidget, theme) async {
   return ColorScheme.fromImageProvider(
     provider: imageProvider,
     brightness: theme == 'light' ? Brightness.light : Brightness.dark,
-    dynamicSchemeVariant: theme == 'original' || theme == 'monochrome' ? DynamicSchemeVariant.fruitSalad :
+    dynamicSchemeVariant: theme == 'o' || theme == 'm' ? DynamicSchemeVariant.fruitSalad :
     DynamicSchemeVariant.tonalSpot,
   );
 }
@@ -333,14 +333,17 @@ List<int> ColorPopCorrection(String text) {
 
 class WeatherData {
   final Map<String, String> settings;
-  final String place;
-  final String provider;
-  final String real_loc;
 
+  final String place;
+  final String real_loc;
   final double lat;
   final double lng;
 
+  final String provider;
+
   final updatedTime;
+  final fetch_datetime;
+  final localtime;
 
   final days;
   final current;
@@ -349,14 +352,7 @@ class WeatherData {
   final radar;
   final minutely_15_precip;
 
-  final fetch_datetime;
-
   final image;
-  final localtime;
-
-  final palette;
-  final colorpop;
-  final desc_color;
 
   WeatherData({
     required this.place,
@@ -376,10 +372,6 @@ class WeatherData {
     required this.localtime,
 
     required this.minutely_15_precip,
-
-    required this.palette,
-    required this.colorpop,
-    required this.desc_color,
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
