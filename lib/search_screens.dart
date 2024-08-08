@@ -21,6 +21,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -37,7 +38,7 @@ Widget searchBar(Color color, List<String> recommend,
     Function updateIsEditing, bool isEditing, Function updateFav,
     List<String> favorites, Function updateRec, String place, var context,
     bool prog, Function updateProg, Map<String, String> settings, String real_loc, Color secondColor, 
-    Color textColor, Color highlightColor) {
+    Color textColor, Color highlightColor, Color extraTextColor) {
 
   return FloatingSearchBar(
       hint: translation('Search...', settings["Language"]!),
@@ -46,14 +47,14 @@ Widget searchBar(Color color, List<String> recommend,
         child: comfortatext(place, 24, settings, color: textColor, weight: FontWeight.w400)
       ),
       hintStyle: GoogleFonts.comfortaa(
-        color: textColor,
-        fontSize: 18 * getFontSize(settings["Font size"]!),
+        color: extraTextColor,
+        fontSize: 16 * getFontSize(settings["Font size"]!),
         fontWeight: FontWeight.w100,
       ),
 
       queryStyle: GoogleFonts.comfortaa(
-        color: textColor,
-        fontSize: 22 * getFontSize(settings["Font size"]!),
+        color: extraTextColor,
+        fontSize: 21 * getFontSize(settings["Font size"]!),
         fontWeight: FontWeight.w100,
       ),
 
@@ -62,8 +63,7 @@ Widget searchBar(Color color, List<String> recommend,
 
       borderRadius: BorderRadius.circular(23),
       backgroundColor: color,
-      accentColor: color,
-
+      accentColor: textColor,
 
       elevation: 0,
       height: 62,
@@ -101,7 +101,7 @@ Widget searchBar(Color color, List<String> recommend,
           child: Padding(
             padding: const EdgeInsets.only(right: 12),
             child: CircularButton(
-              icon: Icon(Icons.arrow_back_outlined, color: secondColor),
+              icon: Icon(Icons.arrow_back_outlined, color: secondColor, size: 22,),
               onPressed: () {
                 controller.close();
               },
@@ -156,7 +156,7 @@ Widget searchBar(Color color, List<String> recommend,
             },
             child: decideSearch(color, recommend, updateLocation,
                 controller, updateIsEditing, isEditing, updateFav,
-                favorites, controller.query, settings, textColor)
+                favorites, controller.query, settings, textColor, extraTextColor)
         );
       }
   );
@@ -165,17 +165,17 @@ Widget searchBar(Color color, List<String> recommend,
 Widget decideSearch(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, String entered, Map<String, String> settings, textColor) {
+    List<String> favorites, String entered, Map<String, String> settings, textColor, extraTextColor) {
 
   if (entered == '') {
     return defaultSearchScreen(color, updateLocation,
-        controller, updateIsEditing, isEditing, updateFav, favorites, settings, textColor);
+        controller, updateIsEditing, isEditing, updateFav, favorites, settings, textColor, extraTextColor);
   }
   else{
     if (recommend.isNotEmpty) {
       return recommendSearchScreen(
           color, recommend, updateLocation, controller,
-          favorites, updateFav, settings, textColor);
+          favorites, updateFav, settings, textColor, extraTextColor);
     }
   }
   return Container();
@@ -184,11 +184,11 @@ Widget decideSearch(Color color, List<String> recommend,
 Widget defaultSearchScreen(Color color,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, Map<String, String> settings, textColor) {
+    List<String> favorites, Map<String, String> settings, textColor, extraTextColor) {
 
   List<Icon> Myicon = [
     const Icon(null),
-    Icon(Icons.close, color: color,),
+    Icon(Icons.close, color: color, size: 20,),
   ];
 
   Icon editIcon = const Icon(Icons.icecream, color: WHITE,);
@@ -199,7 +199,7 @@ Widget defaultSearchScreen(Color color,
     for (String _ in favorites) {
       icons.add(1);
     }
-    editIcon = Icon(Icons.check, color: color,);
+    editIcon = Icon(Icons.check, color: color, size: 20,);
     rectColor = textColor;
     text = color;
   }
@@ -207,7 +207,7 @@ Widget defaultSearchScreen(Color color,
     for (String _ in favorites) {
       icons.add(0);
     }
-    editIcon = Icon(Icons.edit, color: textColor,);
+    editIcon = Icon(Icons.create_outlined, color: textColor, size: 20,);
     rectColor = color;
     text = textColor;
   }
@@ -215,11 +215,19 @@ Widget defaultSearchScreen(Color color,
   return Column(
     children: [
       Padding(
-        padding: const EdgeInsets.only(top:5, bottom: 10, right: 20, left: 20),
+        padding: const EdgeInsets.only(top:5, bottom: 8, right: 20, left: 20),
         child: Row(
           children: [
-            comfortatext(translation("Favorites", settings["Language"]!), 26 * getFontSize(settings["Font size"]!),
-                settings, color: WHITE),
+            Padding(
+              padding: const EdgeInsets.only(left: 1, top: 4, bottom: 0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: comfortatext(
+                    "favorites", 20,
+                    settings,
+                    color: extraTextColor),
+              ),
+            ),
             const Spacer(),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
@@ -233,10 +241,11 @@ Widget defaultSearchScreen(Color color,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       elevation: 0,
-                      padding: const EdgeInsets.all(6),
+                      padding: const EdgeInsets.all(2),
                       backgroundColor: rectColor,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)
+                        //side: BorderSide(color: rectColor, width: 1.5),
+                          borderRadius: BorderRadius.circular(18)
                       )
                   ),
                   onPressed: () async {
@@ -260,7 +269,7 @@ Widget defaultSearchScreen(Color color,
             decoration: BoxDecoration(
               color: rectColor,
               //border: Border.all(width: 1.2, color: WHITE),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(18),
             ),
             child: ListView.builder(
               shrinkWrap: true,
@@ -276,7 +285,7 @@ Widget defaultSearchScreen(Color color,
                     controller.close();
                   },
                   child: Container(
-                    padding: const EdgeInsets.only(left: 20, bottom: 3, right: 10, top: 3),
+                    padding: const EdgeInsets.only(left: 20, bottom: 1, right: 10, top: 1),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -285,10 +294,10 @@ Widget defaultSearchScreen(Color color,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              comfortatext(split["name"], 25 * getFontSize(settings["Font size"]!), settings,
+                              comfortatext(split["name"], 24 * getFontSize(settings["Font size"]!), settings,
                                   color: text),
-                              comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 18
-                                  * getFontSize(settings["Font size"]!), settings, color: text)
+                              comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 16
+                                  * getFontSize(settings["Font size"]!), settings, color: extraTextColor)
                             ],
                           ),
                         ),
@@ -315,15 +324,15 @@ Widget defaultSearchScreen(Color color,
 
 Widget recommendSearchScreen(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller, List<String> favorites,
-    Function updateFav, var settings, textColor) {
+    Function updateFav, var settings, textColor, extraTextColor) {
   List<Icon> icons = [];
 
   for (String n in recommend) {
     if (favorites.contains(n)) {
-      icons.add(Icon(Icons.favorite, color: textColor,),);
+      icons.add(Icon(Icons.favorite, color: textColor, size: 21,),);
     }
     else{
-      icons.add(Icon(Icons.favorite_border, color: textColor,),);
+      icons.add(Icon(Icons.favorite_border, color: textColor, size: 21,),);
     }
   }
 
@@ -348,18 +357,18 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
             controller.close();
           },
           child: Container(
-            padding: const EdgeInsets.only(left: 20, bottom: 3,
-                  right: 10, top: 3),
+            padding: const EdgeInsets.only(left: 20, bottom: 1,
+                  right: 10, top: 1),
             child: Row(
               children: [
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      comfortatext(split["name"], 25 * getFontSize(settings["Font size"]),
+                      comfortatext(split["name"], 24 * getFontSize(settings["Font size"]),
                           settings, color: textColor),
-                      comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 18 * getFontSize(settings["Font size"]),
-                          settings, color: textColor)
+                      comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 16 * getFontSize(settings["Font size"]),
+                          settings, color: extraTextColor)
                       //comfortatext(split[0], 23)
                     ],
                   ),
@@ -504,7 +513,8 @@ class dumbySearch extends StatelessWidget {
                 ),
                 MySearchParent(updateLocation: updateLocation,
                     color: colors[0], place: place, controller: controller, settings: settings,
-                  real_loc: place, secondColor: colors[1], textColor: colors[2], highlightColor: colors[5],),
+                  real_loc: place, secondColor: colors[1], textColor: colors[2], highlightColor: colors[5],
+                  extraTextColor: colors[5],),
               ],
             )
         ),

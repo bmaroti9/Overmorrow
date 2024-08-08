@@ -731,16 +731,18 @@ class MySearchParent extends StatefulWidget{
   final secondColor;
   final textColor;
   final highlightColor;
+  final extraTextColor;
 
   const MySearchParent({super.key, required this.updateLocation,
     required this.color, required this.place, required this.controller, required this.settings,
     required this.real_loc, required this.secondColor, required this.textColor,
-    required this.highlightColor});
+    required this.highlightColor, required this.extraTextColor});
 
   @override
   _MySearchParentState createState() => _MySearchParentState(color: color,
   place: place, controller: controller, settings: settings, real_loc: real_loc,
-      secondColor: secondColor, textColor: textColor, highlightColor: highlightColor);
+      secondColor: secondColor, textColor: textColor, highlightColor: highlightColor,
+    extraTextColor: extraTextColor);
 }
 
 class _MySearchParentState extends State<MySearchParent> {
@@ -754,10 +756,11 @@ class _MySearchParentState extends State<MySearchParent> {
   final secondColor;
   final textColor;
   final highlightColor;
+  final extraTextColor;
 
   _MySearchParentState({required this.color, required this.place,
   required this.controller, required this.settings, required this.real_loc, required this.secondColor,
-  required this.textColor, required this.highlightColor});
+  required this.textColor, required this.highlightColor, required this.extraTextColor});
 
   late Future<SharedPreferences> _prefsFuture;
 
@@ -803,7 +806,8 @@ class _MySearchParentState extends State<MySearchParent> {
         return MySearchWidget(updateLocation: widget.updateLocation,
             color: color, favorites: favorites, prefs: snapshot.data,
         place: place, controller: controller, settings: settings, real_loc: real_loc,
-        secondColor: secondColor, textColor: textColor, highlightColor: highlightColor,);
+        secondColor: secondColor, textColor: textColor, highlightColor: highlightColor,
+        extraTextColor: extraTextColor,);
       },
     );
   }
@@ -821,17 +825,20 @@ class MySearchWidget extends StatefulWidget{
   final secondColor;
   final textColor;
   final highlightColor;
+  final extraTextColor;
 
   const MySearchWidget({super.key, required this.color, required this.updateLocation,
   required this.favorites, required this.prefs, required this.place,
   required this.controller, required this.settings, required this.real_loc,
-    required this.secondColor, required this.textColor, required this.highlightColor});
+    required this.secondColor, required this.textColor, required this.highlightColor,
+    required this.extraTextColor});
 
   @override
   _MySearchWidgetState createState() => _MySearchWidgetState(color: color,
   updateLocation: updateLocation, favorites: favorites,
       prefs: prefs, place: place, controller: controller, settings: settings, real_loc: real_loc,
-  secondColor: secondColor, textColor: textColor, highlightColor: highlightColor);
+  secondColor: secondColor, textColor: textColor, highlightColor: highlightColor,
+  extraTextColor: extraTextColor);
 }
 
 class _MySearchWidgetState extends State<MySearchWidget> {
@@ -846,6 +853,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   final secondColor;
   final textColor;
   final highlightColor;
+  final extraTextColor;
 
   List<String> favorites;
 
@@ -855,7 +863,8 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   _MySearchWidgetState({required this.color, required this.updateLocation,
         required this.favorites, required this.prefs, required this.place,
   required this.controller, required this.settings, required this.real_loc,
-    required this.secondColor, required this.textColor, required this.highlightColor});
+    required this.secondColor, required this.textColor, required this.highlightColor,
+  required this.extraTextColor});
 
   List<String> recommend = [];
 
@@ -901,7 +910,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
     return searchBar(color, recommend, updateLocation,
         controller, updateIsEditing, isEditing, updateFav, favorites,
         updateRec, place, context, prog, updateProg, settings, real_loc, secondColor,
-    textColor, highlightColor);
+    textColor, highlightColor, extraTextColor);
 
   }
 }
