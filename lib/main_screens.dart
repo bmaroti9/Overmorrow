@@ -154,9 +154,9 @@ class _NewMainState extends State<NewMain> {
             child: providerSelector(
                 data.settings,
                 updateLocation,
-                data.current.outline,
+                data.current.onSurface,
                 data.current.container,
-                data.current.surface,
+                data.current.primary,
                 data.provider,
                 "${data.lat}, ${data.lng}",
                 data.real_loc),

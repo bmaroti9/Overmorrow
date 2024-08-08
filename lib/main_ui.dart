@@ -722,12 +722,12 @@ Widget buildHours(List<dynamic> hours, data) => SizedBox(
 Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
     provider, latlng, real_loc) {
   return Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 30),
+    padding: const EdgeInsets.only(left: 23, right: 23, top: 15, bottom: 30),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 5, top: 0),
+          padding: const EdgeInsets.only(left: 2, top: 0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: comfortatext(
@@ -749,11 +749,11 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
               borderRadius: BorderRadius.circular(20),
               icon: Padding(
                 padding: const EdgeInsets.only(left:5),
-                child: Icon(Icons.arrow_drop_down_circle, color: primary,),
+                child: Icon(Icons.arrow_drop_down_circle, color: primary, size: 20,),
               ),
               style: GoogleFonts.comfortaa(
-                color: WHITE,
-                fontSize: 20 * getFontSize(settings["Font size"]),
+                color: primary,
+                fontSize: 18 * getFontSize(settings["Font size"]),
                 fontWeight: FontWeight.w300,
               ),
               //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty

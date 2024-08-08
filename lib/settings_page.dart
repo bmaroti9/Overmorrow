@@ -147,31 +147,31 @@ List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
   ];
   if (x == "monochrome") {
     colors = [
-      palette.surface,
-      palette.primary,
-      palette.primaryFixedDim,
-      palette.primaryFixed,
+      palette.onPrimaryFixedVariant,
+      WHITE,
+      WHITE,
+      WHITE,
       palette.onSurface,
-      palette.outline,
-      palette.surfaceContainerLow,
-      palette.surfaceContainer,
-      palette.surfaceContainerHigh,
-      palette.surfaceContainerHighest,
-      palette.onPrimaryFixed,
+      WHITE,
+      darken2(palette.onPrimaryFixedVariant, 0.09),
+      darken2(palette.onPrimaryFixedVariant, 0.15),
+      darken2(palette.onPrimaryFixedVariant, 0.2),
+      darken2(palette.onPrimaryFixedVariant, 0.1),
+      WHITE
     ];
   }
   else if (x == "colorful") {
     colors = [
-      palette.surface,
+      palette.onTertiaryFixedVariant,
       palette.primary,
-      palette.primaryFixedDim,
+      palette.primaryFixed,
       palette.primaryFixed,
       palette.onSurface,
       palette.outline,
-      palette.surfaceContainerLow,
-      palette.surfaceContainer,
-      palette.surfaceContainerHigh,
-      palette.surfaceContainerHighest,
+      darken2(palette.onTertiaryFixedVariant, 0.09),
+      darken2(palette.onTertiaryFixedVariant, 0.15),
+      darken2(palette.onTertiaryFixedVariant, 0.2),
+      darken2(palette.onTertiaryFixedVariant, 0.1),
       palette.onPrimaryFixed,
     ];
   }
