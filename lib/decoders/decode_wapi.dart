@@ -524,7 +524,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
   Image Uimage = await getUnsplashImage(text, real_loc, lat, lng);
 
   //GET COLORS
-  List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
+  List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"], settings);
 
   //String real_time = wapi_body["location"]["localtime"];
   int epoch = wapi_body["location"]["localtime_epoch"];

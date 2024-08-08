@@ -638,7 +638,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
       oMBody["current"]["weather_code"], sunstatus, real_time), real_loc, lat, lng);
 
   //GET COLORS
-  List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"]);
+  List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"], settings);
 
   return WeatherData(
     radar: await RainviewerRadar.getData(),

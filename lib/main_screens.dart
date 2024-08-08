@@ -67,7 +67,7 @@ class _NewMainState extends State<NewMain> {
           await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
         },
         headerData: HeaderData(
-          //backgroundColor: WHITE,
+            //backgroundColor: WHITE,
             blurContent: false,
             headerHeight: max(size.height * 0.53, 400),
             //we don't want it to be smaller than 400
@@ -105,16 +105,19 @@ class _NewMainState extends State<NewMain> {
                     ],
                   ),
                 ),
-                MySearchParent(updateLocation: updateLocation,
-                  color: data.current.surface,
-                  place: data.place,
-                  controller: controller,
-                  settings: data.settings,
-                  real_loc: data.real_loc,
-                  secondColor: data.current.primaryLight,
-                  textColor: data.current.primary,
-                  highlightColor: data.current.containerLow,
-                  key: Key("${data.place}, ${data.current.surface}"),),
+                Container(
+                  padding: EdgeInsets.zero,
+                  child: MySearchParent(updateLocation: updateLocation,
+                    color: data.current.surface,
+                    place: data.place,
+                    controller: controller,
+                    settings: data.settings,
+                    real_loc: data.real_loc,
+                    secondColor: data.current.primaryLight,
+                    textColor: data.current.primary,
+                    highlightColor: data.current.container,
+                    key: Key("${data.place}, ${data.current.surface}"),),
+                ),
               ],
             )
         ),

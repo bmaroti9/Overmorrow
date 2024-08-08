@@ -24,6 +24,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
+import 'package:overmorrow/settings_page.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 import '../api_key.dart';
@@ -146,7 +147,7 @@ Future<ColorScheme> MaterialYouColor(String theme) async {
   return palette;
 }
 
-Future<dynamic> getImageColors(Image Uimage, color_mode) async {
+Future<dynamic> getImageColors(Image Uimage, color_mode, settings) async {
   final PaletteGenerator pali = await _generatorPalette(Uimage);
 
   //var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
@@ -155,31 +156,33 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
 
   final ColorScheme palette = (await _materialPalette(Uimage, color_mode));
 
+  final List<Color> used_colors = getNetworkColors(palette, settings);
+
   final List<Color> dominant = pali.colors.toList();
 
-  Color startcolor = palette.tertiaryFixedDim;
+  Color startcolor = used_colors[2];
 
-  Color bestcolor = palette.tertiaryFixedDim;
+  Color bestcolor = used_colors[2];
   int bestDif = difFromBackColors(bestcolor, dominant);
 
-  int base = diffBetweenBackColors(dominant);
+  int base = (diffBetweenBackColors(dominant) * 0.7).round();
   print(("base", base));
 
   if (bestDif <= base + 50) {
     print("trying");
     for (int i = 1; i < 4; i++) {
       //LIGHT
-      Color newcolor = lighten(startcolor, i / 13);
+      Color newcolor = lighten(startcolor, i / 20);
       int newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < base + 200) {
+      if (newdif > bestDif && newdif < base + 150) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
 
       //DARK
-      newcolor = darken(startcolor, i / 7);
+      newcolor = darken(startcolor, i / 20);
       newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < base + 200) {
+      if (newdif > bestDif && newdif < base + 150) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
@@ -199,7 +202,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode) async {
     }
   }
 
-  Color desc_color = palette.onPrimaryFixedVariant;
+  Color desc_color = used_colors[0];
   int desc_dif = difFromBackColors(desc_color, dominant);
 
   print(("diffs", bestDif, desc_dif));
@@ -230,8 +233,7 @@ int diffBetweenBackColors(List<Color> backcolors) {
       }
     }
   }
-  return 1;
-  //return (diff_sum / (backcolors.length * (backcolors.length - 1))).round();
+  return (diff_sum / (backcolors.length * (backcolors.length - 1))).round();
 }
 
 int difBetweenTwoColors(Color color1, Color color2) {

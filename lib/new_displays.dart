@@ -383,7 +383,7 @@ Widget NewRain15MinuteIndicator(var data) {
                         "rain expected in ${data.minutely_15_precip.t_minus}",
                         14,
                         data.settings,
-                        color: data.current.outline, weight: FontWeight.w500),
+                        color: data.current.onSurface, weight: FontWeight.w500),
                   ),
                 ),
               ],
@@ -419,9 +419,9 @@ Widget NewRain15MinuteIndicator(var data) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  comfortatext('now', 13, data.settings, color: data.current.outline),
-                  comfortatext('3hr', 13, data.settings, color: data.current.outline),
-                  comfortatext('6hr', 13, data.settings, color: data.current.outline)
+                  comfortatext('now', 13, data.settings, color: data.current.onSurface),
+                  comfortatext('3hr', 13, data.settings, color: data.current.onSurface),
+                  comfortatext('6hr', 13, data.settings, color: data.current.onSurface)
                 ],
               ),
             )

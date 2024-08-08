@@ -58,14 +58,15 @@ Widget searchBar(Color color, List<String> recommend,
       ),
 
       margins: secondColor == highlightColor ? const EdgeInsets.only(left: 10, right: 10, top: 20)
-                    :  EdgeInsets.only(left: 10, right: 10, top: MediaQuery.of(context).padding.top + 15),
+                    :  EdgeInsets.only(left: 17, right: 17, top: MediaQuery.of(context).padding.top + 15),
 
       borderRadius: BorderRadius.circular(23),
       backgroundColor: color,
-      accentColor: secondColor,
+      accentColor: color,
+
 
       elevation: 0,
-      height: 60,
+      height: 62,
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
       transitionDuration: const Duration(milliseconds: 800),
       transitionCurve: Curves.easeInOut,
@@ -111,7 +112,7 @@ Widget searchBar(Color color, List<String> recommend,
           showIfOpened: false,
           showIfClosed: true,
           child: IconButton(
-            icon: Icon(Icons.menu, color: secondColor, size: 26,),
+            icon: Icon(Icons.menu_rounded, color: secondColor, size: 25,),
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
@@ -389,16 +390,16 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
     Color secondColor, Color textColor) {
   if (real_loc == 'CurrentLocation') {
     return Padding(
-      padding: const EdgeInsets.only(right: 6, top: 3, bottom: 3),
+      padding: const EdgeInsets.only(right: 6.5, top: 4, bottom: 4),
       child: AspectRatio(
         aspectRatio: 1,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               elevation: 0,
               padding: const EdgeInsets.all(10),
-              backgroundColor: textColor,
+              backgroundColor: secondColor,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)
+                  borderRadius: BorderRadius.circular(19)
               )
           ),
           onPressed: () async {},
