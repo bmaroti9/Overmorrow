@@ -242,7 +242,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                     }
                     return state ? data.current.containerLow : data.current.surface;
                   }),
-                  side: BorderSide(color: data.current.primaryLighter, width: 1.0),
+                  side: BorderSide(color: data.current.primaryLighter, width: 1.4),
                   label: comfortatext(
                       ['temp', 'precip', 'wind', 'uv'][index], 14, data.settings,
                       color: _value == index ? data.current.onPrimaryLight : data.current.onSurface),
@@ -802,7 +802,7 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(13),
                     //border: Border.all(width: 1.5, color: data.current.primaryLight)
-                    color: data.current.primaryLight
+                    color: data.current.primaryLighter
                 ),
                 child: Row(
                   children: [

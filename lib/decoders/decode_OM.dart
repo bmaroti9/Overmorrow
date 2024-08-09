@@ -207,7 +207,6 @@ double oMIconSizeCorrection(String text) {
 
 class OMCurrent {
   final String text;
-  final String backdrop;
   final int temp;
   final int humidity;
   final int feels_like;
@@ -234,9 +233,10 @@ class OMCurrent {
   final Color backup_primary;
   final Color backup_backcolor;
 
+  final Image image;
+
   const OMCurrent({
     required this.precip,
-    required this.backdrop,
     required this.humidity,
     required this.feels_like,
     required this.temp,
@@ -260,9 +260,26 @@ class OMCurrent {
     required this.descColor,
     required this.surfaceVariant,
     required this.onPrimaryLight,
+
+    required this.image,
   });
 
-  static OMCurrent fromJson(item, settings, sunstatus, timenow, palette) {
+  static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow) async {
+
+    // GET IMAGE
+    //Image Uimage = await getUnsplashImage(oMCurrentTextCorrection(
+    //    oMBody["current"]["weather_code"], sunstatus, real_time), real_loc, lat, lng);
+
+    String imagePath = oMBackdropCorrection(
+      oMCurrentTextCorrection(
+          item["current"]["weather_code"], sunstatus, timenow),
+    );
+    Image Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
+      width: double.infinity, height: double.infinity,);
+
+    //GET COLORS
+    List<dynamic> palette = await getImageColors(Uimage, settings["Color mode"], settings);
+
     Color back = BackColorCorrection(
       oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),
@@ -277,15 +294,17 @@ class OMCurrent {
     //List<Color> colors = getColors(primary, back, settings,
     //    ColorPopCorrection( oMCurrentTextCorrection(
     //        item["current"]["weather_code"], sunstatus, timenow),)[
-    //          settings["Color mode"] == "dark" ? 1 : 0
-    //    ]);
+    //         settings["Color mode"] == "dark" ? 1 : 0
+    //]);
 
 
-    List<Color> colors = getNetworkColors(palette[0], settings);
+    List<Color> colors = getNetworkColors(palette, settings);
 
     //List<Color> colors = palette.colors.toList();
 
     return OMCurrent(
+      image: Uimage,
+
       text: translation(oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),
           settings["Language"]),
@@ -306,16 +325,11 @@ class OMCurrent {
       surfaceVariant: colors[9],
       onPrimaryLight: colors[10],
 
-      colorPop: palette[1],
-      descColor: palette[2],
+      colorPop: colors[11],
+      descColor: colors[12],
 
       backup_backcolor: back,
       backup_primary: primary,
-
-      backdrop: oMBackdropCorrection(
-        oMCurrentTextCorrection(
-            item["current"]["weather_code"], sunstatus, timenow),
-      ),
 
       precip: double.parse(unit_coversion(
           item["daily"]["precipitation_sum"][0], settings["Precipitation"])
@@ -633,20 +647,13 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   DateTime localtime = OMGetLocalTime(oMBody);
   String real_time = "jT${localtime.hour}:${localtime.minute}";
 
-  // GET IMAGE
-  Image Uimage = await getUnsplashImage(oMCurrentTextCorrection(
-      oMBody["current"]["weather_code"], sunstatus, real_time), real_loc, lat, lng);
-
-  //GET COLORS
-  List<dynamic> imageColors = await getImageColors(Uimage, settings["Color mode"], settings);
-
   return WeatherData(
     radar: await RainviewerRadar.getData(),
     aqi: await OMAqi.fromJson(oMBody, lat, lng),
     sunstatus: sunstatus,
     minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
 
-    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, imageColors),
+    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time),
     days: days,
 
     lat: lat,
@@ -660,7 +667,5 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
     localtime: real_time.split("T")[1],
-
-    image: Uimage,
     );
 }

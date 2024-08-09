@@ -57,7 +57,7 @@ class WeatherPage extends StatelessWidget {
     //return PhoneLayout(data, updateLocation, context);
 
     return NewMain(data: data, updateLocation: updateLocation, context: context,
-        key: Key("${data.place}, ${data.current.surface} ${data.image}"),);
+        key: Key("${data.place}, ${data.current.surface} ${data.current.image}"),);
 
   }
 }
@@ -749,12 +749,12 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
               borderRadius: BorderRadius.circular(20),
               icon: Padding(
                 padding: const EdgeInsets.only(left:5),
-                child: Icon(Icons.arrow_drop_down_circle, color: primary, size: 20,),
+                child: Icon(Icons.arrow_drop_down_circle_outlined, color: primary, size: 22,),
               ),
               style: GoogleFonts.comfortaa(
                 color: primary,
                 fontSize: 18 * getFontSize(settings["Font size"]),
-                fontWeight: FontWeight.w300,
+                fontWeight: FontWeight.w500,
               ),
               //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
               value: provider.toString(),

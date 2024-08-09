@@ -55,20 +55,36 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
 
   String x = force == "-1" ? settings["Color mode"] : force;
 
-  //0 BACKCOLOR
-  //1 PRIMARY
-  //2 TEXT COLOR
-  //3 COLOR POP
-  //4 SECONDARY
-  //5 HIGHLIGHT
+  //surface
+  //primary
+  //primaryLight
+  //primaryLighter
+  //onSurface
+  //outline
+  //containerLow
+  //container
+  //containerHigh
+  //surfaceVariant
+  //onPrimaryLight
+
+  //colorpop
+  //desc
 
   List<Color> colors = [
     primary,
     back,
     WHITE,
-    [back, WHITE, WHITE][dif],
+    lighten2(back, 0.03),
     WHITE,
-    darken(primary)
+    WHITE,
+    darken(primary, 0.03),
+    darken(primary, 0.06),
+    darken(primary, 0.06),
+    darken(primary, 0.03),
+    WHITE,
+
+    [back, WHITE, WHITE][dif],
+    WHITE
   ];
 
   if (x == "monochrome") {
@@ -78,7 +94,15 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
       WHITE,
       WHITE,
       WHITE,
-      darken(primary)
+      WHITE,
+      darken(primary, 0.03),
+      darken(primary, 0.06),
+      darken(primary, 0.06),
+      darken(primary, 0.03),
+      primary,
+
+      WHITE,
+      WHITE
     ];
   }
 
@@ -87,20 +111,37 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
       back,
       primary,
       WHITE,
-      [back, WHITE, WHITE][dif],
+      lighten2(primary, 0.03),
       WHITE,
-      darken(back)
+      WHITE,
+      darken(back, 0.03),
+      darken(back, 0.06),
+      darken(back, 0.06),
+      darken(back, 0.03),
+      WHITE,
+
+      [back, WHITE, WHITE][dif],
+      WHITE
     ];
   }
 
   else if (x == "light") {
     colors = [ //backcolor, primary, text
-      const Color(0xffeeeeee),
-      primary,
-      BLACK,
       WHITE,
       primary,
-      lighten(lightAccent(primary, 60000), 0.25),
+      lighten(primary, 0.1),
+      lighten(primary, 0.15),
+      Color.fromARGB(250, 30, 30, 30),
+      Color.fromARGB(250, 50, 50, 50),
+      Color.fromARGB(250, 245, 245, 245),
+      Color.fromARGB(250, 230, 230, 230),
+      Color.fromARGB(250, 220, 220, 220),
+      Color.fromARGB(250, 190, 190, 190),
+      primary,
+
+      WHITE,
+      WHITE,
+
     ];
   }
   else if (x == "dark") {
@@ -117,7 +158,7 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
   return colors;
 }
 
-List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
+List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
   String x = force == "-1" ? settings["Color mode"] : force;
 
   //surface
@@ -133,76 +174,91 @@ List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
   //onPrimaryLight
 
   List<Color> colors = [
-    palette.onPrimaryFixedVariant,
-    palette.tertiary,
-    palette.tertiaryFixed,
-    palette.secondaryFixed,
-    palette.onSurface,
-    palette.outline,
-    darken2(palette.onPrimaryFixedVariant, 0.09),
-    darken2(palette.onPrimaryFixedVariant, 0.15),
-    darken2(palette.onPrimaryFixedVariant, 0.2),
-    darken2(palette.onPrimaryFixedVariant, 0.1),
-    palette.onTertiaryFixed,
+    palette[0].onPrimaryFixedVariant,
+    palette[0].primaryFixed,
+    palette[0].tertiaryFixed,
+    palette[0].secondaryFixed,
+    palette[0].onSurface,
+    palette[0].outline,
+    darken2(palette[0].onPrimaryFixedVariant, 0.09),
+    darken2(palette[0].onPrimaryFixedVariant, 0.15),
+    darken2(palette[0].onPrimaryFixedVariant, 0.2),
+    darken2(palette[0].onPrimaryFixedVariant, 0.1),
+    palette[0].onTertiaryFixed,
+
+    palette[1],
+    palette[2],
   ];
   if (x == "monochrome") {
     colors = [
-      palette.onPrimaryFixedVariant,
+      palette[0].onPrimaryFixedVariant,
       WHITE,
       WHITE,
       WHITE,
-      palette.onSurface,
+      palette[0].onSurface,
       WHITE,
-      darken2(palette.onPrimaryFixedVariant, 0.09),
-      darken2(palette.onPrimaryFixedVariant, 0.15),
-      darken2(palette.onPrimaryFixedVariant, 0.2),
-      darken2(palette.onPrimaryFixedVariant, 0.1),
-      palette.onTertiaryFixed,
+      darken2(palette[0].onPrimaryFixedVariant, 0.09),
+      darken2(palette[0].onPrimaryFixedVariant, 0.15),
+      darken2(palette[0].onPrimaryFixedVariant, 0.2),
+      darken2(palette[0].onPrimaryFixedVariant, 0.1),
+      palette[0].onTertiaryFixed,
+
+      palette[1],
+      palette[2],
     ];
   }
   else if (x == "colorful") {
     colors = [
-      palette.onTertiaryFixedVariant,
-      palette.primary,
-      palette.primaryFixed,
-      palette.primaryFixed,
-      palette.onSurface,
-      palette.outline,
-      darken2(palette.onTertiaryFixedVariant, 0.09),
-      darken2(palette.onTertiaryFixedVariant, 0.15),
-      darken2(palette.onTertiaryFixedVariant, 0.2),
-      darken2(palette.onTertiaryFixedVariant, 0.1),
-      palette.onPrimaryFixed,
+      palette[0].onTertiaryFixedVariant,
+      palette[0].tertiaryFixed,
+      palette[0].primaryFixed,
+      palette[0].secondaryFixed,
+      palette[0].onSurface,
+      palette[0].outline,
+      darken2(palette[0].onTertiaryFixedVariant, 0.09),
+      darken2(palette[0].onTertiaryFixedVariant, 0.15),
+      darken2(palette[0].onTertiaryFixedVariant, 0.2),
+      darken2(palette[0].onTertiaryFixedVariant, 0.1),
+      palette[0].onPrimaryFixed,
+
+      palette[1],
+      palette[2],
     ];
   }
   else if (x == "light") {
     colors = [
-      palette.surface,
-      palette.primary,
-      palette.primaryFixedDim,
-      palette.primaryFixed,
-      palette.onSurface,
-      palette.outline,
-      palette.surfaceContainerLow,
-      palette.surfaceContainer,
-      palette.surfaceContainerHigh,
-      palette.surfaceContainerHighest,
-      palette.onPrimaryFixed,
+      palette[0].surface,
+      palette[0].primary,
+      palette[0].primaryFixedDim,
+      palette[0].primaryFixed,
+      palette[0].onSurface,
+      palette[0].outline,
+      palette[0].surfaceContainerLow,
+      palette[0].surfaceContainer,
+      palette[0].surfaceContainerHigh,
+      palette[0].surfaceContainerHighest,
+      palette[0].onPrimaryFixed,
+
+      palette[1],
+      palette[2],
     ];
   }
   else if (x == "dark") {
     colors = [
-      palette.surface,
-      palette.primary,
-      palette.primaryFixed,
-      palette.primaryFixed,
-      palette.onSurface,
-      palette.outline,
-      palette.surfaceContainerLow,
-      palette.surfaceContainer,
-      palette.surfaceContainerHigh,
-      palette.surfaceContainerHighest,
-      palette.onPrimaryFixed,
+      palette[0].surface,
+      palette[0].primary,
+      palette[0].primaryFixed,
+      palette[0].primaryFixed,
+      palette[0].onSurface,
+      palette[0].outline,
+      palette[0].surfaceContainerLow,
+      palette[0].surfaceContainer,
+      palette[0].surfaceContainerHigh,
+      palette[0].surfaceContainerHighest,
+      palette[0].onPrimaryFixed,
+
+      palette[1],
+      palette[2],
     ];
   }
   return colors;
@@ -431,7 +487,7 @@ class _SettingsPageState extends State<SettingsPage> {
 }
 
 Widget SettingsMain(Color primary, Map<String, String>? settings, Function updatePage,
-    Function goBack, Color back, String image, context) {
+    Function goBack, Color back, Image image, context) {
 
   List<Color> colors = getColors(primary, back, settings, 0);
 
@@ -461,7 +517,7 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
 }
 
 Widget settingsMain(Color color, Map<String, String> settings, Function updatePage,
-    Color textcolor, Color secondary, highlight, Color colorpop, String image, Color primary,
+    Color textcolor, Color secondary, highlight, Color colorpop, Image image, Color primary,
     Color back) {
 
   //var entryList = settings.entries.toList();
@@ -529,8 +585,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                                   height: 220,
                                   child: Stack(
                                     children: [
-                                      ParrallaxBackground(image: Image.asset("assets/backdrops/$image",
-                                          fit: BoxFit.fill, width: double.infinity, height: double.infinity,), color: color),
+                                      ParrallaxBackground(image: image, color: color),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 10, bottom: 15),
                                         child: Column(

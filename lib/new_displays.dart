@@ -202,7 +202,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
                     height: 4,
                     width: 4,
                     decoration: BoxDecoration(
-                      color: widget.data.current.primaryLight,
+                      color: widget.data.current.primaryLighter,
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
@@ -214,7 +214,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
                 child: CustomPaint(
                   painter: WavePainter(
                       _controller.value,
-                      widget.data.current.primaryLight,
+                      widget.data.current.primaryLighter,
                       darken(widget.data.current.surfaceVariant, 0.03),
                       progress),
                   child: Container(
@@ -231,13 +231,13 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
                       padding: const EdgeInsets.only(right: 4),
                       child: Icon(
                         Icons.wb_sunny_outlined,
-                        color: widget.data.current.primaryLight,
+                        color: widget.data.current.primaryLighter,
                         size: 14,
                       ),
                     ),
                     comfortatext(
                         widget.data.sunstatus.sunrise, 15, widget.data.settings,
-                        color: widget.data.current.primaryLight,
+                        color: widget.data.current.primaryLighter,
                         weight: FontWeight.w500),
                     const Spacer(),
                     comfortatext(
@@ -265,25 +265,15 @@ Widget NewAirQuality(var data) {
     padding: const EdgeInsets.only(left: 20, right: 20, bottom: 19, top: 23),
     child: Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 6, left: 5),
-          child: Row(
-            children: [
-              comfortatext(
-                  translation('air quality', data.settings["Language"]),
-                  16,
-                  data.settings,
-                  color: data.current.onSurface),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: Icon(
-                  Icons.arrow_forward,
-                  size: 16,
-                  color: data.current.onSurface,
-                ),
-              )
-            ],
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 6, left: 5),
+            child: comfortatext(
+                translation('air quality', data.settings["Language"]),
+                16,
+                data.settings,
+                color: data.current.onSurface),
           ),
         ),
         Row(
@@ -299,7 +289,7 @@ Widget NewAirQuality(var data) {
                 child: Center(
                     child: comfortatext(
                         data.aqi.aqi_index.toString(), 32, data.settings,
-                        color: data.current.primaryLight)),
+                        color: data.current.primaryLighter)),
               ),
             ),
             Expanded(
@@ -312,7 +302,7 @@ Widget NewAirQuality(var data) {
                       data.aqi.aqi_title,
                       20,
                       data.settings,
-                      color: data.current.primaryLight,
+                      color: data.current.primaryLighter,
                       align: TextAlign.left,
                       weight: FontWeight.w600,
                     ),

@@ -60,7 +60,7 @@ class _NewMainState extends State<NewMain> {
       drawer: MyDrawer(primary: data.current.backup_primary,
         back: data.current.backup_backcolor,
         settings: data.settings,
-        image: data.current.backdrop,),
+        image: data.current.image,),
       body: StretchyHeader.listView(
         displacement: 130,
         onRefresh: () async {
@@ -71,7 +71,7 @@ class _NewMainState extends State<NewMain> {
             blurContent: false,
             headerHeight: max(size.height * 0.53, 400),
             //we don't want it to be smaller than 400
-            header: ParrallaxBackground(image: data.image, key: Key(data.place),
+            header: ParrallaxBackground(image: data.current.image, key: Key(data.place),
                 color: data.current.surface == BLACK ? BLACK
                     : lightAccent(data.current.surface, 5000)),
             overlay: Stack(
@@ -99,7 +99,7 @@ class _NewMainState extends State<NewMain> {
                             data.current.text, 32, data.settings,
                             weight: data.settings["Color mode"] == "light"
                                 ? FontWeight.w500
-                                : FontWeight.w600,
+                                : FontWeight.w400,
                             color: data.current.descColor),
                       )
                     ],
@@ -111,7 +111,7 @@ class _NewMainState extends State<NewMain> {
                   controller: controller,
                   settings: data.settings,
                   real_loc: data.real_loc,
-                  secondColor: data.settings["Color mode"] == "light" ? data.current.primary : data.current.primaryLight,
+                  secondColor: data.current.onSurface,
                   textColor: data.settings["Color mode"] == "light" ? data.current.primaryLight : data.current.primary,
                   highlightColor: data.current.container,
                   key: Key("${data.place}, ${data.current.surface}"),
@@ -193,7 +193,7 @@ Widget TabletLayout(data, updateLocation, context) {
   return Scaffold(
     backgroundColor: data.current.surface,
     drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
-        settings: data.settings, image: data.current.backdrop),
+        settings: data.settings, image: data.current.image),
     body: RefreshIndicator(
       onRefresh: () async {
         await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
@@ -224,7 +224,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                 padding: const EdgeInsets.only(top: 100),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
-                                  child: ParrallaxBackground(image: data.current.backdrop, key: Key(data.place),
+                                  child: ParrallaxBackground(image: data.current.image, key: Key(data.place),
                                     color: darken(data.current.surface, 0.1),),
                                 ),
                               ),

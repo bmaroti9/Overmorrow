@@ -161,7 +161,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode, settings) async {
 
   final ColorScheme palette = (await _materialPalette(Uimage, color_mode));
 
-  final List<Color> used_colors = getNetworkColors(palette, settings);
+  final List<Color> used_colors = getNetworkColors([palette, ], settings);
 
   final List<Color> dominant = pali.colors.toList();
 
@@ -359,8 +359,6 @@ class WeatherData {
   final radar;
   final minutely_15_precip;
 
-  final image;
-
   WeatherData({
     required this.place,
     required this.settings,
@@ -375,7 +373,6 @@ class WeatherData {
     required this.current,
     required this.fetch_datetime,
     required this.updatedTime,
-    required this.image,
     required this.localtime,
 
     required this.minutely_15_precip,
