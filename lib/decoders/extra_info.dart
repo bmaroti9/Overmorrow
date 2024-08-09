@@ -90,8 +90,13 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
     for (int x = 0; x < textToUnsplashText.length; x ++) {
       for (int y = 0; y < textToUnsplashText[keys2[x]]!.length; y ++) {
         int reward = keys2[x] == _text ? -3000 : 1000;
+        if (textToUnsplashText[_text]!.contains(textToUnsplashText[keys2[x]]![y])) {
+          if (reward == 1000) {
+            reward = 0;
+          }
+        }
         if (desc.contains(textToUnsplashText[keys2[x]]![y])) {
-          print(("punished", textToUnsplashText[keys2[x]]![y], reward));
+          print(("punished1", textToUnsplashText[keys2[x]]![y], reward));
           unaccuracy += reward; // i had to reverse it
         }
       }
@@ -99,7 +104,7 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
 
     for (int x = 0; x < textFilter.length; x ++) {
       if (desc.contains(keys1[x])) {
-        print(("punished", keys1[x], -textFilter[keys1[x]]!));
+        print(("punished2", keys1[x], -textFilter[keys1[x]]!));
         unaccuracy -= textFilter[keys1[x]]!; // i had to reverse it
       }
     }
@@ -168,7 +173,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode, settings) async {
   int base = (diffBetweenBackColors(dominant) * 0.7).round();
   print(("base", base));
 
-  if (bestDif <= base + 50) {
+  if (bestDif <= base + 80) {
     print("trying");
     for (int i = 1; i < 4; i++) {
       //LIGHT
@@ -190,7 +195,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode, settings) async {
   }
 
   //if the contrast is still low then we need to choose another color
-  if (bestDif <= base + 50) {
+  if (bestDif <= base + 80) {
     print("plan b");
     for (int i = 0; i < dominant.length; i++) {
       Color newcolor = dominant[i];
@@ -209,7 +214,7 @@ Future<dynamic> getImageColors(Image Uimage, color_mode, settings) async {
 
   print(("desc_dif", desc_dif));
 
-  if (desc_dif < 200) {
+  if (desc_dif < base + 40) {
     desc_color = bestcolor;
   }
 

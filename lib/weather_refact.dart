@@ -339,7 +339,7 @@ Map<String, List<String>> textToUnsplashText = {
   'Heavy Snow': ['heavy snow', 'snow', 'snowing', 'snows'],
   'Fog': ['fog', 'mist', 'haze'],
   'Snow': ['snow', 'snowing', 'snows'],
-  'Heavy Rain': ['heavy rain', 'rain', 'drop', 'rainy', 'raining'],
+  'Heavy Rain': ['heavy rain', 'rain', 'drop', 'rainy', 'raining', 'drops'],
   'Cloudy Night' : ['cloudy night', 'night'] //if you specify cloudy then it gives cloudy results
 };
 
@@ -360,6 +360,7 @@ Map<String, int> textFilter = {
   'fabric': -10000,
   'texture': -10000,
   'pattern': -10000,
+  'text': -10000,
   'man': -10000000, //trying to not have people in images
   'male': -1000000,
   'couple': -1000000,

@@ -97,28 +97,25 @@ class _NewMainState extends State<NewMain> {
                         padding: const EdgeInsets.only(left: 0),
                         child: comfortatext(
                             data.current.text, 32, data.settings,
-                            weight: data.settings["Color mode"] == "dark"
-                                ? FontWeight.w600
-                                : FontWeight.w500,
+                            weight: data.settings["Color mode"] == "light"
+                                ? FontWeight.w500
+                                : FontWeight.w600,
                             color: data.current.descColor),
                       )
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.zero,
-                  child: MySearchParent(updateLocation: updateLocation,
-                    color: data.current.surface,
-                    place: data.place,
-                    controller: controller,
-                    settings: data.settings,
-                    real_loc: data.real_loc,
-                    secondColor: data.current.primaryLight,
-                    textColor: data.current.primary,
-                    highlightColor: data.current.container,
-                    key: Key("${data.place}, ${data.current.surface}"),
-                    extraTextColor: data.current.onSurface,),
-                ),
+                MySearchParent(updateLocation: updateLocation,
+                  color: data.current.surface,
+                  place: data.place,
+                  controller: controller,
+                  settings: data.settings,
+                  real_loc: data.real_loc,
+                  secondColor: data.settings["Color mode"] == "light" ? data.current.primary : data.current.primaryLight,
+                  textColor: data.settings["Color mode"] == "light" ? data.current.primaryLight : data.current.primary,
+                  highlightColor: data.current.container,
+                  key: Key("${data.place}, ${data.current.surface}"),
+                  extraTextColor: data.current.onSurface,),
               ],
             )
         ),

@@ -44,7 +44,7 @@ Widget searchBar(Color color, List<String> recommend,
       hint: translation('Search...', settings["Language"]!),
       title: Container(
         padding: const EdgeInsets.only(left: 5, top: 3),
-        child: comfortatext(place, 24, settings, color: textColor, weight: FontWeight.w400)
+        child: comfortatext(place, 24, settings, color: secondColor, weight: FontWeight.w400)
       ),
       hintStyle: GoogleFonts.comfortaa(
         color: extraTextColor,
@@ -112,7 +112,7 @@ Widget searchBar(Color color, List<String> recommend,
           showIfOpened: false,
           showIfClosed: true,
           child: IconButton(
-            icon: Icon(Icons.menu_rounded, color: secondColor, size: 25,),
+            icon: Icon(Icons.menu_rounded, color: textColor, size: 25,),
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
@@ -406,13 +406,13 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
           style: ElevatedButton.styleFrom(
               elevation: 0,
               padding: const EdgeInsets.all(10),
-              backgroundColor: secondColor,
+              backgroundColor: textColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(19)
               )
           ),
           onPressed: () async {},
-          child: Icon(Icons.place_outlined, color: color,),
+          child: Icon(Icons.place_outlined, color: textColor,),
         ),
       ),
     );
@@ -427,7 +427,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
               elevation: 0,
               padding: const EdgeInsets.all(10),
               backgroundColor: color,
-              side: BorderSide(width: 1.7, color: textColor),
+              side: BorderSide(width: 1.7, color: secondColor),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20)
             )
@@ -435,7 +435,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
           onPressed: () async {
             updateLocation('40.7128, 74.0060', 'CurrentLocation');
           },                   //^ this is new york for backup
-          child: Icon(Icons.place_outlined, color: secondColor,),
+          child: Icon(Icons.place_outlined, color: textColor,),
         ),
       ),
     );

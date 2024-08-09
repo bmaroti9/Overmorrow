@@ -157,7 +157,7 @@ List<Color> getNetworkColors(ColorScheme palette, settings, {force = "-1"}) {
       darken2(palette.onPrimaryFixedVariant, 0.15),
       darken2(palette.onPrimaryFixedVariant, 0.2),
       darken2(palette.onPrimaryFixedVariant, 0.1),
-      WHITE
+      palette.onTertiaryFixed,
     ];
   }
   else if (x == "colorful") {

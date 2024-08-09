@@ -238,11 +238,11 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                   checkmarkColor: data.current.onPrimaryLight,
                   color: WidgetStateProperty.resolveWith((states) {
                     if (index == _value) {
-                      return data.current.primaryLight;
+                      return data.current.primaryLighter;
                     }
                     return state ? data.current.containerLow : data.current.surface;
                   }),
-                  side: BorderSide(color: data.current.primaryLight, width: 1.0),
+                  side: BorderSide(color: data.current.primaryLighter, width: 1.0),
                   label: comfortatext(
                       ['temp', 'precip', 'wind', 'uv'][index], 14, data.settings,
                       color: _value == index ? data.current.onPrimaryLight : data.current.onSurface),
