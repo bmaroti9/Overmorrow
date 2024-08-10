@@ -180,7 +180,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
 
   List<Color> colors = [
     palette[0].onPrimaryFixedVariant,
-    palette[0].primaryFixed,
+    palette[0].tertiaryFixed,
     palette[0].tertiaryFixed,
     palette[0].secondaryFixed,
     palette[0].onSurface,
@@ -190,7 +190,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
     darken2(palette[0].onPrimaryFixedVariant, 0.2),
     darken2(palette[0].onPrimaryFixedVariant, 0.1),
     palette[0].onTertiaryFixed,
-    palette[0].primaryFixed,
+    palette[0].tertiaryFixed,
 
     palette[1],
     palette[2],

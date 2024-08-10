@@ -124,6 +124,10 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
             ],
           ),
         ),
+        Visibility(
+            visible: day.mm_precip > 0.1,
+            child: RainWidget(data, day)
+        ),
         Padding(
           padding: const EdgeInsets.only(left: 8, right: 8, top: 20, bottom: 10),
           child: Container(

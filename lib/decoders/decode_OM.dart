@@ -266,18 +266,21 @@ class OMCurrent {
     required this.image,
   });
 
-  static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow) async {
+  static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng) async {
 
-    // GET IMAGE
-    //Image Uimage = await getUnsplashImage(oMCurrentTextCorrection(
-    //    oMBody["current"]["weather_code"], sunstatus, real_time), real_loc, lat, lng);
+    //GET IMAGE
+    Image Uimage = await getUnsplashImage(oMCurrentTextCorrection(
+        item["current"]["weather_code"], sunstatus, timenow), real_loc, lat, lng);
 
+    /*
     String imagePath = oMBackdropCorrection(
       oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),
     );
     Image Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
       width: double.infinity, height: double.infinity,);
+
+     */
 
     Color back = BackColorCorrection(
       oMCurrentTextCorrection(
@@ -291,7 +294,8 @@ class OMCurrent {
 
     List<Color> colors;
 
-    if (settings["Color mode"] == "light" || settings["Color mode"] == "dark") {
+    //if (settings["Color mode"] == "light" || settings["Color mode"] == "dark") {
+    if (true) {
       List<dynamic> palette = await getImageColors(Uimage, settings["Color mode"], settings);
       colors = getNetworkColors(palette, settings);
     }
@@ -658,7 +662,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     sunstatus: sunstatus,
     minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
 
-    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time),
+    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng),
     days: days,
 
     lat: lat,

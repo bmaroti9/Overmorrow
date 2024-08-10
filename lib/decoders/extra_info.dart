@@ -130,7 +130,8 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
   print(index);
   print(unsplash_body[index]["links"]["html"]);
 
-  return Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,);
+  return Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,
+    width: double.infinity, height: double.infinity,);
 }
 
 Future<ColorScheme> MaterialYouColor(String theme) async {
@@ -164,9 +165,10 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
   final List<Color> used_colors = getNetworkColors([palette, BLACK, BLACK], settings);
 
   final List<Color> dominant = pali.colors.toList();
-  Color startcolor = used_colors[2];
+  Color startcolor = settings["Color mode"] == "light" || settings["Color mode"] == "dark"
+      ?used_colors[2] : used_colors[0];
 
-  Color bestcolor = used_colors[2];
+  Color bestcolor = startcolor;
   int bestDif = difFromBackColors(bestcolor, dominant);
 
   int base = (diffBetweenBackColors(dominant) * 0.7).round();
@@ -206,7 +208,8 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
     }
   }
 
-  Color desc_color = used_colors[0];
+  Color desc_color = settings["Color mode"] == "light" || settings["Color mode"] == "dark"
+      ?used_colors[0] : used_colors[1];
   int desc_dif = difFromBackColors(desc_color, dominant);
 
   print(("diffs", bestDif, desc_dif));

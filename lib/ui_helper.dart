@@ -368,98 +368,13 @@ Widget aqiDataPoints(String name, double value, var data) {
   );
 }
 
-Widget WindWidget(data, day) {
-  List<dynamic> hours = day.hourly_for_precip;
-
-  List<double> wind = [];
-
-  for (var i = 0; i < hours.length; i+= 2) {
-    double x = min(round((hours[i].wind + hours[i + 1].wind) * 0.5, decimals: 0) / 2, 10);
-    wind.add(x);
-  }
-
-  return Column(
-    children: [
-      Flex(
-          direction: Axis.horizontal,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, right: 5, bottom: 5, top: 5),
-                child: Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 1.2, color: data.current.secondary)
-                  ),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(18),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: MyChart(wind, data),
-                      )
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 165,
-              width: 55,
-              child: ListView.builder(
-                  reverse: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          comfortatext((index * 10).round().toString(), 17, data.settings),
-                          comfortatext('m/s', 12, data.settings),
-                        ],
-                      ),
-                    );
-                  }
-              ),
-            )
-          ]
-      ),
-      Padding(
-          padding: const EdgeInsets.only(left: 33, top: 0, right: 70, bottom: 15),
-          child: Visibility(
-            visible: data.settings["Time mode"] == "24 hour",
-            replacement: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  comfortatext("3am", 14,data. settings),
-                  comfortatext("9am", 14, data.settings),
-                  comfortatext("3pm", 14, data.settings),
-                  comfortatext("9pm", 14, data.settings),
-                ]
-            ),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  comfortatext("3:00", 14, data.settings),
-                  comfortatext("9:00", 14, data.settings),
-                  comfortatext("15:00", 14, data.settings),
-                  comfortatext("21:00", 14, data.settings),
-                ]
-            ),
-          )
-      )
-    ],
-  );
-}
-
 Widget RainWidget(data, day) {
   List<dynamic> hours = day.hourly_for_precip;
 
   List<double> precip = [];
 
-  for (var i = 0; i < hours.length; i+= 2) {
-    double x = min(round((hours[i].precip + hours[i + 1].precip) * 4, decimals: 0) / 2, 10);
+  for (var i = 0; i < hours.length; i++) {
+    double x = min(round(hours[i].precip * 8, decimals: 0) / 2, 10);
     precip.add(x);
   }
 
@@ -475,7 +390,7 @@ Widget RainWidget(data, day) {
                   height: 150,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 1.2, color: data.current.secondary)
+                      border: Border.all(width: 1.2, color: data.current.primary)
                   ),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(18),
@@ -502,8 +417,8 @@ Widget RainWidget(data, day) {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             comfortatext((index * 0.2).toStringAsFixed(1), 17, data.settings,
-                                color: data.current.secondary),
-                            comfortatext('in', 12, data.settings, color: data.current.secondary),
+                                color: data.current.primary),
+                            comfortatext('in', 12, data.settings, color: data.current.primary),
                           ],
                         ),
                       );
@@ -515,8 +430,8 @@ Widget RainWidget(data, day) {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             comfortatext((index * 5).toString(), 17, data.settings,
-                                color: data.current.secondary),
-                            comfortatext('mm', 12, data.settings, color: data.current.secondary),
+                                color: data.current.primary),
+                            comfortatext('mm', 12, data.settings, color: data.current.primary),
                           ],
                         ),
                       );
@@ -533,19 +448,19 @@ Widget RainWidget(data, day) {
             replacement: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  comfortatext("3am", 14,data. settings, color: data.current.secondary),
-                  comfortatext("9am", 14, data.settings, color: data.current.secondary),
-                  comfortatext("3pm", 14, data.settings, color: data.current.secondary),
-                  comfortatext("9pm", 14, data.settings, color: data.current.secondary),
+                  comfortatext("3am", 14,data. settings, color: data.current.primary),
+                  comfortatext("9am", 14, data.settings, color: data.current.primary),
+                  comfortatext("3pm", 14, data.settings, color: data.current.primary),
+                  comfortatext("9pm", 14, data.settings, color: data.current.primary),
                 ]
             ),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  comfortatext("3:00", 14, data.settings, color: data.current.secondary),
-                  comfortatext("9:00", 14, data.settings, color: data.current.secondary),
-                  comfortatext("15:00", 14, data.settings, color: data.current.secondary),
-                  comfortatext("21:00", 14, data.settings, color: data.current.secondary),
+                  comfortatext("3:00", 14, data.settings, color: data.current.primary),
+                  comfortatext("9:00", 14, data.settings, color: data.current.primary),
+                  comfortatext("15:00", 14, data.settings, color: data.current.primary),
+                  comfortatext("21:00", 14, data.settings, color: data.current.primary),
                 ]
             ),
           )
@@ -578,19 +493,19 @@ class BarChartPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
 
     Paint paint = Paint()
-      ..color = data.current.surface
+      ..color = data.current.primary
       ..style = PaintingStyle.fill;
 
     double maxValue = 10;
     double scaleY = size.height / maxValue;
 
-    int numberOfBars = precip.length; // get rid of the extra precip points
-    double totalWidth = size.width; // Subtract padding
+    int numberOfBars = precip.length;
+    double totalWidth = size.width;
     double barWidth = totalWidth / numberOfBars;
 
     for (int i = 0; i < numberOfBars; i++) {
       double barHeight = precip[i] * scaleY;
-      double x = i * barWidth; // Add half of the remaining padding
+      double x = i * barWidth;
       double y = size.height - barHeight;
 
       double topRadius = 6.0;

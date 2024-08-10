@@ -475,7 +475,8 @@ class dumbySearch extends StatelessWidget {
     List<Color> colors = getColors(primary, back, settings, 0);
 
     return Scaffold(
-      drawer: MyDrawer(primary: primary, settings: settings, back: back, image: "grayscale_snow2.jpg"),
+      drawer: MyDrawer(primary: primary, settings: settings, back: back, image: Image.asset("assets/backdrops/grayscale_snow2.jpg",
+        fit: BoxFit.cover, width: double.infinity, height: double.infinity,)),
       backgroundColor: colors[0],
       body: StretchyHeader.singleChild(
         displacement: 150,

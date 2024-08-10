@@ -327,10 +327,10 @@ Map<String, List<double>> conversionTable = {
 //I am trying to convert conditions to text that unsplash better understands
 //for example: blue sky instead of clear sky tends to help a lot
 Map<String, List<String>> textToUnsplashText = {
-  'Clear Night': ['night', 'clear', 'night'], //somehow just 'night' always gives you clear skies: stars or moon
-  'Partly Cloudy': ['cloudy', 'cloud', 'clouds',], //this is also some simplification which improves a lot
-  'Clear Sky': ['blue sky', 'sunny', 'sun', 'clear',], //it doesn't understand clear as much so i use blue instead
-  'Overcast': ['overcast', 'clouds'],
+  'Clear Night': ['night', 'clear', 'moon'], //somehow just 'night' always gives you clear skies: stars or moon
+  'Partly Cloudy': ['cloudy', 'cloud',], //this is also some simplification which improves a lot
+  'Clear Sky': ['blue sky', 'sunny', 'sun', 'clear', 'cloud'], //it doesn't understand clear as much so i use blue instead
+  'Overcast': ['overcast', 'cloud'],
   'Haze': ['haze', 'fog', 'mist'],
   'Rain': ['rain', 'drop', 'rainy', 'raining', 'drops'],
   'Sleet': ['freezing rain', 'sleet', 'ice'],//this works much better
