@@ -66,6 +66,7 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
   //containerHigh
   //surfaceVariant
   //onPrimaryLight
+  //primarySecond
 
   //colorpop
   //desc
@@ -73,15 +74,16 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
   List<Color> colors = [
     primary,
     back,
+    lighten2(primary, 0.8),
+    darken2(primary, 0.4),
     WHITE,
-    lighten2(back, 0.03),
-    WHITE,
-    WHITE,
+    lighten2(primary, 1),
+    darken(primary, 0.02),
+    darken(primary, 0.04),
+    darken(primary, 0.04),
     darken(primary, 0.03),
-    darken(primary, 0.06),
-    darken(primary, 0.06),
-    darken(primary, 0.03),
-    WHITE,
+    back,
+    back,
 
     [back, WHITE, WHITE][dif],
     WHITE
@@ -100,6 +102,7 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
       darken(primary, 0.06),
       darken(primary, 0.03),
       primary,
+      WHITE,
 
       WHITE,
       WHITE
@@ -110,15 +113,16 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
     colors = [ //default colorful option
       back,
       primary,
+      lighten2(back, 0.8),
+      darken(back, 0.1),
       WHITE,
-      lighten2(primary, 0.03),
-      WHITE,
-      WHITE,
+      lighten2(back, 1),
+      darken(back, 0.02),
+      darken(back, 0.04),
+      darken(back, 0.04),
       darken(back, 0.03),
-      darken(back, 0.06),
-      darken(back, 0.06),
-      darken(back, 0.03),
-      WHITE,
+      primary,
+      primary,
 
       [back, WHITE, WHITE][dif],
       WHITE
@@ -172,6 +176,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
   //containerHigh
   //surfaceVariant
   //onPrimaryLight
+  //primarySecond
 
   List<Color> colors = [
     palette[0].onPrimaryFixedVariant,
@@ -185,6 +190,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
     darken2(palette[0].onPrimaryFixedVariant, 0.2),
     darken2(palette[0].onPrimaryFixedVariant, 0.1),
     palette[0].onTertiaryFixed,
+    palette[0].primaryFixed,
 
     palette[1],
     palette[2],
@@ -202,6 +208,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
       darken2(palette[0].onPrimaryFixedVariant, 0.2),
       darken2(palette[0].onPrimaryFixedVariant, 0.1),
       palette[0].onTertiaryFixed,
+      WHITE,
 
       palette[1],
       palette[2],
@@ -220,6 +227,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
       darken2(palette[0].onTertiaryFixedVariant, 0.2),
       darken2(palette[0].onTertiaryFixedVariant, 0.1),
       palette[0].onPrimaryFixed,
+      palette[0].tertiaryFixed,
 
       palette[1],
       palette[2],
@@ -238,6 +246,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
       palette[0].surfaceContainerHigh,
       palette[0].surfaceContainerHighest,
       palette[0].onPrimaryFixed,
+      palette[0].primaryFixedDim,
 
       palette[1],
       palette[2],
@@ -256,6 +265,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
       palette[0].surfaceContainerHigh,
       palette[0].surfaceContainerHighest,
       palette[0].onPrimaryFixed,
+      palette[0].primaryFixed,
 
       palette[1],
       palette[2],

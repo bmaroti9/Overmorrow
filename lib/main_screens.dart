@@ -111,7 +111,7 @@ class _NewMainState extends State<NewMain> {
                   controller: controller,
                   settings: data.settings,
                   real_loc: data.real_loc,
-                  secondColor: data.current.onSurface,
+                  secondColor: data.settings["Color mode"] == "light" ? data.current.primary : data.current.onSurface,
                   textColor: data.settings["Color mode"] == "light" ? data.current.primaryLight : data.current.primary,
                   highlightColor: data.current.container,
                   key: Key("${data.place}, ${data.current.surface}"),
@@ -141,8 +141,7 @@ class _NewMainState extends State<NewMain> {
           NewSunriseSunset(data: data, key: Key(data.place), size: size,),
           NewRain15MinuteIndicator(data),
           NewAirQuality(data),
-          RadarSmall(
-              data: data, key: Key("${data.place}, ${data.current.surface}")),
+          RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
           buildNewDays(data),
           buildNewGlanceDay(data: data),
 

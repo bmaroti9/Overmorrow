@@ -319,11 +319,11 @@ Widget NewAqiDataPoints(String name, double value, var data) {
           height: 2.5,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: data.current.primaryLighter,
+            color: data.current.primarySecond,
           ),
         ),
       ),
-      comfortatext(value.toString(), 15, data.settings, color: data.current.primaryLighter,
+      comfortatext(value.toString(), 15, data.settings, color: data.current.primarySecond,
           align: TextAlign.end, weight: FontWeight.w600),
     ],
   );

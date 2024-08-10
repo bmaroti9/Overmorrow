@@ -229,6 +229,7 @@ class OMCurrent {
   final Color descColor;
   final Color surfaceVariant;
   final Color onPrimaryLight;
+  final Color primarySecond;
 
   final Color backup_primary;
   final Color backup_backcolor;
@@ -260,6 +261,7 @@ class OMCurrent {
     required this.descColor,
     required this.surfaceVariant,
     required this.onPrimaryLight,
+    required this.primarySecond,
 
     required this.image,
   });
@@ -277,9 +279,6 @@ class OMCurrent {
     Image Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
       width: double.infinity, height: double.infinity,);
 
-    //GET COLORS
-    List<dynamic> palette = await getImageColors(Uimage, settings["Color mode"], settings);
-
     Color back = BackColorCorrection(
       oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),
@@ -290,15 +289,20 @@ class OMCurrent {
           item["current"]["weather_code"], sunstatus, timenow),
     );
 
+    List<Color> colors;
 
-    //List<Color> colors = getColors(primary, back, settings,
-    //    ColorPopCorrection( oMCurrentTextCorrection(
-    //        item["current"]["weather_code"], sunstatus, timenow),)[
-    //         settings["Color mode"] == "dark" ? 1 : 0
-    //]);
+    if (settings["Color mode"] == "light" || settings["Color mode"] == "dark") {
+      List<dynamic> palette = await getImageColors(Uimage, settings["Color mode"], settings);
+      colors = getNetworkColors(palette, settings);
+    }
+    else {
+      colors = getColors(primary, back, settings,
+          ColorPopCorrection( oMCurrentTextCorrection(
+              item["current"]["weather_code"], sunstatus, timenow),)[
+          settings["Color mode"] == "dark" ? 1 : 0
+          ]);
+    }
 
-
-    List<Color> colors = getNetworkColors(palette, settings);
 
     //List<Color> colors = palette.colors.toList();
 
@@ -324,9 +328,10 @@ class OMCurrent {
       containerHigh: colors[8],
       surfaceVariant: colors[9],
       onPrimaryLight: colors[10],
+      primarySecond: colors[11],
 
-      colorPop: colors[11],
-      descColor: colors[12],
+      colorPop: colors[12],
+      descColor: colors[13],
 
       backup_backcolor: back,
       backup_primary: primary,

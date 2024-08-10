@@ -152,7 +152,7 @@ Future<ColorScheme> MaterialYouColor(String theme) async {
   return palette;
 }
 
-Future<dynamic> getImageColors(Image Uimage, color_mode, settings) async {
+Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
   final PaletteGenerator pali = await _generatorPalette(Uimage);
 
   //var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
@@ -161,10 +161,9 @@ Future<dynamic> getImageColors(Image Uimage, color_mode, settings) async {
 
   final ColorScheme palette = (await _materialPalette(Uimage, color_mode));
 
-  final List<Color> used_colors = getNetworkColors([palette, ], settings);
+  final List<Color> used_colors = getNetworkColors([palette, BLACK, BLACK], settings);
 
   final List<Color> dominant = pali.colors.toList();
-
   Color startcolor = used_colors[2];
 
   Color bestcolor = used_colors[2];
