@@ -174,21 +174,21 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
   int base = (diffBetweenBackColors(dominant) * 0.7).round();
   print(("base", base));
 
-  if (bestDif <= base + 80) {
+  if (bestDif <= base + 120) {
     print("trying");
     for (int i = 1; i < 4; i++) {
       //LIGHT
-      Color newcolor = lighten(startcolor, i / 20);
+      Color newcolor = lighten2(startcolor, i / 9);
       int newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < base + 150) {
+      if (newdif > bestDif && newdif < base + 200) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
 
       //DARK
-      newcolor = darken(startcolor, i / 20);
+      newcolor = darken2(startcolor, i / 7);
       newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < base + 150) {
+      if (newdif > bestDif && newdif < base + 200) {
         bestDif = newdif;
         bestcolor = newcolor;
       }
@@ -196,15 +196,14 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
   }
 
   //if the contrast is still low then we need to choose another color
-  if (bestDif <= base + 80) {
+  if (bestDif <= base + 120) {
     print("plan b");
-    for (int i = 0; i < dominant.length; i++) {
-      Color newcolor = dominant[i];
-      int newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < base + 250) {
-        bestDif = newdif;
-        bestcolor = newcolor;
-      }
+    Color newcolor = settings["Color mode"] == "light" || settings["Color mode"] == "dark"
+        ?used_colors[0] : used_colors[2];
+    int newdif = difFromBackColors(newcolor, dominant);
+    if (newdif > bestDif && newdif < base + 250) {
+      bestDif = newdif;
+      bestcolor = newcolor;
     }
   }
 
@@ -216,7 +215,7 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
 
   print(("desc_dif", desc_dif));
 
-  if (desc_dif < base + 40) {
+  if (desc_dif < base + 100) {
     desc_color = bestcolor;
   }
 
@@ -320,14 +319,13 @@ Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
   return _paletteGenerator;
 }
 
-
 Future<ColorScheme> _materialPalette(Image imageWidget, theme) async {
   final ImageProvider imageProvider = imageWidget.image;
 
   return ColorScheme.fromImageProvider(
     provider: imageProvider,
     brightness: theme == 'light' ? Brightness.light : Brightness.dark,
-    dynamicSchemeVariant: theme == 'o' || theme == 'm' ? DynamicSchemeVariant.fruitSalad :
+    dynamicSchemeVariant: theme == 'light' || theme == 'dark' ? DynamicSchemeVariant.tonalSpot :
     DynamicSchemeVariant.tonalSpot,
   );
 }

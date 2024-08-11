@@ -311,7 +311,7 @@ Widget NewAqiDataPoints(String name, double value, var data) {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       comfortatext(name, 15, data.settings, color: data.current.primary,
-      align: TextAlign.end),
+      align: TextAlign.end, weight: FontWeight.w500),
       Padding(
         padding: const EdgeInsets.all(3.0),
         child: Container(
@@ -368,117 +368,77 @@ Widget aqiDataPoints(String name, double value, var data) {
   );
 }
 
-Widget RainWidget(data, day) {
+Widget RainWidget(data, day, highlight) {
   List<dynamic> hours = day.hourly_for_precip;
 
   List<double> precip = [];
 
   for (var i = 0; i < hours.length; i++) {
-    double x = min(round(hours[i].precip * 8, decimals: 0) / 2, 10);
+    double x = min(hours[i].precip, 10);
     precip.add(x);
   }
 
-  return Column(
-    children: [
-      Flex(
-          direction: Axis.horizontal,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, right: 5, bottom: 5, top: 5),
-                child: Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 1.2, color: data.current.primary)
-                  ),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(18),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: MyChart(precip, data),
-                      )
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 165,
-              width: 55,
-              child: ListView.builder(
-                  reverse: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    if (data.settings["Precipitation"] == 'in') {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            comfortatext((index * 0.2).toStringAsFixed(1), 17, data.settings,
-                                color: data.current.primary),
-                            comfortatext('in', 12, data.settings, color: data.current.primary),
-                          ],
-                        ),
-                      );
-                    }
-                    else {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            comfortatext((index * 5).toString(), 17, data.settings,
-                                color: data.current.primary),
-                            comfortatext('mm', 12, data.settings, color: data.current.primary),
-                          ],
-                        ),
-                      );
-                    }
-                  }
-              ),
-            )
-          ]
+  return Padding(
+    padding: const EdgeInsets.only(left: 14, right: 14, top: 15),
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18),
+        //color: data.current.containerLow,
+        border: data.settings["Color mode"] == "dark" || data.settings["Color mode"] == "light"
+          ? Border.all(width: 3, color: highlight)
+          : Border.all(width: 1.6, color: data.current.primaryLight)
+
       ),
-      Padding(
-          padding: const EdgeInsets.only(left: 33, top: 0, right: 70, bottom: 15),
-          child: Visibility(
-            visible: data.settings["Time mode"] == "24 hour",
-            replacement: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  comfortatext("3am", 14,data. settings, color: data.current.primary),
-                  comfortatext("9am", 14, data.settings, color: data.current.primary),
-                  comfortatext("3pm", 14, data.settings, color: data.current.primary),
-                  comfortatext("9pm", 14, data.settings, color: data.current.primary),
-                ]
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 14, right: 18, left: 18),
+              child: AspectRatio(
+                aspectRatio: 2.2,
+                child: MyChart(precip, data, highlight)
+              ),
             ),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  comfortatext("3:00", 14, data.settings, color: data.current.primary),
-                  comfortatext("9:00", 14, data.settings, color: data.current.primary),
-                  comfortatext("15:00", 14, data.settings, color: data.current.primary),
-                  comfortatext("21:00", 14, data.settings, color: data.current.primary),
-                ]
-            ),
-          )
-      )
-    ],
+            Padding(
+                padding: const EdgeInsets.only(top: 12, bottom: 14),
+                child: Visibility(
+                  visible: data.settings["Time mode"] == "24 hour",
+                  replacement: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        comfortatext("3am", 14,data. settings, color: data.current.outline),
+                        comfortatext("9am", 14, data.settings, color: data.current.outline),
+                        comfortatext("3pm", 14, data.settings, color: data.current.outline),
+                        comfortatext("9pm", 14, data.settings, color: data.current.outline),
+                      ]
+                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        comfortatext("3:00", 14, data.settings, color: data.current.outline),
+                        comfortatext("9:00", 14, data.settings, color: data.current.outline),
+                        comfortatext("15:00", 14, data.settings, color: data.current.outline),
+                        comfortatext("21:00", 14, data.settings, color: data.current.outline),
+                      ]
+                  ),
+                )
+            )
+          ],
+        ),
+    ),
   );
 }
 
 class MyChart extends StatelessWidget {
   final List<double> precip; // Sample data for the chart
   final data;
+  final highlight;
 
-  const MyChart(this.precip, this.data, {super.key});
+  const MyChart(this.precip, this.data, this.highlight, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: BarChartPainter(precip, data),
+      painter: BarChartPainter(precip, data, highlight),
     );
   }
 }
@@ -486,39 +446,70 @@ class MyChart extends StatelessWidget {
 class BarChartPainter extends CustomPainter {
   final List<double> precip;
   final data;
+  final highlight;
 
-  BarChartPainter(this.precip, this.data);
+  BarChartPainter(this.precip, this.data, this.highlight);
 
   @override
   void paint(Canvas canvas, Size size) {
 
-    Paint paint = Paint()
-      ..color = data.current.primary
+    Paint circle_paint = Paint()
+      ..color = data.current.primaryLight
       ..style = PaintingStyle.fill;
 
-    double maxValue = 10;
-    double scaleY = size.height / maxValue;
+    Paint circle_paint2 = Paint()
+      ..color = highlight
+      ..style = PaintingStyle.fill;
 
     int numberOfBars = precip.length;
     double totalWidth = size.width;
     double barWidth = totalWidth / numberOfBars;
 
     for (int i = 0; i < numberOfBars; i++) {
-      double barHeight = precip[i] * scaleY;
       double x = i * barWidth;
-      double y = size.height - barHeight;
 
-      double topRadius = 6.0;
+      int circles = 10;
+      double y_dis = size.height / circles;
+      double start = size.height - barWidth * 0.5;
 
-      RRect roundedRect = RRect.fromLTRBR(
-        x + barWidth * 0.1,
-        y,
-        x + barWidth * 0.9,
-        size.height,
-        Radius.circular(topRadius),
-      );
+      int smallerThan = (precip[i] * 2).round();
 
-      canvas.drawRRect(roundedRect, paint);
+      print((precip[i], smallerThan));
+      if (smallerThan == 0 && precip[i] > 0) {
+        smallerThan = 1;
+      }
+
+      for (int i = 1; i < 21; i++) {
+        if (i <= smallerThan) {
+          canvas.drawArc(
+            Rect.fromCenter(
+              center: Offset(x + barWidth * 0.5, start),
+              height: barWidth * 0.8,
+              width: barWidth * 0.8,
+            ),
+            i % 2 == 0 ? pi : pi * 2,
+            pi,
+            false,
+            circle_paint,
+          );
+        }
+        else {
+          canvas.drawArc(
+            Rect.fromCenter(
+              center: Offset(x + barWidth * 0.5, start),
+              height: barWidth * 0.8,
+              width: barWidth * 0.8,
+            ),
+            i % 2 == 0 ? pi : pi * 2,
+            pi,
+            false,
+            circle_paint2,
+          );
+          //canvas.drawCircle(Offset(x + barWidth * 0.5, start), barWidth * 0.4, circle_paint2);
+        }
+
+        start -= i % 2 == 1 ? 0 : y_dis;
+      }
     }
   }
 

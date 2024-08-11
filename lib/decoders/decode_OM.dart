@@ -98,7 +98,7 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
     "longitude": lng.toString(),
     "minutely_15" : ["precipitation"],
     "current": ["temperature_2m", "relative_humidity_2m", "apparent_temperature", "weather_code", "wind_speed_10m", 'wind_direction_10m'],
-    "hourly": ["temperature_2m", "precipitation", "weather_code", "wind_speed_10m", "wind_direction_10m", "uv_index"],
+    "hourly": ["temperature_2m", "precipitation", "weather_code", "wind_speed_10m", "wind_direction_10m", "uv_index", "precipitation_probability"],
     "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "uv_index_max", "precipitation_sum", "precipitation_probability_max", "wind_speed_10m_max", "wind_direction_10m_dominant", "sunrise", "sunset"],
     "timezone": "auto",
     "forecast_days": "14",
@@ -515,6 +515,7 @@ class OMHour {
   final String time;
   final String text;
   final double precip;
+  final int precip_prob;
   final double wind;
   final int wind_dir;
   final int uv;
@@ -536,6 +537,7 @@ class OMHour {
     required this.raw_wind,
     required this.wind_dir,
     required this.uv,
+    required this.precip_prob,
   });
 
   static OMHour fromJson(item, index, settings, sunstatus) => OMHour(
@@ -549,6 +551,7 @@ class OMHour {
     time: settings["Time mode"] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
 
     precip: unit_coversion(item["hourly"]["precipitation"][index], settings["Precipitation"]),
+    precip_prob: item["hourly"]["precipitation_probability"][index],
     wind: double.parse(
         unit_coversion(item["hourly"]["wind_speed_10m"][index], settings["Wind"]).toStringAsFixed(1)),
     wind_dir: item["hourly"]["wind_direction_10m"][index],

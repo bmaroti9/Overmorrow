@@ -126,10 +126,10 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
         ),
         Visibility(
             visible: day.mm_precip > 0.1,
-            child: RainWidget(data, day)
+            child: RainWidget(data, day, highlight)
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 8, right: 8, top: 20, bottom: 10),
+          padding: const EdgeInsets.only(left: 8, right: 8, top: 15, bottom: 10),
           child: Container(
             height: 85,
             padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
@@ -263,7 +263,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
           ),
         ),
         SizedBox(
-          height: 250,
+          height: state? 280 : 250,
           child: PageView(
             controller: _pageController,
             children: <Widget>[
@@ -587,18 +587,23 @@ Widget buildPrecip(List<dynamic> hours, data, Color highlight) => ListView(
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            padding: const EdgeInsets.only(top: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 comfortatext('${hour.precip}', 18, data.settings, color: data.current.primary,
                     weight: FontWeight.w500),
                 comfortatext('${data.settings["Precipitation"]}', 9, data.settings, color: data.current.primary),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: comfortatext('${hour.precip_prob}%', 14, data.settings, color: data.current.primaryLight,
+                  weight: FontWeight.w600),
+                ),
               ],
             ),
           ),
           SizedBox(
-            height: 101,
+            height: 99,
             width: 15.5,
             child: GridView.builder(
                 padding: EdgeInsets.zero,
@@ -606,7 +611,7 @@ Widget buildPrecip(List<dynamic> hours, data, Color highlight) => ListView(
                   crossAxisCount: 2,
                 ),
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: 26,
+                itemCount: 24,
                 reverse: true,
                 itemBuilder: (BuildContext context, int index) {
                   double prec = hour.precip > 0 ? 1 : 0;
@@ -637,7 +642,7 @@ Widget buildPrecip(List<dynamic> hours, data, Color highlight) => ListView(
             ),
           ),
           Padding(
-              padding: const EdgeInsets.only(top: 12, left: 3, right: 3),
+              padding: const EdgeInsets.only(top: 5, left: 3, right: 3),
               child: SizedBox(
                 height: 30,
                 child: Icon(
@@ -719,7 +724,8 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
                 return Padding(
                   padding: const EdgeInsets.only(top: 3, bottom: 3),
                   child: AnimatedContainer(
-                    height: expand[index] ? 528.0 : 73.0,
+                    height: expand[index] ? (day.mm_precip > 0.1
+                        ? (MediaQuery.of(context).size.width - 112) / 2.2 + 610: 528.0) : 73.0,
                     duration: const Duration(milliseconds:250),
                     child: SingleChildScrollView(
                       physics: const NeverScrollableScrollPhysics(),

@@ -389,7 +389,7 @@ Widget buildHihiDays(var data) => ListView.builder(
                             ),
                             Visibility(
                               visible: day.mm_precip > 0.1,
-                              child: RainWidget(data, day)
+                              child: RainWidget(data, day, data.current.container)
                             ),
                           ],
                         ),
@@ -651,7 +651,7 @@ Widget buildGlanceDay(var data) => Padding(
                         visible: day.mm_precip > rain_limit,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 5),
-                          child: RainWidget(data, day),
+                          child: RainWidget(data, day, data.current.container),
                         )
                     ),
                   ],

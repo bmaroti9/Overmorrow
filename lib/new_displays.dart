@@ -310,7 +310,7 @@ Widget NewAirQuality(var data) {
                   Padding(
                     padding: const EdgeInsets.all(3.0),
                     child: comfortatext(data.aqi.aqi_desc, 14, data.settings,
-                        color: data.current.onSurface, weight: FontWeight.w400),
+                        color: data.current.primary, weight: FontWeight.w500),
                   ),
                 ],
               ),
