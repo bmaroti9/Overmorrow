@@ -379,7 +379,7 @@ Widget RainWidget(data, day, highlight) {
   }
 
   return Padding(
-    padding: const EdgeInsets.only(left: 14, right: 14, top: 15),
+    padding: const EdgeInsets.only(left: 13, right: 13, top: 15),
     child: Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),

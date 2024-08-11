@@ -399,7 +399,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
     Color secondColor, Color textColor) {
   if (real_loc == 'CurrentLocation') {
     return Padding(
-      padding: const EdgeInsets.only(right: 6.5, top: 4, bottom: 4),
+      padding: const EdgeInsets.only(right: 7, top: 4.5, bottom: 4.5),
       child: AspectRatio(
         aspectRatio: 1,
         child: ElevatedButton(
@@ -412,7 +412,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
               )
           ),
           onPressed: () async {},
-          child: Icon(Icons.place_outlined, color: textColor,),
+          child: Icon(Icons.place_outlined, color: color,),
         ),
       ),
     );

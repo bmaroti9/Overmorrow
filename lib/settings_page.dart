@@ -23,6 +23,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/donation_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'decoders/decode_wapi.dart';
+import 'decoders/extra_info.dart';
 import 'languages.dart';
 import 'main.dart';
 import 'main_ui.dart';
@@ -148,6 +149,7 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
 
     ];
   }
+
   else if (x == "dark") {
     colors = [ //backcolor, primary, text
       BLACK,
@@ -186,7 +188,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
     palette[0].secondaryFixed,
     palette[0].outline,
     darken2(palette[0].onPrimaryFixedVariant, 0.09),
-    darken2(palette[0].onPrimaryFixedVariant, 0.15),
+    darken2(palette[0].onPrimaryFixedVariant, 0.12),
     darken2(palette[0].onPrimaryFixedVariant, 0.2),
     darken2(palette[0].onPrimaryFixedVariant, 0.1),
     palette[0].onTertiaryFixed,
@@ -204,7 +206,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
       palette[0].onSurface,
       WHITE,
       darken2(palette[0].onPrimaryFixedVariant, 0.09),
-      darken2(palette[0].onPrimaryFixedVariant, 0.15),
+      darken2(palette[0].onPrimaryFixedVariant, 0.12),
       darken2(palette[0].onPrimaryFixedVariant, 0.2),
       darken2(palette[0].onPrimaryFixedVariant, 0.1),
       palette[0].onTertiaryFixed,
@@ -223,7 +225,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
       palette[0].onSurface,
       palette[0].outline,
       darken2(palette[0].onTertiaryFixedVariant, 0.09),
-      darken2(palette[0].onTertiaryFixedVariant, 0.15),
+      darken2(palette[0].onTertiaryFixedVariant, 0.12),
       darken2(palette[0].onTertiaryFixedVariant, 0.2),
       darken2(palette[0].onTertiaryFixedVariant, 0.1),
       palette[0].onPrimaryFixed,
@@ -274,6 +276,39 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
   return colors;
 }
 
+Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
+  List<Color> colors;
+  List<List<Color>> allColor = [];
+
+  List<dynamic> palette = await getImageColors(image, settings["Color mode"], settings);
+
+  if (settings["Color mode"] == "light" || settings["Color mode"] == "dark") {
+  //if (true) {
+    colors = getNetworkColors(palette, settings);
+
+    allColor.add(getNetworkColors(palette, settings, force: "original"));
+    allColor.add(getNetworkColors(palette, settings, force: "colorful"));
+    allColor.add(getNetworkColors(palette, settings, force: "monochrome"));
+    allColor.add(getNetworkColors(palette, settings, force: "light"));
+    allColor.add(getNetworkColors(palette, settings, force: "dark"));
+  }
+  else {
+    colors = getColors(primary, back, settings, 0);
+
+    allColor.add(getColors(primary, back, settings, 0, force: "original"));
+    allColor.add(getColors(primary, back, settings, 0, force: "colorful"));
+    allColor.add(getColors(primary, back, settings, 0, force: "dark"));
+    allColor.add(getNetworkColors(palette, settings, force: "light")); //because the light and dark use the
+    allColor.add(getNetworkColors(palette, settings, force: "dark")); // material palette generator anyway
+  }
+  return [colors, allColor];
+}
+
+Future<List<dynamic>> getSettingsAndColors(primary, back, image) async {
+  Map<String, String> settings = await getSettingsUsed();
+  List<dynamic> colors = await getTotalColor(settings, primary, back, image);
+  return [settings, colors];
+}
 
 Future<Map<String, String>> getSettingsUsed() async {
   Map<String, String> settings = {};
@@ -362,14 +397,15 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
     }
   );
 }
-Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primary) {
+
+Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primaryLight, primary) {
   return Padding(
     padding: const EdgeInsets.only(top: 3, bottom: 3),
     child: Row(
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 20),
-          child: Icon(icon, color: textcolor),
+          child: Icon(icon, color: primary),
         ),
         Expanded(
           flex: 10,
@@ -382,7 +418,7 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
         ),
         const Spacer(),
         dropdown(
-            darken(highlight), text, updatePage, settings[text]!, settings, textcolor, primary
+            darken(highlight), text, updatePage, settings[text]!, settings, textcolor, primaryLight
         ),
       ],
     ),
@@ -401,9 +437,7 @@ Widget NavButton(text, settings, textcolor, icon) {
   );
 }
 
-Widget ColorCircle(name, primary, back, settings, updatePage, {w = 2, tap = 0}) {
-
-  List<Color> colors = getColors(primary, back, settings, 0, force: name);
+Widget ColorCircle(name, outline, inside, settings, updatePage, {w = 2, tap = 0}) {
 
   return Expanded(
     child: GestureDetector(
@@ -424,10 +458,10 @@ Widget ColorCircle(name, primary, back, settings, updatePage, {w = 2, tap = 0}) 
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(200),
-                  border: Border.all(width: w * 1.0, color: colors[1]),
-                  color: colors[0]
+                  border: Border.all(width: w * 1.0, color: outline),
+                  color: inside
                 ),
-                child: tap == 1 ? Center(child: comfortatext(name[0], 20, settings, color: colors[2]))
+                child: tap == 1 ? Center(child: comfortatext(name[0], 20, settings, color: outline))
                 : Container(),
               ),
             ),
@@ -478,31 +512,30 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, String>>(
-      future: getSettingsUsed(),
+    return FutureBuilder<List<dynamic>>(
+      future: getSettingsAndColors(primary, back, image),
       builder: (BuildContext context,
-          AsyncSnapshot<Map<String, String>> snapshot) {
+          AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Container();
         } else if (snapshot.hasError) {
-          print(snapshot.error);
+          print((snapshot.error, snapshot.stackTrace));
           return Center(
             child: ErrorWidget(snapshot.error as Object),
           );
         }
-        return SettingsMain(primary, snapshot.data, updatePage, goBack, back, image, context);
+        return SettingsMain(primary, snapshot.data?[0], updatePage, goBack, back, image, context,
+            snapshot.data?[1][0], snapshot.data?[1][1]);
       },
     );
   }
 }
 
 Widget SettingsMain(Color primary, Map<String, String>? settings, Function updatePage,
-    Function goBack, Color back, Image image, context) {
-
-  List<Color> colors = getColors(primary, back, settings, 0);
+    Function goBack, Color back, Image image, context, colors, allColors) {
 
   return  Material(
-    color: colors[5],
+    color: colors[6],
     child: CustomScrollView(
       slivers: <Widget>[
         SliverAppBar.large(
@@ -511,14 +544,14 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
             goBack();
           }),
           title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[2]),
-          backgroundColor: colors[5],
+          backgroundColor: colors[6],
           pinned: false,
         ),
         // Just some content big enough to have something to scroll.
         SliverToBoxAdapter(
           child: Container(
-            color: colors[0],
-            child: settingsMain(colors[0], settings, updatePage, colors[2], colors[4], colors[5], colors[3], image, primary, back),
+            color: colors[6],
+            child: settingsMain(settings, updatePage, image, colors, allColors),
           ),
         ),
       ],
@@ -526,14 +559,21 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
   );
 }
 
-Widget settingsMain(Color color, Map<String, String> settings, Function updatePage,
-    Color textcolor, Color secondary, highlight, Color colorpop, Image image, Color primary,
-    Color back) {
+Widget settingsMain(Map<String, String> settings, Function updatePage, Image image, List<Color> colors,
+    allColors) {
+
+  Color containerLow = colors[6];
+  Color onSurface = colors[4];
+  Color primary = colors[1];
+  Color primaryLight = colors[2];
+  Color surface = colors[0];
+  Color colorpop = colors[12];
+
 
   //var entryList = settings.entries.toList();
   return Container(
     padding: const EdgeInsets.only(left: 20, right: 15),
-    color: highlight,
+    color: containerLow,
     child: SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Center(
@@ -560,15 +600,15 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 20),
-                        child: Icon(CupertinoIcons.circle_lefthalf_fill, color: textcolor, ),
+                        child: Icon(CupertinoIcons.circle_lefthalf_fill, color: primary, ),
                       ),
                       Expanded(
                         flex: 10,
                         child: comfortatext(translation('Color mode', settings["Language"]!), 20, settings,
-                        color: textcolor),
+                        color: onSurface),
                       ),
                       const Spacer(),
-                      comfortatext(settings["Color mode"]!, 20, settings, color: textcolor)
+                      comfortatext(settings["Color mode"]!, 20, settings, color: primaryLight)
                     ],
                   ),
                 ),
@@ -585,7 +625,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                             borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(20),
                                 topRight: Radius.circular(20)),
-                            color: color,
+                            color: surface,
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
@@ -595,7 +635,7 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                                   height: 220,
                                   child: Stack(
                                     children: [
-                                      ParrallaxBackground(image: image, color: color),
+                                      ParrallaxBackground(image: image, color: surface),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 10, bottom: 15),
                                         child: Column(
@@ -616,10 +656,11 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
-                                      ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
-                                      ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
-                                      ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
+                                      //ColorCircle(settings["Color mode"], primary, surface, settings, updatePage),
+                                      ColorCircle("", primary, surface, settings, updatePage),
+                                      ColorCircle("", primary, surface, settings, updatePage),
+                                      ColorCircle("", primary, surface, settings, updatePage),
+                                      ColorCircle("", primary, surface, settings, updatePage)
                                     ],
                                   ),
                                 )
@@ -645,11 +686,11 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                         child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              ColorCircle("original", primary, back, settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("colorful", primary, back, settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("monochrome", primary, back, settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("light", primary, back, settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("dark", primary, back, settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("original", primary, surface, settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("colorful", primary, surface, settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("monochrome", primary, surface, settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("light", primary, surface, settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("dark", primary, surface, settings, updatePage, w: 4, tap: 1),
                             ]
                         ),
                       ),
@@ -657,35 +698,35 @@ Widget settingsMain(Color color, Map<String, String> settings, Function updatePa
                   ),
                 ),
 
-                settingEntry(CupertinoIcons.globe, "Language", settings, highlight, updatePage,
-                    textcolor, secondary),
-                settingEntry(Icons.access_time_filled_sharp, "Time mode", settings, highlight, updatePage,
-                    textcolor, secondary),
-                settingEntry(CupertinoIcons.textformat_size, "Font size", settings, highlight, updatePage,
-                    textcolor, secondary),
+                settingEntry(CupertinoIcons.globe, "Language", settings, containerLow, updatePage,
+                    onSurface, primaryLight, primary),
+                settingEntry(Icons.access_time_filled_sharp, "Time mode", settings, onSurface, updatePage,
+                    onSurface, primaryLight, primary),
+                settingEntry(CupertinoIcons.textformat_size, "Font size", settings, onSurface, updatePage,
+                    onSurface, primaryLight, primary),
 
-                settingEntry(Icons.manage_search_outlined, "Search provider", settings, highlight, updatePage,
-                    textcolor, secondary),
+                settingEntry(Icons.manage_search_outlined, "Search provider", settings, onSurface, updatePage,
+                    onSurface, primaryLight, primary),
 
                 Padding(
                   padding: const EdgeInsets.only(top: 20, bottom: 20, left: 12, right: 12),
                   child: Container(
                     height: 2,
                     decoration: BoxDecoration(
-                        color: secondary,
+                        color: primaryLight,
                         borderRadius: BorderRadius.circular(2)
                     ),
                   ),
                 ),
 
-                settingEntry(CupertinoIcons.thermometer, "Temperature", settings, highlight, updatePage,
-                    textcolor, secondary),
-                settingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, highlight, updatePage,
-                    textcolor, secondary),
-                settingEntry(CupertinoIcons.wind, "Wind", settings, highlight, updatePage,
-                    textcolor, secondary),
-                settingEntry(CupertinoIcons.timelapse, "Pressure", settings, highlight, updatePage,
-                    textcolor, secondary),
+                settingEntry(CupertinoIcons.thermometer, "Temperature", settings, onSurface, updatePage,
+                    onSurface, primaryLight, primary),
+                settingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, onSurface, updatePage,
+                    onSurface, primaryLight, primary),
+                settingEntry(CupertinoIcons.wind, "Wind", settings, onSurface, updatePage,
+                    onSurface, primaryLight, primary),
+                settingEntry(CupertinoIcons.timelapse, "Pressure", settings, onSurface, updatePage,
+                    onSurface, primaryLight, primary),
 
                 const SizedBox(
                   height: 40,

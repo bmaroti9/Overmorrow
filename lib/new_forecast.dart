@@ -112,12 +112,12 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                 padding: const EdgeInsets.only(top: 4),
                 child: Row(
                   children: [
-                    comfortatext(day.minmaxtemp.split("/")[0], 19, data.settings, color: data.current.primary),
+                    comfortatext(day.minmaxtemp.split("/")[0], 20, data.settings, color: data.current.primary),
                     Padding(
                       padding: const EdgeInsets.only(left: 5, right: 4),
                       child: comfortatext("/", 19, data.settings, color: data.current.onSurface),
                     ),
-                    comfortatext(day.minmaxtemp.split("/")[1], 19, data.settings, color: data.current.primary),
+                    comfortatext(day.minmaxtemp.split("/")[1], 20, data.settings, color: data.current.primary),
                   ],
                 ),
               )
@@ -725,7 +725,7 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
                   padding: const EdgeInsets.only(top: 3, bottom: 3),
                   child: AnimatedContainer(
                     height: expand[index] ? (day.mm_precip > 0.1
-                        ? (MediaQuery.of(context).size.width - 112) / 2.2 + 610: 528.0) : 73.0,
+                        ? (MediaQuery.of(context).size.width - 110) / 2.2 + 610: 528.0) : 73.0,
                     duration: const Duration(milliseconds:250),
                     child: SingleChildScrollView(
                       physics: const NeverScrollableScrollPhysics(),
