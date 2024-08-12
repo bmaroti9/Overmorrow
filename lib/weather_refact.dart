@@ -360,6 +360,7 @@ Map<String, int> textFilter = {
   'fabric': -10000,
   'texture': -10000,
   'pattern': -10000,
+  'wall' : -10000,
   'text': -10000,
   'man': -10000000, //trying to not have people in images
   'male': -1000000,

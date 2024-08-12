@@ -280,26 +280,31 @@ Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
   List<Color> colors;
   List<List<Color>> allColor = [];
 
-  List<dynamic> palette = await getImageColors(image, settings["Color mode"], settings);
+  final String mode = settings["Color mode"];
 
-  if (settings["Color mode"] == "light" || settings["Color mode"] == "dark") {
-  //if (true) {
-    colors = getNetworkColors(palette, settings);
+  List<dynamic> lightPalette = await getImageColors(image, "light" , settings);
+  List<dynamic> darkPalette = await getImageColors(image, "dark" , settings);
 
-    allColor.add(getNetworkColors(palette, settings, force: "original"));
-    allColor.add(getNetworkColors(palette, settings, force: "colorful"));
-    allColor.add(getNetworkColors(palette, settings, force: "monochrome"));
-    allColor.add(getNetworkColors(palette, settings, force: "light"));
-    allColor.add(getNetworkColors(palette, settings, force: "dark"));
+  allColor.add(getNetworkColors(darkPalette, settings, force: "original"));
+  allColor.add(getNetworkColors(darkPalette, settings, force: "colorful"));
+  allColor.add(getNetworkColors(darkPalette, settings, force: "monochrome"));
+  allColor.add(getNetworkColors(lightPalette, settings, force: "light"));
+  allColor.add(getNetworkColors(darkPalette, settings, force: "dark"));
+
+  //if (mode == "light" || mode == "dark") {
+  if (true) {
+    colors = getNetworkColors(mode == "light" ? lightPalette : darkPalette ,settings);
   }
   else {
     colors = getColors(primary, back, settings, 0);
 
+    /*
     allColor.add(getColors(primary, back, settings, 0, force: "original"));
     allColor.add(getColors(primary, back, settings, 0, force: "colorful"));
     allColor.add(getColors(primary, back, settings, 0, force: "dark"));
     allColor.add(getNetworkColors(palette, settings, force: "light")); //because the light and dark use the
     allColor.add(getNetworkColors(palette, settings, force: "dark")); // material palette generator anyway
+     */
   }
   return [colors, allColor];
 }
@@ -535,7 +540,7 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
     Function goBack, Color back, Image image, context, colors, allColors) {
 
   return  Material(
-    color: colors[6],
+    color: colors[1],
     child: CustomScrollView(
       slivers: <Widget>[
         SliverAppBar.large(
@@ -686,11 +691,11 @@ Widget settingsMain(Map<String, String> settings, Function updatePage, Image ima
                         child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              ColorCircle("original", primary, surface, settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("colorful", primary, surface, settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("monochrome", primary, surface, settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("light", primary, surface, settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("dark", primary, surface, settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("original", allColors[0][1], allColors[0][0], settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("colorful", allColors[1][1], allColors[1][0], settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("monochrome", allColors[2][1], allColors[2][0], settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("light", allColors[3][1], allColors[3][0], settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("dark", allColors[4][1], allColors[4][0], settings, updatePage, w: 4, tap: 1),
                             ]
                         ),
                       ),
