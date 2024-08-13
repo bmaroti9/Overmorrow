@@ -1253,6 +1253,35 @@ Map<String, List<String>> mainTranslate = {
     'Εύρεση τοποθεσίας...'
   ],
 
+  'Color source': [
+    'Color source',
+    'Szín forrása',
+    'Fuente de color',
+    'Source de couleur',
+    'Farbquelle',
+    'Fonte di colore',
+    'Fonte de cor',
+    'Источник цвета',
+    '颜色来源',
+    'カラーソース',
+    'Źródło koloru',
+    'Πηγή χρώματος'
+  ],
+  'Image source': [
+    'Image source',
+    'Kép forrása',
+    'Fuente de imagen',
+    "Source d'image",
+    'Bildquelle',
+    "Fonte dell'immagine",
+    'Fonte de imagem',
+    'Источник изображения',
+    '图片来源',
+    '画像ソース',
+    'Źródło obrazu',
+    'Πηγή εικόνας'
+  ],
+
   'Search translation': [ //used for getting the codes used for translation of city names
                           //If none are available then en (english) is the default
                           // for more info visit https://open-meteo.com/en/docs/geocoding-api

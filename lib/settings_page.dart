@@ -43,6 +43,9 @@ Map<String, List<String>> settingSwitches = {
 
   'Color mode' : ['original', 'colorful', 'monochrome', 'light', 'dark'],
 
+  'Color source' : ['image', 'wallpaper'],
+  'Image source' : ['network', 'asset'],
+
   'Search provider' : ['weatherapi', 'open-meteo'],
 };
 
@@ -281,8 +284,7 @@ Future<List<Color>> getMainColor(settings, primary, back, image) async {
 
   List<dynamic> palette = await getImageColors(image, mode , settings);
 
-  //if (mode == "light" || mode == "dark") {
-  if (true) {
+  if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network') {
     colors = getNetworkColors(palette ,settings);
   }
   else {
@@ -306,8 +308,7 @@ Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
   allColor.add(getNetworkColors(lightPalette, settings, force: "light"));
   allColor.add(getNetworkColors(darkPalette, settings, force: "dark"));
 
-  //if (mode == "light" || mode == "dark") {
-  if (true) {
+  if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network') {
     colors = getNetworkColors(mode == "light" ? lightPalette : darkPalette ,settings);
   }
   else {
@@ -621,7 +622,7 @@ Widget settingsMain(Map<String, String> settings, Function updatePage, Image ima
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 20),
-                        child: Icon(CupertinoIcons.circle_lefthalf_fill, color: primary, ),
+                        child: Icon(Icons.palette_outlined, color: primary, ),
                       ),
                       Expanded(
                         flex: 10,
@@ -715,6 +716,22 @@ Widget settingsMain(Map<String, String> settings, Function updatePage, Image ima
                             ]
                         ),
                       ),
+                    ),
+                  ),
+                ),
+
+                settingEntry(Icons.invert_colors_on, "Color source", settings, containerLow, updatePage,
+                    onSurface, primaryLight, primary),
+                settingEntry(Icons.landscape_outlined, "Image source", settings, containerLow, updatePage,
+                    onSurface, primaryLight, primary),
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 20, left: 12, right: 12),
+                  child: Container(
+                    height: 2,
+                    decoration: BoxDecoration(
+                        color: primaryLight,
+                        borderRadius: BorderRadius.circular(2)
                     ),
                   ),
                 ),

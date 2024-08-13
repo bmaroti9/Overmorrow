@@ -269,18 +269,20 @@ class OMCurrent {
   static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng) async {
 
     //GET IMAGE
-    Image Uimage = await getUnsplashImage(oMCurrentTextCorrection(
-        item["current"]["weather_code"], sunstatus, timenow), real_loc, lat, lng);
+    Image Uimage;
 
-    /*
-    String imagePath = oMBackdropCorrection(
-      oMCurrentTextCorrection(
-          item["current"]["weather_code"], sunstatus, timenow),
-    );
-    Image Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
-      width: double.infinity, height: double.infinity,);
-
-     */
+    if (settings["Image source"] == "network") {
+      Uimage = await getUnsplashImage(oMCurrentTextCorrection(
+          item["current"]["weather_code"], sunstatus, timenow), real_loc, lat, lng);
+    }
+    else {
+      String imagePath = oMBackdropCorrection(
+        oMCurrentTextCorrection(
+            item["current"]["weather_code"], sunstatus, timenow),
+      );
+      Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
+        width: double.infinity, height: double.infinity,);
+    }
 
     Color back = BackColorCorrection(
       oMCurrentTextCorrection(
@@ -293,8 +295,6 @@ class OMCurrent {
     );
 
     List<Color> colors = await getMainColor(settings, primary, back, Uimage);
-
-    //List<Color> colors = palette.colors.toList();
 
     return OMCurrent(
       image: Uimage,

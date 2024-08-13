@@ -154,13 +154,17 @@ Future<ColorScheme> MaterialYouColor(String theme) async {
 }
 
 Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
+
   final PaletteGenerator pali = await _generatorPalette(Uimage);
 
-  //var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-  //color_mode = brightness == Brightness.dark ? "dark" : "light";
-  //final ColorScheme palette = await MaterialYouColor(color_mode);
+  ColorScheme palette;
 
-  final ColorScheme palette = (await _materialPalette(Uimage, color_mode));
+  if (settings["Color source"] == "image") {
+    palette = await _materialPalette(Uimage, color_mode);
+  }
+  else {
+    palette = await MaterialYouColor(color_mode);
+  }
 
   final List<Color> used_colors = getNetworkColors([palette, BLACK, BLACK], settings);
 
