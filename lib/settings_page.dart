@@ -79,7 +79,7 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
     primary,
     back,
     lighten2(primary, 0.8),
-    darken2(primary, 0.4),
+    darken2(primary, 0.2),
     WHITE,
     lighten2(primary, 1),
     darken(primary, 0.02),
@@ -282,14 +282,16 @@ Future<List<Color>> getMainColor(settings, primary, back, image) async {
 
   final String mode = settings["Color mode"];
 
-  List<dynamic> palette = await getImageColors(image, mode , settings);
+  List<dynamic> palette = await getImageColors(image, mode, settings);
 
-  if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network') {
+  if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network'
+      || settings["Color source"] == 'wallpaper') {
     colors = getNetworkColors(palette ,settings);
   }
   else {
     colors = getColors(primary, back, settings, 0);
   }
+
   return colors;
 }
 
@@ -302,26 +304,29 @@ Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
   List<dynamic> lightPalette = await getImageColors(image, "light" , settings);
   List<dynamic> darkPalette = await getImageColors(image, "dark" , settings);
 
-  allColor.add(getNetworkColors(darkPalette, settings, force: "original"));
-  allColor.add(getNetworkColors(darkPalette, settings, force: "colorful"));
-  allColor.add(getNetworkColors(darkPalette, settings, force: "monochrome"));
-  allColor.add(getNetworkColors(lightPalette, settings, force: "light"));
-  allColor.add(getNetworkColors(darkPalette, settings, force: "dark"));
+  if (settings["Image source"] == 'network' || settings["Color source"] == 'wallpaper') {
+    allColor.add(getNetworkColors(darkPalette, settings, force: "original"));
+    allColor.add(getNetworkColors(darkPalette, settings, force: "colorful"));
+    allColor.add(getNetworkColors(darkPalette, settings, force: "monochrome"));
+    allColor.add(getNetworkColors(lightPalette, settings, force: "light"));
+    allColor.add(getNetworkColors(darkPalette, settings, force: "dark"));
+  }
+  else {
+    allColor.add(getColors(primary, back, settings, 0, force: "original"));
+    allColor.add(getColors(primary, back, settings, 0, force: "colorful"));
+    allColor.add(getColors(primary, back, settings, 0, force: "dark"));
+    allColor.add(getNetworkColors(lightPalette, settings, force: "light")); //because the light and dark use the
+    allColor.add(getNetworkColors(darkPalette, settings, force: "dark")); // material palette generator anyway
+  }
 
-  if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network') {
+  if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network'
+      || settings["Color source"] == 'wallpaper') {
     colors = getNetworkColors(mode == "light" ? lightPalette : darkPalette ,settings);
   }
   else {
     colors = getColors(primary, back, settings, 0);
-
-    /*
-    allColor.add(getColors(primary, back, settings, 0, force: "original"));
-    allColor.add(getColors(primary, back, settings, 0, force: "colorful"));
-    allColor.add(getColors(primary, back, settings, 0, force: "dark"));
-    allColor.add(getNetworkColors(palette, settings, force: "light")); //because the light and dark use the
-    allColor.add(getNetworkColors(palette, settings, force: "dark")); // material palette generator anyway
-     */
   }
+
   return [colors, allColor];
 }
 
