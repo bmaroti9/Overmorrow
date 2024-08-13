@@ -321,7 +321,7 @@ class OMCurrent {
       primarySecond: colors[11],
 
       colorPop: colors[12],
-      descColor: colors[14],
+      descColor: colors[13],
 
       backup_backcolor: back,
       backup_primary: primary,
