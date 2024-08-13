@@ -475,8 +475,10 @@ class dumbySearch extends StatelessWidget {
     List<Color> colors = getColors(primary, back, settings, 0);
 
     return Scaffold(
-      drawer: MyDrawer(primary: primary, settings: settings, back: back, image: Image.asset("assets/backdrops/grayscale_snow2.jpg",
-        fit: BoxFit.cover, width: double.infinity, height: double.infinity,)),
+      drawer: MyDrawer(backupprimary: primary, settings: settings, backupback: back, image: Image.asset("assets/backdrops/grayscale_snow2.jpg",
+        fit: BoxFit.cover, width: double.infinity, height: double.infinity,), surface: colors[0],
+        onSurface: colors[4], primary: colors[1],
+      ),
       backgroundColor: colors[0],
       body: StretchyHeader.singleChild(
         displacement: 150,
@@ -485,13 +487,13 @@ class dumbySearch extends StatelessWidget {
         },
         headerData: HeaderData(
             blurContent: false,
-            headerHeight: max(size.height * 0.54, 400), //we don't want it to be smaller than 400
+            headerHeight: max(size.height * 0.525, 400), //we don't want it to be smaller than 400
             header: ParrallaxBackground(image: Image.asset("assets/backdrops/grayscale_snow2.jpg", fit: BoxFit.cover,), key: Key(place),
               color: darken(colors[0], 0.1),),
             overlay: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(40),
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -499,29 +501,38 @@ class dumbySearch extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 50, bottom: 20),
-                          child: Icon(icon, color: Colors.black54, size: 25),
+                          child: Icon(icon, color: Colors.black54, size: 20),
                         ),
-                        comfortatext(newStr, 20, settings, color: Colors.black54, weight: FontWeight.w300,
+                        comfortatext(newStr, 17, settings, color: Colors.black54, weight: FontWeight.w500,
                         align: TextAlign.center),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: comfortatext(shouldAdd ?? "", 20, settings, color: Colors.black54, weight: FontWeight.w500,
-                              align: TextAlign.center),
-                        ),
                       ],
                     ),
                   ),
                 ),
                 MySearchParent(updateLocation: updateLocation,
                     color: colors[0], place: place, controller: controller, settings: settings,
-                  real_loc: place, secondColor: colors[1], textColor: colors[2], highlightColor: colors[5],
-                  extraTextColor: colors[5],),
+                  real_loc: place,
+                  secondColor: settings["Color mode"] == "light" ? colors[1] : colors[4],
+                  textColor: settings["Color mode"] == "light" ? colors[2] : colors[1],
+                  highlightColor: colors[6],
+                  extraTextColor: colors[4],),
               ],
             )
         ),
         child:
-          providerSelector(settings, updateLocation, colors[2], colors[5],
-              colors[1], provider, latlng, place),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: comfortatext(shouldAdd ?? "", 16, settings, color: colors[4], weight: FontWeight.w400,),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: providerSelector(settings, updateLocation, colors[4], colors[7],
+                    colors[1], provider, latlng, place),
+              ),
+            ],
+          ),
       ),
     );
   }

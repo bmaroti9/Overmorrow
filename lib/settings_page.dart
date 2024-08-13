@@ -130,22 +130,17 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
     ];
   }
 
-  else if (x == "light") {
+  else if (x == "light") { //only the error page uses these because it's otherwise the network palette
     colors = [ //backcolor, primary, text
       WHITE,
       primary,
-      lighten(primary, 0.1),
+      lighten(primary, 0.05),
       lighten(primary, 0.15),
-      Color.fromARGB(250, 30, 30, 30),
-      Color.fromARGB(250, 50, 50, 50),
-      Color.fromARGB(250, 245, 245, 245),
-      Color.fromARGB(250, 230, 230, 230),
-      Color.fromARGB(250, 220, 220, 220),
-      Color.fromARGB(250, 190, 190, 190),
-      primary,
-
-      WHITE,
-      WHITE,
+      BLACK,
+      BLACK,
+      const Color.fromARGB(250, 245, 245, 245),
+      const Color.fromARGB(250, 240, 240, 240),
+      const Color.fromARGB(250, 230, 230, 230),
 
     ];
   }
@@ -153,11 +148,14 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
   else if (x == "dark") {
     colors = [ //backcolor, primary, text
       BLACK,
-      lighten(primary, 0.25),
-      lighten(lightAccent(primary, 50000), 0.3),
-      [BLACK, primary, WHITE][dif],
-      lighten(lightAccent(primary, 60000), 0.25),
-      const Color(0xff141414),
+      primary,
+      lighten(primary, 0.1),
+      lighten(primary, 0.15),
+      WHITE,
+      WHITE,
+      const Color.fromARGB(250, 15, 15, 15),
+      const Color.fromARGB(250, 25, 25, 25),
+      const Color.fromARGB(250, 35, 35, 35),
     ];
   }
 
@@ -272,6 +270,23 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
       palette[1],
       palette[2],
     ];
+  }
+  return colors;
+}
+
+Future<List<Color>> getMainColor(settings, primary, back, image) async {
+  List<Color> colors;
+
+  final String mode = settings["Color mode"];
+
+  List<dynamic> palette = await getImageColors(image, mode , settings);
+
+  //if (mode == "light" || mode == "dark") {
+  if (true) {
+    colors = getNetworkColors(palette ,settings);
+  }
+  else {
+    colors = getColors(primary, back, settings, 0);
   }
   return colors;
 }
@@ -573,6 +588,7 @@ Widget settingsMain(Map<String, String> settings, Function updatePage, Image ima
   Color primaryLight = colors[2];
   Color surface = colors[0];
   Color colorpop = colors[12];
+  Color desc_color = colors[13];
 
 
   //var entryList = settings.entries.toList();
@@ -648,8 +664,8 @@ Widget settingsMain(Map<String, String> settings, Function updatePage, Image ima
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 36, settings, color: colorpop),
-                                            comfortatext(translation("Partly Cloudy", settings["Language"]!), 20,
-                                                settings, color: WHITE)
+                                            comfortatext(translation("Clear Sky", settings["Language"]!), 20,
+                                                settings, color: desc_color)
                                           ],
                                         ),
                                       ),
@@ -748,75 +764,77 @@ Widget settingsMain(Map<String, String> settings, Function updatePage, Image ima
 
 class MyDrawer extends StatelessWidget {
 
-  final primary;
-  final back;
+  final backupprimary;
+  final backupback;
   final settings;
   final image;
 
-  const MyDrawer({super.key, required this.settings, required this.primary, required this.back,
-  required this.image});
+  final primary;
+  final surface;
+  final onSurface;
+
+  const MyDrawer({super.key, required this.settings, required this.backupback, required this.backupprimary,
+  required this.image, required this.surface, required this.primary, required this.onSurface});
 
   @override
   Widget build(BuildContext context) {
 
-    List<Color> colors = getColors(primary, back, settings, 0);
-
     return Drawer(
-      backgroundColor: colors[0],
+      backgroundColor: surface,
       elevation: 0,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: colors[1],
+              color: primary,
             ),
             child: Column(
               children: [
                 Align(
                     alignment: Alignment.center,
-                    child: comfortatext('Overmorrow', 30, settings, color: colors[0])
+                    child: comfortatext('Overmorrow', 30, settings, color: surface)
                 ),
                 Align(
                   alignment: Alignment.centerRight,
-                    child: comfortatext('Weather', 30, settings, color: colors[0])
+                    child: comfortatext('Weather', 30, settings, color: surface)
                 ),
               ],
             ),
           ),
           ListTile(
             title: comfortatext(translation('Settings', settings["Language"]), 25,
-                settings, color: colors[2]),
-            leading: Icon(Icons.settings, color: colors[2],),
+                settings, color: onSurface),
+            leading: Icon(Icons.settings, color: primary,),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SettingsPage(primary: primary,
-                    back: back, image: image,)),
+                MaterialPageRoute(builder: (context) => SettingsPage(primary: backupprimary,
+                    back: backupback, image: image,)),
               );
             },
           ),
           ListTile(
             title: comfortatext(translation('About', settings["Language"]), 25,
-                settings, color: colors[2]),
-            leading: Icon(Icons.info_outline, color: colors[2],),
+                settings, color: onSurface),
+            leading: Icon(Icons.info_outline, color: primary,),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => InfoPage(primary: primary, settings: settings,
-                back: back,)),
+                MaterialPageRoute(builder: (context) => InfoPage(primary: backupprimary, settings: settings,
+                back: backupback,)),
               );
             },
           ),
           ListTile(
             title: comfortatext(translation('Donate', settings["Language"]), 25,
-                settings, color: colors[2]),
-            leading: Icon(Icons.favorite_border, color: colors[2],),
+                settings, color: onSurface),
+            leading: Icon(Icons.favorite_border, color: primary,),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DonationPage(primary: primary, settings: settings,
-                back: back,)),
+                MaterialPageRoute(builder: (context) => DonationPage(primary: backupprimary, settings: settings,
+                back: backupback,)),
               );
             },
           ),

@@ -57,10 +57,11 @@ class _NewMainState extends State<NewMain> {
 
     return Scaffold(
       backgroundColor: data.current.surface,
-      drawer: MyDrawer(primary: data.current.backup_primary,
-        back: data.current.backup_backcolor,
-        settings: data.settings,
-        image: data.current.image,),
+      drawer: MyDrawer(backupprimary: data.current.backup_primary,
+        backupback: data.current.backup_backcolor, settings: data.settings, image: data.current.image,
+        primary: data.current.primary, onSurface: data.current.onSurface,
+        surface: data.current.surface,
+      ),
       body: StretchyHeader.listView(
         displacement: 130,
         onRefresh: () async {
@@ -169,7 +170,6 @@ class _NewMainState extends State<NewMain> {
            */
           const Padding(padding: EdgeInsets.only(bottom: 20))
 
-
         ],
       ),
     );
@@ -191,8 +191,11 @@ Widget TabletLayout(data, updateLocation, context) {
 
   return Scaffold(
     backgroundColor: data.current.surface,
-    drawer: MyDrawer(primary: data.current.backup_primary, back: data.current.backup_backcolor,
-        settings: data.settings, image: data.current.image),
+    drawer: MyDrawer(backupprimary: data.current.backup_primary,
+      backupback: data.current.backup_backcolor, settings: data.settings, image: data.current.image,
+      primary: data.current.primary, onSurface: data.current.onSurface,
+      surface: data.current.surface,
+    ),
     body: RefreshIndicator(
       onRefresh: () async {
         await updateLocation("${data.lat}, ${data.lng}", data.real_loc);

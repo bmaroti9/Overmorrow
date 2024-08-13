@@ -292,21 +292,7 @@ class OMCurrent {
           item["current"]["weather_code"], sunstatus, timenow),
     );
 
-    List<Color> colors;
-
-    //if (settings["Color mode"] == "light" || settings["Color mode"] == "dark") {
-    if (true) {
-      List<dynamic> palette = await getImageColors(Uimage, settings["Color mode"], settings);
-      colors = getNetworkColors(palette, settings);
-    }
-    else {
-      colors = getColors(primary, back, settings,
-          ColorPopCorrection( oMCurrentTextCorrection(
-              item["current"]["weather_code"], sunstatus, timenow),)[
-          settings["Color mode"] == "dark" ? 1 : 0
-          ]);
-    }
-
+    List<Color> colors = await getMainColor(settings, primary, back, Uimage);
 
     //List<Color> colors = palette.colors.toList();
 
@@ -335,7 +321,7 @@ class OMCurrent {
       primarySecond: colors[11],
 
       colorPop: colors[12],
-      descColor: colors[13],
+      descColor: colors[14],
 
       backup_backcolor: back,
       backup_primary: primary,
