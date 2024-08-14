@@ -92,15 +92,15 @@ class _NewMainState extends State<NewMain> {
                         padding: const EdgeInsets.only(left: 0, bottom: 2),
                         child: comfortatext(
                             "${data.current.temp}°", 69, data.settings,
-                            color: data.current.colorPop, weight: FontWeight.w300),
+                            color: data.current.colorPop, weight: FontWeight.w300,
+                        )
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 0),
                         child: comfortatext(
                             data.current.text, 32, data.settings,
-                            weight: data.settings["Color mode"] == "light"
-                                ? FontWeight.w500
-                                : FontWeight.w400,
+                            weight: estimateBrightnessForColor(data.current.descColor)
+                                ? FontWeight.w500 : FontWeight.w700,
                             color: data.current.descColor),
                       )
                     ],

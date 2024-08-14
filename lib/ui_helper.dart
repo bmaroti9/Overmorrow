@@ -69,6 +69,14 @@ Widget comfortatext(String text, double size, settings,
 );
 }
 
+bool estimateBrightnessForColor(Color color) {
+  final double relativeLuminance = color.computeLuminance();
+
+  const double kThreshold = 0.15;
+  print((relativeLuminance + 0.05) * (relativeLuminance + 0.05) > kThreshold);
+  return (relativeLuminance + 0.05) * (relativeLuminance + 0.05) > kThreshold;
+}
+
 Color darken(Color color, [double amount = .1]) {
   assert(amount >= 0 && amount <= 1);
 

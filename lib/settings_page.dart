@@ -286,7 +286,7 @@ Future<List<Color>> getMainColor(settings, primary, back, image) async {
 
   if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network'
       || settings["Color source"] == 'wallpaper') {
-    colors = getNetworkColors(palette ,settings);
+    colors = getNetworkColors(palette, settings);
   }
   else {
     colors = getColors(primary, back, settings, 0);

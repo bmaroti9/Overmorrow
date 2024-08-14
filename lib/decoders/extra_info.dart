@@ -169,8 +169,7 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
   final List<Color> used_colors = getNetworkColors([palette, BLACK, BLACK], settings);
 
   final List<Color> dominant = pali.colors.toList();
-  Color startcolor = settings["Color mode"] == "light" || settings["Color mode"] == "dark"
-      ?used_colors[2] : used_colors[0];
+  Color startcolor = used_colors[2];
 
   Color bestcolor = startcolor;
   int bestDif = difFromBackColors(bestcolor, dominant);
@@ -211,8 +210,7 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
     }
   }
 
-  Color desc_color = settings["Color mode"] == "light" || settings["Color mode"] == "dark"
-      ?used_colors[0] : used_colors[1];
+  Color desc_color = used_colors[0];
   int desc_dif = difFromBackColors(desc_color, dominant);
 
   print(("diffs", bestDif, desc_dif));

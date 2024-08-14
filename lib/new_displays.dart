@@ -299,11 +299,7 @@ Widget NewAirQuality(var data) {
                   Align(
                     alignment: Alignment.topLeft,
                     child: comfortatext(
-                      data.aqi.aqi_title,
-                      20,
-                      data.settings,
-                      color: data.current.primarySecond,
-                      align: TextAlign.left,
+                      data.aqi.aqi_title, 18, data.settings, color: data.current.primary, align: TextAlign.left,
                       weight: FontWeight.w500,
                     ),
                   ),
