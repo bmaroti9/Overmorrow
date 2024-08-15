@@ -21,6 +21,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:overmorrow/settings_page.dart';
 import 'ui_helper.dart';
 
 
@@ -248,7 +249,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                   }),
                   side: BorderSide(color: data.current.primaryLighter, width: 1.5),
                   label: comfortatext(
-                      ['temp', 'precip', 'wind', 'uv'][index], 14, data.settings,
+                      translation(['temp', 'precip', 'wind', 'uv'][index], data.settings["Language"]), 14, data.settings,
                       color: _value == index ? data.current.onPrimaryLight : data.current.onSurface),
                   selected: _value == index,
                   onSelected: (bool selected) {
@@ -699,62 +700,67 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 10, top: 10),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 1, top: 0, bottom: 6),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: comfortatext(
-                  "daily", 16,
-                  data.settings,
-                  color: data.current.onSurface),
+    if (data.days.length > 3) {
+      return Padding(
+        padding: const EdgeInsets.only(left: 24, right: 24, bottom: 10, top: 10),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 1, top: 0, bottom: 6),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: comfortatext(
+                    "daily", 16,
+                    data.settings,
+                    color: data.current.onSurface),
+              ),
             ),
-          ),
-          ListView.builder(
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(
-                  top: 5, bottom: 5, left: 0, right: 0),
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: data.days.length - 3,
-              itemBuilder: (context, index) {
-                final day = data.days[index + 3];
-                return Padding(
-                  padding: const EdgeInsets.only(top: 3, bottom: 3),
-                  child: AnimatedContainer(
-                    height: expand[index] ? (day.mm_precip > 0.1
-                        ? (MediaQuery.of(context).size.width - 110) / 2.2 + 610: 528.0) : 73.0,
-                    duration: const Duration(milliseconds:250),
-                    child: SingleChildScrollView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      child: expand[index] ? Container(
-                        decoration: BoxDecoration(
-                            borderRadius:
-                            index == 0 ? const BorderRadius.vertical(
-                                top: Radius.circular(18.0),
-                                bottom: Radius.circular(8))
-                                : index == data.days.length - 4 ? const BorderRadius
-                                .vertical(bottom: Radius.circular(18.0),
-                                top: Radius.circular(8))
-                                : BorderRadius.circular(8),
-                            color: data.current.containerLow),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 25, left: 3, right: 3),
-                          child: NewDay(data: data, index: index, state: true,
-                            onExpandTapped: _onExpandTapped, day: day,),
-                        ),
-                      )
-                          : GlanceDayEntry(data, index, day, _onExpandTapped),
+            ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(
+                    top: 5, bottom: 5, left: 0, right: 0),
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: data.days.length - 3,
+                itemBuilder: (context, index) {
+                  final day = data.days[index + 3];
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 3, bottom: 3),
+                    child: AnimatedContainer(
+                      height: expand[index] ? (day.mm_precip > 0.1
+                          ? (MediaQuery.of(context).size.width - 110) / 2.2 + 610: 528.0) : 73.0,
+                      duration: const Duration(milliseconds:250),
+                      child: SingleChildScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: expand[index] ? Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                              index == 0 ? const BorderRadius.vertical(
+                                  top: Radius.circular(18.0),
+                                  bottom: Radius.circular(8))
+                                  : index == data.days.length - 4 ? const BorderRadius
+                                  .vertical(bottom: Radius.circular(18.0),
+                                  top: Radius.circular(8))
+                                  : BorderRadius.circular(8),
+                              color: data.current.containerLow),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 25, left: 3, right: 3),
+                            child: NewDay(data: data, index: index, state: true,
+                              onExpandTapped: _onExpandTapped, day: day,),
+                          ),
+                        )
+                            : GlanceDayEntry(data, index, day, _onExpandTapped),
+                      ),
                     ),
-                  ),
-                );
-              }
-          ),
-        ],
-      ),
-    );
+                  );
+                }
+            ),
+          ],
+        ),
+      );
+    }
+    else {
+      return Container();
+    }
   }
 }
 

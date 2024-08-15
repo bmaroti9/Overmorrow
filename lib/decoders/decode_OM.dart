@@ -36,6 +36,24 @@ String OMConvertTime(String time) {
   return time.split("T")[1];
 }
 
+String OmAqiDesc(index, language) {
+  String desc = ['Air quality is excellent; no health risk.',
+    'Acceptable air quality; minor risk for sensitive people.',
+    'Sensitive individuals may experience mild effects.',
+    'Health effects possible for everyone, serious for sensitive groups.',
+    'Serious health effects for everyone.',
+    'Emergency conditions; severe health effects for all.']
+  [index - 1];
+  return translation(desc, language);
+}
+
+
+String OmAqiTitle(index, language) {
+  String desc = ['good', 'fair', 'moderate', 'poor', 'very poor', 'unhealthy']
+  [index - 1];
+  return translation(desc, language);
+}
+
 String OMamPmTime(String time) {
   String a = time.split("T")[1];
   List<String> num = a.split(":");
@@ -593,7 +611,7 @@ class OMAqi{
     required this.aqi_title,
   });
 
-  static Future<OMAqi> fromJson(item, lat, lng) async {
+  static Future<OMAqi> fromJson(item, lat, lng, settings) async {
     final params = {
       "latitude": lat.toString(),
       "longitude": lng.toString(),
@@ -613,16 +631,9 @@ class OMAqi{
       no2: item["nitrogen_dioxide"],
       o3: item["ozone"],
 
-      aqi_title: ['good', 'fair', 'moderate', 'poor', 'very poor', 'unhealthy']
-      [index - 1],
+      aqi_title: OmAqiTitle(index, settings["Language"]),
 
-      aqi_desc: ['Air quality is excellent; no health risk.',
-        'Acceptable air quality; minor risk for sensitive people.',
-        'Sensitive individuals may experience mild effects.',
-        'Health effects possible for everyone, serious for sensitive groups.',
-        'Serious health effects for everyone.',
-        'Emergency conditions; severe health effects for all.']
-      [index - 1],
+      aqi_desc: OmAqiDesc(index, settings["Language"]),
     );
   }
 }
@@ -646,7 +657,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
 
   return WeatherData(
     radar: await RainviewerRadar.getData(),
-    aqi: await OMAqi.fromJson(oMBody, lat, lng),
+    aqi: await OMAqi.fromJson(oMBody, lat, lng, settings),
     sunstatus: sunstatus,
     minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
 

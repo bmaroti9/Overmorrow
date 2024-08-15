@@ -100,7 +100,7 @@ class _NewMainState extends State<NewMain> {
                         child: comfortatext(
                             data.current.text, 32, data.settings,
                             weight: estimateBrightnessForColor(data.current.descColor)
-                                ? FontWeight.w500 : FontWeight.w700,
+                                ? FontWeight.w400 : FontWeight.w600,
                             color: data.current.descColor),
                       )
                     ],

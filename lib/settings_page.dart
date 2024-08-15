@@ -566,10 +566,10 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
       slivers: <Widget>[
         SliverAppBar.large(
           leading:
-          IconButton(icon: Icon(Icons.arrow_back, color: colors[2],), onPressed: () {
+          IconButton(icon: Icon(Icons.arrow_back, color: colors[11],), onPressed: () {
             goBack();
           }),
-          title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[2]),
+          title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[11]),
           backgroundColor: colors[6],
           pinned: false,
         ),
