@@ -117,10 +117,10 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
     colors = [ //default colorful option
       back,
       primary,
-      lighten2(back, 0.8),
+      lighten2(back, 0.73),
       darken(back, 0.1),
-      WHITE,
-      lighten2(back, 1),
+      lighten2(back, 0.73),
+      lighten2(back, 0.73),
       darken(back, 0.02),
       darken(back, 0.04),
       darken(back, 0.04),

@@ -268,7 +268,6 @@ class OMCurrent {
 
   static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng) async {
 
-    //GET IMAGE
     Image Uimage;
 
     if (settings["Image source"] == "network") {

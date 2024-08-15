@@ -343,8 +343,8 @@ Widget aqiDataPoints(String name, double value, var data) {
     child: LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         double width;
-        if (constraints.maxWidth > 300) {
-          width = 200;
+        if (constraints.maxWidth > 100) {
+          width = 100;
         }
         else {width = constraints.maxWidth;}
 
@@ -354,18 +354,18 @@ Widget aqiDataPoints(String name, double value, var data) {
             padding: const EdgeInsets.only(left: 10, bottom: 1.5, top: 1.5),
             child: Row(
               children: [
-                comfortatext(name, 18, data.settings, color: data.current.outline,
+                comfortatext(name, 16, data.settings, color: data.current.primary,
                 weight: FontWeight.w400),
                 const Spacer(),
                 Container(
                   padding: const EdgeInsets.only(top:4,bottom: 3, left: 4, right: 4),
                   decoration: BoxDecoration(
                       //border: Border.all(color: Colors.blueAccent)
-                    color: data.current.surface,
+                    color: data.current.primaryLight,
                     borderRadius: BorderRadius.circular(10)
                   ),
-                  child: comfortatext(value.toString(), 17, data.settings,
-                      color: data.current.container, weight: FontWeight.w600)
+                  child: comfortatext(value.toString(), 15, data.settings,
+                      color: data.current.onPrimaryLight, weight: FontWeight.w500)
                 )
               ],
             ),

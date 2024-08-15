@@ -299,14 +299,15 @@ Widget NewAirQuality(var data) {
                   Align(
                     alignment: Alignment.topLeft,
                     child: comfortatext(
-                      data.aqi.aqi_title, 18, data.settings, color: data.current.primary, align: TextAlign.left,
+                      data.aqi.aqi_title, 19, data.settings, color: data.current.primarySecond, align: TextAlign.left,
                       weight: FontWeight.w500,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(3.0),
+                    padding: const EdgeInsets.only(top: 5, left: 2),
                     child: comfortatext(data.aqi.aqi_desc, 14, data.settings,
-                        color: data.current.primary, weight: FontWeight.w500),
+                        color: data.settings["Color mode"] == "light" ? data.current.primary : data.current.onSurface,
+                        weight: FontWeight.w500),
                   ),
                 ],
               ),
