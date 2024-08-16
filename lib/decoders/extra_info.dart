@@ -160,7 +160,7 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
   ColorScheme palette;
 
   if (settings["Color source"] == "image") {
-    palette = await _materialPalette(Uimage, color_mode);
+    palette = await _materialPalette(Uimage, color_mode, pali.colors.toList()[0]);
   }
   else {
     palette = await MaterialYouColor(color_mode);
@@ -321,14 +321,22 @@ Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
   return _paletteGenerator;
 }
 
-Future<ColorScheme> _materialPalette(Image imageWidget, theme) async {
+Future<ColorScheme> _materialPalette(Image imageWidget, theme, color) async {
   final ImageProvider imageProvider = imageWidget.image;
 
+  /*
   return ColorScheme.fromImageProvider(
     provider: imageProvider,
     brightness: theme == 'light' ? Brightness.light : Brightness.dark,
     dynamicSchemeVariant: theme == 'light' || theme == 'dark' ? DynamicSchemeVariant.tonalSpot :
     DynamicSchemeVariant.tonalSpot,
+  );
+   */
+
+  return ColorScheme.fromSeed(
+    seedColor: color,
+    brightness: theme == 'light' ? Brightness.light : Brightness.dark,
+    dynamicSchemeVariant: DynamicSchemeVariant.tonalSpot
   );
 }
 

@@ -674,7 +674,7 @@ class _RadarSmallState extends State<RadarSmall> {
                         data: SliderTheme.of(context).copyWith(
                           trackHeight: 18,
                           valueIndicatorTextStyle: GoogleFonts.comfortaa(
-                            color: data.current.onSurface,
+                            color: data.current.onPrimaryLight,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
@@ -900,7 +900,7 @@ class _RadarBigState extends State<RadarBig> {
                                 data: SliderTheme.of(context).copyWith(
                                     trackHeight: 18,
                                     valueIndicatorTextStyle: GoogleFonts.comfortaa(
-                                      color: data.current.onSurface,
+                                      color: data.current.onPrimaryLight,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                     ),
