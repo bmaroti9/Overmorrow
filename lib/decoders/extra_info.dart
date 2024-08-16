@@ -155,12 +155,14 @@ Future<ColorScheme> MaterialYouColor(String theme) async {
 
 Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
 
-  final PaletteGenerator pali = await _generatorPalette(Uimage);
+  final List<PaletteGenerator> genPalette = await _generatorPalette(Uimage);
+  final PaletteGenerator pali = genPalette[0];
+  final PaletteGenerator paliTotal = genPalette[1];
 
   ColorScheme palette;
 
   if (settings["Color source"] == "image") {
-    palette = await _materialPalette(Uimage, color_mode, pali.colors.toList()[0]);
+    palette = await _materialPalette(Uimage, color_mode, paliTotal.colors.first);
   }
   else {
     palette = await MaterialYouColor(color_mode);
@@ -272,7 +274,7 @@ Color BackColorCorrection(String text) {
   return accentColors[text] ?? WHITE;
 }
 
-Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
+Future<List<PaletteGenerator>> _generatorPalette(Image imageWidget) async {
   final ImageProvider imageProvider = imageWidget.image;
 
   final Completer<ImageInfo> completer = Completer();
@@ -315,16 +317,19 @@ Future<PaletteGenerator> _generatorPalette(Image imageWidget) async {
     region: region,
     maximumColorCount: 4
   );
+  PaletteGenerator _paletteGenerator2 = await PaletteGenerator.fromImage(
+      imageInfo.image,
+      maximumColorCount: 1
+  );
 
   imageProvider.resolve(const ImageConfiguration()).removeListener(listener);
 
-  return _paletteGenerator;
+  return [_paletteGenerator, _paletteGenerator2];
 }
 
 Future<ColorScheme> _materialPalette(Image imageWidget, theme, color) async {
-  final ImageProvider imageProvider = imageWidget.image;
-
   /*
+  final ImageProvider imageProvider = imageWidget.image;
   return ColorScheme.fromImageProvider(
     provider: imageProvider,
     brightness: theme == 'light' ? Brightness.light : Brightness.dark,

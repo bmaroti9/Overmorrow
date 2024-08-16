@@ -477,6 +477,8 @@ class _RadarSmallState extends State<RadarSmall> {
   double currentFrameIndex = 12;
   late Timer timer;
 
+  bool hasBeenPlayed = false;
+
   final data;
 
   List<String> times = [];
@@ -517,9 +519,18 @@ class _RadarSmallState extends State<RadarSmall> {
   }
 
   void togglePlayPause() {
-    setState(() {
-      isPlaying = !isPlaying;
-    });
+    if (hasBeenPlayed) {
+      setState(() {
+        isPlaying = !isPlaying;
+      });
+    }
+    else {
+      setState(() {
+        hasBeenPlayed = true;
+        currentFrameIndex = 0;
+        isPlaying = !isPlaying;
+      });
+    }
   }
 
   @override
@@ -701,6 +712,7 @@ class _RadarSmallState extends State<RadarSmall> {
 
                           onChanged: (double value) {
                             setState(() {
+                              hasBeenPlayed = true;
                               currentFrameIndex = value;
                             });
                           },
@@ -763,6 +775,8 @@ class _RadarBigState extends State<RadarBig> {
 
   List<String> times = [];
 
+  bool hasBeenPlayed = false;
+
   final data;
 
   _RadarBigState({this.data});
@@ -802,9 +816,18 @@ class _RadarBigState extends State<RadarBig> {
   }
 
   void togglePlayPause() {
-    setState(() {
-      isPlaying = !isPlaying;
-    });
+    if (hasBeenPlayed) {
+      setState(() {
+        isPlaying = !isPlaying;
+      });
+    }
+    else {
+      setState(() {
+        hasBeenPlayed = true;
+        currentFrameIndex = 0;
+        isPlaying = !isPlaying;
+      });
+    }
   }
 
   @override
@@ -927,6 +950,7 @@ class _RadarBigState extends State<RadarBig> {
 
                                   onChanged: (double value) {
                                     setState(() {
+                                      hasBeenPlayed = true;
                                       currentFrameIndex = value;
                                     });
                                   },
