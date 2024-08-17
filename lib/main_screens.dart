@@ -60,7 +60,7 @@ class _NewMainState extends State<NewMain> {
       drawer: MyDrawer(backupprimary: data.current.backup_primary,
         backupback: data.current.backup_backcolor, settings: data.settings, image: data.current.image,
         primary: data.current.primary, onSurface: data.current.onSurface,
-        surface: data.current.surface,
+        surface: data.current.surface, hihglight: data.current.containerLow,
       ),
       body: StretchyHeader.listView(
         displacement: 130,
@@ -194,7 +194,7 @@ Widget TabletLayout(data, updateLocation, context) {
     drawer: MyDrawer(backupprimary: data.current.backup_primary,
       backupback: data.current.backup_backcolor, settings: data.settings, image: data.current.image,
       primary: data.current.primary, onSurface: data.current.onSurface,
-      surface: data.current.surface,
+      surface: data.current.surface, hihglight: data.current.containerLow,
     ),
     body: RefreshIndicator(
       onRefresh: () async {

@@ -794,9 +794,11 @@ class MyDrawer extends StatelessWidget {
   final primary;
   final surface;
   final onSurface;
+  final hihglight;
 
   const MyDrawer({super.key, required this.settings, required this.backupback, required this.backupprimary,
-  required this.image, required this.surface, required this.primary, required this.onSurface});
+  required this.image, required this.surface, required this.primary, required this.onSurface,
+  required this.hihglight});
 
   @override
   Widget build(BuildContext context) {
@@ -843,8 +845,8 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => InfoPage(primary: backupprimary, settings: settings,
-                back: backupback,)),
+                MaterialPageRoute(builder: (context) => InfoPage(primary: primary, settings: settings,
+                surface: surface, onSurface: onSurface, hihglight: hihglight,)),
               );
             },
           ),

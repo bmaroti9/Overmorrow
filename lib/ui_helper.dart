@@ -250,7 +250,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
           ],
         ),
       );
-    } else {
+    } else if (widget.data.current.photographerName != ""){
       return Padding(
         padding: const EdgeInsets.only(top: 5, right: 10),
         child: Row(
@@ -282,6 +282,9 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
           ],
         ),
       );
+    }
+    else {
+      return Container();
     }
   }
 }

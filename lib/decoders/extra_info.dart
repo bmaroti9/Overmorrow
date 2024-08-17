@@ -48,8 +48,6 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
 
   String text_query = textToUnsplashText[_text]![0];
 
-  //String addon = wapi_body["current"]["is_day"] == 1 ? 'daytime' : 'nighttime';
-
   final params2 = {
     'client_id': access_key,
     'query' : "$text_query, $loc",
@@ -68,8 +66,6 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
 
   var unsplash_body = jsonDecode(response2);
 
-  //var rng = Random();
-  //int index = rng.nextInt(3);
   int index = 0;
   double best = 99999999999;
 
@@ -188,9 +184,9 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
 
   if (bestDif <= base + 120) {
     print("trying");
-    for (int i = 1; i < 4; i++) {
+    for (int i = 1; i < 5; i++) {
       //LIGHT
-      Color newcolor = lighten2(startcolor, i / 9);
+      Color newcolor = lighten2(startcolor, i / 4);
       int newdif = difFromBackColors(newcolor, dominant);
       if (newdif > bestDif && newdif < base + 200) {
         bestDif = newdif;
@@ -198,7 +194,7 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
       }
 
       //DARK
-      newcolor = darken2(startcolor, i / 7);
+      newcolor = darken2(startcolor, i / 4);
       newdif = difFromBackColors(newcolor, dominant);
       if (newdif > bestDif && newdif < base + 200) {
         bestDif = newdif;
