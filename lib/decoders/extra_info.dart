@@ -34,7 +34,7 @@ import '../ui_helper.dart';
 import '../weather_refact.dart';
 import 'decode_wapi.dart';
 
-Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double lng) async {
+Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat, double lng) async {
 
   List<String> keys1 = textFilter.keys.toList();
   //this is all to make sure that none
@@ -130,8 +130,15 @@ Future<Image> getUnsplashImage(String _text, String real_loc, double lat, double
   print(index);
   print(unsplash_body[index]["links"]["html"]);
 
-  return Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,
-    width: double.infinity, height: double.infinity,);
+  final String userLink = unsplash_body[index]["user"]["links"]["html"] ?? "";
+  final String username = unsplash_body[index]["user"]["name"] ?? "";
+  final String photoLink = unsplash_body[index]["links"]["html"] ?? "";
+
+  print((username, userLink));
+
+
+  return [Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,
+    width: double.infinity, height: double.infinity,), username, userLink, photoLink];
 }
 
 Future<ColorScheme> MaterialYouColor(String theme) async {
@@ -197,18 +204,6 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
         bestDif = newdif;
         bestcolor = newcolor;
       }
-    }
-  }
-
-  //if the contrast is still low then we need to choose another color
-  if (bestDif <= base + 120) {
-    print("plan b");
-    Color newcolor = settings["Color mode"] == "light" || settings["Color mode"] == "dark"
-        ?used_colors[0] : used_colors[2];
-    int newdif = difFromBackColors(newcolor, dominant);
-    if (newdif > bestDif && newdif < base + 250) {
-      bestDif = newdif;
-      bestcolor = newcolor;
     }
   }
 

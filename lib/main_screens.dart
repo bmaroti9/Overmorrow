@@ -123,7 +123,7 @@ class _NewMainState extends State<NewMain> {
         children: [
           Stack(
             children: [
-              UpdatedNotifier(data: data,
+              FadingWidget(data: data,
                   time: data.updatedTime,
                   key: Key(data.updatedTime.toString())),
               LayoutBuilder(

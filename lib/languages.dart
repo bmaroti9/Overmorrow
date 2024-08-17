@@ -1426,6 +1426,21 @@ Map<String, List<String>> mainTranslate = {
     'Συνθήκες έκτακτης ανάγκης· σοβαρές επιπτώσεις στην υγεία για όλους.'
   ],
 
+  'photo by x on Unsplash': [
+    'photo by x on Unsplash',
+    'fotó: x az Unsplashen',
+    'foto de x en Unsplash',
+    'photo de x sur Unsplash',
+    'Foto von x auf Unsplash',
+    'foto di x su Unsplash',
+    'foto de x no Unsplash',
+    'фото x на Unsplash',
+    '由 x 拍摄，发布于 Unsplash',
+    '写真: x on Unsplash',
+    'zdjęcie x na Unsplash',
+    'φωτογραφία από τον x στο Unsplash'
+  ],
+
   'Search translation': [ //used for getting the codes used for translation of city names
                           //If none are available then en (english) is the default
                           // for more info visit https://open-meteo.com/en/docs/geocoding-api

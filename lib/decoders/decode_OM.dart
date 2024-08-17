@@ -254,6 +254,10 @@ class OMCurrent {
 
   final Image image;
 
+  final String photographerName;
+  final String photographerUrl;
+  final String photoUrl;
+
   const OMCurrent({
     required this.precip,
     required this.humidity,
@@ -282,15 +286,25 @@ class OMCurrent {
     required this.primarySecond,
 
     required this.image,
+    required this.photographerName,
+    required this.photographerUrl,
+    required this.photoUrl,
   });
 
   static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng) async {
 
     Image Uimage;
+    String photographerName = "";
+    String photorgaperUrl = "";
+    String photoLink = "";
 
     if (settings["Image source"] == "network") {
-      Uimage = await getUnsplashImage(oMCurrentTextCorrection(
+      final ImageData = await getUnsplashImage(oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow), real_loc, lat, lng);
+      Uimage = ImageData[0];
+      photographerName = ImageData[1];
+      photorgaperUrl = ImageData[2];
+      photoLink = ImageData[3];
     }
     else {
       String imagePath = oMBackdropCorrection(
@@ -313,8 +327,13 @@ class OMCurrent {
 
     List<Color> colors = await getMainColor(settings, primary, back, Uimage);
 
+    print((photographerName, photorgaperUrl, photoLink));
+
     return OMCurrent(
       image: Uimage,
+      photographerName: photographerName,
+      photographerUrl: photorgaperUrl,
+      photoUrl: photoLink,
 
       text: translation(oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),

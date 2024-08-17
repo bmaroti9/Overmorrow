@@ -21,13 +21,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'api_key.dart';
 import 'caching.dart';
@@ -51,7 +51,8 @@ double getFontSize(String set) {
 }
 
 Widget comfortatext(String text, double size, settings,
-    {Color color = WHITE, TextAlign align = TextAlign.left, weight = FontWeight.w400}) {
+    {Color color = WHITE, TextAlign align = TextAlign.left, weight = FontWeight.w400,
+      decoration = TextDecoration.none}) {
 
   double x = getFontSize(settings["Font size"]);
   return Text(
@@ -61,6 +62,8 @@ Widget comfortatext(String text, double size, settings,
       fontSize: size * x,
       fontWeight: weight,
       height: 1.1,
+      decoration: decoration,
+      decorationColor: color,
     ),
     overflow: TextOverflow.ellipsis,
     maxLines: 40,
@@ -121,31 +124,10 @@ Color lightAccent(Color color, int intensity) {
   return Color.fromRGBO(sqrt(color.red * x).toInt(), sqrt(color.green * x).toInt(), sqrt(color.blue * x).toInt(), 1);
 }
 
-class UpdatedNotifier extends StatefulWidget {
-  final data;
-  final time;
-
-  UpdatedNotifier({Key? key, required this.data, required this.time}) : super(key: key);
-
-  @override
-  _FadeWidgetState createState() => _FadeWidgetState();
-}
-
-class _FadeWidgetState extends State<UpdatedNotifier> with AutomaticKeepAliveClientMixin<UpdatedNotifier> {
-  bool _hasBeenShown = false;
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-
-    if (!_hasBeenShown) {
-      _hasBeenShown = true;
-      return FadingWidget(data: widget.data, time: widget.time);
-    }
-    return Container();
+Future<void> _launchUrl(String url) async {
+  final Uri _url = Uri.parse(url);
+  if (!await launchUrl(_url)) {
+    throw Exception('Could not launch $_url');
   }
 }
 
@@ -159,9 +141,12 @@ class FadingWidget extends StatefulWidget  {
   _FadingWidgetState createState() => _FadingWidgetState();
 }
 
-class _FadingWidgetState extends State<FadingWidget> {
-  bool _isVisible = false;
+class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClientMixin {
+  bool _isVisible = true;
   Timer? _timer;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -173,7 +158,7 @@ class _FadingWidgetState extends State<FadingWidget> {
         });
       }
     });
-    _timer = Timer(Duration(milliseconds: 3500), () {
+    _timer = Timer(Duration(milliseconds: 2000), () {
       if (mounted) {
         setState(() {
           _isVisible = false;
@@ -191,13 +176,11 @@ class _FadingWidgetState extends State<FadingWidget> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
 
     final dif = widget.time.difference(widget.data.fetch_datetime).inMinutes;
 
     String text = translation('updated, just now', widget.data.settings["Language"]);
-
-
-    print(dif);
 
     if (dif > 0) {
       text = translation('updated, x min ago', widget.data.settings["Language"]);
@@ -206,10 +189,51 @@ class _FadingWidgetState extends State<FadingWidget> {
 
     List<String> split = text.split(',');
 
-    return AnimatedOpacity(
-      duration: const Duration(milliseconds: 400),
-      opacity: _isVisible ? 1.0 : 0.0,
-      child: Padding(
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 1000),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        final inAnimation = CurvedAnimation(
+          parent: animation,
+          curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
+        );
+        final outAnimation = CurvedAnimation(
+          parent: animation,
+          curve: const Interval(1.0, 0.5, curve: Curves.easeOut),
+        );
+        return FadeTransition(
+          opacity: _isVisible ? outAnimation : inAnimation,
+          child: child,
+        );
+      },
+      child: SinceLastUpdate(
+        key: ValueKey<bool>(_isVisible),
+        split: split,
+        data: widget.data,
+        isVisible: _isVisible,
+      ),
+    );
+  }
+}
+
+
+class SinceLastUpdate extends StatefulWidget {
+  final split;
+  final data;
+  final isVisible;
+
+  SinceLastUpdate({Key? key, required this.data, required this.split, required this.isVisible}) : super(key: key);
+
+  @override
+  _SinceLastUpdateState createState() => _SinceLastUpdateState();
+}
+
+class _SinceLastUpdateState extends State<SinceLastUpdate>{
+
+  @override
+  Widget build(BuildContext context) {
+
+    if (widget.isVisible) {
+      return Padding(
         padding: const EdgeInsets.only(top: 6, right: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -218,17 +242,51 @@ class _FadingWidgetState extends State<FadingWidget> {
               padding: const EdgeInsets.only(right: 3),
               child: Icon(Icons.access_time, color: widget.data.current.primary, size: 13,),
             ),
-            comfortatext('${split[0]},', 13, widget.data.settings,
+            comfortatext('${widget.split[0]},', 13, widget.data.settings,
                 color: widget.data.current.primary, weight: FontWeight.w500),
 
-            comfortatext(split.length > 1 ?split[1] : "", 13, widget.data.settings,
+            comfortatext(widget.split.length > 1 ? widget.split[1] : "", 13, widget.data.settings,
                 color: widget.data.current.onSurface, weight: FontWeight.w500),
           ],
         ),
-      ),
-    );
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(top: 5, right: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            GestureDetector(
+              onTap: () async {
+                await _launchUrl(widget.data.current.photoUrl);
+              },
+              child: comfortatext("Photo", 12, widget.data.settings, color: widget.data.current.onSurface,
+                  decoration: TextDecoration.underline),
+            ),
+            comfortatext(" by ", 12, widget.data.settings, color: widget.data.current.onSurface),
+            GestureDetector(
+              onTap: () async {
+                await _launchUrl(widget.data.current.photographerUrl);
+              },
+              child: comfortatext(widget.data.current.photographerName, 13, widget.data.settings, color: widget.data.current.onSurface,
+                  decoration: TextDecoration.underline),
+            ),
+            comfortatext(" on ", 12, widget.data.settings, color: widget.data.current.onSurface),
+            GestureDetector(
+              onTap: () async {
+                await _launchUrl("https://unsplash.com/");
+              },
+              child: comfortatext("Unsplash", 12, widget.data.settings, color: widget.data.current.onSurface,
+                  decoration: TextDecoration.underline),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }
+
+
 
 class DescriptionCircle extends StatelessWidget {
 

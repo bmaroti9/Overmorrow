@@ -275,6 +275,10 @@ class WapiCurrent {
 
   final Image image;
 
+  final String photographerName;
+  final String photographerUrl;
+  final String photoUrl;
+
   const WapiCurrent({
     required this.precip,
     required this.humidity,
@@ -303,15 +307,26 @@ class WapiCurrent {
     required this.primarySecond,
 
     required this.image,
+    required this.photographerName,
+    required this.photographerUrl,
+    required this.photoUrl,
   });
 
   static Future<WapiCurrent> fromJson(item, settings, real_loc, lat, lng) async {
 
     Image Uimage;
 
+    String photographerName = "";
+    String photorgaperUrl = "";
+    String photoLink = "";
+
     if (settings["Image source"] == "network") {
-      Uimage = await getUnsplashImage(textCorrection(
+      final ImageData = await getUnsplashImage(textCorrection(
           item["current"]["weather_code"], item["current"]["is_day"]), real_loc, lat, lng);
+      Uimage = ImageData[0];
+      photographerName = ImageData[1];
+      photorgaperUrl = ImageData[2];
+      photoLink = ImageData[3];
     }
     else {
       String imagePath = backdropCorrection(
@@ -373,7 +388,11 @@ class WapiCurrent {
           settings["Precipitation"]).toStringAsFixed(1)),
       wind: unit_coversion(item["current"]["wind_kph"], settings["Wind"])
           .round(),
-      wind_dir: item["current"]["wind_degree"]
+      wind_dir: item["current"]["wind_degree"],
+
+      photographerName: photographerName,
+      photographerUrl: photorgaperUrl,
+      photoUrl: photoLink
     );
   }
 }

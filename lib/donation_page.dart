@@ -448,6 +448,7 @@ class _InfoPageState extends State<InfoPage> {
   }
 }
 
+
 Future<void> _launchUrl(String url) async {
   final Uri _url = Uri.parse(url);
   if (!await launchUrl(_url)) {
