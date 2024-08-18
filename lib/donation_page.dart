@@ -23,61 +23,33 @@ import 'package:overmorrow/ui_helper.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
-final imageText = [
-  'Clear Night',
-  'Partly Cloudy',
-  'Clear Sky',
-  'Overcast',
-  'Haze',
-  'Rain',
-  'Sleet',
-  'Drizzle',
-  'Thunderstorm',
-  'Heavy Snow',
-  'Fog',
-  'Snow',
-  'Heavy Rain',
-  'Cloudy Night',
-  'Error Screen'
-];
-
-final imageLink = [
-  'https://unsplash.com/photos/time-lapse-photography-of-stars-at-nighttime-YvOT1lJ0NPQ',
-  'https://unsplash.com/photos/ocean-under-clouds-Plkff-dVfNM',
-  'https://unsplash.com/photos/blue-and-white-sky-d12K_FkCUN8',
-  'https://unsplash.com/photos/view-of-calm-sea-nQM2oClouhY',
-  'https://unsplash.com/photos/silhouette-of-trees-and-sea-L-HxY2XlaaY',
-  'https://unsplash.com/photos/water-droplets-on-clear-glass-1YHXFeOYpN0',
-  'https://unsplash.com/photos/snow-covered-trees-and-road-during-daytime-wyM1KmMUSbA',
-  'https://unsplash.com/photos/a-view-of-a-plane-through-a-rain-covered-window-UsYOap7yIMg',
-  'https://unsplash.com/photos/lightning-strike-on-the-sky-ley4Kf2iG7Y',
-  'https://unsplash.com/photos/snowy-forest-on-mountainside-during-daytime-t4hA-zCALUQ',
-  'https://unsplash.com/photos/green-trees-on-mountain-under-white-clouds-during-daytime-obQacWYxB1I',
-  'https://unsplash.com/photos/bokeh-photography-of-snows-SH4GNXNj1RA',
-  'https://unsplash.com/photos/dew-drops-on-glass-panel-bWtd1ZyEy6w',
-  'https://unsplash.com/photos/blue-and-white-starry-night-sky-NpF9JLGYfeQ',
-  'https://unsplash.com/photos/snow-covered-grass-at-daytime-KQWEuSh_VR0',
-];
-
 class DonationPage extends StatefulWidget {
-  final Color primary;
-  final Color back;
+  final primary;
   final settings;
+  final surface;
+  final onSurface;
+  final highlight;
+
 
   const DonationPage({Key? key, required this.primary, required this.settings,
-  required this.back}) : super(key: key);
+  required this.surface, required this.highlight, required this.onSurface}) : super(key: key);
 
   @override
   _DonationPageState createState() =>
-      _DonationPageState(primary: primary, settings: settings, back: back);
+      _DonationPageState(primary: primary, settings: settings, surface: surface,
+          onSurface: onSurface, highlight: highlight);
 }
 
 class _DonationPageState extends State<DonationPage> {
   final primary;
   final settings;
-  final back;
+  final surface;
+  final onSurface;
+  final highlight;
 
-  _DonationPageState({required this.back, required this.settings, required this.primary});
+
+  _DonationPageState({required this.surface, required this.settings,
+    required this.primary, required this.onSurface, required this.highlight});
 
   void goBack() {
     Navigator.pop(context);
@@ -85,90 +57,62 @@ class _DonationPageState extends State<DonationPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Color> colors = getColors(primary, back, settings, 0);
 
-    return Scaffold(
-      appBar: AppBar(
-          toolbarHeight: 65,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-          elevation: 0,
-          leadingWidth: 50,
-          backgroundColor: colors[0],
-          title: comfortatext(translation('Donate', settings["Language"]), 25, settings,
-          color: colors[2]),
-          leading: IconButton(
-            onPressed: () {
-              goBack();
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: colors[2],
-            ),
-          )),
-      body: Container(
-        color: colors[0],
-        child: Padding(
-          padding: const EdgeInsets.only(top: 30),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Image.asset(
-                    'assets/icons/Overmorrow_white_classic.png',
-                    fit: BoxFit.contain,
-                    height: 100,
-                  ),
-                ),
-                SizedBox(
-                  width: 300,
+    return Material(
+      color: surface,
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            leading:
+            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
+                onPressed: () {
+                  goBack();
+                }),
+            title: comfortatext(
+                translation('Donate', settings!["Language"]!), 30, settings,
+                color: surface),
+            backgroundColor: primary,
+            pinned: false,
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+                color: surface,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      comfortatext("Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. "
+                          "\n \nSo if you just want to use it like that then please do enjoy."
+                          "\n \nIf however you like using it and you feel like it's worth \$1 of your money then please consider supporting the project on my Patreon."
+                         , 18, settings, color: onSurface),
+
                       Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: comfortatext(translation(
-                            'Overmorrow is a free app. :)', settings["Language"]), 21, settings,
-                            color: colors[2])
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15),
-                        child: comfortatext(translation(
-                            'Support me on Patreon, to help me keep it that way!',
-                            settings["Language"]), 21, settings,
-                            color: colors[2])
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 30, bottom: 40),
-                          child: comfortatext(translation('Thank You! -Balint',
-                              settings["Language"]), 18, settings,
-                              color: colors[2])
+                        padding: const EdgeInsets.only(top: 40),
+                        child: Center(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              padding: const EdgeInsets.all(15),
+                              backgroundColor: surface,
+                              side: BorderSide(width: 2, color: primary),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                            ),
+                            onPressed: () async {
+                              await _launchUrl('https://www.patreon.com/MarotiDevel');
+                            },
+                            child: comfortatext('Support on Patreon',
+                                18, settings, color: primary, weight: FontWeight.w600),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 6,
-                      padding: const EdgeInsets.all(15),
-                      backgroundColor: Color(0xfff96854),
-                      //side: BorderSide(width: 3, color: main),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                    onPressed: () async {
-                      await _launchUrl('https://www.patreon.com/MarotiDevel');
-                    },
-                    child: comfortatext(translation('Support me on Patreon', settings["Language"]),
-                        20, settings, color: WHITE),
-                ),
-              ],
+                )
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -222,7 +166,6 @@ class _InfoPageState extends State<InfoPage> {
             backgroundColor: primary,
             pinned: false,
           ),
-          // Just some content big enough to have something to scroll.
           SliverToBoxAdapter(
             child: Container(
               color: surface,
