@@ -236,7 +236,7 @@ class _InfoPageState extends State<InfoPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 30, bottom: 10),
                       child: comfortatext(
-                          "developed by:", 16,
+                          translation("developed by:", settings["Language"]), 16,
                           settings,
                           color: onSurface),
                     ),
@@ -258,14 +258,14 @@ class _InfoPageState extends State<InfoPage> {
                             onTap: () {
                               _launchUrl("https://github.com/bmaroti9/Overmorrow");
                             },
-                            child: comfortatext("source code", 16, settings, color: primary,
+                            child: comfortatext(translation("source code", settings["Language"]), 16, settings, color: primary,
                                 decoration: TextDecoration.underline),
                           ),
                           GestureDetector(
                             onTap: () {
                               _launchUrl("https://github.com/bmaroti9/Overmorrow/issues");
                             },
-                            child: comfortatext("report an issue", 16, settings, color: primary,
+                            child: comfortatext(translation("report an issue", settings["Language"]), 16, settings, color: primary,
                                 decoration: TextDecoration.underline),
                           ),
                         ],
@@ -274,7 +274,7 @@ class _InfoPageState extends State<InfoPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 40, bottom: 10),
                       child: comfortatext(
-                          "weather data:", 16,
+                          translation("weather data:", settings["Language"]), 16,
                           settings,
                           color: onSurface),
                     ),
@@ -312,7 +312,7 @@ class _InfoPageState extends State<InfoPage> {
                       child: Wrap(
                         spacing: 10,
                         children: [
-                          comfortatext("all images used are from:", 16, settings, color: onSurface),
+                          comfortatext(translation("all images used are from:", settings["Language"]), 16, settings, color: onSurface),
                           GestureDetector(
                             onTap: () {
                               _launchUrl("https://unsplash.com/");

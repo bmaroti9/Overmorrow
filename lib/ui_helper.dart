@@ -251,6 +251,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
         ),
       );
     } else if (widget.data.current.photographerName != ""){
+      List<String> split = translation("photo by x on Unsplash", widget.data.settings["Language"]).split(",");
       return Padding(
         padding: const EdgeInsets.only(top: 5, right: 10),
         child: Row(
@@ -260,10 +261,10 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
               onTap: () async {
                 await _launchUrl(widget.data.current.photoUrl);
               },
-              child: comfortatext("Photo", 12, widget.data.settings, color: widget.data.current.onSurface,
+              child: comfortatext(split[0], 12, widget.data.settings, color: widget.data.current.onSurface,
                   decoration: TextDecoration.underline),
             ),
-            comfortatext(" by ", 12, widget.data.settings, color: widget.data.current.onSurface),
+            comfortatext(split[1], 12, widget.data.settings, color: widget.data.current.onSurface),
             GestureDetector(
               onTap: () async {
                 await _launchUrl(widget.data.current.photographerUrl);
@@ -271,12 +272,12 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
               child: comfortatext(widget.data.current.photographerName, 13, widget.data.settings, color: widget.data.current.onSurface,
                   decoration: TextDecoration.underline),
             ),
-            comfortatext(" on ", 12, widget.data.settings, color: widget.data.current.onSurface),
+            comfortatext(split[3], 12, widget.data.settings, color: widget.data.current.onSurface),
             GestureDetector(
               onTap: () async {
                 await _launchUrl("https://unsplash.com/");
               },
-              child: comfortatext("Unsplash", 12, widget.data.settings, color: widget.data.current.onSurface,
+              child: comfortatext(split[4], 12, widget.data.settings, color: widget.data.current.onSurface,
                   decoration: TextDecoration.underline),
             ),
           ],
