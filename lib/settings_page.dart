@@ -220,7 +220,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
   else if (x == "colorful") {
     colors = [
       palette[0].onTertiaryFixedVariant,
-      palette[0].tertiary,
+      palette[0].primary,
       palette[0].primaryFixed,
       palette[0].secondaryFixed,
       palette[0].onSurface,

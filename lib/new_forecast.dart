@@ -266,6 +266,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
         SizedBox(
           height: state? 280 : 250,
           child: PageView(
+            physics: const NeverScrollableScrollPhysics(),
             controller: _pageController,
             children: <Widget>[
               buildTemp(day.hourly, data, highlight),

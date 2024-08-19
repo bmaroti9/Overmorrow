@@ -32,19 +32,61 @@ Map<String, int> languageIndex = { //the index of the language used in the mainT
 };
 
 Map<String, List<String>> mainTranslate = {
+  'Feels like': [
+    'Feels like',
+    'Hőérzet',
+    'Sensación',
+    'Ressenti',
+    'Gefühlt',
+    'Percepito',
+    'Sensação',
+    'Ощущается',
+    '体感',
+    '体感',
+    'Odczuwaln.',
+    'Αίσθηση'
+  ],
+  'Precip.': [
+    'Precip.',
+    'Csapad.',
+    'Precip.',
+    'Précip.',
+    'Niedersch.',
+    'Precip.',
+    'Precip.',
+    'Осадки',
+    '降水',
+    '降水',
+    'Opady',
+    'Κατ. βροχ.'
+  ],
   'Humidity': [
     'Humidity',
-    'Páratartalom',
+    'Páratart.',
     'Humedad',
     'Humidité',
-    'Luftfeuchtigkeit',
+    'Luftfeuch.',
     'Umidità',
-    'Umidade',
-    'влажность',
+    'Humidade',
+    'Влажность',
     '湿度',
     '湿度',
-    'Wilgotność',
+    'Wilgot.',
     'Υγρασία'
+  ],
+  'Wind': [
+    'Wind',
+    'Szél',
+    'Viento',
+    'Vent',
+    'Wind',
+    'Vento',
+    'Vento',
+    'Ветер',
+    '风',
+    '風',
+    'Wiatr',
+    'Άνεμος'
   ],
   'UV': [
     'UV',
@@ -88,20 +130,6 @@ Map<String, List<String>> mainTranslate = {
     'Ustawienia',
     'Ρυθμίσεις'
   ],
-  'Feels like': [
-    'Feels like',
-    'Érződik, mint',
-    'Se siente como',
-    'Se sent comme',
-    'Fühlt sich an wie',
-    'Sembra',
-    'Sente-se como',
-    'Чувствуется как',
-    '感觉像',
-    '感じる',
-    'Odczuwalna',
-    'Αισθητή'
-  ],
   'Donate': [
     'Donate',
     'Adományozás',
@@ -129,20 +157,6 @@ Map<String, List<String>> mainTranslate = {
     '紹介',
     'Info',
     'Σχετικά με'
-  ],
-  'Wind': [
-    'Wind',
-    'Szél',
-    'Viento',
-    'Vent',
-    'Wind',
-    'Vento',
-    'Vento',
-    'Ветер',
-    '风',
-    '風',
-    'Wiatr',
-    'Άνεμος'
   ],
   'Today': [
     'Today',
@@ -451,62 +465,6 @@ Map<String, List<String>> mainTranslate = {
     '多云の夜',
     'Pochmurna noc',
     'Συννεφιασμένη Νύχτα'
-  ],
-  'Overmorrow is a free app. :)': [
-    'Overmorrow is a free app. :)',
-    'Overmorrow egy ingyenes alkalmazás. :)',
-    'Overmorrow es una aplicación gratuita. :)',
-    'Overmorrow est une application gratuite. :)',
-    'Overmorrow ist eine kostenlose App. :)',
-    'Overmorrow è un app gratuita. :)',
-    'O Overmorrow é um aplicativo gratuito. :)',
-    'Overmorrow - бесплатное приложение. :)',
-    'Overmorrow是一款免费应用程序。:)',
-    'Overmorrowは無料のアプリです。:)',
-    'Overmorrow to darmowa aplikacja. :)',
-    'Το Overmorrow είναι μία δωρεάν εφαρμογή. :)'
-  ],
-  'Support me on Patreon, to help me keep it that way!': [
-  'Support me on Patreon, to help me keep it that way!',
-  'Támogass a Patreonon, hogy segíts nekem fenntartani! :)',
-  '¡Apóyame en Patreon para ayudarme a mantenerlo así! :)',
-  'Soutenez-moi sur Patreon pour m aider à le maintenir de cette manière ! :)',
-  'Unterstützen Sie mich auf Patreon, um mir dabei zu helfen, es so zu halten! :)',
-  'Sostienimi su Patreon per aiutarmi a mantenerlo in questo modo! :)',
-  'Apoie-me no Patreon para me ajudar a mantê-lo assim! :)',
-  'Поддержите меня на Patreon, чтобы помочь мне сохранить это так! :)',
-  '在Patreon上支持我，以帮助我保持这种方式！:)',
-  'これを維持するのを助けるためにPatreonで私をサポートしてください！:)',
-  'Wesprzyj mnie, wspomóż rozwój aplikacji! :)',
-  'Στήριξέ με στο Patreon ώστε να συνεχίσει να είναι έτσι! :)'
-  ],
-  'Thank You! -Balint': [
-    'Thank You! -Balint',
-    'Köszönöm! -Balint',
-    '¡Gracias! -Balint',
-    'Merci ! -Balint',
-    'Vielen Dank! -Balint',
-    'Grazie! -Balint',
-    'Obrigado! -Balint',
-    'Спасибо! -Балинт',
-    '谢谢！ -巴林特',
-    'ありがとうございます！ -バリント',
-    'Dziękuję! -Balint',
-    'Σας ευχαριστώ! -Μπαλίντ'
-  ],
-  'Support me on Patreon': [
-    'Support me on Patreon',
-    'Támogass a Patreonon',
-    'Apóyame en Patreon',
-    'Soutenez-moi sur Patreon',
-    'Unterstützen Sie mich auf Patreon',
-    'Sostienimi su Patreon',
-    'Apoie-me no Patreon',
-    'Поддержите меня на Patreon',
-    '在Patreon上支持我',
-    'Patreonでサポートしてください',
-    'Wspieraj na Patreon',
-    'Υποστήριξέ με στο Patreon'
   ],
 
   'Weak or no wifi connection': [
@@ -1258,6 +1216,34 @@ Map<String, List<String>> mainTranslate = {
     '使用されているすべての画像は次の提供です：',
     'Wszystkie użyte obrazy pochodzą z:',
     'Όλες οι εικόνες που χρησιμοποιούνται είναι από:',
+  ],
+  'Overmorrow donate text': [
+    'Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nIf however you like using it and you feel like it\'s worth \$1 of your money then please consider supporting the project on my Patreon.',
+    'Overmorrow mindig is teljesen ingyenes alkalmazásnak készült, hirdetések és alkalmazáson belüli vásárlások nélkül. \n \nHa csak így szeretnéd használni, akkor élvezd bátran. \n \nHa azonban szereted használni, és úgy érzed, hogy megér egy dollárt, kérlek, fontold meg a projekt támogatását a Patreonomon.',
+    'Overmorrow siempre estuvo destinado a ser una aplicación completamente gratuita, sin anuncios ni compras dentro de la aplicación. \n \nAsí que si solo quieres usarla así, disfrútala. \n \nSin embargo, si te gusta usarla y sientes que vale un dólar de tu dinero, considera apoyar el proyecto en mi Patreon.',
+    'Overmorrow a toujours été conçu pour être une application totalement gratuite, sans aucune publicité ni achats intégrés. \n \nDonc si vous voulez juste l\'utiliser comme ça, profitez-en. \n \nCependant, si vous aimez l\'utiliser et que vous pensez que cela vaut un dollar, envisagez de soutenir le projet sur mon Patreon.',
+    'Overmorrow war immer als völlig kostenlose App gedacht, ohne Werbung oder In-App-Käufe. \n \nWenn du sie also einfach so nutzen möchtest, dann genieße es. \n \nWenn dir die Nutzung gefällt und du denkst, dass sie einen Dollar wert ist, erwäge bitte, das Projekt auf meinem Patreon zu unterstützen.',
+    'Overmorrow è sempre stata pensata come un\'app completamente gratuita, senza pubblicità o acquisti in-app. \n \nQuindi, se vuoi usarla così, per favore, goditela. \n \nTuttavia, se ti piace usarla e pensi che valga un dollaro, considera di supportare il progetto su Patreon.',
+    'Overmorrow sempre foi planejado para ser um aplicativo totalmente gratuito, sem anúncios ou compras dentro do app. \n \nEntão, se você quiser apenas usá-lo assim, aproveite. \n \nNo entanto, se você gosta de usá-lo e sente que vale um dólar, considere apoiar o projeto no meu Patreon.',
+    'Overmorrow всегда задумывался как полностью бесплатное приложение, без рекламы и встроенных покупок. \n \nЕсли вы хотите просто пользоваться им таким образом, пожалуйста, наслаждайтесь. \n \nЕсли вам нравится пользоваться приложением, и вы считаете, что оно стоит одного доллара, пожалуйста, подумайте о поддержке проекта на моем Patreon.',
+    'Overmorrow 始终是一款完全免费的应用程序，没有任何广告或应用内购买。\n \n所以如果您只想这样使用它，那么请尽情享用。\n \n但是，如果您喜欢使用它，并觉得它值 1 美元，请考虑在我的 Patreon 上支持该项目。',
+    'Overmorrow は、広告やアプリ内購入がない完全無料のアプリとして常に意図されていました。\n \nそれだけで使いたい場合は、ぜひお楽しみください。\n \nただし、気に入っていただけて、それが 1 ドルの価値があると感じた場合は、私の Patreon でプロジェクトをサポートすることをご検討ください。',
+    'Overmorrow zawsze miało być całkowicie darmową aplikacją, bez żadnych reklam ani zakupów w aplikacji.\n \nWięc jeśli chcesz jej tak używać, proszę bardzo.\n \nJeśli jednak lubisz ją używać i uważasz, że jest warta dolara, rozważ wsparcie projektu na moim Patreon.',
+    'Το Overmorrow προοριζόταν πάντα να είναι μια εντελώς δωρεάν εφαρμογή, χωρίς διαφημίσεις ή αγορές εντός εφαρμογής. \n \nΑν λοιπόν θέλετε να το χρησιμοποιήσετε έτσι, απολαύστε το. \n \nΩστόσο, εάν σας αρέσει να το χρησιμοποιείτε και αισθάνεστε ότι αξίζει 1 δολάριο από τα χρήματά σας, σκεφτείτε να στηρίξετε το έργο στο Patreon μου.'
+  ],
+  'Support on Patreon': [
+    'Support on Patreon',
+    'Támogatás a Patreonon',
+    'Apoyo en Patreon',
+    'Soutien sur Patreon',
+    'Unterstützung auf Patreon',
+    'Supporto su Patreon',
+    'Apoio no Patreon',
+    'Поддержка на Patreon',
+    '在 Patreon 上支持',
+    'Patreon でサポート',
+    'Wsparcie na Patreon',
+    'Υποστήριξη στο Patreon'
   ],
 
   'Search translation': [ //used for getting the codes used for translation of city names

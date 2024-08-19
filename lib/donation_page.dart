@@ -82,9 +82,7 @@ class _DonationPageState extends State<DonationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      comfortatext("Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. "
-                          "\n \nSo if you just want to use it like that then please do enjoy."
-                          "\n \nIf however you like using it and you feel like it's worth \$1 of your money then please consider supporting the project on my Patreon."
+                      comfortatext(translation("Overmorrow donate text", settings["Language"])
                          , 18, settings, color: onSurface),
 
                       Padding(
@@ -102,7 +100,7 @@ class _DonationPageState extends State<DonationPage> {
                             onPressed: () async {
                               await _launchUrl('https://www.patreon.com/MarotiDevel');
                             },
-                            child: comfortatext('Support on Patreon',
+                            child: comfortatext(translation('Support on Patreon', settings["Language"]),
                                 18, settings, color: primary, weight: FontWeight.w600),
                           ),
                         ),
