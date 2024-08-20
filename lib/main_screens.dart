@@ -148,15 +148,9 @@ class _NewMainState extends State<NewMain> {
 
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 30),
-            child: providerSelector(
-                data.settings,
-                updateLocation,
-                data.current.onSurface,
-                data.current.containerLow,
-                data.current.primary,
-                data.provider,
-                "${data.lat}, ${data.lng}",
-                data.real_loc),
+            child: providerSelector(data.settings, updateLocation, data.current.onSurface,
+                data.current.containerLow, data.current.primary, data.provider,
+                "${data.lat}, ${data.lng}", data.real_loc),
           ),
 
 
@@ -186,7 +180,7 @@ Widget TabletLayout(data, updateLocation, context) {
 
   double toppad = MediaQuery.of(context).viewPadding.top;
 
-  double width = size.width - min(max(size.width * 0.4, 400), 450);
+  double width = size.width * 0.6;
   double heigth = min(max(width / 1.5, 450), 510);
 
   return Scaffold(
@@ -200,7 +194,7 @@ Widget TabletLayout(data, updateLocation, context) {
       onRefresh: () async {
         await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
       },
-      backgroundColor: WHITE,
+      backgroundColor: data.current.primaryLight,
       color: data.current.surface,
       displacement: 100,
       child: Padding(
@@ -223,70 +217,80 @@ Widget TabletLayout(data, updateLocation, context) {
                           child: Stack(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 100),
+                                padding: const EdgeInsets.only(top: 100, left: 6, right: 6),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: ParrallaxBackground(image: data.current.image, key: Key(data.place),
                                     color: darken(data.current.surface, 0.1),),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 100, left: 30, bottom: 31),
-                                child: Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Spacer(),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 0, bottom: 0),
-                                        child: comfortatext("${data.current.temp}°", 65, data.settings,
-                                            color: data.current.colorpop, weight: FontWeight.w200),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 0),
-                                        child: comfortatext(data.current.text, 25, data.settings, color: data.current.colorpop),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              LayoutBuilder(
-                                  builder: (BuildContext context, BoxConstraints constraints) {
-                                    if(constraints.maxWidth > 400.0) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(right: 20),
-                                        child: Circles(400, data, 0.6, data.current.colorpop, align: Alignment.centerRight),
-                                      );
-                                    } else {
-                                      return Circles(constraints.maxWidth * 0.90, data, 1, data.current.surface);
-                                    }
-                                  }
-                              ),
                               MySearchParent(updateLocation: updateLocation,
-                                color: data.current.container, place: data.place,
-                                controller: controller, settings: data.settings, real_loc: data.real_loc,
-                                secondColor: data.current.surface, textColor: data.current.outline,
-                                highlightColor: data.current.surface, key: Key("${data.place}, ${data.current.surface}"),
+                                color: data.current.container,
+                                place: data.place,
+                                controller: controller,
+                                settings: data.settings,
+                                real_loc: data.real_loc,
+                                secondColor: data.settings["Color mode"] == "light" ? data.current.primary : data.current.onSurface,
+                                textColor: data.settings["Color mode"] == "light" ? data.current.primaryLight : data.current.primary,
+                                highlightColor: data.settings["Color mode"] == "light" ? data.current.primary : data.current.onSurface,
+                                key: Key("${data.place}, ${data.current.surface}"),
                                 extraTextColor: data.current.onSurface,),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    buildHihiDays(data),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30, right: 10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 7),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                comfortatext("${data.current.temp}°", 65, data.settings,
+                                    color: data.current.primaryLight, weight: FontWeight.w200),
+                                comfortatext(data.current.text, 25, data.settings, color: data.current.onSurface,
+                                weight: FontWeight.w300),
+                              ],
+                            ),
+                          ),
+                          const Spacer(),
+                          Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              FadingWidget(data: data,
+                                  time: data.updatedTime,
+                                  key: Key(data.updatedTime.toString())),
+                              Circles(420, data, 0.3, data.current.primary),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    buildNewDays(data),
                   ],
                 ),
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 50),
+                  padding: const EdgeInsets.only(left: 20, top: 0),
                   child: Column(
                     children: [
-                      NewTimes(data, false),
-                      buildGlanceDay(data),
-                      providerSelector(data.settings, updateLocation, data.current.outline, data.current.container, data.current.surface,
-                          data.provider, "${data.lat}, ${data.lng}", data.real_loc),
+                      NewSunriseSunset(data: data, key: Key(data.place), size: size,),
+                      NewRain15MinuteIndicator(data),
+                      NewAirQuality(data),
+                      RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
+                      buildNewGlanceDay(data: data, key: Key("${data.place}, ${data.current.primary}"),),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 30),
+                        child: providerSelector(data.settings, updateLocation, data.current.onSurface,
+                            data.current.containerLow, data.current.primary, data.provider,
+                            "${data.lat}, ${data.lng}", data.real_loc),
+                      ),
                     ],
                   ),
                 ),

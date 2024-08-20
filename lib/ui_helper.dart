@@ -451,6 +451,7 @@ Widget RainWidget(data, day, highlight) {
   return Padding(
     padding: const EdgeInsets.only(left: 13, right: 13, top: 15),
     child: Container(
+      constraints: const BoxConstraints(minWidth: 0, maxWidth: 450),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
         //color: data.current.containerLow,
