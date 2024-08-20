@@ -132,7 +132,6 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
 
   print((username, userLink));
 
-
   return [Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,
     width: double.infinity, height: double.infinity,), username, userLink, photoLink];
 }

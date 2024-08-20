@@ -354,6 +354,7 @@ Map<String, int> textFilter = {
   'ice': -10000,
   'icy': -10000,
   'bubble': -10000,
+  'smoke' : -2000,
   'instagram': -10000,
   'ring': -10000,
   'during': 10000,
