@@ -257,6 +257,7 @@ class OMCurrent {
   final String photographerName;
   final String photographerUrl;
   final String photoUrl;
+  final List<Color> imageDebugColors;
 
   const OMCurrent({
     required this.precip,
@@ -289,6 +290,7 @@ class OMCurrent {
     required this.photographerName,
     required this.photographerUrl,
     required this.photoUrl,
+    required this.imageDebugColors
   });
 
   static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng) async {
@@ -325,7 +327,9 @@ class OMCurrent {
           item["current"]["weather_code"], sunstatus, timenow),
     );
 
-    List<Color> colors = await getMainColor(settings, primary, back, Uimage);
+    List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
+    List<Color> colors = x[0];
+    List<Color> imageDebugColors = x[1];
 
     print((photographerName, photorgaperUrl, photoLink));
 
@@ -334,6 +338,8 @@ class OMCurrent {
       photographerName: photographerName,
       photographerUrl: photorgaperUrl,
       photoUrl: photoLink,
+
+      imageDebugColors: imageDebugColors,
 
       text: translation(oMCurrentTextCorrection(
           item["current"]["weather_code"], sunstatus, timenow),

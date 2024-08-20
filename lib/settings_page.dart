@@ -277,12 +277,13 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
   return colors;
 }
 
-Future<List<Color>> getMainColor(settings, primary, back, image) async {
+Future<List<dynamic>> getMainColor(settings, primary, back, image) async {
   List<Color> colors;
 
   final String mode = settings["Color mode"];
 
-  List<dynamic> palette = await getImageColors(image, mode, settings);
+  List<dynamic> x = await getImageColors(image, mode, settings);
+  List<dynamic> palette = x[0];
 
   if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network'
       || settings["Color source"] == 'wallpaper') {
@@ -292,7 +293,7 @@ Future<List<Color>> getMainColor(settings, primary, back, image) async {
     colors = getColors(primary, back, settings, 0);
   }
 
-  return colors;
+  return [colors, x[1]];
 }
 
 Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
@@ -301,8 +302,8 @@ Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
 
   final String mode = settings["Color mode"];
 
-  List<dynamic> lightPalette = await getImageColors(image, "light" , settings);
-  List<dynamic> darkPalette = await getImageColors(image, "dark" , settings);
+  List<dynamic> lightPalette = (await getImageColors(image, "light" , settings))[0];
+  List<dynamic> darkPalette = (await getImageColors(image, "dark" , settings))[0];
 
   if (settings["Image source"] == 'network' || settings["Color source"] == 'wallpaper') {
     allColor.add(getNetworkColors(darkPalette, settings, force: "original"));

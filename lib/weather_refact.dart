@@ -363,6 +363,8 @@ Map<String, int> textFilter = {
   'wall' : -10000,
   'text': -10000,
   'sign': -10000,
+  'grayscale' : -100000,
+  'black and white' : -100000,
   'man': -10000000, //trying to not have people in images
   'male': -1000000,
   'couple': -1000000,

@@ -164,8 +164,23 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
 
   ColorScheme palette;
 
+  Color primeColor = Colors.amber;
+  int bestValue = -10000;
+
+  List<Color> paliColors = paliTotal.colors.toList();
+
+  for (int i = 0; i < paliColors.length; i++) { //i am trying to reduce the number of blue palettes
+                                                //because they are too common
+    double v = paliColors[i].red * 1 + paliColors[i].green * 1 - paliColors[i].blue * 5.0;
+    if (v > bestValue) {
+      print(("better", i));
+      bestValue = v.round();
+      primeColor = paliColors[i];
+    }
+  }
+
   if (settings["Color source"] == "image") {
-    palette = await _materialPalette(Uimage, color_mode, paliTotal.colors.first);
+    palette = await _materialPalette(Uimage, color_mode, primeColor);
   }
   else {
     palette = await MaterialYouColor(color_mode);
@@ -214,7 +229,7 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
     desc_color = bestcolor;
   }
 
-  return [palette, bestcolor, desc_color];
+  return [[palette, bestcolor, desc_color], paliTotal.colors.toList()];
 }
 
 int difFromBackColors(Color frontColor, List<Color> backcolors) {
@@ -310,7 +325,7 @@ Future<List<PaletteGenerator>> _generatorPalette(Image imageWidget) async {
   );
   PaletteGenerator _paletteGenerator2 = await PaletteGenerator.fromImage(
       imageInfo.image,
-      maximumColorCount: 1
+      maximumColorCount: 5
   );
 
   imageProvider.resolve(const ImageConfiguration()).removeListener(listener);

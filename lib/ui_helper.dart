@@ -76,7 +76,6 @@ bool estimateBrightnessForColor(Color color) {
   final double relativeLuminance = color.computeLuminance();
 
   const double kThreshold = 0.15;
-  print((relativeLuminance + 0.05) * (relativeLuminance + 0.05) > kThreshold);
   return (relativeLuminance + 0.05) * (relativeLuminance + 0.05) > kThreshold;
 }
 
@@ -545,7 +544,6 @@ class BarChartPainter extends CustomPainter {
 
       int smallerThan = (precip[i] * 2).round();
 
-      print((precip[i], smallerThan));
       if (smallerThan == 0 && precip[i] > 0) {
         smallerThan = 1;
       }

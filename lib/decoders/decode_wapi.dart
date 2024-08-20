@@ -279,6 +279,8 @@ class WapiCurrent {
   final String photographerUrl;
   final String photoUrl;
 
+  final List<Color> imageDebugColors;
+
   const WapiCurrent({
     required this.precip,
     required this.humidity,
@@ -310,6 +312,7 @@ class WapiCurrent {
     required this.photographerName,
     required this.photographerUrl,
     required this.photoUrl,
+    required this.imageDebugColors,
   });
 
   static Future<WapiCurrent> fromJson(item, settings, real_loc, lat, lng) async {
@@ -348,7 +351,9 @@ class WapiCurrent {
         )
     );
 
-    List<Color> colors = await getMainColor(settings, primary, back, Uimage);
+    List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
+    List<Color> colors = x[0];
+    List<Color> imageDebugColors = x[1];
 
     return WapiCurrent(
 
@@ -392,7 +397,8 @@ class WapiCurrent {
 
       photographerName: photographerName,
       photographerUrl: photorgaperUrl,
-      photoUrl: photoLink
+      photoUrl: photoLink,
+      imageDebugColors: imageDebugColors,
     );
   }
 }

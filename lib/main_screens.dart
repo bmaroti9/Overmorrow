@@ -138,6 +138,33 @@ class _NewMainState extends State<NewMain> {
               ),
             ],
           ),
+          /*
+          Padding(
+            padding: const EdgeInsets.only(left: 30),
+            child: SizedBox(
+              height: 35,
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: data.current.imageDebugColors.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Container(
+                        width: 25,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: data.current.imageDebugColors[index]
+                        ),
+                      ),
+                  );
+                }
+              ),
+            ),
+          ),
+           */
 
           NewSunriseSunset(data: data, key: Key(data.place), size: size,),
           NewRain15MinuteIndicator(data),
