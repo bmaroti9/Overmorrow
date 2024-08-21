@@ -416,7 +416,7 @@ class WapiDay {
   final double total_precip;
   final int windspeed;
   final int uv;
-  final mm_precip;
+  final double mm_precip;
 
   final int wind_dir;
 

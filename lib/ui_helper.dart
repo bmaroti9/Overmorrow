@@ -150,14 +150,14 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
   @override
   void initState() {
     super.initState();
-    _timer = Timer(Duration(milliseconds: 400), () {
+    _timer = Timer(const Duration(milliseconds: 400), () {
       if (mounted) {
         setState(() {
           _isVisible = true;
         });
       }
     });
-    _timer = Timer(Duration(milliseconds: 2000), () {
+    _timer = Timer(const Duration(milliseconds: 2000), () {
       if (mounted) {
         setState(() {
           _isVisible = false;
@@ -252,31 +252,43 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
     } else if (widget.data.current.photographerName != ""){
       List<String> split = translation("photo by x on Unsplash", widget.data.settings["Language"]).split(",");
       return Padding(
-        padding: const EdgeInsets.only(top: 5, right: 10),
+        padding: const EdgeInsets.only(top: 0, right: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            GestureDetector(
-              onTap: () async {
+            TextButton(
+              onPressed: () async {
                 await _launchUrl(widget.data.current.photoUrl);
               },
-              child: comfortatext(split[0], 12, widget.data.settings, color: widget.data.current.onSurface,
+              style: TextButton.styleFrom(
+                 padding: const EdgeInsets.all(1),
+                  minimumSize: const Size(0, 22),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: comfortatext(split[0], 12.5, widget.data.settings, color: widget.data.current.onSurface,
                   decoration: TextDecoration.underline),
             ),
-            comfortatext(split[1], 12, widget.data.settings, color: widget.data.current.onSurface),
-            GestureDetector(
-              onTap: () async {
+            comfortatext(split[1], 12.5, widget.data.settings, color: widget.data.current.onSurface),
+            TextButton(
+              onPressed: () async {
                 await _launchUrl(widget.data.current.photographerUrl);
               },
-              child: comfortatext(widget.data.current.photographerName, 13, widget.data.settings, color: widget.data.current.onSurface,
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                minimumSize: const Size(0, 22),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: comfortatext(widget.data.current.photographerName, 12.5, widget.data.settings, color: widget.data.current.onSurface,
                   decoration: TextDecoration.underline),
             ),
-            comfortatext(split[3], 12, widget.data.settings, color: widget.data.current.onSurface),
-            GestureDetector(
-              onTap: () async {
+            comfortatext(split[3], 12.5, widget.data.settings, color: widget.data.current.onSurface),
+            TextButton(
+              onPressed: () async {
                 await _launchUrl("https://unsplash.com/");
               },
-              child: comfortatext(split[4], 12, widget.data.settings, color: widget.data.current.onSurface,
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                minimumSize: const Size(0, 22),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: comfortatext(split[4], 12.5, widget.data.settings, color: widget.data.current.onSurface,
                   decoration: TextDecoration.underline),
             ),
           ],
@@ -462,7 +474,7 @@ Widget RainWidget(data, day, highlight) {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 14, right: 18, left: 18),
+              padding: const EdgeInsets.only(top: 14, right: 18, left: 18),
               child: AspectRatio(
                 aspectRatio: 2.2,
                 child: MyChart(precip, data, highlight)
