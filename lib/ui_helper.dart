@@ -258,7 +258,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
           children: [
             TextButton(
               onPressed: () async {
-                await _launchUrl(widget.data.current.photoUrl);
+                await _launchUrl(widget.data.current.photoUrl + "?utm_source=overmorrow&utm_medium=referral");
               },
               style: TextButton.styleFrom(
                  padding: const EdgeInsets.all(1),
@@ -270,7 +270,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
             comfortatext(split[1], 12.5, widget.data.settings, color: widget.data.current.onSurface),
             TextButton(
               onPressed: () async {
-                await _launchUrl(widget.data.current.photographerUrl);
+                await _launchUrl(widget.data.current.photographerUrl + "?utm_source=overmorrow&utm_medium=referral");
               },
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.all(1),
@@ -282,7 +282,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
             comfortatext(split[3], 12.5, widget.data.settings, color: widget.data.current.onSurface),
             TextButton(
               onPressed: () async {
-                await _launchUrl("https://unsplash.com/");
+                await _launchUrl("https://unsplash.com/?utm_source=overmorrow&utm_medium=referral");
               },
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.all(1),

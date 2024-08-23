@@ -126,7 +126,7 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
   print(index);
   print(unsplash_body[index]["links"]["html"]);
 
-  final String userLink = unsplash_body[index]["user"]["links"]["html"] ?? "";
+  final String userLink = (unsplash_body[index]["user"]["links"]["html"]) ?? "";
   final String username = unsplash_body[index]["user"]["name"] ?? "";
   final String photoLink = unsplash_body[index]["links"]["html"] ?? "";
 

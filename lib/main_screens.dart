@@ -93,7 +93,7 @@ class _NewMainState extends State<NewMain> {
                         child: comfortatext(
                             "${data.current.temp}°", 69, data.settings,
                             color: data.current.colorPop, weight: FontWeight.w300,
-                        )
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 0),
