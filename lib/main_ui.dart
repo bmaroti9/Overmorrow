@@ -62,7 +62,6 @@ class WeatherPage extends StatelessWidget {
   }
 }
 
-
 class ParrallaxBackground extends StatelessWidget {
   final Image image;
   final Color color;
@@ -73,14 +72,18 @@ class ParrallaxBackground extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return TweenAnimationBuilder<double>(
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 1300),
       tween: Tween<double>(begin: 0, end: 1),
+      curve: Curves.easeOutCubic,
       builder: (context, value, child) {
         return Container(
           color: color,
           child: Opacity(
             opacity: value,
-            child: image,
+            child: Transform.scale(
+              scale: 1.0 + (0.06 * value),
+              child: image,
+            ),
           ),
         );
       },
