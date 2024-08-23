@@ -209,8 +209,9 @@ class _MyAppState extends State<MyApp> {
     updateLocation('40.7128, 74.0060', "New York", time: 300, startup: true); //just for testing
   }
 
-  Future<void> updateLocation(proposedLoc, backupName, {time = 500, startup = false}) async {
+  Future<void> updateLocation(proposedLoc, backupName, {time = 0, startup = false}) async {
     setState(() {
+      HapticFeedback.lightImpact();
       if (startup) {
         startup2 = true;
       }
@@ -228,8 +229,10 @@ class _MyAppState extends State<MyApp> {
           startup2 = false;
         }
       });
-
-      await Future.delayed(Duration(milliseconds: (800 - time).toInt()));
+      if (time > 0) {
+        await Future.delayed(Duration(milliseconds: (800 - time).toInt()));
+      }
+      await Future.delayed(const Duration(milliseconds: 200));
 
       setState(() {
         isLoading = false;

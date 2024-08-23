@@ -65,7 +65,7 @@ class _NewMainState extends State<NewMain> {
       body: StretchyHeader.listView(
         displacement: 130,
         onRefresh: () async {
-          await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
+          await updateLocation("${data.lat}, ${data.lng}", data.real_loc, time: 400);
         },
         headerData: HeaderData(
             //backgroundColor: WHITE,

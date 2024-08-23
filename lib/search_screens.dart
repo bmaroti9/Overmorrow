@@ -498,7 +498,7 @@ class dumbySearch extends StatelessWidget {
       body: StretchyHeader.singleChild(
         displacement: 150,
         onRefresh: () async {
-          await updateLocation(latlng, place);
+          await updateLocation(latlng, place, time: 400);
         },
         headerData: HeaderData(
             blurContent: false,
