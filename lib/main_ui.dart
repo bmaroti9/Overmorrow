@@ -20,6 +20,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
 import 'package:overmorrow/main_screens.dart';
@@ -768,6 +769,7 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
                 );
               }).toList(),
               onChanged: (String? value) async {
+                HapticFeedback.mediumImpact();
                 SetData('weather_provider', value!);
                 await updateLocation(latlng, real_loc);
               },

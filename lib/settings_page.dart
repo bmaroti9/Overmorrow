@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/donation_page.dart';
@@ -420,6 +421,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
       );
     }).toList(),
     onChanged: (Object? value) {
+      HapticFeedback.lightImpact();
       updatePage(name, value);
     }
   );
@@ -469,6 +471,7 @@ Widget ColorCircle(name, outline, inside, settings, updatePage, {w = 2, tap = 0}
   return Expanded(
     child: GestureDetector(
       onTap: () {
+        HapticFeedback.mediumImpact();
         if (tap == 0) {
           return;
         }
@@ -568,6 +571,7 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
         SliverAppBar.large(
           leading:
           IconButton(icon: Icon(Icons.arrow_back, color: colors[11],), onPressed: () {
+            HapticFeedback.selectionClick();
             goBack();
           }),
           title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[11]),
@@ -832,6 +836,7 @@ class MyDrawer extends StatelessWidget {
                 settings, color: onSurface),
             leading: Icon(Icons.settings, color: primary,),
             onTap: () {
+              HapticFeedback.selectionClick();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SettingsPage(primary: backupprimary,
@@ -844,6 +849,7 @@ class MyDrawer extends StatelessWidget {
                 settings, color: onSurface),
             leading: Icon(Icons.info_outline, color: primary,),
             onTap: () {
+              HapticFeedback.selectionClick();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => InfoPage(primary: primary, settings: settings,
@@ -856,6 +862,7 @@ class MyDrawer extends StatelessWidget {
                 settings, color: onSurface),
             leading: Icon(Icons.favorite_border, color: primary,),
             onTap: () {
+              HapticFeedback.selectionClick();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => DonationPage(primary: primary, settings: settings,

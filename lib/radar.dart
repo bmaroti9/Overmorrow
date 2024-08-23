@@ -21,6 +21,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/settings_page.dart';
@@ -505,6 +506,7 @@ class _RadarSmallState extends State<RadarSmall> {
     timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer t) {
       if (isPlaying) {
         setState(() {
+          HapticFeedback.lightImpact();
           currentFrameIndex =
           ((currentFrameIndex + 1) % (data.radar.images.length - 1));
         });
@@ -622,6 +624,7 @@ class _RadarSmallState extends State<RadarSmall> {
                               ),
                             ),
                             onPressed: () {
+                              HapticFeedback.selectionClick();
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) =>
@@ -666,6 +669,7 @@ class _RadarSmallState extends State<RadarSmall> {
                           )
                       ),
                       onPressed: () async {
+                        HapticFeedback.selectionClick();
                         togglePlayPause();
                       },
                       child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
@@ -712,6 +716,7 @@ class _RadarSmallState extends State<RadarSmall> {
 
                           onChanged: (double value) {
                             setState(() {
+                              HapticFeedback.lightImpact();
                               hasBeenPlayed = true;
                               currentFrameIndex = value;
                             });
@@ -801,6 +806,7 @@ class _RadarBigState extends State<RadarBig> {
 
     timer = Timer.periodic(const Duration(milliseconds: 1600), (Timer t) {
       if (isPlaying) {
+        HapticFeedback.lightImpact();
         setState(() {
           currentFrameIndex =
           ((currentFrameIndex + 1) % (data.radar.images.length - 1));
@@ -903,6 +909,7 @@ class _RadarBigState extends State<RadarBig> {
                                   )
                               ),
                               onPressed: () async {
+                                HapticFeedback.selectionClick();
                                 togglePlayPause();
                               },
                               child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
@@ -950,6 +957,7 @@ class _RadarBigState extends State<RadarBig> {
 
                                   onChanged: (double value) {
                                     setState(() {
+                                      HapticFeedback.lightImpact();
                                       hasBeenPlayed = true;
                                       currentFrameIndex = value;
                                     });
@@ -1015,6 +1023,7 @@ class _RadarBigState extends State<RadarBig> {
                       ),
                     ),
                     onPressed: () {
+                      HapticFeedback.selectionClick();
                       Navigator.of(context).pop();
                     },
                     child: Icon(CupertinoIcons.fullscreen_exit,

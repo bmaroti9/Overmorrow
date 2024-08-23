@@ -76,12 +76,17 @@ Widget searchBar(Color color, List<String> recommend,
       controller: controller,
       width: 800,
 
+      onFocusChanged: (to) {
+        HapticFeedback.selectionClick();
+      },
+
       onQueryChanged: (query) async {
         isEditing = false;
         var result = await getRecommend(query, settings["Search provider"], settings);
         updateRec(result);
       },
       onSubmitted: (submission) {
+        HapticFeedback.lightImpact();
         updateLocation('query', submission);
         controller.close();
       },
@@ -103,6 +108,7 @@ Widget searchBar(Color color, List<String> recommend,
             child: CircularButton(
               icon: Icon(Icons.arrow_back_outlined, color: secondColor, size: 22,),
               onPressed: () {
+                HapticFeedback.selectionClick();
                 controller.close();
               },
             ),
@@ -114,6 +120,7 @@ Widget searchBar(Color color, List<String> recommend,
           child: IconButton(
             icon: Icon(Icons.menu_rounded, color: textColor, size: 25,),
             onPressed: () {
+              HapticFeedback.selectionClick();
               Scaffold.of(context).openDrawer();
             },
           ),
@@ -141,6 +148,7 @@ Widget searchBar(Color color, List<String> recommend,
               child: CircularButton(
                 icon: Icon(Icons.close, color: textColor,),
                 onPressed: () {
+                  HapticFeedback.lightImpact();
                   controller.clear();
                 },
               ),
@@ -249,6 +257,7 @@ Widget defaultSearchScreen(Color color,
                       )
                   ),
                   onPressed: () async {
+                    HapticFeedback.lightImpact();
                     updateIsEditing(!isEditing);
                   },
                   child: editIcon,
@@ -281,6 +290,7 @@ Widget defaultSearchScreen(Color color,
                 return GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
+                    HapticFeedback.lightImpact();
                     updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
                     controller.close();
                   },
@@ -305,6 +315,7 @@ Widget defaultSearchScreen(Color color,
                           icon: Myicon[icons[index]],
                           onPressed: () {
                             if (isEditing) {
+                              HapticFeedback.mediumImpact();
                               favorites.remove(favorites[index]);
                               updateFav(favorites);
                             }
@@ -353,6 +364,7 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
         return GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
+            HapticFeedback.selectionClick();
             updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
             controller.close();
           },
@@ -376,10 +388,12 @@ Widget recommendSearchScreen(Color color, List<String> recommend,
 
                 IconButton(onPressed: () {
                   if (favorites.contains(recommend[index])) {
+                    HapticFeedback.mediumImpact();
                     favorites.remove(recommend[index]);
                     updateFav(favorites);
                   }
                   else{
+                    HapticFeedback.lightImpact();
                     favorites.add(recommend[index]);
                     updateFav(favorites);
                   }
@@ -433,6 +447,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
             )
           ),
           onPressed: () async {
+            HapticFeedback.lightImpact();
             updateLocation('40.7128, 74.0060', 'CurrentLocation');
           },                   //^ this is new york for backup
           child: Icon(Icons.place_outlined, color: textColor,),

@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 
@@ -52,6 +53,7 @@ class _DonationPageState extends State<DonationPage> {
     required this.primary, required this.onSurface, required this.highlight});
 
   void goBack() {
+    HapticFeedback.selectionClick();
     Navigator.pop(context);
   }
 
@@ -143,6 +145,7 @@ class _InfoPageState extends State<InfoPage> {
   required this.highlight});
 
   void goBack() {
+    HapticFeedback.selectionClick();
     Navigator.pop(context);
   }
 
@@ -197,6 +200,7 @@ class _InfoPageState extends State<InfoPage> {
                         children: [
                           GestureDetector(
                             onTap: () {
+                              HapticFeedback.selectionClick();
                               _launchUrl("https://github.com/bmaroti9/Overmorrow");
                             },
                             child: comfortatext(translation("source code", settings["Language"]), 16, settings, color: primary,
@@ -204,6 +208,7 @@ class _InfoPageState extends State<InfoPage> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              HapticFeedback.selectionClick();
                               _launchUrl("https://github.com/bmaroti9/Overmorrow/issues");
                             },
                             child: comfortatext(translation("report an issue", settings["Language"]), 16, settings, color: primary,
@@ -226,6 +231,7 @@ class _InfoPageState extends State<InfoPage> {
                         children: [
                           GestureDetector(
                             onTap: () {
+                              HapticFeedback.selectionClick();
                               _launchUrl("https://open-meteo.com");
                             },
                             child: comfortatext("open-meteo", 16, settings, color: primary,
@@ -233,6 +239,7 @@ class _InfoPageState extends State<InfoPage> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              HapticFeedback.selectionClick();
                               _launchUrl("https://www.weatherapi.com/");
                             },
                             child: comfortatext("weatherapi", 16, settings, color: primary,
@@ -240,6 +247,7 @@ class _InfoPageState extends State<InfoPage> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              HapticFeedback.selectionClick();
                               _launchUrl("https://www.rainviewer.com/api.html");
                             },
                             child: comfortatext("rainviewer", 16, settings, color: primary,
@@ -256,6 +264,7 @@ class _InfoPageState extends State<InfoPage> {
                           comfortatext(translation("all images used are from:", settings["Language"]), 16, settings, color: onSurface),
                           GestureDetector(
                             onTap: () {
+                              HapticFeedback.selectionClick();
                               _launchUrl("https://unsplash.com/");
                             },
                             child: comfortatext("unsplash", 16, settings, color: primary,

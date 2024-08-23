@@ -21,6 +21,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'ui_helper.dart';
 
@@ -88,6 +89,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                     child: Icon(Icons.expand_less, color: data
                         .current.primaryLight, size: 20),
                     onTap: () {
+                      HapticFeedback.selectionClick();
                       onExpandTapped(index);
                     },
                   ),
@@ -255,6 +257,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                   onSelected: (bool selected) {
                     _value = index;
                     setState(() {
+                      HapticFeedback.selectionClick();
                       _onItemTapped(index);
                     });
                   },
@@ -689,6 +692,7 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
 
   void _onExpandTapped(int index) {
     setState(() {
+      HapticFeedback.selectionClick();
       expand[index] = !expand[index];
     });
   }
