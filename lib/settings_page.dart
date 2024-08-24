@@ -581,7 +581,7 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
         ),
         // Just some content big enough to have something to scroll.
         SliverToBoxAdapter(
-          child: NewSettings(settings, updatePage, image, colors, allColors),
+          child: NewSettings(settings, updatePage, image, colors, allColors, context),
         ),
       ],
     ),
