@@ -22,6 +22,7 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/donation_page.dart';
+import 'package:overmorrow/settings_screens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'decoders/decode_wapi.dart';
 import 'decoders/extra_info.dart';
@@ -565,25 +566,22 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
     Function goBack, Color back, Image image, context, colors, allColors) {
 
   return  Material(
-    color: colors[1],
+    color: colors[0],
     child: CustomScrollView(
       slivers: <Widget>[
         SliverAppBar.large(
           leading:
-          IconButton(icon: Icon(Icons.arrow_back, color: colors[11],), onPressed: () {
+          IconButton(icon: Icon(Icons.arrow_back, color: colors[0],), onPressed: () {
             HapticFeedback.selectionClick();
             goBack();
           }),
-          title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[11]),
-          backgroundColor: colors[6],
+          title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[0]),
+          backgroundColor: colors[1],
           pinned: false,
         ),
         // Just some content big enough to have something to scroll.
         SliverToBoxAdapter(
-          child: Container(
-            color: colors[6],
-            child: settingsMain(settings, updatePage, image, colors, allColors),
-          ),
+          child: NewSettings(settings, updatePage, image, colors, allColors),
         ),
       ],
     ),
@@ -789,6 +787,7 @@ Widget settingsMain(Map<String, String> settings, Function updatePage, Image ima
   );
 }
 
+
 class MyDrawer extends StatelessWidget {
 
   final backupprimary;
@@ -822,7 +821,7 @@ class MyDrawer extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomLeft,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(15.0),
                   child: comfortatext('OVRMRW', 40, settings, color: surface, weight: FontWeight.w300),
                 )
             ),
