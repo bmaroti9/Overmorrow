@@ -814,27 +814,26 @@ class MyDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
+          Container(
+            height: 240,
             decoration: BoxDecoration(
               color: primary,
             ),
-            child: Column(
-              children: [
-                Align(
-                    alignment: Alignment.center,
-                    child: comfortatext('Overmorrow', 30, settings, color: surface)
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                    child: comfortatext('Weather', 30, settings, color: surface)
-                ),
-              ],
+            child: Align(
+              alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: comfortatext('OVRMRW', 40, settings, color: surface, weight: FontWeight.w300),
+                )
             ),
           ),
+          const SizedBox(
+            height: 15,
+          ),
           ListTile(
-            title: comfortatext(translation('Settings', settings["Language"]), 25,
+            title: comfortatext(translation('Settings', settings["Language"]), 24,
                 settings, color: onSurface),
-            leading: Icon(Icons.settings, color: primary,),
+            leading: Icon(Icons.settings_outlined, color: primary, size: 24,),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.push(
@@ -845,7 +844,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext(translation('About', settings["Language"]), 25,
+            title: comfortatext(translation('About', settings["Language"]), 24,
                 settings, color: onSurface),
             leading: Icon(Icons.info_outline, color: primary,),
             onTap: () {
@@ -858,9 +857,9 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext(translation('Donate', settings["Language"]), 25,
+            title: comfortatext(translation('Donate', settings["Language"]), 24,
                 settings, color: onSurface),
-            leading: Icon(Icons.favorite_border, color: primary,),
+            leading: Icon(Icons.favorite_outline_sharp, color: primary,),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.push(
