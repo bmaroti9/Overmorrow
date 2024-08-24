@@ -107,7 +107,7 @@ double OMGetSunStatus(item) {
   int total = sunset.difference(sunrise).inMinutes;
   int passed = localtime.difference(sunrise).inMinutes;
 
-  return passed / total;
+  return min(1, max(passed / total, 0));
 }
 
 Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) async {
@@ -664,6 +664,7 @@ class OMAqi{
 }
 
 Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) async {
+
   var OM = await OMRequestData(lat, lng, real_loc);
   var oMBody = OM[0];
 

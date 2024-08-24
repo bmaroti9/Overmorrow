@@ -98,37 +98,22 @@ class NewSunriseSunset extends StatefulWidget {
   _NewSunriseSunsetState createState() => _NewSunriseSunsetState();
 }
 
-class _NewSunriseSunsetState extends State<NewSunriseSunset>
-    with SingleTickerProviderStateMixin {
-  late DateTime riseDT;
-  late int total;
+class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerProviderStateMixin {
   late int hourdif;
 
   late AnimationController _controller;
 
   @override
   void initState() {
-    final List<String> absoluteSunriseSunset =
-        widget.data.sunstatus.absoluteSunriseSunset.split('/');
-
-    final List<String> absoluteRise = absoluteSunriseSunset[0].split(':');
-    final List<String> absoluteSet = absoluteSunriseSunset[1].split(':');
-
     final List<String> absoluteLocalTime = widget.data.localtime.split(':');
 
     final currentTime = DateTime.now();
-    riseDT = currentTime.copyWith(
-        hour: int.parse(absoluteRise[0]), minute: int.parse(absoluteRise[1]));
-    final setDT = currentTime.copyWith(
-        hour: int.parse(absoluteSet[0]), minute: int.parse(absoluteSet[1]));
 
     final localtimeOld = currentTime.copyWith(
         hour: int.parse(absoluteLocalTime[0]),
         minute: int.parse(absoluteLocalTime[1]));
 
     hourdif = localtimeOld.hour - currentTime.hour;
-
-    total = setDT.difference(riseDT).inSeconds;
 
     super.initState();
     _controller = AnimationController(
@@ -151,9 +136,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset>
         DateTime now = DateTime.now();
         DateTime localTime = now.add(Duration(hours: hourdif));
 
-        final thisdif = localTime.difference(riseDT).inSeconds;
-
-        final double progress = min(max(thisdif / total, 0), 1);
+        final double progress = widget.data.sunstatus.sunstatus;
 
         String write = widget.data.settings["Time mode"] == "24 hour"
             ? OMConvertTime(

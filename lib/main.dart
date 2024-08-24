@@ -111,14 +111,13 @@ class _MyAppState extends State<MyApp> {
             Placemark place = placemarks[0];
 
             backupName = place.locality;
-
+            absoluteProposed = "${position.latitude}, ${position.longitude}";
 
           } on FormatException {
             backupName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
           } on PlatformException {
             backupName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
           }
-
         }
         else {
           return dumbySearch(errorMessage: translation(loc_status, settings["Language"]!),
