@@ -81,8 +81,9 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
       children: [
         settingEntry("Appearance", "color theme, image source", containerLow, primary, onSurface, surface,
             Icons.palette_outlined, settings,
-          AppearancePage(primary: primary, settings: settings, surface: surface,
-              onSurface: onSurface, highlight: containerLow, image: image, colorPop: colorpop, descColor: desc_color,),
+          AppearancePage(primary: primary, settings: settings, surface: surface, onSurface: onSurface,
+            highlight: containerLow, image: image, colorPop: colorpop, descColor: desc_color,
+            updatePage: updatePage),
           context,
         ),
         settingEntry("General", "time mode, font size", containerLow, primary, onSurface, surface,
@@ -98,6 +99,34 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
   );
 }
 
+Widget ColorThemeButton(String name, IconData icon, Color highlight, Color primary, settings, updatePage) {
+  bool selected = settings["Color mode"] == name;
+  return Padding(
+    padding: const EdgeInsets.all(3.0),
+    child: GestureDetector(
+      onTap: () {
+        updatePage("Color mode", name);
+      },
+      child: Container(
+        padding: const EdgeInsets.only(top: 22, bottom: 22, left: 8, right: 6),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          color: selected ? primary : highlight,
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: Icon(icon, size: 17, color: selected ? highlight : primary,),
+            ),
+            comfortatext(name, 17, settings, color: selected ? highlight : primary, weight: FontWeight.w600)
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 class AppearancePage extends StatefulWidget {
   final Color primary;
   final Color surface;
@@ -107,15 +136,16 @@ class AppearancePage extends StatefulWidget {
   final colorPop;
   final descColor;
   final image;
+  final updatePage;
 
   const AppearancePage({Key? key, required this.primary, required this.settings, required this.surface, required this.onSurface,
-    required this.highlight, required this.descColor, required this.colorPop, required this.image})
+    required this.highlight, required this.descColor, required this.colorPop, required this.image, required this.updatePage})
       : super(key: key);
 
   @override
   _AppearancePageState createState() =>
       _AppearancePageState(primary: primary, settings: settings, surface: surface, highlight: highlight, onSurface: onSurface,
-      colorPop: colorPop, image: image, descColor: descColor);
+      colorPop: colorPop, image: image, descColor: descColor, updatePage: updatePage);
 }
 
 class _AppearancePageState extends State<AppearancePage> {
@@ -127,9 +157,10 @@ class _AppearancePageState extends State<AppearancePage> {
   final colorPop;
   final descColor;
   final image;
+  final updatePage;
 
   _AppearancePageState({required this.primary, required this.settings, required this.surface, required this.onSurface,
-    required this.highlight, required this.colorPop, required this.descColor, required this.image});
+    required this.highlight, required this.colorPop, required this.descColor, required this.image, required this.updatePage});
 
   void goBack() {
     HapticFeedback.selectionClick();
@@ -159,34 +190,90 @@ class _AppearancePageState extends State<AppearancePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 40, bottom: 10),
+                  padding: const EdgeInsets.only(top: 50, bottom: 10),
                   child: Center(
-                    child: SizedBox(
-                      width: 270,
-                      height: 320,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        color: highlight
+                      ),
+                      width: 240,
+                      height: 330,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Stack(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Column(
                           children: [
-                            ParrallaxBackground(image: image, color: surface),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10, bottom: 15),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            SizedBox(
+                              height: 220,
+                              child: Stack(
                                 children: [
-                                  comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 50, settings, color: colorPop),
-                                  comfortatext(translation("Clear Sky", settings["Language"]!), 25,
-                                      settings, color: descColor)
+                                  ParrallaxBackground(image: image, color: surface),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10, bottom: 15),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 42,
+                                            settings, color: colorPop, weight: FontWeight.w300),
+                                        comfortatext(translation("Clear Sky", settings["Language"]!), 22,
+                                            settings, color: descColor, weight: FontWeight.w500)
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10, right: 4, left: 4),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: List.generate(4, (index) {
+                                  return Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(40),
+                                            border: Border.all(color: primary, width: 2),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              )
                             ),
                           ],
                         ),
                       ),
                     ),
                   ),
-                )
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ColorThemeButton("light", Icons.light_mode_outlined, highlight, primary, settings, updatePage),
+                          ColorThemeButton("dark", Icons.dark_mode_outlined, highlight, primary, settings, updatePage),
+                          ColorThemeButton("automatic", Icons.brightness_6_rounded, highlight, primary, settings, updatePage),
+                        ]
+                    )
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ColorThemeButton("original", Icons.circle_outlined, highlight, primary, settings, updatePage),
+                          ColorThemeButton("colorful", Icons.circle, highlight, primary, settings, updatePage),
+                          ColorThemeButton("monochrome", Icons.invert_colors_on_outlined, highlight, primary, settings, updatePage),
+                        ]
+                    )
+                ),
               ],
             ),
           ),
