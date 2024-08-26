@@ -256,20 +256,6 @@ Map<String, List<String>> mainTranslate = {
     'Opady',
     'Βροχόπτωση'
   ],
-  'Pressure': [
-    'Pressure',
-    'Nyomás',
-    'Presión',
-    'Pression',
-    'Druck',
-    'Pressione',
-    'Pressão',
-    'Давление',
-    '压力',
-    '圧力',
-    'Ciśnienie',
-    'Πίεση'
-  ],
   'Favorites': [
     'Favorites',
     'Kedvencek',

@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -25,7 +26,7 @@ import 'package:overmorrow/ui_helper.dart';
 import 'decoders/decode_wapi.dart';
 import 'main_ui.dart';
 
-Widget settingEntry(String title, String desc, Color highlight, Color primary, Color onSurface, Color surface,
+Widget mainSettingEntry(String title, String desc, Color highlight, Color primary, Color onSurface, Color surface,
     IconData icon, settings, Widget pushTo, context, updatePage) {
   return Padding(
     padding: const EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
@@ -76,18 +77,20 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
     padding: const EdgeInsets.only(top: 20, bottom: 20),
     child: Column(
       children: [
-        settingEntry("Appearance", "color theme, image source", containerLow, primary, onSurface, surface,
+        mainSettingEntry("Appearance", "color theme, image source", containerLow, primary, onSurface, surface,
             Icons.palette_outlined, settings,
           AppearancePage(settings: settings, image: image, allColors: allColors, updateMainPage: updatePage,),
           context, updatePage
         ),
-        settingEntry("General", "time mode, font size", containerLow, primary, onSurface, surface,
+        mainSettingEntry("General", "time mode, font size", containerLow, primary, onSurface, surface,
             Icons.settings_applications, settings, Container(), context, updatePage),
-        settingEntry("Language", "the language used", containerLow, primary, onSurface, surface,
+        mainSettingEntry("Language", "the language used", containerLow, primary, onSurface, surface,
             Icons.language, settings, Container(), context, updatePage),
-        settingEntry("Units", "the units used in the app", containerLow, primary, onSurface, surface,
-            Icons.pie_chart_outline, settings, Container(), context, updatePage),
-        settingEntry("Layout", "widget order, customization", containerLow, primary, onSurface, surface,
+        mainSettingEntry("Units", "the units used in the app", containerLow, primary, onSurface, surface,
+            Icons.pie_chart_outline, settings,
+            UnitsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
+            context, updatePage),
+        mainSettingEntry("Layout", "widget order, customization", containerLow, primary, onSurface, surface,
             Icons.grid_view, settings, Container(), context, updatePage),
       ],
     ),
@@ -185,6 +188,7 @@ class _AppearancePageState extends State<AppearancePage> {
         .indexOf(x)];
 
     Color highlight = colors[7];
+    Color primaryLight = colors[2];
     Color primary = colors[1];
     Color onSurface = colors[4];
     Color surface = colors[0];
@@ -287,7 +291,7 @@ class _AppearancePageState extends State<AppearancePage> {
                                 height: 4,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: primary,
+                                  color: primaryLight,
                                 ),
                               ),
                             )
@@ -309,7 +313,7 @@ class _AppearancePageState extends State<AppearancePage> {
                     )
                 ),
                 Padding(
-                    padding: const EdgeInsets.only(top: 4),
+                    padding: const EdgeInsets.only(top: 4, bottom: 30),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -319,7 +323,104 @@ class _AppearancePageState extends State<AppearancePage> {
                         ]
                     )
                 ),
+                settingEntry(Icons.invert_colors_on, "Color source", settings, highlight, updatePage,
+                    onSurface, primaryLight, primary),
+                settingEntry(Icons.landscape_outlined, "Image source", settings, highlight, updatePage,
+                    onSurface, primaryLight, primary),
+                const SizedBox(height: 70,),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class UnitsPage extends StatefulWidget {
+  final settings;
+  final image;
+  final colors;
+  final updateMainPage;
+
+  const UnitsPage({Key? key, required this.colors, required this.settings,
+    required this.image, required this.updateMainPage})
+      : super(key: key);
+
+  @override
+  _UnitsPageState createState() =>
+      _UnitsPageState(image: image, settings: settings, colors: colors,
+          updateMainPage: updateMainPage);
+}
+
+class _UnitsPageState extends State<UnitsPage> {
+
+  final image;
+  final settings;
+  final colors;
+  final updateMainPage;
+
+  _UnitsPageState({required this.image, required this.settings, required this.colors, required this.updateMainPage});
+
+  Map<String, String> copySettings = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    copySettings = settings;
+  }
+
+  void updatePage(String name, String to) {
+    setState(() {
+      updateMainPage(name, to);
+      copySettings[name] = to;
+    });
+  }
+
+  void goBack() {
+    HapticFeedback.selectionClick();
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    Color highlight = colors[7];
+    Color primaryLight = colors[2];
+    Color primary = colors[1];
+    Color onSurface = colors[4];
+    Color surface = colors[0];
+
+    return Material(
+      color: surface,
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            leading:
+            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
+                onPressed: () {
+                  goBack();
+                }),
+            title: comfortatext(
+                "Units", 30, settings,
+                color: surface),
+            backgroundColor: primary,
+            pinned: false,
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30, bottom: 60),
+              child: Column(
+                children: [
+                  settingEntry(CupertinoIcons.thermometer, "Temperature", settings, onSurface, updatePage,
+                      onSurface, primaryLight, primary),
+                  settingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, onSurface, updatePage,
+                      onSurface, primaryLight, primary),
+                  settingEntry(CupertinoIcons.wind, "Wind", settings, onSurface, updatePage,
+                      onSurface, primaryLight, primary),
+                ],
+              ),
             ),
           ),
         ],

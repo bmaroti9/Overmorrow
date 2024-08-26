@@ -40,7 +40,6 @@ Map<String, List<String>> settingSwitches = {
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
   'Wind': ['m/s', 'kph', 'mph', 'kn'],
-  'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa'],
   'Time mode': ['12 hour', '24 hour'],
   'Font size': ['normal', 'small', 'very small', 'big'],
 
@@ -440,7 +439,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
 
 Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primaryLight, primary) {
   return Padding(
-    padding: const EdgeInsets.only(top: 3, bottom: 3),
+    padding: const EdgeInsets.only(top: 3, bottom: 3, left: 25, right: 25),
     child: Row(
       children: [
         Padding(
@@ -780,8 +779,6 @@ Widget settingsMain(Map<String, String> settings, Function updatePage, Image ima
                 settingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, onSurface, updatePage,
                     onSurface, primaryLight, primary),
                 settingEntry(CupertinoIcons.wind, "Wind", settings, onSurface, updatePage,
-                    onSurface, primaryLight, primary),
-                settingEntry(CupertinoIcons.timelapse, "Pressure", settings, onSurface, updatePage,
                     onSurface, primaryLight, primary),
 
                 const SizedBox(
