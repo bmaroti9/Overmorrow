@@ -148,7 +148,7 @@ Future<ColorScheme> MaterialYouColor(String theme) async {
   final ColorScheme palette = ColorScheme.fromSeed(
     seedColor: mainColor,
     brightness: theme == 'light' ? Brightness.light : Brightness.dark,
-    dynamicSchemeVariant: theme == 'original' || theme == 'monochrome' ? DynamicSchemeVariant.tonalSpot :
+    dynamicSchemeVariant: theme == 'original' || theme == 'mono' ? DynamicSchemeVariant.tonalSpot :
     DynamicSchemeVariant.tonalSpot,
   );
 

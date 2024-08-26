@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,7 +44,7 @@ Map<String, List<String>> settingSwitches = {
   'Time mode': ['12 hour', '24 hour'],
   'Font size': ['normal', 'small', 'very small', 'big'],
 
-  'Color mode' : ['original', 'colorful', 'monochrome', 'light', 'dark'],
+  'Color mode' : ['auto', 'original', 'colorful', 'mono', 'light', 'dark'],
 
   'Color source' : ['image', 'wallpaper'],
   'Image source' : ['network', 'asset'],
@@ -60,6 +61,11 @@ String translation(String text, String language) {
 List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
 
   String x = force == "-1" ? settings["Color mode"] : force;
+  if (x == "auto") {
+    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    x = brightness == Brightness.dark ? "dark" : "light";
+  }
+
 
   //surface
   //primary
@@ -95,7 +101,7 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
     WHITE
   ];
 
-  if (x == "monochrome") {
+  if (x == "mono") {
     colors = [ //default colorful option
       primary,
       WHITE,
@@ -169,6 +175,10 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
 
 List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
   String x = force == "-1" ? settings["Color mode"] : force;
+  if (x == "auto") {
+    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    x = brightness == Brightness.dark ? "dark" : "light";
+  }
 
   //surface
   //primary
@@ -200,7 +210,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
     palette[1],
     palette[2],
   ];
-  if (x == "monochrome") {
+  if (x == "mono") {
     colors = [
       palette[0].onPrimaryFixedVariant,
       WHITE,
@@ -310,7 +320,7 @@ Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
   if (settings["Image source"] == 'network' || settings["Color source"] == 'wallpaper') {
     allColor.add(getNetworkColors(darkPalette, settings, force: "original"));
     allColor.add(getNetworkColors(darkPalette, settings, force: "colorful"));
-    allColor.add(getNetworkColors(darkPalette, settings, force: "monochrome"));
+    allColor.add(getNetworkColors(darkPalette, settings, force: "mono"));
     allColor.add(getNetworkColors(lightPalette, settings, force: "light"));
     allColor.add(getNetworkColors(darkPalette, settings, force: "dark"));
   }
@@ -718,7 +728,7 @@ Widget settingsMain(Map<String, String> settings, Function updatePage, Image ima
                             children: [
                               ColorCircle("original", allColors[0][1], allColors[0][0], settings, updatePage, w: 4, tap: 1),
                               ColorCircle("colorful", allColors[1][1], allColors[1][0], settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("monochrome", allColors[2][1], allColors[2][0], settings, updatePage, w: 4, tap: 1),
+                              ColorCircle("mono", allColors[2][1], allColors[2][0], settings, updatePage, w: 4, tap: 1),
                               ColorCircle("light", allColors[3][1], allColors[3][0], settings, updatePage, w: 4, tap: 1),
                               ColorCircle("dark", allColors[4][1], allColors[4][0], settings, updatePage, w: 4, tap: 1),
                             ]

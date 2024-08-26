@@ -70,10 +70,7 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
   Color containerLow = colors[6];
   Color onSurface = colors[4];
   Color primary = colors[1];
-  Color primaryLight = colors[2];
   Color surface = colors[0];
-  Color colorpop = colors[12];
-  Color desc_color = colors[13];
 
   return Padding(
     padding: const EdgeInsets.only(top: 20, bottom: 20),
@@ -107,7 +104,7 @@ Widget ColorThemeButton(String name, IconData icon, Color highlight, Color prima
         updatePage("Color mode", name);
       },
       child: Container(
-        padding: const EdgeInsets.only(top: 22, bottom: 22, left: 8, right: 6),
+        padding: const EdgeInsets.only(top: 22, bottom: 22, left: 10, right: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(18),
           color: selected ? primary : highlight,
@@ -116,9 +113,9 @@ Widget ColorThemeButton(String name, IconData icon, Color highlight, Color prima
           children: [
             Padding(
               padding: const EdgeInsets.only(right: 4),
-              child: Icon(icon, size: 17, color: selected ? highlight : primary,),
+              child: Icon(icon, size: 18, color: selected ? highlight : primary,),
             ),
-            comfortatext(name, 17, settings, color: selected ? highlight : primary, weight: FontWeight.w600)
+            comfortatext(name, 18, settings, color: selected ? highlight : primary)
           ],
         ),
       ),
@@ -176,7 +173,7 @@ class _AppearancePageState extends State<AppearancePage> {
   Widget build(BuildContext context) {
 
     String x = "light";
-    if (copySettings["Color mode"] == "automatic") {
+    if (copySettings["Color mode"] == "auto") {
       var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
       x = brightness == Brightness.dark ? "dark" : "light";
     }
@@ -184,12 +181,12 @@ class _AppearancePageState extends State<AppearancePage> {
       x = copySettings["Color mode"] ?? "light";
     }
 
-    final colors = allColors[["original", "colorful", "monochrome", "light", "dark"]
+    final colors = allColors[["original", "colorful", "mono", "light", "dark"]
         .indexOf(x)];
 
     Color highlight = colors[7];
-    Color onSurface = colors[4];
     Color primary = colors[1];
+    Color onSurface = colors[4];
     Color surface = colors[0];
     Color colorPop = colors[12];
     Color descColor = colors[13];
@@ -223,10 +220,11 @@ class _AppearancePageState extends State<AppearancePage> {
                         color: highlight
                       ),
                       width: 240,
-                      height: 330,
+                      height: 350,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(18),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
                               height: 220,
@@ -250,7 +248,7 @@ class _AppearancePageState extends State<AppearancePage> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 10, right: 4, left: 4),
+                              padding: const EdgeInsets.only(top: 10, right: 4, left: 4, bottom: 15),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: List.generate(4, (index) {
@@ -271,6 +269,28 @@ class _AppearancePageState extends State<AppearancePage> {
                                 }),
                               )
                             ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Container(
+                                width: 150,
+                                height: 4,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: onSurface,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10, top: 8),
+                              child: Container(
+                                width: 70,
+                                height: 4,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: primary,
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -284,7 +304,7 @@ class _AppearancePageState extends State<AppearancePage> {
                         children: [
                           ColorThemeButton("light", Icons.light_mode_outlined, highlight, primary, settings, updatePage),
                           ColorThemeButton("dark", Icons.dark_mode_outlined, highlight, primary, settings, updatePage),
-                          ColorThemeButton("automatic", Icons.brightness_6_rounded, highlight, primary, settings, updatePage),
+                          ColorThemeButton("auto", Icons.brightness_6_rounded, highlight, primary, settings, updatePage),
                         ]
                     )
                 ),
@@ -295,7 +315,7 @@ class _AppearancePageState extends State<AppearancePage> {
                         children: [
                           ColorThemeButton("original", Icons.circle_outlined, highlight, primary, settings, updatePage),
                           ColorThemeButton("colorful", Icons.circle, highlight, primary, settings, updatePage),
-                          ColorThemeButton("monochrome", Icons.invert_colors_on_outlined, highlight, primary, settings, updatePage),
+                          ColorThemeButton("mono", Icons.invert_colors_on_outlined, highlight, primary, settings, updatePage),
                         ]
                     )
                 ),
