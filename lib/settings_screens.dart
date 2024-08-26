@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
@@ -25,7 +26,7 @@ import 'decoders/decode_wapi.dart';
 import 'main_ui.dart';
 
 Widget settingEntry(String title, String desc, Color highlight, Color primary, Color onSurface, Color surface,
-    IconData icon, settings, Widget pushTo, context) {
+    IconData icon, settings, Widget pushTo, context, updatePage) {
   return Padding(
     padding: const EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
     child: GestureDetector(
@@ -74,26 +75,23 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
   Color colorpop = colors[12];
   Color desc_color = colors[13];
 
-
   return Padding(
     padding: const EdgeInsets.only(top: 20, bottom: 20),
     child: Column(
       children: [
         settingEntry("Appearance", "color theme, image source", containerLow, primary, onSurface, surface,
             Icons.palette_outlined, settings,
-          AppearancePage(primary: primary, settings: settings, surface: surface, onSurface: onSurface,
-            highlight: containerLow, image: image, colorPop: colorpop, descColor: desc_color,
-            updatePage: updatePage),
-          context,
+          AppearancePage(settings: settings, image: image, allColors: allColors, updateMainPage: updatePage,),
+          context, updatePage
         ),
         settingEntry("General", "time mode, font size", containerLow, primary, onSurface, surface,
-            Icons.settings_applications, settings, Container(), context),
+            Icons.settings_applications, settings, Container(), context, updatePage),
         settingEntry("Language", "the language used", containerLow, primary, onSurface, surface,
-            Icons.language, settings, Container(), context),
+            Icons.language, settings, Container(), context, updatePage),
         settingEntry("Units", "the units used in the app", containerLow, primary, onSurface, surface,
-            Icons.pie_chart_outline, settings, Container(), context),
+            Icons.pie_chart_outline, settings, Container(), context, updatePage),
         settingEntry("Layout", "widget order, customization", containerLow, primary, onSurface, surface,
-            Icons.grid_view, settings, Container(), context),
+            Icons.grid_view, settings, Container(), context, updatePage),
       ],
     ),
   );
@@ -105,6 +103,7 @@ Widget ColorThemeButton(String name, IconData icon, Color highlight, Color prima
     padding: const EdgeInsets.all(3.0),
     child: GestureDetector(
       onTap: () {
+        HapticFeedback.mediumImpact();
         updatePage("Color mode", name);
       },
       child: Container(
@@ -128,39 +127,45 @@ Widget ColorThemeButton(String name, IconData icon, Color highlight, Color prima
 }
 
 class AppearancePage extends StatefulWidget {
-  final Color primary;
-  final Color surface;
   final settings;
-  final onSurface;
-  final highlight;
-  final colorPop;
-  final descColor;
   final image;
-  final updatePage;
+  final allColors;
+  final updateMainPage;
 
-  const AppearancePage({Key? key, required this.primary, required this.settings, required this.surface, required this.onSurface,
-    required this.highlight, required this.descColor, required this.colorPop, required this.image, required this.updatePage})
+  const AppearancePage({Key? key, required this.allColors, required this.settings,
+    required this.image, required this.updateMainPage})
       : super(key: key);
 
   @override
   _AppearancePageState createState() =>
-      _AppearancePageState(primary: primary, settings: settings, surface: surface, highlight: highlight, onSurface: onSurface,
-      colorPop: colorPop, image: image, descColor: descColor, updatePage: updatePage);
+      _AppearancePageState(image: image, settings: settings, allColors: allColors,
+          updateMainPage: updateMainPage);
 }
 
 class _AppearancePageState extends State<AppearancePage> {
-  final primary;
-  final settings;
-  final surface;
-  final onSurface;
-  final highlight;
-  final colorPop;
-  final descColor;
-  final image;
-  final updatePage;
 
-  _AppearancePageState({required this.primary, required this.settings, required this.surface, required this.onSurface,
-    required this.highlight, required this.colorPop, required this.descColor, required this.image, required this.updatePage});
+  final image;
+  final settings;
+  final allColors;
+  final updateMainPage;
+
+  _AppearancePageState({required this.image, required this.settings, required this.allColors, required this.updateMainPage});
+
+  Map<String, String> copySettings = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    copySettings = settings;
+  }
+
+  void updatePage(String name, String to) {
+    setState(() {
+      updateMainPage(name, to);
+      copySettings[name] = to;
+    });
+  }
 
   void goBack() {
     HapticFeedback.selectionClick();
@@ -169,6 +174,26 @@ class _AppearancePageState extends State<AppearancePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    String x = "light";
+    if (copySettings["Color mode"] == "automatic") {
+      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+      x = brightness == Brightness.dark ? "dark" : "light";
+    }
+    else {
+      x = copySettings["Color mode"] ?? "light";
+    }
+
+    final colors = allColors[["original", "colorful", "monochrome", "light", "dark"]
+        .indexOf(x)];
+
+    Color highlight = colors[7];
+    Color onSurface = colors[4];
+    Color primary = colors[1];
+    Color surface = colors[0];
+    Color colorPop = colors[12];
+    Color descColor = colors[13];
+
     return Material(
       color: surface,
       child: CustomScrollView(
