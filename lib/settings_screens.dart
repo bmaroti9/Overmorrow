@@ -413,11 +413,11 @@ class _UnitsPageState extends State<UnitsPage> {
               padding: const EdgeInsets.only(top: 30, bottom: 60),
               child: Column(
                 children: [
-                  settingEntry(CupertinoIcons.thermometer, "Temperature", settings, onSurface, updatePage,
+                  settingEntry(CupertinoIcons.thermometer, "Temperature", settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
-                  settingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, onSurface, updatePage,
+                  settingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
-                  settingEntry(CupertinoIcons.wind, "Wind", settings, onSurface, updatePage,
+                  settingEntry(CupertinoIcons.wind, "Wind", settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
                 ],
               ),

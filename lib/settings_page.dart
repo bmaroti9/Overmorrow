@@ -457,7 +457,7 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
         ),
         const Spacer(),
         dropdown(
-            darken(highlight), text, updatePage, settings[text]!, settings, textcolor, primaryLight
+            highlight, text, updatePage, settings[text]!, settings, textcolor, primaryLight
         ),
       ],
     ),
