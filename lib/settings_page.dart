@@ -443,14 +443,14 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
     child: Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(right: 20),
+          padding: const EdgeInsets.only(right: 13),
           child: Icon(icon, color: primary),
         ),
         Expanded(
           flex: 10,
           child: comfortatext(
             translation(text, settings["Language"]!),
-            20,
+            19,
             settings,
             color: textcolor,
           ),

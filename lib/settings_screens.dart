@@ -83,9 +83,13 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
           context, updatePage
         ),
         mainSettingEntry("General", "time mode, font size", containerLow, primary, onSurface, surface,
-            Icons.settings_applications, settings, Container(), context, updatePage),
+            Icons.settings_applications, settings,
+            GeneralSettingsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
+            context, updatePage),
         mainSettingEntry("Language", "the language used", containerLow, primary, onSurface, surface,
-            Icons.language, settings, Container(), context, updatePage),
+            Icons.language, settings,
+            LangaugePage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
+            context, updatePage),
         mainSettingEntry("Units", "the units used in the app", containerLow, primary, onSurface, surface,
             Icons.pie_chart_outline, settings,
             UnitsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
@@ -323,7 +327,8 @@ class _AppearancePageState extends State<AppearancePage> {
                         ]
                     )
                 ),
-                settingEntry(Icons.invert_colors_on, "Color source", settings, highlight, updatePage,
+
+                settingEntry(Icons.colorize_rounded, "Color source", settings, highlight, updatePage,
                     onSurface, primaryLight, primary),
                 settingEntry(Icons.landscape_outlined, "Image source", settings, highlight, updatePage,
                     onSurface, primaryLight, primary),
@@ -415,12 +420,211 @@ class _UnitsPageState extends State<UnitsPage> {
                 children: [
                   settingEntry(CupertinoIcons.thermometer, "Temperature", settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
-                  settingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, highlight, updatePage,
+                  settingEntry(Icons.water_drop_outlined, "Precipitation", settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
                   settingEntry(CupertinoIcons.wind, "Wind", settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
                 ],
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class GeneralSettingsPage extends StatefulWidget {
+  final settings;
+  final image;
+  final colors;
+  final updateMainPage;
+
+  const GeneralSettingsPage({Key? key, required this.colors, required this.settings,
+    required this.image, required this.updateMainPage})
+      : super(key: key);
+
+  @override
+  _GeneralSettingsPageState createState() =>
+      _GeneralSettingsPageState(image: image, settings: settings, colors: colors,
+          updateMainPage: updateMainPage);
+}
+
+class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
+
+  final image;
+  final settings;
+  final colors;
+  final updateMainPage;
+
+  _GeneralSettingsPageState({required this.image, required this.settings, required this.colors, required this.updateMainPage});
+
+  Map<String, String> copySettings = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    copySettings = settings;
+  }
+
+  void updatePage(String name, String to) {
+    setState(() {
+      updateMainPage(name, to);
+      copySettings[name] = to;
+    });
+  }
+
+  void goBack() {
+    HapticFeedback.selectionClick();
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    Color highlight = colors[7];
+    Color primaryLight = colors[2];
+    Color primary = colors[1];
+    Color onSurface = colors[4];
+    Color surface = colors[0];
+
+    return Material(
+      color: surface,
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            leading:
+            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
+                onPressed: () {
+                  goBack();
+                }),
+            title: comfortatext(
+                "General", 30, settings,
+                color: surface),
+            backgroundColor: primary,
+            pinned: false,
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30, bottom: 60),
+              child: Column(
+                children: [
+                  settingEntry(Icons.access_time_filled_sharp, "Time mode", settings, highlight, updatePage,
+                      onSurface, primaryLight, primary),
+                  settingEntry(CupertinoIcons.textformat_size, "Font size", settings, highlight, updatePage,
+                      onSurface, primaryLight, primary),
+
+                  settingEntry(Icons.manage_search_outlined, "Search provider", settings, highlight, updatePage,
+                      onSurface, primaryLight, primary),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LangaugePage extends StatefulWidget {
+  final settings;
+  final image;
+  final colors;
+  final updateMainPage;
+
+  const LangaugePage({Key? key, required this.colors, required this.settings,
+    required this.image, required this.updateMainPage})
+      : super(key: key);
+
+  @override
+  _LangaugePageState createState() =>
+      _LangaugePageState(image: image, settings: settings, colors: colors,
+          updateMainPage: updateMainPage);
+}
+
+class _LangaugePageState extends State<LangaugePage> {
+
+  final image;
+  final settings;
+  final colors;
+  final updateMainPage;
+
+  _LangaugePageState({required this.image, required this.settings, required this.colors, required this.updateMainPage});
+
+  Map<String, String> copySettings = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    copySettings = settings;
+  }
+
+  void updatePage(String name, String to) {
+    setState(() {
+      updateMainPage(name, to);
+      copySettings[name] = to;
+    });
+  }
+
+  void goBack() {
+    HapticFeedback.selectionClick();
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    Color primary = colors[1];
+    Color onSurface = colors[4];
+    Color surface = colors[0];
+
+    String selected = copySettings["Language"] ?? "English";
+    List<String> options = settingSwitches["Language"]!;
+
+    return Material(
+      color: surface,
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            leading:
+            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
+                onPressed: () {
+                  goBack();
+                }),
+            title: comfortatext(
+                translation("Language", selected), 30, settings,
+                color: surface),
+            backgroundColor: primary,
+            pinned: false,
+          ),
+          SliverToBoxAdapter(
+            child: ListView.builder(
+              padding: const EdgeInsets.only(top: 30, left: 10, right: 20, bottom: 40),
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: options.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: comfortatext(options[index], 20, settings, color: onSurface),
+                  leading: Radio<String>(
+                    fillColor: WidgetStateProperty.all(primary),
+                    value: options[index],
+                    groupValue: selected,
+                    onChanged: (String? value) {
+                      setState(() {
+                        HapticFeedback.mediumImpact();
+                        if (value != null) {
+                          copySettings["Language"] = value;
+                          updateMainPage("Language", value);
+                        }
+                      });
+                    },
+                  ),
+                );
+              },
             ),
           ),
         ],
