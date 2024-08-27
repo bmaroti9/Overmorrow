@@ -647,10 +647,13 @@ class _LayoutPageState extends State<LayoutPage> {
 
   _LayoutPageState({required this.image, required this.settings, required this.colors, required this.updateMainPage});
 
+  late List<String> _items;
 
   @override
   void initState() {
     super.initState();
+    _items = ["sun status", "rain indicator", "air quality", "radar", "detailed daily",
+    "compact daily"];
   }
 
   void updatePage(String name, String to) {
@@ -671,8 +674,6 @@ class _LayoutPageState extends State<LayoutPage> {
     Color onSurface = colors[4];
     Color surface = colors[0];
     Color highlight = colors[7];
-
-    final List<int> _items = List<int>.generate(5, (int index) => index);
 
     return Material(
       color: surface,
@@ -697,32 +698,32 @@ class _LayoutPageState extends State<LayoutPage> {
               children: <Widget>[
                 for (int index = 0; index < _items.length; index += 1)
                   Container(
-                    color: surface,
                     key: Key("$index"),
-                    padding: EdgeInsets.all(4),
+                    color: surface,
+                    padding: const EdgeInsets.all(4),
                     child: Container(
                       decoration: BoxDecoration(
                         color: highlight,
                         borderRadius: BorderRadius.circular(18),
                       ),
                       height: 70,
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.only(left: 20, right: 20),
                       child: Row(
                         children: [
-                          comfortatext("$index", 20, settings, color: onSurface),
+                          comfortatext("${_items[index]}", 20, settings, color: onSurface),
                           Spacer(),
-                          Icon(Icons.reorder_rounded, color: onSurface,)
+                          Icon(Icons.reorder_rounded, color: onSurface, size: 20,),
                         ],
                       ),
                     ),
-                  )
+                  ),
               ],
               onReorder: (int oldIndex, int newIndex) {
                 setState(() {
                   if (oldIndex < newIndex) {
                     newIndex -= 1;
                   }
-                  final int item = _items.removeAt(oldIndex);
+                  final String item = _items.removeAt(oldIndex);
                   _items.insert(newIndex, item);
                 });
               },
