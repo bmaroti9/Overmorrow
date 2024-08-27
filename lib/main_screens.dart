@@ -42,11 +42,54 @@ class NewMain extends StatefulWidget {
 }
 
 class _NewMainState extends State<NewMain> {
-  final data;
+  late var data;
+  final realData;
   final updateLocation;
   final context;
 
-  _NewMainState(this.data, this.updateLocation, this.context);
+  _NewMainState(this.realData, this.updateLocation, this.context);
+
+  @override
+  void initState() {
+    super.initState();
+    data = realData;
+    if (data.settings['networkImageDialogShown'] == "true") {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showFeatureDialog(context);
+      });
+    }
+  }
+
+  void _showFeatureDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("New Feature!"),
+          content: Text("Would you like to enable this feature?"),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                await SetData('settingnetworkImageDialogShown', "false");
+                setState(() {
+                  data.settings['networkImageDialogShown'] = "false";
+                });
+                Navigator.pushNamedAndRemoveUntil(context,'/',(_) => false);
+              },
+              child: Text("Disable"),
+            ),
+            TextButton(
+              onPressed: () async {
+                await SetData('settingnetworkImageDialogShown', "true");
+                Navigator.pushNamedAndRemoveUntil(context,'/',(_) => false);
+              },
+              child: Text("Enable"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -57,6 +57,7 @@ class WeatherPage extends StatelessWidget {
 
     //return PhoneLayout(data, updateLocation, context);
 
+
     return NewMain(data: data, updateLocation: updateLocation, context: context,
         key: Key("${data.place}, ${data.current.surface} ${data.current.image} ${data.provider}"),);
 

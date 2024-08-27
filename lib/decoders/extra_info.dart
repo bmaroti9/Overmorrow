@@ -23,6 +23,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -145,6 +146,12 @@ Future<ColorScheme> MaterialYouColor(String theme) async {
   } else {
     mainColor = Colors.blue;
   }
+
+  if (theme == "auto") {
+    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    theme= brightness == Brightness.dark ? "dark" : "light";
+  }
+
   final ColorScheme palette = ColorScheme.fromSeed(
     seedColor: mainColor,
     brightness: theme == 'light' ? Brightness.light : Brightness.dark,
@@ -342,6 +349,10 @@ Future<ColorScheme> _materialPalette(Image imageWidget, theme, color) async {
     DynamicSchemeVariant.tonalSpot,
   );
    */
+  if (theme == "auto") {
+    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    theme= brightness == Brightness.dark ? "dark" : "light";
+  }
 
   return ColorScheme.fromSeed(
     seedColor: color,

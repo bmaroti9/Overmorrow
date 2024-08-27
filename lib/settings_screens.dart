@@ -43,7 +43,7 @@ Widget mainSettingEntry(String title, String desc, Color highlight, Color primar
           borderRadius: BorderRadius.circular(20),
           color: highlight,
         ),
-        padding: EdgeInsets.all(23),
+        padding: const EdgeInsets.all(23),
         child: Row(
           children: [
             Padding(
@@ -93,10 +93,6 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
         mainSettingEntry("Units", "the units used in the app", containerLow, primary, onSurface, surface,
             Icons.pie_chart_outline, settings,
             UnitsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
-            context, updatePage),
-        mainSettingEntry("Layout", "widget order, customization", containerLow, primary, onSurface, surface,
-            Icons.grid_view, settings,
-            LayoutPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
             context, updatePage),
       ],
     ),
@@ -184,6 +180,7 @@ class _AppearancePageState extends State<AppearancePage> {
     String x = "light";
     if (copySettings["Color mode"] == "auto") {
       var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+      print(("brightness", brightness));
       x = brightness == Brightness.dark ? "dark" : "light";
     }
     else {
@@ -612,120 +609,6 @@ class _LangaugePageState extends State<LangaugePage> {
                     },
                   ),
                 );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-class LayoutPage extends StatefulWidget {
-  final settings;
-  final image;
-  final colors;
-  final updateMainPage;
-
-  const LayoutPage({Key? key, required this.colors, required this.settings,
-    required this.image, required this.updateMainPage})
-      : super(key: key);
-
-  @override
-  _LayoutPageState createState() =>
-      _LayoutPageState(image: image, settings: settings, colors: colors,
-          updateMainPage: updateMainPage);
-}
-
-class _LayoutPageState extends State<LayoutPage> {
-
-  final image;
-  final settings;
-  final colors;
-  final updateMainPage;
-
-  _LayoutPageState({required this.image, required this.settings, required this.colors, required this.updateMainPage});
-
-  late List<String> _items;
-
-  @override
-  void initState() {
-    super.initState();
-    _items = ["sun status", "rain indicator", "air quality", "radar", "detailed daily",
-    "compact daily"];
-  }
-
-  void updatePage(String name, String to) {
-    setState(() {
-      updateMainPage(name, to);
-    });
-  }
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    Color primary = colors[1];
-    Color onSurface = colors[4];
-    Color surface = colors[0];
-    Color highlight = colors[7];
-
-    return Material(
-      color: surface,
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar.large(
-            leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
-                onPressed: () {
-                  goBack();
-                }),
-            title: comfortatext(
-                "Layout", 30, settings,
-                color: surface),
-            backgroundColor: primary,
-            pinned: false,
-          ),
-          SliverToBoxAdapter(
-            child: ReorderableListView(
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 50),
-              children: <Widget>[
-                for (int index = 0; index < _items.length; index += 1)
-                  Container(
-                    key: Key("$index"),
-                    color: surface,
-                    padding: const EdgeInsets.all(4),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: highlight,
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      height: 70,
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Row(
-                        children: [
-                          comfortatext("${_items[index]}", 20, settings, color: onSurface),
-                          Spacer(),
-                          Icon(Icons.reorder_rounded, color: onSurface, size: 20,),
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
-              onReorder: (int oldIndex, int newIndex) {
-                setState(() {
-                  if (oldIndex < newIndex) {
-                    newIndex -= 1;
-                  }
-                  final String item = _items.removeAt(oldIndex);
-                  _items.insert(newIndex, item);
-                });
               },
             ),
           ),

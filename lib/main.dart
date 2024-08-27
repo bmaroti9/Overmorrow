@@ -204,6 +204,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
+
     //defaults to new york when no previous location was found
     updateLocation('40.7128, 74.0060', "New York", time: 300, startup: true); //just for testing
   }

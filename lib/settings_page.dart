@@ -49,6 +49,7 @@ Map<String, List<String>> settingSwitches = {
   'Image source' : ['network', 'asset'],
 
   'Search provider' : ['weatherapi', 'open-meteo'],
+  'networkImageDialogShown' : ["false", "true"],
 };
 
 String translation(String text, String language) {
