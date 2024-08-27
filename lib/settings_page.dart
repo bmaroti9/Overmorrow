@@ -312,7 +312,12 @@ Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
   List<Color> colors;
   List<List<Color>> allColor = [];
 
-  final String mode = settings["Color mode"];
+  String mode = settings["Color mode"];
+
+  if (mode == "auto") {
+    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    mode = brightness == Brightness.dark ? "dark" : "light";
+  }
 
   List<dynamic> lightPalette = (await getImageColors(image, "light" , settings))[0];
   List<dynamic> darkPalette = (await getImageColors(image, "dark" , settings))[0];
@@ -334,6 +339,7 @@ Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
 
   if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network'
       || settings["Color source"] == 'wallpaper') {
+
     colors = getNetworkColors(mode == "light" ? lightPalette : darkPalette ,settings);
   }
   else {
