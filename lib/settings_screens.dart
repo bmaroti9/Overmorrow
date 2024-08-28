@@ -180,7 +180,6 @@ class _AppearancePageState extends State<AppearancePage> {
     String x = "light";
     if (copySettings["Color mode"] == "auto") {
       var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      print(("brightness", brightness));
       x = brightness == Brightness.dark ? "dark" : "light";
     }
     else {

@@ -53,8 +53,6 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   };
   final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
 
-  print(url);
-
   var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
       .timeout(const Duration(seconds: 6));
 
@@ -63,8 +61,6 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   var response = await file.readAsString();
 
   var wapi_body = jsonDecode(response);
-
-  print(wapi_body["current"]["air_quality"]);
 
   return [wapi_body, fetch_datetime];
 }

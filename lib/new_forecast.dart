@@ -238,7 +238,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
             children: List<Widget>.generate(
               4,
                   (int index) {
-                print((_value, index));
+
 
                 return ChoiceChip(
                   elevation: 0.0,

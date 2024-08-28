@@ -89,7 +89,7 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
     List<String> keys2 = textToUnsplashText.keys.toList();
     for (int x = 0; x < textToUnsplashText.length; x ++) {
       for (int y = 0; y < textToUnsplashText[keys2[x]]!.length; y ++) {
-        int reward = keys2[x] == _text ? -3000 : 1000;
+        int reward = keys2[x] == _text ? -3000 : 2000;
         if (textToUnsplashText[_text]!.contains(textToUnsplashText[keys2[x]]![y])) {
           if (reward == 1000) {
             reward = 0;

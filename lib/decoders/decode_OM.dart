@@ -332,8 +332,6 @@ class OMCurrent {
     List<Color> colors = x[0];
     List<Color> imageDebugColors = x[1];
 
-    print((photographerName, photorgaperUrl, photoLink));
-
     return OMCurrent(
       image: Uimage,
       photographerName: photographerName,
@@ -495,8 +493,6 @@ class OM15MinutePrecip {
 
       precips.add(x);
     }
-
-    print(("closest", closest));
 
     sum = max(sum, 0.1); //if there is rain then it shouldn't write 0
 
