@@ -44,18 +44,16 @@ class NewMain extends StatefulWidget {
 }
 
 class _NewMainState extends State<NewMain> {
-  late var data;
-  final realData;
+  final data;
   final updateLocation;
   final context;
 
-  _NewMainState(this.realData, this.updateLocation, this.context);
+  _NewMainState(this.data, this.updateLocation, this.context);
 
   @override
   void initState() {
     super.initState();
-    data = realData;
-    if (data.settings['networkImageDialogShown'] == "true") {
+    if (data.settings['networkImageDialogShown'] == "false") {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showFeatureDialog(context);
       });
@@ -84,12 +82,8 @@ class _NewMainState extends State<NewMain> {
           actions: [
             TextButton(
               onPressed: () async {
-                await SetData('settingnetworkImageDialogShown', "false");
+                await SetData('settingnetworkImageDialogShown', "true");
                 await SetData('settingImage source', "asset");
-                setState(() {
-                  data.settings['networkImageDialogShown'] = "false";
-                  data.settings['settingImage source'] = "asset";
-                });
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
@@ -103,12 +97,8 @@ class _NewMainState extends State<NewMain> {
             ),
             TextButton(
               onPressed: () async {
-                await SetData('settingnetworkImageDialogShown', "false");
+                await SetData('settingnetworkImageDialogShown', "true");
                 await SetData('settingImage source', "network");
-                setState(() {
-                  data.settings['networkImageDialogShown'] = "false";
-                  data.settings['settingImage source'] = "network";
-                });
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(

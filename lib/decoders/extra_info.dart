@@ -48,19 +48,22 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
   }
 
   String text_query = textToUnsplashText[_text]![0];
+  String placeName = shouldUsePlaceName[_text]! ? " $loc" : "";
+
+  print(("textquery", "$text_query, $loc", _text, text_query + placeName));
 
   final params2 = {
     'client_id': access_key,
-    'query' : "$text_query, $loc",
+    'query' : text_query + placeName,
     'content_filter' : 'high',
-    'count': '6',
+    'count': '8',
     //'collections' : '893395, 583204, 11649432, 162468, 1492135, 42478673, 8253647, 461360'
     //'collections' : '893395, 162468, 461360'
   };
 
   final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
 
-  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$real_loc $text_query")
+  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$text_query $loc")
       .timeout(const Duration(seconds: 6));
 
   var response2 = await file2.readAsString();

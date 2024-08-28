@@ -324,8 +324,11 @@ class WapiCurrent {
     String photoLink = "";
 
     if (settings["Image source"] == "network") {
-      final ImageData = await getUnsplashImage(textCorrection(
-          item["current"]["weather_code"], item["current"]["is_day"]), real_loc, lat, lng);
+      final text = textCorrection(
+          item["current"]["condition"]["code"], item["current"]["is_day"],
+          language: settings["Language"]
+      );
+      final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
       Uimage = ImageData[0];
       photographerName = ImageData[1];
       photorgaperUrl = ImageData[2];

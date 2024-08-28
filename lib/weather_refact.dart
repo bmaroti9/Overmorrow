@@ -343,6 +343,23 @@ Map<String, List<String>> textToUnsplashText = {
   'Cloudy Night' : ['cloudy night', 'night'] //if you specify cloudy then it gives cloudy results
 };
 
+Map<String, bool> shouldUsePlaceName = {
+  'Clear Night': true,
+  'Partly Cloudy': true,
+  'Clear Sky': true,
+  'Overcast': true,
+  'Haze': false,
+  'Rain': false,
+  'Sleet': false,
+  'Drizzle': false,
+  'Thunderstorm': false,
+  'Heavy Snow': false,
+  'Fog': false,
+  'Snow': false,
+  'Heavy Rain': false,
+  'Cloudy Night': true,
+};
+
 //trying to assign values for words (for example sky will be rewarded)
 Map<String, int> textFilter = {
   'sky' : 2000,
