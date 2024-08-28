@@ -20,6 +20,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/new_forecast.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/settings_page.dart';
@@ -53,7 +54,7 @@ class _NewMainState extends State<NewMain> {
   void initState() {
     super.initState();
     data = realData;
-    if (data.settings['networkImageDialogShown'] == "true") {
+    if (data.settings['networkImageDialogShown'] == "false") {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showFeatureDialog(context);
       });
@@ -70,9 +71,9 @@ class _NewMainState extends State<NewMain> {
           actions: [
             TextButton(
               onPressed: () async {
-                await SetData('settingnetworkImageDialogShown', "false");
+                await SetData('settingnetworkImageDialogShown', "true");
                 setState(() {
-                  data.settings['networkImageDialogShown'] = "false";
+                  data.settings['networkImageDialogShown'] = "true";
                 });
                 Navigator.pushNamedAndRemoveUntil(context,'/',(_) => false);
               },
@@ -97,6 +98,12 @@ class _NewMainState extends State<NewMain> {
     final Size size = view.physicalSize / view.devicePixelRatio;
 
     final FloatingSearchBarController controller = FloatingSearchBarController();
+
+    String colorMode = data.settings["Color mode"];
+    if (colorMode == "auto") {
+      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+      colorMode = brightness == Brightness.dark ? "dark" : "light";
+    }
 
     return Scaffold(
       backgroundColor: data.current.surface,
@@ -155,8 +162,8 @@ class _NewMainState extends State<NewMain> {
                   controller: controller,
                   settings: data.settings,
                   real_loc: data.real_loc,
-                  secondColor: data.settings["Color mode"] == "light" ? data.current.primary : data.current.onSurface,
-                  textColor: data.settings["Color mode"] == "light" ? data.current.primaryLight : data.current.primary,
+                  secondColor: colorMode == "light" ? data.current.primary : data.current.onSurface,
+                  textColor: colorMode == "light" ? data.current.primaryLight : data.current.primary,
                   highlightColor: data.current.container,
                   key: Key("${data.place}, ${data.current.surface}"),
                   extraTextColor: data.current.onSurface,),

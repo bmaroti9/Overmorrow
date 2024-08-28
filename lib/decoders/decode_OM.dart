@@ -92,7 +92,8 @@ int AqiIndexCorrection(int aqi) {
 }
 
 DateTime OMGetLocalTime(item) {
-  return DateTime.now().toUtc().add(Duration(seconds: item["utc_offset_seconds"]));
+  DateTime localTime = DateTime.now().toUtc().add(Duration(seconds: item["utc_offset_seconds"]));
+  return localTime;
 }
 
 double OMGetSunStatus(item) {
