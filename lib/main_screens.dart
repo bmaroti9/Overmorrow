@@ -26,6 +26,7 @@ import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
+import 'main.dart';
 import 'main_ui.dart';
 import 'new_displays.dart';
 import 'ui_helper.dart';
@@ -54,7 +55,7 @@ class _NewMainState extends State<NewMain> {
   void initState() {
     super.initState();
     data = realData;
-    if (data.settings['networkImageDialogShown'] == "false") {
+    if (data.settings['networkImageDialogShown'] == "true") {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showFeatureDialog(context);
       });
@@ -66,25 +67,58 @@ class _NewMainState extends State<NewMain> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("New Feature!"),
-          content: Text("Would you like to enable this feature?"),
+          backgroundColor: data.current.surface,
+          title: comfortatext("Overmorrow 2.4.0 introduces Network images!", 20, data.settings, color: data.current.primary),
+          content: SizedBox(
+            height: 100,
+            child: Column(
+              children: [
+                comfortatext("Would you like to enable network images?", 16, data.settings,
+                    color: data.current.onSurface),
+                const SizedBox(height: 20,),
+                comfortatext("note: you can always change later by going into settings > appearance > image source", 13, data.settings,
+                    color: data.current.onSurface),
+              ],
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () async {
-                await SetData('settingnetworkImageDialogShown', "true");
+                await SetData('settingnetworkImageDialogShown', "false");
+                await SetData('settingImage source', "asset");
                 setState(() {
-                  data.settings['networkImageDialogShown'] = "true";
+                  data.settings['networkImageDialogShown'] = "false";
+                  data.settings['settingImage source'] = "asset";
                 });
-                Navigator.pushNamedAndRemoveUntil(context,'/',(_) => false);
+                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const MyApp();
+                    },
+                  ),
+                );
               },
-              child: Text("Disable"),
+              child: comfortatext("Disable", 17, data.settings, color: data.current.outline, weight: FontWeight.w600),
             ),
             TextButton(
               onPressed: () async {
-                await SetData('settingnetworkImageDialogShown', "true");
-                Navigator.pushNamedAndRemoveUntil(context,'/',(_) => false);
+                await SetData('settingnetworkImageDialogShown', "false");
+                await SetData('settingImage source', "network");
+                setState(() {
+                  data.settings['networkImageDialogShown'] = "false";
+                  data.settings['settingImage source'] = "network";
+                });
+                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const MyApp();
+                    },
+                  ),
+                );
               },
-              child: Text("Enable"),
+              child: comfortatext("Enable", 17, data.settings, color: data.current.primary, weight: FontWeight.w600),
             ),
           ],
         );
