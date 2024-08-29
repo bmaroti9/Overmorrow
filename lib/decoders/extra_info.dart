@@ -56,7 +56,7 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
     'client_id': access_key,
     'query' : text_query + placeName,
     'content_filter' : 'high',
-    'count': '8',
+    'count': '6',
     //'collections' : '893395, 583204, 11649432, 162468, 1492135, 42478673, 8253647, 461360'
     //'collections' : '893395, 162468, 461360'
   };
@@ -99,7 +99,7 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
           }
         }
         if (desc.contains(lookFor)) {
-          print(("punished1", textToUnsplashText[keys2[x]]![y], reward));
+          print(("punished1", textToUnsplashText[keys2[x]]![y], reward, lookFor, textToUnsplashText[_text]));
           unaccuracy += reward; // i had to reverse it
         }
       }

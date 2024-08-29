@@ -329,9 +329,9 @@ Map<String, List<double>> conversionTable = {
 // the ones with spaces around them is so that only the work itself will count (sun <- yes, sunglasses <- no)
 Map<String, List<String>> textToUnsplashText = {
   'Clear Night': ['night', 'clear', 'moon'], //somehow just 'night' always gives you clear skies: stars or moon
-  'Partly Cloudy': ['cloud', 'daytime'], //this is also some simplification which improves a lot
-  'Clear Sky': ['sunny clear', 'sunny', ' sun ', 'clear' 'daytime'], //it doesn't understand clear as much so i use blue instead
-  'Overcast': ['overcast', 'cloud' 'daytime'],
+  'Partly Cloudy': ['cloud'], //this is also some simplification which improves a lot
+  'Clear Sky': ['sunny clear', 'sunny', ' sun ', 'clear'], //it doesn't understand clear as much so i use blue instead
+  'Overcast': ['overcast', 'cloud'],
   'Haze': ['haze', 'fog', 'mist'],
   'Rain': ['rain', 'drop', 'rainy', 'raining', 'drops'],
   'Sleet': ['freezing rain', 'sleet', 'ice'],//this works much better
@@ -350,9 +350,9 @@ Map<String, bool> shouldUsePlaceName = {
   'Clear Sky': true,
   'Overcast': true,
   'Haze': false,
-  'Rain': true,
+  'Rain': false,
   'Sleet': false,
-  'Drizzle': true,
+  'Drizzle': false,
   'Thunderstorm': false,
   'Heavy Snow': false,
   'Fog': false,
