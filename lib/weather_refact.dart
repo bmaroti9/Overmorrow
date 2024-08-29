@@ -330,7 +330,7 @@ Map<String, List<double>> conversionTable = {
 Map<String, List<String>> textToUnsplashText = {
   'Clear Night': ['night', 'clear', 'moon'], //somehow just 'night' always gives you clear skies: stars or moon
   'Partly Cloudy': ['cloud'], //this is also some simplification which improves a lot
-  'Clear Sky': ['sunny clear', 'sunny', ' sun ', 'clear'], //it doesn't understand clear as much so i use blue instead
+  'Clear Sky': ['sunny clear', 'sunny', ' sun ', 'clear', 'blue sky'], //it doesn't understand clear as much so i use blue instead
   'Overcast': ['overcast', 'cloud'],
   'Haze': ['haze', 'fog', 'mist'],
   'Rain': ['rain', 'drop', 'rainy', 'raining', 'drops'],
@@ -378,6 +378,7 @@ Map<String, int> textFilter = {
   'sign': -10000,
   'grayscale' : -100000,
   'black and white' : -100000,
+  'meat' : -5000,
   'man': -10000000, //trying to not have people in images
   'male': -1000000,
   'couple': -1000000,
