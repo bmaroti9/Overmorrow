@@ -326,16 +326,17 @@ Map<String, List<double>> conversionTable = {
 
 //I am trying to convert conditions to text that unsplash better understands
 //for example: blue sky instead of clear sky tends to help a lot
+// the ones with spaces around them is so that only the work itself will count (sun <- yes, sunglasses <- no)
 Map<String, List<String>> textToUnsplashText = {
   'Clear Night': ['night', 'clear', 'moon'], //somehow just 'night' always gives you clear skies: stars or moon
-  'Partly Cloudy': ['cloud',], //this is also some simplification which improves a lot
-  'Clear Sky': ['sunny', 'blue sky', 'sun', 'clear'], //it doesn't understand clear as much so i use blue instead
-  'Overcast': ['overcast', 'cloud'],
+  'Partly Cloudy': ['cloud', 'daytime'], //this is also some simplification which improves a lot
+  'Clear Sky': ['sunny clear', 'sunny', ' sun ', 'clear' 'daytime'], //it doesn't understand clear as much so i use blue instead
+  'Overcast': ['overcast', 'cloud' 'daytime'],
   'Haze': ['haze', 'fog', 'mist'],
   'Rain': ['rain', 'drop', 'rainy', 'raining', 'drops'],
   'Sleet': ['freezing rain', 'sleet', 'ice'],//this works much better
   'Drizzle': ['light rain', 'rain', 'rainy', 'raining', 'drop', 'drops'], //somehow understands it more though still not perfect
-  'Thunderstorm': ['thunderstorm', 'lightning', 'storm'],
+  'Thunderstorm': ['thunderstorm', 'lightning', 'storm', 'thunder'],
   'Heavy Snow': ['heavy snow', 'snow', 'snowing', 'snows'],
   'Fog': ['fog', 'mist', 'haze'],
   'Snow': ['snow', 'snowing', 'snows'],
@@ -349,9 +350,9 @@ Map<String, bool> shouldUsePlaceName = {
   'Clear Sky': true,
   'Overcast': true,
   'Haze': false,
-  'Rain': false,
+  'Rain': true,
   'Sleet': false,
-  'Drizzle': false,
+  'Drizzle': true,
   'Thunderstorm': false,
   'Heavy Snow': false,
   'Fog': false,
@@ -362,7 +363,7 @@ Map<String, bool> shouldUsePlaceName = {
 
 //trying to assign values for words (for example sky will be rewarded)
 Map<String, int> textFilter = {
-  'sky' : 2000,
+  'sky' : 1000,
   'ice': -10000,
   'icy': -10000,
   'bubble': -10000,
@@ -373,7 +374,6 @@ Map<String, int> textFilter = {
   'fabric': -10000,
   'texture': -10000,
   'pattern': -10000,
-  'wall' : -10000,
   'text': -10000,
   'sign': -10000,
   'grayscale' : -100000,

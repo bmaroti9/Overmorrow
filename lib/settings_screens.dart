@@ -194,6 +194,7 @@ class _AppearancePageState extends State<AppearancePage> {
     Color primary = colors[1];
     Color onSurface = colors[4];
     Color surface = colors[0];
+
     Color colorPop = colors[12];
     Color descColor = colors[13];
 

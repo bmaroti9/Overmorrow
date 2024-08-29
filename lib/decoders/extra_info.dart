@@ -83,19 +83,22 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
     }
 
     var desc1 = unsplash_body[i]["description"] ?? " ";
-    var desc2 = unsplash_body[i]["links"]["html"];
+    var desc2 = unsplash_body[i]["links"]["html"] ?? " ";
+    var desc3 = unsplash_body[i]["alt_description"] ?? " ";
 
-    var desc = desc1.toLowerCase() + " " +  desc2.toLowerCase();
+    String desc = desc1.toLowerCase() + " " + desc3.toLowerCase();
+    desc = " ${desc.replaceAll("-", " ")} ";
     List<String> keys2 = textToUnsplashText.keys.toList();
     for (int x = 0; x < textToUnsplashText.length; x ++) {
       for (int y = 0; y < textToUnsplashText[keys2[x]]!.length; y ++) {
+        String lookFor = textToUnsplashText[keys2[x]]![y];
         int reward = keys2[x] == _text ? -3000 : 2000;
-        if (textToUnsplashText[_text]!.contains(textToUnsplashText[keys2[x]]![y])) {
-          if (reward == 1000) {
+        if (textToUnsplashText[_text]!.contains(lookFor)) {
+          if (reward == 2000) {
             reward = 0;
           }
         }
-        if (desc.contains(textToUnsplashText[keys2[x]]![y])) {
+        if (desc.contains(lookFor)) {
           print(("punished1", textToUnsplashText[keys2[x]]![y], reward));
           unaccuracy += reward; // i had to reverse it
         }
@@ -109,15 +112,11 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
       }
     }
 
-    if (desc.contains(real_loc.toLowerCase())) {
-      unaccuracy -= 3000;
-    }
-
     double ratings = unsplash_body[i]["likes"] * 0.02 ?? 0;
     ratings += unsplash_body[i]["downloads"] * 0.01 ?? 0;
     print(("ratings", ratings));
 
-    unaccuracy -= min(ratings, 4000);
+    unaccuracy -= min(ratings, 2000);
 
     print((i, unaccuracy.toStringAsFixed(6), (desc1 ?? "null").trim() + ", " +  desc2, unsplash_body[i]["likes"], unsplash_body[i]["downloads"]));
     if (unaccuracy < best) {
@@ -258,7 +257,7 @@ int diffBetweenBackColors(List<Color> backcolors) {
       }
     }
   }
-  return (diff_sum / (backcolors.length * (backcolors.length - 1))).round();
+  return (diff_sum / max((backcolors.length * (backcolors.length - 1)), 1)).round();
 }
 
 int difBetweenTwoColors(Color color1, Color color2) {
