@@ -1232,6 +1232,105 @@ Map<String, List<String>> mainTranslate = {
     'Υποστήριξη στο Patreon'
   ],
 
+  'rain expected in the next half an hour': [
+    'rain expected in the next half an hour',
+    'eső várható a következő fél órában',
+    'se espera lluvia en la próxima media hora',
+    'pluie attendue dans la prochaine demi-heure',
+    'regen in der nächsten halben Stunde erwartet',
+    'pioggia prevista nella prossima mezz\'ora',
+    'chuva esperada na próxima meia hora',
+    'ожидается дождь в течение следующего получаса',
+    '预计在接下来的半小时内下雨',
+    '雨が次の30分以内に予想されます',
+    'deszcz spodziewany w ciągu następnych pół godziny',
+    'αναμένεται βροχή στο επόμενο μισάωρο'
+  ],
+  'rain expected in the next x minutes': [
+    'rain expected in the next x minutes',
+    'eső várható a következő x percben',
+    'se espera lluvia en los próximos x minutos',
+    'pluie attendue dans les x prochaines minutes',
+    'regen in den nächsten x Minuten erwartet',
+    'pioggia prevista nei prossimi x minuti',
+    'chuva esperada nos próximos x minutos',
+    'ожидается дождь в течение следующих x минут',
+    '预计在接下来的 x 分钟内下雨',
+    '雨が次の x 分以内に予想されます',
+    'deszcz spodziewany w ciągu następnych x minut',
+    'αναμένεται βροχή στα επόμενα x λεπτά'
+  ],
+  'rain expected in the next 1 hour': [
+    'rain expected in the next 1 hour',
+    'eső várható a következő 1 órában',
+    'se espera lluvia en la próxima 1 hora',
+    'pluie attendue dans la prochaine heure',
+    'regen in der nächsten Stunde erwartet',
+    'pioggia prevista nell\'ora successiva',
+    'chuva esperada na próxima 1 hora',
+    'ожидается дождь в течение следующего часа',
+    '预计在接下来的 1 小时内下雨',
+    '雨が次の1時間以内に予想されます',
+    'deszcz spodziewany w ciągu następnej godziny',
+    'αναμένεται βροχή στην επόμενη 1 ώρα'
+  ],
+  'rain expected in the next x hours': [
+    'rain expected in the next x hours',
+    'eső várható a következő x órában',
+    'se espera lluvia en las próximas x horas',
+    'pluie attendue dans les x prochaines heures',
+    'regen in den nächsten x Stunden erwartet',
+    'pioggia prevista nelle prossime x ore',
+    'chuva esperada nas próximas x horas',
+    'ожидается дождь в течение следующих x часов',
+    '预计在接下来的 x 小时内下雨',
+    '雨が次の x 時間以内に予想されます',
+    'deszcz spodziewany w ciągu następnych x godzin',
+    'αναμένεται βροχή στις επόμενες x ώρες'
+  ],
+  'rain expected in x minutes': [
+    'rain expected in x minutes',
+    'eső várható x perc múlva',
+    'se espera lluvia en x minutos',
+    'pluie attendue dans x minutes',
+    'regen in x Minuten erwartet',
+    'pioggia prevista tra x minuti',
+    'chuva esperada em x minutos',
+    'ожидается дождь через x минут',
+    '预计在 x 分钟内下雨',
+    '雨が x 分以内に予想されます',
+    'deszcz spodziewany za x minut',
+    'αναμένεται βροχή σε x λεπτά'
+  ],
+  'rain expected in 1 hour': [
+    'rain expected in 1 hour',
+    'eső várható 1 óra múlva',
+    'se espera lluvia en 1 hora',
+    'pluie attendue dans 1 heure',
+    'regen in 1 Stunde erwartet',
+    'pioggia prevista tra 1 ora',
+    'chuva esperada em 1 hora',
+    'ожидается дождь через 1 час',
+    '预计在 1 小时内下雨',
+    '雨が1時間以内に予想されます',
+    'deszcz spodziewany za 1 godzinę',
+    'αναμένεται βροχή σε 1 ώρα'
+  ],
+  'rain expected in x hours': [
+    'rain expected in x hours',
+    'eső várható x óra múlva',
+    'se espera lluvia en x horas',
+    'pluie attendue dans x heures',
+    'regen in x Stunden erwartet',
+    'pioggia prevista tra x ore',
+    'chuva esperada em x horas',
+    'ожидается дождь через x часов',
+    '预计在 x 小时内下雨',
+    '雨が x 時間以内に予想されます',
+    'deszcz spodziewany za x godzin',
+    'αναμένεται βροχή σε x ώρες'
+  ],
+
   'Search translation': [ //used for getting the codes used for translation of city names
                           //If none are available then en (english) is the default
                           // for more info visit https://open-meteo.com/en/docs/geocoding-api

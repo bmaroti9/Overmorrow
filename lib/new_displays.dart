@@ -350,7 +350,7 @@ Widget NewRain15MinuteIndicator(var data) {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8),
                     child: comfortatext(
-                        "rain expected in ${data.minutely_15_precip.t_minus}",
+                        data.minutely_15_precip.t_minus,
                         14,
                         data.settings,
                         color: data.current.onSurface, weight: FontWeight.w500),

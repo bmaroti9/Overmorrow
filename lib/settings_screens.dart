@@ -568,6 +568,16 @@ class _LangaugePageState extends State<LangaugePage> {
     String selected = settings["Language"] ?? "English";
     List<String> options = settingSwitches["Language"]!;
 
+    void onTap(value) {
+      setState(() {
+        HapticFeedback.mediumImpact();
+        if (value != null) {
+          settings["Language"] = value;
+          updateMainPage("Language", value);
+        }
+      });
+    }
+
     return Material(
       color: surface,
       child: CustomScrollView(
@@ -592,19 +602,16 @@ class _LangaugePageState extends State<LangaugePage> {
               itemCount: options.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
+                  onTap: () {
+                    onTap(options[index]);
+                  },
                   title: comfortatext(options[index], 20, settings, color: onSurface),
                   leading: Radio<String>(
                     fillColor: WidgetStateProperty.all(primary),
                     value: options[index],
                     groupValue: selected,
                     onChanged: (String? value) {
-                      setState(() {
-                        HapticFeedback.mediumImpact();
-                        if (value != null) {
-                          settings["Language"] = value;
-                          updateMainPage("Language", value);
-                        }
-                      });
+                      onTap(value);
                     },
                   ),
                 );

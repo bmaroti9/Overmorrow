@@ -340,7 +340,7 @@ Map<String, List<String>> textToUnsplashText = {
   'Fog': ['fog', 'mist', 'haze'],
   'Snow': ['snow', 'snowing', 'snows'],
   'Heavy Rain': ['heavy rain', 'rain', 'drop', 'rainy', 'raining', 'drops'],
-  'Cloudy Night' : ['cloudy night', 'night'] //if you specify cloudy then it gives cloudy results
+  'Cloudy Night' : ['cloudy night', 'night', 'moon'] //if you specify cloudy then it gives cloudy results
 };
 
 Map<String, bool> shouldUsePlaceName = {
@@ -363,11 +363,6 @@ Map<String, bool> shouldUsePlaceName = {
 //trying to assign values for words (for example sky will be rewarded)
 Map<String, int> textFilter = {
   'sky' : 2000,
-  'weather': 2000,
-  'tree': 1000,
-  'flower': 1000,
-  'cliff': 1000,
-  'mountain': 1000,
   'ice': -10000,
   'icy': -10000,
   'bubble': -10000,

@@ -500,26 +500,34 @@ class OM15MinutePrecip {
     if (closest != 100) {
       if (closest <= 2) {
         if (end == 2) {
-          t_minus = "the next half an hour";
+          t_minus = translation("rain expected in the next half an hour", settings["Language"]);
         }
         else if (end < 4) {
-          t_minus = "the next ${[15, 30, 45][end - 1]} minutes";
+          String x = " ${[15, 30, 45][end - 1]} ";
+          t_minus = translation("rain expected in the next x minutes", settings["Language"]);
+          t_minus = t_minus.replaceAll(" x ", x);
         }
         else if (end ~/ 4 == 1) {
-          t_minus = "the next 1 hour";
+          t_minus = translation("rain expected in the next 1 hour", settings["Language"]);
         }
         else {
-          t_minus = "the next ${end ~/ 4} hours";
+          String x = " ${end ~/ 4} ";
+          t_minus = translation("rain expected in the next x hours", settings["Language"]);
+          t_minus = t_minus.replaceAll(" x ", x);
         }
       }
       else if (closest < 4) {
-        t_minus = "${[15, 30, 45][closest - 1]} minutes";
+        String x = " ${[15, 30, 45][closest - 1]} ";
+        t_minus = translation("rain expected in x minutes", settings["Language"]);
+        t_minus = t_minus.replaceAll(" x ", x);
       }
       else if (closest ~/ 4 == 1) {
-        t_minus = "1 hour";
+        t_minus = translation("rain expected in 1 hour", settings["Language"]);
       }
       else {
-        t_minus = "${closest ~/ 4} hours";
+        String x = " ${closest ~/ 4} ";
+        t_minus = translation("rain expected in x hours", settings["Language"]);
+        t_minus = t_minus.replaceAll(" x ", x);
       }
     }
 
