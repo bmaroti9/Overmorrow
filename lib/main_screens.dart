@@ -255,14 +255,6 @@ class _NewMainState extends State<NewMain> {
           ),
 
 
-          /*
-          NewTimes(data, true),
-          buildHihiDays(data),
-          buildGlanceDay(data),
-          providerSelector(data.settings, updateLocation, data.current.outline, data.current.container,
-          data.current.surface, data.provider, "${data.lat}, ${data.lng}", data.real_loc),
-
-           */
           const Padding(padding: EdgeInsets.only(bottom: 20))
 
         ],

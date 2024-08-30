@@ -16,7 +16,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -25,11 +24,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/donation_page.dart';
 import 'package:overmorrow/settings_screens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'decoders/decode_wapi.dart';
 import 'decoders/extra_info.dart';
 import 'languages.dart';
 import 'main.dart';
-import 'main_ui.dart';
 import 'ui_helper.dart';
 
 Map<String, List<String>> settingSwitches = {
@@ -472,54 +469,6 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
   );
 }
 
-Widget NavButton(text, settings, textcolor, icon) {
-  return Row(
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(left: 8, right: 12, top: 15, bottom: 15),
-        child: Icon(icon, color: textcolor, size: 26,),
-      ),
-      comfortatext(text, 21, settings, color: textcolor),
-    ],
-  );
-}
-
-Widget ColorCircle(name, outline, inside, settings, updatePage, {w = 2, tap = 0}) {
-
-  return Expanded(
-    child: GestureDetector(
-      onTap: () {
-        HapticFeedback.mediumImpact();
-        if (tap == 0) {
-          return;
-        }
-        else {
-          updatePage("Color mode", name);
-        }
-      },
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 4, right: 4, bottom: 10),
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(200),
-                  border: Border.all(width: w * 1.0, color: outline),
-                  color: inside
-                ),
-                child: tap == 1 ? Center(child: comfortatext(name[0], 20, settings, color: outline))
-                : Container(),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
 class SettingsPage extends StatefulWidget {
 
   final primary;
@@ -604,204 +553,6 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
     ),
   );
 }
-
-Widget settingsMain(Map<String, String> settings, Function updatePage, Image image, List<Color> colors,
-    allColors) {
-
-  Color containerLow = colors[6];
-  Color onSurface = colors[4];
-  Color primary = colors[1];
-  Color primaryLight = colors[2];
-  Color surface = colors[0];
-  Color colorpop = colors[12];
-  Color desc_color = colors[13];
-
-
-  //var entryList = settings.entries.toList();
-  return Container(
-    padding: const EdgeInsets.only(left: 20, right: 15),
-    color: containerLow,
-    child: SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Center(
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 800),
-          padding: const EdgeInsets.all(2),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                /*
-                NavButton('Appearance', settings, textcolor, Icons.color_lens),
-                NavButton('Language', settings, textcolor, Icons.language),
-                NavButton('Units', settings, textcolor, Icons.graphic_eq),
-                NavButton('Advanced', settings, textcolor, Icons.code),
-
-                 */
-
-
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: Icon(Icons.palette_outlined, color: primary, ),
-                      ),
-                      Expanded(
-                        flex: 10,
-                        child: comfortatext(translation('Color mode', settings["Language"]!), 20, settings,
-                        color: onSurface),
-                      ),
-                      const Spacer(),
-                      comfortatext(settings["Color mode"]!, 20, settings, color: primaryLight)
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 40, bottom: 30),
-                  child: SizedBox(
-                    height: 300,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: AspectRatio(
-                        aspectRatio: 0.72,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20)),
-                            color: surface,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 220,
-                                  child: Stack(
-                                    children: [
-                                      ParrallaxBackground(image: image, color: surface),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 10, bottom: 15),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 36, settings, color: colorpop),
-                                            comfortatext(translation("Clear Sky", settings["Language"]!), 20,
-                                                settings, color: desc_color)
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10, right: 4, left: 4),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      //ColorCircle(settings["Color mode"], primary, surface, settings, updatePage),
-                                      ColorCircle("", primary, surface, settings, updatePage),
-                                      ColorCircle("", primary, surface, settings, updatePage),
-                                      ColorCircle("", primary, surface, settings, updatePage),
-                                      ColorCircle("", primary, surface, settings, updatePage)
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  //somehow this was the only way i found to limit the width.
-                  //otherwise the row would disregard the max size and expand beyond
-                  child: Container(
-                    constraints: const BoxConstraints(maxHeight: 90),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: AspectRatio(
-                        aspectRatio: 4,
-                        child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ColorCircle("original", allColors[0][1], allColors[0][0], settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("colorful", allColors[1][1], allColors[1][0], settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("mono", allColors[2][1], allColors[2][0], settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("light", allColors[3][1], allColors[3][0], settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("dark", allColors[4][1], allColors[4][0], settings, updatePage, w: 4, tap: 1),
-                            ]
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
-                settingEntry(Icons.invert_colors_on, "Color source", settings, containerLow, updatePage,
-                    onSurface, primaryLight, primary),
-                settingEntry(Icons.landscape_outlined, "Image source", settings, containerLow, updatePage,
-                    onSurface, primaryLight, primary),
-
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 20, left: 12, right: 12),
-                  child: Container(
-                    height: 2,
-                    decoration: BoxDecoration(
-                        color: primaryLight,
-                        borderRadius: BorderRadius.circular(2)
-                    ),
-                  ),
-                ),
-
-                settingEntry(CupertinoIcons.globe, "Language", settings, containerLow, updatePage,
-                    onSurface, primaryLight, primary),
-                settingEntry(Icons.access_time_filled_sharp, "Time mode", settings, onSurface, updatePage,
-                    onSurface, primaryLight, primary),
-                settingEntry(CupertinoIcons.textformat_size, "Font size", settings, onSurface, updatePage,
-                    onSurface, primaryLight, primary),
-
-                settingEntry(Icons.manage_search_outlined, "Search provider", settings, onSurface, updatePage,
-                    onSurface, primaryLight, primary),
-
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 20, left: 12, right: 12),
-                  child: Container(
-                    height: 2,
-                    decoration: BoxDecoration(
-                        color: primaryLight,
-                        borderRadius: BorderRadius.circular(2)
-                    ),
-                  ),
-                ),
-
-                settingEntry(CupertinoIcons.thermometer, "Temperature", settings, onSurface, updatePage,
-                    onSurface, primaryLight, primary),
-                settingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, onSurface, updatePage,
-                    onSurface, primaryLight, primary),
-                settingEntry(CupertinoIcons.wind, "Wind", settings, onSurface, updatePage,
-                    onSurface, primaryLight, primary),
-
-                const SizedBox(
-                  height: 40,
-                )
-
-
-              ]
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
 
 class MyDrawer extends StatelessWidget {
 
