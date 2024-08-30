@@ -16,7 +16,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'dart:ui';
 import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
 import 'package:flutter/material.dart';
 

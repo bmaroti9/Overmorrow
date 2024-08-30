@@ -55,26 +55,27 @@ class _NewMainState extends State<NewMain> {
     super.initState();
     if (data.settings['networkImageDialogShown'] == "false") {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showFeatureDialog(context);
+        _showFeatureDialog(context, data.settings);
       });
     }
   }
 
-  void _showFeatureDialog(BuildContext context) {
+  void _showFeatureDialog(BuildContext context, settings) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: data.current.surface,
-          title: comfortatext("Overmorrow 2.4.0 introduces Network images!", 20, data.settings, color: data.current.primary),
+          title: comfortatext(translation("Overmorrow 2.4.0 introduces Network images!", settings["Language"]), 20, data.settings, color: data.current.primary),
           content: SizedBox(
             height: 100,
             child: Column(
               children: [
-                comfortatext("Would you like to enable network images?", 16, data.settings,
+                comfortatext(translation("Would you like to enable network images?", settings["Language"]), 16, data.settings,
                     color: data.current.onSurface),
                 const SizedBox(height: 20,),
-                comfortatext("note: you can always change later by going into settings > appearance > image source", 13, data.settings,
+                comfortatext(translation("note: you can always change later by going into settings > appearance > image source",
+                settings["Language"]), 13, data.settings,
                     color: data.current.onSurface),
               ],
             ),
@@ -93,7 +94,7 @@ class _NewMainState extends State<NewMain> {
                   ),
                 );
               },
-              child: comfortatext("Disable", 17, data.settings, color: data.current.outline, weight: FontWeight.w600),
+              child: comfortatext(translation("Disable", settings["Language"]), 17, data.settings, color: data.current.outline, weight: FontWeight.w600),
             ),
             TextButton(
               onPressed: () async {
@@ -108,7 +109,7 @@ class _NewMainState extends State<NewMain> {
                   ),
                 );
               },
-              child: comfortatext("Enable", 17, data.settings, color: data.current.primary, weight: FontWeight.w600),
+              child: comfortatext(translation("Enable", settings["Language"]), 17, data.settings, color: data.current.primary, weight: FontWeight.w600),
             ),
           ],
         );
