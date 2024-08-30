@@ -1331,6 +1331,106 @@ Map<String, List<String>> mainTranslate = {
     'αναμένεται βροχή σε x ώρες'
   ],
 
+  'Appearance': [
+    'Appearance',
+    'Megjelenés',
+    'Apariencia',
+    'Apparence',
+    'Erscheinungsbild',
+    'Aspetto',
+    'Aparência',
+    'Внешний вид',
+    '外观',
+    '外観',
+    'Wygląd',
+    'Εμφάνιση'
+  ],
+  'General': [
+    'General',
+    'Általános',
+    'General',
+    'Général',
+    'Allgemein',
+    'Generale',
+    'Geral',
+    'Общие',
+    '常规',
+    '一般',
+    'Ogólne',
+    'Γενικά'
+  ],
+  'Units': [
+    'Units',
+    'Egységek',
+    'Unidades',
+    'Unités',
+    'Einheiten',
+    'Unità',
+    'Unidades',
+    'Единицы',
+    '单位',
+    '単位',
+    'Jednostki',
+    'Μονάδες'
+  ],
+
+  "color theme, image source": [
+    'color theme, image source',
+    'színtéma, kép forrása',
+    'tema de color, fuente de imagen',
+    'thème de couleur, source d\'image',
+    'Farbschema, Bildquelle',
+    'tema colore, sorgente immagine',
+    'tema de cor, fonte de imagem',
+    'цветовая тема, источник изображения',
+    '颜色主题, 图片来源',
+    'カラーテーマ, 画像のソース',
+    'motyw kolorystyczny, źródło obrazu',
+    'θέμα χρωμάτων, πηγή εικόνας'
+  ],
+  "time mode, font size": [
+    'time mode, font size',
+    'idő mód, betűméret',
+    'modo de tiempo, tamaño de fuente',
+    'mode de temps, taille de police',
+    'Zeitmodus, Schriftgröße',
+    'modalità tempo, dimensione del carattere',
+    'modo de tempo, tamanho da fonte',
+    'режим времени, размер шрифта',
+    '时间模式, 字体大小',
+    '時間モード, フォントサイズ',
+    'tryb czasu, rozmiar czcionki',
+    'λειτουργία χρόνου, μέγεθος γραμματοσειράς'
+  ],
+  "the language used": [
+    'the language used',
+    'használt nyelv',
+    'el idioma utilizado',
+    'la langue utilisée',
+    'die verwendete Sprache',
+    'la lingua utilizzata',
+    'o idioma usado',
+    'используемый язык',
+    '使用的语言',
+    '使用されている言語',
+    'używany język',
+    'η χρησιμοποιούμενη γλώσσα'
+  ],
+  "the units used in the app": [
+    'the units used in the app',
+    'az alkalmazásban használt egységek',
+    'las unidades utilizadas en la aplicación',
+    'les unités utilisées dans l\'application',
+    'die in der App verwendeten Einheiten',
+    'le unità utilizzate nell\'app',
+    'as unidades usadas no aplicativo',
+    'единицы, используемые в приложении',
+    '应用中使用的单位',
+    'アプリで使用される単位',
+    'jednostki używane w aplikacji',
+    'οι μονάδες που χρησιμοποιούνται στην εφαρμογή'
+  ],
+
   'Search translation': [ //used for getting the codes used for translation of city names
                           //If none are available then en (english) is the default
                           // for more info visit https://open-meteo.com/en/docs/geocoding-api

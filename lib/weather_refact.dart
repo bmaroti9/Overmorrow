@@ -362,8 +362,12 @@ Map<String, bool> shouldUsePlaceName = {
 };
 
 //trying to assign values for words (for example sky will be rewarded)
+//-10000 is basically taboo
 Map<String, int> textFilter = {
   'sky' : 1000,
+  'tree' : 500,
+  'flower': 500,
+  'mountain': 500,
   'ice': -10000,
   'icy': -10000,
   'bubble': -10000,
@@ -378,6 +382,7 @@ Map<String, int> textFilter = {
   'sign': -10000,
   'grayscale' : -100000,
   'black and white' : -100000,
+  'graffiti' : -2000,
   'meat' : -5000,
   'man': -10000000, //trying to not have people in images
   'male': -1000000,

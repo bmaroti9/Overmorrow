@@ -231,7 +231,7 @@ Widget defaultSearchScreen(Color color,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: comfortatext(
-                    "favorites", 20,
+                    translation('Favorites', settings["Language"] ?? "English"), 20,
                     settings,
                     color: extraTextColor),
               ),

@@ -54,8 +54,8 @@ Widget mainSettingEntry(String title, String desc, Color highlight, Color primar
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                comfortatext(title, 21, settings, color: onSurface),
-                comfortatext(desc, 16, settings, color: onSurface)
+                comfortatext(translation(title, settings["Language"]), 21, settings, color: onSurface),
+                comfortatext(translation(desc, settings["Language"]), 16, settings, color: onSurface)
               ],
             )
           ],
@@ -209,7 +209,7 @@ class _AppearancePageState extends State<AppearancePage> {
                   goBack();
                 }),
             title: comfortatext(
-                "Appearance", 30, settings,
+                translation('Appearance', settings["Language"]), 30, settings,
                 color: surface),
             backgroundColor: primary,
             pinned: false,
@@ -402,7 +402,7 @@ class _UnitsPageState extends State<UnitsPage> {
                   goBack();
                 }),
             title: comfortatext(
-                "Units", 30, settings,
+                translation("Units", settings["Language"]), 30, settings,
                 color: surface),
             backgroundColor: primary,
             pinned: false,
@@ -490,7 +490,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                   goBack();
                 }),
             title: comfortatext(
-                "General", 30, settings,
+                translation("General", settings["Language"]), 30, settings,
                 color: surface),
             backgroundColor: primary,
             pinned: false,
