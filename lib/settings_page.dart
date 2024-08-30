@@ -289,10 +289,15 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
 Future<List<dynamic>> getMainColor(settings, primary, back, image) async {
   List<Color> colors;
 
-  final String mode = settings["Color mode"];
+  String mode = settings["Color mode"];
 
   List<dynamic> x = await getImageColors(image, mode, settings);
   List<dynamic> palette = x[0];
+
+  if (mode == "auto") {
+    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    mode = brightness == Brightness.dark ? "dark" : "light";
+  }
 
   if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network'
       || settings["Color source"] == 'wallpaper') {
@@ -329,7 +334,7 @@ Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
   else {
     allColor.add(getColors(primary, back, settings, 0, force: "original"));
     allColor.add(getColors(primary, back, settings, 0, force: "colorful"));
-    allColor.add(getColors(primary, back, settings, 0, force: "dark"));
+    allColor.add(getColors(primary, back, settings, 0, force: "mono"));
     allColor.add(getNetworkColors(lightPalette, settings, force: "light")); //because the light and dark use the
     allColor.add(getNetworkColors(darkPalette, settings, force: "dark")); // material palette generator anyway
   }
