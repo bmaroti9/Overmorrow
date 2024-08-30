@@ -1430,6 +1430,34 @@ Map<String, List<String>> mainTranslate = {
     'jednostki używane w aplikacji',
     'οι μονάδες που χρησιμοποιούνται στην εφαρμογή'
   ],
+  "now": [
+    'now',
+    'most',
+    'ahora',
+    'maintenant',
+    'jetzt',
+    'ora',
+    'agora',
+    'сейчас',
+    '现在',
+    '今',
+    'teraz',
+    'τώρα'
+  ],
+  "hr": [
+    'hr',
+    'ó',
+    'h',
+    'h',
+    'Std',
+    'h',
+    'h',
+    'ч',
+    '小时',
+    '時',
+    'godz.',
+    'ώ',
+  ],
 
   'Search translation': [ //used for getting the codes used for translation of city names
                           //If none are available then en (english) is the default

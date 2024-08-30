@@ -389,9 +389,9 @@ Widget NewRain15MinuteIndicator(var data) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  comfortatext('now', 13, data.settings, color: data.current.onSurface),
-                  comfortatext('3hr', 13, data.settings, color: data.current.onSurface),
-                  comfortatext('6hr', 13, data.settings, color: data.current.onSurface)
+                  comfortatext(translation('now', data.settings["Language"]), 13, data.settings, color: data.current.onSurface),
+                  comfortatext('3${translation("hr", data.settings["Language"])}', 13, data.settings, color: data.current.onSurface),
+                  comfortatext('6${translation("hr", data.settings["Language"])}', 13, data.settings, color: data.current.onSurface)
                 ],
               ),
             )

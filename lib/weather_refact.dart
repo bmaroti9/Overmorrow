@@ -341,7 +341,7 @@ Map<String, List<String>> textToUnsplashText = {
   'Fog': ['fog', 'mist', 'haze'],
   'Snow': ['snow', 'snowing', 'snows'],
   'Heavy Rain': ['heavy rain', 'rain', 'drop', 'rainy', 'raining', 'drops'],
-  'Cloudy Night' : ['cloudy night', 'night', 'moon'] //if you specify cloudy then it gives cloudy results
+  'Cloudy Night' : ['cloud night', 'night', 'moon']
 };
 
 Map<String, bool> shouldUsePlaceName = {
