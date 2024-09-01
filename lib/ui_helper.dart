@@ -421,13 +421,14 @@ Widget RainWidget(data, day, highlight) {
   }
 
   return Padding(
-    padding: const EdgeInsets.only(left: 13, right: 13, top: 15),
+    padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
     child: Container(
       constraints: const BoxConstraints(minWidth: 0, maxWidth: 450),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
         //color: data.current.containerLow,
         border: data.settings["Color mode"] == "dark" || data.settings["Color mode"] == "light"
+            || data.settings["Color mode"] == "auto"
           ? Border.all(width: 3, color: highlight)
           : Border.all(width: 1.6, color: data.current.primaryLight)
 
@@ -435,7 +436,7 @@ Widget RainWidget(data, day, highlight) {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 14, right: 18, left: 18),
+              padding: const EdgeInsets.only(top: 14, right: 15, left: 18),
               child: AspectRatio(
                 aspectRatio: 2.2,
                 child: MyChart(precip, data, highlight)
