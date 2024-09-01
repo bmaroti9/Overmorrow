@@ -50,7 +50,7 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
   String text_query = textToUnsplashText[_text]![0];
   String placeName = shouldUsePlaceName[_text]! ? " $loc" : "";
 
-  print(("textquery", "$text_query, $loc", _text, text_query + placeName));
+  //print(("textquery", "$text_query, $loc", _text, text_query + placeName));
 
   final params2 = {
     'client_id': access_key,
@@ -83,7 +83,7 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
     }
 
     var desc1 = unsplash_body[i]["description"] ?? " ";
-    var desc2 = unsplash_body[i]["links"]["html"] ?? " ";
+    //var desc2 = unsplash_body[i]["links"]["html"] ?? " ";
     var desc3 = unsplash_body[i]["alt_description"] ?? " ";
 
     String desc = desc1.toLowerCase() + " " + desc3.toLowerCase();
@@ -99,7 +99,7 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
           }
         }
         if (desc.contains(lookFor)) {
-          print(("punished1", textToUnsplashText[keys2[x]]![y], reward, lookFor, textToUnsplashText[_text]));
+          //print(("punished1", textToUnsplashText[keys2[x]]![y], reward, lookFor, textToUnsplashText[_text]));
           unaccuracy += reward; // i had to reverse it
         }
       }
@@ -107,18 +107,18 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
 
     for (int x = 0; x < textFilter.length; x ++) {
       if (desc.contains(keys1[x])) {
-        print(("punished2", keys1[x], -textFilter[keys1[x]]!));
+        //print(("punished2", keys1[x], -textFilter[keys1[x]]!));
         unaccuracy -= textFilter[keys1[x]]!; // i had to reverse it
       }
     }
 
     double ratings = unsplash_body[i]["likes"] * 0.02 ?? 0;
     ratings += unsplash_body[i]["downloads"] * 0.01 ?? 0;
-    print(("ratings", ratings));
+    //print(("ratings", ratings));
 
     unaccuracy -= min(ratings, 2000);
 
-    print((i, unaccuracy.toStringAsFixed(6), (desc1 ?? "null").trim() + ", " +  desc2, unsplash_body[i]["likes"], unsplash_body[i]["downloads"]));
+    //print((i, unaccuracy.toStringAsFixed(6), (desc1 ?? "null").trim() + ", " +  desc2, unsplash_body[i]["likes"], unsplash_body[i]["downloads"]));
     if (unaccuracy < best) {
       index = i;
       best = unaccuracy;
@@ -126,14 +126,14 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
   }
 
   String image_path = unsplash_body[index]["urls"]["regular"];
-  print(index);
-  print(unsplash_body[index]["links"]["html"]);
+  //print(index);
+  //print(unsplash_body[index]["links"]["html"]);
 
   final String userLink = (unsplash_body[index]["user"]["links"]["html"]) ?? "";
   final String username = unsplash_body[index]["user"]["name"] ?? "";
   final String photoLink = unsplash_body[index]["links"]["html"] ?? "";
 
-  print((username, userLink));
+  //print((username, userLink));
 
   return [Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,
     width: double.infinity, height: double.infinity,), username, userLink, photoLink];
@@ -181,7 +181,6 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
                                                 //because they are too common
     double v = paliColors[i].red * 1 + paliColors[i].green * 1 - paliColors[i].blue * 5.0;
     if (v > bestValue) {
-      print(("better", i));
       bestValue = v.round();
       primeColor = paliColors[i];
     }
@@ -203,10 +202,9 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
   int bestDif = difFromBackColors(bestcolor, dominant);
 
   int base = (diffBetweenBackColors(dominant) * 0.7).round();
-  print(("base", base));
+  //print(("base", base));
 
   if (bestDif <= base + 120) {
-    print("trying");
     for (int i = 1; i < 5; i++) {
       //LIGHT
       Color newcolor = lighten(startcolor, i / 4);
@@ -229,9 +227,7 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
   Color desc_color = used_colors[0];
   int desc_dif = difFromBackColors(desc_color, dominant);
 
-  print(("diffs", bestDif, desc_dif));
-
-  print(("desc_dif", desc_dif));
+  //print(("diffs", bestDif, desc_dif));
 
   if (desc_dif < base + 100) {
     desc_color = bestcolor;

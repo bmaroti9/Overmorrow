@@ -935,13 +935,18 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 17),
-              child: GestureDetector(
-                child: Icon(Icons.expand_more, color: data
-                    .current.primaryLight, size: 20,),
-                onTap: () {
-                  onExpandTapped(index);
-                },
+              padding: const EdgeInsets.only(right: 10),
+              child: SizedBox(
+                width: 28,
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  icon: Icon(Icons.expand_more, color: data
+                      .current.primaryLight, size: 20,),
+                  onPressed: () {
+                    onExpandTapped(index);
+                  },
+                ),
               ),
             ),
           ],

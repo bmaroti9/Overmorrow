@@ -20,6 +20,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -100,6 +101,14 @@ class _RadarSmallState extends State<RadarSmall> {
 
   @override
   Widget build(BuildContext context) {
+
+    String mode = data.settings["Color mode"];
+
+    if (mode == "auto") {
+      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+      mode = brightness == Brightness.dark ? "dark" : "light";
+    }
+
     return Column(
       children: [
         Padding(
@@ -140,7 +149,7 @@ class _RadarSmallState extends State<RadarSmall> {
                         },
                         initialCenter: LatLng(data.lat, data.lng),
                         initialZoom: 6,
-                        backgroundColor: data.settings["Color mode"] == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
+                        backgroundColor: mode == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
                         keepAlive: true,
                         maxZoom: 6,
                         minZoom: 6,
@@ -156,7 +165,7 @@ class _RadarSmallState extends State<RadarSmall> {
                       ),
                       children: [
                         TileLayer(
-                          urlTemplate: data.settings["Color mode"] == "dark"
+                          urlTemplate: mode == "dark"
                               ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                               : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
                         ),
@@ -402,7 +411,15 @@ class _RadarBigState extends State<RadarBig> {
   @override
   Widget build(BuildContext context) {
     double x = MediaQuery.of(context).padding.top;
-    
+
+    String mode = data.settings["Color mode"];
+
+    if (mode == "auto") {
+      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+      mode = brightness == Brightness.dark ? "dark" : "light";
+    }
+
+
     return Scaffold(
       body: Stack(
         children: [
@@ -413,15 +430,15 @@ class _RadarBigState extends State<RadarBig> {
               minZoom: 2,
               maxZoom: 8,
 
-              backgroundColor: data.settings["Color mode"] == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
+              backgroundColor: mode == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
               interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate,),
             ),
             children: [
               Container(
-                color: data.settings["Color mode"] == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
+                color: mode == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
               ),
               TileLayer(
-                urlTemplate: data.settings["Color mode"] == "dark"
+                urlTemplate: mode == "dark"
                     ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                     : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
               ),
@@ -429,7 +446,7 @@ class _RadarBigState extends State<RadarBig> {
                 urlTemplate: data.radar.images[currentFrameIndex.toInt()] + "/256/{z}/{x}/{y}/8/1_1.png",
               ),
               TileLayer(
-                urlTemplate: data.settings["Color mode"] == "dark"
+                urlTemplate: mode == "dark"
                     ? 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png'
                     : 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
               ),

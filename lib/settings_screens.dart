@@ -189,8 +189,6 @@ class _AppearancePageState extends State<AppearancePage> {
     final colors = allColors[["original", "colorful", "mono", "light", "dark"]
         .indexOf(x)];
 
-    print((colors, x));
-
     Color highlight = colors[7];
     Color primaryLight = colors[2];
     Color primary = colors[1];
