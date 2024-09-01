@@ -1,15 +1,14 @@
-![app_screens](Screenshots/Overmorrow_white_circle_mini.png)
-
 # Overmorrow weather
 
-![app_gallery](Screenshots/new_preview.png)
+![app_gallery](Screenshots/new_feature_graphic_yellow.jpg)
 
-### Beautiful minimalist weather app. 
+## Minimalist colorful weather app
 
-![app_screens](Screenshots/app_gallery3.png)
+![app_gallery](Screenshots/app_gallery4_tranparent.png)
+
+
 | [![Download on Google Play](/Screenshots/play_badge4.png 'Download')](https://play.google.com/store/apps/details?id=com.marotidev.Overmorrow) | [![Download on IzzyOnDroid](/Screenshots/IzzyOnDroid_c.png 'Download')](https://apt.izzysoft.de/fdroid/index/apk/com.marotidev.Overmorrow/) |
 |---|---|
-
 
 ## Weather providers 🌨️
 - [open-meteo](https://open-meteo.com)
@@ -59,6 +58,8 @@ So instead here is my take on the weather app ui (but i did kep it free and ad f
 - ✅ Settings/Info/Donate pages
 - ✅ Tablet mode
 - ✅ more than one weather provider
+- ✅ add network images
+- ✅ material you
 
 #### hope to add in the near-future:
  
