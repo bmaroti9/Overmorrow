@@ -16,14 +16,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:overmorrow/decoders/decode_wapi.dart';
 import 'package:overmorrow/donation_page.dart';
-import 'package:overmorrow/main_ui.dart';
+import 'package:overmorrow/settings_screens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'decoders/extra_info.dart';
 import 'languages.dart';
 import 'main.dart';
 import 'ui_helper.dart';
@@ -36,13 +37,16 @@ Map<String, List<String>> settingSwitches = {
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
   'Wind': ['m/s', 'kph', 'mph', 'kn'],
-  'Pressure' : ['mmHg', 'inHg', 'mb', 'hPa'],
   'Time mode': ['12 hour', '24 hour'],
   'Font size': ['normal', 'small', 'very small', 'big'],
 
-  'Color mode' : ['original', 'colorful', 'monochrome', 'light', 'dark'],
+  'Color mode' : ['auto', 'original', 'colorful', 'mono', 'light', 'dark'],
+
+  'Color source' : ['image', 'wallpaper'],
+  'Image source' : ['network', 'asset'],
 
   'Search provider' : ['weatherapi', 'open-meteo'],
+  'networkImageDialogShown' : ["false", "true"],
 };
 
 String translation(String text, String language) {
@@ -54,31 +58,63 @@ String translation(String text, String language) {
 List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
 
   String x = force == "-1" ? settings["Color mode"] : force;
+  if (x == "auto") {
+    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    x = brightness == Brightness.dark ? "dark" : "light";
+  }
 
-  //0 BACKCOLOR
-  //1 PRIMARY
-  //2 TEXT COLOR
-  //3 COLOR POP
-  //4 SECONDARY
-  //5 HIGHLIGHT
+
+  //surface
+  //primary
+  //primaryLight
+  //primaryLighter
+  //onSurface
+  //outline
+  //containerLow
+  //container
+  //containerHigh
+  //surfaceVariant
+  //onPrimaryLight
+  //primarySecond
+
+  //colorpop
+  //desc
 
   List<Color> colors = [
     primary,
     back,
+    lighten2(primary, 0.8),
+    darken2(primary, 0.2),
     WHITE,
+    lighten2(primary, 1),
+    darken(primary, 0.02),
+    darken(primary, 0.04),
+    darken(primary, 0.04),
+    darken(primary, 0.03),
+    back,
+    back,
+
     [back, WHITE, WHITE][dif],
-    WHITE,
-    darken(primary)
+    WHITE
   ];
 
-  if (x == "monochrome") {
+  if (x == "mono") {
     colors = [ //default colorful option
       primary,
       WHITE,
       WHITE,
       WHITE,
       WHITE,
-      darken(primary)
+      WHITE,
+      darken(primary, 0.03),
+      darken(primary, 0.06),
+      darken(primary, 0.06),
+      darken(primary, 0.03),
+      primary,
+      WHITE,
+
+      WHITE,
+      WHITE
     ];
   }
 
@@ -86,35 +122,239 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
     colors = [ //default colorful option
       back,
       primary,
-      WHITE,
+      lighten2(back, 0.73),
+      darken(back, 0.1),
+      lighten2(back, 0.73),
+      lighten2(back, 0.73),
+      darken(back, 0.02),
+      darken(back, 0.04),
+      darken(back, 0.04),
+      darken(back, 0.03),
+      primary,
+      primary,
+
       [back, WHITE, WHITE][dif],
-      WHITE,
-      darken(back)
+      WHITE
     ];
   }
 
-  else if (x == "light") {
+  else if (x == "light") { //only the error page uses these because it's otherwise the network palette
     colors = [ //backcolor, primary, text
-      const Color(0xffeeeeee),
-      primary,
-      BLACK,
       WHITE,
       primary,
-      lighten(lightAccent(primary, 60000), 0.25),
+      lighten(primary, 0.05),
+      lighten(primary, 0.15),
+      BLACK,
+      BLACK,
+      const Color.fromARGB(250, 245, 245, 245),
+      const Color.fromARGB(250, 240, 240, 240),
+      const Color.fromARGB(250, 230, 230, 230),
+
     ];
   }
+
   else if (x == "dark") {
     colors = [ //backcolor, primary, text
       BLACK,
-      lighten(primary, 0.25),
-      lighten(lightAccent(primary, 50000), 0.3),
-      [BLACK, primary, WHITE][dif],
-      lighten(lightAccent(primary, 60000), 0.25),
-      const Color(0xff141414),
+      primary,
+      lighten(primary, 0.1),
+      lighten(primary, 0.15),
+      WHITE,
+      WHITE,
+      const Color.fromARGB(250, 15, 15, 15),
+      const Color.fromARGB(250, 25, 25, 25),
+      const Color.fromARGB(250, 35, 35, 35),
     ];
   }
 
   return colors;
+}
+
+List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
+  String x = force == "-1" ? settings["Color mode"] : force;
+  if (x == "auto") {
+    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    x = brightness == Brightness.dark ? "dark" : "light";
+  }
+
+  //surface
+  //primary
+  //primaryLight
+  //primaryLighter
+  //onSurface
+  //outline
+  //containerLow
+  //container
+  //containerHigh
+  //surfaceVariant
+  //onPrimaryLight
+  //primarySecond
+
+  List<Color> colors = [
+    palette[0].onPrimaryFixedVariant,
+    palette[0].tertiary,
+    palette[0].tertiaryFixed,
+    palette[0].secondaryFixed,
+    palette[0].secondaryFixed,
+    palette[0].outline,
+    darken2(palette[0].onPrimaryFixedVariant, 0.09),
+    darken2(palette[0].onPrimaryFixedVariant, 0.12),
+    darken2(palette[0].onPrimaryFixedVariant, 0.2),
+    darken2(palette[0].onPrimaryFixedVariant, 0.1),
+    palette[0].onTertiaryFixed,
+    palette[0].tertiaryFixed,
+
+    palette[1],
+    palette[2],
+  ];
+  if (x == "mono") {
+    colors = [
+      palette[0].onPrimaryFixedVariant,
+      WHITE,
+      WHITE,
+      WHITE,
+      palette[0].onSurface,
+      WHITE,
+      darken2(palette[0].onPrimaryFixedVariant, 0.09),
+      darken2(palette[0].onPrimaryFixedVariant, 0.12),
+      darken2(palette[0].onPrimaryFixedVariant, 0.2),
+      darken2(palette[0].onPrimaryFixedVariant, 0.1),
+      palette[0].onTertiaryFixed,
+      WHITE,
+
+      palette[1],
+      palette[2],
+    ];
+  }
+  else if (x == "colorful") {
+    colors = [
+      palette[0].onTertiaryFixedVariant,
+      palette[0].primary,
+      palette[0].primaryFixed,
+      palette[0].secondaryFixed,
+      palette[0].onSurface,
+      palette[0].outline,
+      darken2(palette[0].onTertiaryFixedVariant, 0.09),
+      darken2(palette[0].onTertiaryFixedVariant, 0.12),
+      darken2(palette[0].onTertiaryFixedVariant, 0.2),
+      darken2(palette[0].onTertiaryFixedVariant, 0.1),
+      palette[0].onPrimaryFixed,
+      palette[0].primaryFixed,
+
+      palette[1],
+      palette[2],
+    ];
+  }
+  else if (x == "light") {
+    colors = [
+      palette[0].surface,
+      palette[0].primary,
+      palette[0].primaryFixedDim,
+      palette[0].primaryFixed,
+      palette[0].onSurface,
+      palette[0].outline,
+      palette[0].surfaceContainerLow,
+      palette[0].surfaceContainer,
+      palette[0].surfaceContainerHigh,
+      palette[0].surfaceContainerHighest,
+      palette[0].onPrimaryFixed,
+      palette[0].primaryFixedDim,
+
+      palette[1],
+      palette[2],
+    ];
+  }
+  else if (x == "dark") {
+    colors = [
+      palette[0].surface,
+      palette[0].primary,
+      palette[0].primaryFixed,
+      palette[0].primaryFixed,
+      palette[0].onSurface,
+      palette[0].outline,
+      palette[0].surfaceContainerLow,
+      palette[0].surfaceContainer,
+      palette[0].surfaceContainerHigh,
+      palette[0].surfaceContainerHighest,
+      palette[0].onPrimaryFixed,
+      palette[0].primaryFixed,
+
+      palette[1],
+      palette[2],
+    ];
+  }
+  return colors;
+}
+
+Future<List<dynamic>> getMainColor(settings, primary, back, image) async {
+  List<Color> colors;
+
+  String mode = settings["Color mode"];
+
+  List<dynamic> x = await getImageColors(image, mode, settings);
+  List<dynamic> palette = x[0];
+
+  if (mode == "auto") {
+    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    mode = brightness == Brightness.dark ? "dark" : "light";
+  }
+
+  if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network'
+      || settings["Color source"] == 'wallpaper') {
+    colors = getNetworkColors(palette, settings);
+  }
+  else {
+    colors = getColors(primary, back, settings, 0);
+  }
+
+  return [colors, x[1]];
+}
+
+Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
+  List<Color> colors;
+  List<List<Color>> allColor = [];
+
+  String mode = settings["Color mode"];
+
+  if (mode == "auto") {
+    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    mode = brightness == Brightness.dark ? "dark" : "light";
+  }
+
+  List<dynamic> lightPalette = (await getImageColors(image, "light" , settings))[0];
+  List<dynamic> darkPalette = (await getImageColors(image, "dark" , settings))[0];
+
+  if (settings["Image source"] == 'network' || settings["Color source"] == 'wallpaper') {
+    allColor.add(getNetworkColors(darkPalette, settings, force: "original"));
+    allColor.add(getNetworkColors(darkPalette, settings, force: "colorful"));
+    allColor.add(getNetworkColors(darkPalette, settings, force: "mono"));
+    allColor.add(getNetworkColors(lightPalette, settings, force: "light"));
+    allColor.add(getNetworkColors(darkPalette, settings, force: "dark"));
+  }
+  else {
+    allColor.add(getColors(primary, back, settings, 0, force: "original"));
+    allColor.add(getColors(primary, back, settings, 0, force: "colorful"));
+    allColor.add(getColors(primary, back, settings, 0, force: "mono"));
+    allColor.add(getNetworkColors(lightPalette, settings, force: "light")); //because the light and dark use the
+    allColor.add(getNetworkColors(darkPalette, settings, force: "dark")); // material palette generator anyway
+  }
+
+  if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network'
+      || settings["Color source"] == 'wallpaper') {
+
+    colors = getNetworkColors(mode == "light" ? lightPalette : darkPalette ,settings);
+  }
+  else {
+    colors = getColors(primary, back, settings, 0);
+  }
+
+  return [colors, allColor];
+}
+
+Future<List<dynamic>> getSettingsAndColors(primary, back, image) async {
+  Map<String, String> settings = await getSettingsUsed();
+  List<dynamic> colors = await getTotalColor(settings, primary, back, image);
+  return [settings, colors];
 }
 
 Future<Map<String, String>> getSettingsUsed() async {
@@ -200,70 +440,36 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
       );
     }).toList(),
     onChanged: (Object? value) {
+      HapticFeedback.lightImpact();
+      settings[name] = value;
       updatePage(name, value);
     }
   );
 }
-Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primary) {
+
+Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primaryLight, primary) {
   return Padding(
-    padding: const EdgeInsets.only(top: 3, bottom: 3),
+    padding: const EdgeInsets.only(top: 3, bottom: 3, left: 25, right: 25),
     child: Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: Icon(icon, color: textcolor),
+          padding: const EdgeInsets.only(right: 13),
+          child: Icon(icon, color: primary),
         ),
         Expanded(
           flex: 10,
           child: comfortatext(
             translation(text, settings["Language"]!),
-            20,
+            19,
             settings,
             color: textcolor,
           ),
         ),
         const Spacer(),
         dropdown(
-            darken(highlight), text, updatePage, settings[text]!, settings, textcolor, primary
+            highlight, text, updatePage, settings[text]!, settings, textcolor, primaryLight
         ),
       ],
-    ),
-  );
-}
-
-Widget ColorCircle(name, primary, back, settings, updatePage, {w = 2, tap = 0}) {
-
-  List<Color> colors = getColors(primary, back, settings, 0, force: name);
-
-  return Expanded(
-    child: GestureDetector(
-      onTap: () {
-        if (tap == 0) {
-          return;
-        }
-        else {
-          updatePage("Color mode", name);
-        }
-      },
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 4, right: 4, bottom: 10),
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(200),
-                  border: Border.all(width: w * 1.0, color: colors[1]),
-                  color: colors[0]
-                ),
-                child: tap == 1 ? Center(child: comfortatext(name[0], 20, settings, color: colors[2]))
-                : Container(),
-              ),
-            ),
-          ),
-        ],
-      ),
     ),
   );
 }
@@ -300,7 +506,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) {
-          return MyApp();
+          return const MyApp();
         },
       ),
     );
@@ -308,285 +514,128 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, String>>(
-      future: getSettingsUsed(),
+    return FutureBuilder<List<dynamic>>(
+      future: getSettingsAndColors(primary, back, image),
       builder: (BuildContext context,
-          AsyncSnapshot<Map<String, String>> snapshot) {
+          AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Container();
         } else if (snapshot.hasError) {
-          print(snapshot.error);
+          print((snapshot.error, snapshot.stackTrace));
           return Center(
             child: ErrorWidget(snapshot.error as Object),
           );
         }
-        return SettingsMain(primary, snapshot.data, updatePage, goBack, back, image);
+        return SettingsMain(primary, snapshot.data?[0], updatePage, goBack, back, image, context,
+            snapshot.data?[1][0], snapshot.data?[1][1]);
       },
     );
   }
 }
 
 Widget SettingsMain(Color primary, Map<String, String>? settings, Function updatePage,
-    Function goBack, Color back, String image) {
+    Function goBack, Color back, Image image, context, colors, allColors) {
 
-  List<Color> colors = getColors(primary, back, settings, 0);
-
-  return Scaffold(
-      appBar: AppBar(
-          toolbarHeight: 65,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0)
-          ),
-          elevation: 0,
-          leadingWidth: 50,
-          backgroundColor: colors[5],
-          title: comfortatext(translation('Settings', settings!["Language"]!), 25, settings, color: colors[2]),
+  return  Material(
+    color: colors[0],
+    child: CustomScrollView(
+      slivers: <Widget>[
+        SliverAppBar.large(
           leading:
-          IconButton(
-            onPressed: (){
-              goBack();
-            },
-            icon: Icon(Icons.arrow_back, color: colors[2],),
-          )
-      ),
-      body: settingsMain(colors[0], settings, updatePage, colors[2], colors[1], colors[5], colors[3],
-      image, primary, back),
-  );
-}
-
-Widget settingsMain(Color color, Map<String, String> settings, Function updatePage,
-    Color textcolor, Color secondary, highlight, Color colorpop, String image, Color primary,
-    Color back) {
-
-  //var entryList = settings.entries.toList();
-  return Container(
-    padding: const EdgeInsets.only(left: 20, right: 15),
-    color: highlight,
-    child: SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: Center(
-        child: Container(
-          constraints: BoxConstraints(maxWidth: 800),
-          padding: EdgeInsets.all(2),
-          child: Column(
-              children: [
-                SizedBox(height: 15,),
-                Padding(
-                  padding: EdgeInsets.only(left: 10, right: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: Icon(CupertinoIcons.circle_lefthalf_fill, color: textcolor, ),
-                      ),
-                      Expanded(
-                        flex: 10,
-                        child: comfortatext(translation('Color mode', settings["Language"]!), 20, settings,
-                        color: textcolor),
-                      ),
-                      const Spacer(),
-                      comfortatext(settings["Color mode"]!, 20, settings, color: textcolor)
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 40, bottom: 30),
-                  child: SizedBox(
-                    height: 300,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: AspectRatio(
-                        aspectRatio: 0.72,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20)),
-                            color: color,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 220,
-                                  child: Stack(
-                                    children: [
-                                      ParrallaxBackground(imagePath1: image, color: color),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 10, bottom: 15),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 36, settings, color: colorpop),
-                                            comfortatext(translation("Partly Cloudy", settings["Language"]!), 20,
-                                                settings, color: WHITE)
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10, right: 4, left: 4),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
-                                      ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
-                                      ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
-                                      ColorCircle(settings["Color mode"], primary, back, settings, updatePage),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  //somehow this was the only way i found to limit the width.
-                  //otherwise the row would disregard the max size and expand beyond
-                  child: Container(
-                    constraints: const BoxConstraints(maxHeight: 90),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: AspectRatio(
-                        aspectRatio: 4,
-                        child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ColorCircle("original", primary, back, settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("colorful", primary, back, settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("monochrome", primary, back, settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("light", primary, back, settings, updatePage, w: 4, tap: 1),
-                              ColorCircle("dark", primary, back, settings, updatePage, w: 4, tap: 1),
-                            ]
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
-                settingEntry(CupertinoIcons.globe, "Language", settings, highlight, updatePage,
-                    textcolor, secondary),
-                settingEntry(Icons.access_time_filled_sharp, "Time mode", settings, highlight, updatePage,
-                    textcolor, secondary),
-                settingEntry(CupertinoIcons.textformat_size, "Font size", settings, highlight, updatePage,
-                    textcolor, secondary),
-
-                settingEntry(Icons.manage_search_outlined, "Search provider", settings, highlight, updatePage,
-                    textcolor, secondary),
-
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 20, left: 12, right: 12),
-                  child: Container(
-                    height: 2,
-                    decoration: BoxDecoration(
-                        color: secondary,
-                        borderRadius: BorderRadius.circular(2)
-                    ),
-                  ),
-                ),
-
-                settingEntry(CupertinoIcons.thermometer, "Temperature", settings, highlight, updatePage,
-                    textcolor, secondary),
-                settingEntry(CupertinoIcons.drop_fill, "Precipitation", settings, highlight, updatePage,
-                    textcolor, secondary),
-                settingEntry(CupertinoIcons.wind, "Wind", settings, highlight, updatePage,
-                    textcolor, secondary),
-                settingEntry(CupertinoIcons.timelapse, "Pressure", settings, highlight, updatePage,
-                    textcolor, secondary),
-
-                const SizedBox(
-                  height: 40,
-                )
-              ]
-          ),
+          IconButton(icon: Icon(Icons.arrow_back, color: colors[0],), onPressed: () {
+            HapticFeedback.selectionClick();
+            goBack();
+          }),
+          title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[0]),
+          backgroundColor: colors[1],
+          pinned: false,
         ),
-      ),
+        // Just some content big enough to have something to scroll.
+        SliverToBoxAdapter(
+          child: NewSettings(settings, updatePage, image, colors, allColors, context),
+        ),
+      ],
     ),
   );
 }
 
 class MyDrawer extends StatelessWidget {
 
-  final primary;
-  final back;
+  final backupprimary;
+  final backupback;
   final settings;
   final image;
 
-  const MyDrawer({super.key, required this.settings, required this.primary, required this.back,
-  required this.image});
+  final primary;
+  final surface;
+  final onSurface;
+  final hihglight;
+
+  const MyDrawer({super.key, required this.settings, required this.backupback, required this.backupprimary,
+  required this.image, required this.surface, required this.primary, required this.onSurface,
+  required this.hihglight});
 
   @override
   Widget build(BuildContext context) {
 
-    List<Color> colors = getColors(primary, back, settings, 0);
-
     return Drawer(
-      backgroundColor: colors[0],
+      backgroundColor: surface,
       elevation: 0,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
+          Container(
+            height: 240,
             decoration: BoxDecoration(
-              color: colors[1],
+              color: primary,
             ),
-            child: Column(
-              children: [
-                Align(
-                    alignment: Alignment.center,
-                    child: comfortatext('Overmorrow', 30, settings, color: colors[0])
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                    child: comfortatext('Weather', 30, settings, color: colors[0])
-                ),
-              ],
+            child: Align(
+              alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: comfortatext('OVRMRW', 40, settings, color: surface, weight: FontWeight.w300),
+                )
             ),
           ),
+          const SizedBox(
+            height: 15,
+          ),
           ListTile(
-            title: comfortatext(translation('Settings', settings["Language"]), 25,
-                settings, color: colors[2]),
-            leading: Icon(Icons.settings, color: colors[2],),
+            title: comfortatext(translation('Settings', settings["Language"]), 24,
+                settings, color: onSurface),
+            leading: Icon(Icons.settings_outlined, color: primary, size: 24,),
             onTap: () {
+              HapticFeedback.selectionClick();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SettingsPage(primary: primary,
-                    back: back, image: image,)),
+                MaterialPageRoute(builder: (context) => SettingsPage(primary: backupprimary,
+                    back: backupback, image: image,)),
               );
             },
           ),
           ListTile(
-            title: comfortatext(translation('About', settings["Language"]), 25,
-                settings, color: colors[2]),
-            leading: Icon(Icons.info_outline, color: colors[2],),
+            title: comfortatext(translation('About', settings["Language"]), 24,
+                settings, color: onSurface),
+            leading: Icon(Icons.info_outline, color: primary,),
             onTap: () {
+              HapticFeedback.selectionClick();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => InfoPage(primary: primary, settings: settings,
-                back: back,)),
+                surface: surface, onSurface: onSurface, hihglight: hihglight,)),
               );
             },
           ),
           ListTile(
-            title: comfortatext(translation('Donate', settings["Language"]), 25,
-                settings, color: colors[2]),
-            leading: Icon(Icons.favorite_border, color: colors[2],),
+            title: comfortatext(translation('Donate', settings["Language"]), 24,
+                settings, color: onSurface),
+            leading: Icon(Icons.favorite_outline_sharp, color: primary,),
             onTap: () {
+              HapticFeedback.selectionClick();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => DonationPage(primary: primary, settings: settings,
-                back: back,)),
+                surface: surface, highlight: hihglight, onSurface: onSurface,)),
               );
             },
           ),

@@ -16,18 +16,54 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 
+import '../Icons/overmorrow_weather_icons_icons.dart';
+import '../api_key.dart';
+import '../caching.dart';
 import '../settings_page.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart' as weather_refactor;
+import '../weather_refact.dart';
+import 'decode_OM.dart';
 import 'extra_info.dart';
+
+import 'package:flutter/material.dart';
 
 //decodes the whole response from the weatherapi.com api_call
 
 bool RandomSwitch = false;
+
+String WapiGetLocalTime(item) {
+  return item["location"]["localtime"].split(" ")[1];
+}
+
+Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
+  //gets the json response for weatherapi.com
+  final params = {
+    'key': wapi_Key,
+    'q': latlong,
+    'days': '3',
+    'aqi': 'yes',
+    'alerts': 'no',
+  };
+  final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
+
+  var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
+      .timeout(const Duration(seconds: 6));
+
+  DateTime fetch_datetime = await file.lastModified();
+
+  var response = await file.readAsString();
+
+  var wapi_body = jsonDecode(response);
+
+  return [wapi_body, fetch_datetime];
+}
 
 int wapiGetWindDir(var data) {
   int total = 0;
@@ -54,8 +90,8 @@ String amPmTime(String time) {
   return "$hour:$minute$atEnd";
 }
 
-String convertTime(String input) {
-  List<String> splited = input.split(" ");
+String convertTime(String input, {by = " "}) {
+  List<String> splited = input.split(by);
   List<String> num = splited[0].split(":");
   int hour = int.parse(num[0]);
   int minute = int.parse(num[1]);
@@ -74,8 +110,8 @@ String convertTime(String input) {
   return "$hour:$minute";
 }
 
-double getSunStatus(String sunrise, String sunset, String time) {
-  List<String> splited1 = sunrise.split(" ");
+double getSunStatus(String sunrise, String sunset, String time, {by = " "}) {
+  List<String> splited1 = sunrise.split(by);
   List<String> num1 = splited1[0].split(":");
   int hour1 = int.parse(num1[0]);
   int minute1 = int.parse(num1[1]);
@@ -111,17 +147,17 @@ double unit_coversion(double value, String unit) {
 
 double temp_multiply_for_scale(int temp, String unit) {
   if (unit == '˚C') {
-    return max(0, min(100, 17 + temp * 2.4));
+    return max(0, min(105, 17 + temp * 2.4));
   }
   else{
-    return max(0, min(100, (0 + temp).toDouble()));
+    return max(0, min(105, (0 + temp).toDouble()));
   }
 }
 
-String iconCorrection(name, isday) {
+IconData iconCorrection(name, isday) {
   String text = textCorrection(name, isday);
-  String p = weather_refactor.textIconMap[text] ?? 'clear_night.png';
-  return p;
+  //String p = weather_refactor.textIconMap[text] ?? 'clear_night.png';
+  return textMaterialIcon[text] ?? OvermorrowWeatherIcons.sun2;
 }
 
 String getTime(date, bool ampm) {
@@ -170,8 +206,8 @@ String getName(index, settings) {
 
 String backdropCorrection(name, isday) {
   String text = textCorrection(name, isday);
-  print((name, text));
   String backdrop = weather_refactor.textBackground[text] ?? "haze.jpg";
+
   return backdrop;
 }
 
@@ -206,7 +242,6 @@ List<Color> contentColorCorrection(name, isday) {
 
 class WapiCurrent {
   final String text;
-  final String backdrop;
   final int temp;
   final int humidity;
   final int feels_like;
@@ -216,63 +251,126 @@ class WapiCurrent {
   final int wind;
   final int wind_dir;
 
-  final Color backcolor;
+  final Color surface;
   final Color primary;
-  final Color colorpop;
-  final Color textcolor;
-  final Color secondary;
-  final Color highlight;
+  final Color primaryLight;
+  final Color primaryLighter;
+  final Color onSurface;
+  final Color outline;
+  final Color containerLow;
+  final Color container;
+  final Color containerHigh;
+  final Color colorPop;
+  final Color descColor;
+  final Color surfaceVariant;
+  final Color onPrimaryLight;
+  final Color primarySecond;
 
   final Color backup_primary;
   final Color backup_backcolor;
 
+  final Image image;
+
+  final String photographerName;
+  final String photographerUrl;
+  final String photoUrl;
+
+  final List<Color> imageDebugColors;
+
   const WapiCurrent({
-    required this.feels_like,
     required this.precip,
-    required this.backcolor,
-    required this.backdrop,
     required this.humidity,
+    required this.feels_like,
     required this.temp,
     required this.text,
     required this.uv,
     required this.wind,
-    required this.textcolor,
-    required this.secondary,
-    required this.primary,
-    required this.highlight,
-    required this.backup_primary,
     required this.backup_backcolor,
-    required this.colorpop,
+    required this.backup_primary,
     required this.wind_dir,
+
+    required this.surface,
+    required this.primary,
+    required this.primaryLight,
+    required this.primaryLighter,
+    required this.onSurface,
+    required this.outline,
+    required this.containerLow,
+    required this.container,
+    required this.containerHigh,
+    required this.colorPop,
+    required this.descColor,
+    required this.surfaceVariant,
+    required this.onPrimaryLight,
+    required this.primarySecond,
+
+    required this.image,
+    required this.photographerName,
+    required this.photographerUrl,
+    required this.photoUrl,
+    required this.imageDebugColors,
   });
 
-  static WapiCurrent fromJson(item, settings) {
-    Color back = BackColorCorrection(
-      textCorrection(
-          item["current"]["condition"]["code"], item["current"]["is_day"],
-      ),
-    );
+  static Future<WapiCurrent> fromJson(item, settings, real_loc, lat, lng) async {
 
-    Color primary = PrimaryColorCorrection(
+    Image Uimage;
+
+    String photographerName = "";
+    String photorgaperUrl = "";
+    String photoLink = "";
+
+    if (settings["Image source"] == "network") {
+      final text = textCorrection(
+          item["current"]["condition"]["code"], item["current"]["is_day"],
+          language: settings["Language"]
+      );
+      final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
+      Uimage = ImageData[0];
+      photographerName = ImageData[1];
+      photorgaperUrl = ImageData[2];
+      photoLink = ImageData[3];
+    }
+    else {
+      String imagePath = backdropCorrection(
+          item["current"]["condition"]["code"], item["current"]["is_day"]
+      );
+      Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
+        width: double.infinity, height: double.infinity,);
+    }
+
+    Color back = BackColorCorrection(
       textCorrection(
         item["current"]["condition"]["code"], item["current"]["is_day"],
       ),
     );
 
-    List<Color> colors = getColors(primary, back, settings,
-        ColorPopCorrection(textCorrection(
-            item["current"]["weather_code"], item["current"]["is_day"]),)[
-        settings["Color mode"] == "dark" ? 1 : 0
-        ]);
+    Color primary = PrimaryColorCorrection(
+        textCorrection(
+          item["current"]["condition"]["code"], item["current"]["is_day"],
+        )
+    );
+
+    List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
+    List<Color> colors = x[0];
+    List<Color> imageDebugColors = x[1];
 
     return WapiCurrent(
 
-      backcolor: colors[0],
+      surface: colors[0],
       primary: colors[1],
-      textcolor: colors[2],
-      colorpop: colors[3],
-      secondary:  colors[4],
-      highlight: colors[5],
+      primaryLight: colors[2],
+      primaryLighter: colors[3],
+      onSurface: colors[4],
+      outline: colors[5],
+      containerLow: colors[6],
+      container: colors[7],
+      containerHigh: colors[8],
+      surfaceVariant: colors[9],
+      onPrimaryLight: colors[10],
+      primarySecond: colors[11],
+
+      colorPop: colors[12],
+      descColor: colors[13],
 
       backup_backcolor: back,
       backup_primary: primary,
@@ -281,9 +379,7 @@ class WapiCurrent {
           item["current"]["condition"]["code"], item["current"]["is_day"],
           language: settings["Language"]
       ),
-      backdrop: backdropCorrection(
-          item["current"]["condition"]["code"], item["current"]["is_day"]
-      ),
+      image: Uimage,
       temp: unit_coversion(item["current"]["temp_c"], settings["Temperature"])
           .round(),
       feels_like: unit_coversion(
@@ -296,14 +392,20 @@ class WapiCurrent {
           settings["Precipitation"]).toStringAsFixed(1)),
       wind: unit_coversion(item["current"]["wind_kph"], settings["Wind"])
           .round(),
-      wind_dir: item["current"]["wind_degree"]
+      wind_dir: item["current"]["wind_degree"],
+
+      photographerName: photographerName,
+      photographerUrl: photorgaperUrl,
+      photoUrl: photoLink,
+      imageDebugColors: imageDebugColors,
     );
   }
 }
 
 class WapiDay {
   final String text;
-  final String icon;
+  final IconData icon;
+  final double iconSize;
   final String name;
   final String minmaxtemp;
   final List<WapiHour> hourly;
@@ -313,13 +415,14 @@ class WapiDay {
   final double total_precip;
   final int windspeed;
   final int uv;
-  final mm_precip;
+  final double mm_precip;
 
   final int wind_dir;
 
   const WapiDay({
     required this.text,
     required this.icon,
+    required this.iconSize,
     required this.name,
     required this.minmaxtemp,
     required this.hourly,
@@ -340,6 +443,9 @@ class WapiDay {
     icon: iconCorrection(
         item["day"]["condition"]["code"], 1
     ),
+    iconSize: oMIconSizeCorrection(textCorrection(
+        item["day"]["condition"]["code"], 1, language: settings["Language"]
+    ),),
     name: getName(index, settings),
     minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings["Temperature"]).round()}°'
         '/${unit_coversion(item["day"]["mintemp_c"], settings["Temperature"]).round()}°',
@@ -375,10 +481,21 @@ class WapiDay {
 
 class WapiHour {
   final int temp;
-  final String icon;
+
+  final IconData icon;
+  final double iconSize;
+
   final String time;
   final String text;
   final double precip;
+  final int precip_prob;
+  final double wind;
+  final int wind_dir;
+  final int uv;
+
+  final double raw_temp;
+  final double raw_precip;
+  final double raw_wind;
 
   const WapiHour(
       {
@@ -387,6 +504,14 @@ class WapiHour {
         required this.icon,
         required this.text,
         required this.precip,
+        required this.wind,
+        required this.iconSize,
+        required this.raw_precip,
+        required this.raw_temp,
+        required this.raw_wind,
+        required this.wind_dir,
+        required this.uv,
+        required this.precip_prob,
       });
 
   static WapiHour fromJson(item, settings) => WapiHour(
@@ -396,9 +521,131 @@ class WapiHour {
     icon: iconCorrection(
         item["condition"]["code"], item["is_day"]
     ),
-    //temp:double.parse(unit_coversion(item["temp_c"], settings["Temperature"]).toStringAsFixed(1)),
+    iconSize: oMIconSizeCorrection(textCorrection(
+        item["condition"]["code"], item["is_day"], language: settings["Language"]
+    ),),
     temp: unit_coversion(item["temp_c"], settings["Temperature"]).round(),
     time: getTime(item["time"], settings["Time mode"] == '12 hour'),
-    precip: item["precip_mm"] + (item["snow_cm"] / 10),
+    precip: unit_coversion(item["precip_mm"] + (item["snow_cm"] / 10), settings["Precipitation"]),
+
+    raw_temp: item["temp_c"],
+    raw_precip: item["precip_mm"] + (item["snow_cm"] / 10),
+    raw_wind: item["wind_kph"],
+
+    wind: double.parse(unit_coversion(item["wind_kph"], settings["Wind"]).toStringAsFixed(1)),
+
+    precip_prob: max(item["chance_of_rain"], item["chance_of_snow"]),
+    uv: item["uv"].round(),
+    wind_dir: item["wind_degree"],
+
+  );
+}
+
+class WapiSunstatus {
+  final String sunrise;
+  final String sunset;
+  final double sunstatus;
+  final String absoluteSunriseSunset;
+
+  const WapiSunstatus({
+    required this.sunrise,
+    required this.sunstatus,
+    required this.sunset,
+    required this.absoluteSunriseSunset,
+  });
+
+  static WapiSunstatus fromJson(item, settings) => WapiSunstatus(
+    sunrise: settings["Time mode"] == "24 hour"
+        ? convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"])
+        : amPmTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"]),
+    sunset: settings["Time mode"] == "24 hour"
+        ? convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"])
+        : amPmTime(item["forecast"]["forecastday"][0]["astro"]["sunset"]),
+    absoluteSunriseSunset: "${convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"])}/"
+        "${convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"])}",
+    sunstatus: getSunStatus(item["forecast"]["forecastday"][0]["astro"]["sunrise"],
+        item["forecast"]["forecastday"][0]["astro"]["sunset"], item["current"]["last_updated"]),
+  );
+}
+
+class WapiAqi {
+  final int aqi_index;
+  final double pm2_5;
+  final double pm10;
+  final double o3;
+  final double no2;
+  final String aqi_title;
+  final String aqi_desc;
+
+  const WapiAqi({
+    required this.no2,
+    required this.o3,
+    required this.pm2_5,
+    required this.pm10,
+    required this.aqi_index,
+    required this.aqi_desc,
+    required this.aqi_title,
+  });
+
+  static WapiAqi fromJson(item) => WapiAqi(
+    aqi_index: item["current"]["air_quality"]["us-epa-index"],
+    pm10: item["current"]["air_quality"]["pm10"],
+    pm2_5: item["current"]["air_quality"]["pm2_5"],
+    o3: item["current"]["air_quality"]["o3"],
+    no2: item["current"]["air_quality"]["no2"],
+
+    aqi_title: ['good', 'fair', 'moderate', 'poor', 'very poor', 'unhealthy']
+    [item["current"]["air_quality"]["us-epa-index"] - 1],
+
+    aqi_desc: ['Air quality is excellent; no health risk.',
+      'Acceptable air quality; minor risk for sensitive people.',
+      'Sensitive individuals may experience mild effects.',
+      'Health effects possible for everyone, serious for sensitive groups.',
+      'Serious health effects for everyone.',
+      'Emergency conditions; severe health effects for all.']
+    [item["current"]["air_quality"]["us-epa-index"] - 1],
+
+  );
+}
+
+Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) async {
+
+  var wapi = await WapiMakeRequest("$lat,$lng", real_loc);
+
+  var wapi_body = wapi[0];
+  DateTime fetch_datetime = wapi[1];
+
+  //String real_time = wapi_body["location"]["localtime"];
+  int epoch = wapi_body["location"]["localtime_epoch"];
+  WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
+
+  List<WapiDay> days = [];
+
+  for (int n = 0; n < wapi_body["forecast"]["forecastday"].length; n++) {
+    days.add(WapiDay.fromJson(
+        wapi_body["forecast"]["forecastday"][n], n, settings, epoch));
+  }
+
+  return WeatherData(
+    place: placeName,
+    settings: settings,
+    provider: "weatherapi.com",
+    real_loc: real_loc,
+
+    lat: lat,
+    lng: lng,
+
+    current: await WapiCurrent.fromJson(wapi_body, settings, real_loc, lat, lng),
+    days: days,
+    sunstatus: sunstatus,
+    aqi: WapiAqi.fromJson(wapi_body),
+    radar: await RainviewerRadar.getData(),
+
+    fetch_datetime: fetch_datetime,
+    updatedTime: DateTime.now(),
+    localtime: WapiGetLocalTime(wapi_body),
+    minutely_15_precip: const OM15MinutePrecip(t_minus: "", precip_sum: 0, precips: []), //because wapi doesn't have 15 minutely
+
+    //image: Uimage,
   );
 }

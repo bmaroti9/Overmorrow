@@ -16,24 +16,43 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'dart:ui';
+import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
+import 'package:flutter/material.dart';
+
 import 'ui_helper.dart';
 
-Map<String, String> textIconMap = {
-  'Clear Night': 'moon.png',
-  'Partly Cloudy': 'partly_cloudy.png',
-  'Clear Sky': 'sun.png',
-  'Overcast': 'cloudy.png',
-  'Haze': 'haze.png',
-  'Rain': 'rainy.png',
-  'Sleet': 'sleet.png',
-  'Drizzle': 'drizzle.png',
-  'Thunderstorm': 'lightning.png',
-  'Heavy Snow': 'heavy_snow.png',
-  'Fog': 'fog.png',
-  'Snow': 'snow.png',
-  'Heavy Rain': 'heavy_rain.png',
-  'Cloudy Night' : 'cloudy_night.png',
+Map<String, IconData> textMaterialIcon = {
+  'Clear Night': OvermorrowWeatherIcons.moon2,
+  'Partly Cloudy': OvermorrowWeatherIcons.partly_cloudy2,
+  'Clear Sky': OvermorrowWeatherIcons.sun2,
+  'Overcast': OvermorrowWeatherIcons.cloudy2,
+  'Haze': OvermorrowWeatherIcons.haze2,
+  'Rain': OvermorrowWeatherIcons.rain2,
+  'Sleet': OvermorrowWeatherIcons.sleet2,
+  'Drizzle': OvermorrowWeatherIcons.drizzle2,
+  'Thunderstorm': OvermorrowWeatherIcons.lightning2,
+  'Heavy Snow': OvermorrowWeatherIcons.heavy_snow2,
+  'Fog': OvermorrowWeatherIcons.fog2,
+  'Snow': OvermorrowWeatherIcons.snow2,
+  'Heavy Rain': OvermorrowWeatherIcons.heavy_rain2,
+  'Cloudy Night' : OvermorrowWeatherIcons.cloudy_night2,
+};
+
+Map<String, double> textIconSizeNormalize = {
+  'Clear Night': 0.77,
+  'Partly Cloudy': 0.8,
+  'Clear Sky': 0.8,
+  'Overcast': 0.74,
+  'Haze': 0.8,
+  'Rain': 0.95,
+  'Sleet': 1,
+  'Drizzle': 1,
+  'Thunderstorm': 1,
+  'Heavy Snow': 1,
+  'Fog': 0.8,
+  'Snow': 0.8,
+  'Heavy Rain': 0.95,
+  'Cloudy Night' : 0.8,
 };
 
 Map<int, String> weatherTextMap = {
@@ -201,7 +220,7 @@ Map<int, String> OMCodes = {
   86: 'Heavy Snow',
   95: 'Thunderstorm',
   96: 'Thunderstorm',
-  99: 'thunderstorm',
+  99: 'Thunderstorm',
 };
 
 Map<String, String> textBackground = {
@@ -259,7 +278,7 @@ Map<String, Color> accentColors = {
   'Clear Night': const Color(0xFF8D8F7D),
   'Partly Cloudy': const Color(0xff526181),
   'Clear Sky': const Color(0xFFA1C1D2),
-  'Overcast': const Color(0xFFE3BC9D),
+  'Overcast': const Color(0xFFCDA07E),
   'Haze': const Color(0xFF968C82),
   'Rain': const Color(0xFF262A3D),
   'Sleet': const Color(0xFFD2B1C5),
@@ -302,6 +321,84 @@ Map<String, List<double>> conversionTable = {
   'mmHg': [0, 25.4],
   'mb': [0, 33.864],
   'hPa': [0, 33.863886],
+};
+
+//I am trying to convert conditions to text that unsplash better understands
+//for example: blue sky instead of clear sky tends to help a lot
+// the ones with spaces around them is so that only the work itself will count (sun <- yes, sunglasses <- no)
+Map<String, List<String>> textToUnsplashText = {
+  'Clear Night': ['night', 'clear', 'moon'], //somehow just 'night' always gives you clear skies: stars or moon
+  'Partly Cloudy': ['cloud'], //this is also some simplification which improves a lot
+  'Clear Sky': ['sunny clear', 'sunny', ' sun ', 'clear', 'blue sky'], //it doesn't understand clear as much so i use blue instead
+  'Overcast': ['overcast', 'cloud'],
+  'Haze': ['haze', 'fog', 'mist'],
+  'Rain': ['rain', 'drop', 'rainy', 'raining', 'drops'],
+  'Sleet': ['freezing rain', 'sleet', 'ice'],//this works much better
+  'Drizzle': ['light rain', 'rain', 'rainy', 'raining', 'drop', 'drops'], //somehow understands it more though still not perfect
+  'Thunderstorm': ['thunderstorm', 'lightning', 'storm', 'thunder'],
+  'Heavy Snow': ['heavy snow', 'snow', 'snowing', 'snows'],
+  'Fog': ['fog', 'mist', 'haze'],
+  'Snow': ['snow', 'snowing', 'snows'],
+  'Heavy Rain': ['heavy rain', 'rain', 'drop', 'rainy', 'raining', 'drops'],
+  'Cloudy Night' : ['cloud night', 'night', 'moon']
+};
+
+Map<String, bool> shouldUsePlaceName = {
+  'Clear Night': true,
+  'Partly Cloudy': true,
+  'Clear Sky': true,
+  'Overcast': true,
+  'Haze': false,
+  'Rain': false,
+  'Sleet': false,
+  'Drizzle': false,
+  'Thunderstorm': false,
+  'Heavy Snow': false,
+  'Fog': false,
+  'Snow': false,
+  'Heavy Rain': false,
+  'Cloudy Night': true,
+};
+
+//trying to assign values for words (for example sky will be rewarded)
+//-10000 is basically taboo
+Map<String, int> textFilter = {
+  'sky' : 1000,
+  'tree' : 500,
+  'flower': 500,
+  'mountain': 500,
+  'ice': -10000,
+  'icy': -10000,
+  'bubble': -10000,
+  'smoke' : -2000,
+  'instagram': -2000,
+  'ring': -10000,
+  'during': 10000,
+  'fabric': -10000,
+  'texture': -10000,
+  'pattern': -10000,
+  'text': -10000,
+  'sign': -10000,
+  'grayscale' : -100000,
+  'black and white' : -100000,
+  'graffiti' : -2000,
+  'meat' : -5000,
+  'man': -10000000, //trying to not have people in images
+  'male': -1000000,
+  'couple': -1000000,
+  'female': -1000000,
+  'human': -1000000,
+  'girl': -1000000,
+  'boy': -1000000,
+  'woman': -10000000,
+  'person': -10000000,
+  'child': -10000000,
+  'crowd': -10000,
+  'people': -100000,
+  'hand': -100000,
+  'feet': -100000,
+  'bikini': -1000000,
+  'swimsuit': -1000000,
 };
 
 //if i have to get the average of two weather conditions then the condition

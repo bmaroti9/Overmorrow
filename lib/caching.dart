@@ -37,14 +37,31 @@ class MyGetResponse implements FileServiceResponse {
 
   @override
   DateTime get validTill {
-    if (url.toString().contains("search.json")) {
+    if (url.toString().contains("search.json")) { //search results are stored for 20 days
       return DateTime.now().add(const Duration(days: 20));
     }
 
+
+    //snap to the next quarter hour because that's when the weather data updates
+    DateTime now = DateTime.now();
+    int minutes = now.minute;
+    int nextQuarter = (minutes + 15 - minutes % 15) % 60;
+    int hoursToAdd = nextQuarter == 0 ? 1 : 0;
+
+    return DateTime(
+      now.year,
+      now.month,
+      now.day,
+      now.hour + hoursToAdd,
+      nextQuarter,
+    );
+
+    /*
     return DateTime.now().add(
         Duration(minutes: 60 - DateTime.now().minute,
             seconds: 60 - DateTime.now().second)
     );
+     */
   }
 
   @override

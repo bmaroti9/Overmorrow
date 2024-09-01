@@ -23,4 +23,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //IMPORTANT: Overmorrow has two weather providers (open-meteo and weatherapi)
 //but only weatherapi requires an api key. You don't need an api key for open-meteo.
 
-const String wapi_key = "YourApiKey"; //your api key from weatherapi.com
+const String wapi_key = "YourWeatherApiKey"; //your api key from weatherapi.com
+//the app works without this if you only use the open-meteo provider
+
+const String access_key = "YourUnsplashApiKey"; //your api key from unsplash.com
+//the app works without this if you set the image source to asset

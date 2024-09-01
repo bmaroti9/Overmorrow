@@ -60,19 +60,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  bool startup = true;
-
-  Future<Widget> getDays(bool recall, proposedLoc, backupName) async {
+  Future<Widget> getDays(bool recall, proposedLoc, backupName, startup) async {
 
     try {
 
       Map<String, String> settings = await getSettingsUsed();
       String weather_provider = await getWeatherProvider();
-      //print(weather_provider);
 
       if (startup) {
         List<String> n = await getLastPlace();  //loads the last place you visited
-        print(n);
         proposedLoc = n[1];
         backupName = n[0];
         startup = false;
@@ -82,9 +78,7 @@ class _MyAppState extends State<MyApp> {
       bool isItCurrentLocation = false;
 
       if (backupName == 'CurrentLocation') {
-        print("almost therre");
         String loc_status = await isLocationSafe();
-        print("got past");
         if (loc_status == "enabled") {
           Position position;
           try {
@@ -108,10 +102,22 @@ class _MyAppState extends State<MyApp> {
               place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
           }
 
-          backupName = '${position.latitude},${position.longitude}';
-          proposedLoc = 'search';
           isItCurrentLocation = true;
-          print('True');
+
+          try {
+
+            List<Placemark> placemarks = await placemarkFromCoordinates(
+                position.latitude, position.longitude);
+            Placemark place = placemarks[0];
+
+            backupName = place.locality;
+            absoluteProposed = "${position.latitude}, ${position.longitude}";
+
+          } on FormatException {
+            backupName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
+          } on PlatformException {
+            backupName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
+          }
         }
         else {
           return dumbySearch(errorMessage: translation(loc_status, settings["Language"]!),
@@ -119,34 +125,6 @@ class _MyAppState extends State<MyApp> {
             icon: Icons.gps_off,
             place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
         }
-      }
-      if (proposedLoc == 'search') {
-        
-        //List<dynamic> x = await getRecommend(backupName, "weatherapi", settings);
-
-        List<String> s_cord = backupName.split(",");
-
-        try {
-
-          List<Placemark> placemarks = await placemarkFromCoordinates(
-              double.parse(s_cord[0]), double.parse(s_cord[1]));
-          Placemark place = placemarks[0];
-
-          String city = '${place.locality}';
-
-          absoluteProposed = s_cord.join(', ');
-          backupName = city;
-        } on FormatException {
-          return dumbySearch(
-            errorMessage: '${translation('Place not found', settings["Language"]!)}: \n $backupName',
-            updateLocation: updateLocation,
-            icon: Icons.location_disabled,
-            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
-        } on PlatformException {
-          absoluteProposed = backupName;
-          backupName = "${double.parse(s_cord[0]).toStringAsFixed(2)}, ${double.parse(s_cord[1]).toStringAsFixed(2)}";
-        }
-
       }
 
       if (proposedLoc == 'query') {
@@ -181,23 +159,16 @@ class _MyAppState extends State<MyApp> {
           icon: Icons.wifi_off,
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on HttpExceptionWithStatus catch (hihi){
-        print(hihi.toString());
         return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
           icon: Icons.bug_report,
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,
+          shouldAdd: "Please try another weather provider!",);
       } on SocketException {
         return dumbySearch(errorMessage: translation("Not connected to the internet", settings["Language"]!),
           updateLocation: updateLocation,
           icon: Icons.wifi_off,
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
-      } on Error catch (e, stacktrace) {
-        print(stacktrace);
-        return dumbySearch(errorMessage: "general error at place 2: $e", updateLocation: updateLocation,
-          icon: Icons.bug_report,
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       }
-
-      print("temp:${weatherdata.current.temp}");
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
                                 // then this will be the new startup
@@ -216,40 +187,52 @@ class _MyAppState extends State<MyApp> {
       if (recall) {
         return dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
           icon: Icons.bug_report,
-          place: backupName, settings: settings, provider: weather_provider, latlng: 'search',);
+          place: backupName, settings: settings, provider: weather_provider, latlng: 'query',
+          shouldAdd: "Please try another weather provider!",);
       }
       else {
-        return getDays(true, proposedLoc, backupName);
+        return getDays(true, proposedLoc, backupName, startup);
       }
     }
   }
 
-  late Widget w1;
+  Widget w1 = Container();
   bool isLoading = false;
+  bool startup2 = false;
 
   @override
   void initState() {
     super.initState();
-    w1 = Container();
+
+
     //defaults to new york when no previous location was found
-    updateLocation('40.7128, 74.0060', "New York", time: 0);
+    updateLocation('40.7128, 74.0060', "New York", time: 300, startup: true); //just for testing
   }
 
-  Future<void> updateLocation(proposedLoc, backupName, {time = 500}) async {
+  Future<void> updateLocation(proposedLoc, backupName, {time = 0, startup = false}) async {
     setState(() {
+      HapticFeedback.lightImpact();
+      if (startup) {
+        startup2 = true;
+      }
       isLoading = true;
     });
 
     await Future.delayed(Duration(milliseconds: time));
 
     try {
-      Widget screen = await getDays(false, proposedLoc, backupName);
+      Widget screen = await getDays(false, proposedLoc, backupName, startup);
 
       setState(() {
         w1 = screen;
+        if (startup) {
+          startup2 = false;
+        }
       });
-
-      await Future.delayed(Duration(milliseconds: (800 - time).toInt()));
+      if (time > 0) {
+        await Future.delayed(Duration(milliseconds: (800 - time).toInt()));
+      }
+      await Future.delayed(const Duration(milliseconds: 200));
 
       setState(() {
         isLoading = false;
@@ -261,6 +244,10 @@ class _MyAppState extends State<MyApp> {
         isLoading = false;
       });
     }
+
+    if (startup) {
+      startup2 = false;
+    }
   }
 
   @override
@@ -268,7 +255,6 @@ class _MyAppState extends State<MyApp> {
     List<Color> colors = getStartBackColor();
 
     final EdgeInsets systemGestureInsets = MediaQuery.of(context).systemGestureInsets;
-    print(('hihi', systemGestureInsets.left));
     if (systemGestureInsets.left > 0) {
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
@@ -286,10 +272,10 @@ class _MyAppState extends State<MyApp> {
           children: [
             w1,
             if (isLoading) Container(
-              color: startup ? colors[0] : const Color.fromRGBO(0, 0, 0, 0.7),
+              color: startup2 ? colors[0] : const Color.fromRGBO(0, 0, 0, 0.7),
               child: Center(
                 child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: startup ? colors[1] : WHITE,
+                  color: startup2 ? colors[1] : WHITE,
                   size: 40,
                 ),
               ),
@@ -303,7 +289,6 @@ class _MyAppState extends State<MyApp> {
 
 List<Color> getStartBackColor() {
   var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-  print(brightness);
   bool isDarkMode = brightness == Brightness.dark;
   Color back = isDarkMode ? BLACK : WHITE;
   Color front = isDarkMode ? const Color.fromRGBO(250, 250, 250, 0.7) : const Color.fromRGBO(0, 0, 0, 0.3);

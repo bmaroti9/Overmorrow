@@ -18,6 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:math';
 import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
 
 import 'package:overmorrow/decoders/decode_wapi.dart';
 
@@ -48,8 +50,8 @@ List<Color> metNContentColorCorrection(String text) {
   return textFontColor[text] ?? [WHITE, WHITE];
 }
 
-String metNIconCorrection(String text) {
-  return textIconMap[text] ?? 'sun.png';
+IconData metNIconCorrection(String text) {
+  return textMaterialIcon[text] ?? OvermorrowWeatherIcons.sun2;
 }
 
 String metNTimeCorrect(String date) {
@@ -123,7 +125,7 @@ class MetNCurrent {
 
 class MetNDay {
   final String text;
-  final String icon;
+  final IconData icon;
   final String name;
   final String minmaxtemp;
   final List<MetNHour> hourly;
@@ -180,8 +182,6 @@ class MetNDay {
       index += 1;
     }
 
-    print(("hihihihihih", begin, end));
-
     //now we know the timestamps for the beginning and the end of the day
     
     List<int> temperatures = [];
@@ -234,7 +234,7 @@ class MetNDay {
 
 class MetNHour {
   final int temp;
-  final String icon;
+  final IconData icon;
   final String time;
   final String text;
   final double precip;

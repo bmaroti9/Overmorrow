@@ -21,13 +21,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'api_key.dart';
 import 'caching.dart';
@@ -51,29 +51,32 @@ double getFontSize(String set) {
 }
 
 Widget comfortatext(String text, double size, settings,
-    {Color color = WHITE, TextAlign align = TextAlign.left, weight = FontWeight.w400}) {
+    {Color color = WHITE, TextAlign align = TextAlign.left, weight = FontWeight.w400,
+      decoration = TextDecoration.none}) {
 
   double x = getFontSize(settings["Font size"]);
   return Text(
-  text,
-  style: GoogleFonts.comfortaa(
-    color: color,
-    fontSize: size * x,
-    fontWeight: weight,
-  ),
-  overflow: TextOverflow.ellipsis,
-  maxLines: 3,
-  textAlign: align,
+    text,
+    style: GoogleFonts.comfortaa(
+      color: color,
+      fontSize: size * x,
+      fontWeight: weight,
+      height: 1.1,
+      decoration: decoration,
+      decorationColor: color,
+    ),
+    overflow: TextOverflow.ellipsis,
+    maxLines: 40,
+    textAlign: align,
+
 );
 }
 
-Color lighten(Color color, [double amount = .1]) {
-  assert(amount >= 0 && amount <= 1);
+bool estimateBrightnessForColor(Color color) {
+  final double relativeLuminance = color.computeLuminance();
 
-  final hsl = HSLColor.fromColor(color);
-  final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
-
-  return hslLight.toColor();
+  const double kThreshold = 0.15;
+  return (relativeLuminance + 0.05) * (relativeLuminance + 0.05) > kThreshold;
 }
 
 Color darken(Color color, [double amount = .1]) {
@@ -85,37 +88,45 @@ Color darken(Color color, [double amount = .1]) {
   return hslDark.toColor();
 }
 
+Color lighten(Color color, [double amount = .1]) {
+  assert(amount >= 0 && amount <= 1);
+
+  final hsl = HSLColor.fromColor(color);
+  final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+
+  return hslLight.toColor();
+}
+
+Color darken2(Color c, [double amount = 0.1]) {
+  assert(0 <= amount && amount <= 1);
+  var f = 1 - amount;
+  return Color.fromARGB(
+      c.alpha,
+      (c.red * f).round(),
+      (c.green  * f).round(),
+      (c.blue * f).round()
+  );
+}
+
+Color lighten2(Color c, [double amount = 0.1]) {
+  assert(0 <= amount && amount <= 1);
+  return Color.fromARGB(
+      c.alpha,
+      c.red + ((255 - c.red) * amount).round(),
+      c.green + ((255 - c.green) * amount).round(),
+      c.blue + ((255 - c.blue) * amount).round()
+  );
+}
+
 Color lightAccent(Color color, int intensity) {
   double x = intensity / (color.red + color.green + color.blue);
-  print((x, (color.red * x).toInt(), (color.green * x).toInt(), (color.blue * x).toInt()));
   return Color.fromRGBO(sqrt(color.red * x).toInt(), sqrt(color.green * x).toInt(), sqrt(color.blue * x).toInt(), 1);
 }
 
-class UpdatedNotifier extends StatefulWidget {
-  final data;
-  final time;
-
-  UpdatedNotifier({Key? key, required this.data, required this.time}) : super(key: key);
-
-  @override
-  _FadeWidgetState createState() => _FadeWidgetState();
-}
-
-class _FadeWidgetState extends State<UpdatedNotifier> with AutomaticKeepAliveClientMixin<UpdatedNotifier> {
-  bool _hasBeenShown = false;
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-
-    if (!_hasBeenShown) {
-      _hasBeenShown = true;
-      return FadingWidget(data: widget.data, time: widget.time);
-    }
-    return Container();
+Future<void> _launchUrl(String url) async {
+  final Uri _url = Uri.parse(url);
+  if (!await launchUrl(_url)) {
+    throw Exception('Could not launch $_url');
   }
 }
 
@@ -129,21 +140,24 @@ class FadingWidget extends StatefulWidget  {
   _FadingWidgetState createState() => _FadingWidgetState();
 }
 
-class _FadingWidgetState extends State<FadingWidget> {
-  bool _isVisible = false;
+class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClientMixin {
+  bool _isVisible = true;
   Timer? _timer;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer(Duration(milliseconds: 400), () {
+    _timer = Timer(const Duration(milliseconds: 400), () {
       if (mounted) {
         setState(() {
           _isVisible = true;
         });
       }
     });
-    _timer = Timer(Duration(milliseconds: 3500), () {
+    _timer = Timer(const Duration(milliseconds: 2000), () {
       if (mounted) {
         setState(() {
           _isVisible = false;
@@ -161,12 +175,11 @@ class _FadingWidgetState extends State<FadingWidget> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
 
     final dif = widget.time.difference(widget.data.fetch_datetime).inMinutes;
 
     String text = translation('updated, just now', widget.data.settings["Language"]);
-
-    print(dif);
 
     if (dif > 0) {
       text = translation('updated, x min ago', widget.data.settings["Language"]);
@@ -175,29 +188,120 @@ class _FadingWidgetState extends State<FadingWidget> {
 
     List<String> split = text.split(',');
 
-    return AnimatedOpacity(
-      duration: const Duration(milliseconds: 400),
-      opacity: _isVisible ? 1.0 : 0.0,
-      child: Padding(
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 1000),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        final inAnimation = CurvedAnimation(
+          parent: animation,
+          curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
+        );
+        final outAnimation = CurvedAnimation(
+          parent: animation,
+          curve: const Interval(1.0, 0.5, curve: Curves.easeOut),
+        );
+        return FadeTransition(
+          opacity: _isVisible ? outAnimation : inAnimation,
+          child: child,
+        );
+      },
+      child: SinceLastUpdate(
+        key: ValueKey<bool>(_isVisible),
+        split: split,
+        data: widget.data,
+        isVisible: _isVisible,
+      ),
+    );
+  }
+}
+
+
+class SinceLastUpdate extends StatefulWidget {
+  final split;
+  final data;
+  final isVisible;
+
+  SinceLastUpdate({Key? key, required this.data, required this.split, required this.isVisible}) : super(key: key);
+
+  @override
+  _SinceLastUpdateState createState() => _SinceLastUpdateState();
+}
+
+class _SinceLastUpdateState extends State<SinceLastUpdate>{
+
+  @override
+  Widget build(BuildContext context) {
+
+    if (widget.isVisible) {
+      return Padding(
         padding: const EdgeInsets.only(top: 6, right: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
               padding: const EdgeInsets.only(right: 3),
-              child: Icon(Icons.access_time, color: widget.data.current.textcolor, size: 13,),
+              child: Icon(Icons.access_time, color: widget.data.current.primary, size: 13,),
             ),
-            comfortatext('${split[0]},', 13, widget.data.settings,
-                color: widget.data.current.textcolor, weight: FontWeight.w500),
-
-            comfortatext(split.length > 1 ?split[1] : "", 13, widget.data.settings,
+            comfortatext('${widget.split[0]},', 13, widget.data.settings,
                 color: widget.data.current.primary, weight: FontWeight.w500),
+
+            comfortatext(widget.split.length > 1 ? widget.split[1] : "", 13, widget.data.settings,
+                color: widget.data.current.onSurface, weight: FontWeight.w500),
           ],
         ),
-      ),
-    );
+      );
+    } else if (widget.data.current.photographerName != ""){
+      List<String> split = translation("photo by x on Unsplash", widget.data.settings["Language"]).split(",");
+      return Padding(
+        padding: const EdgeInsets.only(top: 0, right: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+              onPressed: () async {
+                await _launchUrl(widget.data.current.photoUrl + "?utm_source=overmorrow&utm_medium=referral");
+              },
+              style: TextButton.styleFrom(
+                 padding: const EdgeInsets.all(1),
+                  minimumSize: const Size(0, 22),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: comfortatext(split[0], 12.5, widget.data.settings, color: widget.data.current.onSurface,
+                  decoration: TextDecoration.underline),
+            ),
+            comfortatext(split[1], 12.5, widget.data.settings, color: widget.data.current.onSurface),
+            TextButton(
+              onPressed: () async {
+                await _launchUrl(widget.data.current.photographerUrl + "?utm_source=overmorrow&utm_medium=referral");
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                minimumSize: const Size(0, 22),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: comfortatext(widget.data.current.photographerName, 12.5, widget.data.settings, color: widget.data.current.onSurface,
+                  decoration: TextDecoration.underline),
+            ),
+            comfortatext(split[3], 12.5, widget.data.settings, color: widget.data.current.onSurface),
+            TextButton(
+              onPressed: () async {
+                await _launchUrl("https://unsplash.com/?utm_source=overmorrow&utm_medium=referral");
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                minimumSize: const Size(0, 22),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: comfortatext(split[4], 12.5, widget.data.settings, color: widget.data.current.onSurface,
+                  decoration: TextDecoration.underline),
+            ),
+          ],
+        ),
+      );
+    }
+    else {
+      return Container();
+    }
   }
 }
+
+
 
 class DescriptionCircle extends StatelessWidget {
 
@@ -236,7 +340,7 @@ class DescriptionCircle extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
 
-                    border: Border.all(width: 2, color: color),
+                    border: Border.all(width: 1.9, color: color),
                     //color: WHITE,
                     //borderRadius: BorderRadius.circular(size * 0.09)
                   ),
@@ -246,9 +350,9 @@ class DescriptionCircle extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        comfortatext(text, fontsize, settings, color: color, weight: FontWeight.w500),
+                        comfortatext(text, fontsize, settings, color: color, weight: FontWeight.w400),
                         Flexible(
-                          child: comfortatext(extra, small_font, settings, color: color, weight: FontWeight.w500)
+                          child: comfortatext(extra, small_font, settings, color: color, weight: FontWeight.w400)
                         ),
                       ],
                     ),
@@ -283,240 +387,102 @@ class DescriptionCircle extends StatelessWidget {
   }
 }
 
-Widget aqiDataPoints(String name, double value, var data) {
-  return Align(
-    alignment: Alignment.centerRight,
-    child: LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        double width;
-        if (constraints.maxWidth > 300) {
-          width = 200;
-        }
-        else {width = constraints.maxWidth;}
-
-        return SizedBox(
-          width: width,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, bottom: 2, top: 2),
-            child: Row(
-              children: [
-                comfortatext(name, 19, data.settings, color: data.current.textcolor,
-                weight: FontWeight.w500),
-                const Spacer(),
-                Container(
-                  padding: const EdgeInsets.only(top:5,bottom: 3, left: 4, right: 4),
-                  decoration: BoxDecoration(
-                      //border: Border.all(color: Colors.blueAccent)
-                    color: data.current.primary,
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: comfortatext(value.toString(), 18, data.settings,
-                      color: data.current.highlight, weight: FontWeight.w600)
-                )
-              ],
-            ),
-          )
-        );
-      }
-    )
-  );
-}
-
-Widget WindWidget(data, day) {
-  List<dynamic> hours = day.hourly_for_precip;
-
-  List<double> wind = [];
-
-  for (var i = 0; i < hours.length; i+= 2) {
-    double x = min(round((hours[i].wind + hours[i + 1].wind) * 0.5, decimals: 0) / 2, 10);
-    print((hours[i].wind, x));
-    wind.add(x);
-  }
-
-  return Column(
+Widget NewAqiDataPoints(String name, double value, var data) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Flex(
-          direction: Axis.horizontal,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, right: 5, bottom: 5, top: 5),
-                child: Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 1.2, color: WHITE)
-                  ),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(18),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: MyChart(wind, data),
-                      )
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 165,
-              width: 55,
-              child: ListView.builder(
-                  reverse: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          comfortatext((index * 10).round().toString(), 17, data.settings),
-                          comfortatext('m/s', 12, data.settings),
-                        ],
-                      ),
-                    );
-                  }
-              ),
-            )
-          ]
-      ),
+      comfortatext(name, 15, data.settings, color: data.current.primary,
+      align: TextAlign.end, weight: FontWeight.w500),
       Padding(
-          padding: const EdgeInsets.only(left: 33, top: 0, right: 70, bottom: 15),
-          child: Visibility(
-            visible: data.settings["Time mode"] == "24 hour",
-            replacement: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  comfortatext("3am", 14,data. settings),
-                  comfortatext("9am", 14, data.settings),
-                  comfortatext("3pm", 14, data.settings),
-                  comfortatext("9pm", 14, data.settings),
-                ]
-            ),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  comfortatext("3:00", 14, data.settings),
-                  comfortatext("9:00", 14, data.settings),
-                  comfortatext("15:00", 14, data.settings),
-                  comfortatext("21:00", 14, data.settings),
-                ]
-            ),
-          )
-      )
+        padding: const EdgeInsets.all(3.0),
+        child: Container(
+          width: 2.5,
+          height: 2.5,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: data.current.primarySecond,
+          ),
+        ),
+      ),
+      comfortatext(value.toString(), 15, data.settings, color: data.current.primarySecond,
+          align: TextAlign.end, weight: FontWeight.w600),
     ],
   );
 }
 
-Widget RainWidget(data, day) {
+Widget RainWidget(data, day, highlight) {
   List<dynamic> hours = day.hourly_for_precip;
 
   List<double> precip = [];
 
-  for (var i = 0; i < hours.length; i+= 2) {
-    double x = min(round((hours[i].precip + hours[i + 1].precip) * 4, decimals: 0) / 2, 10);
+  for (var i = 0; i < hours.length; i++) {
+    double x = min(hours[i].precip, 10);
     precip.add(x);
   }
 
-  return Column(
-    children: [
-      Flex(
-          direction: Axis.horizontal,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, right: 5, bottom: 5, top: 5),
-                child: Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 1.2, color: WHITE)
-                  ),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(18),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: MyChart(precip, data),
-                      )
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 165,
-              width: 55,
-              child: ListView.builder(
-                  reverse: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    if (data.settings["Precipitation"] == 'in') {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            comfortatext((index * 0.2).toStringAsFixed(1), 17, data.settings),
-                            comfortatext('in', 12, data.settings),
-                          ],
-                        ),
-                      );
-                    }
-                    else {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 30, bottom: 10, right: 4, left: 4),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            comfortatext((index * 5).toString(), 17, data.settings),
-                            comfortatext('mm', 12, data.settings),
-                          ],
-                        ),
-                      );
-                    }
-                  }
-              ),
-            )
-          ]
+  return Padding(
+    padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+    child: Container(
+      constraints: const BoxConstraints(minWidth: 0, maxWidth: 450),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18),
+        //color: data.current.containerLow,
+        border: data.settings["Color mode"] == "dark" || data.settings["Color mode"] == "light"
+            || data.settings["Color mode"] == "auto"
+          ? Border.all(width: 3, color: highlight)
+          : Border.all(width: 1.6, color: data.current.primaryLight)
+
       ),
-      Padding(
-          padding: const EdgeInsets.only(left: 33, top: 0, right: 70, bottom: 15),
-          child: Visibility(
-            visible: data.settings["Time mode"] == "24 hour",
-            replacement: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  comfortatext("3am", 14,data. settings),
-                  comfortatext("9am", 14, data.settings),
-                  comfortatext("3pm", 14, data.settings),
-                  comfortatext("9pm", 14, data.settings),
-                ]
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 14, right: 15, left: 18),
+              child: AspectRatio(
+                aspectRatio: 2.2,
+                child: MyChart(precip, data, highlight)
+              ),
             ),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  comfortatext("3:00", 14, data.settings),
-                  comfortatext("9:00", 14, data.settings),
-                  comfortatext("15:00", 14, data.settings),
-                  comfortatext("21:00", 14, data.settings),
-                ]
-            ),
-          )
-      )
-    ],
+            Padding(
+                padding: const EdgeInsets.only(top: 12, bottom: 14),
+                child: Visibility(
+                  visible: data.settings["Time mode"] == "24 hour",
+                  replacement: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        comfortatext("3am", 14,data. settings, color: data.current.outline),
+                        comfortatext("9am", 14, data.settings, color: data.current.outline),
+                        comfortatext("3pm", 14, data.settings, color: data.current.outline),
+                        comfortatext("9pm", 14, data.settings, color: data.current.outline),
+                      ]
+                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        comfortatext("3:00", 14, data.settings, color: data.current.outline),
+                        comfortatext("9:00", 14, data.settings, color: data.current.outline),
+                        comfortatext("15:00", 14, data.settings, color: data.current.outline),
+                        comfortatext("21:00", 14, data.settings, color: data.current.outline),
+                      ]
+                  ),
+                )
+            )
+          ],
+        ),
+    ),
   );
 }
 
 class MyChart extends StatelessWidget {
   final List<double> precip; // Sample data for the chart
   final data;
+  final highlight;
 
-  const MyChart(this.precip, this.data, {super.key});
+  const MyChart(this.precip, this.data, this.highlight, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: BarChartPainter(precip, data),
+      painter: BarChartPainter(precip, data, highlight),
     );
   }
 }
@@ -524,39 +490,69 @@ class MyChart extends StatelessWidget {
 class BarChartPainter extends CustomPainter {
   final List<double> precip;
   final data;
+  final highlight;
 
-  BarChartPainter(this.precip, this.data);
+  BarChartPainter(this.precip, this.data, this.highlight);
 
   @override
   void paint(Canvas canvas, Size size) {
 
-    Paint paint = Paint()
-      ..color = data.current.primary
+    Paint circle_paint = Paint()
+      ..color = data.current.primaryLight
       ..style = PaintingStyle.fill;
 
-    double maxValue = 10;
-    double scaleY = size.height / maxValue;
+    Paint circle_paint2 = Paint()
+      ..color = highlight
+      ..style = PaintingStyle.fill;
 
-    int numberOfBars = precip.length; // get rid of the extra precip points
-    double totalWidth = size.width; // Subtract padding
+    int numberOfBars = precip.length;
+    double totalWidth = size.width;
     double barWidth = totalWidth / numberOfBars;
 
     for (int i = 0; i < numberOfBars; i++) {
-      double barHeight = precip[i] * scaleY;
-      double x = i * barWidth; // Add half of the remaining padding
-      double y = size.height - barHeight;
+      double x = i * barWidth;
 
-      double topRadius = 6.0;
+      int circles = 10;
+      double y_dis = size.height / circles;
+      double start = size.height - barWidth * 0.5;
 
-      RRect roundedRect = RRect.fromLTRBR(
-        x + barWidth * 0.1,
-        y,
-        x + barWidth * 0.9,
-        size.height,
-        Radius.circular(topRadius),
-      );
+      int smallerThan = (precip[i] * 2).round();
 
-      canvas.drawRRect(roundedRect, paint);
+      if (smallerThan == 0 && precip[i] > 0) {
+        smallerThan = 1;
+      }
+
+      for (int i = 1; i < 21; i++) {
+        if (i <= smallerThan) {
+          canvas.drawArc(
+            Rect.fromCenter(
+              center: Offset(x + barWidth * 0.5, start),
+              height: barWidth * 0.8,
+              width: barWidth * 0.8,
+            ),
+            i % 2 == 0 ? pi : pi * 2,
+            pi,
+            false,
+            circle_paint,
+          );
+        }
+        else {
+          canvas.drawArc(
+            Rect.fromCenter(
+              center: Offset(x + barWidth * 0.5, start),
+              height: barWidth * 0.8,
+              width: barWidth * 0.8,
+            ),
+            i % 2 == 0 ? pi : pi * 2,
+            pi,
+            false,
+            circle_paint2,
+          );
+          //canvas.drawCircle(Offset(x + barWidth * 0.5, start), barWidth * 0.4, circle_paint2);
+        }
+
+        start -= i % 2 == 1 ? 0 : y_dis;
+      }
     }
   }
 
@@ -656,8 +652,6 @@ Future<List<String>> getOMReccomend(String query, settings) async {
     x = x.replaceAll('latitude', "lat");
     x = x.replaceAll('longitude', "lon");
 
-    print(('got here', x));
-
     recomendations.add(x);
   }
   return recomendations;
@@ -686,16 +680,18 @@ class MySearchParent extends StatefulWidget{
   final secondColor;
   final textColor;
   final highlightColor;
+  final extraTextColor;
 
   const MySearchParent({super.key, required this.updateLocation,
     required this.color, required this.place, required this.controller, required this.settings,
     required this.real_loc, required this.secondColor, required this.textColor,
-    required this.highlightColor});
+    required this.highlightColor, required this.extraTextColor});
 
   @override
   _MySearchParentState createState() => _MySearchParentState(color: color,
   place: place, controller: controller, settings: settings, real_loc: real_loc,
-      secondColor: secondColor, textColor: textColor, highlightColor: highlightColor);
+      secondColor: secondColor, textColor: textColor, highlightColor: highlightColor,
+    extraTextColor: extraTextColor);
 }
 
 class _MySearchParentState extends State<MySearchParent> {
@@ -709,10 +705,11 @@ class _MySearchParentState extends State<MySearchParent> {
   final secondColor;
   final textColor;
   final highlightColor;
+  final extraTextColor;
 
   _MySearchParentState({required this.color, required this.place,
   required this.controller, required this.settings, required this.real_loc, required this.secondColor,
-  required this.textColor, required this.highlightColor});
+  required this.textColor, required this.highlightColor, required this.extraTextColor});
 
   late Future<SharedPreferences> _prefsFuture;
 
@@ -758,7 +755,8 @@ class _MySearchParentState extends State<MySearchParent> {
         return MySearchWidget(updateLocation: widget.updateLocation,
             color: color, favorites: favorites, prefs: snapshot.data,
         place: place, controller: controller, settings: settings, real_loc: real_loc,
-        secondColor: secondColor, textColor: textColor, highlightColor: highlightColor,);
+        secondColor: secondColor, textColor: textColor, highlightColor: highlightColor,
+        extraTextColor: extraTextColor,);
       },
     );
   }
@@ -776,17 +774,20 @@ class MySearchWidget extends StatefulWidget{
   final secondColor;
   final textColor;
   final highlightColor;
+  final extraTextColor;
 
   const MySearchWidget({super.key, required this.color, required this.updateLocation,
   required this.favorites, required this.prefs, required this.place,
   required this.controller, required this.settings, required this.real_loc,
-    required this.secondColor, required this.textColor, required this.highlightColor});
+    required this.secondColor, required this.textColor, required this.highlightColor,
+    required this.extraTextColor});
 
   @override
   _MySearchWidgetState createState() => _MySearchWidgetState(color: color,
   updateLocation: updateLocation, favorites: favorites,
       prefs: prefs, place: place, controller: controller, settings: settings, real_loc: real_loc,
-  secondColor: secondColor, textColor: textColor, highlightColor: highlightColor);
+  secondColor: secondColor, textColor: textColor, highlightColor: highlightColor,
+  extraTextColor: extraTextColor);
 }
 
 class _MySearchWidgetState extends State<MySearchWidget> {
@@ -801,6 +802,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   final secondColor;
   final textColor;
   final highlightColor;
+  final extraTextColor;
 
   List<String> favorites;
 
@@ -810,7 +812,8 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   _MySearchWidgetState({required this.color, required this.updateLocation,
         required this.favorites, required this.prefs, required this.place,
   required this.controller, required this.settings, required this.real_loc,
-    required this.secondColor, required this.textColor, required this.highlightColor});
+    required this.secondColor, required this.textColor, required this.highlightColor,
+  required this.extraTextColor});
 
   List<String> recommend = [];
 
@@ -856,7 +859,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
     return searchBar(color, recommend, updateLocation,
         controller, updateIsEditing, isEditing, updateFav, favorites,
         updateRec, place, context, prog, updateProg, settings, real_loc, secondColor,
-    textColor, highlightColor);
+    textColor, highlightColor, extraTextColor);
 
   }
 }
