@@ -583,7 +583,9 @@ class OMHour {
         sunstatus, item["hourly"]["time"][index])),
     time: settings["Time mode"] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
 
-    precip: unit_coversion(item["hourly"]["precipitation"][index], settings["Precipitation"]),
+    precip: double.parse(
+        unit_coversion(item["hourly"]["precipitation"][index], settings["Precipitation"]).toStringAsFixed(1)),
+
     precip_prob: item["hourly"]["precipitation_probability"][index],
     wind: double.parse(
         unit_coversion(item["hourly"]["wind_speed_10m"][index], settings["Wind"]).toStringAsFixed(1)),

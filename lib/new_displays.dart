@@ -138,7 +138,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
 
         String write = widget.data.settings["Time mode"] == "24 hour"
             ? OMConvertTime(
-                "j T${localTime.hour}:${localTime.minute}") //the j is just added so when splitting
+                "j T${localTime.hour.toString().padLeft(2, "0")}:${localTime.minute.toString().padLeft(2, "0")}") //the j is just added so when splitting
             : OMamPmTime(
                 "j T${localTime.hour}:${localTime.minute}"); //it can grab the second item
 
