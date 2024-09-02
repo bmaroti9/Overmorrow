@@ -614,7 +614,7 @@ class OMSunstatus {
         ? OMConvertTime(item["daily"]["sunrise"][0])
         : OMamPmTime(item["daily"]["sunrise"][0]),
     sunset: settings["Time mode"] == "24 hour"
-        ? OMConvertTime(item["daily"]["sunrise"][0])
+        ? OMConvertTime(item["daily"]["sunset"][0])
         : OMamPmTime(item["daily"]["sunset"][0]),
     absoluteSunriseSunset: "${OMConvertTime(item["daily"]["sunrise"][0])}/"
         "${OMConvertTime(item["daily"]["sunset"][0])}",
