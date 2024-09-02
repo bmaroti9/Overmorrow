@@ -357,7 +357,7 @@ Widget NewRain15MinuteIndicator(var data) {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 14, bottom: 10),
+              padding: const EdgeInsets.only(top: 14, bottom: 8),
               child: SizedBox(
                 height: 30,
                 child: ListView.builder(
@@ -382,7 +382,6 @@ Widget NewRain15MinuteIndicator(var data) {
               ),
             ),
             SizedBox(
-              height: 10,
               width: 11.0 * data.minutely_15_precip.precips.length + 11,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
