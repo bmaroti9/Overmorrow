@@ -325,11 +325,13 @@ Future<List<PaletteGenerator>> _generatorPalette(Image imageWidget) async {
   PaletteGenerator _paletteGenerator = await PaletteGenerator.fromImage(
     imageInfo.image,
     region: region,
-    maximumColorCount: 4
+    maximumColorCount: 4,
+    filters: [],
   );
   PaletteGenerator _paletteGenerator2 = await PaletteGenerator.fromImage(
       imageInfo.image,
-      maximumColorCount: 5
+      maximumColorCount: 5,
+    filters: [],
   );
 
   imageProvider.resolve(const ImageConfiguration()).removeListener(listener);
@@ -355,7 +357,7 @@ Future<ColorScheme> _materialPalette(Image imageWidget, theme, color) async {
   return ColorScheme.fromSeed(
     seedColor: color,
     brightness: theme == 'light' ? Brightness.light : Brightness.dark,
-    dynamicSchemeVariant: DynamicSchemeVariant.tonalSpot
+    dynamicSchemeVariant: DynamicSchemeVariant.tonalSpot,
   );
 }
 
