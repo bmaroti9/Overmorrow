@@ -213,6 +213,7 @@ class _NewMainState extends State<NewMain> {
               ),
             ],
           ),
+
           /*
           Padding(
             padding: const EdgeInsets.only(left: 30),

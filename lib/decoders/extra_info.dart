@@ -35,6 +35,18 @@ import '../ui_helper.dart';
 import '../weather_refact.dart';
 import 'decode_wapi.dart';
 
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF$hexColor";
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
 Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat, double lng) async {
 
   List<String> keys1 = textFilter.keys.toList();
@@ -132,6 +144,10 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
   final String userLink = (unsplash_body[index]["user"]["links"]["html"]) ?? "";
   final String username = unsplash_body[index]["user"]["name"] ?? "";
   final String photoLink = unsplash_body[index]["links"]["html"] ?? "";
+
+  final Color color = HexColor(unsplash_body[index]["color"]);
+
+  print(unsplash_body[index]["color"]);
 
   //print((username, userLink));
 
@@ -300,26 +316,26 @@ Future<List<PaletteGenerator>> _generatorPalette(Image imageWidget) async {
   final int imageHeight = imageInfo.image.height;
   final int imageWidth = imageInfo.image.height;
 
-  final int desiredSquare = 400; //approximation because the top half image cropped is almost a square
+  const int desiredSquare = 400; //approximation because the top half image cropped is almost a square
 
-  final double crop_x = desiredSquare / imageWidth;
-  final double crop_y = desiredSquare / imageHeight;
+  final double cropX = desiredSquare / imageWidth;
+  final double cropY = desiredSquare / imageHeight;
 
-  final double crop_absolute = max(crop_y, crop_x);
+  final double cropAbsolute = max(cropY, cropX);
 
-  final double center_x = imageWidth / 2;
-  final double center_y = imageHeight / 2;
+  final double centerX = imageWidth / 2;
+  final double centerY = imageHeight / 2;
 
-  final new_left = center_x - ((desiredSquare / 2) / crop_absolute);
-  final new_top = center_y - ((desiredSquare / 2) / crop_absolute);
+  final newLeft = centerX - ((desiredSquare / 2) / cropAbsolute);
+  final newTop = centerY - ((desiredSquare / 2) / cropAbsolute);
 
-  final double regionWidth = 50;
-  final double regionHeight = 50;
+  const double regionWidth = 50;
+  const double regionHeight = 50;
   final Rect region = Rect.fromLTWH(
-    new_left + (50 / crop_absolute),
-    new_top + (300 / crop_absolute),
-    (regionWidth / crop_absolute),
-    (regionHeight / crop_absolute),
+    newLeft + (50 / cropAbsolute),
+    newTop + (300 / cropAbsolute),
+    (regionWidth / cropAbsolute),
+    (regionHeight / cropAbsolute),
   );
 
   PaletteGenerator _paletteGenerator = await PaletteGenerator.fromImage(
@@ -330,7 +346,7 @@ Future<List<PaletteGenerator>> _generatorPalette(Image imageWidget) async {
   );
   PaletteGenerator _paletteGenerator2 = await PaletteGenerator.fromImage(
       imageInfo.image,
-      maximumColorCount: 5,
+      maximumColorCount: 3,
     filters: [],
   );
 

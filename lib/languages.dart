@@ -1529,6 +1529,34 @@ Map<String, List<String>> mainTranslate = {
     'Włącz',
     'Ενεργοποίηση'
   ],
+  "Layout": [
+    'Layout',
+    'Elrendezés',
+    'Diseño',
+    'Disposition',
+    'Layout',
+    'Layout',
+    'Layout',
+    'Макет',
+    '布局',
+    'レイアウト',
+    'Układ',
+    'Διάταξη'
+  ],
+  "widget order, customization": [
+    'widget order, customization',
+    'widget sorrend, személyreszabás',
+    'orden de widgets, personalización',
+    'ordre des widgets, personnalisation',
+    'Widget-Reihenfolge, Anpassung',
+    'ordine dei widget, personalizzazione',
+    'ordem de widgets, personalização',
+    'порядок виджетов, настройка',
+    '小部件顺序，自定义',
+    'ウィジェットの順序、カスタマイズ',
+    'kolejność widżetów, dostosowanie',
+    'σειρά widget, προσαρμογή'
+  ],
 
   'Search translation': [ //used for getting the codes used for translation of city names
                           //If none are available then en (english) is the default

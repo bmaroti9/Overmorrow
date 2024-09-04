@@ -94,6 +94,10 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
             Icons.pie_chart_outline, settings,
             UnitsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
             context, updatePage),
+        mainSettingEntry("Layout", "widget order, customization", containerLow, primary, onSurface, surface,
+            Icons.pie_chart_outline, settings,
+            LayoutPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
+            context, updatePage),
       ],
     ),
   );
@@ -616,6 +620,119 @@ class _LangaugePageState extends State<LangaugePage> {
                     },
                   ),
                 );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class LayoutPage extends StatefulWidget {
+  final settings;
+  final image;
+  final colors;
+  final updateMainPage;
+
+  const LayoutPage({Key? key, required this.colors, required this.settings,
+    required this.image, required this.updateMainPage})
+      : super(key: key);
+
+  @override
+  _LayoutPageState createState() =>
+      _LayoutPageState(image: image, settings: settings, colors: colors,
+          updateMainPage: updateMainPage);
+}
+
+class _LayoutPageState extends State<LayoutPage> {
+
+  final image;
+  final settings;
+  final colors;
+  final updateMainPage;
+
+  _LayoutPageState({required this.image, required this.settings, required this.colors, required this.updateMainPage});
+
+  late List<int> _items;
+
+  @override
+  void initState() {
+    super.initState();
+    _items = List<int>.generate(5, (int index) => index);
+  }
+
+  void updatePage(String name, String to) {
+    setState(() {
+      updateMainPage(name, to);
+    });
+  }
+
+  void goBack() {
+    HapticFeedback.selectionClick();
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    Color highlight = colors[7];
+    Color primaryLight = colors[2];
+    Color primary = colors[1];
+    Color onSurface = colors[4];
+    Color surface = colors[0];
+
+    return Material(
+      color: surface,
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: surface),
+              onPressed: () {
+                goBack();
+              },
+            ),
+            title: comfortatext("Layout", 30, settings, color: surface),
+            backgroundColor: primary,
+            pinned: false,
+          ),
+          SliverToBoxAdapter(
+            child: ReorderableListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 50),
+              children: <Widget>[
+                for (int index = 0; index < _items.length; index += 1)
+                  Container(
+                    key: Key("$index"),
+                    color: surface,
+                    padding: const EdgeInsets.all(4),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: highlight,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      height: 70,
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          comfortatext("${_items[index]}", 20, settings, color: onSurface),
+                          Spacer(),
+                          Icon(Icons.reorder_rounded, color: onSurface),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+              onReorder: (int oldIndex, int newIndex) {
+                setState(() {
+                  if (oldIndex < newIndex) {
+                    newIndex -= 1;
+                  }
+                  final int item = _items.removeAt(oldIndex);
+                  _items.insert(newIndex, item);
+                });
               },
             ),
           ),
