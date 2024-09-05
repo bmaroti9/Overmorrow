@@ -47,6 +47,8 @@ Map<String, List<String>> settingSwitches = {
 
   'Search provider' : ['weatherapi', 'open-meteo'],
   'networkImageDialogShown' : ["false", "true"],
+
+  'Layout order' : ["sunstatus,rain indicator,air quality,radar,forecast,daily"],
 };
 
 String translation(String text, String language) {
@@ -363,7 +365,12 @@ Future<Map<String, String>> getSettingsUsed() async {
     final prefs = await SharedPreferences.getInstance();
     final ifnot = v.value[0];
     final used = prefs.getString('setting${v.key}') ?? ifnot;
-    settings[v.key] = v.value.contains(used) ? used: ifnot;
+    if (v.value.length > 1) { //this is so that ones like the layout don't have to include all possible options
+      settings[v.key] = v.value.contains(used) ? used: ifnot;
+    }
+    else {
+      settings[v.key] = used;
+    }
   }
   return settings;
 }

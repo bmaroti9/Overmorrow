@@ -286,7 +286,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
 
 Widget buildNewDays(data) {
   return ListView.builder(
-    padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
+    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
     itemCount: 3,
@@ -707,7 +707,7 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
     super.build(context);
     if (data.days.length > 3) {
       return Padding(
-        padding: const EdgeInsets.only(left: 24, right: 24, bottom: 10, top: 10),
+        padding: const EdgeInsets.only(left: 24, right: 24, bottom: 25),
         child: Column(
           children: [
             Padding(

@@ -655,12 +655,12 @@ class _LayoutPageState extends State<LayoutPage> {
 
   _LayoutPageState({required this.image, required this.settings, required this.colors, required this.updateMainPage});
 
-  late List<int> _items;
+  late List<String> _items;
 
   @override
   void initState() {
     super.initState();
-    _items = List<int>.generate(5, (int index) => index);
+    _items = settings["Layout order"].split(",");
   }
 
   void updatePage(String name, String to) {
@@ -691,6 +691,7 @@ class _LayoutPageState extends State<LayoutPage> {
             leading: IconButton(
               icon: Icon(Icons.arrow_back, color: surface),
               onPressed: () {
+                updatePage('Layout order', _items.join(","));
                 goBack();
               },
             ),
@@ -714,12 +715,12 @@ class _LayoutPageState extends State<LayoutPage> {
                         borderRadius: BorderRadius.circular(18),
                       ),
                       height: 70,
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 20),
                       child: Row(
                         children: [
-                          comfortatext("${_items[index]}", 20, settings, color: onSurface),
-                          Spacer(),
-                          Icon(Icons.reorder_rounded, color: onSurface),
+                          comfortatext(_items[index], 19, settings, color: onSurface),
+                          const Spacer(),
+                          Icon(Icons.reorder_rounded, color: primaryLight, size: 21,),
                         ],
                       ),
                     ),
@@ -730,7 +731,7 @@ class _LayoutPageState extends State<LayoutPage> {
                   if (oldIndex < newIndex) {
                     newIndex -= 1;
                   }
-                  final int item = _items.removeAt(oldIndex);
+                  final String item = _items.removeAt(oldIndex);
                   _items.insert(newIndex, item);
                 });
               },

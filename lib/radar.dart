@@ -112,7 +112,7 @@ class _RadarSmallState extends State<RadarSmall> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 25, top: 40),
+          padding: const EdgeInsets.only(left: 25),
           child: Align(
             alignment: Alignment.centerLeft,
             child: comfortatext(
@@ -123,7 +123,7 @@ class _RadarSmallState extends State<RadarSmall> {
         ),
         Padding(
           padding: const EdgeInsets.only(
-              left: 25, right: 25, top: 12, bottom: 10),
+              left: 25, right: 25, top: 12, bottom: 10,),
           child: AspectRatio(
             aspectRatio: 1.57,
             child: Container(
@@ -216,7 +216,7 @@ class _RadarSmallState extends State<RadarSmall> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 38, right: 25, bottom: 0, top: 10),
+          padding: const EdgeInsets.only(left: 38, right: 25, bottom: 50, top: 10),
           child: Row(
             children: [
               AnimatedSwitcher(

@@ -119,10 +119,25 @@ class _NewMainState extends State<NewMain> {
 
   @override
   Widget build(BuildContext context) {
+
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     final Size size = view.physicalSize / view.devicePixelRatio;
 
     final FloatingSearchBarController controller = FloatingSearchBarController();
+
+    final Map<String, Widget> widgetsMap = {
+      'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), size: size,),
+      'rain indicator': NewRain15MinuteIndicator(data),
+      'air quality': NewAirQuality(data),
+      'radar': RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
+      'forecast': buildNewDays(data),
+      'daily': buildNewGlanceDay(data: data),
+    };
+
+    final List<String> order = data.settings["Layout order"].split(",");
+    print(order);
+
+    final List<Widget> orderedWidgets = order.map((name) => widgetsMap[name]!).toList();
 
     String colorMode = data.settings["Color mode"];
     if (colorMode == "auto") {
@@ -242,12 +257,11 @@ class _NewMainState extends State<NewMain> {
           ),
            */
 
-          NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-          NewRain15MinuteIndicator(data),
-          NewAirQuality(data),
-          RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
-          buildNewDays(data),
-          buildNewGlanceDay(data: data),
+          Column(
+            children: orderedWidgets.map((widget) {
+              return widget;
+            }).toList(),
+          ),
 
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 30),
