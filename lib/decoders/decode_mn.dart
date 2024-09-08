@@ -17,16 +17,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
-
-import 'package:overmorrow/decoders/decode_wapi.dart';
 
 import '../settings_page.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart';
+import 'decode_wapi.dart';
+import 'extra_info.dart';
 
 String metNTextCorrection(String text, {language = 'English'}) {
   String p = metNWeatherToText[text] ?? 'Clear Sky';
@@ -66,7 +65,7 @@ String metNTimeCorrect(String date) {
     return '${minusHour}am';
   }
   else if (num < 12) {
-    return realhour + 'am';
+    return '${realhour}am';
   }
   else if (num == 12) {
     return '12pm';
@@ -76,22 +75,15 @@ String metNTimeCorrect(String date) {
 
 class MetNCurrent {
   final String text;
-  final String backdrop;
   final int temp;
-  final List<Color> contentColor;
   final int humidity;
   final int uv;
   final double precip;
+
   final int wind;
-  final Color backcolor;
-  final Color accentcolor;
 
   const MetNCurrent({
     required this.precip,
-    required this.accentcolor,
-    required this.backcolor,
-    required this.backdrop,
-    required this.contentColor,
     required this.humidity,
     required this.temp,
     required this.text,
@@ -99,28 +91,69 @@ class MetNCurrent {
     required this.wind,
   });
 
-  static MetNCurrent fromJson(item, settings) => MetNCurrent(
-    text: metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"], language: settings["Language"]),
+  static Future<MetNCurrent> fromJson(item, settings, real_loc, lat, lng) async {
 
-    precip: unit_coversion(item["timeseries"][0]["data"]["next_1_hours"]["details"]["precipitation_amount"], settings["Precipitation"]),
-    temp: unit_coversion(item["timeseries"][0]["data"]["instant"]["details"]["air_temperature"], settings["Temperature"]).round(),
-    humidity: item["timeseries"][0]["data"]["instant"]["details"]["relative_humidity"],
-    wind: unit_coversion(item["timeseries"][0]["data"]["instant"]["details"]["wind_speed"] * 3.6, settings["Wind"]).round(),
-    uv: item["timeseries"][0]["data"]["instant"]["details"]["ultraviolet_index_clear_sky"],
+    Image Uimage;
 
-    backdrop: metNBackdropCorrection(
+    String photographerName = "";
+    String photorgaperUrl = "";
+    String photoLink = "";
+
+    if (settings["Image source"] == "network") {
+      final text = metNTextCorrection(
+          item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"],
+          language: "English");
+      final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
+      Uimage = ImageData[0];
+      photographerName = ImageData[1];
+      photorgaperUrl = ImageData[2];
+      photoLink = ImageData[3];
+    }
+    else {
+      String imagePath = metNBackdropCorrection(
+        metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+      );
+      Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
+    }
+
+    Color back = metNAccentColorCorrection(
       metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
-    ),
-    backcolor: metNBackColorCorrection(
+    );
+
+    Color primary = metNBackColorCorrection(
       metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
-    ),
-    accentcolor: metNAccentColorCorrection(
-      metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
-    ),
-    contentColor: metNContentColorCorrection(
-      metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
-    ),
-  );
+    );
+
+    List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
+    List<Color> colors = x[0];
+    List<Color> imageDebugColors = x[1];
+
+    return MetNCurrent(
+      text: metNTextCorrection(
+          item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"],
+          language: settings["Language"]),
+
+      precip: unit_coversion(
+          item["timeseries"][0]["data"]["next_1_hours"]["details"]["precipitation_amount"],
+          settings["Precipitation"]),
+      temp: unit_coversion(
+          item["timeseries"][0]["data"]["instant"]["details"]["air_temperature"],
+          settings["Temperature"]).round(),
+      humidity: item["timeseries"][0]["data"]["instant"]["details"]["relative_humidity"],
+      wind: unit_coversion(
+          item["timeseries"][0]["data"]["instant"]["details"]["wind_speed"] * 3.6,
+          settings["Wind"]).round(),
+      uv: item["timeseries"][0]["data"]["instant"]["details"]["ultraviolet_index_clear_sky"],
+
+      /*
+      backdrop: metNBackdropCorrection(
+        metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+      ),
+
+       */
+
+    );
+  }
 }
 
 class MetNDay {

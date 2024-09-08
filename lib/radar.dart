@@ -300,26 +300,26 @@ class _RadarSmallState extends State<RadarSmall> {
                       padding: const EdgeInsets.only(left: 16, right: 16, top: 9),
                       child: Row(
                         children: <Widget>[
-                          comfortatext('-2hr', 13, data.settings, color: data.current.onSurface),
+                          comfortatext('-2${translation('hr', data.settings['Language'])}', 13, data.settings, color: data.current.onSurface),
                           Expanded(
                             flex: 6,
                             child: Align(
                                 alignment: Alignment.centerRight,
-                                child: comfortatext('-1hr', 13, data.settings, color: data.current.onSurface)
+                                child: comfortatext('-1${translation('hr', data.settings['Language'])}', 13, data.settings, color: data.current.onSurface)
                             ),
                           ),
                           Expanded(
                             flex: 6,
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: comfortatext('now', 13, data.settings, color: data.current.onSurface)
+                              child: comfortatext(translation('now', data.settings["Language"]), 13, data.settings, color: data.current.onSurface)
                             ),
                           ),
                           Expanded(
                             flex: 3,
                             child: Align(
                                 alignment: Alignment.centerRight,
-                                child: comfortatext('30m', 13, data.settings, color: data.current.onSurface)
+                                child: comfortatext(translation('30m', data.settings["Language"]), 13, data.settings, color: data.current.onSurface)
                             ),
                           ),
                         ],
@@ -549,26 +549,26 @@ class _RadarBigState extends State<RadarBig> {
                               padding: const EdgeInsets.only(left: 16, right: 16, top: 9),
                               child: Row(
                                 children: <Widget>[
-                                  comfortatext('-2hr', 13, data.settings, color: data.current.onSurface),
+                                  comfortatext('-2${translation('hr', data.settings['Language'])}', 13, data.settings, color: data.current.onSurface),
                                   Expanded(
                                     flex: 6,
                                     child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: comfortatext('-1hr', 13, data.settings, color: data.current.onSurface)
+                                        child: comfortatext('-1${translation('hr', data.settings['Language'])}', 13, data.settings, color: data.current.onSurface)
                                     ),
                                   ),
                                   Expanded(
                                     flex: 6,
                                     child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: comfortatext('now', 13, data.settings, color: data.current.onSurface)
+                                        child: comfortatext(translation('now', data.settings["Language"]), 13, data.settings, color: data.current.onSurface)
                                     ),
                                   ),
                                   Expanded(
                                     flex: 3,
                                     child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: comfortatext('30m', 13, data.settings, color: data.current.onSurface)
+                                        child: comfortatext(translation('30m', data.settings["Language"]), 13, data.settings, color: data.current.onSurface)
                                     ),
                                   ),
                                 ],

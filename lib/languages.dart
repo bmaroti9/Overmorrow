@@ -1557,6 +1557,20 @@ Map<String, List<String>> mainTranslate = {
     'kolejność widżetów, dostosowanie',
     'σειρά widget, προσαρμογή'
   ],
+  "30m": [
+    '30m',
+    '30p',
+    '30m',
+    '30m',
+    '30m',
+    '30m',
+    '30m',
+    '30м',
+    '30分',
+    '30分',
+    '30m',
+    '30λ',
+  ],
 
   'Search translation': [ //used for getting the codes used for translation of city names
                           //If none are available then en (english) is the default
