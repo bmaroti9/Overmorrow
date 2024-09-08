@@ -28,6 +28,8 @@ import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:latlong2/latlong.dart';
 
+import 'decoders/decode_OM.dart';
+
 class RadarSmall extends StatefulWidget {
 
   final data;
@@ -64,7 +66,13 @@ class _RadarSmallState extends State<RadarSmall> {
     for (int i = 0; i < data.radar.times.length; i++) {
       List<String> split = data.radar.times[i].split("h");
       String minute = split[1].replaceAll(RegExp(r"\D"), "");
-      times.add("${int.parse(split[0]) + offset}:${minute == "0" ? "00" : minute}");
+      int hour = (int.parse(split[0]) + offset) % 24;
+      if (data.settings["Time mode"] == "12 hour") {
+        times.add(OMamPmTime("jT$hour:${minute == "0" ? "00" : minute}"));
+      }
+      else {
+        times.add("${hour.toString().padLeft(2, "0")}:${minute == "0" ? "00" : minute}");
+      }
     }
 
     timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer t) {
@@ -372,7 +380,13 @@ class _RadarBigState extends State<RadarBig> {
     for (int i = 0; i < data.radar.times.length; i++) {
       List<String> split = data.radar.times[i].split("h");
       String minute = split[1].replaceAll(RegExp(r"\D"), "");
-      times.add("${int.parse(split[0]) + offset}:${minute == "0" ? "00" : minute}");
+      int hour = (int.parse(split[0]) + offset) % 24;
+      if (data.settings["Time mode"] == "12 hour") {
+        times.add(OMamPmTime("jT$hour:${minute == "0" ? "00" : minute}"));
+      }
+      else {
+        times.add("${hour.toString().padLeft(2, "0")}:${minute == "0" ? "00" : minute}");
+      }
     }
 
 
