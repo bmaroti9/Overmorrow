@@ -36,6 +36,20 @@ String metNTextCorrection(String text, {language = 'English'}) {
   return t;
 }
 
+
+String metNGetName(index, settings, item, start) {
+  if (index < 3) {
+    const names = ['Today', 'Tomorrow', 'Overmorrow'];
+    return translation(names[index], settings["Language"]);
+  }
+  String x = item["properties"]["timeseries"][start]["time"].split("T")[0];
+  List<String> z = x.split("-");
+  DateTime time = DateTime(int.parse(z[0]), int.parse(z[1]), int.parse(z[2]));
+  const weeks = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  String weekname = translation(weeks[time.weekday - 1], settings["Language"]);
+  return "$weekname, ${time.month}/${time.day}";
+}
+
 String metNBackdropCorrection(String text) {
   return textBackground[text] ?? 'clear_sky3.jpg';
 }
@@ -304,6 +318,7 @@ class MetNDay {
     List<double> windspeeds = [];
     List<int> winddirs = [];
     List<double> precip_mm = [];
+    List<double> precip = [];
     List<int> uvs = [];
 
     int precipProb = 0;
@@ -322,7 +337,8 @@ class MetNDay {
       winddirs.add(hour.wind_dir);
       uvs.add(hour.uv);
 
-      precip_mm.add(hour.precip);
+      precip_mm.add(hour.raw_precip);
+      precip.add(hour.precip);
 
       int index = weather_names.indexOf(hour.rawText);
       int value = weatherConditionBiassTable[hour.rawText] ?? 0;
@@ -340,12 +356,12 @@ class MetNDay {
     return MetNDay(
       mm_precip: precip_mm.reduce((a, b) => a + b),
       precip_prob: precipProb,
-      minmaxtemp: "${temperatures.reduce(max)}˚/${temperatures.reduce(min)}°",
+      minmaxtemp: "${temperatures.reduce(min)}°/${temperatures.reduce(max)}°",
       hourly: hours,
       hourly_for_precip: hours,
-      total_precip: precip_mm.reduce((a, b) => a + b),
+      total_precip: double.parse(precip.reduce((a, b) => a + b).toStringAsFixed(1)),
       windspeed: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
-      name: index < 3 ? getName(index, settings) : "hehe, 0",
+      name: metNGetName(index, settings, item, start),
       text: translation(weather_names[BIndex], settings["Language"]),
       icon: metNIconCorrection(weather_names[BIndex]),
       iconSize: oMIconSizeCorrection( metNTextCorrection(weather_names[BIndex]),),
@@ -466,8 +482,6 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
   int begin = 0;
   int index = 0;
-
-  print(MnBody);
 
   for (int n = 0; n < MnBody["properties"]["timeseries"].length; n++) {
     if (MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0] == "00") {

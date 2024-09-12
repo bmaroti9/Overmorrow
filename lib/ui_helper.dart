@@ -415,6 +415,14 @@ Widget RainWidget(data, day, highlight) {
 
   List<double> precip = [];
 
+  //this is done because sometimes the provider doesn't return the past hours
+  // of the day so i just extend it to 24
+  if (hours.length < 24) {
+    for (int i = 0; i < 24 - hours.length; i++) {
+      precip.add(0);
+    }
+  }
+
   for (var i = 0; i < hours.length; i++) {
     double x = min(hours[i].precip, 10);
     precip.add(x);

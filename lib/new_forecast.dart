@@ -99,7 +99,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 15, left: 23, right: 25),
+          padding: const EdgeInsets.only(top: 18, left: 23, right: 25),
           child: Row(
             children: [
               SizedBox(
@@ -117,7 +117,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                   children: [
                     comfortatext(day.minmaxtemp.split("/")[0], 20, data.settings, color: data.current.primary),
                     Padding(
-                      padding: const EdgeInsets.only(left: 5, right: 4),
+                      padding: const EdgeInsets.only(left: 5, right: 7),
                       child: comfortatext("/", 19, data.settings, color: data.current.onSurface),
                     ),
                     comfortatext(day.minmaxtemp.split("/")[1], 20, data.settings, color: data.current.primary),
@@ -267,7 +267,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
           ),
         ),
         SizedBox(
-          height: state? 280 : 250,
+          height: state? 280 : 260,
           child: PageView(
             physics: const NeverScrollableScrollPhysics(),
             controller: _pageController,
