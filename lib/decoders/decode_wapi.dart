@@ -522,7 +522,7 @@ class WapiHour {
         item["condition"]["code"], item["is_day"]
     ),
     iconSize: oMIconSizeCorrection(textCorrection(
-        item["condition"]["code"], item["is_day"], language: settings["Language"]
+        item["condition"]["code"], item["is_day"], language: "English",
     ),),
     temp: unit_coversion(item["temp_c"], settings["Temperature"]).round(),
     time: getTime(item["time"], settings["Time mode"] == '12 hour'),
@@ -615,7 +615,6 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
   var wapi_body = wapi[0];
   DateTime fetch_datetime = wapi[1];
 
-  //String real_time = wapi_body["location"]["localtime"];
   int epoch = wapi_body["location"]["localtime_epoch"];
   WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
 
