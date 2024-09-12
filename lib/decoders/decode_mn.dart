@@ -36,6 +36,35 @@ String metNTextCorrection(String text, {language = 'English'}) {
   return t;
 }
 
+int metNcalculateFeelsLike(double t, double r, double v) {
+  //unfortunately met norway has no feels like temperatures, so i have to calculate it myself based on:
+  //temperature, relative humidity, and wind speed
+  // https://meteor.geol.iastate.edu/~ckarsten/bufkit/apparent_temperature.html
+
+  if (t > 27) {
+    t = (t * 1.8) + 32;
+
+    double heat_index = -42.379 + (2.04901523 * t) + (10.14333127 * r)
+        - (0.22475541 * t * r) - (0.00683783 * t * t)
+        - (0.05481717 * r * r) + (0.00122874 * t * t * r)
+        + (0.00085282 * t * r * r) - (0.00000199 * t * t * r * r);
+
+    return ((heat_index - 32) / 1.8).round();
+  }
+
+  else if (t < 10) {
+    t = (t * 1.8) + 32;
+
+    double wind_chill = 35.74 + (0.6215 * t) - (35.75 * pow(v, 0.16)) + (0.4275 * t * pow(v, 0.16));
+
+    return ((wind_chill - 32) / 1.8).round();
+  }
+
+  else {
+    return t.round();
+  }
+
+}
 
 String metNGetName(index, settings, item, start) {
   if (index < 3) {
@@ -247,7 +276,8 @@ class MetNCurrent {
           it["instant"]["details"]["wind_speed"] * 3.6,
           settings["Wind"]).round(),
       uv: it["instant"]["details"]["ultraviolet_index_clear_sky"].round(),
-      feels_like: 0,
+      feels_like: metNcalculateFeelsLike(it["instant"]["details"]["air_temperature"],
+        it["instant"]["details"]["relative_humidity"], it["instant"]["details"]["wind_speed"] * 3.6),
       imageDebugColors: imageDebugColors,
       wind_dir: it["instant"]["details"]["wind_from_direction"].round(),
 
