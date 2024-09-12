@@ -25,6 +25,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
+import 'package:overmorrow/decoders/decode_mn.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -433,6 +434,9 @@ class WeatherData {
 
     if (provider == 'weatherapi.com') {
       return WapiGetWeatherData(lat, lng, real_loc, settings, placeName);
+    }
+    else if (provider == "met norway"){
+      return MetNGetWeatherData(lat, lng, real_loc, settings, placeName);
     }
     else {
       return OMGetWeatherData(lat, lng, real_loc, settings, placeName);

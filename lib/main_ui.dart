@@ -178,7 +178,7 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
               ),
               //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
               value: provider.toString(),
-              items: ['weatherapi.com', 'open-meteo'].map((item) {
+              items: ['weatherapi.com', 'open-meteo', 'met norway'].map((item) {
                 return DropdownMenuItem(
                   value: item,
                   child: Text(item),

@@ -183,7 +183,7 @@ class MetNCurrent {
 
     if (settings["Image source"] == "network") {
       final text = metNTextCorrection(
-          item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"],
+          item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"],
           language: "English");
       final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
       Uimage = ImageData[0];
@@ -193,24 +193,24 @@ class MetNCurrent {
     }
     else {
       String imagePath = metNBackdropCorrection(
-        metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+        metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
       );
       Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
     }
 
     Color back = metNAccentColorCorrection(
-      metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+      metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
     );
 
     Color primary = metNBackColorCorrection(
-      metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+      metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
     );
 
     List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
     List<Color> colors = x[0];
     List<Color> imageDebugColors = x[1];
 
-    var it = item["timeseries"][0]["data"];
+    var it = item["properties"]["timeseries"][0]["data"];
 
     return MetNCurrent(
       image: Uimage,
@@ -228,14 +228,14 @@ class MetNCurrent {
       temp: unit_coversion(
           it["instant"]["details"]["air_temperature"],
           settings["Temperature"]).round(),
-      humidity: it["instant"]["details"]["relative_humidity"],
+      humidity: it["instant"]["details"]["relative_humidity"].round(),
       wind: unit_coversion(
           it["instant"]["details"]["wind_speed"] * 3.6,
           settings["Wind"]).round(),
-      uv: it["instant"]["details"]["ultraviolet_index_clear_sky"],
+      uv: it["instant"]["details"]["ultraviolet_index_clear_sky"].round(),
       feels_like: 0,
       imageDebugColors: imageDebugColors,
-      wind_dir: it["instant"]["details"]["wind_from_direction"],
+      wind_dir: it["instant"]["details"]["wind_from_direction"].round(),
 
       surface: colors[0],
       primary: colors[1],
@@ -316,7 +316,7 @@ class MetNDay {
     List<MetNHour> hours = [];
     
     for (int n = start; n < end; n++) {
-      MetNHour hour = MetNHour.fromJson(item[n], settings);
+      MetNHour hour = MetNHour.fromJson(item["properties"]["timeseries"][n], settings);
       temperatures.add(hour.temp);
       windspeeds.add(hour.wind);
       winddirs.add(hour.wind_dir);
@@ -324,8 +324,8 @@ class MetNDay {
 
       precip_mm.add(hour.precip);
 
-      int index = weather_names.indexOf(hour.text);
-      int value = weatherConditionBiassTable[hour.text] ?? 0;
+      int index = weather_names.indexOf(hour.rawText);
+      int value = weatherConditionBiassTable[hour.rawText] ?? 0;
       oneSummary[index] += value;
 
       if (hour.precip_prob > precipProb) {
@@ -345,8 +345,8 @@ class MetNDay {
       hourly_for_precip: hours,
       total_precip: precip_mm.reduce((a, b) => a + b),
       windspeed: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
-      name: getName(index, settings),
-      text: metNTextCorrection(weather_names[BIndex], language: settings["Language"]),
+      name: index < 3 ? getName(index, settings) : "hehe, 0",
+      text: translation(weather_names[BIndex], settings["Language"]),
       icon: metNIconCorrection(weather_names[BIndex]),
       iconSize: oMIconSizeCorrection( metNTextCorrection(weather_names[BIndex]),),
       wind_dir: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
@@ -393,24 +393,63 @@ class MetNHour {
         required this.rawText,
       });
 
-  static MetNHour fromJson(item, settings) => MetNHour(
-    rawText: metNTextCorrection(item["data"]["next_1_hours"]["summary"]["symbol_code"]),
-    text: metNTextCorrection(item["data"]["next_1_hours"]["summary"]["symbol_code"], language: settings["Language"]),
-    temp: unit_coversion(item["data"]["instant"]["details"]["air_temperature"], settings["Temperature"]).round(),
-    precip: unit_coversion(item["data"]["next_1_hours"]["details"]["precipitation_amount"], settings["Precipitation"]),
-    precip_prob : item["data"]["next_1_hours"]["details"]["probability_of_precipitation"].round(),
-    icon: metNIconCorrection(
-      metNTextCorrection(item["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
-    ),
-    time: metNTimeCorrect(item["time"]),
-    wind: unit_coversion(item["data"]["instant"]["details"]["wind_speed"] * 3.6, settings["Wind"]),
-    wind_dir: item["data"]["instant"]["details"]["wind_direction"],
-    uv: item["data"]["instant"]["details"]["ultraviolet_index_clear_sky"],
+  static MetNHour fromJson(item, settings) {
+    var nextHours = item["data"]["next_1_hours"] ?? item["data"]["next_6_hours"];
+    return MetNHour(
+        rawText: metNTextCorrection(
+            nextHours["summary"]["symbol_code"]),
+        text: metNTextCorrection(
+            nextHours["summary"]["symbol_code"],
+            language: settings["Language"]),
+        temp: unit_coversion(
+            item["data"]["instant"]["details"]["air_temperature"],
+            settings["Temperature"]).round(),
+        precip: unit_coversion(
+            nextHours["details"]["precipitation_amount"],
+            settings["Precipitation"]),
+        precip_prob: (nextHours["details"]["probability_of_precipitation"] ??
+            0).round(),
+        icon: metNIconCorrection(
+          metNTextCorrection(
+              nextHours["summary"]["symbol_code"]),
+        ),
+        time: metNTimeCorrect(item["time"]),
+        wind: double.parse(unit_coversion(
+            item["data"]["instant"]["details"]["wind_speed"] * 3.6,
+            settings["Wind"]).toStringAsFixed(1)),
+        wind_dir: item["data"]["instant"]["details"]["wind_from_direction"]
+            .round(),
+        uv: (item["data"]["instant"]["details"]["ultraviolet_index_clear_sky"] ?? 0)
+            .round(),
 
-    raw_wind: item["data"]["instant"]["details"]["wind_speed"] * 3.6,
-    raw_precip: item["data"]["next_1_hours"]["details"]["precipitation_amount"],
-    raw_temp: item["data"]["instant"]["details"]["air_temperature"],
-    iconSize: oMIconSizeCorrection(metNTextCorrection(item["data"]["next_1_hours"]["summary"]["symbol_code"]),)
+        raw_wind: item["data"]["instant"]["details"]["wind_speed"] * 3.6,
+        raw_precip: nextHours["details"]["precipitation_amount"],
+        raw_temp: item["data"]["instant"]["details"]["air_temperature"],
+        iconSize: oMIconSizeCorrection(metNTextCorrection(
+            nextHours["summary"]["symbol_code"]),)
+    );
+  }
+}
+
+
+class MetNSunstatus {
+  final String sunrise;
+  final String sunset;
+  final double sunstatus;
+  final String absoluteSunriseSunset;
+
+  const MetNSunstatus({
+    required this.sunrise,
+    required this.sunstatus,
+    required this.sunset,
+    required this.absoluteSunriseSunset,
+  });
+
+  static MetNSunstatus fromJson(item, settings) => MetNSunstatus(
+      sunrise: "2:00",
+      sunset:"20:00",
+      absoluteSunriseSunset: "10:00/18:00",
+      sunstatus: 0.5,
   );
 }
 
@@ -421,15 +460,17 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
   DateTime fetch_datetime = Mn[1];
 
-  OMSunstatus sunstatus = OMSunstatus.fromJson(MnBody, settings);
+  MetNSunstatus sunstatus = MetNSunstatus.fromJson(MnBody, settings);
 
   List<MetNDay> days = [];
 
   int begin = 0;
   int index = 0;
 
-  for (int n = 0; n < MnBody["timeseries"].length; n++) {
-    if (MnBody["timeseries"]["time"].split("T")[1].split(":")[0] == 0) {
+  print(MnBody);
+
+  for (int n = 0; n < MnBody["properties"]["timeseries"].length; n++) {
+    if (MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0] == "00") {
       MetNDay day = MetNDay.fromJson(MnBody, settings, begin, n, index);
       days.add(day);
       index += 1;
