@@ -139,6 +139,8 @@ Future<List<dynamic>> MetNMakeRequest(double lat, double lng, String real_loc) a
   };
   final MnUrl = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/complete', MnParams);
 
+  print(("real_loc", real_loc, MnUrl));
+
   var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$real_loc, met.no", headers: headers).timeout(const Duration(seconds: 6));
   var MnResponse = await MnFile.readAsString();
   final MnData = jsonDecode(MnResponse);
@@ -509,35 +511,32 @@ class MetNSunstatus {
     var MnResponse = await MnFile.readAsString();
     final item = jsonDecode(MnResponse);
 
-    DateTime realNow = DateTime.now();
-    List<String> nowString = date.split("T")[1].split(":");
-    DateTime now = realNow.copyWith(
-      hour: int.parse(nowString[0]),
-      minute: int.parse(nowString[1]),
-    );
+    DateTime now = DateTime.now().toUtc();
 
-    int dif = now.difference(timeThere).inHours;
-
-    print(("now", now.hour, "there", timeThere.hour));
+    int dif = now.hour - timeThere.hour;
 
     List<String> sunriseString = item["properties"]["sunrise"]["time"].split("T")[1].split("+")[0].split(":");
-    DateTime sunrise = now.copyWith(
-      hour: int.parse(sunriseString[0]) - dif,
+    DateTime sunrise = timeThere.copyWith(
+      hour: (int.parse(sunriseString[0]) - dif) % 24,
       minute: int.parse(sunriseString[1]),
     );
 
     List<String> sunsetString = item["properties"]["sunset"]["time"].split("T")[1].split("+")[0].split(":");
-    DateTime sunset = now.copyWith(
-      hour: int.parse(sunsetString[0]) - dif,
+    DateTime sunset = timeThere.copyWith(
+      hour: (int.parse(sunsetString[0]) - dif) % 24,
       minute: int.parse(sunsetString[1]),
     );
 
     return MetNSunstatus(
-      sunrise: "${sunrise.hour}:${sunrise.minute}",
-      sunset: "${sunset.hour}:${sunset.minute}",
+      sunrise: settings["Time mode"] == "24 hour"
+        ? "${sunrise.hour.toString().padLeft(2, "0")}:${sunrise.minute.toString().padLeft(2, "0")}"
+        : OMamPmTime("T${sunrise.hour}:${sunrise.minute}"),
+      sunset: settings["Time mode"] == "24 hour"
+          ? "${sunset.hour.toString().padLeft(2, "0")}:${sunset.minute.toString().padLeft(2, "0")}"
+          : OMamPmTime("T${sunset.hour}:${sunset.minute}"),
       absoluteSunriseSunset: "${sunrise.hour}:${sunrise.minute}/${sunset.hour}:${sunset.minute}",
       sunstatus: min(max(
-          sunrise.difference(timeThere).inMinutes / sunrise.difference(sunset).inMinutes, 0), 1),
+          timeThere.difference(sunrise).inMinutes / sunset.difference(sunrise).inMinutes, 0), 1),
     );
   }
 }
@@ -552,7 +551,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
   DateTime fetch_datetime = Mn[1];
 
   MetNSunstatus sunstatus = await MetNSunstatus.fromJson(MnBody, settings, lat, lng, MnBody["properties"]
-  ["meta"]["updated_at"], localTime);
+  ["timeseries"][0]["time"], localTime);
 
   List<MetNDay> days = [];
 
