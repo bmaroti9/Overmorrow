@@ -21,6 +21,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
+import 'package:worldtime/worldtime.dart';
 
 import '../caching.dart';
 import '../settings_page.dart';
@@ -119,9 +120,11 @@ String metNTimeCorrect(String date) {
   return '${num - 12}pm';
 }
 
-String MetNGetLocalTime(item) {
-  List<String> x = item["properties"]["meta"]["updated_at"].split("T")[1].split(":");
-  return "${x[0]}:${x[1]}";
+Future<DateTime> MetNGetLocalTime(lat, lng) async {
+  return await Worldtime().timeByLocation(
+    latitude: lat,
+    longitude: lng,
+  );
 }
 
 Future<List<dynamic>> MetNMakeRequest(double lat, double lng, String real_loc) async {
@@ -351,7 +354,7 @@ class MetNDay {
     List<double> precip = [];
     List<int> uvs = [];
 
-    int precipProb = 0;
+    int precipProb = -10;
 
     List<int> oneSummary = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     const weather_names = ['Clear Night', 'Partly Cloudy', 'Clear Sky', 'Overcast',
@@ -394,7 +397,7 @@ class MetNDay {
       name: metNGetName(index, settings, item, start),
       text: translation(weather_names[BIndex], settings["Language"]),
       icon: metNIconCorrection(weather_names[BIndex]),
-      iconSize: oMIconSizeCorrection( metNTextCorrection(weather_names[BIndex]),),
+      iconSize: oMIconSizeCorrection(weather_names[BIndex]),
       wind_dir: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
       uv: uvs.reduce(max)
     );
@@ -491,22 +494,65 @@ class MetNSunstatus {
     required this.absoluteSunriseSunset,
   });
 
-  static MetNSunstatus fromJson(item, settings) => MetNSunstatus(
-      sunrise: "2:00",
-      sunset:"20:00",
-      absoluteSunriseSunset: "10:00/18:00",
-      sunstatus: 0.5,
-  );
+  static Future<MetNSunstatus> fromJson(item, settings, lat, lng, date, DateTime timeThere) async {
+    final MnParams = {
+      "lat" : lat.toString(),
+      "lon" : lng.toString(),
+      "date" : date.split("T")[0],
+    };
+    final headers = {
+      "User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"
+    };
+    final MnUrl = Uri.https("api.met.no", 'weatherapi/sunrise/3.0/sun', MnParams);
+
+    var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$lat, $lng, sunstatus met.no", headers: headers).timeout(const Duration(seconds: 6));
+    var MnResponse = await MnFile.readAsString();
+    final item = jsonDecode(MnResponse);
+
+    DateTime realNow = DateTime.now();
+    List<String> nowString = date.split("T")[1].split(":");
+    DateTime now = realNow.copyWith(
+      hour: int.parse(nowString[0]),
+      minute: int.parse(nowString[1]),
+    );
+
+    int dif = now.difference(timeThere).inHours;
+
+    print(("now", now.hour, "there", timeThere.hour));
+
+    List<String> sunriseString = item["properties"]["sunrise"]["time"].split("T")[1].split("+")[0].split(":");
+    DateTime sunrise = now.copyWith(
+      hour: int.parse(sunriseString[0]) - dif,
+      minute: int.parse(sunriseString[1]),
+    );
+
+    List<String> sunsetString = item["properties"]["sunset"]["time"].split("T")[1].split("+")[0].split(":");
+    DateTime sunset = now.copyWith(
+      hour: int.parse(sunsetString[0]) - dif,
+      minute: int.parse(sunsetString[1]),
+    );
+
+    return MetNSunstatus(
+      sunrise: "${sunrise.hour}:${sunrise.minute}",
+      sunset: "${sunset.hour}:${sunset.minute}",
+      absoluteSunriseSunset: "${sunrise.hour}:${sunrise.minute}/${sunset.hour}:${sunset.minute}",
+      sunstatus: min(max(
+          sunrise.difference(timeThere).inMinutes / sunrise.difference(sunset).inMinutes, 0), 1),
+    );
+  }
 }
 
 Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) async {
+
+  DateTime localTime = await MetNGetLocalTime(lat, lng);
 
   var Mn = await MetNMakeRequest(lat, lng, real_loc);
   var MnBody = Mn[0];
 
   DateTime fetch_datetime = Mn[1];
 
-  MetNSunstatus sunstatus = MetNSunstatus.fromJson(MnBody, settings);
+  MetNSunstatus sunstatus = await MetNSunstatus.fromJson(MnBody, settings, lat, lng, MnBody["properties"]
+  ["meta"]["updated_at"], localTime);
 
   List<MetNDay> days = [];
 
@@ -541,6 +587,6 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
-    localtime: MetNGetLocalTime(MnBody),
+    localtime: "${localTime.hour}:${localTime.minute}"
   );
 }
