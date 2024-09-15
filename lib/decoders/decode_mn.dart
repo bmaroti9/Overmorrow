@@ -37,12 +37,18 @@ String metNTextCorrection(String text, {language = 'English'}) {
   return t;
 }
 
+int metNCalculateHourDif(DateTime timeThere) {
+  DateTime now = DateTime.now().toUtc();
+
+  return now.hour - timeThere.hour;
+}
+
 int metNcalculateFeelsLike(double t, double r, double v) {
   //unfortunately met norway has no feels like temperatures, so i have to calculate it myself based on:
   //temperature, relative humidity, and wind speed
   // https://meteor.geol.iastate.edu/~ckarsten/bufkit/apparent_temperature.html
 
-  if (t > 27) {
+  if (t >= 27) {
     t = (t * 1.8) + 32;
 
     double heat_index = -42.379 + (2.04901523 * t) + (10.14333127 * r)
@@ -53,7 +59,7 @@ int metNcalculateFeelsLike(double t, double r, double v) {
     return ((heat_index - 32) / 1.8).round();
   }
 
-  else if (t < 10) {
+  else if (t <= 10) {
     t = (t * 1.8) + 32;
 
     double wind_chill = 35.74 + (0.6215 * t) - (35.75 * pow(v, 0.16)) + (0.4275 * t * pow(v, 0.16));
@@ -100,10 +106,10 @@ IconData metNIconCorrection(String text) {
   return textMaterialIcon[text] ?? OvermorrowWeatherIcons.sun2;
 }
 
-String metNTimeCorrect(String date) {
+String metNTimeCorrect(String date, int hourDif) {
   final realtime = date.split('T')[1];
   final realhour = realtime.split(':')[0];
-  final num = int.parse(realhour);
+  final num = (int.parse(realhour) - hourDif) % 24;
   if (num == 0) {
     return '12am';
   }
@@ -347,7 +353,7 @@ class MetNDay {
     required this.wind_dir,
   });
 
-  static MetNDay fromJson(item, settings, start, end, index) {
+  static MetNDay fromJson(item, settings, start, end, index, hourDif) {
     
     List<int> temperatures = [];
     List<double> windspeeds = [];
@@ -366,7 +372,7 @@ class MetNDay {
     List<MetNHour> hours = [];
     
     for (int n = start; n < end; n++) {
-      MetNHour hour = MetNHour.fromJson(item["properties"]["timeseries"][n], settings);
+      MetNHour hour = MetNHour.fromJson(item["properties"]["timeseries"][n], settings, hourDif);
       temperatures.add(hour.temp);
       windspeeds.add(hour.wind);
       winddirs.add(hour.wind_dir);
@@ -444,7 +450,7 @@ class MetNHour {
         required this.rawText,
       });
 
-  static MetNHour fromJson(item, settings) {
+  static MetNHour fromJson(item, settings, hourDif) {
     var nextHours = item["data"]["next_1_hours"] ?? item["data"]["next_6_hours"];
     return MetNHour(
         rawText: metNTextCorrection(
@@ -464,7 +470,7 @@ class MetNHour {
           metNTextCorrection(
               nextHours["summary"]["symbol_code"]),
         ),
-        time: metNTimeCorrect(item["time"]),
+        time: metNTimeCorrect(item["time"], hourDif),
         wind: double.parse(unit_coversion(
             item["data"]["instant"]["details"]["wind_speed"] * 3.6,
             settings["Wind"]).toStringAsFixed(1)),
@@ -496,11 +502,11 @@ class MetNSunstatus {
     required this.absoluteSunriseSunset,
   });
 
-  static Future<MetNSunstatus> fromJson(item, settings, lat, lng, date, DateTime timeThere) async {
+  static Future<MetNSunstatus> fromJson(item, settings, lat, lng, int dif, DateTime timeThere) async {
     final MnParams = {
       "lat" : lat.toString(),
       "lon" : lng.toString(),
-      "date" : date.split("T")[0],
+      "date" : "${timeThere.year}-${timeThere.month.toString().padLeft(2, "0")}-${timeThere.day.toString().padLeft(2, "0")}",
     };
     final headers = {
       "User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"
@@ -510,10 +516,6 @@ class MetNSunstatus {
     var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$lat, $lng, sunstatus met.no", headers: headers).timeout(const Duration(seconds: 6));
     var MnResponse = await MnFile.readAsString();
     final item = jsonDecode(MnResponse);
-
-    DateTime now = DateTime.now().toUtc();
-
-    int dif = now.hour - timeThere.hour;
 
     List<String> sunriseString = item["properties"]["sunrise"]["time"].split("T")[1].split("+")[0].split(":");
     DateTime sunrise = timeThere.copyWith(
@@ -544,14 +546,14 @@ class MetNSunstatus {
 Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) async {
 
   DateTime localTime = await MetNGetLocalTime(lat, lng);
+  int hourDif = metNCalculateHourDif(localTime);
 
   var Mn = await MetNMakeRequest(lat, lng, real_loc);
   var MnBody = Mn[0];
 
   DateTime fetch_datetime = Mn[1];
 
-  MetNSunstatus sunstatus = await MetNSunstatus.fromJson(MnBody, settings, lat, lng, MnBody["properties"]
-  ["timeseries"][0]["time"], localTime);
+  MetNSunstatus sunstatus = await MetNSunstatus.fromJson(MnBody, settings, lat, lng, hourDif, localTime);
 
   List<MetNDay> days = [];
 
@@ -559,8 +561,9 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
   int index = 0;
 
   for (int n = 0; n < MnBody["properties"]["timeseries"].length; n++) {
-    if (MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0] == "00") {
-      MetNDay day = MetNDay.fromJson(MnBody, settings, begin, n, index);
+    int hour = (int.parse(MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0]) - hourDif) % 24;
+    if (hour == 0) {
+      MetNDay day = MetNDay.fromJson(MnBody, settings, begin, n, index, hourDif);
       days.add(day);
       index += 1;
       begin = n;
