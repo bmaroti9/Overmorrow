@@ -146,7 +146,7 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
   final String username = unsplash_body[index]["user"]["name"] ?? "";
   final String photoLink = unsplash_body[index]["links"]["html"] ?? "";
 
-  final Color color = HexColor(unsplash_body[index]["color"]);
+  //final Color color = HexColor(unsplash_body[index]["color"]);
 
   print(unsplash_body[index]["color"]);
 
@@ -467,8 +467,6 @@ class RainviewerRadar {
 
   final String host = data["host"];
 
-  //int timenow = DateTime.now().toUtc().microsecond;
-
   List<String> images = [];
   List<String> times = [];
 
@@ -482,7 +480,6 @@ class RainviewerRadar {
   }
 
   for (var x in future) {
-    //int dif = x["time"] * 1000 - timenow;
     DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"] * 1000);
     images.add(host + x["path"]);
     times.add("${time.hour}h ${time.minute}m");

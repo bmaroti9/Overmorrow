@@ -48,7 +48,7 @@ int metNcalculateFeelsLike(double t, double r, double v) {
   //temperature, relative humidity, and wind speed
   // https://meteor.geol.iastate.edu/~ckarsten/bufkit/apparent_temperature.html
 
-  if (t >= 27) {
+  if (t >= 24) {
     t = (t * 1.8) + 32;
 
     double heat_index = -42.379 + (2.04901523 * t) + (10.14333127 * r)
@@ -59,7 +59,7 @@ int metNcalculateFeelsLike(double t, double r, double v) {
     return ((heat_index - 32) / 1.8).round();
   }
 
-  else if (t <= 10) {
+  else if (t <= 13) {
     t = (t * 1.8) + 32;
 
     double wind_chill = 35.74 + (0.6215 * t) - (35.75 * pow(v, 0.16)) + (0.4275 * t * pow(v, 0.16));
@@ -124,6 +124,15 @@ String metNTimeCorrect(String date, int hourDif) {
     return '12pm';
   }
   return '${num - 12}pm';
+}
+
+String metN24HourTime(String date, int hourDif) {
+  final realtime = date.split('T')[1];
+  final realhour = realtime.split(':')[0];
+  final num = (int.parse(realhour) - hourDif) % 24;
+  final hour = num.toString().padLeft(2, "0");
+  final minute = realtime.split(':')[1].padLeft(2, "0");
+  return "$hour:$minute";
 }
 
 Future<DateTime> MetNGetLocalTime(lat, lng) async {
@@ -470,7 +479,8 @@ class MetNHour {
           metNTextCorrection(
               nextHours["summary"]["symbol_code"]),
         ),
-        time: metNTimeCorrect(item["time"], hourDif),
+        time: settings["Time mode"] == "24 hour" ?
+          metN24HourTime(item["time"], hourDif) : metNTimeCorrect(item["time"], hourDif),
         wind: double.parse(unit_coversion(
             item["data"]["instant"]["details"]["wind_speed"] * 3.6,
             settings["Wind"]).toStringAsFixed(1)),
