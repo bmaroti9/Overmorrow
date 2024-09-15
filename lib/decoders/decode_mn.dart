@@ -560,14 +560,16 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
   int begin = 0;
   int index = 0;
 
+  int previous_hour = 0;
   for (int n = 0; n < MnBody["properties"]["timeseries"].length; n++) {
     int hour = (int.parse(MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0]) - hourDif) % 24;
-    if (hour == 0) {
+    if (n > 0 && hour - previous_hour < 1) {
       MetNDay day = MetNDay.fromJson(MnBody, settings, begin, n, index, hourDif);
       days.add(day);
       index += 1;
       begin = n;
     }
+    previous_hour = hour;
   }
 
   return WeatherData(
