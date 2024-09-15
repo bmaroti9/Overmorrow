@@ -26,7 +26,6 @@ import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
-import 'main.dart';
 import 'main_ui.dart';
 import 'new_displays.dart';
 import 'ui_helper.dart';
@@ -53,13 +52,17 @@ class _NewMainState extends State<NewMain> {
   @override
   void initState() {
     super.initState();
+    /*
+    i'm keeping this in case i need another pop-up sometime
     if (data.settings['networkImageDialogShown'] == "false") {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showFeatureDialog(context, data.settings);
       });
     }
+     */
   }
 
+  /*
   void _showFeatureDialog(BuildContext context, settings) {
     showDialog(
       context: context,
@@ -116,6 +119,7 @@ class _NewMainState extends State<NewMain> {
       },
     );
   }
+   */
 
   @override
   Widget build(BuildContext context) {
