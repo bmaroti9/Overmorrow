@@ -51,8 +51,8 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 41
-        versionName "2.4.1"
+        versionCode 42
+        versionName "2.4.2"
     }
 
     buildTypes {
