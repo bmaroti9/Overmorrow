@@ -322,7 +322,7 @@ class WapiCurrent {
     if (settings["Image source"] == "network") {
       final text = textCorrection(
           item["current"]["condition"]["code"], item["current"]["is_day"],
-          language: settings["Language"]
+          language: "English"
       );
       final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
       Uimage = ImageData[0];
@@ -444,7 +444,7 @@ class WapiDay {
         item["day"]["condition"]["code"], 1
     ),
     iconSize: oMIconSizeCorrection(textCorrection(
-        item["day"]["condition"]["code"], 1, language: settings["Language"]
+        item["day"]["condition"]["code"], 1, language: "English"
     ),),
     name: getName(index, settings),
     minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings["Temperature"]).round()}°'
@@ -522,7 +522,7 @@ class WapiHour {
         item["condition"]["code"], item["is_day"]
     ),
     iconSize: oMIconSizeCorrection(textCorrection(
-        item["condition"]["code"], item["is_day"], language: settings["Language"]
+        item["condition"]["code"], item["is_day"], language: "English",
     ),),
     temp: unit_coversion(item["temp_c"], settings["Temperature"]).round(),
     time: getTime(item["time"], settings["Time mode"] == '12 hour'),
@@ -615,7 +615,6 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
   var wapi_body = wapi[0];
   DateTime fetch_datetime = wapi[1];
 
-  //String real_time = wapi_body["location"]["localtime"];
   int epoch = wapi_body["location"]["localtime_epoch"];
   WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
 

@@ -821,6 +821,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  worldtime:
+    dependency: "direct main"
+    description:
+      name: worldtime
+      sha256: "752cfcb7a0c8dd640546202070c9bf517d80dbffb378f96da13be6e4d1239c79"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.2"
   xdg_directories:
     dependency: transitive
     description:
@@ -846,5 +854,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.4.0 <4.0.0"
+  dart: ">=3.4.0 <3.7.0"
   flutter: ">=3.22.0"

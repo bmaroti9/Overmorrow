@@ -88,7 +88,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
     child: SizedBox(
       width: width,
         child: Container(
-            padding: const EdgeInsets.only(top: 25, left: 4, right: 4),
+            padding: const EdgeInsets.only(top: 25, left: 4, right: 4, bottom: 13),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -142,7 +142,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
 Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
     provider, latlng, real_loc) {
   return Padding(
-    padding: const EdgeInsets.only(left: 23, right: 23, top: 15, bottom: 30),
+    padding: const EdgeInsets.only(left: 23, right: 23, bottom: 30, top: 5),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -157,7 +157,7 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.only(top: 12),
           child: Container(
             decoration: BoxDecoration(
               color: highlight,
@@ -178,7 +178,7 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
               ),
               //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
               value: provider.toString(),
-              items: ['weatherapi.com', 'open-meteo'].map((item) {
+              items: ['weatherapi.com', 'open-meteo', 'met norway'].map((item) {
                 return DropdownMenuItem(
                   value: item,
                   child: Text(item),

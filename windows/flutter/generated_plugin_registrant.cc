@@ -8,10 +8,13 @@
 
 #include <dynamic_color/dynamic_color_plugin_c_api.h>
 #include <url_launcher_windows/url_launcher_windows.h>
+#include <worldtime/worldtime_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   DynamicColorPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("DynamicColorPluginCApi"));
   UrlLauncherWindowsRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("UrlLauncherWindows"));
+  WorldtimePluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("WorldtimePlugin"));
 }

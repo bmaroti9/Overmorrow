@@ -26,7 +26,6 @@ import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
-import 'main.dart';
 import 'main_ui.dart';
 import 'new_displays.dart';
 import 'ui_helper.dart';
@@ -53,13 +52,17 @@ class _NewMainState extends State<NewMain> {
   @override
   void initState() {
     super.initState();
+    /*
+    i'm keeping this in case i need another pop-up sometime
     if (data.settings['networkImageDialogShown'] == "false") {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showFeatureDialog(context, data.settings);
       });
     }
+     */
   }
 
+  /*
   void _showFeatureDialog(BuildContext context, settings) {
     showDialog(
       context: context,
@@ -116,13 +119,29 @@ class _NewMainState extends State<NewMain> {
       },
     );
   }
+   */
 
   @override
   Widget build(BuildContext context) {
+
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     final Size size = view.physicalSize / view.devicePixelRatio;
 
     final FloatingSearchBarController controller = FloatingSearchBarController();
+
+    final Map<String, Widget> widgetsMap = {
+      'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), size: size,),
+      'rain indicator': NewRain15MinuteIndicator(data),
+      'air quality': NewAirQuality(data),
+      'radar': RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
+      'forecast': buildNewDays(data),
+      'daily': buildNewGlanceDay(data: data),
+    };
+
+    final List<String> order = data.settings["Layout order"].split(",");
+    print(order);
+
+    final List<Widget> orderedWidgets = order.map((name) => widgetsMap[name]!).toList();
 
     String colorMode = data.settings["Color mode"];
     if (colorMode == "auto") {
@@ -213,6 +232,7 @@ class _NewMainState extends State<NewMain> {
               ),
             ],
           ),
+
           /*
           Padding(
             padding: const EdgeInsets.only(left: 30),
@@ -241,12 +261,11 @@ class _NewMainState extends State<NewMain> {
           ),
            */
 
-          NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-          NewRain15MinuteIndicator(data),
-          NewAirQuality(data),
-          RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
-          buildNewDays(data),
-          buildNewGlanceDay(data: data),
+          Column(
+            children: orderedWidgets.map((widget) {
+              return widget;
+            }).toList(),
+          ),
 
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 30),

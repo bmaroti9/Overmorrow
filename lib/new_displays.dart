@@ -138,7 +138,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
 
         String write = widget.data.settings["Time mode"] == "24 hour"
             ? OMConvertTime(
-                "j T${localTime.hour}:${localTime.minute}") //the j is just added so when splitting
+                "j T${localTime.hour.toString().padLeft(2, "0")}:${localTime.minute.toString().padLeft(2, "0")}") //the j is just added so when splitting
             : OMamPmTime(
                 "j T${localTime.hour}:${localTime.minute}"); //it can grab the second item
 
@@ -157,7 +157,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         final textWidth = textPainter.width;
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, top: 13),
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 23),
           child: Column(
             children: [
               Padding(
@@ -243,7 +243,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
 
 Widget NewAirQuality(var data) {
   return Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 19, top: 23),
+    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 59),
     child: Column(
       children: [
         Align(
@@ -316,7 +316,7 @@ Widget NewRain15MinuteIndicator(var data) {
   return Visibility(
     visible: data.minutely_15_precip.t_minus != "",
     child: Padding(
-      padding: const EdgeInsets.only(left: 21, right: 21, top: 23, bottom: 15),
+      padding: const EdgeInsets.only(left: 21, right: 21, bottom: 38),
       child: Container(
         decoration: BoxDecoration(
           color: data.current.containerLow,
@@ -357,7 +357,7 @@ Widget NewRain15MinuteIndicator(var data) {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 14, bottom: 10),
+              padding: const EdgeInsets.only(top: 14, bottom: 8),
               child: SizedBox(
                 height: 30,
                 child: ListView.builder(
@@ -382,7 +382,6 @@ Widget NewRain15MinuteIndicator(var data) {
               ),
             ),
             SizedBox(
-              height: 10,
               width: 11.0 * data.minutely_15_precip.precips.length + 11,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

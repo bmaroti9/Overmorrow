@@ -408,14 +408,14 @@ Map<String, int> weatherConditionBiassTable = {
   'Partly Cloudy': 6,
   'Clear Sky': 5,
   'Overcast': 4,
-  'Haze': 3,
-  'Rain': 11,  // you can't go wrong by choosing the less extreme one
+  'Haze': 8,
+  'Rain': 31,
   'Sleet': 8,
-  'Drizzle': 9,
-  'Thunderstorm': 14,  // super rare
-  'Heavy Snow': 12,
-  'Fog': 7,
+  'Drizzle': 25,
+  'Thunderstorm': 35,  // super rare
+  'Heavy Snow': 30,
+  'Fog': 10,
   'Snow': 13,  // you can't go wrong by choosing the less extreme one
-  'Heavy Rain': 10,
+  'Heavy Rain': 30,
   'Cloudy Night' : 1, // you don't want night in the daily summary
 };

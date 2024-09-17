@@ -28,6 +28,8 @@ import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:latlong2/latlong.dart';
 
+import 'decoders/decode_OM.dart';
+
 class RadarSmall extends StatefulWidget {
 
   final data;
@@ -64,7 +66,13 @@ class _RadarSmallState extends State<RadarSmall> {
     for (int i = 0; i < data.radar.times.length; i++) {
       List<String> split = data.radar.times[i].split("h");
       String minute = split[1].replaceAll(RegExp(r"\D"), "");
-      times.add("${int.parse(split[0]) + offset}:${minute == "0" ? "00" : minute}");
+      int hour = (int.parse(split[0]) + offset) % 24;
+      if (data.settings["Time mode"] == "12 hour") {
+        times.add(OMamPmTime("jT$hour:${minute == "0" ? "00" : minute}"));
+      }
+      else {
+        times.add("${hour.toString().padLeft(2, "0")}:${minute == "0" ? "00" : minute}");
+      }
     }
 
     timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer t) {
@@ -112,7 +120,7 @@ class _RadarSmallState extends State<RadarSmall> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 25, top: 40),
+          padding: const EdgeInsets.only(left: 25),
           child: Align(
             alignment: Alignment.centerLeft,
             child: comfortatext(
@@ -123,7 +131,7 @@ class _RadarSmallState extends State<RadarSmall> {
         ),
         Padding(
           padding: const EdgeInsets.only(
-              left: 25, right: 25, top: 12, bottom: 10),
+              left: 25, right: 25, top: 12, bottom: 10,),
           child: AspectRatio(
             aspectRatio: 1.57,
             child: Container(
@@ -216,7 +224,7 @@ class _RadarSmallState extends State<RadarSmall> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 38, right: 25, bottom: 0, top: 10),
+          padding: const EdgeInsets.only(left: 38, right: 25, bottom: 50, top: 10),
           child: Row(
             children: [
               AnimatedSwitcher(
@@ -300,26 +308,26 @@ class _RadarSmallState extends State<RadarSmall> {
                       padding: const EdgeInsets.only(left: 16, right: 16, top: 9),
                       child: Row(
                         children: <Widget>[
-                          comfortatext('-2hr', 13, data.settings, color: data.current.onSurface),
+                          comfortatext('-2${translation('hr', data.settings['Language'])}', 13, data.settings, color: data.current.onSurface),
                           Expanded(
                             flex: 6,
                             child: Align(
                                 alignment: Alignment.centerRight,
-                                child: comfortatext('-1hr', 13, data.settings, color: data.current.onSurface)
+                                child: comfortatext('-1${translation('hr', data.settings['Language'])}', 13, data.settings, color: data.current.onSurface)
                             ),
                           ),
                           Expanded(
                             flex: 6,
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: comfortatext('now', 13, data.settings, color: data.current.onSurface)
+                              child: comfortatext(translation('now', data.settings["Language"]), 13, data.settings, color: data.current.onSurface)
                             ),
                           ),
                           Expanded(
                             flex: 3,
                             child: Align(
                                 alignment: Alignment.centerRight,
-                                child: comfortatext('30m', 13, data.settings, color: data.current.onSurface)
+                                child: comfortatext(translation('30m', data.settings["Language"]), 13, data.settings, color: data.current.onSurface)
                             ),
                           ),
                         ],
@@ -372,7 +380,13 @@ class _RadarBigState extends State<RadarBig> {
     for (int i = 0; i < data.radar.times.length; i++) {
       List<String> split = data.radar.times[i].split("h");
       String minute = split[1].replaceAll(RegExp(r"\D"), "");
-      times.add("${int.parse(split[0]) + offset}:${minute == "0" ? "00" : minute}");
+      int hour = (int.parse(split[0]) + offset) % 24;
+      if (data.settings["Time mode"] == "12 hour") {
+        times.add(OMamPmTime("jT$hour:${minute == "0" ? "00" : minute}"));
+      }
+      else {
+        times.add("${hour.toString().padLeft(2, "0")}:${minute == "0" ? "00" : minute}");
+      }
     }
 
 
@@ -549,26 +563,26 @@ class _RadarBigState extends State<RadarBig> {
                               padding: const EdgeInsets.only(left: 16, right: 16, top: 9),
                               child: Row(
                                 children: <Widget>[
-                                  comfortatext('-2hr', 13, data.settings, color: data.current.onSurface),
+                                  comfortatext('-2${translation('hr', data.settings['Language'])}', 13, data.settings, color: data.current.onSurface),
                                   Expanded(
                                     flex: 6,
                                     child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: comfortatext('-1hr', 13, data.settings, color: data.current.onSurface)
+                                        child: comfortatext('-1${translation('hr', data.settings['Language'])}', 13, data.settings, color: data.current.onSurface)
                                     ),
                                   ),
                                   Expanded(
                                     flex: 6,
                                     child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: comfortatext('now', 13, data.settings, color: data.current.onSurface)
+                                        child: comfortatext(translation('now', data.settings["Language"]), 13, data.settings, color: data.current.onSurface)
                                     ),
                                   ),
                                   Expanded(
                                     flex: 3,
                                     child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: comfortatext('30m', 13, data.settings, color: data.current.onSurface)
+                                        child: comfortatext(translation('30m', data.settings["Language"]), 13, data.settings, color: data.current.onSurface)
                                     ),
                                   ),
                                 ],
