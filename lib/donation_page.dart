@@ -215,7 +215,7 @@ class _InfoPageState extends State<InfoPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 40, bottom: 10),
+                      padding: const EdgeInsets.only(top: 50, bottom: 10),
                       child: comfortatext(
                           translation("weather data:", settings["Language"]), 16,
                           settings,
@@ -245,16 +245,47 @@ class _InfoPageState extends State<InfoPage> {
                           GestureDetector(
                             onTap: () {
                               HapticFeedback.selectionClick();
-                              _launchUrl("https://www.rainviewer.com/api.html");
+                              _launchUrl("https://api.met.no/");
                             },
-                            child: comfortatext("rainviewer", 16, settings, color: primary,
+                            child: comfortatext("met-norway", 16, settings, color: primary,
                                 decoration: TextDecoration.underline),
                           ),
                         ],
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 40),
+                      padding: const EdgeInsets.only(top: 30, bottom: 10),
+                      child: comfortatext(
+                          "${translation("radar", settings["Language"])}:", 16,
+                          settings,
+                          color: onSurface),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              HapticFeedback.selectionClick();
+                              _launchUrl("https://www.rainviewer.com/api.html");
+                            },
+                            child: comfortatext("rainviewer", 16, settings, color: primary,
+                                decoration: TextDecoration.underline),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              HapticFeedback.selectionClick();
+                              _launchUrl("https://carto.com/");
+                            },
+                            child: comfortatext("carto", 16, settings, color: primary,
+                                decoration: TextDecoration.underline),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 50),
                       child: Wrap(
                         spacing: 10,
                         children: [

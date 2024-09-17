@@ -105,12 +105,13 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
               SizedBox(
                   width: 35,
                   child: Icon(day.icon, size: 38.0 * day.iconSize, color: data.current.primary,)),
-              Padding(
-                padding: const EdgeInsets.only(left: 12.0, top: 3),
-                child: comfortatext(day.text, 20, data.settings, color: data.current.onSurface,
-                    weight: FontWeight.w400),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12.0, top: 3),
+                  child: comfortatext(day.text, 20, data.settings, color: data.current.onSurface,
+                      weight: FontWeight.w400),
+                ),
               ),
-              const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(top: 4),
                 child: Row(

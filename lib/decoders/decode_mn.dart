@@ -154,8 +154,6 @@ Future<List<dynamic>> MetNMakeRequest(double lat, double lng, String real_loc) a
   };
   final MnUrl = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/complete', MnParams);
 
-  print(("real_loc", real_loc, MnUrl));
-
   var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$real_loc, met.no", headers: headers).timeout(const Duration(seconds: 6));
   var MnResponse = await MnFile.readAsString();
   final MnData = jsonDecode(MnResponse);
