@@ -12,7 +12,7 @@
   <img src="Screenshots/play_badge4.png" alt="colorful1" width="150">
 </a>
 <a href="https://apt.izzysoft.de/fdroid/index/apk/com.marotidev.Overmorrow/">
-  <img src="Screenshots/IzzyOnDroid_c.png" alt="colorful1" width="150">
+  <img src="Screenshots/IzzyOnDroid_c.png" alt="colorful2" width="150">
 </a>
 </div>
 
@@ -22,11 +22,11 @@
 
 
 <div align="center">
-<img src="Screenshots/colorful1.png" alt="colorful1" width="280">
-<img src="Screenshots/colorful2.png" alt="colorful2" width="280">
-<img src="Screenshots/colorful3.png" alt="colorful3" width="280">
-<img src="Screenshots/colorful4.png" alt="colorful4" width="280">
-<img src="Screenshots/colorful5.png" alt="colorful5" width="280">
+<img src="Screenshots/colorful1.png" alt="colorful1" width="320">
+<img src="Screenshots/colorful2.png" alt="colorful2" width="320">
+<img src="Screenshots/colorful3.png" alt="colorful3" width="320">
+<img src="Screenshots/colorful4.png" alt="colorful4" width="320">
+<img src="Screenshots/colorful5.png" alt="colorful5" width="320">
 </div>
 
 ## Weather providers 🌨️
