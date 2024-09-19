@@ -1,32 +1,33 @@
-<div style="text-align: center;">
+
+<div align="center">
     <img width="150" src="Screenshots/Overmorrow_white_circle.png">
 </div>
 
 <br>
 
-<h1 style="text-align: center;">Overmorrow</h1>
+<h1 align="center">Overmorrow</h1>
 
-<div style="text-align: center;">
+<div align="center">
     <a href="https://play.google.com/store/apps/details?id=com.marotidev.Overmorrow">
-        <img src="Screenshots/play_badge4.png" alt="Google Play Store" width="150">
-    </a>
-    <a href="https://apt.izzysoft.de/fdroid/index/apk/com.marotidev.Overmorrow/">
-        <img src="Screenshots/IzzyOnDroid_c.png" alt="IzzyOnDroid" width="150">
-    </a>
+  <img src="Screenshots/play_badge4.png" alt="colorful1" width="150">
+</a>
+<a href="https://apt.izzysoft.de/fdroid/index/apk/com.marotidev.Overmorrow/">
+  <img src="Screenshots/IzzyOnDroid_c.png" alt="colorful1" width="150">
+</a>
 </div>
 
-<h3 style="text-align: center;">minimalist colorful weather.</h3>
-
+<h3 align="center">minimalist colorful weather.</h3>
 <br>
 
-<div style="text-align: center;">
-    <img src="Screenshots/colorful1.png" alt="colorful1" width="280">
-    <img src="Screenshots/colorful2.png" alt="colorful2" width="280">
-    <img src="Screenshots/colorful3.png" alt="colorful3" width="280">
-    <img src="Screenshots/colorful4.png" alt="colorful4" width="280">
-    <img src="Screenshots/colorful5.png" alt="colorful5" width="280">
-</div>
 
+
+<div align="center">
+<img src="Screenshots/colorful1.png" alt="colorful1" width="280">
+<img src="Screenshots/colorful2.png" alt="colorful2" width="280">
+<img src="Screenshots/colorful3.png" alt="colorful3" width="280">
+<img src="Screenshots/colorful4.png" alt="colorful4" width="280">
+<img src="Screenshots/colorful5.png" alt="colorful5" width="280">
+</div>
 
 ## Weather providers 🌨️
 - [open-meteo](https://open-meteo.com)
