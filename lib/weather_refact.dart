@@ -383,6 +383,7 @@ Map<String, int> textFilter = {
   'black and white' : -100000,
   'graffiti' : -2000,
   'meat' : -5000,
+  'toy' : -100000,
   'man': -10000000, //trying to not have people in images
   'male': -1000000,
   'couple': -1000000,
