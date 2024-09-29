@@ -589,10 +589,10 @@ class WapiAqi {
 
   static WapiAqi fromJson(item) => WapiAqi(
     aqi_index: item["current"]["air_quality"]["us-epa-index"],
-    pm10: item["current"]["air_quality"]["pm10"],
-    pm2_5: item["current"]["air_quality"]["pm2_5"],
-    o3: item["current"]["air_quality"]["o3"],
-    no2: item["current"]["air_quality"]["no2"],
+    pm10: double.parse(item["current"]["air_quality"]["pm10"].toStringAsFixed(1)),
+    pm2_5: double.parse(item["current"]["air_quality"]["pm2_5"].toStringAsFixed(1)),
+    o3: double.parse(item["current"]["air_quality"]["o3"].toStringAsFixed(1)),
+    no2: double.parse(item["current"]["air_quality"]["no2"].toStringAsFixed(1)),
 
     aqi_title: ['good', 'fair', 'moderate', 'poor', 'very poor', 'unhealthy']
     [item["current"]["air_quality"]["us-epa-index"] - 1],
