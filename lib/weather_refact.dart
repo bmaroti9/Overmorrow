@@ -385,6 +385,7 @@ Map<String, int> textFilter = {
   'meat' : -5000,
   'toy' : -100000,
   'man': -10000000, //trying to not have people in images
+  'men': -10000000,
   'male': -1000000,
   'couple': -1000000,
   'female': -1000000,
@@ -393,6 +394,7 @@ Map<String, int> textFilter = {
   'boy': -1000000,
   'toddler': -1000000,
   'woman': -10000000,
+  'women': -10000000,
   'person': -10000000,
   'child': -10000000,
   'crowd': -10000,
