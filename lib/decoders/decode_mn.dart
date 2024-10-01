@@ -73,14 +73,16 @@ int metNcalculateFeelsLike(double t, double r, double v) {
 
 }
 
-String metNGetName(index, settings, item, start) {
+String metNGetName(index, settings, item, start, hourDif) {
   if (index < 3) {
     const names = ['Today', 'Tomorrow', 'Overmorrow'];
     return translation(names[index], settings["Language"]);
   }
   String x = item["properties"]["timeseries"][start]["time"].split("T")[0];
+  String hour = item["properties"]["timeseries"][start]["time"].split("T")[1].split(":")[0];
   List<String> z = x.split("-");
-  DateTime time = DateTime(int.parse(z[0]), int.parse(z[1]), int.parse(z[2]));
+  DateTime time_before = DateTime(int.parse(z[0]), int.parse(z[1]), int.parse(z[2]), int.parse(hour));
+  DateTime time = time_before.add(-Duration(hours: hourDif));
   const weeks = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   String weekname = translation(weeks[time.weekday - 1], settings["Language"]);
   return "$weekname, ${time.month}/${time.day}";
@@ -409,7 +411,7 @@ class MetNDay {
       hourly_for_precip: hours,
       total_precip: double.parse(precip.reduce((a, b) => a + b).toStringAsFixed(1)),
       windspeed: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
-      name: metNGetName(index, settings, item, start),
+      name: metNGetName(index, settings, item, start, hourDif),
       text: translation(weather_names[BIndex], settings["Language"]),
       icon: metNIconCorrection(weather_names[BIndex]),
       iconSize: oMIconSizeCorrection(weather_names[BIndex]),
