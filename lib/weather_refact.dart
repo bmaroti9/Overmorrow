@@ -392,6 +392,7 @@ Map<String, int> textFilter = {
   'human': -1000000,
   'girl': -1000000,
   'boy': -1000000,
+  'kid': -1000000,
   'toddler': -1000000,
   'woman': -10000000,
   'women': -10000000,
