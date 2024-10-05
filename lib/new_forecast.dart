@@ -99,7 +99,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 18, left: 23, right: 25),
+          padding: const EdgeInsets.only(top: 18, left: 23, right: 25, bottom: 5),
           child: Row(
             children: [
               SizedBox(
@@ -273,10 +273,10 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
             physics: const NeverScrollableScrollPhysics(),
             controller: _pageController,
             children: <Widget>[
-              buildTemp(day.hourly, data, highlight),
+              buildTemp(day.hourly, data, data.current.containerHigh),
               buildPrecip(day.hourly, data, data.current.containerHigh),
               WindReport(hours: day.hourly, data: data, highlight: data.current.containerHigh,),
-              buildUV(day.hourly, data, highlight),
+              buildUV(day.hourly, data, data.current.containerHigh),
             ],
           ),
         ),

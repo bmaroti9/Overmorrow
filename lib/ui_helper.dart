@@ -429,7 +429,7 @@ Widget RainWidget(data, day, highlight) {
   }
 
   return Padding(
-    padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+    padding: const EdgeInsets.only(left: 8, right: 8, top: 15),
     child: Container(
       constraints: const BoxConstraints(minWidth: 0, maxWidth: 450),
       decoration: BoxDecoration(
@@ -444,7 +444,7 @@ Widget RainWidget(data, day, highlight) {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 14, right: 15, left: 18),
+              padding: const EdgeInsets.only(top: 16, right: 17, left: 17),
               child: AspectRatio(
                 aspectRatio: 2.2,
                 child: MyChart(precip, data, highlight)
@@ -534,7 +534,8 @@ class BarChartPainter extends CustomPainter {
         if (i <= smallerThan) {
           canvas.drawArc(
             Rect.fromCenter(
-              center: Offset(x + barWidth * 0.5, start),
+              center: Offset(x + barWidth * 0.5, start - 0.05), //this small offset is there
+                // to remove the small line between the two half circles
               height: barWidth * 0.8,
               width: barWidth * 0.8,
             ),
