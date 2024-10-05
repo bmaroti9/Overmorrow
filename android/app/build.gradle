@@ -29,7 +29,8 @@ android {
     compileSdk 34
     // compileSdkVersion flutter.compileSdkVersion <- this vas the original one but
     // geolocator insisted on it being 33
-    ndkVersion flutter.ndkVersion
+    //ndkVersion flutter.ndkVersion
+    ndkVersion "27.0.12077973"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
