@@ -492,6 +492,7 @@ class OM15MinutePrecip {
       sum += x;
 
       precips.add(x);
+      print(x);
     }
 
     sum = max(sum, 0.1); //if there is rain then it shouldn't write 0

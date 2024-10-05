@@ -274,7 +274,7 @@ List<Color> getNetworkColors(List<dynamic> palette, settings, {force = "-1"}) {
       palette[0].primaryFixed,
       palette[0].onSurface,
       palette[0].outline,
-      palette[0].surfaceContainer,
+      palette[0].surfaceContainerLow,
       palette[0].surfaceContainer,
       palette[0].surfaceContainerHigh,
       palette[0].surfaceContainerHighest,
