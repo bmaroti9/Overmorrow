@@ -410,7 +410,7 @@ Widget NewAqiDataPoints(String name, double value, var data) {
   );
 }
 
-Widget RainWidget(data, day, highlight) {
+Widget RainWidget(data, day, highlight, border) {
   List<dynamic> hours = day.hourly_for_precip;
 
   List<double> precip = [];
@@ -437,7 +437,7 @@ Widget RainWidget(data, day, highlight) {
         //color: data.current.containerLow,
         border: data.settings["Color mode"] == "dark" || data.settings["Color mode"] == "light"
             || data.settings["Color mode"] == "auto"
-          ? Border.all(width: 3, color: highlight)
+          ? Border.all(width: 2.6, color: border)
           : Border.all(width: 1.6, color: data.current.primaryLight)
 
       ),
