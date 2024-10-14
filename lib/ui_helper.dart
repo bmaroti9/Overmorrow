@@ -387,11 +387,11 @@ class DescriptionCircle extends StatelessWidget {
   }
 }
 
-Widget NewAqiDataPoints(String name, double value, var data) {
+Widget NewAqiDataPoints(String name, double value, var data, [double size = 15]) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      comfortatext(name, 15, data.settings, color: data.current.primary,
+      comfortatext(name, size, data.settings, color: data.current.primary,
       align: TextAlign.end, weight: FontWeight.w500),
       Padding(
         padding: const EdgeInsets.all(3.0),
@@ -404,7 +404,7 @@ Widget NewAqiDataPoints(String name, double value, var data) {
           ),
         ),
       ),
-      comfortatext(value.toString(), 15, data.settings, color: data.current.primarySecond,
+      comfortatext(value.toString(), size, data.settings, color: data.current.primarySecond,
           align: TextAlign.end, weight: FontWeight.w600),
     ],
   );

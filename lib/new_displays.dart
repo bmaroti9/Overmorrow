@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
@@ -157,7 +158,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         final textWidth = textPainter.width;
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 23),
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 11),
           child: Column(
             children: [
               Padding(
@@ -241,26 +242,38 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
   }
 }
 
-Widget NewAirQuality(var data) {
+Widget NewAirQuality(var data, context) {
   return Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, bottom: 59),
     child: Column(
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 6, left: 5),
-            child: comfortatext(
-                translation('air quality', data.settings["Language"]),
-                16,
-                data.settings,
-                color: data.current.onSurface),
-          ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 0, left: 5),
+              child: comfortatext(
+                  translation('air quality', data.settings["Language"]),
+                  16,
+                  data.settings,
+                  color: data.current.onSurface),
+            ),
+            const Spacer(),
+            IconButton(
+              constraints: const BoxConstraints(),
+              padding: EdgeInsets.only(top:2),
+              onPressed: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AllergensPage(data: data))
+                );
+              },
+              icon: Icon(Icons.keyboard_arrow_right, color: data.current.primary, size: 20,))
+          ],
         ),
         Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 5, top: 5, right: 14),
+              padding: const EdgeInsets.only(left: 5, top: 0, right: 14),
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
@@ -397,4 +410,114 @@ Widget NewRain15MinuteIndicator(var data) {
       ),
     )
   );
+}
+
+class SquigglyCirclePainter extends CustomPainter {
+
+  final Color circleColor;
+
+  SquigglyCirclePainter(this.circleColor);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = circleColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.2;
+
+    final Path path = Path();
+    double radius = size.width / 2;
+    double centerX = size.width / 2;
+    double centerY = size.height / 2;
+
+    double waves = 10;
+    double waveAmplitude = size.width / 50;
+
+    for (double i = 0; i <= 360; i += 0.1) {
+      double angle = i * pi / 180;
+      double x = centerX + (radius + waveAmplitude * sin(waves * angle)) * cos(angle);
+      double y = centerY + (radius + waveAmplitude * sin(waves * angle)) * sin(angle);
+
+      if (i == 0) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
+    }
+
+    path.close();
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+class AllergensPage extends StatefulWidget {
+  final data;
+
+  const AllergensPage({Key? key, required this.data})
+      : super(key: key);
+
+  @override
+  _AllergensPageState createState() =>
+      _AllergensPageState(data:data);
+}
+
+class _AllergensPageState extends State<AllergensPage> {
+
+  final data;
+
+  _AllergensPageState({required this.data});
+
+  void goBack() {
+    HapticFeedback.selectionClick();
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Material(
+      color: data.current.surface,
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: data.current.primary),
+              onPressed: () {
+                goBack();
+              },
+            ),
+            title: comfortatext("Air Quality", 30, data.settings, color: data.current.primary),
+            backgroundColor: data.current.surface,
+            pinned: false,
+          ),
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 70, right: 70, top: 50, bottom: 30),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: CustomPaint(
+                      painter: SquigglyCirclePainter(data.current.primaryLight),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          comfortatext("1", 63, data.settings, color: data.current.primary, weight: FontWeight.w300),
+                          comfortatext("good", 25, data.settings, color: data.current.primary, weight: FontWeight.w600),
+                          ],
+                        ),
+                    ),
+                  ),
+                ),
+                NewAqiDataPoints("hehe", 30, data, 18.0)
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

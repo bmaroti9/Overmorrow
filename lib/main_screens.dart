@@ -132,7 +132,7 @@ class _NewMainState extends State<NewMain> {
     final Map<String, Widget> widgetsMap = {
       'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), size: size,),
       'rain indicator': NewRain15MinuteIndicator(data),
-      'air quality': NewAirQuality(data),
+      'air quality': NewAirQuality(data, context),
       'radar': RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
       'forecast': buildNewDays(data),
       'daily': buildNewGlanceDay(data: data),
@@ -395,7 +395,7 @@ Widget TabletLayout(data, updateLocation, context) {
                     children: [
                       NewSunriseSunset(data: data, key: Key(data.place), size: size,),
                       NewRain15MinuteIndicator(data),
-                      NewAirQuality(data),
+                      NewAirQuality(data, context),
                       RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
                       buildNewGlanceDay(data: data, key: Key("${data.place}, ${data.current.primary}"),),
                       Padding(
