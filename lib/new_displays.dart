@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -453,6 +454,23 @@ class SquigglyCirclePainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
+Widget pollenWidget(IconData icon, String name, double value, data) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 20, right: 20, top:10, bottom: 10),
+    child: Row(
+      children: [
+        Icon(icon, size: 22, color: data.current.primaryLight),
+        Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: comfortatext(name, 20, data.settings, color: data.current.primary),
+        ),
+        const Spacer(),
+        comfortatext(value.toString(), 20, data.settings, color: data.current.primaryLight),
+      ],
+    ),
+  );
+}
+
 class AllergensPage extends StatefulWidget {
   final data;
 
@@ -494,26 +512,67 @@ class _AllergensPageState extends State<AllergensPage> {
             pinned: false,
           ),
           SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 70, right: 70, top: 50, bottom: 30),
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: CustomPaint(
-                      painter: SquigglyCirclePainter(data.current.primaryLight),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          comfortatext("1", 63, data.settings, color: data.current.primary, weight: FontWeight.w300),
-                          comfortatext("good", 25, data.settings, color: data.current.primary, weight: FontWeight.w600),
-                          ],
-                        ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 55, right: 55, top: 50, bottom: 30),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: CustomPaint(
+                        painter: SquigglyCirclePainter(data.current.primaryLight),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: comfortatext("1", 63, data.settings, color: data.current.primary, weight: FontWeight.w300),
+                            ),
+                            comfortatext("good", 25, data.settings, color: data.current.primary, weight: FontWeight.w600),
+                            ],
+                          ),
+                      ),
                     ),
                   ),
-                ),
-                NewAqiDataPoints("hehe", 30, data, 18.0)
-              ],
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 20),
+                    child: comfortatext(data.aqi.aqi_desc, 18, data.settings, color: data.current.primarySecond, weight: FontWeight.w600, align: TextAlign.center),
+                  ),
+
+                  GridView.count(
+                    primary: false,
+                    padding: const EdgeInsets.all(20),
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    crossAxisCount: 3,
+                    childAspectRatio: 5,
+                    shrinkWrap: true,
+                    children: [
+                      NewAqiDataPoints("PM2.5", data.aqi.pm2_5, data, 19.0),
+                      NewAqiDataPoints("PM10", data.aqi.pm10, data, 19.0),
+                      NewAqiDataPoints("O3", data.aqi.o3, data, 19.0),
+                      NewAqiDataPoints("NO2", data.aqi.no2, data, 19.0),
+                      NewAqiDataPoints("CO", data.aqi.co, data, 19.0),
+                      NewAqiDataPoints("SO2", data.aqi.so2, data, 19.0),
+                    ]
+                  ),
+
+                  const SizedBox(height: 30),
+
+
+                  pollenWidget(CupertinoIcons.tree, "Alder Pollen", data.aqi.alder, data),
+                  pollenWidget(Icons.eco_outlined, "Birch Pollen", data.aqi.birch, data),
+                  pollenWidget(Icons.grass_outlined, "Grass Pollen", data.aqi.grass, data),
+                  pollenWidget(Icons.local_florist_outlined, "Mugwort Pollen", data.aqi.mugwort, data),
+                  pollenWidget(Icons.park_outlined, "Olive Pollen", data.aqi.olive, data),
+                  pollenWidget(Icons.grain_outlined, "Ragweed Pollen", data.aqi.ragweed, data),
+
+                  const SizedBox(height: 100)
+
+                ],
+              ),
             ),
           ),
         ],

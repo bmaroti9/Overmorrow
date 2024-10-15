@@ -631,6 +631,16 @@ class OMAqi{
   final double pm10;
   final double o3;
   final double no2;
+  final double co;
+  final double so2;
+
+  final double alder;
+  final double birch;
+  final double grass;
+  final double mugwort;
+  final double olive;
+  final double ragweed;
+
   final String aqi_title;
   final String aqi_desc;
 
@@ -642,13 +652,22 @@ class OMAqi{
     required this.aqi_index,
     required this.aqi_desc,
     required this.aqi_title,
+    required this.co,
+    required this.so2,
+    required this.alder,
+    required this.birch,
+    required this.grass,
+    required this.mugwort,
+    required this.olive,
+    required this.ragweed,
   });
 
   static Future<OMAqi> fromJson(item, lat, lng, settings) async {
     final params = {
       "latitude": lat.toString(),
       "longitude": lng.toString(),
-      "current": ["european_aqi", "pm10", "pm2_5", "nitrogen_dioxide", 'ozone'],
+      "current": ["european_aqi", "pm10", "pm2_5", "nitrogen_dioxide", 'ozone', 'carbon_monoxide', 'sulphur_dioxide',
+        'alder_pollen', 'birch_pollen', 'grass_pollen', 'mugwort_pollen', 'olive_pollen', 'ragweed_pollen'],
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
     var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 6));
@@ -663,6 +682,15 @@ class OMAqi{
       pm2_5: item["pm2_5"],
       no2: item["nitrogen_dioxide"],
       o3: item["ozone"],
+      co: item["carbon_monoxide"],
+      so2: item["sulphur_dioxide"],
+
+      alder: item["alder_pollen"],
+      birch: item["birch_pollen"],
+      grass: item["grass_pollen"],
+      mugwort: item["mugwort_pollen"],
+      olive: item["olive_pollen"],
+      ragweed: item["ragweed_pollen"],
 
       aqi_title: OmAqiTitle(index, settings["Language"]),
 
