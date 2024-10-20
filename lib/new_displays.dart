@@ -259,16 +259,20 @@ Widget NewAirQuality(var data, context) {
                   color: data.current.onSurface),
             ),
             const Spacer(),
-            IconButton(
-              constraints: const BoxConstraints(),
-              padding: EdgeInsets.only(top:2),
-              onPressed: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AllergensPage(data: data))
-                );
-              },
-              icon: Icon(Icons.keyboard_arrow_right, color: data.current.primary, size: 20,))
+            GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AllergensPage(data: data))
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 1),
+                  child: SizedBox(
+                      width: 40, height: 36,
+                      child: Icon(Icons.keyboard_arrow_right, color: data.current.primary, size: 21,)),
+                )
+            ),
           ],
         ),
         Row(
@@ -279,8 +283,8 @@ Widget NewAirQuality(var data, context) {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: data.current.containerLow),
-                width: 65,
-                height: 65,
+                width: 72,
+                height: 72,
                 child: Center(
                     child: comfortatext(
                         data.aqi.aqi_index.toString(), 32, data.settings,
@@ -330,7 +334,7 @@ Widget NewRain15MinuteIndicator(var data) {
   return Visibility(
     visible: data.minutely_15_precip.t_minus != "",
     child: Padding(
-      padding: const EdgeInsets.only(left: 21, right: 21, bottom: 38),
+      padding: const EdgeInsets.only(left: 21, right: 21, bottom: 33, top: 13),
       child: Container(
         decoration: BoxDecoration(
           color: data.current.containerLow,
@@ -345,7 +349,7 @@ Widget NewRain15MinuteIndicator(var data) {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 5, bottom: 2, right: 3),
+                      const EdgeInsets.only(left: 5, bottom: 2, right: 3, top: 1),
                   child: Icon(
                     Icons.water_drop_outlined,
                     color: data.current.primary,
@@ -456,16 +460,16 @@ class SquigglyCirclePainter extends CustomPainter {
 
 Widget pollenWidget(IconData icon, String name, double value, data) {
   return Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, top:10, bottom: 10),
+    padding: const EdgeInsets.only(left: 10, right: 10, top:10, bottom: 10),
     child: Row(
       children: [
         Icon(icon, size: 22, color: data.current.primaryLight),
         Padding(
           padding: const EdgeInsets.only(left: 12),
-          child: comfortatext(name, 20, data.settings, color: data.current.primary),
+          child: comfortatext(name, 19, data.settings, color: data.current.onSurface),
         ),
         const Spacer(),
-        comfortatext(value.toString(), 20, data.settings, color: data.current.primaryLight),
+        comfortatext(value.toString(), 19, data.settings, color: data.current.primaryLight),
       ],
     ),
   );
@@ -538,7 +542,7 @@ class _AllergensPageState extends State<AllergensPage> {
 
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 20),
-                    child: comfortatext(data.aqi.aqi_desc, 18, data.settings, color: data.current.primarySecond, weight: FontWeight.w600, align: TextAlign.center),
+                    child: comfortatext(data.aqi.aqi_desc, 18, data.settings, color: data.current.onSurface, weight: FontWeight.w400, align: TextAlign.center),
                   ),
 
                   GridView.count(
@@ -559,17 +563,26 @@ class _AllergensPageState extends State<AllergensPage> {
                     ]
                   ),
 
-                  const SizedBox(height: 30),
-
-
-                  pollenWidget(CupertinoIcons.tree, "Alder Pollen", data.aqi.alder, data),
-                  pollenWidget(Icons.eco_outlined, "Birch Pollen", data.aqi.birch, data),
-                  pollenWidget(Icons.grass_outlined, "Grass Pollen", data.aqi.grass, data),
-                  pollenWidget(Icons.local_florist_outlined, "Mugwort Pollen", data.aqi.mugwort, data),
-                  pollenWidget(Icons.park_outlined, "Olive Pollen", data.aqi.olive, data),
-                  pollenWidget(Icons.grain_outlined, "Ragweed Pollen", data.aqi.ragweed, data),
-
-                  const SizedBox(height: 100)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5, right: 5, top: 30, bottom: 100),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: data.current.containerLow,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      padding: EdgeInsets.all(8),
+                      child: Column(
+                        children: [
+                          pollenWidget(CupertinoIcons.tree, "Alder Pollen", data.aqi.alder, data),
+                          pollenWidget(Icons.eco_outlined, "Birch Pollen", data.aqi.birch, data),
+                          pollenWidget(Icons.grass_outlined, "Grass Pollen", data.aqi.grass, data),
+                          pollenWidget(Icons.local_florist_outlined, "Mugwort Pollen", data.aqi.mugwort, data),
+                          pollenWidget(Icons.park_outlined, "Olive Pollen", data.aqi.olive, data),
+                          pollenWidget(Icons.grain_outlined, "Ragweed Pollen", data.aqi.ragweed, data),
+                        ],
+                      ),
+                    ),
+                  ),
 
                 ],
               ),
