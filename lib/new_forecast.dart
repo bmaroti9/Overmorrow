@@ -240,7 +240,6 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
               4,
                   (int index) {
 
-
                 return ChoiceChip(
                   elevation: 0.0,
                   checkmarkColor: data.current.onPrimaryLight,
@@ -258,7 +257,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                   onSelected: (bool selected) {
                     _value = index;
                     setState(() {
-                      HapticFeedback.selectionClick();
+                      HapticFeedback.lightImpact();
                       _onItemTapped(index);
                     });
                   },
@@ -693,7 +692,7 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
 
   void _onExpandTapped(int index) {
     setState(() {
-      HapticFeedback.selectionClick();
+      HapticFeedback.lightImpact();
       expand[index] = !expand[index];
     });
   }
