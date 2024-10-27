@@ -652,7 +652,7 @@ class OMAqi{
     final params = {
       "latitude": lat.toString(),
       "longitude": lng.toString(),
-      "current": ["european_aqi", "pm10", "pm2_5", "nitrogen_dioxide", 'ozone'],
+      "current": ["european_aqi", "pm10", "pm2_5", "nitrogen_dioxide", "ozone"],
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
     var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 6));
@@ -688,6 +688,11 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
   final double olive;
   final double ragweed;
 
+  final List<double> pm2_5_h;
+  final List<double> pm10_h;
+  final List<double> no2_h;
+  final List<double> o3_h;
+
   final double aod;
   final double dust;
 
@@ -702,6 +707,11 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     required this.ragweed,
     required this.aod,
     required this.dust,
+
+    required this.no2_h,
+    required this.o3_h,
+    required this.pm2_5_h,
+    required this.pm10_h,
   });
 
   static Future<OMExtendedAqi> fromJson(lat, lng, settings) async {
@@ -711,25 +721,31 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       "current": ['carbon_monoxide', 'sulphur_dioxide',
         'alder_pollen', 'birch_pollen', 'grass_pollen', 'mugwort_pollen', 'olive_pollen', 'ragweed_pollen',
         'aerosol_optical_depth', 'dust'],
+      "hourly" : ["pm10", "pm2_5", "nitrogen_dioxide", "ozone"]
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
     var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo extended").timeout(const Duration(seconds: 6));
     var response = await file.readAsString();
-    final item = jsonDecode(response)["current"];
+    final item = jsonDecode(response);
 
     return OMExtendedAqi(
-      co: item["carbon_monoxide"],
-      so2: item["sulphur_dioxide"],
+      co: item["current"]["carbon_monoxide"],
+      so2: item["current"]["sulphur_dioxide"],
 
-      alder: item["alder_pollen"] ?? -1,
-      birch: item["birch_pollen"] ?? -1,
-      grass: item["grass_pollen"] ?? -1,
-      mugwort: item["mugwort_pollen"] ?? -1,
-      olive: item["olive_pollen"] ?? -1,
-      ragweed: item["ragweed_pollen"] ?? -1,
+      alder: item["current"]["alder_pollen"] ?? -1,
+      birch: item["current"]["birch_pollen"] ?? -1,
+      grass: item["current"]["grass_pollen"] ?? -1,
+      mugwort: item["current"]["mugwort_pollen"] ?? -1,
+      olive: item["current"]["olive_pollen"] ?? -1,
+      ragweed: item["current"]["ragweed_pollen"] ?? -1,
 
-      aod: item["aerosol_optical_depth"],
-      dust: item["dust"],
+      aod: item["current"]["aerosol_optical_depth"],
+      dust: item["current"]["dust"],
+
+      no2_h: List<double>.from(item["hourly"]["nitrogen_dioxide"] as List),
+      o3_h: List<double>.from(item["hourly"]["ozone"] as List),
+      pm2_5_h: List<double>.from(item["hourly"]["pm2_5"] as List),
+      pm10_h: List<double>.from(item["hourly"]["pm10"] as List),
     );
   }
 }

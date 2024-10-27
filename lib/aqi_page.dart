@@ -249,7 +249,7 @@ Widget AqiMain(data, goBack, extendedAqi) {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.only(top: 25, bottom: 20),
+                  padding: const EdgeInsets.only(top: 25, bottom: 40),
                   child: Container(
                     decoration: BoxDecoration(
                       color: data.current.containerLow,
@@ -269,14 +269,46 @@ Widget AqiMain(data, goBack, extendedAqi) {
                   ),
                 ),
 
-
-                CustomPaint(
-                  painter: AQIGraphPainter(aqiData: [0.2, 0.3, 0.6, 0.8, 0.1, 0.2], maxAQI: 2.1,
-                      color: data.current.primaryLight),
-                  child: Container(
-                    width: double.infinity,
-                    height: 200.0,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Row(
+                    children: [
+                      Icon(Icons.grain, size: 20, color: data.current.primaryLight),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: comfortatext("PM2.5", 16, data.settings, color: data.current.onSurface),
+                      )
+                    ]
                   ),
+                ),
+
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 2, right: 10),
+                      child: SizedBox(
+                        height: 200,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            comfortatext('60', 14, data.settings, color: data.current.onSurface),
+                            comfortatext('40', 14, data.settings, color: data.current.onSurface),
+                            comfortatext('20', 14, data.settings, color: data.current.onSurface),
+                            comfortatext('0', 14, data.settings, color: data.current.onSurface),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: CustomPaint(
+                        painter: AQIGraphPainter(aqiData: extendedAqi.pm2_5_h, maxAQI: 60,
+                            color: data.current.primaryLight),
+                        child: const SizedBox(
+                          height: 200.0,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
 
                 /*
