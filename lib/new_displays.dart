@@ -18,13 +18,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 
+import 'aqi_page.dart';
 import 'decoders/decode_OM.dart';
 
 class WavePainter extends CustomPainter {
@@ -305,7 +304,7 @@ Widget NewAirQuality(var data, context) {
                   Padding(
                     padding: const EdgeInsets.only(top: 5, left: 2),
                     child: comfortatext(data.aqi.aqi_desc, 14, data.settings,
-                        color: data.settings["Color mode"] == "light" ? data.current.primary : data.current.onSurface,
+                        color: data.settings["Color mode"] == "light2" ? data.current.primary : data.current.onSurface,
                         weight: FontWeight.w500),
                   ),
                 ],
@@ -415,204 +414,4 @@ Widget NewRain15MinuteIndicator(var data) {
       ),
     )
   );
-}
-
-class SquigglyCirclePainter extends CustomPainter {
-
-  final Color circleColor;
-
-  SquigglyCirclePainter(this.circleColor);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = circleColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.2;
-
-    final Path path = Path();
-    double radius = size.width / 2;
-    double centerX = size.width / 2;
-    double centerY = size.height / 2;
-
-    double waves = 10;
-    double waveAmplitude = size.width / 50;
-
-    for (double i = 0; i <= 360; i += 0.1) {
-      double angle = i * pi / 180;
-      double x = centerX + (radius + waveAmplitude * sin(waves * angle)) * cos(angle);
-      double y = centerY + (radius + waveAmplitude * sin(waves * angle)) * sin(angle);
-
-      if (i == 0) {
-        path.moveTo(x, y);
-      } else {
-        path.lineTo(x, y);
-      }
-    }
-
-    path.close();
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
-Widget pollenWidget(IconData icon, String name, double value, data) {
-  const categoryBoundaries = [0, 20, 80, 200];
-  const categoryNames = ["none", "low", "medium", "high"];
-
-  int categoryIndex = 0;
-  for (int i = 0; i < categoryBoundaries.length; i++) {
-    if (value > categoryBoundaries[i]) {
-      categoryIndex = i + 1;
-    }
-  }
-
-  String severity = categoryNames[categoryIndex];
-
-  return Padding(
-    padding: const EdgeInsets.only(left: 10, right: 10, top:5, bottom: 5),
-    child: Row(
-      children: [
-        Icon(icon, size: 22, color: data.current.primaryLight),
-        Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: comfortatext(name, 19, data.settings, color: data.current.onSurface),
-        ),
-        const Spacer(),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: data.current.primaryLighter,
-          ),
-            padding: const EdgeInsets.all(6),
-            width: 70,
-            child: Center(child: comfortatext(severity, 17, data.settings, color: data.current.onPrimaryLight))
-        ),
-      ],
-    ),
-  );
-}
-
-
-class AllergensPage extends StatefulWidget {
-  final data;
-
-  const AllergensPage({Key? key, required this.data})
-      : super(key: key);
-
-  @override
-  _AllergensPageState createState() =>
-      _AllergensPageState(data:data);
-}
-
-class _AllergensPageState extends State<AllergensPage> {
-
-  final data;
-
-  _AllergensPageState({required this.data});
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Material(
-      color: data.current.surface,
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar.large(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: data.current.primary),
-              onPressed: () {
-                goBack();
-              },
-            ),
-            title: comfortatext("Air Quality", 30, data.settings, color: data.current.primary),
-            backgroundColor: data.current.surface,
-            pinned: false,
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 57, right: 57, top: 50, bottom: 30),
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: CustomPaint(
-                        painter: SquigglyCirclePainter(data.current.primaryLight),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15),
-                              child: comfortatext("1", 55, data.settings, color: data.current.primary, weight: FontWeight.w300),
-                            ),
-                            comfortatext("good", 24, data.settings, color: data.current.primary, weight: FontWeight.w600),
-                            ],
-                          ),
-                      ),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 20),
-                    child: comfortatext(data.aqi.aqi_desc, 18, data.settings, color: data.current.onSurface, weight: FontWeight.w400, align: TextAlign.center),
-                  ),
-
-
-                  GridView.count(
-                    padding: const EdgeInsets.all(20),
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    crossAxisCount: 3,
-                    childAspectRatio: 4.8,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      NewAqiDataPoints("PM2.5", data.aqi.pm2_5, data, 18.0),
-                      NewAqiDataPoints("PM10", data.aqi.pm10, data, 18.0),
-                      NewAqiDataPoints("O3", data.aqi.o3, data, 18.0),
-                      NewAqiDataPoints("NO2", data.aqi.no2, data, 18.0),
-                      NewAqiDataPoints("CO", data.aqi.co, data, 18.0),
-                      NewAqiDataPoints("SO2", data.aqi.so2, data, 18.0),
-                    ]
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5, right: 5, top: 25, bottom: 100),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: data.current.containerLow,
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      padding: EdgeInsets.all(8),
-                      child: Column(
-                        children: [
-                          pollenWidget(Icons.forest_outlined, "Alder Pollen", data.aqi.alder, data),
-                          pollenWidget(Icons.eco_outlined, "Birch Pollen", data.aqi.birch, data),
-                          pollenWidget(Icons.grass_outlined, "Grass Pollen", data.aqi.grass, data),
-                          pollenWidget(Icons.local_florist_outlined, "Mugwort Pollen", data.aqi.mugwort, data),
-                          pollenWidget(Icons.park_outlined, "Olive Pollen", data.aqi.olive, data),
-                          pollenWidget(Icons.grain_outlined, "Ragweed Pollen", data.aqi.ragweed, data),
-                        ],
-                      ),
-                    ),
-                  ),
-
-
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

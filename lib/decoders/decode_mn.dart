@@ -670,7 +670,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
   return WeatherData(
     radar: await RainviewerRadar.getData(),
-    aqi: await OMAqi.fromJson(MnBody, lat, lng, settings),
+    aqi: await OMAqi.fromJson(lat, lng, settings),
     sunstatus: sunstatus,
     minutely_15_precip: MetN15MinutePrecip.fromJson(MnBody, settings),
 

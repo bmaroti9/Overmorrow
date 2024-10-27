@@ -627,47 +627,32 @@ class OMSunstatus {
 
 class OMAqi{
   final int aqi_index;
+
   final double pm2_5;
   final double pm10;
   final double o3;
   final double no2;
-  final double co;
-  final double so2;
 
-  final double alder;
-  final double birch;
-  final double grass;
-  final double mugwort;
-  final double olive;
-  final double ragweed;
-
-  final String aqi_title;
   final String aqi_desc;
+  final String aqi_title;
 
   const OMAqi({
+
+    required this.aqi_desc,
+    required this.aqi_title,
+
     required this.no2,
     required this.o3,
     required this.pm2_5,
     required this.pm10,
     required this.aqi_index,
-    required this.aqi_desc,
-    required this.aqi_title,
-    required this.co,
-    required this.so2,
-    required this.alder,
-    required this.birch,
-    required this.grass,
-    required this.mugwort,
-    required this.olive,
-    required this.ragweed,
   });
 
-  static Future<OMAqi> fromJson(item, lat, lng, settings) async {
+  static Future<OMAqi> fromJson(lat, lng, settings) async {
     final params = {
       "latitude": lat.toString(),
       "longitude": lng.toString(),
-      "current": ["european_aqi", "pm10", "pm2_5", "nitrogen_dioxide", 'ozone', 'carbon_monoxide', 'sulphur_dioxide',
-        'alder_pollen', 'birch_pollen', 'grass_pollen', 'mugwort_pollen', 'olive_pollen', 'ragweed_pollen'],
+      "current": ["european_aqi", "pm10", "pm2_5", "nitrogen_dioxide", 'ozone'],
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
     var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 6));
@@ -682,19 +667,69 @@ class OMAqi{
       pm2_5: item["pm2_5"],
       no2: item["nitrogen_dioxide"],
       o3: item["ozone"],
-      co: item["carbon_monoxide"],
-      so2: item["sulphur_dioxide"],
-
-      alder: item["alder_pollen"],
-      birch: item["birch_pollen"],
-      grass: item["grass_pollen"],
-      mugwort: item["mugwort_pollen"],
-      olive: item["olive_pollen"],
-      ragweed: item["ragweed_pollen"],
 
       aqi_title: OmAqiTitle(index, settings["Language"]),
 
       aqi_desc: OmAqiDesc(index, settings["Language"]),
+    );
+  }
+}
+
+
+class OMExtendedAqi{ //this data will only be called if you open the Air quality page
+                      //this is done to reduce the amount of unused calls to the open-meteo servers
+  final double co;
+  final double so2;
+
+  final double alder;
+  final double birch;
+  final double grass;
+  final double mugwort;
+  final double olive;
+  final double ragweed;
+
+  final double aod;
+  final double dust;
+
+  const OMExtendedAqi({
+    required this.co,
+    required this.so2,
+    required this.alder,
+    required this.birch,
+    required this.grass,
+    required this.mugwort,
+    required this.olive,
+    required this.ragweed,
+    required this.aod,
+    required this.dust,
+  });
+
+  static Future<OMExtendedAqi> fromJson(lat, lng, settings) async {
+    final params = {
+      "latitude": lat.toString(),
+      "longitude": lng.toString(),
+      "current": ['carbon_monoxide', 'sulphur_dioxide',
+        'alder_pollen', 'birch_pollen', 'grass_pollen', 'mugwort_pollen', 'olive_pollen', 'ragweed_pollen',
+        'aerosol_optical_depth', 'dust'],
+    };
+    final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
+    var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo extended").timeout(const Duration(seconds: 6));
+    var response = await file.readAsString();
+    final item = jsonDecode(response)["current"];
+
+    return OMExtendedAqi(
+      co: item["carbon_monoxide"],
+      so2: item["sulphur_dioxide"],
+
+      alder: item["alder_pollen"] ?? -1,
+      birch: item["birch_pollen"] ?? -1,
+      grass: item["grass_pollen"] ?? -1,
+      mugwort: item["mugwort_pollen"] ?? -1,
+      olive: item["olive_pollen"] ?? -1,
+      ragweed: item["ragweed_pollen"] ?? -1,
+
+      aod: item["aerosol_optical_depth"],
+      dust: item["dust"],
     );
   }
 }
@@ -719,7 +754,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
 
   return WeatherData(
     radar: await RainviewerRadar.getData(),
-    aqi: await OMAqi.fromJson(oMBody, lat, lng, settings),
+    aqi: await OMAqi.fromJson(lat, lng, settings),
     sunstatus: sunstatus,
     minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
 
