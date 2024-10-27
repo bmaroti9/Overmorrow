@@ -229,85 +229,87 @@ class _AllergensPageState extends State<AllergensPage> {
 
                       NewHourlyAqi(data: data, extendedAqi: extendedAqi),
 
-                      /*
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(width: 1.5, color: data.current.containerHigh),
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                              height: 110,
-                              padding: const EdgeInsets.only(left: 14, top: 14, right: 10, bottom: 14),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Icon(Icons.grain, size: 18, color: data.current.primaryLight),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 5, bottom: 12),
-                                        child: comfortatext("dust", 15, data.settings, color: data.current.onSurface),
-                                      )
-                                    ],
-                                  ),
-                                  const Spacer(),
-                                  comfortatext(data.aqi.dust.toString(), 25, data.settings, color: data.current.primary, weight: FontWeight.w400),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 2, top: 1),
-                                    child: comfortatext("μg/m³", 15, data.settings, color: data.current.primary, weight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                      ),
-                      Expanded(
-                        flex: 7,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 4),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(width: 1.5, color: data.current.containerHigh),
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                              height: 110,
-                              padding: const EdgeInsets.only(left: 14, top: 14, right: 10, bottom: 14),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Icon(Icons.grain, size: 18, color: data.current.primaryLight),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(left: 5, bottom: 12),
-                                          child: comfortatext("aerosol optical depth", 15, data.settings, color: data.current.onSurface),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 40),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 5,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 4),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      //color: data.current.containerLow,
+                                      border: Border.all(width: 1.5, color: data.current.containerHigh),
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
+                                    height: 125,
+                                    padding: const EdgeInsets.only(left: 14, top: 14, right: 10, bottom: 14),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.grain, size: 18, color: data.current.primaryLight),
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 5),
+                                              child: comfortatext("dust", 14, data.settings, color: data.current.onSurface),
+                                            )
+                                          ],
                                         ),
-                                      )
-                                    ],
+                                        const Spacer(),
+                                        comfortatext(extendedAqi.dust.toString(), 25, data.settings, color: data.current.primary, weight: FontWeight.w400),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 2, top: 1),
+                                          child: comfortatext("μg/m³", 15, data.settings, color: data.current.outline, weight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  const Spacer(),
-                                  comfortatext(data.aqi.aod.toString(), 25, data.settings, color: data.current.primary, weight: FontWeight.w400),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 2, top: 1),
-                                    child: comfortatext("extremely clear", 15, data.settings, color: data.current.primary, weight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
+                                )
                             ),
-                          )
-                      )
-                    ],
-                  ),
-
-                   */
+                            Expanded(
+                              flex: 8,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 4),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      //color: data.current.containerLow,
+                                      border: Border.all(width: 1.5, color: data.current.containerHigh),
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
+                                    height: 125,
+                                    padding: const EdgeInsets.only(left: 14, top: 14, right: 10, bottom: 14),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.grain, size: 18, color: data.current.primaryLight),
+                                            Expanded(
+                                              child: Padding(
+                                                padding: EdgeInsets.only(left: 5),
+                                                child: comfortatext("aerosol \noptical depth", 14, data.settings, color: data.current.onSurface),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        const Spacer(),
+                                        comfortatext(extendedAqi.aod.toString(), 25, data.settings, color: data.current.primary, weight: FontWeight.w400),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 2, top: 1),
+                                          child: comfortatext("extremely clear", 15, data.settings, color: data.current.outline, weight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                            )
+                          ],
+                        ),
+                      ),
 
 
 
@@ -364,7 +366,7 @@ class _NewHourlyAqiState extends State<NewHourlyAqi> with AutomaticKeepAliveClie
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: 5),
           child: SizedBox(
             height: 300,
             child: PageView(
@@ -392,7 +394,7 @@ class _NewHourlyAqiState extends State<NewHourlyAqi> with AutomaticKeepAliveClie
                   if (index == _value) {
                     return data.current.primaryLighter;
                   }
-                  return data.current.containerLow;
+                  return data.current.surface;
                 }),
                 side: BorderSide(color: data.current.primaryLighter, width: 1.5),
                 label: comfortatext(
@@ -497,6 +499,7 @@ Widget HourlyQqi(data, hourValues, name) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(6, (index) {
                   return Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       comfortatext(chartTypes[currentChart][5 - index].toString(), 14, data.settings,
                           color: data.current.outline),
@@ -530,7 +533,7 @@ Widget HourlyQqi(data, hourValues, name) {
         ],
       ),
       Padding(
-          padding: const EdgeInsets.only(top: 5, bottom: 14),
+          padding: const EdgeInsets.only(top: 7, bottom: 0),
           child: Visibility(
             visible: data.settings["Time mode"] == "24 hour",
             replacement: Row(

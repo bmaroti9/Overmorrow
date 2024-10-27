@@ -721,7 +721,9 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       "current": ['carbon_monoxide', 'sulphur_dioxide',
         'alder_pollen', 'birch_pollen', 'grass_pollen', 'mugwort_pollen', 'olive_pollen', 'ragweed_pollen',
         'aerosol_optical_depth', 'dust'],
-      "hourly" : ["pm10", "pm2_5", "nitrogen_dioxide", "ozone"]
+      "hourly" : ["pm10", "pm2_5", "nitrogen_dioxide", "ozone"],
+      "timezone": "auto",
+      "forecast_days" : "1",
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
     var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo extended").timeout(const Duration(seconds: 6));
