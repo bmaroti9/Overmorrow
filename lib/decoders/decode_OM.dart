@@ -692,6 +692,10 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
   final List<double> pm10_h;
   final List<double> no2_h;
   final List<double> o3_h;
+  final List<double> co_h;
+  final List<double> so2_h;
+
+  final List<double> dailyAqi;
 
   final double aod;
   final double dust;
@@ -712,6 +716,9 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     required this.o3_h,
     required this.pm2_5_h,
     required this.pm10_h,
+    required this.co_h,
+    required this.so2_h,
+    required this.dailyAqi,
   });
 
   static Future<OMExtendedAqi> fromJson(lat, lng, settings) async {
@@ -721,14 +728,80 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       "current": ['carbon_monoxide', 'sulphur_dioxide',
         'alder_pollen', 'birch_pollen', 'grass_pollen', 'mugwort_pollen', 'olive_pollen', 'ragweed_pollen',
         'aerosol_optical_depth', 'dust'],
-      "hourly" : ["pm10", "pm2_5", "nitrogen_dioxide", "ozone"],
+      "hourly" : ["pm10", "pm2_5", "nitrogen_dioxide", "ozone", "sulphur_dioxide", "carbon_monoxide"],
       "timezone": "auto",
-      "forecast_days" : "1",
+      "forecast_days" : "5",
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
     var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo extended").timeout(const Duration(seconds: 6));
     var response = await file.readAsString();
     final item = jsonDecode(response);
+
+    final no2_h =  List<double>.from((item["hourly"]["nitrogen_dioxide"] as List));
+    final o3_h = List<double>.from(item["hourly"]["ozone"] as List);
+    final pm2_5_h = List<double>.from(item["hourly"]["pm2_5"] as List);
+    final pm10_h = List<double>.from(item["hourly"]["pm10"] as List);
+    final co_h = List<double>.from(item["hourly"]["carbon_monoxide"] as List);
+    final so2_h = List<double>.from(item["hourly"]["sulphur_dioxide"] as List);
+
+
+    //determine the individual air quality indexes for each day using the hourly values of the different contaminants
+    // https://www.airnow.gov/publications/air-quality-index/technical-assistance-document-for-reporting-the-daily-aqi/
+
+    const List<int> aqiCategories = [0, 51, 101, 151, 201, 301, 500];
+    const List<List<double>> breakpoints = [
+      [0, 0.055, 0.071, 0.086, 0.106, 0.201, 0.604], //o3
+      [0, 9.1, 35.5, 55.5, 125.5, 225.5, 325.4], //pm2.5
+      [0, 55, 155, 255, 355, 425, 604], //pm10
+      [0, 4.5, 9.5, 12.5, 15.5, 30.5, 50.4], //co
+      [0, 36, 76, 186, 305, 605, 1004], //so2
+      [0, 54, 101, 361, 650, 1250, 2049] //no2
+    ];
+    
+    List<int> dailyAqi = [];
+    for (int i = 0; i < 5; i++) {
+      //some of the values in the documentation are in ppm so open-meteo's mg/m^3 data has to be converted to ppm
+      //https://teesing.com/en/tools/ppm-mg3-converter <- used this as a reference
+      //the division by 1000 is because is because we're converting micrograms to grams
+
+      List<double> values = [
+        double.parse((o3_h.getRange(i * 24, (i + 1) * 24).reduce(max) * 24.45 / 48 / 1000).toStringAsFixed(3)),
+        double.parse(pm2_5_h.getRange(i * 24, (i + 1) * 24).reduce(max).toStringAsFixed(1)),
+        double.parse(pm10_h.getRange(i * 24, (i + 1) * 24).reduce(max).toStringAsFixed(0)),
+        double.parse((co_h.getRange(i * 24, (i + 1) * 24).reduce(max) * 24.45 / 28.01 / 1000).toStringAsFixed(1)),
+        double.parse((so2_h.getRange(i * 24, (i + 1) * 24).reduce(max) * 24.45 / 64.066 / 1000).toStringAsFixed(0)),
+        double.parse((no2_h.getRange(i * 24, (i + 1) * 24).reduce(max) * 24.45 / 46.0055 / 1000).toStringAsFixed(0)),
+      ];
+
+      List<int> final_indexes = [];
+
+      for (int x = 0; x < 6; x++) {
+
+        double current = values[x];
+
+        //find the above and below breakpoints
+        double bp_hi = 1;
+        double bp_lo = 0;
+
+        int i_hi = 1;
+        int i_lo = 0;
+
+        for (int z = 0; z < breakpoints[x].length - 1; z++) {
+          if (current >= breakpoints[x][z]) {
+            bp_lo = breakpoints[x][z];
+            bp_hi = breakpoints[x][z + 1];
+
+            i_lo = aqiCategories[z];
+            i_hi = aqiCategories[z + 1];
+          }
+        }
+
+        int final_index = (((i_hi - i_lo) / (bp_hi - bp_lo)) * (current - bp_lo) + i_lo).round();
+        final_indexes.add(final_index);
+      }
+
+      dailyAqi.add(final_indexes.reduce(max));
+    }
 
     return OMExtendedAqi(
       co: item["current"]["carbon_monoxide"],
@@ -744,10 +817,14 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       aod: item["current"]["aerosol_optical_depth"],
       dust: item["current"]["dust"],
 
-      no2_h: List<double>.from(item["hourly"]["nitrogen_dioxide"] as List),
-      o3_h: List<double>.from(item["hourly"]["ozone"] as List),
-      pm2_5_h: List<double>.from(item["hourly"]["pm2_5"] as List),
-      pm10_h: List<double>.from(item["hourly"]["pm10"] as List),
+      no2_h: no2_h,
+      o3_h: o3_h,
+      pm2_5_h: pm2_5_h,
+      pm10_h: pm10_h,
+      co_h: co_h,
+      so2_h: so2_h,
+
+      dailyAqi: [0]
     );
   }
 }

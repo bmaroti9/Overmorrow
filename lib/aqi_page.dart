@@ -38,7 +38,7 @@ class SquigglyCirclePainter extends CustomPainter {
       ..color = circleColor
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 3;
+      ..strokeWidth = 2.8;
 
     final Path path = Path();
     double radius = size.width / 2;
@@ -183,7 +183,7 @@ class _AllergensPageState extends State<AllergensPage> {
                       ),
 
                       Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 20),
+                        padding: const EdgeInsets.only(top: 10, bottom: 20, left: 10, right: 10),
                         child: comfortatext(data.aqi.aqi_desc, 18, data.settings, color: data.current.onSurface, weight: FontWeight.w400, align: TextAlign.center),
                       ),
 
@@ -311,9 +311,13 @@ class _AllergensPageState extends State<AllergensPage> {
                         ),
                       ),
 
-
-
-                      const SizedBox(height: 100,)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 60, bottom: 50),
+                          child: comfortatext("air quality data from open-meteo", 15, data.settings, color: data.current.outline),
+                        ),
+                      )
 
                     ],
                   ),
@@ -377,6 +381,8 @@ class _NewHourlyAqiState extends State<NewHourlyAqi> with AutomaticKeepAliveClie
                 HourlyQqi(data, extendedAqi.pm10_h, "PM10"),
                 HourlyQqi(data, extendedAqi.o3_h, "O3"),
                 HourlyQqi(data, extendedAqi.no2_h, "NO2"),
+                HourlyQqi(data, extendedAqi.co_h, "CO"),
+                HourlyQqi(data, extendedAqi.so2_h, "SO2"),
               ],
             ),
           ),
@@ -384,7 +390,7 @@ class _NewHourlyAqiState extends State<NewHourlyAqi> with AutomaticKeepAliveClie
         Wrap(
           spacing: 5.0,
           children: List<Widget>.generate(
-            4,
+            6,
                 (int index) {
 
               return ChoiceChip(
@@ -398,7 +404,7 @@ class _NewHourlyAqiState extends State<NewHourlyAqi> with AutomaticKeepAliveClie
                 }),
                 side: BorderSide(color: data.current.primaryLighter, width: 1.5),
                 label: comfortatext(
-                    ['pm2.5', 'pm10', 'o3', 'no2'][index], 14, data.settings,
+                    ['pm2.5', 'pm10', 'o3', 'no2', 'co', 'so2'][index], 14, data.settings,
                     color: _value == index ? data.current.onPrimaryLight : data.current.onSurface),
                 selected: _value == index,
                 onSelected: (bool selected) {
@@ -461,18 +467,20 @@ Widget HourlyQqi(data, hourValues, name) {
     [0, 20, 40, 60, 80, 100],
     [0, 30, 60, 90, 120, 150],
     [0, 50, 100, 150, 200, 250],
-    [0, 100, 200, 300, 400, 500]
+    [0, 100, 200, 300, 400, 500],
+    [0, 200, 400, 600, 800, 1000]
   ];
 
   double valueMax = hourValues.reduce((a, b) => max<double>(a, b));
   int currentChart = 0;
 
   for (int i = 0; i < chartTypes.length; i++) {
-    print((valueMax, chartTypes[i][5], name));
-    if (valueMax * 1.3 > chartTypes[i][5]) { //because it looks weird if it is close to the top
+    if (valueMax * 1.3 > chartTypes[i][chartTypes[i].length - 1]) { //because it looks weird if it is close to the top
       currentChart = min(i + 1, chartTypes.length - 1); //just for null safety
     }
   }
+
+  int len = chartTypes[currentChart].length;
 
   return Column(
     children: [
@@ -497,11 +505,11 @@ Widget HourlyQqi(data, hourValues, name) {
               height: 220,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(6, (index) {
+                children: List.generate(len, (index) {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      comfortatext(chartTypes[currentChart][5 - index].toString(), 14, data.settings,
+                      comfortatext(chartTypes[currentChart][len - 1 - index].toString(), 14, data.settings,
                           color: data.current.outline),
                       Expanded(
                         child: Padding(
@@ -522,7 +530,7 @@ Widget HourlyQqi(data, hourValues, name) {
             padding: const EdgeInsets.only(left: 40, right: 20),
             child: CustomPaint(
               painter: AQIGraphPainter(aqiData: hourValues,
-                  maxAQI: chartTypes[currentChart][5],
+                  maxAQI: chartTypes[currentChart][len - 1],
                   color: data.current.primaryLight),
               child: const SizedBox(
                 width: double.infinity,
@@ -534,28 +542,17 @@ Widget HourlyQqi(data, hourValues, name) {
       ),
       Padding(
           padding: const EdgeInsets.only(top: 7, bottom: 0),
-          child: Visibility(
-            visible: data.settings["Time mode"] == "24 hour",
-            replacement: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  comfortatext("3am", 14,data. settings, color: data.current.outline),
-                  comfortatext("9am", 14, data.settings, color: data.current.outline),
-                  comfortatext("3pm", 14, data.settings, color: data.current.outline),
-                  comfortatext("9pm", 14, data.settings, color: data.current.outline),
-                ]
-            ),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  comfortatext("3:00", 14, data.settings, color: data.current.outline),
-                  comfortatext("9:00", 14, data.settings, color: data.current.outline),
-                  comfortatext("15:00", 14, data.settings, color: data.current.outline),
-                  comfortatext("21:00", 14, data.settings, color: data.current.outline),
-                ]
-            ),
-          )
-      ),
-    ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+            comfortatext("now", 14,data. settings, color: data.current.outline),
+            comfortatext("1d", 14, data.settings, color: data.current.outline),
+            comfortatext("2d", 14, data.settings, color: data.current.outline),
+            comfortatext("3d", 14, data.settings, color: data.current.outline),
+            comfortatext("4d", 14, data.settings, color: data.current.outline),
+            comfortatext("5d", 14, data.settings, color: data.current.outline),
+        ])
+      )
+    ]
   );
 }
