@@ -230,7 +230,7 @@ class _AllergensPageState extends State<AllergensPage> {
                       NewHourlyAqi(data: data, extendedAqi: extendedAqi),
 
                       Padding(
-                        padding: const EdgeInsets.only(top: 40),
+                        padding: const EdgeInsets.only(top: 40, bottom: 40),
                         child: Row(
                           children: [
                             Expanded(
@@ -310,6 +310,32 @@ class _AllergensPageState extends State<AllergensPage> {
                           ],
                         ),
                       ),
+
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: List.generate(extendedAqi.dailyAqi.length, (index) {
+                            return Expanded(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 7, right: 7, bottom: 10),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(22),
+                                        color: data.current.primaryLight,
+                                      ),
+                                      height: extendedAqi.dailyAqi[index] * 1.0,
+                                    ),
+                                  ),
+                                  comfortatext("${index}d", 16, data.settings, color: data.current.outline)
+                                ],
+                              ),
+                            );
+                          }
+                        )
+                      ),
+
+
 
                       Align(
                         alignment: Alignment.centerLeft,

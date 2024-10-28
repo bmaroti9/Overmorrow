@@ -695,7 +695,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
   final List<double> co_h;
   final List<double> so2_h;
 
-  final List<double> dailyAqi;
+  final List<int> dailyAqi;
 
   final double aod;
   final double dust;
@@ -733,16 +733,17 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       "forecast_days" : "5",
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
+    print(url);
     var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo extended").timeout(const Duration(seconds: 6));
     var response = await file.readAsString();
     final item = jsonDecode(response);
 
-    final no2_h =  List<double>.from((item["hourly"]["nitrogen_dioxide"] as List));
-    final o3_h = List<double>.from(item["hourly"]["ozone"] as List);
-    final pm2_5_h = List<double>.from(item["hourly"]["pm2_5"] as List);
-    final pm10_h = List<double>.from(item["hourly"]["pm10"] as List);
-    final co_h = List<double>.from(item["hourly"]["carbon_monoxide"] as List);
-    final so2_h = List<double>.from(item["hourly"]["sulphur_dioxide"] as List);
+    final no2_h = List<double>.from((item["hourly"]["nitrogen_dioxide"] as List?) ?.map((e) => (e as double?) ?? 0.0) ?? []);
+    final o3_h = List<double>.from((item["hourly"]["ozone"] as List?) ?.map((e) => (e as double?) ?? 0.0) ?? []);
+    final pm2_5_h = List<double>.from((item["hourly"]["pm2_5"] as List?) ?.map((e) => (e as double?) ?? 0.0) ?? []);
+    final pm10_h = List<double>.from((item["hourly"]["pm10"] as List?) ?.map((e) => (e as double?) ?? 0.0) ?? []);
+    final co_h = List<double>.from((item["hourly"]["carbon_monoxide"] as List?) ?.map((e) => (e as double?) ?? 0.0) ?? []);
+    final so2_h = List<double>.from((item["hourly"]["sulphur_dioxide"] as List?) ?.map((e) => (e as double?) ?? 0.0) ?? []);
 
 
     //determine the individual air quality indexes for each day using the hourly values of the different contaminants
@@ -759,7 +760,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     ];
     
     List<int> dailyAqi = [];
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < item["hourly"]["pm2_5"].length / 24; i++) {
       //some of the values in the documentation are in ppm so open-meteo's mg/m^3 data has to be converted to ppm
       //https://teesing.com/en/tools/ppm-mg3-converter <- used this as a reference
       //the division by 1000 is because is because we're converting micrograms to grams
@@ -824,7 +825,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       co_h: co_h,
       so2_h: so2_h,
 
-      dailyAqi: [0]
+      dailyAqi: dailyAqi
     );
   }
 }
