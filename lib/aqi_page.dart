@@ -105,6 +105,82 @@ Widget pollenWidget(IconData icon, String name, double value, data) {
   );
 }
 
+
+class ThreeQuarterCirclePainter extends CustomPainter {
+  final double percentage;
+  final Color color;
+  final Color secondColor;
+
+  ThreeQuarterCirclePainter({required this.percentage, required this.color, required this.secondColor});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    double angle = 2 * 3.14159265359 * (percentage / 100) * 0.75; // 3 quarters of a circle
+
+    // Background Circle
+    Paint baseCircle = Paint()
+      ..color = secondColor
+      ..strokeWidth = 8
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+    canvas.drawArc(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      -3.14159265359 * 5 / 4,
+      3.14159265359 * 1.5,
+      false,
+      baseCircle,
+    );
+
+    // Foreground Circle
+    Paint progressCircle = Paint()
+      ..color = color
+      ..strokeWidth = 8
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+    canvas.drawArc(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      -3.14159265359 * 5 / 4,
+      angle,
+      false,
+      progressCircle,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+Widget pollutantWidget(data, name, value, percent) {
+  return Padding(
+    padding: EdgeInsets.all(4),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        comfortatext(name, 14, data.settings, color: data.current.onSurface),
+        Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 17, bottom: 7),
+              child: Center(
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CustomPaint(
+                    painter: ThreeQuarterCirclePainter(percentage: percent * 1.0, color: data.current.primaryLight,
+                    secondColor: data.current.containerHigh),
+                    child: Center(
+                      child: comfortatext(value.toString(), 18, data.settings, color: data.current.primary, weight: FontWeight.w600)
+                  ),
+                ),
+                            ),
+              ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 class AllergensPage extends StatefulWidget {
   final data;
 
@@ -207,13 +283,11 @@ class _AllergensPageState extends State<AllergensPage> {
                             NewAqiDataPoints("SO2", extendedAqi.so2, data, 18.0),
                           ]
                       ),
-
                        */
 
 
-
                       Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        padding: const EdgeInsets.only(top: 10, bottom: 5),
                         child: Container(
                           decoration: BoxDecoration(
                             color: data.current.containerLow,
@@ -253,13 +327,37 @@ class _AllergensPageState extends State<AllergensPage> {
                         ),
                       ),
 
-
-
                       NewHourlyAqi(data: data, extendedAqi: extendedAqi),
 
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20, top: 50),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            //color: data.current.containerLow,
+                            border: Border.all(width: 1.5, color: data.current.containerHigh),
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          padding: EdgeInsets.all(13),
+                          child: GridView.count(
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            crossAxisCount: 3,
+                            shrinkWrap: true,
+                            childAspectRatio: 0.95,
+                            children: <Widget>[
+                              pollutantWidget(data, "pm2.5", data.aqi.pm2_5, 20),
+                              pollutantWidget(data, "pm10", data.aqi.pm10, 40),
+                              pollutantWidget(data, "o3", data.aqi.o3, 30),
+                              pollutantWidget(data, "no2", data.aqi.no2, 70),
+                              pollutantWidget(data, "co", extendedAqi.co, 5),
+                              pollutantWidget(data, "so2", extendedAqi.so2, 20),
+                            ],
+                          ),
+                        ),
+                      ),
 
                       Padding(
-                        padding: const EdgeInsets.only(top: 40, bottom: 0),
+                        padding: const EdgeInsets.only(top: 0, bottom: 0),
                         child: Row(
                           children: [
                             Expanded(
@@ -268,8 +366,8 @@ class _AllergensPageState extends State<AllergensPage> {
                                   padding: const EdgeInsets.only(right: 4),
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      //color: data.current.containerLow,
-                                      border: Border.all(width: 1.5, color: data.current.containerHigh),
+                                      color: data.current.containerLow,
+                                      //border: Border.all(width: 1.5, color: data.current.containerHigh),
                                       borderRadius: BorderRadius.circular(18),
                                     ),
                                     height: 125,
@@ -295,8 +393,8 @@ class _AllergensPageState extends State<AllergensPage> {
                                   padding: const EdgeInsets.only(left: 4),
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      //color: data.current.containerLow,
-                                      border: Border.all(width: 1.5, color: data.current.containerHigh),
+                                      color: data.current.containerLow,
+                                      //border: Border.all(width: 1.5, color: data.current.containerHigh),
                                       borderRadius: BorderRadius.circular(18),
                                     ),
                                     height: 125,
@@ -374,8 +472,8 @@ class _AllergensPageState extends State<AllergensPage> {
                                   padding: const EdgeInsets.only(right: 4),
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: data.current.containerLow,
-                                      //border: Border.all(width: 1.5, color: data.current.containerHigh),
+                                      //color: data.current.containerLow,
+                                      border: Border.all(width: 1.5, color: data.current.containerHigh),
                                       borderRadius: BorderRadius.circular(18),
                                     ),
                                     height: 125,
@@ -410,8 +508,8 @@ class _AllergensPageState extends State<AllergensPage> {
                                   padding: const EdgeInsets.only(left: 4),
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: data.current.containerLow,
-                                      //border: Border.all(width: 1.5, color: data.current.containerHigh),
+                                      //color: data.current.containerLow,
+                                      border: Border.all(width: 1.5, color: data.current.containerHigh),
                                       borderRadius: BorderRadius.circular(18),
                                     ),
                                     height: 125,
