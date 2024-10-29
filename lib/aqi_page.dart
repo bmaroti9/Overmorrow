@@ -120,7 +120,7 @@ class ThreeQuarterCirclePainter extends CustomPainter {
     // Background Circle
     Paint baseCircle = Paint()
       ..color = secondColor
-      ..strokeWidth = 8
+      ..strokeWidth = 9
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
     canvas.drawArc(
@@ -134,7 +134,7 @@ class ThreeQuarterCirclePainter extends CustomPainter {
     // Foreground Circle
     Paint progressCircle = Paint()
       ..color = color
-      ..strokeWidth = 8
+      ..strokeWidth = 9
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
     canvas.drawArc(
@@ -166,7 +166,7 @@ Widget pollutantWidget(data, name, value, percent) {
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: CustomPaint(
-                    painter: ThreeQuarterCirclePainter(percentage: percent * 1.0, color: data.current.primaryLight,
+                    painter: ThreeQuarterCirclePainter(percentage: percent, color: data.current.primaryLight,
                     secondColor: data.current.containerHigh),
                     child: Center(
                       child: comfortatext(value.toString(), 18, data.settings, color: data.current.primary, weight: FontWeight.w600)
@@ -250,9 +250,9 @@ class _AllergensPageState extends State<AllergensPage> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(top: 15),
-                                  child: comfortatext("1", 52, data.settings, color: data.current.primary, weight: FontWeight.w300),
+                                  child: comfortatext(data.aqi.aqi_index.toString(), 52, data.settings, color: data.current.primary, weight: FontWeight.w300),
                                 ),
-                                comfortatext("good", 23, data.settings, color: data.current.primary, weight: FontWeight.w600),
+                                comfortatext(data.aqi.aqi_title, 23, data.settings, color: data.current.primary, weight: FontWeight.w600),
                               ],
                             ),
                           ),
@@ -310,7 +310,7 @@ class _AllergensPageState extends State<AllergensPage> {
                         child: Container(
                           decoration: BoxDecoration(
                             //color: data.current.containerLow,
-                            border: Border.all(width: 1.5, color: data.current.containerHigh),
+                            border: Border.all(width: 2, color: data.current.containerHigh),
                             borderRadius: BorderRadius.circular(18),
                           ),
                           padding: const EdgeInsets.all(11),
@@ -334,7 +334,7 @@ class _AllergensPageState extends State<AllergensPage> {
                         child: Container(
                           decoration: BoxDecoration(
                             //color: data.current.containerLow,
-                            border: Border.all(width: 1.5, color: data.current.containerHigh),
+                            border: Border.all(width: 2, color: data.current.containerHigh),
                             borderRadius: BorderRadius.circular(18),
                           ),
                           padding: EdgeInsets.all(13),
@@ -345,12 +345,12 @@ class _AllergensPageState extends State<AllergensPage> {
                             shrinkWrap: true,
                             childAspectRatio: 0.95,
                             children: <Widget>[
-                              pollutantWidget(data, "pm2.5", data.aqi.pm2_5, 20),
-                              pollutantWidget(data, "pm10", data.aqi.pm10, 40),
-                              pollutantWidget(data, "o3", data.aqi.o3, 30),
-                              pollutantWidget(data, "no2", data.aqi.no2, 70),
-                              pollutantWidget(data, "co", extendedAqi.co, 5),
-                              pollutantWidget(data, "so2", extendedAqi.so2, 20),
+                              pollutantWidget(data, "pm2.5", data.aqi.pm2_5, extendedAqi.pm2_5_p),
+                              pollutantWidget(data, "pm10", data.aqi.pm10, extendedAqi.pm10_p),
+                              pollutantWidget(data, "o3", data.aqi.o3, extendedAqi.o3_p),
+                              pollutantWidget(data, "no2", data.aqi.no2, extendedAqi.no2_p),
+                              pollutantWidget(data, "co", extendedAqi.co, extendedAqi.co_p),
+                              pollutantWidget(data, "so2", extendedAqi.so2, extendedAqi.so2_p),
                             ],
                           ),
                         ),
@@ -370,7 +370,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                       //border: Border.all(width: 1.5, color: data.current.containerHigh),
                                       borderRadius: BorderRadius.circular(18),
                                     ),
-                                    height: 125,
+                                    height: 115,
                                     padding: const EdgeInsets.only(left: 14, top: 14, right: 10, bottom: 14),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -397,7 +397,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                       //border: Border.all(width: 1.5, color: data.current.containerHigh),
                                       borderRadius: BorderRadius.circular(18),
                                     ),
-                                    height: 125,
+                                    height: 115,
                                     padding: const EdgeInsets.only(left: 14, top: 14, right: 10, bottom: 14),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,

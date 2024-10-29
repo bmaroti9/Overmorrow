@@ -681,6 +681,14 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
   final double co;
   final double so2;
 
+  //percent
+  final double pm2_5_p;
+  final double pm10_p;
+  final double o3_p;
+  final double no2_p;
+  final double co_p;
+  final double so2_p;
+
   final double alder;
   final double birch;
   final double grass;
@@ -688,6 +696,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
   final double olive;
   final double ragweed;
 
+  //hourly
   final List<double> pm2_5_h;
   final List<double> pm10_h;
   final List<double> no2_h;
@@ -726,6 +735,14 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     required this.pm10_h,
     required this.co_h,
     required this.so2_h,
+
+    required this.pm2_5_p,
+    required this.pm10_p,
+    required this.o3_p,
+    required this.no2_p,
+    required this.co_p,
+    required this.so2_p,
+
     required this.dailyAqi,
 
     required this.mainPollutant,
@@ -849,7 +866,14 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       dailyAqi: dailyAqi,
 
       european_aqi: item["current"]["european_aqi"],
-      us_aqi: item["current"]["us_aqi"]
+      us_aqi: item["current"]["us_aqi"],
+
+      o3_p: o3_h[0] * 24.45 / 48 / 1000 / breakpoints[0][breakpoints[0].length - 1],
+      pm2_5_p: pm2_5_h[0] / breakpoints[1][breakpoints[1].length - 1],
+      pm10_p: pm10_h[0] / breakpoints[2][breakpoints[2].length - 1],
+      co_p: co_h[0] * 24.45 / 28.01 / 1000 / breakpoints[3][breakpoints[3].length - 1],
+      so2_p: so2_h[0] * 24.45 / 64.066 / 1000 / breakpoints[4][breakpoints[4].length - 1],
+      no2_p: no2_h[0] * 24.45 / 46.0055 / 1000 / breakpoints[5][breakpoints[5].length - 1],
     );
   }
 }
