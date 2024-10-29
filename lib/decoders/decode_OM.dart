@@ -695,7 +695,12 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
   final List<double> co_h;
   final List<double> so2_h;
 
+  final String mainPollutant;
+
   final List<int> dailyAqi;
+
+  final int european_aqi;
+  final int us_aqi;
 
   final double aod;
   final double dust;
@@ -712,6 +717,9 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     required this.aod,
     required this.dust,
 
+    required this.european_aqi,
+    required this.us_aqi,
+
     required this.no2_h,
     required this.o3_h,
     required this.pm2_5_h,
@@ -719,6 +727,8 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     required this.co_h,
     required this.so2_h,
     required this.dailyAqi,
+
+    required this.mainPollutant,
   });
 
   static Future<OMExtendedAqi> fromJson(lat, lng, settings) async {
@@ -727,7 +737,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       "longitude": lng.toString(),
       "current": ['carbon_monoxide', 'sulphur_dioxide',
         'alder_pollen', 'birch_pollen', 'grass_pollen', 'mugwort_pollen', 'olive_pollen', 'ragweed_pollen',
-        'aerosol_optical_depth', 'dust'],
+        'aerosol_optical_depth', 'dust', 'european_aqi', 'us_aqi'],
       "hourly" : ["pm10", "pm2_5", "nitrogen_dioxide", "ozone", "sulphur_dioxide", "carbon_monoxide"],
       "timezone": "auto",
       "forecast_days" : "5",
@@ -750,6 +760,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     // https://www.airnow.gov/publications/air-quality-index/technical-assistance-document-for-reporting-the-daily-aqi/
 
     const List<int> aqiCategories = [0, 51, 101, 151, 201, 301, 500];
+    const List<String> pollutantNames = ["ozone", "pm2.5", "pm10", "carbon monoxide", "sulphur dioxide", "nitrogen dioxide"];
     const List<List<double>> breakpoints = [
       [0, 0.055, 0.071, 0.086, 0.106, 0.201, 0.604], //o3
       [0, 9.1, 35.5, 55.5, 125.5, 225.5, 325.4], //pm2.5
@@ -760,6 +771,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     ];
     
     List<int> dailyAqi = [];
+    String mainPollutant = "hehe";
     for (int i = 0; i < item["hourly"]["pm2_5"].length / 24; i++) {
       //some of the values in the documentation are in ppm so open-meteo's mg/m^3 data has to be converted to ppm
       //https://teesing.com/en/tools/ppm-mg3-converter <- used this as a reference
@@ -800,8 +812,15 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
         int final_index = (((i_hi - i_lo) / (bp_hi - bp_lo)) * (current - bp_lo) + i_lo).round();
         final_indexes.add(final_index);
       }
+      int biggest = final_indexes.reduce(max);
 
-      dailyAqi.add(final_indexes.reduce(max));
+      //determine the main pollutant for today
+      if (i == 0) {
+        print(("final indexes", final_indexes));
+        mainPollutant = pollutantNames[final_indexes.indexOf(biggest)];
+      }
+
+      dailyAqi.add(biggest);
     }
 
     return OMExtendedAqi(
@@ -825,7 +844,12 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       co_h: co_h,
       so2_h: so2_h,
 
-      dailyAqi: dailyAqi
+      mainPollutant: mainPollutant,
+
+      dailyAqi: dailyAqi,
+
+      european_aqi: item["current"]["european_aqi"],
+      us_aqi: item["current"]["us_aqi"]
     );
   }
 }

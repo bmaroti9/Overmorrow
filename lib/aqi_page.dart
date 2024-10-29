@@ -88,7 +88,7 @@ Widget pollenWidget(IconData icon, String name, double value, data) {
         Icon(icon, size: 22, color: data.current.primaryLight),
         Padding(
           padding: const EdgeInsets.only(left: 17),
-          child: comfortatext(name, 17.5, data.settings, color: data.current.onSurface),
+          child: comfortatext(name, 17, data.settings, color: data.current.onSurface),
         ),
         const Spacer(),
         Container(
@@ -96,9 +96,9 @@ Widget pollenWidget(IconData icon, String name, double value, data) {
               borderRadius: BorderRadius.circular(12),
               color: data.current.primaryLighter,
             ),
-            padding: const EdgeInsets.only(top: 6.5, bottom: 6),
+            padding: const EdgeInsets.only(top: 6.5, bottom: 6.5),
             width: 65,
-            child: Center(child: comfortatext(severity, 16, data.settings, color: data.current.onPrimaryLight))
+            child: Center(child: comfortatext(severity, 15, data.settings, color: data.current.onPrimaryLight))
         ),
       ],
     ),
@@ -142,6 +142,7 @@ class _AllergensPageState extends State<AllergensPage> {
           );
         }
         final OMExtendedAqi extendedAqi = snapshot.data!;
+        final highestAqi = extendedAqi.dailyAqi.reduce(max);
         return Material(
           color: data.current.surface,
           child: CustomScrollView(
@@ -163,7 +164,7 @@ class _AllergensPageState extends State<AllergensPage> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 47, right: 47, top: 50, bottom: 30),
+                        padding: const EdgeInsets.only(left: 50, right: 50, top: 50, bottom: 30),
                         child: AspectRatio(
                           aspectRatio: 1,
                           child: CustomPaint(
@@ -173,9 +174,9 @@ class _AllergensPageState extends State<AllergensPage> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(top: 15),
-                                  child: comfortatext("1", 55, data.settings, color: data.current.primary, weight: FontWeight.w300),
+                                  child: comfortatext("1", 52, data.settings, color: data.current.primary, weight: FontWeight.w300),
                                 ),
-                                comfortatext("good", 24, data.settings, color: data.current.primary, weight: FontWeight.w600),
+                                comfortatext("good", 23, data.settings, color: data.current.primary, weight: FontWeight.w600),
                               ],
                             ),
                           ),
@@ -184,12 +185,13 @@ class _AllergensPageState extends State<AllergensPage> {
 
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 20, left: 10, right: 10),
-                        child: comfortatext(data.aqi.aqi_desc, 18, data.settings, color: data.current.onSurface, weight: FontWeight.w400, align: TextAlign.center),
+                        child: comfortatext(data.aqi.aqi_desc, 17, data.settings, color: data.current.onSurface, weight: FontWeight.w400, align: TextAlign.center),
                       ),
 
 
+                      /*
                       GridView.count(
-                          padding: const EdgeInsets.only(top: 20, bottom: 20, left: 10, right: 10),
+                          padding: const EdgeInsets.only(top: 15, bottom: 20, left: 10, right: 10),
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                           crossAxisCount: 3,
@@ -206,14 +208,38 @@ class _AllergensPageState extends State<AllergensPage> {
                           ]
                       ),
 
+                       */
+
+
+
                       Padding(
-                        padding: const EdgeInsets.only(top: 25, bottom: 40),
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
                         child: Container(
                           decoration: BoxDecoration(
                             color: data.current.containerLow,
+                            //border: Border.all(width: 1.5, color: data.current.containerHigh),
                             borderRadius: BorderRadius.circular(18),
                           ),
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(17),
+                          child: Row(
+                            children: [
+                              comfortatext("main pollutant", 16, data.settings, color: data.current.onSurface),
+                              const Spacer(),
+                              comfortatext(extendedAqi.mainPollutant, 18, data.settings, color: data.current.primaryLight, weight: FontWeight.w600)
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15, bottom: 40),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            //color: data.current.containerLow,
+                            border: Border.all(width: 1.5, color: data.current.containerHigh),
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          padding: const EdgeInsets.all(11),
                           child: Column(
                             children: [
                               pollenWidget(Icons.forest_outlined, "Alder Pollen", extendedAqi.alder, data),
@@ -227,14 +253,17 @@ class _AllergensPageState extends State<AllergensPage> {
                         ),
                       ),
 
+
+
                       NewHourlyAqi(data: data, extendedAqi: extendedAqi),
 
+
                       Padding(
-                        padding: const EdgeInsets.only(top: 40, bottom: 40),
+                        padding: const EdgeInsets.only(top: 40, bottom: 0),
                         child: Row(
                           children: [
                             Expanded(
-                              flex: 5,
+                                flex: 1,
                                 child: Padding(
                                   padding: const EdgeInsets.only(right: 4),
                                   child: Container(
@@ -248,12 +277,118 @@ class _AllergensPageState extends State<AllergensPage> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
+                                        comfortatext("european aqi", 14, data.settings, color: data.current.onSurface),
+                                        const Spacer(),
+                                        comfortatext(extendedAqi.european_aqi.toString(), 25, data.settings, color: data.current.primary, weight: FontWeight.w400),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 2, top: 1),
+                                          child: comfortatext("good", 15, data.settings, color: data.current.outline, weight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                            ),
+                            Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 4),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      //color: data.current.containerLow,
+                                      border: Border.all(width: 1.5, color: data.current.containerHigh),
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
+                                    height: 125,
+                                    padding: const EdgeInsets.only(left: 14, top: 14, right: 10, bottom: 14),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        comfortatext("united states aqi", 14, data.settings, color: data.current.onSurface),
+                                        const Spacer(),
+                                        comfortatext(extendedAqi.us_aqi.toString(), 25, data.settings, color: data.current.primary, weight: FontWeight.w400),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 2, top: 1),
+                                          child: comfortatext("good", 15, data.settings, color: data.current.outline, weight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                            )
+                          ],
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10, top: 35),
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: comfortatext("daily aqi", 16, data.settings, color: data.current.primary)
+                        ),
+                      ),
+
+                      Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: List.generate(extendedAqi.dailyAqi.length, (index) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 4, right: 4, bottom: 10),
+                                  child: SizedBox(
+                                    height: 130,
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(22),
+                                            color: extendedAqi.dailyAqi[index] == highestAqi ? data.current.surface : data.current.primaryLight,
+                                            border: Border.all(color: extendedAqi.dailyAqi[index] == highestAqi ? data.current.primaryLight
+                                                : data.current.surface, width: 2)
+                                        ),
+                                        width: 43,
+                                        alignment: Alignment.topCenter,
+                                        padding: const EdgeInsets.only(top: 12),
+                                        height: 110 / highestAqi * extendedAqi.dailyAqi[index],
+                                        child: comfortatext(extendedAqi.dailyAqi[index].toString(), 16, data.settings,
+                                            color: extendedAqi.dailyAqi[index] == highestAqi ? data.current.primaryLight : data.current.surface,
+                                            weight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                comfortatext(index == 0 ? "now" : "${index}d", 14, data.settings, color: data.current.outline)
+                              ],
+                            );
+                          }
+                          )
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(top: 45, bottom: 0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                flex: 5,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 4),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: data.current.containerLow,
+                                      //border: Border.all(width: 1.5, color: data.current.containerHigh),
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
+                                    height: 125,
+                                    padding: const EdgeInsets.only(left: 14, top: 14, right: 10, bottom: 14),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
                                         Row(
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Icon(Icons.grain, size: 18, color: data.current.primaryLight),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 5),
+                                              padding: const EdgeInsets.only(left: 5),
                                               child: comfortatext("dust", 14, data.settings, color: data.current.onSurface),
                                             )
                                           ],
@@ -270,13 +405,13 @@ class _AllergensPageState extends State<AllergensPage> {
                                 )
                             ),
                             Expanded(
-                              flex: 8,
+                                flex: 8,
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 4),
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      //color: data.current.containerLow,
-                                      border: Border.all(width: 1.5, color: data.current.containerHigh),
+                                      color: data.current.containerLow,
+                                      //border: Border.all(width: 1.5, color: data.current.containerHigh),
                                       borderRadius: BorderRadius.circular(18),
                                     ),
                                     height: 125,
@@ -290,7 +425,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                             Icon(Icons.grain, size: 18, color: data.current.primaryLight),
                                             Expanded(
                                               child: Padding(
-                                                padding: EdgeInsets.only(left: 5),
+                                                padding: const EdgeInsets.only(left: 5),
                                                 child: comfortatext("aerosol \noptical depth", 14, data.settings, color: data.current.onSurface),
                                               ),
                                             )
@@ -311,37 +446,11 @@ class _AllergensPageState extends State<AllergensPage> {
                         ),
                       ),
 
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: List.generate(extendedAqi.dailyAqi.length, (index) {
-                            return Expanded(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 7, right: 7, bottom: 10),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(22),
-                                        color: data.current.primaryLight,
-                                      ),
-                                      height: extendedAqi.dailyAqi[index] * 1.0,
-                                    ),
-                                  ),
-                                  comfortatext("${index}d", 16, data.settings, color: data.current.outline)
-                                ],
-                              ),
-                            );
-                          }
-                        )
-                      ),
-
-
-
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment.center,
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 60, bottom: 50),
-                          child: comfortatext("air quality data from open-meteo", 15, data.settings, color: data.current.outline),
+                          padding: const EdgeInsets.only(top: 60, bottom: 70),
+                          child: comfortatext("powered by open-meteo", 15, data.settings, color: data.current.outline),
                         ),
                       )
 
