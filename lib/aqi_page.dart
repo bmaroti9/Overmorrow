@@ -591,6 +591,14 @@ class _NewHourlyAqiState extends State<NewHourlyAqi> with AutomaticKeepAliveClie
   }
 
   @override
+  void initState() {
+    super.initState();
+    _value = ["pm2.5", "pm10", "ozone", "carbon monoxide", "sulphur dioxide", "nitrogen dioxide"].
+      indexOf(extendedAqi.mainPollutant);
+    _pageController = PageController(initialPage: _value);
+  }
+
+  @override
   bool get wantKeepAlive => true;
 
   _NewHourlyAqiState(this.data, this.extendedAqi);
