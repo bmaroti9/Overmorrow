@@ -115,7 +115,7 @@ class ThreeQuarterCirclePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    double angle = 2 * 3.14159265359 * (percentage / 100) * 0.75; // 3 quarters of a circle
+    double angle = 2 * 3.14159265359 * (max(min(percentage, 100), 0) / 100) * 0.75; // 3 quarters of a circle
 
     // Background Circle
     Paint baseCircle = Paint()
@@ -154,14 +154,13 @@ class ThreeQuarterCirclePainter extends CustomPainter {
 
 Widget pollutantWidget(data, name, value, percent) {
   return Padding(
-    padding: EdgeInsets.all(4),
+    padding: EdgeInsets.all(14),
     child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        comfortatext(name, 14, data.settings, color: data.current.onSurface),
         Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(top: 17, bottom: 7),
+              padding: const EdgeInsets.only(top: 0, bottom: 0),
               child: Center(
                 child: AspectRatio(
                   aspectRatio: 1,
@@ -176,6 +175,7 @@ Widget pollutantWidget(data, name, value, percent) {
               ),
           ),
         ),
+        comfortatext(name, 14, data.settings, color: data.current.onSurface),
       ],
     ),
   );
@@ -343,7 +343,7 @@ class _AllergensPageState extends State<AllergensPage> {
                             padding: EdgeInsets.zero,
                             crossAxisCount: 3,
                             shrinkWrap: true,
-                            childAspectRatio: 0.95,
+                            childAspectRatio: 0.87,
                             children: <Widget>[
                               pollutantWidget(data, "pm2.5", data.aqi.pm2_5, extendedAqi.pm2_5_p),
                               pollutantWidget(data, "pm10", data.aqi.pm10, extendedAqi.pm10_p),

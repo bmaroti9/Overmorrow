@@ -760,7 +760,6 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       "forecast_days" : "5",
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
-    print(url);
     var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo extended").timeout(const Duration(seconds: 6));
     var response = await file.readAsString();
     final item = jsonDecode(response);
@@ -868,12 +867,15 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       european_aqi: item["current"]["european_aqi"],
       us_aqi: item["current"]["us_aqi"],
 
-      o3_p: o3_h[0] * 24.45 / 48 / 1000 / breakpoints[0][breakpoints[0].length - 1],
-      pm2_5_p: pm2_5_h[0] / breakpoints[1][breakpoints[1].length - 1],
-      pm10_p: pm10_h[0] / breakpoints[2][breakpoints[2].length - 1],
-      co_p: co_h[0] * 24.45 / 28.01 / 1000 / breakpoints[3][breakpoints[3].length - 1],
-      so2_p: so2_h[0] * 24.45 / 64.066 / 1000 / breakpoints[4][breakpoints[4].length - 1],
-      no2_p: no2_h[0] * 24.45 / 46.0055 / 1000 / breakpoints[5][breakpoints[5].length - 1],
+
+      //i am looking at the one before last because the last is basically only for calculating the high
+      //and not actually expected to be reached
+      o3_p: o3_h[0] * 24.45 / 48 / 1000 / breakpoints[0][breakpoints[0].length - 2] * 100,
+      pm2_5_p: pm2_5_h[0] / breakpoints[1][breakpoints[1].length - 2] * 100,
+      pm10_p: pm10_h[0] / breakpoints[2][breakpoints[2].length - 2] * 100,
+      co_p: co_h[0] * 24.45 / 28.01 / 1000 / breakpoints[3][breakpoints[3].length - 2] * 100,
+      so2_p: so2_h[0] * 24.45 / 64.066 / 1000 / breakpoints[4][breakpoints[4].length - 2] * 100,
+      no2_p: no2_h[0] * 24.45 / 46.0055 / 1000 / breakpoints[5][breakpoints[5].length - 2] * 100,
     );
   }
 }
