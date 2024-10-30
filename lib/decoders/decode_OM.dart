@@ -712,6 +712,8 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
   final int us_aqi;
 
   final double aod;
+  final String aod_desc;
+
   final double dust;
 
   const OMExtendedAqi({
@@ -723,7 +725,10 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     required this.mugwort,
     required this.olive,
     required this.ragweed,
+
     required this.aod,
+    required this.aod_desc,
+
     required this.dust,
 
     required this.european_aqi,
@@ -760,7 +765,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       "forecast_days" : "5",
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
-    var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo extended").timeout(const Duration(seconds: 6));
+    var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo extended").timeout(const Duration(seconds: 3));
     var response = await file.readAsString();
     final item = jsonDecode(response);
 
@@ -839,6 +844,20 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       dailyAqi.add(biggest);
     }
 
+    const aod_names = ["extremely clear", "very clear", "clear", "slightly hazy", "hazy", "very hazy", "extremely hazy"];
+    const aod_breakpoints = [0, 0.05, 0.1, 0.2, 0.4, 0.7, 1.0];
+
+    final aod_value = item["current"]["aerosol_optical_depth"];
+
+    int aod_index = 0;
+    for (int i = 0; i < aod_breakpoints.length; i++) {
+      if (aod_value > aod_breakpoints[i])  {
+        aod_index = i;
+      }
+    }
+
+    final String aod_desc = aod_names[aod_index];
+
     return OMExtendedAqi(
       co: item["current"]["carbon_monoxide"],
       so2: item["current"]["sulphur_dioxide"],
@@ -850,7 +869,9 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       olive: item["current"]["olive_pollen"] ?? -1,
       ragweed: item["current"]["ragweed_pollen"] ?? -1,
 
-      aod: item["current"]["aerosol_optical_depth"],
+      aod: aod_value,
+      aod_desc: aod_desc,
+
       dust: item["current"]["dust"],
 
       no2_h: no2_h,

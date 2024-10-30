@@ -22,7 +22,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
+import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 
 
@@ -70,7 +72,7 @@ class SquigglyCirclePainter extends CustomPainter {
 
 Widget pollenWidget(IconData icon, String name, double value, data) {
   const categoryBoundaries = [-1, 0, 20, 80, 200];
-  const categoryNames = ["nA", "none", "low", "medium", "high"];
+  const categoryNames = ["--", "none", "low", "medium", "high"];
 
   int categoryIndex = 0;
   for (int i = 0; i < categoryBoundaries.length; i++) {
@@ -205,37 +207,48 @@ class _AllergensPageState extends State<AllergensPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<OMExtendedAqi>(
-      future: OMExtendedAqi.fromJson(data.lat, data.lng, data.settings),
-      builder: (BuildContext context,
-          AsyncSnapshot<OMExtendedAqi> snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Container();
-        } else if (snapshot.hasError) {
-          print((snapshot.error, snapshot.stackTrace));
-          return Center(
-            child: ErrorWidget(snapshot.error as Object),
-          );
-        }
-        final OMExtendedAqi extendedAqi = snapshot.data!;
-        final highestAqi = extendedAqi.dailyAqi.reduce(max);
-        return Material(
-          color: data.current.surface,
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar.large(
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back, color: data.current.primary),
-                  onPressed: () {
-                    goBack();
-                  },
-                ),
-                title: comfortatext("Air Quality", 30, data.settings, color: data.current.primary),
-                backgroundColor: data.current.surface,
-                pinned: false,
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
+    return Material(
+      color: data.current.surface,
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar.large(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: data.current.primary),
+              onPressed: () {
+                goBack();
+              },
+            ),
+            title: comfortatext(translation("Air Quality", data.settings["Language"]), 30, data.settings, color: data.current.primary),
+            backgroundColor: data.current.surface,
+            pinned: false,
+          ),
+          SliverToBoxAdapter(
+            child: FutureBuilder<OMExtendedAqi>(
+              future: OMExtendedAqi.fromJson(data.lat, data.lng, data.settings),
+              builder: (BuildContext context,
+                  AsyncSnapshot<OMExtendedAqi> snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 200),
+                    child: Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: data.current.primaryLight,
+                        size: 40,
+                      ),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  print((snapshot.error, snapshot.stackTrace));
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 200),
+                    child: Center(
+                      child: comfortatext("unable to load air quality data", 18, data.settings, color: data.current.primary)
+                    ),
+                  );
+                }
+                final OMExtendedAqi extendedAqi = snapshot.data!;
+                final highestAqi = extendedAqi.dailyAqi.reduce(max);
+                return Padding(
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   child: Column(
                     children: [
@@ -297,7 +310,7 @@ class _AllergensPageState extends State<AllergensPage> {
                           padding: const EdgeInsets.all(17),
                           child: Row(
                             children: [
-                              comfortatext("main pollutant", 16, data.settings, color: data.current.onSurface),
+                              comfortatext(translation("main pollutant", data.settings["Language"]), 16, data.settings, color: data.current.onSurface),
                               const Spacer(),
                               comfortatext(extendedAqi.mainPollutant, 18, data.settings, color: data.current.primaryLight, weight: FontWeight.w600)
                             ],
@@ -316,12 +329,18 @@ class _AllergensPageState extends State<AllergensPage> {
                           padding: const EdgeInsets.all(11),
                           child: Column(
                             children: [
-                              pollenWidget(Icons.forest_outlined, "Alder Pollen", extendedAqi.alder, data),
-                              pollenWidget(Icons.eco_outlined, "Birch Pollen", extendedAqi.birch, data),
-                              pollenWidget(Icons.grass_outlined, "Grass Pollen", extendedAqi.grass, data),
-                              pollenWidget(Icons.local_florist_outlined, "Mugwort Pollen", extendedAqi.mugwort, data),
-                              pollenWidget(Icons.park_outlined, "Olive Pollen", extendedAqi.olive, data),
-                              pollenWidget(Icons.filter_vintage_outlined, "Ragweed Pollen", extendedAqi.ragweed, data),
+                              pollenWidget(Icons.forest_outlined,
+                                  translation("Alder Pollen", data.settings["Language"]), extendedAqi.alder, data),
+                              pollenWidget(Icons.eco_outlined,
+                                  translation("Birch Pollen", data.settings["Language"]), extendedAqi.birch, data),
+                              pollenWidget(Icons.grass_outlined,
+                                  translation("Grass Pollen", data.settings["Language"]), extendedAqi.grass, data),
+                              pollenWidget(Icons.local_florist_outlined,
+                                  translation("Mugwort Pollen", data.settings["Language"]), extendedAqi.mugwort, data),
+                              pollenWidget(Icons.park_outlined,
+                                  translation("Olive Pollen", data.settings["Language"]), extendedAqi.olive, data),
+                              pollenWidget(Icons.filter_vintage_outlined,
+                                  translation("Ragweed Pollen", data.settings["Language"]), extendedAqi.ragweed, data),
                             ],
                           ),
                         ),
@@ -337,13 +356,13 @@ class _AllergensPageState extends State<AllergensPage> {
                             border: Border.all(width: 2, color: data.current.containerHigh),
                             borderRadius: BorderRadius.circular(18),
                           ),
-                          padding: EdgeInsets.all(13),
+                          padding: EdgeInsets.all(10),
                           child: GridView.count(
                             physics: const NeverScrollableScrollPhysics(),
                             padding: EdgeInsets.zero,
                             crossAxisCount: 3,
                             shrinkWrap: true,
-                            childAspectRatio: 0.87,
+                            childAspectRatio: 0.9,
                             children: <Widget>[
                               pollutantWidget(data, "pm2.5", data.aqi.pm2_5, extendedAqi.pm2_5_p),
                               pollutantWidget(data, "pm10", data.aqi.pm10, extendedAqi.pm10_p),
@@ -375,7 +394,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        comfortatext("european aqi", 14, data.settings, color: data.current.onSurface),
+                                        comfortatext(translation("european aqi", data.settings["Language"]), 14, data.settings, color: data.current.onSurface),
                                         const Spacer(),
                                         comfortatext(extendedAqi.european_aqi.toString(), 25, data.settings, color: data.current.primary, weight: FontWeight.w400),
                                         Padding(
@@ -402,7 +421,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        comfortatext("united states aqi", 14, data.settings, color: data.current.onSurface),
+                                        comfortatext(translation("united states aqi", data.settings["Language"]), 14, data.settings, color: data.current.onSurface),
                                         const Spacer(),
                                         comfortatext(extendedAqi.us_aqi.toString(), 25, data.settings, color: data.current.primary, weight: FontWeight.w400),
                                         Padding(
@@ -422,7 +441,7 @@ class _AllergensPageState extends State<AllergensPage> {
                         padding: const EdgeInsets.only(bottom: 10, top: 35),
                         child: Align(
                             alignment: Alignment.centerLeft,
-                            child: comfortatext("daily aqi", 16, data.settings, color: data.current.primary)
+                            child: comfortatext(translation("daily aqi", data.settings["Language"]), 16, data.settings, color: data.current.primary)
                         ),
                       ),
 
@@ -455,7 +474,9 @@ class _AllergensPageState extends State<AllergensPage> {
                                     ),
                                   ),
                                 ),
-                                comfortatext(index == 0 ? "now" : "${index}d", 14, data.settings, color: data.current.outline)
+                                comfortatext(index == 0 ? translation("now", data.settings["Language"])
+                                    : "${index}${translation("d", data.settings["Language"])}",
+                                    14, data.settings, color: data.current.outline)
                               ],
                             );
                           }
@@ -487,7 +508,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                             Icon(Icons.grain, size: 18, color: data.current.primaryLight),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 5),
-                                              child: comfortatext("dust", 14, data.settings, color: data.current.onSurface),
+                                              child: comfortatext(translation("dust", data.settings["Language"]), 14, data.settings, color: data.current.onSurface),
                                             )
                                           ],
                                         ),
@@ -524,7 +545,8 @@ class _AllergensPageState extends State<AllergensPage> {
                                             Expanded(
                                               child: Padding(
                                                 padding: const EdgeInsets.only(left: 5),
-                                                child: comfortatext("aerosol \noptical depth", 14, data.settings, color: data.current.onSurface),
+                                                child: comfortatext(translation("aerosol optical depth", data.settings["Language"]),
+                                                    14, data.settings, color: data.current.onSurface),
                                               ),
                                             )
                                           ],
@@ -533,7 +555,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                         comfortatext(extendedAqi.aod.toString(), 25, data.settings, color: data.current.primary, weight: FontWeight.w400),
                                         Padding(
                                           padding: const EdgeInsets.only(left: 2, top: 1),
-                                          child: comfortatext("extremely clear", 15, data.settings, color: data.current.outline, weight: FontWeight.w600),
+                                          child: comfortatext(extendedAqi.aod_desc, 15, data.settings, color: data.current.outline, weight: FontWeight.w600),
                                         ),
                                       ],
                                     ),
@@ -554,12 +576,12 @@ class _AllergensPageState extends State<AllergensPage> {
 
                     ],
                   ),
-                ),
-              ),
-            ],
+                );
+              },
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }
@@ -618,12 +640,12 @@ class _NewHourlyAqiState extends State<NewHourlyAqi> with AutomaticKeepAliveClie
               physics: const NeverScrollableScrollPhysics(),
               controller: _pageController,
               children: <Widget>[
-                HourlyQqi(data, extendedAqi.pm2_5_h, "PM2.5"),
-                HourlyQqi(data, extendedAqi.pm10_h, "PM10"),
-                HourlyQqi(data, extendedAqi.o3_h, "O3"),
-                HourlyQqi(data, extendedAqi.no2_h, "NO2"),
-                HourlyQqi(data, extendedAqi.co_h, "CO"),
-                HourlyQqi(data, extendedAqi.so2_h, "SO2"),
+                HourlyQqi(data, extendedAqi.pm2_5_h, "PM2.5", extendedAqi),
+                HourlyQqi(data, extendedAqi.pm10_h, "PM10", extendedAqi),
+                HourlyQqi(data, extendedAqi.o3_h, "O3", extendedAqi),
+                HourlyQqi(data, extendedAqi.no2_h, "NO2", extendedAqi),
+                HourlyQqi(data, extendedAqi.co_h, "CO", extendedAqi),
+                HourlyQqi(data, extendedAqi.so2_h, "SO2", extendedAqi),
               ],
             ),
           ),
@@ -700,9 +722,10 @@ class AQIGraphPainter extends CustomPainter {
   }
 }
 
-Widget HourlyQqi(data, hourValues, name) {
+Widget HourlyQqi(data, hourValues, name, extendedAqi) {
 
   const List<List<int>> chartTypes = [
+    [0, 2, 4, 6, 8, 10],
     [0, 5, 10, 15, 20, 25],
     [0, 10, 20, 30, 40, 50],
     [0, 20, 40, 60, 80, 100],
@@ -784,15 +807,14 @@ Widget HourlyQqi(data, hourValues, name) {
       Padding(
           padding: const EdgeInsets.only(top: 7, bottom: 0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-            comfortatext("now", 14,data. settings, color: data.current.outline),
-            comfortatext("1d", 14, data.settings, color: data.current.outline),
-            comfortatext("2d", 14, data.settings, color: data.current.outline),
-            comfortatext("3d", 14, data.settings, color: data.current.outline),
-            comfortatext("4d", 14, data.settings, color: data.current.outline),
-            comfortatext("5d", 14, data.settings, color: data.current.outline),
-        ])
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: List.generate(extendedAqi.dailyAqi.length, (index) {
+                return comfortatext(index == 0 ? translation("now", data.settings["Language"])
+                    : "${index}${translation("d", data.settings["Language"])}",
+                    14, data.settings, color: data.current.outline);
+               }
+              )
+          ),
       )
     ]
   );
