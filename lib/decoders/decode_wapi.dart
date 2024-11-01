@@ -589,10 +589,10 @@ class WapiAqi {
 
   static WapiAqi fromJson(item) => WapiAqi(
     aqi_index: item["current"]["air_quality"]["us-epa-index"],
-    pm10: item["current"]["air_quality"]["pm10"],
-    pm2_5: item["current"]["air_quality"]["pm2_5"],
-    o3: item["current"]["air_quality"]["o3"],
-    no2: item["current"]["air_quality"]["no2"],
+    pm10: double.parse(item["current"]["air_quality"]["pm10"].toStringAsFixed(1)),
+    pm2_5: double.parse(item["current"]["air_quality"]["pm2_5"].toStringAsFixed(1)),
+    o3: double.parse(item["current"]["air_quality"]["o3"].toStringAsFixed(1)),
+    no2: double.parse(item["current"]["air_quality"]["no2"].toStringAsFixed(1)),
 
     aqi_title: ['good', 'fair', 'moderate', 'poor', 'very poor', 'unhealthy']
     [item["current"]["air_quality"]["us-epa-index"] - 1],
@@ -606,6 +606,110 @@ class WapiAqi {
     [item["current"]["air_quality"]["us-epa-index"] - 1],
 
   );
+}
+
+
+class Wapi15MinutePrecip { //weatherapi doesn't actaully have 15 minute forecast, but i figured i could just use the
+                          //hourly data and just use some smoothing between the hours to emulate the 15 minutes
+                          //still better than not having it
+  final String t_minus;
+  final double precip_sum;
+  final List<double> precips;
+
+  const Wapi15MinutePrecip({
+    required this.t_minus,
+    required this.precip_sum,
+    required this.precips,
+  });
+
+  static Wapi15MinutePrecip fromJson(item, settings) {
+    int closest = 100;
+    int end = -1;
+    double sum = 0;
+
+    List<double> precips = [];
+    List<double> hourly = [];
+
+    int day = 0;
+    int hour = 0;
+
+    int i = 0;
+
+    while (i < 6) {
+      if (item["forecast"]["forecastday"][day]["hour"].length > hour) {
+        double x;
+        if (i == 0) {
+          x = double.parse(item["current"]["precip_mm"].toStringAsFixed(1));
+        }
+        else {
+          x = double.parse(item["forecast"]["forecastday"][day]["hour"][hour]["precip_mm"].toStringAsFixed(1));
+        }
+
+        if (x > 0.0) {
+          if (closest == 100) {
+            closest = i + 1;
+          }
+          if (i >= end) {
+            end = i + 1;
+          }
+        }
+
+        hourly.add(x);
+
+        i += 1;
+        hour += 1;
+      }
+      else {
+        day += 1;
+      }
+    }
+
+    //smooth the hours into 15 minute segments
+
+    for (int i = 0; i < hourly.length - 1; i++) {
+      double now = hourly[i];
+      double next = hourly[i + 1];
+
+      double dif = next - now;
+      for (double x = 0; x <= 1; x += 0.25) {
+        double g = now + (dif * x);
+        sum += g;
+        precips.add(g);
+      }
+    }
+
+    String t_minus = "";
+    if (closest != 100) {
+      if (closest <= 2) {
+        if (end <= 1) {
+          t_minus = translation("rain expected in the next 1 hour", settings["Language"]);
+        }
+        else {
+          String x = " $end ";
+          t_minus = translation("rain expected in the next x hours", settings["Language"]);
+          t_minus = t_minus.replaceAll(" x ", x);
+        }
+      }
+      else if (closest < 1) {
+        t_minus = translation("rain expected in 1 hour", settings["Language"]);
+      }
+      else {
+        String x = " $closest ";
+        t_minus = translation("rain expected in x hours", settings["Language"]);
+        t_minus = t_minus.replaceAll(" x ", x);
+      }
+    }
+
+    sum = max(sum, 0.1); //if there is rain then it shouldn't write 0
+
+    return Wapi15MinutePrecip(
+      t_minus: t_minus,
+      precip_sum: unit_coversion(sum, settings["Precipitation"]),
+      precips: precips,
+    );
+
+  }
+
 }
 
 Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) async {
@@ -643,7 +747,9 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
     localtime: WapiGetLocalTime(wapi_body),
-    minutely_15_precip: const OM15MinutePrecip(t_minus: "", precip_sum: 0, precips: []), //because wapi doesn't have 15 minutely
+    //minutely_15_precip: const OM15MinutePrecip(t_minus: "", precip_sum: 0, precips: []), //because wapi doesn't have 15 minutely
+
+    minutely_15_precip: Wapi15MinutePrecip.fromJson(wapi_body, settings),
 
     //image: Uimage,
   );

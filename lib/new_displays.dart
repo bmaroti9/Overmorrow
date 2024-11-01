@@ -23,6 +23,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 
+import 'aqi_page.dart';
 import 'decoders/decode_OM.dart';
 
 class WavePainter extends CustomPainter {
@@ -157,7 +158,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         final textWidth = textPainter.width;
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 23),
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 11),
           child: Column(
             children: [
               Padding(
@@ -241,73 +242,98 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
   }
 }
 
-Widget NewAirQuality(var data) {
+Widget NewAirQuality(var data, context) {
   return Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, bottom: 59),
-    child: Column(
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 6, left: 5),
-            child: comfortatext(
-                translation('air quality', data.settings["Language"]),
-                16,
-                data.settings,
-                color: data.current.onSurface),
-          ),
-        ),
-        Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 5, top: 5, right: 14),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: data.current.containerLow),
-                width: 65,
-                height: 65,
-                child: Center(
-                    child: comfortatext(
-                        data.aqi.aqi_index.toString(), 32, data.settings,
-                        color: data.current.primarySecond)),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: comfortatext(
-                      data.aqi.aqi_title, 19, data.settings, color: data.current.primarySecond, align: TextAlign.left,
-                      weight: FontWeight.w500,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5, left: 2),
-                    child: comfortatext(data.aqi.aqi_desc, 14, data.settings,
-                        color: data.settings["Color mode"] == "light" ? data.current.primary : data.current.onSurface,
-                        weight: FontWeight.w500),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 15, left: 14, right: 14),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    child: GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: (){
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AllergensPage(data: data))
+        );
+      },
+      child: Column(
+        children: [
+          Row(
             children: [
-              NewAqiDataPoints("PM2.5", data.aqi.pm2_5, data),
-              NewAqiDataPoints("PM10", data.aqi.pm10, data),
-              NewAqiDataPoints("O3", data.aqi.o3, data),
-              NewAqiDataPoints("NO2", data.aqi.no2, data),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 0, left: 5),
+                child: comfortatext(
+                    translation('air quality', data.settings["Language"]),
+                    16,
+                    data.settings,
+                    color: data.current.onSurface),
+              ),
+              const Spacer(),
+              GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AllergensPage(data: data))
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 1),
+                    child: SizedBox(
+                        width: 40, height: 36,
+                        child: Icon(Icons.keyboard_arrow_right, color: data.current.primary, size: 21,)),
+                  )
+              ),
             ],
           ),
-        )
-      ],
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 5, top: 0, right: 14),
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: data.current.containerLow),
+                  width: 71,
+                  height: 71,
+                  child: Center(
+                      child: comfortatext(
+                          data.aqi.aqi_index.toString(), 32, data.settings,
+                          color: data.current.primarySecond)),
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: comfortatext(
+                        data.aqi.aqi_title, 19, data.settings, color: data.current.primarySecond, align: TextAlign.left,
+                        weight: FontWeight.w500,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5, left: 2),
+                      child: comfortatext(data.aqi.aqi_desc, 14, data.settings,
+                          color: data.settings["Color mode"] == "light2" ? data.current.primary : data.current.onSurface,
+                          weight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15, left: 14, right: 14),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                NewAqiDataPoints("PM2.5", data.aqi.pm2_5, data),
+                NewAqiDataPoints("PM10", data.aqi.pm10, data),
+                NewAqiDataPoints("O3", data.aqi.o3, data),
+                NewAqiDataPoints("NO2", data.aqi.no2, data),
+              ],
+            ),
+          )
+        ],
+      ),
     ),
   );
 }
@@ -316,7 +342,7 @@ Widget NewRain15MinuteIndicator(var data) {
   return Visibility(
     visible: data.minutely_15_precip.t_minus != "",
     child: Padding(
-      padding: const EdgeInsets.only(left: 21, right: 21, bottom: 38),
+      padding: const EdgeInsets.only(left: 21, right: 21, bottom: 33, top: 13),
       child: Container(
         decoration: BoxDecoration(
           color: data.current.containerLow,
@@ -331,7 +357,7 @@ Widget NewRain15MinuteIndicator(var data) {
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 5, bottom: 2, right: 3),
+                      const EdgeInsets.only(left: 5, bottom: 2, right: 3, top: 1),
                   child: Icon(
                     Icons.water_drop_outlined,
                     color: data.current.primary,

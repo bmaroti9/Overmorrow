@@ -387,11 +387,11 @@ class DescriptionCircle extends StatelessWidget {
   }
 }
 
-Widget NewAqiDataPoints(String name, double value, var data) {
+Widget NewAqiDataPoints(String name, double value, var data, [double size = 15]) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      comfortatext(name, 15, data.settings, color: data.current.primary,
+      comfortatext(name, size, data.settings, color: data.current.primary,
       align: TextAlign.end, weight: FontWeight.w500),
       Padding(
         padding: const EdgeInsets.all(3.0),
@@ -404,13 +404,13 @@ Widget NewAqiDataPoints(String name, double value, var data) {
           ),
         ),
       ),
-      comfortatext(value.toString(), 15, data.settings, color: data.current.primarySecond,
+      comfortatext(value.toString(), size, data.settings, color: data.current.primarySecond,
           align: TextAlign.end, weight: FontWeight.w600),
     ],
   );
 }
 
-Widget RainWidget(data, day, highlight) {
+Widget RainWidget(data, day, highlight, border) {
   List<dynamic> hours = day.hourly_for_precip;
 
   List<double> precip = [];
@@ -429,7 +429,7 @@ Widget RainWidget(data, day, highlight) {
   }
 
   return Padding(
-    padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+    padding: const EdgeInsets.only(left: 8, right: 8, top: 15),
     child: Container(
       constraints: const BoxConstraints(minWidth: 0, maxWidth: 450),
       decoration: BoxDecoration(
@@ -437,14 +437,14 @@ Widget RainWidget(data, day, highlight) {
         //color: data.current.containerLow,
         border: data.settings["Color mode"] == "dark" || data.settings["Color mode"] == "light"
             || data.settings["Color mode"] == "auto"
-          ? Border.all(width: 3, color: highlight)
+          ? Border.all(width: 2.6, color: border)
           : Border.all(width: 1.6, color: data.current.primaryLight)
 
       ),
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 14, right: 15, left: 18),
+              padding: const EdgeInsets.only(top: 16, right: 17, left: 17),
               child: AspectRatio(
                 aspectRatio: 2.2,
                 child: MyChart(precip, data, highlight)
@@ -534,7 +534,8 @@ class BarChartPainter extends CustomPainter {
         if (i <= smallerThan) {
           canvas.drawArc(
             Rect.fromCenter(
-              center: Offset(x + barWidth * 0.5, start),
+              center: Offset(x + barWidth * 0.5, start - 0.05), //this small offset is there
+                // to remove the small line between the two half circles
               height: barWidth * 0.8,
               width: barWidth * 0.8,
             ),

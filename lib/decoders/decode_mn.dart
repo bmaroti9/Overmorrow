@@ -73,14 +73,16 @@ int metNcalculateFeelsLike(double t, double r, double v) {
 
 }
 
-String metNGetName(index, settings, item, start) {
+String metNGetName(index, settings, item, start, hourDif) {
   if (index < 3) {
     const names = ['Today', 'Tomorrow', 'Overmorrow'];
     return translation(names[index], settings["Language"]);
   }
   String x = item["properties"]["timeseries"][start]["time"].split("T")[0];
+  String hour = item["properties"]["timeseries"][start]["time"].split("T")[1].split(":")[0];
   List<String> z = x.split("-");
-  DateTime time = DateTime(int.parse(z[0]), int.parse(z[1]), int.parse(z[2]));
+  DateTime time_before = DateTime(int.parse(z[0]), int.parse(z[1]), int.parse(z[2]), int.parse(hour));
+  DateTime time = time_before.add(-Duration(hours: hourDif));
   const weeks = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   String weekname = translation(weeks[time.weekday - 1], settings["Language"]);
   return "$weekname, ${time.month}/${time.day}";
@@ -153,6 +155,7 @@ Future<List<dynamic>> MetNMakeRequest(double lat, double lng, String real_loc) a
     "User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"
   };
   final MnUrl = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/complete', MnParams);
+  print(MnUrl);
 
   var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$real_loc, met.no", headers: headers).timeout(const Duration(seconds: 6));
   var MnResponse = await MnFile.readAsString();
@@ -409,7 +412,7 @@ class MetNDay {
       hourly_for_precip: hours,
       total_precip: double.parse(precip.reduce((a, b) => a + b).toStringAsFixed(1)),
       windspeed: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
-      name: metNGetName(index, settings, item, start),
+      name: metNGetName(index, settings, item, start, hourDif),
       text: translation(weather_names[BIndex], settings["Language"]),
       icon: metNIconCorrection(weather_names[BIndex]),
       iconSize: oMIconSizeCorrection(weather_names[BIndex]),
@@ -551,6 +554,91 @@ class MetNSunstatus {
   }
 }
 
+
+class MetN15MinutePrecip { //met norway doesn't actaully have 15 minute forecast, but i figured i could just use the
+  //hourly data and just use some smoothing between the hours to emulate the 15 minutes
+  //still better than not having it
+  final String t_minus;
+  final double precip_sum;
+  final List<double> precips;
+
+  const MetN15MinutePrecip({
+    required this.t_minus,
+    required this.precip_sum,
+    required this.precips,
+  });
+
+  static MetN15MinutePrecip fromJson(item, settings) {
+    int closest = 100;
+    int end = -1;
+    double sum = 0;
+
+    List<double> precips = [];
+    List<double> hourly = [];
+
+    for (int i = 0; i < 6; i++) {
+      double x = double.parse(item["properties"]["timeseries"][i]["data"]["next_1_hours"]["details"]["precipitation_amount"].toStringAsFixed(1));
+
+      if (x > 0.0) {
+        if (closest == 100) {
+          closest = i + 1;
+        }
+        if (i >= end) {
+          end = i + 1;
+        }
+      }
+
+      hourly.add(x);
+    }
+
+    //smooth the hours into 15 minute segments
+
+    for (int i = 0; i < hourly.length - 1; i++) {
+      double now = hourly[i];
+      double next = hourly[i + 1];
+
+      double dif = next - now;
+      for (double x = 0; x <= 1; x += 0.25) {
+        double g = now + (dif * x);
+        sum += g;
+        precips.add(g);
+      }
+    }
+
+    String t_minus = "";
+    if (closest != 100) {
+      if (closest <= 2) {
+        if (end <= 1) {
+          t_minus = translation("rain expected in the next 1 hour", settings["Language"]);
+        }
+        else {
+          String x = " $end ";
+          t_minus = translation("rain expected in the next x hours", settings["Language"]);
+          t_minus = t_minus.replaceAll(" x ", x);
+        }
+      }
+      else if (closest < 1) {
+        t_minus = translation("rain expected in 1 hour", settings["Language"]);
+      }
+      else {
+        String x = " $closest ";
+        t_minus = translation("rain expected in x hours", settings["Language"]);
+        t_minus = t_minus.replaceAll(" x ", x);
+      }
+    }
+
+    sum = max(sum, 0.1); //if there is rain then it shouldn't write 0
+
+    return MetN15MinutePrecip(
+      t_minus: t_minus,
+      precip_sum: unit_coversion(sum, settings["Precipitation"]),
+      precips: precips,
+    );
+
+  }
+
+}
+
 Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) async {
 
   DateTime localTime = await MetNGetLocalTime(lat, lng);
@@ -582,9 +670,9 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
   return WeatherData(
     radar: await RainviewerRadar.getData(),
-    aqi: await OMAqi.fromJson(MnBody, lat, lng, settings),
+    aqi: await OMAqi.fromJson(lat, lng, settings),
     sunstatus: sunstatus,
-    minutely_15_precip: const OM15MinutePrecip(t_minus: "", precip_sum: 0, precips: []), //because MetN has no 15 minute forecast
+    minutely_15_precip: MetN15MinutePrecip.fromJson(MnBody, settings),
 
     current: await MetNCurrent.fromJson(MnBody, settings, real_loc, lat, lng),
     days: days,

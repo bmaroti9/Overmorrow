@@ -139,7 +139,7 @@ class _RadarSmallState extends State<RadarSmall> {
                   color: data.current.surface,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(
-                      width: 2.2, color: data.current.containerHigh)
+                      width: 2.5, color: data.current.containerHigh)
               ),
               child: Stack(
                 children: [

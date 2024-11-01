@@ -132,7 +132,7 @@ class _NewMainState extends State<NewMain> {
     final Map<String, Widget> widgetsMap = {
       'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), size: size,),
       'rain indicator': NewRain15MinuteIndicator(data),
-      'air quality': NewAirQuality(data),
+      'air quality': NewAirQuality(data, context),
       'radar': RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
       'forecast': buildNewDays(data),
       'daily': buildNewGlanceDay(data: data),
@@ -164,7 +164,7 @@ class _NewMainState extends State<NewMain> {
         headerData: HeaderData(
             //backgroundColor: WHITE,
             blurContent: false,
-            headerHeight: max(size.height * 0.525, 400),
+            headerHeight: max(size.height * 0.518, 400),
             //we don't want it to be smaller than 400
             header: ParrallaxBackground(image: data.current.image, key: Key(data.place),
                 color: data.current.surface == BLACK ? BLACK
@@ -395,7 +395,7 @@ Widget TabletLayout(data, updateLocation, context) {
                     children: [
                       NewSunriseSunset(data: data, key: Key(data.place), size: size,),
                       NewRain15MinuteIndicator(data),
-                      NewAirQuality(data),
+                      NewAirQuality(data, context),
                       RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
                       buildNewGlanceDay(data: data, key: Key("${data.place}, ${data.current.primary}"),),
                       Padding(

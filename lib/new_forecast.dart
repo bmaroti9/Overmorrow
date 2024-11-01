@@ -69,216 +69,222 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
 
     Color highlight = state ? data.current.containerHigh : data.current.container;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
       children: [
-        Padding(
-          padding: EdgeInsets.only(left: state ? 15 : 5, top: 0),
-          child: Row(
-            children: [
-              comfortatext(
-                  day.name, 16,
-                  data.settings,
-                  color: data.current.onSurface),
-              const Spacer(),
-              Visibility(
-                visible: state,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 13),
-                  child: GestureDetector(
-                    child: Icon(Icons.expand_less, color: data
-                        .current.primaryLight, size: 20),
-                    onTap: () {
-                      HapticFeedback.selectionClick();
-                      onExpandTapped(index);
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
+        if (state) GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            onExpandTapped(index);
+          },
+          child: const SizedBox(height: 70, width: double.infinity,)
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 18, left: 23, right: 25),
-          child: Row(
-            children: [
-              SizedBox(
-                  width: 35,
-                  child: Icon(day.icon, size: 38.0 * day.iconSize, color: data.current.primary,)),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, top: 3),
-                  child: comfortatext(day.text, 20, data.settings, color: data.current.onSurface,
-                      weight: FontWeight.w400),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Row(
-                  children: [
-                    comfortatext(day.minmaxtemp.split("/")[0], 20, data.settings, color: data.current.primary),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5, right: 7),
-                      child: comfortatext("/", 19, data.settings, color: data.current.onSurface),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: state ? 15 : 5, top: state ? 20 : 0),
+              child: Row(
+                children: [
+                  comfortatext(
+                      day.name, 16,
+                      data.settings,
+                      color: data.current.onSurface),
+                  const Spacer(),
+                  if (state) Padding(
+                    padding: const EdgeInsets.only(right: 13),
+                    child: GestureDetector(
+                      child: Icon(Icons.expand_less, color: data
+                          .current.primaryLight, size: 20),
+                      onTap: () {
+                        onExpandTapped(index);
+                      },
                     ),
-                    comfortatext(day.minmaxtemp.split("/")[1], 20, data.settings, color: data.current.primary),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        Visibility(
-            visible: day.mm_precip > 0.1,
-            child: RainWidget(data, day, highlight)
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8, right: 8, top: 15, bottom: 10),
-          child: Container(
-            height: 85,
-            padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
-            decoration: BoxDecoration(
-              //border: Border.all(width: 1, color: data.current.outline),
-              color: state ? data.current.container : data.current.containerLow,
-              borderRadius: BorderRadius.circular(18),
+                  ),
+                ],
+              ),
             ),
-            child:  LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return GridView.count(
-                      padding: const EdgeInsets.all(0),
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisSpacing: 1,
-                      mainAxisSpacing: 1,
-                      crossAxisCount: 2,
-                      childAspectRatio: constraints.maxWidth / constraints.maxHeight,
+            Padding(
+              padding: const EdgeInsets.only(top: 18, left: 23, right: 25, bottom: 5),
+              child: Row(
+                children: [
+                  SizedBox(
+                      width: 35,
+                      child: Icon(day.icon, size: 38.0 * day.iconSize, color: data.current.primary,)),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0, top: 3),
+                      child: comfortatext(day.text, 20, data.settings, color: data.current.onSurface,
+                          weight: FontWeight.w400),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Row(
                       children: [
+                        comfortatext(day.minmaxtemp.split("/")[0], 20, data.settings, color: data.current.primary),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8, right: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.water_drop_outlined,
-                                  color: data.current.primaryLight, size: 21),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10, top: 3),
-                                child: comfortatext('${day.precip_prob}%', 18, data.settings,
-                                    color: data.current.primary),
-                              ),
-                            ],
-                          ),
+                          padding: const EdgeInsets.only(left: 5, right: 7),
+                          child: comfortatext("/", 19, data.settings, color: data.current.onSurface),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8, right: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                  Icons.water_drop, color: data.current.primaryLight, size: 21),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 3, left: 10),
-                                child: comfortatext(day.total_precip.toString() +
-                                    data.settings["Precipitation"], 18, data.settings,
-                                    color: data.current.primary),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8, right: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                CupertinoIcons.wind, color: data.current.primaryLight, size: 21,),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 3, left: 10),
-                                child: comfortatext('${day.windspeed} ${data
-                                    .settings["Wind"]}', 18, data.settings,
-                                    color: data.current.primary),
-                              ),
-                              Padding(
-                                  padding: const EdgeInsets.only(left: 5, right: 3),
-                                  child: RotationTransition(
-                                      turns: AlwaysStoppedAnimation(day.wind_dir / 360),
-                                      child: Icon(CupertinoIcons.arrow_down_circle,
-                                        color: data.current.primaryLight, size: 18,)
-                                  )
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8, right: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(CupertinoIcons.sun_max,
-                                  color: data.current.primaryLight, size: 21),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 3, left: 10),
-                                child: comfortatext('${day.uv} UV', 18, data.settings,
-                                    color: data.current.primary),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ]
-                  );
-                }
+                        comfortatext(day.minmaxtemp.split("/")[1], 20, data.settings, color: data.current.primary),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 15),
-          child: Wrap(
-            spacing: 5.0,
-            children: List<Widget>.generate(
-              4,
-                  (int index) {
-
-
-                return ChoiceChip(
-                  elevation: 0.0,
-                  checkmarkColor: data.current.onPrimaryLight,
-                  color: WidgetStateProperty.resolveWith((states) {
-                    if (index == _value) {
-                      return data.current.primaryLighter;
+            Visibility(
+                visible: day.mm_precip > 0.1,
+                child: RainWidget(data, day, highlight, data.current.containerHigh)
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8, top: 18, bottom: 10),
+              child: Container(
+                height: 85,
+                padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+                decoration: BoxDecoration(
+                  //border: Border.all(width: 1, color: data.current.outline),
+                  color: state ? data.current.container : data.current.containerLow,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child:  LayoutBuilder(
+                    builder: (BuildContext context, BoxConstraints constraints) {
+                      return GridView.count(
+                          padding: const EdgeInsets.all(0),
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisSpacing: 1,
+                          mainAxisSpacing: 1,
+                          crossAxisCount: 2,
+                          childAspectRatio: constraints.maxWidth / constraints.maxHeight,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.water_drop_outlined,
+                                      color: data.current.primaryLight, size: 21),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10, top: 3),
+                                    child: comfortatext('${day.precip_prob}%', 18, data.settings,
+                                        color: data.current.primary),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                      Icons.water_drop, color: data.current.primaryLight, size: 21),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3, left: 10),
+                                    child: comfortatext(day.total_precip.toString() +
+                                        data.settings["Precipitation"], 18, data.settings,
+                                        color: data.current.primary),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    CupertinoIcons.wind, color: data.current.primaryLight, size: 21,),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3, left: 10),
+                                    child: comfortatext('${day.windspeed} ${data
+                                        .settings["Wind"]}', 18, data.settings,
+                                        color: data.current.primary),
+                                  ),
+                                  Padding(
+                                      padding: const EdgeInsets.only(left: 5, right: 3),
+                                      child: RotationTransition(
+                                          turns: AlwaysStoppedAnimation(day.wind_dir / 360),
+                                          child: Icon(CupertinoIcons.arrow_down_circle,
+                                            color: data.current.primaryLight, size: 18,)
+                                      )
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(CupertinoIcons.sun_max,
+                                      color: data.current.primaryLight, size: 21),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3, left: 10),
+                                    child: comfortatext('${day.uv} UV', 18, data.settings,
+                                        color: data.current.primary),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ]
+                      );
                     }
-                    return state ? data.current.containerLow : data.current.surface;
-                  }),
-                  side: BorderSide(color: data.current.primaryLighter, width: 1.5),
-                  label: comfortatext(
-                      translation(['temp', 'precip', 'wind', 'uv'][index], data.settings["Language"]), 14, data.settings,
-                      color: _value == index ? data.current.onPrimaryLight : data.current.onSurface),
-                  selected: _value == index,
-                  onSelected: (bool selected) {
-                    _value = index;
-                    setState(() {
-                      HapticFeedback.selectionClick();
-                      _onItemTapped(index);
-                    });
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 15),
+              child: Wrap(
+                spacing: 5.0,
+                children: List<Widget>.generate(
+                  4,
+                      (int index) {
+
+                    return ChoiceChip(
+                      elevation: 0.0,
+                      checkmarkColor: data.current.onPrimaryLight,
+                      color: WidgetStateProperty.resolveWith((states) {
+                        if (index == _value) {
+                          return data.current.primaryLighter;
+                        }
+                        return state ? data.current.containerLow : data.current.surface;
+                      }),
+                      side: BorderSide(color: data.current.primaryLighter, width: 1.5),
+                      label: comfortatext(
+                          translation(['temp', 'precip', 'wind', 'uv'][index], data.settings["Language"]), 14, data.settings,
+                          color: _value == index ? data.current.onPrimaryLight : data.current.onSurface),
+                      selected: _value == index,
+                      onSelected: (bool selected) {
+                        _value = index;
+                        setState(() {
+                          HapticFeedback.lightImpact();
+                          _onItemTapped(index);
+                        });
+                      },
+                    );
                   },
-                );
-              },
-            ).toList(),
-          ),
-        ),
-        SizedBox(
-          height: state? 280 : 260,
-          child: PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: _pageController,
-            children: <Widget>[
-              buildTemp(day.hourly, data, highlight),
-              buildPrecip(day.hourly, data, data.current.containerHigh),
-              WindReport(hours: day.hourly, data: data, highlight: data.current.containerHigh,),
-              buildUV(day.hourly, data, highlight),
-            ],
-          ),
+                ).toList(),
+              ),
+            ),
+            SizedBox(
+              height: state? 280 : 260,
+              child: PageView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: _pageController,
+                children: <Widget>[
+                  buildTemp(day.hourly, data, data.current.containerHigh),
+                  buildPrecip(day.hourly, data, data.current.containerHigh),
+                  WindReport(hours: day.hourly, data: data, highlight: data.current.containerHigh,),
+                  buildUV(day.hourly, data, data.current.containerHigh),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -693,7 +699,7 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
 
   void _onExpandTapped(int index) {
     setState(() {
-      HapticFeedback.selectionClick();
+      HapticFeedback.lightImpact();
       expand[index] = !expand[index];
     });
   }
@@ -749,7 +755,7 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
                                   : BorderRadius.circular(8),
                               color: data.current.containerLow),
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 25, left: 3, right: 3),
+                            padding: const EdgeInsets.only(top: 5, left: 3, right: 3),
                             child: NewDay(data: data, index: index, state: true,
                               onExpandTapped: _onExpandTapped, day: day,),
                           ),
@@ -772,187 +778,192 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
 
 
 Widget GlanceDayEntry(data, index, day, onExpandTapped) {
-  return Container(
-    decoration: BoxDecoration(
-        borderRadius:
-        index == 0 ? const BorderRadius.vertical(
-            top: Radius.circular(18.0),
-            bottom: Radius.circular(8))
-            : index == data.days.length - 4 ? const BorderRadius
-            .vertical(bottom: Radius.circular(18.0),
-            top: Radius.circular(8))
-            : BorderRadius.circular(8),
-        color: data.current.containerLow),
-    child: Column(
-      children: [
-        Row(
-          children: [
-            SizedBox(
-              width: 60,
-              height: 73,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 18),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    comfortatext(day.name.split(", ")[0], 18,
-                        data.settings,
-                        color: data.current.primary),
-                    comfortatext(day.name.split(", ")[1], 14,
-                        data.settings,
-                        color: data.current.onSurface),
-                  ],
+  return GestureDetector(
+    onTap: () {
+      onExpandTapped(index);
+    },
+    child: Container(
+      decoration: BoxDecoration(
+          borderRadius:
+          index == 0 ? const BorderRadius.vertical(
+              top: Radius.circular(18.0),
+              bottom: Radius.circular(8))
+              : index == data.days.length - 4 ? const BorderRadius
+              .vertical(bottom: Radius.circular(18.0),
+              top: Radius.circular(8))
+              : BorderRadius.circular(8),
+          color: data.current.containerLow),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              SizedBox(
+                width: 60,
+                height: 73,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      comfortatext(day.name.split(", ")[0], 18,
+                          data.settings,
+                          color: data.current.primary),
+                      comfortatext(day.name.split(", ")[1], 14,
+                          data.settings,
+                          color: data.current.onSurface),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 30,
-              width: 43,
-              child: Icon(
-                day.icon,
-                color: data.current.primary,
-                size: 31.0 * day.iconSize,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 10, top: 2, bottom: 2),
-              child: Container(
-                height: 56,
+              SizedBox(
+                height: 30,
                 width: 43,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(13),
-                    //border: Border.all(width: 1.5, color: data.current.primaryLight)
-                    color: data.current.primaryLighter
+                child: Icon(
+                  day.icon,
+                  color: data.current.primary,
+                  size: 31.0 * day.iconSize,
                 ),
-                child: Row(
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              bottom: 2),
-                          child: Icon(Icons.keyboard_arrow_up,
-                            color: data.current.onPrimaryLight,
-                            size: 14,),
-                        ),
-                        Icon(Icons.keyboard_arrow_down,
-                          color: data.current.onPrimaryLight, size: 14,),
-                      ],
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment
-                            .center,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 10, top: 2, bottom: 2),
+                child: Container(
+                  height: 56,
+                  width: 43,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(13),
+                      //border: Border.all(width: 1.5, color: data.current.primaryLight)
+                      color: data.current.primaryLighter
+                  ),
+                  child: Row(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(
                                 bottom: 2),
-                            child: comfortatext(
-                                day.minmaxtemp.split("/")[1], 14,
+                            child: Icon(Icons.keyboard_arrow_up,
+                              color: data.current.onPrimaryLight,
+                              size: 14,),
+                          ),
+                          Icon(Icons.keyboard_arrow_down,
+                            color: data.current.onPrimaryLight, size: 14,),
+                        ],
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment
+                              .center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 2),
+                              child: comfortatext(
+                                  day.minmaxtemp.split("/")[1], 14,
+                                  data.settings,
+                                  color: data.current.onPrimaryLight),
+                            ),
+                            comfortatext(
+                                day.minmaxtemp.split("/")[0], 14,
                                 data.settings,
                                 color: data.current.onPrimaryLight),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.water_drop_outlined,
+                            color: data.current.primaryLight,
+                            size: 18,),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 2, right: 8),
+                            child: comfortatext(
+                                '${day.precip_prob}%', 17,
+                                data.settings,
+                                color: data.current.onSurface),
                           ),
-                          comfortatext(
-                              day.minmaxtemp.split("/")[0], 14,
-                              data.settings,
-                              color: data.current.onPrimaryLight),
+                          Icon(
+                            Icons.water_drop,
+                            color: data.current.primaryLight,
+                            size: 18,),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 2, right: 2),
+                            child: comfortatext(
+                                day.total_precip.toString() +
+                                    data.settings["Precipitation"],
+                                17, data.settings,
+                                color: data.current.onSurface),
+                          ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.water_drop_outlined,
-                          color: data.current.primaryLight,
-                          size: 18,),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 2, right: 8),
-                          child: comfortatext(
-                              '${day.precip_prob}%', 17,
-                              data.settings,
-                              color: data.current.onSurface),
-                        ),
                         Icon(
-                          Icons.water_drop,
+                          CupertinoIcons.wind,
                           color: data.current.primaryLight,
                           size: 18,),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 2, right: 2),
                           child: comfortatext(
-                              day.total_precip.toString() +
-                                  data.settings["Precipitation"],
-                              17, data.settings,
+                              '${day.windspeed} ${data
+                                  .settings["Wind"]}', 17,
+                              data.settings,
                               color: data.current.onSurface),
                         ),
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                left: 3, right: 3, bottom: 1),
+                            child: RotationTransition(
+                                turns: AlwaysStoppedAnimation(
+                                    day.wind_dir / 360),
+                                child: Icon(
+                                  CupertinoIcons.arrow_down_circle,
+                                  color: data.current.primary,
+                                  size: 16,)
+                            )
+                        ),
                       ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        CupertinoIcons.wind,
-                        color: data.current.primaryLight,
-                        size: 18,),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 2, right: 2),
-                        child: comfortatext(
-                            '${day.windspeed} ${data
-                                .settings["Wind"]}', 17,
-                            data.settings,
-                            color: data.current.onSurface),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.only(
-                              left: 3, right: 3, bottom: 1),
-                          child: RotationTransition(
-                              turns: AlwaysStoppedAnimation(
-                                  day.wind_dir / 360),
-                              child: Icon(
-                                CupertinoIcons.arrow_down_circle,
-                                color: data.current.primary,
-                                size: 16,)
-                          )
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: SizedBox(
-                width: 28,
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  icon: Icon(Icons.expand_more, color: data
-                      .current.primaryLight, size: 20,),
-                  onPressed: () {
-                    onExpandTapped(index);
-                  },
+                    )
+                  ],
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: SizedBox(
+                  width: 28,
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    icon: Icon(Icons.expand_more, color: data
+                        .current.primaryLight, size: 20,),
+                    onPressed: () {
+                      onExpandTapped(index);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }
