@@ -240,9 +240,16 @@ class _AllergensPageState extends State<AllergensPage> {
                 } else if (snapshot.hasError) {
                   print((snapshot.error, snapshot.stackTrace));
                   return Padding(
-                    padding: const EdgeInsets.only(top: 200),
-                    child: Center(
-                      child: comfortatext("unable to load air quality data", 18, data.settings, color: data.current.primary)
+                    padding: const EdgeInsets.only(top: 100),
+                    child: Column(
+                      children: [
+                        comfortatext("unable to load air quality data", 18, data.settings, color: data.current.primary),
+                        Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: comfortatext("${snapshot.error} ${snapshot.stackTrace}", 15, data.settings, color: data.current.onSurface,
+                          align: TextAlign.center),
+                        )
+                      ],
                     ),
                   );
                 }
@@ -312,7 +319,7 @@ class _AllergensPageState extends State<AllergensPage> {
                             children: [
                               comfortatext(translation("main pollutant", data.settings["Language"]), 16, data.settings, color: data.current.onSurface),
                               const Spacer(),
-                              comfortatext(extendedAqi.mainPollutant, 18, data.settings, color: data.current.primaryLight, weight: FontWeight.w600)
+                              comfortatext(extendedAqi.mainPollutant, 18, data.settings, color: data.current.primary, weight: FontWeight.w600)
                             ],
                           ),
                         ),
@@ -466,7 +473,8 @@ class _AllergensPageState extends State<AllergensPage> {
                                         width: 43,
                                         alignment: Alignment.topCenter,
                                         padding: const EdgeInsets.only(top: 12),
-                                        height: 110 / highestAqi * extendedAqi.dailyAqi[index],
+                                        //tried to do some null safety and not allowing the bars to be too short
+                                        height: max(110 / max(highestAqi, 1) * extendedAqi.dailyAqi[index], 42),
                                         child: comfortatext(extendedAqi.dailyAqi[index].toString(), 16, data.settings,
                                             color: extendedAqi.dailyAqi[index] == highestAqi ? data.current.primaryLight : data.current.surface,
                                             weight: FontWeight.w600),
