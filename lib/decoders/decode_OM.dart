@@ -769,7 +769,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     var response = await file.readAsString();
     final item = jsonDecode(response);
 
-    final no2_h = List<double>.from((item["hourly"]["nitrogen_dioxid"] as List?) ?.map((e) => (e as double?) ?? 0.0) ?? []);
+    final no2_h = List<double>.from((item["hourly"]["nitrogen_dioxide"] as List?) ?.map((e) => (e as double?) ?? 0.0) ?? []);
     final o3_h = List<double>.from((item["hourly"]["ozone"] as List?) ?.map((e) => (e as double?) ?? 0.0) ?? []);
     final pm2_5_h = List<double>.from((item["hourly"]["pm2_5"] as List?) ?.map((e) => (e as double?) ?? 0.0) ?? []);
     final pm10_h = List<double>.from((item["hourly"]["pm10"] as List?) ?.map((e) => (e as double?) ?? 0.0) ?? []);
