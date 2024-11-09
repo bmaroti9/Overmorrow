@@ -260,20 +260,27 @@ class _AllergensPageState extends State<AllergensPage> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 50, right: 50, top: 50, bottom: 30),
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: CustomPaint(
-                            painter: SquigglyCirclePainter(data.current.primaryLight),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 15),
-                                  child: comfortatext(data.aqi.aqi_index.toString(), 52, data.settings, color: data.current.primary, weight: FontWeight.w300),
+                        padding: const EdgeInsets.only(top: 30, bottom: 30),
+                        child: FractionallySizedBox(
+                          widthFactor: 0.76,
+                          alignment: FractionalOffset.center,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: CustomPaint(
+                                painter: SquigglyCirclePainter(data.current.primaryLight),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 15),
+                                      child: comfortatext(data.aqi.aqi_index.toString(), 52, data.settings, color: data.current.primary, weight: FontWeight.w300),
+                                    ),
+                                    comfortatext(data.aqi.aqi_title, 23, data.settings, color: data.current.primary, weight: FontWeight.w600),
+                                  ],
                                 ),
-                                comfortatext(data.aqi.aqi_title, 23, data.settings, color: data.current.primary, weight: FontWeight.w600),
-                              ],
+                              ),
                             ),
                           ),
                         ),
@@ -283,28 +290,6 @@ class _AllergensPageState extends State<AllergensPage> {
                         padding: const EdgeInsets.only(top: 10, bottom: 20, left: 10, right: 10),
                         child: comfortatext(data.aqi.aqi_desc, 17, data.settings, color: data.current.onSurface, weight: FontWeight.w400, align: TextAlign.center),
                       ),
-
-
-                      /*
-                      GridView.count(
-                          padding: const EdgeInsets.only(top: 15, bottom: 20, left: 10, right: 10),
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          crossAxisCount: 3,
-                          childAspectRatio: 4.8,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            NewAqiDataPoints("PM2.5", data.aqi.pm2_5, data, 18.0),
-                            NewAqiDataPoints("PM10", data.aqi.pm10, data, 18.0),
-                            NewAqiDataPoints("O3", data.aqi.o3, data, 18.0),
-                            NewAqiDataPoints("NO2", data.aqi.no2, data, 18.0),
-                            NewAqiDataPoints("CO", extendedAqi.co, data, 18.0),
-                            NewAqiDataPoints("SO2", extendedAqi.so2, data, 18.0),
-                          ]
-                      ),
-                       */
-
 
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 5),
