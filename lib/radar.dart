@@ -278,7 +278,7 @@ class _RadarSmallState extends State<RadarSmall> {
                               enabledThumbRadius: 10, elevation: 0.0,
                               pressedElevation: 0),
 
-                          tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2),
+                          tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 2),
                           overlayShape: SliderComponentShape.noOverlay
 
                         ),
@@ -533,7 +533,7 @@ class _RadarBigState extends State<RadarBig> {
                                         enabledThumbRadius: 10, elevation: 0.0,
                                         pressedElevation: 0),
 
-                                    tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 2),
+                                    tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 2),
                                     overlayShape: SliderComponentShape.noOverlay,
 
                                 ),

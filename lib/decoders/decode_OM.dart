@@ -492,7 +492,6 @@ class OM15MinutePrecip {
       sum += x;
 
       precips.add(x);
-      print(x);
     }
 
     sum = max(sum, 0.1); //if there is rain then it shouldn't write 0
@@ -837,7 +836,6 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
 
       //determine the main pollutant for today
       if (i == 0) {
-        print(("final indexes", final_indexes));
         mainPollutant = pollutantNames[final_indexes.indexOf(biggest)];
       }
 

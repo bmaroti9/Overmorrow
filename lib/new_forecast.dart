@@ -334,8 +334,8 @@ Widget buildTemp(List<dynamic> hours, data, Color highlight) => ListView(
                 ),
               ),
               Container(
-                width: 13,
-                height: hour.raw_temp * 1.8 + 30,
+                width: 14,
+                height: min(max(hour.raw_temp * 1.8 + 30, 14), 105),
                 decoration: BoxDecoration(
                     color: data.current.primaryLight,
                   //border: Border.all(color: data.current.primaryLight, width: 2),

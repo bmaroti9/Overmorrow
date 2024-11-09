@@ -139,7 +139,6 @@ class _NewMainState extends State<NewMain> {
     };
 
     final List<String> order = data.settings["Layout order"].split(",");
-    print(order);
 
     final List<Widget> orderedWidgets = order.map((name) => widgetsMap[name]!).toList();
 
