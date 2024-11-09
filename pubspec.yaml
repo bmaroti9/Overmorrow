@@ -37,7 +37,8 @@ dependencies:
   url_launcher: ^6.1.14
 
   # geolocator: ^10.1.0
-  geolocator: ^7.7.1
+  #geolocator: ^7.7.1
+  geolocator: ^13.0.1
   geocoding: ^3.0.0
   worldtime: ^1.2.2
 
@@ -57,11 +58,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^5.1.0
 
+#https://github.com/Zverik/every_door/blob/aaf8d2fdeac483041bcac2c7c79ef760b99dff2b/pubspec.yaml#L55
+
 dependency_overrides:
   geolocator_android:
-    hosted:
-      name: geolocator_android
-      url: https://hanntech-gmbh.gitlab.io/free2pass/flutter-geolocator-floss
+    git:
+      url: https://github.com/Zverik/flutter-geolocator.git
+      ref: floss
+      path: geolocator_android
+
 
 flutter_launcher_icons:
   image_path_android: "assets/icons/Overmorrow_white_circle.png"
