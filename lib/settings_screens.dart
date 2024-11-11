@@ -657,10 +657,23 @@ class _LayoutPageState extends State<LayoutPage> {
 
   late List<String> _items;
 
+  //also the default order
+  static const allNames = ["sunstatus", "rain indicator", "air quality", "radar", "forecast", "daily"];
+
+  List<String> removed = [];
+
   @override
   void initState() {
     super.initState();
-    _items = settings["Layout order"].split(",");
+    _items = settings["Layout order"] == "" ? [] : settings["Layout order"].split(",");
+
+    for (int i = 0; i < allNames.length; i++) {
+      if (!_items.contains(allNames[i])) {
+        removed.add(allNames[i]);
+      }
+    }
+
+    print(removed);
   }
 
   void updatePage(String name, String to) {
@@ -696,6 +709,20 @@ class _LayoutPageState extends State<LayoutPage> {
                 goBack();
               },
             ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: IconButton(
+                  icon: Icon(Icons.restore, color: surface, size: 26,),
+                  onPressed: () {
+                    setState(() {
+                      _items = allNames.toList();
+                      removed = [];
+                    });
+                  },
+                ),
+              ),
+            ],
             title: comfortatext("Layout", 30, settings, color: surface),
             backgroundColor: primary,
             pinned: false,
@@ -730,7 +757,11 @@ class _LayoutPageState extends State<LayoutPage> {
                                 padding: const EdgeInsets.only(right: 12),
                                 child: GestureDetector(
                                   onTap: () {
-
+                                    print((_items[index], _items));
+                                    setState(() {
+                                      removed.add(_items[index]);
+                                      _items.remove(_items[index]);
+                                    });
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -759,22 +790,29 @@ class _LayoutPageState extends State<LayoutPage> {
                   },
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top:0),
+                  padding: const EdgeInsets.only(top:0, left: 20, right: 20),
                   child: Wrap(
                     spacing: 4,
-                    children: List.generate(4, (index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                          border: Border.all(width: 1.2, color: outline)
-                        ),
-                        padding: EdgeInsets.all(10),
-                        child: Expanded(
+                    runSpacing: 4,
+                    children: List.generate(removed.length, (i) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _items.add(removed[i]);
+                            removed.remove(removed[i]);
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(width: 1.2, color: outline)
+                          ),
+                          padding: EdgeInsets.all(10),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(Icons.add_rounded, color: primaryLight, size: 21,),
-                              comfortatext("hehe", 16, settings, color: onSurface),
+                              comfortatext(removed[i], 16, settings, color: onSurface),
                             ],
                           ),
                         ),

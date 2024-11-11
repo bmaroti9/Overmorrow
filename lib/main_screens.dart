@@ -138,9 +138,12 @@ class _NewMainState extends State<NewMain> {
       'daily': buildNewGlanceDay(data: data),
     };
 
-    final List<String> order = data.settings["Layout order"].split(",");
+    final List<String> order = data.settings["Layout order"] == "" ? [] : data.settings["Layout order"].split(",");
+    List<Widget> orderedWidgets = [];
+    if (order.isNotEmpty && order[0] != "") {
+      orderedWidgets = order.map((name) => widgetsMap[name]!).toList();
+    }
 
-    final List<Widget> orderedWidgets = order.map((name) => widgetsMap[name]!).toList();
 
     String colorMode = data.settings["Color mode"];
     if (colorMode == "auto") {
