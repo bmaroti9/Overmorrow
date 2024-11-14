@@ -16,8 +16,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'dart:async';
 
 class MyGetResponse implements FileServiceResponse {
   var url;
@@ -41,7 +44,6 @@ class MyGetResponse implements FileServiceResponse {
       return DateTime.now().add(const Duration(days: 20));
     }
 
-
     //snap to the next quarter hour because that's when the weather data updates
     DateTime now = DateTime.now();
     int minutes = now.minute;
@@ -55,6 +57,17 @@ class MyGetResponse implements FileServiceResponse {
       now.hour + hoursToAdd,
       nextQuarter,
     );
+
+    /*
+    return DateTime(
+      now.year,
+      now.month,
+      now.day,
+      now.hour + 3,
+      nextQuarter,
+    );
+
+     */
 
     /*
     return DateTime.now().add(
@@ -99,3 +112,34 @@ CacheManager cacheManager2 = CacheManager(Config(
   stalePeriod: const Duration(hours: 3),
   fileService: MyFileService(),
 ));
+
+CustomCacheManager XCustomCacheManager = CustomCacheManager();
+
+class CustomCacheManager {
+  static const cacheKey = "myCacheKey";
+  static final CacheManager _cacheManager = CacheManager(Config(
+    "hehekey",
+    stalePeriod: const Duration(hours: 3),
+    fileService: MyFileService(),
+  ));
+
+  Future<File> fetchData(String url, String cacheKey) async {
+    try {
+      final fileInfo = await _cacheManager.getFileFromCache(cacheKey);
+
+      print((cacheKey, fileInfo?.validTill.difference(DateTime.now())));
+
+      if (fileInfo == null || fileInfo.validTill.difference(DateTime.now()).isNegative) {
+        print(("got here", fileInfo?.validTill, fileInfo?.validTill.difference(DateTime.now())));
+        final file = await _cacheManager.downloadFile(url, key: cacheKey);
+        return file.file;
+      } else {
+        return fileInfo.file;
+      }
+    } catch (error) {
+      print("last data");
+      final cachedFile = await _cacheManager.getSingleFile(url);
+      return cachedFile;
+    }
+  }
+}

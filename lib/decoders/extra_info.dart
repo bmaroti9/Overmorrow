@@ -76,8 +76,12 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
 
   final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
 
-  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$text_query $loc")
-      .timeout(const Duration(seconds: 6));
+  //await cacheManager2.removeFile("$text_query $loc");
+
+  //var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$text_query $loc")
+  //    .timeout(const Duration(seconds: 6));
+
+  var file2 = await XCustomCacheManager.fetchData(url2.toString(), "$text_query $loc unsplash");
 
   var response2 = await file2.readAsString();
 
