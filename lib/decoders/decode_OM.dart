@@ -657,7 +657,11 @@ class OMAqi{
       "current": ["european_aqi", "pm10", "pm2_5", "nitrogen_dioxide", "ozone"],
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
-    var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 6));
+
+
+    //var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 6));
+    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi open-meteo");
+
     var response = await file.readAsString();
     final item = jsonDecode(response)["current"];
 
@@ -904,6 +908,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
 
 Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) async {
 
+  print("got here 1");
   var OM = await OMRequestData(lat, lng, real_loc);
   var oMBody = OM[0];
 
@@ -919,6 +924,8 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
 
   DateTime localtime = OMGetLocalTime(oMBody);
   String real_time = "jT${localtime.hour}:${localtime.minute}";
+
+  print("survivied");
 
   return WeatherData(
     radar: await RainviewerRadar.getData(),

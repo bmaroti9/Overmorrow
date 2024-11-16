@@ -37,7 +37,10 @@ Map<String, List<String>> settingSwitches = {
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
   'Wind': ['m/s', 'kph', 'mph', 'kn'],
+
   'Time mode': ['12 hour', '24 hour'],
+  'Date format': ['mm/dd', 'dd/mm'],
+
   'Font size': ['normal', 'small', 'very small', 'big'],
 
   'Color mode' : ['auto', 'original', 'colorful', 'mono', 'light', 'dark'],

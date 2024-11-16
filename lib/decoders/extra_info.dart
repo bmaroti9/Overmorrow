@@ -470,7 +470,8 @@ class RainviewerRadar {
   static Future<RainviewerRadar> getData() async {
   const String url = 'https://api.rainviewer.com/public/weather-maps.json';
 
-  var file = await cacheManager2.getSingleFile(url.toString());
+  //var file = await cacheManager2.getSingleFile(url.toString());
+  var file = await XCustomCacheManager.fetchData(url.toString(), url.toString());
   var response = await file.readAsString();
   final Map<String, dynamic> data = json.decode(response);
 

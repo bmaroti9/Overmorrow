@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -163,7 +162,8 @@ class _MyAppState extends State<MyApp> {
           icon: Icons.bug_report,
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,
           shouldAdd: "Please try another weather provider!",);
-      } on SocketException {
+      } catch (e, stacktrace) {
+        print(stacktrace);
         return dumbySearch(errorMessage: translation("Not connected to the internet", settings["Language"]!),
           updateLocation: updateLocation,
           icon: Icons.wifi_off,

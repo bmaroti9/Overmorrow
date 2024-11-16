@@ -59,17 +59,6 @@ class MyGetResponse implements FileServiceResponse {
     );
 
     /*
-    return DateTime(
-      now.year,
-      now.month,
-      now.day,
-      now.hour + 3,
-      nextQuarter,
-    );
-
-     */
-
-    /*
     return DateTime.now().add(
         Duration(minutes: 60 - DateTime.now().minute,
             seconds: 60 - DateTime.now().second)
@@ -138,8 +127,17 @@ class CustomCacheManager {
       }
     } catch (error) {
       print("last data");
-      final cachedFile = await _cacheManager.getSingleFile(url);
-      return cachedFile;
+      try {
+        final FileInfo? fileInfo = await _cacheManager.getFileFromCache(cacheKey);
+        return fileInfo!.file;
+      }
+      catch (error) {
+        print("catched now wifi");
+        throw SocketException("no wifi");
+      }
+
+      //final cachedFile = await _cacheManager.getSingleFile(url);
+      //return cachedFile;
     }
   }
 }
