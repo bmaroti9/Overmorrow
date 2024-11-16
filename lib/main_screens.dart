@@ -219,9 +219,11 @@ class _NewMainState extends State<NewMain> {
         children: [
           Stack(
             children: [
-              FadingWidget(data: data,
-                  time: data.updatedTime,
-                  key: Key(data.updatedTime.toString())),
+              FadingWidget(
+                data: data,
+                time: data.updatedTime,
+                key: Key(data.updatedTime.toString()),
+              ),
               LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     if (constraints.maxWidth > 500.0) {

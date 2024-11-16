@@ -47,7 +47,7 @@ class WeatherPage extends StatelessWidget {
     }
 
     return NewMain(data: data, updateLocation: updateLocation, context: context,
-        key: Key("${data.place}, ${data.current.surface} ${data.current.image} ${data.provider}"),);
+        key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
 
   }
 }
