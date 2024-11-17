@@ -108,7 +108,7 @@ class CustomCacheManager {
   static const cacheKey = "myCacheKey";
   static final CacheManager _cacheManager = CacheManager(Config(
     "hehekey",
-    stalePeriod: const Duration(hours: 3),
+    stalePeriod: const Duration(days: 3),
     fileService: MyFileService(),
   ));
 

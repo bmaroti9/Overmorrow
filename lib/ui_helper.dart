@@ -181,9 +181,31 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
 
     String text = translation('updated, just now', widget.data.settings["Language"]);
 
-    if (dif > 0) {
+    if (dif > 0 && dif < 60) {
       text = translation('updated, x min ago', widget.data.settings["Language"]);
       text = text.replaceAll('x', dif.toString());
+    }
+    else if (dif >= 60) {
+      int hour = (dif + 30) ~/ 60;
+      if (hour == 1) {
+        text = "updated, x hour ago";
+      }
+      else {
+        text = "updated, x hours ago";
+      }
+
+      text = text.replaceAll('x', hour.toString());
+    }
+    else if (dif >= 1440) { //number of minutes in a day
+      int day = (dif + 720) ~/ 1440;
+      if (day == 1) {
+        text = "updated, x day ago";
+      }
+      else {
+        text = "updated, x days ago";
+      }
+
+      text = text.replaceAll('x', day.toString());
     }
 
     List<String> split = text.split(',');
@@ -238,12 +260,12 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             if (widget.data.networkState == "offline") Padding(
-              padding: const EdgeInsets.only(right: 2, left: 23),
+              padding: const EdgeInsets.only(right: 2),
               child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
             ),
             if (widget.data.networkState == "offline") Padding(
               padding: const EdgeInsets.only(right: 7),
-              child: comfortatext(widget.data.networkState, 13, widget.data.settings,
+              child: comfortatext("offline", 13, widget.data.settings,
                   color: widget.data.current.primary, weight: FontWeight.w600),
             ),
             if (widget.data.networkState == "online") Padding(
@@ -267,12 +289,12 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             if (widget.data.networkState == "offline") Padding(
-              padding: const EdgeInsets.only(right: 2, left: 23),
+              padding: const EdgeInsets.only(right: 2),
               child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
             ),
             if (widget.data.networkState == "offline") Padding(
               padding: const EdgeInsets.only(right: 7),
-              child: comfortatext(widget.data.networkState, 13, widget.data.settings,
+              child: comfortatext("offline", 13, widget.data.settings,
                   color: widget.data.current.primary, weight: FontWeight.w600),
             ),
             TextButton(

@@ -144,8 +144,8 @@ class _RadarSmallState extends State<RadarSmall> {
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(17),
-                    child: FlutterMap(
+                    borderRadius: BorderRadius.circular(16),
+                    child: (data.networkState == "online") ? FlutterMap(
                       options: MapOptions(
                         onTap: (tapPosition, point) =>
                         {
@@ -182,7 +182,10 @@ class _RadarSmallState extends State<RadarSmall> {
                               .toInt()] + "/256/{z}/{x}/{y}/8/0_1.png",
                         ),
                       ],
-                    ),
+                    )
+                    : Center(
+                        child: comfortatext("not available offline", 15, data.settings, color: data.current.outline)
+                    )
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 8, top: 8),
@@ -435,9 +438,10 @@ class _RadarBigState extends State<RadarBig> {
 
 
     return Scaffold(
+      backgroundColor: data.current.containerLow,
       body: Stack(
         children: [
-          FlutterMap(
+          (data.networkState == "online") ? FlutterMap(
             options: MapOptions(
               initialCenter: LatLng(data.lat, data.lng),
               initialZoom: 5,
@@ -465,6 +469,9 @@ class _RadarBigState extends State<RadarBig> {
                     : 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
               ),
             ],
+          )
+          : Center(
+            child: comfortatext("not available offline", 15, data.settings, color: data.current.outline)
           ),
           Align(
             alignment: Alignment.bottomCenter,
