@@ -233,10 +233,19 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
 
     if (widget.isVisible) {
       return Padding(
-        padding: const EdgeInsets.only(top: 6, right: 10),
+        padding: const EdgeInsets.only(top: 7, right: 10, bottom: 2),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 3, left: 23),
+              child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: comfortatext("offline", 13, widget.data.settings,
+                  color: widget.data.current.primary, weight: FontWeight.w600),
+            ),
             Padding(
               padding: const EdgeInsets.only(right: 3),
               child: Icon(Icons.access_time, color: widget.data.current.primary, size: 13,),
@@ -256,6 +265,15 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 3, left: 23),
+              child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: comfortatext("offline", 13, widget.data.settings,
+                  color: widget.data.current.primary, weight: FontWeight.w600),
+            ),
             TextButton(
               onPressed: () async {
                 await _launchUrl(widget.data.current.photoUrl + "?utm_source=overmorrow&utm_medium=referral");

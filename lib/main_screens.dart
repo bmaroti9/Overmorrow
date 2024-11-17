@@ -222,7 +222,6 @@ class _NewMainState extends State<NewMain> {
               FadingWidget(
                 data: data,
                 time: data.updatedTime,
-                key: Key(data.updatedTime.toString()),
               ),
               LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {

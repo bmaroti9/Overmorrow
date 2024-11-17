@@ -115,12 +115,8 @@ String metNTimeCorrect(String date, int hourDif) {
   if (num == 0) {
     return '12am';
   }
-  else if (num < 10) {
-    final minusHour = (num % 10).toString();
-    return '${minusHour}am';
-  }
   else if (num < 12) {
-    return '${realhour}am';
+    return '${num}am';
   }
   else if (num == 12) {
     return '12pm';
@@ -461,6 +457,8 @@ class MetNHour {
 
   static MetNHour fromJson(item, settings, hourDif) {
     var nextHours = item["data"]["next_1_hours"] ?? item["data"]["next_6_hours"];
+
+    print((metN24HourTime(item["time"], hourDif), metNTimeCorrect(item["time"], hourDif)));
     return MetNHour(
         rawText: metNTextCorrection(
             nextHours["summary"]["symbol_code"]),
