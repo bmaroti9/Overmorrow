@@ -83,7 +83,7 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
 
   var file2 = await XCustomCacheManager.fetchData(url2.toString(), "$text_query $loc unsplash");
 
-  var response2 = await file2.readAsString();
+  var response2 = await file2[0].readAsString();
 
   var unsplash_body = jsonDecode(response2);
 
@@ -407,6 +407,8 @@ class WeatherData {
 
   final updatedTime;
   final fetch_datetime;
+  final networkState;
+
   final localtime;
 
   final days;
@@ -429,6 +431,7 @@ class WeatherData {
     required this.days,
     required this.current,
     required this.fetch_datetime,
+    required this.networkState,
     required this.updatedTime,
     required this.localtime,
 
@@ -472,7 +475,7 @@ class RainviewerRadar {
 
   //var file = await cacheManager2.getSingleFile(url.toString());
   var file = await XCustomCacheManager.fetchData(url.toString(), url.toString());
-  var response = await file.readAsString();
+  var response = await file[0].readAsString();
   final Map<String, dynamic> data = json.decode(response);
 
   final String host = data["host"];

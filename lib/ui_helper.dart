@@ -233,25 +233,26 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
 
     if (widget.isVisible) {
       return Padding(
-        padding: const EdgeInsets.only(top: 7, right: 10, bottom: 2),
+        padding: const EdgeInsets.only(top: 7, right: 24, bottom: 2),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 3, left: 23),
+            if (widget.data.networkState == "offline") Padding(
+              padding: const EdgeInsets.only(right: 2, left: 23),
               child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: comfortatext("offline", 13, widget.data.settings,
+            if (widget.data.networkState == "offline") Padding(
+              padding: const EdgeInsets.only(right: 7),
+              child: comfortatext(widget.data.networkState, 13, widget.data.settings,
                   color: widget.data.current.primary, weight: FontWeight.w600),
             ),
-            Padding(
+            if (widget.data.networkState == "online") Padding(
               padding: const EdgeInsets.only(right: 3),
               child: Icon(Icons.access_time, color: widget.data.current.primary, size: 13,),
             ),
             comfortatext('${widget.split[0]},', 13, widget.data.settings,
-                color: widget.data.current.primary, weight: FontWeight.w500),
+                color: widget.data.networkState == "online" ? widget.data.current.primary
+                    : widget.data.current.onSurface, weight: FontWeight.w500),
 
             comfortatext(widget.split.length > 1 ? widget.split[1] : "", 13, widget.data.settings,
                 color: widget.data.current.onSurface, weight: FontWeight.w500),
@@ -261,17 +262,17 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
     } else if (widget.data.current.photographerName != ""){
       List<String> split = translation("photo by x on Unsplash", widget.data.settings["Language"]).split(",");
       return Padding(
-        padding: const EdgeInsets.only(top: 0, right: 10),
+        padding: const EdgeInsets.only(top: 0, right: 24),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 3, left: 23),
+            if (widget.data.networkState == "offline") Padding(
+              padding: const EdgeInsets.only(right: 2, left: 23),
               child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: comfortatext("offline", 13, widget.data.settings,
+            if (widget.data.networkState == "offline") Padding(
+              padding: const EdgeInsets.only(right: 7),
+              child: comfortatext(widget.data.networkState, 13, widget.data.settings,
                   color: widget.data.current.primary, weight: FontWeight.w600),
             ),
             TextButton(

@@ -684,6 +684,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
-    localtime: "${localTime.hour}:${localTime.minute}"
+    localtime: "${localTime.hour}:${localTime.minute}",
+    networkState: "online" //TODO: implement actual network state
   );
 }

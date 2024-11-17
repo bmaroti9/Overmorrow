@@ -112,7 +112,7 @@ class CustomCacheManager {
     fileService: MyFileService(),
   ));
 
-  Future<File> fetchData(String url, String cacheKey) async {
+  Future<List<dynamic>> fetchData(String url, String cacheKey) async {
     try {
       final fileInfo = await _cacheManager.getFileFromCache(cacheKey);
 
@@ -121,15 +121,15 @@ class CustomCacheManager {
       if (fileInfo == null || fileInfo.validTill.difference(DateTime.now()).isNegative) {
         print(("got here", fileInfo?.validTill, fileInfo?.validTill.difference(DateTime.now())));
         final file = await _cacheManager.downloadFile(url, key: cacheKey);
-        return file.file;
+        return [file.file, "online"];
       } else {
-        return fileInfo.file;
+        return [fileInfo.file, "online"];
       }
     } catch (error) {
       print("last data");
       try {
         final FileInfo? fileInfo = await _cacheManager.getFileFromCache(cacheKey);
-        return fileInfo!.file;
+        return [fileInfo!.file, "offline"];
       }
       catch (error) {
         print("catched now wifi");

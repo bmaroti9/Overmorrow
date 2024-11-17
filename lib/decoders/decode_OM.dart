@@ -129,12 +129,13 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
   //var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
   var oMFile = await XCustomCacheManager.fetchData(oMUrl.toString(), "$real_loc, open-meteo");
 
-  var oMResponse = await oMFile.readAsString();
+  var oMResponse = await oMFile[0].readAsString();
   final OMData = jsonDecode(oMResponse);
 
-  DateTime fetch_datetime = await oMFile.lastModified();
+  DateTime fetch_datetime = await oMFile[0].lastModified();
+  String networkState = oMFile[1];
 
-  return [OMData, fetch_datetime];
+  return [OMData, fetch_datetime, networkState];
 }
 
 String oMGetName(index, settings, item) {
@@ -662,7 +663,7 @@ class OMAqi{
     //var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 6));
     var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi open-meteo");
 
-    var response = await file.readAsString();
+    var response = await file[0].readAsString();
     final item = jsonDecode(response)["current"];
 
     int index = AqiIndexCorrection(item["european_aqi"]);
@@ -913,6 +914,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   var oMBody = OM[0];
 
   DateTime fetch_datetime = OM[1];
+  String networkState = OM[2];
 
   OMSunstatus sunstatus = OMSunstatus.fromJson(oMBody, settings);
 
@@ -947,5 +949,6 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
     localtime: real_time.split("T")[1],
+    networkState: networkState,
     );
 }
