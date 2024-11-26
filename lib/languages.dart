@@ -1656,6 +1656,21 @@ Map<String, List<String>> mainTranslate = {
     'καθημερινό AQI'
   ],
 
+  "Date format": [
+    "Date format",
+    "Dátumformátum",
+    "Formato de fecha",
+    "Format de date",
+    "Datumsformat",
+    "Formato Data",
+    "Formato de Data",
+    "Формат Даты",
+    "日期格式",
+    "日付形式",
+    "Format Daty",
+    "Μορφή Ημερομηνίας"
+  ],
+
   //day
   "d": [
     "d",

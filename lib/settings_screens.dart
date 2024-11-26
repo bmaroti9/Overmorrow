@@ -504,7 +504,9 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
               padding: const EdgeInsets.only(top: 30, bottom: 60),
               child: Column(
                 children: [
-                  settingEntry(Icons.access_time_filled_sharp, "Time mode", settings, highlight, updatePage,
+                  settingEntry(Icons.access_time_outlined, "Time mode", settings, highlight, updatePage,
+                      onSurface, primaryLight, primary),
+                  settingEntry(Icons.date_range, "Date format", settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
                   settingEntry(CupertinoIcons.textformat_size, "Font size", settings, highlight, updatePage,
                       onSurface, primaryLight, primary),

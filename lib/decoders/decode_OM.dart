@@ -149,7 +149,9 @@ String oMGetName(index, settings, item) {
   DateTime time = DateTime(int.parse(z[0]), int.parse(z[1]), int.parse(z[2]));
   const weeks = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   String weekname = translation(weeks[time.weekday - 1], settings["Language"]);
-  return "$weekname, ${time.month}/${time.day}";
+  final String date = settings["Date format"] == "mm/dd" ? "${time.month}/${time.day}"
+      :"${time.day}/${time.month}";
+  return "$weekname, $date";
 }
 
 String oMamPmTime(String time) {
