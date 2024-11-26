@@ -60,16 +60,17 @@ String OMamPmTime(String time) {
   int hour = int.parse(num[0]);
   int minute = int.parse(num[1]);
 
+  if (hour == 0) {
+    return "0:${minute}am";
+  }
+  if (hour == 12) {
+    return "12:${minute}pm";
+  }
+
   if (hour > 12) {
-    if (minute < 10) {
-      return "${hour - 12}:0${minute}pm";
-    }
     return "${hour - 12}:${minute}pm";
   }
-  if (minute < 10) {
-    return "$hour:0${minute}am";
-  }
-  return "$hour:${minute}am";
+  return "${hour.toString().padLeft(2, "0")}:${minute.toString().padLeft(2, "0")}am";
 }
 
 int AqiIndexCorrection(int aqi) {

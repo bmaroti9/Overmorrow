@@ -59,7 +59,7 @@ Widget searchBar(Color color, List<String> recommend,
       ),
 
       margins: secondColor == highlightColor ? const EdgeInsets.only(left: 10, right: 10, top: 20) //tablet
-            :  EdgeInsets.only(left: 17, right: 17, top: MediaQuery.of(context).padding.top + 15), //phone
+            :  EdgeInsets.only(left: 20, right: 20, top: MediaQuery.of(context).padding.top + 15), //phone
 
       borderRadius: BorderRadius.circular(23),
       backgroundColor: color,
