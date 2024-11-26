@@ -282,10 +282,9 @@ class MetNCurrent {
       text: metNTextCorrection(
           it["next_1_hours"]["summary"]["symbol_code"],
           language: settings["Language"]),
-
-      precip: unit_coversion(
+      precip: double.parse(unit_coversion(
           it["next_1_hours"]["details"]["precipitation_amount"],
-          settings["Precipitation"]),
+          settings["Precipitation"]).toStringAsFixed(1)),
       temp: unit_coversion(
           it["instant"]["details"]["air_temperature"],
           settings["Temperature"]).round(),

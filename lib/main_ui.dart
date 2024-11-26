@@ -165,6 +165,9 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
             padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
             child: DropdownButton(
               underline: Container(),
+              onTap: () {
+                HapticFeedback.mediumImpact();
+              },
               borderRadius: BorderRadius.circular(20),
               icon: Padding(
                 padding: const EdgeInsets.only(left:5),
