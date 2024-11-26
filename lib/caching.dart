@@ -120,7 +120,7 @@ class CustomCacheManager {
 
       if (fileInfo == null || fileInfo.validTill.difference(DateTime.now()).isNegative) {
         print(("got here", fileInfo?.validTill, fileInfo?.validTill.difference(DateTime.now())));
-        final file = await _cacheManager.downloadFile(url, key: cacheKey);
+        final file = await _cacheManager.downloadFile(url, key: cacheKey).timeout(Duration(seconds: 3));
         return [file.file, "online"];
       } else {
         return [fileInfo.file, "online"];

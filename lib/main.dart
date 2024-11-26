@@ -137,7 +137,7 @@ class _MyAppState extends State<MyApp> {
           return dumbySearch(
             errorMessage: '${translation('Place not found', settings["Language"]!)}: \n $backupName',
             updateLocation: updateLocation,
-            icon: Icons.location_disabled,
+            icon: Icons.location_disabled, key: Key(backupName),
             place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
         }
       }
@@ -149,13 +149,14 @@ class _MyAppState extends State<MyApp> {
 
       var weatherdata;
 
+      print(("backupName", backupName));
       try {
         weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weather_provider);
 
       } on TimeoutException {
         return dumbySearch(errorMessage: translation("Weak or no wifi connection", settings["Language"]!),
           updateLocation: updateLocation,
-          icon: Icons.wifi_off,
+          icon: Icons.wifi_off, key: Key(backupName),
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on HttpExceptionWithStatus catch (hihi){
         return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
@@ -166,12 +167,12 @@ class _MyAppState extends State<MyApp> {
         print(stacktrace);
         return dumbySearch(errorMessage: translation("Not connected to the internet", settings["Language"]!),
           updateLocation: updateLocation,
-          icon: Icons.wifi_off,
+          icon: Icons.wifi_off, key: Key(backupName),
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       }
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
-                                // then this will be the new startup
+                                // then this will be the new startup place
 
       return WeatherPage(data: weatherdata, updateLocation: updateLocation);
 
@@ -191,6 +192,7 @@ class _MyAppState extends State<MyApp> {
           shouldAdd: "Please try another weather provider!",);
       }
       else {
+        //retry after clearing cache
         return getDays(true, proposedLoc, backupName, startup);
       }
     }

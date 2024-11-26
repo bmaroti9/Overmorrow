@@ -916,16 +916,24 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   DateTime fetch_datetime = OM[1];
   String networkState = OM[2];
 
+  DateTime localtime = OMGetLocalTime(oMBody);
+  String real_time = "jT${localtime.hour}:${localtime.minute}";
+
   OMSunstatus sunstatus = OMSunstatus.fromJson(oMBody, settings);
+
+  //try to find the start of the actual time
+  //this is for offline mode, when you would have to get rid of the first x hours
+  //because they have already passed
+
+  final DateTime firstHour = DateTime.parse(oMBody["hourly"]["time"][0]);
+  final int difference = localtime.difference(firstHour).inHours;
+  print(("firstHour", firstHour, localtime, difference));
 
   List<OMDay> days = [];
   for (int n = 0; n < 14; n++) {
     OMDay x = OMDay.build(oMBody, settings, n, sunstatus);
     days.add(x);
   }
-
-  DateTime localtime = OMGetLocalTime(oMBody);
-  String real_time = "jT${localtime.hour}:${localtime.minute}";
 
   print("survivied");
 

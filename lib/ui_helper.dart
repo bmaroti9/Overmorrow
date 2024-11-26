@@ -181,11 +181,11 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
 
     String text = translation('updated, just now', widget.data.settings["Language"]);
 
-    if (dif > 0 && dif < 60) {
+    if (dif > 0 && dif < 45) {
       text = translation('updated, x min ago', widget.data.settings["Language"]);
       text = text.replaceAll('x', dif.toString());
     }
-    else if (dif >= 60) {
+    else if (dif >= 45 && dif < 1440) {
       int hour = (dif + 30) ~/ 60;
       if (hour == 1) {
         text = "updated, x hour ago";
