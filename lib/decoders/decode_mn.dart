@@ -154,12 +154,16 @@ Future<List<dynamic>> MetNMakeRequest(double lat, double lng, String real_loc) a
   };
   final MnUrl = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/complete', MnParams);
 
-  var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$real_loc, met.no", headers: headers).timeout(const Duration(seconds: 6));
-  var MnResponse = await MnFile.readAsString();
+  //var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$real_loc, met.no", headers: headers).timeout(const Duration(seconds: 6));
+  var MnFile = await XCustomCacheManager.fetchData(MnUrl.toString(), "$real_loc, met.no", headers: headers);
+
+  var MnResponse = await MnFile[0].readAsString();
+  String networkState = MnFile[1];
+
   final MnData = jsonDecode(MnResponse);
 
-  DateTime fetch_datetime = await MnFile.lastModified();
-  return [MnData, fetch_datetime];
+  DateTime fetch_datetime = await MnFile[0].lastModified();
+  return [MnData, fetch_datetime, networkState];
 
 }
 
@@ -459,7 +463,6 @@ class MetNHour {
   static MetNHour fromJson(item, settings, hourDif) {
     var nextHours = item["data"]["next_1_hours"] ?? item["data"]["next_6_hours"];
 
-    print((metN24HourTime(item["time"], hourDif), metNTimeCorrect(item["time"], hourDif)));
     return MetNHour(
         rawText: metNTextCorrection(
             nextHours["summary"]["symbol_code"]),
@@ -646,6 +649,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
   var MnBody = Mn[0];
 
   DateTime fetch_datetime = Mn[1];
+  String networkState = Mn[2];
 
   MetNSunstatus sunstatus = await MetNSunstatus.fromJson(MnBody, settings, lat, lng, hourDif, localTime);
 
@@ -686,6 +690,6 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
     localtime: "${localTime.hour}:${localTime.minute}",
-    networkState: "online" //TODO: implement actual network state
+    networkState: networkState,
   );
 }

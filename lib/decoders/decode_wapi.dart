@@ -53,16 +53,19 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   };
   final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
 
-  var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
-      .timeout(const Duration(seconds: 6));
+  //var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
+  //    .timeout(const Duration(seconds: 3));
 
-  DateTime fetch_datetime = await file.lastModified();
+  var file = await XCustomCacheManager.fetchData(url.toString(), "$real_loc, weatherapi.com");
 
-  var response = await file.readAsString();
+  DateTime fetch_datetime = await file[0].lastModified();
+  String networkState = file[1];
+
+  var response = await file[0].readAsString();
 
   var wapi_body = jsonDecode(response);
 
-  return [wapi_body, fetch_datetime];
+  return [wapi_body, fetch_datetime, networkState];
 }
 
 int wapiGetWindDir(var data) {
@@ -526,7 +529,9 @@ class WapiHour {
     ),),
     temp: unit_coversion(item["temp_c"], settings["Temperature"]).round(),
     time: getTime(item["time"], settings["Time mode"] == '12 hour'),
-    precip: unit_coversion(item["precip_mm"] + (item["snow_cm"] / 10), settings["Precipitation"]),
+    precip: double.parse(
+        unit_coversion(item["precip_mm"] + (item["snow_cm"] / 10), settings["Precipitation"]).toStringAsFixed(1)
+    ),
 
     raw_temp: item["temp_c"],
     raw_precip: item["precip_mm"] + (item["snow_cm"] / 10),
@@ -718,6 +723,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
   var wapi_body = wapi[0];
   DateTime fetch_datetime = wapi[1];
+  String networkState = wapi[2];
 
   int epoch = wapi_body["location"]["localtime_epoch"];
   WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
@@ -750,6 +756,6 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
     minutely_15_precip: Wapi15MinutePrecip.fromJson(wapi_body, settings),
 
-    networkState: "online" //TODO: implement actual network state
+    networkState: networkState
   );
 }

@@ -664,7 +664,7 @@ class OMAqi{
 
 
     //var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 6));
-    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi open-meteo");
+    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 3));
 
     var response = await file[0].readAsString();
     final item = jsonDecode(response)["current"];
@@ -775,8 +775,11 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       "forecast_days" : "5",
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
-    var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo extended").timeout(const Duration(seconds: 3));
-    var response = await file.readAsString();
+
+    //var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo extended").timeout(const Duration(seconds: 3));
+    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi-extended open-meteo").timeout(const Duration(seconds: 3));
+
+    var response = await file[0].readAsString();
     final item = jsonDecode(response);
 
     final no2_h = List<double>.from((item["hourly"]["nitrogen_dioxide"] as List?) ?.map((e) => (e as double?) ?? 0.0) ?? []);
@@ -937,8 +940,6 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     OMDay x = OMDay.build(oMBody, settings, n, sunstatus);
     days.add(x);
   }
-
-  print("survivied");
 
   return WeatherData(
     radar: await RainviewerRadar.getData(),

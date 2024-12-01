@@ -108,11 +108,11 @@ class CustomCacheManager {
   static const cacheKey = "myCacheKey";
   static final CacheManager _cacheManager = CacheManager(Config(
     "hehekey",
-    stalePeriod: const Duration(days: 3),
+    stalePeriod: const Duration(days: 7),
     fileService: MyFileService(),
   ));
 
-  Future<List<dynamic>> fetchData(String url, String cacheKey) async {
+  Future<List<dynamic>> fetchData(String url, String cacheKey, {headers}) async {
     try {
       final fileInfo = await _cacheManager.getFileFromCache(cacheKey);
 
@@ -120,7 +120,7 @@ class CustomCacheManager {
 
       if (fileInfo == null || fileInfo.validTill.difference(DateTime.now()).isNegative) {
         print(("got here", fileInfo?.validTill, fileInfo?.validTill.difference(DateTime.now())));
-        final file = await _cacheManager.downloadFile(url, key: cacheKey).timeout(Duration(seconds: 3));
+        final file = await _cacheManager.downloadFile(url, key: cacheKey, authHeaders: headers).timeout(Duration(seconds: 3));
         return [file.file, "online"];
       } else {
         return [fileInfo.file, "online"];
