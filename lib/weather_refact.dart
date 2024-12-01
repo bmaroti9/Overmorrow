@@ -378,6 +378,7 @@ Map<String, int> textFilter = {
   'texture': -10000,
   'pattern': -10000,
   'text': -10000,
+  'wall':-10000,
   'sign': -10000,
   'grayscale' : -100000,
   'black and white' : -100000,
