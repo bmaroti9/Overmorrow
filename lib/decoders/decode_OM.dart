@@ -70,7 +70,7 @@ String OMamPmTime(String time) {
   if (hour > 12) {
     return "${hour - 12}:${minute}pm";
   }
-  return "${hour.toString().padLeft(2, "0")}:${minute.toString().padLeft(2, "0")}am";
+  return "$hour:${minute.toString().padLeft(2, "0")}am";
 }
 
 int AqiIndexCorrection(int aqi) {
