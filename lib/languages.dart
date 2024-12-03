@@ -620,7 +620,7 @@ Map<String, List<String>> mainTranslate = {
     '好',
     '良い',
     'dobry',
-    'Εξαιρετική'
+    'εξαιρετική'
   ],
   'fair': [
     'fair',
