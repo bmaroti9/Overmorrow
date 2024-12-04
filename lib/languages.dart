@@ -114,7 +114,7 @@ Map<String, List<String>> mainTranslate = {
     '降水',
     '降水量',
     'Opady',
-    'Βροχόπτωση'
+    'Υετός'
   ],
   'Settings': [
     'Settings',
