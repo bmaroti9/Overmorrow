@@ -166,10 +166,10 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                 child: RainWidget(data, day, highlight, data.current.containerHigh)
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, top: 18, bottom: 10),
+              padding: const EdgeInsets.only(left: 8, right: 8, top: 18, bottom: 8),
               child: Container(
-                height: 85,
-                padding: const EdgeInsets.only(top: 8, bottom: 8, left: 13, right: 13),
+                height: 87,
+                padding: const EdgeInsets.only(top: 9, bottom: 9, left: 15, right: 15),
                 decoration: BoxDecoration(
                   //border: Border.all(width: 1, color: data.current.outline),
                   color: state ? data.current.container : data.current.containerLow,
@@ -189,7 +189,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                             dayStat(data, Icons.water_drop_outlined, day.total_precip, data.settings["Precipitation"]),
                             dayStat(data, CupertinoIcons.wind, day.windspeed, data.settings["Wind"], addWind: true,
                                 windDir: day.wind_dir),
-                            dayStat(data, CupertinoIcons.sun_max, day.uv, "UV"),
+                            dayStat(data, CupertinoIcons.sun_max, day.uv, "UV", iconSize: 20.0),
                           ]
                       );
                     }
