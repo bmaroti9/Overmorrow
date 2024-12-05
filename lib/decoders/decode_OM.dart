@@ -61,14 +61,14 @@ String OMamPmTime(String time) {
   int minute = int.parse(num[1]);
 
   if (hour == 0) {
-    return "0:${minute}am";
+    return "0:${minute.toString().padLeft(2, "0")}am";
   }
   if (hour == 12) {
-    return "12:${minute}pm";
+    return "12:${minute.toString().padLeft(2, "0")}pm";
   }
 
   if (hour > 12) {
-    return "${hour - 12}:${minute}pm";
+    return "${hour - 12}:${minute.toString().padLeft(2, "0")}pm";
   }
   return "$hour:${minute.toString().padLeft(2, "0")}am";
 }

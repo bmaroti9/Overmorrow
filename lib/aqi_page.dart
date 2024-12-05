@@ -48,7 +48,7 @@ class SquigglyCirclePainter extends CustomPainter {
     double centerY = size.height / 2;
 
     double waves = 12;
-    double waveAmplitude = size.width / 50;
+    double waveAmplitude = size.width / 52;
 
     for (double i = 0; i <= 360; i += 0.1) {
       double angle = i * pi / 180;
