@@ -21,7 +21,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
-import 'package:worldtime/worldtime.dart';
 
 import '../caching.dart';
 import '../settings_page.dart';
@@ -136,7 +135,7 @@ String metN24HourTime(String date, int hourDif) {
 }
 
 Future<DateTime> MetNGetLocalTime(lat, lng) async {
-  return await Worldtime().timeByLocation(
+  return await MyWorldtime().timeByLocation(
     latitude: lat,
     longitude: lng,
   );
@@ -525,8 +524,9 @@ class MetNSunstatus {
     };
     final MnUrl = Uri.https("api.met.no", 'weatherapi/sunrise/3.0/sun', MnParams);
 
-    var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$lat, $lng, sunstatus met.no", headers: headers).timeout(const Duration(seconds: 6));
-    var MnResponse = await MnFile.readAsString();
+    //var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$lat, $lng, sunstatus met.no", headers: headers).timeout(const Duration(seconds: 6));
+    var MnFile = await XCustomCacheManager.fetchData(MnUrl.toString(), "$lat, $lng met.no aqi", headers: headers);
+    var MnResponse = await MnFile[0].readAsString();
     final item = jsonDecode(MnResponse);
 
     List<String> sunriseString = item["properties"]["sunrise"]["time"].split("T")[1].split("+")[0].split(":");

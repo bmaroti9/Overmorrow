@@ -46,8 +46,8 @@ Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0
           padding: const EdgeInsets.only(left: 5, right: 3),
           child: RotationTransition(
               turns: AlwaysStoppedAnimation(windDir / 360),
-              child: Icon(CupertinoIcons.arrow_down_circle,
-                color: data.current.primaryLight, size: 18,)
+              child: Icon(Icons.arrow_circle_right_outlined,
+                color: data.current.primaryLight, size: 20)
           )
       ),
     ],
@@ -187,9 +187,9 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                           children: [
                             dayStat(data, Icons.umbrella_rounded, day.precip_prob, "%"),
                             dayStat(data, Icons.water_drop_outlined, day.total_precip, data.settings["Precipitation"]),
-                            dayStat(data, CupertinoIcons.wind, day.windspeed, data.settings["Wind"], addWind: true,
+                            dayStat(data, Icons.air, day.windspeed, data.settings["Wind"], addWind: true,
                                 windDir: day.wind_dir),
-                            dayStat(data, CupertinoIcons.sun_max, day.uv, "UV", iconSize: 20.0),
+                            dayStat(data, Icons.wb_sunny_outlined, day.uv, "UV", iconSize: 20.0),
                           ]
                       );
                     }
@@ -851,7 +851,7 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                         ]
                       ),
                     ),
-                    dayStat(data, CupertinoIcons.wind, day.windspeed, data.settings["Wind"], addWind: true,
+                    dayStat(data, Icons.air, day.windspeed, data.settings["Wind"], addWind: true,
                         windDir: day.wind_dir),
                   ],
                 ),
