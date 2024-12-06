@@ -42,6 +42,11 @@ int metNCalculateHourDif(DateTime timeThere) {
   return now.hour - timeThere.hour;
 }
 
+Duration metNCalculateTimeOffset(DateTime timeThere) {
+  DateTime now = DateTime.now().toUtc();
+  return now.difference(timeThere);
+}
+
 int metNcalculateFeelsLike(double t, double r, double v) {
   //unfortunately met norway has no feels like temperatures, so i have to calculate it myself based on:
   //temperature, relative humidity, and wind speed
@@ -637,18 +642,26 @@ class MetN15MinutePrecip { //met norway doesn't actaully have 15 minute forecast
     );
 
   }
-
 }
 
 Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) async {
 
-  DateTime localTime = await MetNGetLocalTime(lat, lng);
-  int hourDif = metNCalculateHourDif(localTime);
-
   var Mn = await MetNMakeRequest(lat, lng, real_loc);
   var MnBody = Mn[0];
 
+  DateTime lastKnowTime = await MetNGetLocalTime(lat, lng);
   DateTime fetch_datetime = Mn[1];
+
+  //this gives us the time passed since last fetch, this is all basically for offline mode
+  Duration realTimeOffset = DateTime.now().difference(fetch_datetime);
+
+  //now we just need to apply this time offset to get the real current time
+  DateTime localTime = lastKnowTime.add(realTimeOffset);
+
+  int hourDif = metNCalculateHourDif(localTime);
+
+  print(("fetch", fetch_datetime, realTimeOffset, lastKnowTime, localTime));
+
   String networkState = Mn[2];
 
   MetNSunstatus sunstatus = await MetNSunstatus.fromJson(MnBody, settings, lat, lng, hourDif, localTime);

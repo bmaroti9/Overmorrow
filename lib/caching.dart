@@ -43,8 +43,8 @@ class MyGetResponse implements FileServiceResponse {
 
   @override
   DateTime get validTill {
-    if (url.toString().contains("search.json")) { //search results are stored for 20 days
-      return DateTime.now().add(const Duration(days: 20));
+    if (url.toString().contains("search.json")) { //search results are stored for 40 days
+      return DateTime.now().add(const Duration(days: 40));
     }
 
     //snap to the next quarter hour because that's when the weather data updates
