@@ -39,6 +39,8 @@ String metNTextCorrection(String text, {language = 'English'}) {
 int metNCalculateHourDif(DateTime timeThere) {
   DateTime now = DateTime.now().toUtc();
 
+  print(("hourdif", now.hour, timeThere.hour));
+
   return now.hour - timeThere.hour;
 }
 
@@ -254,11 +256,20 @@ class MetNCurrent {
       final text = metNTextCorrection(
           item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"],
           language: "English");
-      final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
-      Uimage = ImageData[0];
-      photographerName = ImageData[1];
-      photorgaperUrl = ImageData[2];
-      photoLink = ImageData[3];
+
+      try {
+        final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
+        Uimage = ImageData[0];
+        photographerName = ImageData[1];
+        photorgaperUrl = ImageData[2];
+        photoLink = ImageData[3];
+      }
+      catch (e) {
+        String imagePath = metNBackdropCorrection(
+          metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+        );
+        Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
+      }
     }
     else {
       String imagePath = metNBackdropCorrection(
@@ -518,11 +529,11 @@ class MetNSunstatus {
     required this.absoluteSunriseSunset,
   });
 
-  static Future<MetNSunstatus> fromJson(item, settings, lat, lng, int dif, DateTime timeThere) async {
+  static Future<MetNSunstatus> fromJson(item, settings, lat, lng, int dif, DateTime timeThere, DateTime fetchDate) async {
     final MnParams = {
       "lat" : lat.toString(),
       "lon" : lng.toString(),
-      "date" : "${timeThere.year}-${timeThere.month.toString().padLeft(2, "0")}-${timeThere.day.toString().padLeft(2, "0")}",
+      "date" : "${fetchDate.year}-${fetchDate.month.toString().padLeft(2, "0")}-${fetchDate.day.toString().padLeft(2, "0")}",
     };
     final headers = {
       "User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"
@@ -650,6 +661,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
   var MnBody = Mn[0];
 
   DateTime lastKnowTime = await MetNGetLocalTime(lat, lng);
+  print(("LOCAAAAAAAL", lastKnowTime));
   DateTime fetch_datetime = Mn[1];
 
   //this gives us the time passed since last fetch, this is all basically for offline mode
@@ -659,21 +671,30 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
   DateTime localTime = lastKnowTime.add(realTimeOffset);
 
   int hourDif = metNCalculateHourDif(localTime);
+  //int hourDif = fetch_datetime.toUtc().hour - localTime.hour;
 
   print(("fetch", fetch_datetime, realTimeOffset, lastKnowTime, localTime));
 
   String networkState = Mn[2];
 
-  MetNSunstatus sunstatus = await MetNSunstatus.fromJson(MnBody, settings, lat, lng, hourDif, localTime);
+  //I have to use the fetch date because on offline it wouldn't work because it changes
+  MetNSunstatus sunstatus = await MetNSunstatus.fromJson(MnBody, settings, lat, lng, hourDif, localTime, fetch_datetime);
+
+  int start = localTime.difference(DateTime(lastKnowTime.year, lastKnowTime.month,
+      lastKnowTime.day, lastKnowTime.hour)).inHours;
+
+  print(("hours", localTime.hour, lastKnowTime.hour, start, hourDif));
+
+  MnBody["properties"]["timeseries"] = MnBody["properties"]["timeseries"].sublist(start);
 
   List<MetNDay> days = [];
-
   int begin = 0;
   int index = 0;
 
   int previous_hour = 0;
   for (int n = 0; n < MnBody["properties"]["timeseries"].length; n++) {
     int hour = (int.parse(MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0]) - hourDif) % 24;
+    print((hourDif, hour, MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0]));
     if (n > 0 && hour - previous_hour < 1) {
       MetNDay day = MetNDay.fromJson(MnBody, settings, begin, n, index, hourDif);
       days.add(day);
