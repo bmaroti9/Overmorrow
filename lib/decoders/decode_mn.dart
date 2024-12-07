@@ -661,7 +661,6 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
   var MnBody = Mn[0];
 
   DateTime lastKnowTime = await MetNGetLocalTime(lat, lng);
-  print(("LOCAAAAAAAL", lastKnowTime));
   DateTime fetch_datetime = Mn[1];
 
   //this gives us the time passed since last fetch, this is all basically for offline mode
@@ -671,20 +670,15 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
   DateTime localTime = lastKnowTime.add(realTimeOffset);
 
   int hourDif = metNCalculateHourDif(localTime);
-  //int hourDif = fetch_datetime.toUtc().hour - localTime.hour;
-
-  print(("fetch", fetch_datetime, realTimeOffset, lastKnowTime, localTime));
 
   String networkState = Mn[2];
 
   //I have to use the fetch date because on offline it wouldn't work because it changes
   MetNSunstatus sunstatus = await MetNSunstatus.fromJson(MnBody, settings, lat, lng, hourDif, localTime, fetch_datetime);
 
+  //removes the outdated hours
   int start = localTime.difference(DateTime(lastKnowTime.year, lastKnowTime.month,
       lastKnowTime.day, lastKnowTime.hour)).inHours;
-
-  print(("hours", localTime.hour, lastKnowTime.hour, start, hourDif));
-
   MnBody["properties"]["timeseries"] = MnBody["properties"]["timeseries"].sublist(start);
 
   List<MetNDay> days = [];
