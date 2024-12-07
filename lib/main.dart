@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -152,7 +153,6 @@ class _MyAppState extends State<MyApp> {
       print(("backupName", backupName));
       try {
         weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weather_provider);
-
       } on TimeoutException {
         return dumbySearch(errorMessage: translation("Weak or no wifi connection", settings["Language"]!),
           updateLocation: updateLocation,
@@ -163,12 +163,18 @@ class _MyAppState extends State<MyApp> {
           icon: Icons.bug_report,
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,
           shouldAdd: "Please try another weather provider!",);
-      } catch (e, stacktrace) {
-        print(stacktrace);
+      } on SocketException {
         return dumbySearch(errorMessage: translation("Not connected to the internet", settings["Language"]!),
           updateLocation: updateLocation,
           icon: Icons.wifi_off, key: Key(backupName),
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+      }
+      catch (e, stacktrace) {
+        print(stacktrace);
+        return dumbySearch(errorMessage: "general error at place 1: ${e.toString()}", updateLocation: updateLocation,
+          icon: Icons.bug_report,
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,
+          shouldAdd: "Please try another weather provider!",);
       }
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail

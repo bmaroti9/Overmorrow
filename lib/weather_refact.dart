@@ -378,6 +378,7 @@ Map<String, int> textFilter = {
   'texture': -10000,
   'pattern': -10000,
   'text': -10000,
+  'eclipse': -10000, //it gets put in during days and it looks like night
   'wall':-10000,
   'sign': -10000,
   'grayscale' : -100000,
