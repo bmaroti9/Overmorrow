@@ -301,7 +301,7 @@ class OMCurrent {
     required this.imageDebugColors
   });
 
-  static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng) async {
+  static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng, start) async {
 
     Image Uimage;
     String photographerName = "";
@@ -310,7 +310,7 @@ class OMCurrent {
 
     if (settings["Image source"] == "network") {
       final ImageData = await getUnsplashImage(oMCurrentTextCorrection(
-          item["hourly"]["weather_code"][0], sunstatus, timenow), real_loc, lat, lng);
+          item["hourly"]["weather_code"][start], sunstatus, timenow), real_loc, lat, lng);
       Uimage = ImageData[0];
       photographerName = ImageData[1];
       photorgaperUrl = ImageData[2];
@@ -319,7 +319,7 @@ class OMCurrent {
     else {
       String imagePath = oMBackdropCorrection(
         oMCurrentTextCorrection(
-            item["hourly"]["weather_code"][0], sunstatus, timenow),
+            item["hourly"]["weather_code"][start], sunstatus, timenow),
       );
       Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
         width: double.infinity, height: double.infinity,);
@@ -327,12 +327,12 @@ class OMCurrent {
 
     Color back = BackColorCorrection(
       oMCurrentTextCorrection(
-          item["hourly"]["weather_code"][0], sunstatus, timenow),
+          item["hourly"]["weather_code"][start], sunstatus, timenow),
     );
 
     Color primary = PrimaryColorCorrection(
       oMCurrentTextCorrection(
-          item["hourly"]["weather_code"][0], sunstatus, timenow),
+          item["hourly"]["weather_code"][start], sunstatus, timenow),
     );
 
     List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
@@ -348,9 +348,9 @@ class OMCurrent {
       imageDebugColors: imageDebugColors,
 
       text: translation(oMCurrentTextCorrection(
-          item["hourly"]["weather_code"][0], sunstatus, timenow),
+          item["hourly"]["weather_code"][start], sunstatus, timenow),
           settings["Language"]),
-      uv: item["daily"]["uv_index_max"][0].round(),
+      uv: item["daily"]["uv_index_max"][start].round(),
       feels_like: unit_coversion(
           item["current"]["apparent_temperature"], settings["Temperature"])
           .round(),
@@ -375,14 +375,14 @@ class OMCurrent {
       backup_primary: primary,
 
       precip: double.parse(unit_coversion(
-          item["daily"]["precipitation_sum"][0], settings["Precipitation"])
+          item["daily"]["precipitation_sum"][start], settings["Precipitation"])
           .toStringAsFixed(1)),
-      wind: unit_coversion(item["hourly"]["wind_speed_10m"][0], settings["Wind"])
+      wind: unit_coversion(item["hourly"]["wind_speed_10m"][start], settings["Wind"])
           .round(),
       humidity: item["current"]["relative_humidity_2m"],
       temp: unit_coversion(
-          item["hourly"]["temperature_2m"][0], settings["Temperature"]).round(),
-      wind_dir: item["hourly"]["wind_direction_10m"][0],
+          item["hourly"]["temperature_2m"][start], settings["Temperature"]).round(),
+      wind_dir: item["hourly"]["wind_direction_10m"][start],
     );
   }
 }
@@ -427,9 +427,9 @@ class OMDay {
     required this.wind_dir,
   });
 
-  static OMDay? build(item, settings, index, sunstatus, localtime) {
+  static OMDay? build(item, settings, index, sunstatus, approximatelocal) {
 
-    List<OMHour> hours = buildHours(index, true, item, settings, sunstatus, localtime);
+    List<OMHour> hours = buildHours(index, true, item, settings, sunstatus, approximatelocal);
 
     if (hours.length > 0) {
       return OMDay(
@@ -444,7 +444,7 @@ class OMDay {
             "/${unit_coversion(item["daily"]["temperature_2m_max"][index], settings["Temperature"]).round().toString()}°",
         precip_prob: item["daily"]["precipitation_probability_max"][index] ?? 0,
         mm_precip: item["daily"]["precipitation_sum"][index],
-        hourly_for_precip: buildHours(index, false, item, settings, sunstatus, localtime),
+        hourly_for_precip: buildHours(index, false, item, settings, sunstatus, approximatelocal),
         hourly: hours,
         wind_dir: item["daily"]["wind_direction_10m_dominant"][index] ?? 0,
       );
@@ -453,20 +453,19 @@ class OMDay {
 
   }
 
-  static List<OMHour> buildHours(index, get_rid_first, item, settings, sunstatus, localtime) {
+  static List<OMHour> buildHours(index, get_rid_first, item, settings, sunstatus, approximatelocal) {
     //int timenow = int.parse(item["current"]["time"].split("T")[1].split(":")[0]);
     List<OMHour> hourly = [];
 
     //somehow localtime is in utc and the hours are not, so the differences were incorrect
     //converting it always changed the time so i just did this
-    DateTime localWithoutUTC = DateTime(localtime.year, localtime.month, localtime.day, localtime.hour);
 
     int l = item["hourly"]["weather_code"].length;
 
     for (var i = 0; i < 24; i++) {
       int j = index * 24 + i;
       DateTime hour = DateTime.parse(item["hourly"]["time"][j]);
-      if ((localWithoutUTC.difference(hour).inMinutes <= 0 || !get_rid_first) && l > j) {
+      if ((approximatelocal.difference(hour).inMinutes <= 0 || !get_rid_first) && l > j) {
         hourly.add(OMHour.fromJson(item, j, settings, sunstatus));
       }
     }
@@ -932,46 +931,19 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   DateTime localtime = OMGetLocalTime(oMBody);
   String real_time = "jT${localtime.hour}:${localtime.minute}";
 
+
+  DateTime lastKnowTime = DateTime.parse(oMBody["current"]["time"]);
+  DateTime approximateLocal = DateTime(localtime.year, localtime.month, localtime.day, localtime.hour);
+  int start = approximateLocal.difference(DateTime(lastKnowTime.year,
+      lastKnowTime.month, lastKnowTime.day, lastKnowTime.hour)).inHours;
+
+  print(("start", start, lastKnowTime, localtime));
   OMSunstatus sunstatus = OMSunstatus.fromJson(oMBody, settings);
-
-  //try to find the start of the actual time
-  //this is for offline mode, when you would have to get rid of the first x hours
-  //because they have already passed
-
-  /*
-  int hoursToRemove = 0;
-  int daysToRemove = 0;
-
-  for (int i = 0; i < oMBody["hourly"]["weather_code"].length; i++) {
-    DateTime hour = DateTime.parse(oMBody["hourly"]["time"][i]);
-    print((hour, localtime));
-    if (hour.difference(localtime).isNegative) {
-      hoursToRemove += 1;
-      if (hour.hour == 23) {
-        daysToRemove += 1;
-      }
-    }
-    else {
-      break;
-    }
-  }
-
-  print(("remove", hoursToRemove, daysToRemove));
-
-  oMBody["hourly"] = oMBody["hourly"].map((key, value) {
-    return MapEntry(key, value.length > hoursToRemove ? value.sublist(hoursToRemove) : []);
-  });
-
-  oMBody["daily"] = oMBody["daily"].map((key, value) {
-    return MapEntry(key, value.length > daysToRemove ? value.sublist(daysToRemove) : []);
-  });
-
-   */
 
 
   List<OMDay> days = [];
   for (int n = 0; n < 14; n++) {
-    OMDay? x = OMDay.build(oMBody, settings, n, sunstatus, localtime);
+    OMDay? x = OMDay.build(oMBody, settings, n, sunstatus, approximateLocal);
     if (x != null) {
       days.add(x);
     }
@@ -983,7 +955,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     sunstatus: sunstatus,
     minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
 
-    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng),
+    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng, start),
     days: days,
 
     lat: lat,
