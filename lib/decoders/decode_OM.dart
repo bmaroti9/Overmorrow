@@ -427,37 +427,46 @@ class OMDay {
     required this.wind_dir,
   });
 
-  static OMDay build(item, settings, index, sunstatus, localtime) {
+  static OMDay? build(item, settings, index, sunstatus, localtime) {
 
-    return OMDay(
-      uv: item["daily"]["uv_index_max"][0].round(),
-      icon: oMIconCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
-      iconSize: oMIconSizeCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
-      text: translation(oMTextCorrection(item["daily"]["weather_code"][index]), settings["Language"]),
-      name: oMGetName(index, settings, item),
-      windspeed: unit_coversion(item["daily"]["wind_speed_10m_max"][index], settings["Wind"]).round(),
-      total_precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][index], settings["Precipitation"]).toStringAsFixed(1)),
-      minmaxtemp: "${unit_coversion(item["daily"]["temperature_2m_min"][index], settings["Temperature"]).round().toString()}°"
-          "/${unit_coversion(item["daily"]["temperature_2m_max"][index], settings["Temperature"]).round().toString()}°",
-      precip_prob: item["daily"]["precipitation_probability_max"][index] ?? 0,
-      mm_precip: item["daily"]["precipitation_sum"][index],
-      hourly_for_precip: buildHours(index, false, item, settings, sunstatus, localtime),
-      hourly: buildHours(index, true, item, settings, sunstatus, localtime),
-      wind_dir: item["daily"]["wind_direction_10m_dominant"][index] ?? 0,
-    );
+    List<OMHour> hours = buildHours(index, true, item, settings, sunstatus, localtime);
+
+    if (hours.length > 0) {
+      return OMDay(
+        uv: item["daily"]["uv_index_max"][0].round(),
+        icon: oMIconCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
+        iconSize: oMIconSizeCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
+        text: translation(oMTextCorrection(item["daily"]["weather_code"][index]), settings["Language"]),
+        name: oMGetName(index, settings, item),
+        windspeed: unit_coversion(item["daily"]["wind_speed_10m_max"][index], settings["Wind"]).round(),
+        total_precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][index], settings["Precipitation"]).toStringAsFixed(1)),
+        minmaxtemp: "${unit_coversion(item["daily"]["temperature_2m_min"][index], settings["Temperature"]).round().toString()}°"
+            "/${unit_coversion(item["daily"]["temperature_2m_max"][index], settings["Temperature"]).round().toString()}°",
+        precip_prob: item["daily"]["precipitation_probability_max"][index] ?? 0,
+        mm_precip: item["daily"]["precipitation_sum"][index],
+        hourly_for_precip: buildHours(index, false, item, settings, sunstatus, localtime),
+        hourly: hours,
+        wind_dir: item["daily"]["wind_direction_10m_dominant"][index] ?? 0,
+      );
+    }
+    return null;
+
   }
 
   static List<OMHour> buildHours(index, get_rid_first, item, settings, sunstatus, localtime) {
     //int timenow = int.parse(item["current"]["time"].split("T")[1].split(":")[0]);
     List<OMHour> hourly = [];
 
+    //somehow localtime is in utc and the hours are not, so the differences were incorrect
+    //converting it always changed the time so i just did this
+    DateTime localWithoutUTC = DateTime(localtime.year, localtime.month, localtime.day, localtime.hour);
+
     int l = item["hourly"]["weather_code"].length;
 
     for (var i = 0; i < 24; i++) {
       int j = index * 24 + i;
-      DateTime hour = DateTime.parse(item["hourly"]["time"][j]).toUtc();
-      print((localtime.difference(hour), hour, localtime, j));
-      if ((localtime.difference(hour).isNegative || !get_rid_first) && l > j) {
+      DateTime hour = DateTime.parse(item["hourly"]["time"][j]);
+      if ((localWithoutUTC.difference(hour).inMinutes <= 0 || !get_rid_first) && l > j) {
         hourly.add(OMHour.fromJson(item, j, settings, sunstatus));
       }
     }
@@ -962,8 +971,10 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
 
   List<OMDay> days = [];
   for (int n = 0; n < 14; n++) {
-    OMDay x = OMDay.build(oMBody, settings, n, sunstatus, localtime);
-    days.add(x);
+    OMDay? x = OMDay.build(oMBody, settings, n, sunstatus, localtime);
+    if (x != null) {
+      days.add(x);
+    }
   }
 
   return WeatherData(
