@@ -725,6 +725,20 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
   DateTime fetch_datetime = wapi[1];
   String networkState = wapi[2];
 
+  DateTime lastKnowTime = DateTime.parse(wapi_body["location"]["localtime"]);
+
+  //this gives us the time passed since last fetch, this is all basically for offline mode
+  Duration realTimeOffset = DateTime.now().difference(fetch_datetime);
+
+  //now we just need to apply this time offset to get the real current time
+  DateTime localtime = lastKnowTime.add(realTimeOffset);
+
+  DateTime approximateLocal = DateTime(localtime.year, localtime.month, localtime.day, localtime.hour);
+  int start = approximateLocal.difference(DateTime(lastKnowTime.year,
+      lastKnowTime.month, lastKnowTime.day, lastKnowTime.hour)).inHours;
+
+  print(("local", localtime, start));
+
   int epoch = wapi_body["location"]["localtime_epoch"];
   WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
 
