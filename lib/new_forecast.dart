@@ -502,8 +502,8 @@ Widget buildUV(List<dynamic> hours, data, highlight) => ListView(
                   if (index < min(max(10 - hour.uv, 0), 10)) {
                     return Center(
                       child: Container(
-                        width: 10,
-                        height: 5,
+                        width: 14,
+                        height: 6,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: highlight,
@@ -514,8 +514,8 @@ Widget buildUV(List<dynamic> hours, data, highlight) => ListView(
                   else {
                     return Center(
                       child: Container(
-                        width: 10,
-                        height: 5,
+                        width: 14,
+                        height: 6,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: data.current.primaryLight,

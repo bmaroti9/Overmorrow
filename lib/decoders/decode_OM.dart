@@ -491,7 +491,7 @@ class OM15MinutePrecip {
     required this.precips,
   });
 
-  static OM15MinutePrecip fromJson(item, settings) {
+  static OM15MinutePrecip fromJson(item, settings, minuteOffset) {
 
     int closest = 100;
     int end = -1;
@@ -499,7 +499,9 @@ class OM15MinutePrecip {
 
     List<double> precips = [];
 
-    for (int i = 0; i < item["minutely_15"]["precipitation"].length; i++) {
+    int offset15 = minuteOffset ~/ 15;
+
+    for (int i = offset15; i < item["minutely_15"]["precipitation"].length; i++) {
       double x = item["minutely_15"]["precipitation"][i];
       if (x > 0.0) {
         if (closest == 100) {
@@ -965,7 +967,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     radar: await RainviewerRadar.getData(),
     aqi: await OMAqi.fromJson(lat, lng, settings),
     sunstatus: sunstatus,
-    minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
+    minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings, localtime.difference(lastKnowTime).inMinutes),
 
     current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng,
         start, dayDif),
