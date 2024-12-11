@@ -301,7 +301,7 @@ class OMCurrent {
     required this.imageDebugColors
   });
 
-  static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng, start) async {
+  static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng, start, dayDif) async {
 
     Image Uimage;
     String photographerName = "";
@@ -309,12 +309,22 @@ class OMCurrent {
     String photoLink = "";
 
     if (settings["Image source"] == "network") {
-      final ImageData = await getUnsplashImage(oMCurrentTextCorrection(
-          item["hourly"]["weather_code"][start], sunstatus, timenow), real_loc, lat, lng);
-      Uimage = ImageData[0];
-      photographerName = ImageData[1];
-      photorgaperUrl = ImageData[2];
-      photoLink = ImageData[3];
+      try {
+        final ImageData = await getUnsplashImage(oMCurrentTextCorrection(
+            item["hourly"]["weather_code"][start], sunstatus, timenow), real_loc, lat, lng);
+        Uimage = ImageData[0];
+        photographerName = ImageData[1];
+        photorgaperUrl = ImageData[2];
+        photoLink = ImageData[3];
+      }
+      catch (e) {
+        String imagePath = oMBackdropCorrection(
+          oMCurrentTextCorrection(
+              item["hourly"]["weather_code"][start], sunstatus, timenow),
+        );
+        Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
+          width: double.infinity, height: double.infinity,);
+      }
     }
     else {
       String imagePath = oMBackdropCorrection(
@@ -350,7 +360,7 @@ class OMCurrent {
       text: translation(oMCurrentTextCorrection(
           item["hourly"]["weather_code"][start], sunstatus, timenow),
           settings["Language"]),
-      uv: item["daily"]["uv_index_max"][start].round(),
+      uv: item["daily"]["uv_index_max"][dayDif].round(),
       feels_like: unit_coversion(
           item["current"]["apparent_temperature"], settings["Temperature"])
           .round(),
@@ -375,7 +385,7 @@ class OMCurrent {
       backup_primary: primary,
 
       precip: double.parse(unit_coversion(
-          item["daily"]["precipitation_sum"][start], settings["Precipitation"])
+          item["daily"]["precipitation_sum"][dayDif], settings["Precipitation"])
           .toStringAsFixed(1)),
       wind: unit_coversion(item["hourly"]["wind_speed_10m"][start], settings["Wind"])
           .round(),
@@ -931,13 +941,18 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   DateTime localtime = OMGetLocalTime(oMBody);
   String real_time = "jT${localtime.hour}:${localtime.minute}";
 
-
   DateTime lastKnowTime = DateTime.parse(oMBody["current"]["time"]);
+
+  //get hour diff
   DateTime approximateLocal = DateTime(localtime.year, localtime.month, localtime.day, localtime.hour);
   int start = approximateLocal.difference(DateTime(lastKnowTime.year,
       lastKnowTime.month, lastKnowTime.day, lastKnowTime.hour)).inHours;
 
-  print(("start", start, lastKnowTime, localtime));
+  //get day diff
+  int dayDif = DateTime(localtime.year, localtime.month, localtime.day).difference(
+      DateTime(lastKnowTime.year, lastKnowTime.month, lastKnowTime.day)).inDays;
+
+  print(("start", start, lastKnowTime, localtime, dayDif));
   OMSunstatus sunstatus = OMSunstatus.fromJson(oMBody, settings);
 
 
@@ -955,7 +970,8 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     sunstatus: sunstatus,
     minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings),
 
-    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng, start),
+    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng,
+        start, dayDif),
     days: days,
 
     lat: lat,
