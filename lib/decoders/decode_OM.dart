@@ -317,6 +317,7 @@ class OMCurrent {
         photorgaperUrl = ImageData[2];
         photoLink = ImageData[3];
       }
+      //fallback to asset image when condition changed and there is no image for the new one
       catch (e) {
         String imagePath = oMBackdropCorrection(
           oMCurrentTextCorrection(
@@ -464,11 +465,7 @@ class OMDay {
   }
 
   static List<OMHour> buildHours(index, get_rid_first, item, settings, sunstatus, approximatelocal) {
-    //int timenow = int.parse(item["current"]["time"].split("T")[1].split(":")[0]);
     List<OMHour> hourly = [];
-
-    //somehow localtime is in utc and the hours are not, so the differences were incorrect
-    //converting it always changed the time so i just did this
 
     int l = item["hourly"]["weather_code"].length;
 

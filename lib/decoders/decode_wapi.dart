@@ -314,7 +314,7 @@ class WapiCurrent {
     required this.imageDebugColors,
   });
 
-  static Future<WapiCurrent> fromJson(item, settings, real_loc, lat, lng) async {
+  static Future<WapiCurrent> fromJson(item, settings, real_loc, lat, lng, start) async {
 
     Image Uimage;
 
@@ -323,19 +323,29 @@ class WapiCurrent {
     String photoLink = "";
 
     if (settings["Image source"] == "network") {
-      final text = textCorrection(
-          item["current"]["condition"]["code"], item["current"]["is_day"],
-          language: "English"
-      );
-      final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
-      Uimage = ImageData[0];
-      photographerName = ImageData[1];
-      photorgaperUrl = ImageData[2];
-      photoLink = ImageData[3];
+      try {
+        final text = textCorrection(
+            item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
+            language: "English"
+        );
+        final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
+        Uimage = ImageData[0];
+        photographerName = ImageData[1];
+        photorgaperUrl = ImageData[2];
+        photoLink = ImageData[3];
+      }
+      //fallback to asset image when condition changed and there is no image for the new one
+      catch(e) {
+        String imagePath = backdropCorrection(
+            item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"]
+        );
+        Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
+          width: double.infinity, height: double.infinity,);
+      }
     }
     else {
       String imagePath = backdropCorrection(
-          item["current"]["condition"]["code"], item["current"]["is_day"]
+          item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"]
       );
       Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
         width: double.infinity, height: double.infinity,);
@@ -343,13 +353,13 @@ class WapiCurrent {
 
     Color back = BackColorCorrection(
       textCorrection(
-        item["current"]["condition"]["code"], item["current"]["is_day"],
+        item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
       ),
     );
 
     Color primary = PrimaryColorCorrection(
         textCorrection(
-          item["current"]["condition"]["code"], item["current"]["is_day"],
+          item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
         )
     );
 
@@ -379,23 +389,23 @@ class WapiCurrent {
       backup_primary: primary,
 
       text: textCorrection(
-          item["current"]["condition"]["code"], item["current"]["is_day"],
+          item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
           language: settings["Language"]
       ),
       image: Uimage,
-      temp: unit_coversion(item["current"]["temp_c"], settings["Temperature"])
+      temp: unit_coversion(item["hour"][start]["temp_c"], settings["Temperature"])
           .round(),
       feels_like: unit_coversion(
-          item["current"]["feelslike_c"], settings["Temperature"]).round(),
+          item["hour"][start]["feelslike_c"], settings["Temperature"]).round(),
 
-      uv: item["current"]["uv"].round(),
-      humidity: item["current"]["humidity"],
+      uv: item["hour"][start]["uv"].round(),
+      humidity: item["hour"][start]["humidity"],
       precip: double.parse(unit_coversion(
-          item["forecast"]["forecastday"][0]["day"]["totalprecip_mm"],
+          item["day"]["totalprecip_mm"],
           settings["Precipitation"]).toStringAsFixed(1)),
-      wind: unit_coversion(item["current"]["wind_kph"], settings["Wind"])
+      wind: unit_coversion(item["hour"][start]["wind_kph"], settings["Wind"])
           .round(),
-      wind_dir: item["current"]["wind_degree"],
+      wind_dir: item["hour"][start]["wind_degree"],
 
       photographerName: photographerName,
       photographerUrl: photorgaperUrl,
@@ -439,7 +449,7 @@ class WapiDay {
     required this.wind_dir,
   });
 
-  static WapiDay fromJson(item, index, settings, timenow) => WapiDay(
+  static WapiDay fromJson(item, index, settings, approximatelocal) => WapiDay(
     text: textCorrection(
         item["day"]["condition"]["code"], 1, language: settings["Language"]
     ),
@@ -453,8 +463,8 @@ class WapiDay {
     minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings["Temperature"]).round()}°'
         '/${unit_coversion(item["day"]["mintemp_c"], settings["Temperature"]).round()}°',
 
-    hourly: buildWapiHour(item["hour"], settings, index, timenow, true),
-    hourly_for_precip: buildWapiHour(item["hour"], settings, index, timenow, false),
+    hourly: buildWapiHour(item["hour"], settings, index, approximatelocal, true),
+    hourly_for_precip: buildWapiHour(item["hour"], settings, index, approximatelocal, false),
 
     mm_precip: item["day"]["totalprecip_mm"] + item["day"]["totalsnow_cm"] / 10,
     total_precip: double.parse(unit_coversion(item["day"]["totalprecip_mm"], settings["Precipitation"]).toStringAsFixed(1)),
@@ -464,7 +474,18 @@ class WapiDay {
     wind_dir: wapiGetWindDir(item["hour"])
   );
 
-  static List<WapiHour> buildWapiHour(data, settings, int index, int timenow, bool get_rid_first) {
+  static List<WapiHour> buildWapiHour(data, settings, int index, DateTime approximatelocal, bool get_rid_first) {
+    List<WapiHour> hourly = [];
+
+    for (var i = 0; i < 24; i++) {
+      DateTime hour = DateTime.parse(data[i]["time"]);
+      if (approximatelocal.difference(hour).inMinutes <= 0 || !get_rid_first) {
+        hourly.add(WapiHour.fromJson(data[i], settings));
+      }
+    }
+    return hourly;
+
+    /*
     List<WapiHour> hourly = [];
     if (index == 0 && get_rid_first) {
       for (var i = 0; i < data.length; i++) {
@@ -479,6 +500,8 @@ class WapiDay {
       }
     }
     return hourly;
+
+     */
   }
 }
 
@@ -627,7 +650,7 @@ class Wapi15MinutePrecip { //weatherapi doesn't actaully have 15 minute forecast
     required this.precips,
   });
 
-  static Wapi15MinutePrecip fromJson(item, settings) {
+  static Wapi15MinutePrecip fromJson(item, settings, day, hour) {
     int closest = 100;
     int end = -1;
     double sum = 0;
@@ -635,8 +658,8 @@ class Wapi15MinutePrecip { //weatherapi doesn't actaully have 15 minute forecast
     List<double> precips = [];
     List<double> hourly = [];
 
-    int day = 0;
-    int hour = 0;
+    //int day = 0;
+    //int hour = 0;
 
     int i = 0;
 
@@ -677,7 +700,7 @@ class Wapi15MinutePrecip { //weatherapi doesn't actaully have 15 minute forecast
 
       double dif = next - now;
       for (double x = 0; x <= 1; x += 0.25) {
-        double g = now + (dif * x);
+        double g = (now + (dif * x)) / 4; //because we are dividing the sum of 1 hour into quarters
         sum += g;
         precips.add(g);
       }
@@ -733,20 +756,28 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
   //now we just need to apply this time offset to get the real current time
   DateTime localtime = lastKnowTime.add(realTimeOffset);
 
+  //get hour diff
   DateTime approximateLocal = DateTime(localtime.year, localtime.month, localtime.day, localtime.hour);
   int start = approximateLocal.difference(DateTime(lastKnowTime.year,
-      lastKnowTime.month, lastKnowTime.day, lastKnowTime.hour)).inHours;
+      lastKnowTime.month, lastKnowTime.day)).inHours % 24;
 
-  print(("local", localtime, start));
+  //get day diff
+  int dayDif = DateTime(localtime.year, localtime.month, localtime.day).difference(
+      DateTime(lastKnowTime.year, lastKnowTime.month, lastKnowTime.day)).inDays;
 
-  int epoch = wapi_body["location"]["localtime_epoch"];
+  print(("local", localtime, start, dayDif));
+
+  //remove outdated days
+  wapi_body["forecast"]["forecastday"] = wapi_body["forecast"]["forecastday"].sublist(dayDif);
+
+  //int epoch = wapi_body["location"]["localtime_epoch"];
   WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
 
   List<WapiDay> days = [];
 
   for (int n = 0; n < wapi_body["forecast"]["forecastday"].length; n++) {
     days.add(WapiDay.fromJson(
-        wapi_body["forecast"]["forecastday"][n], n, settings, epoch));
+        wapi_body["forecast"]["forecastday"][n], n, settings, approximateLocal));
   }
 
   return WeatherData(
@@ -758,7 +789,8 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
     lat: lat,
     lng: lng,
 
-    current: await WapiCurrent.fromJson(wapi_body, settings, real_loc, lat, lng),
+    current: await WapiCurrent.fromJson(wapi_body["forecast"]["forecastday"][0], settings,
+        real_loc, lat, lng, start),
     days: days,
     sunstatus: sunstatus,
     aqi: WapiAqi.fromJson(wapi_body),
@@ -766,9 +798,9 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
-    localtime: WapiGetLocalTime(wapi_body),
+    localtime: "${localtime.hour}:${localtime.minute}",
 
-    minutely_15_precip: Wapi15MinutePrecip.fromJson(wapi_body, settings),
+    minutely_15_precip: Wapi15MinutePrecip.fromJson(wapi_body, settings, 0, start),
 
     networkState: networkState
   );

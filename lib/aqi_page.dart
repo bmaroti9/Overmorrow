@@ -239,10 +239,29 @@ class _AllergensPageState extends State<AllergensPage> {
                   );
                 } else if (snapshot.hasError) {
                   print((snapshot.error, snapshot.stackTrace));
+                  //this was the best way i found to detect no wifi
+                  if (snapshot.error.toString().contains("Socket")) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 100),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(14.0),
+                            child: Icon(Icons.wifi_off_rounded, color: data.current.primaryLight, size: 23,),
+                          ),
+                          comfortatext("no wifi connection", 18, data.settings, color: data.current.primary),
+                        ],
+                      ),
+                    );
+                  }
                   return Padding(
                     padding: const EdgeInsets.only(top: 100),
                     child: Column(
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.all(14.0),
+                          child: Icon(Icons.wifi_off_rounded, color: data.current.primaryLight, size: 23,),
+                        ),
                         comfortatext("unable to load air quality data", 18, data.settings, color: data.current.primary),
                         Padding(
                           padding: const EdgeInsets.all(30.0),

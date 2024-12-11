@@ -255,7 +255,7 @@ Widget buildNewDays(data) {
     padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
-    itemCount: 3,
+    itemCount: min(3, data.days.length),
     itemBuilder: (BuildContext context, int index) {
       final day = data.days[index];
       return Padding(

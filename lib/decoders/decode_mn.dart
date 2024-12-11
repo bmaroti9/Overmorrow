@@ -256,7 +256,6 @@ class MetNCurrent {
       final text = metNTextCorrection(
           item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"],
           language: "English");
-
       try {
         final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
         Uimage = ImageData[0];
@@ -264,6 +263,7 @@ class MetNCurrent {
         photorgaperUrl = ImageData[2];
         photoLink = ImageData[3];
       }
+      //fallback to asset image when condition changed and there is no image for the new one
       catch (e) {
         String imagePath = metNBackdropCorrection(
           metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
@@ -616,7 +616,7 @@ class MetN15MinutePrecip { //met norway doesn't actaully have 15 minute forecast
 
       double dif = next - now;
       for (double x = 0; x <= 1; x += 0.25) {
-        double g = now + (dif * x);
+        double g = now + (dif * x) / 4; //because we are dividing the sum of 1 hour into quarters
         sum += g;
         precips.add(g);
       }
