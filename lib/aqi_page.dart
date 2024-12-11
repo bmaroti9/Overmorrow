@@ -122,7 +122,7 @@ class ThreeQuarterCirclePainter extends CustomPainter {
     // Background Circle
     Paint baseCircle = Paint()
       ..color = secondColor
-      ..strokeWidth = 9
+      ..strokeWidth = 10
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
     canvas.drawArc(

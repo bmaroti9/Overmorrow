@@ -127,6 +127,8 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
 
+  print(oMUrl);
+
   //var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
   var oMFile = await XCustomCacheManager.fetchData(oMUrl.toString(), "$real_loc, open-meteo");
 
@@ -945,7 +947,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   //get hour diff
   DateTime approximateLocal = DateTime(localtime.year, localtime.month, localtime.day, localtime.hour);
   int start = approximateLocal.difference(DateTime(lastKnowTime.year,
-      lastKnowTime.month, lastKnowTime.day, lastKnowTime.hour)).inHours;
+      lastKnowTime.month, lastKnowTime.day)).inHours;
 
   //get day diff
   int dayDif = DateTime(localtime.year, localtime.month, localtime.day).difference(
