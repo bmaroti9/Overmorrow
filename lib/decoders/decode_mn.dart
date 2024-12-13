@@ -165,12 +165,12 @@ Future<List<dynamic>> MetNMakeRequest(double lat, double lng, String real_loc) a
   var MnFile = await XCustomCacheManager.fetchData(MnUrl.toString(), "$real_loc, met.no", headers: headers);
 
   var MnResponse = await MnFile[0].readAsString();
-  String networkState = MnFile[1];
+  bool isonline = MnFile[1];
 
   final MnData = jsonDecode(MnResponse);
 
   DateTime fetch_datetime = await MnFile[0].lastModified();
-  return [MnData, fetch_datetime, networkState];
+  return [MnData, fetch_datetime, isonline];
 
 }
 
@@ -672,7 +672,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
   int hourDif = metNCalculateHourDif(localTime);
 
-  String networkState = Mn[2];
+  bool isonline = Mn[2];
 
   //I have to use the fetch date because on offline it wouldn't work because it changes
   MetNSunstatus sunstatus = await MetNSunstatus.fromJson(MnBody, settings, lat, lng, hourDif, localTime, fetch_datetime);
@@ -725,6 +725,6 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
     localtime: "${localTime.hour}:${localTime.minute}",
-    networkState: networkState,
+    isonline: isonline,
   );
 }

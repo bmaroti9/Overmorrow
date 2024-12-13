@@ -407,7 +407,7 @@ class WeatherData {
 
   final updatedTime;
   final fetch_datetime;
-  final networkState;
+  final bool isonline;
 
   final localtime;
 
@@ -431,7 +431,7 @@ class WeatherData {
     required this.days,
     required this.current,
     required this.fetch_datetime,
-    required this.networkState,
+    required this.isonline,
     required this.updatedTime,
     required this.localtime,
 

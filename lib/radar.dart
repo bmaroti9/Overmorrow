@@ -145,7 +145,7 @@ class _RadarSmallState extends State<RadarSmall> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: (data.networkState == "online") ? FlutterMap(
+                    child: (data.isonline) ? FlutterMap(
                       options: MapOptions(
                         onTap: (tapPosition, point) =>
                         {
@@ -441,7 +441,7 @@ class _RadarBigState extends State<RadarBig> {
       backgroundColor: data.current.containerLow,
       body: Stack(
         children: [
-          (data.networkState == "online") ? FlutterMap(
+          (data.isonline) ? FlutterMap(
             options: MapOptions(
               initialCenter: LatLng(data.lat, data.lng),
               initialZoom: 5,

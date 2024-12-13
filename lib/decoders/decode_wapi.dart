@@ -60,13 +60,13 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   var file = await XCustomCacheManager.fetchData(url.toString(), "$real_loc, weatherapi.com");
 
   DateTime fetch_datetime = await file[0].lastModified();
-  String networkState = file[1];
+  bool isonline = file[1];
 
   var response = await file[0].readAsString();
 
   var wapi_body = jsonDecode(response);
 
-  return [wapi_body, fetch_datetime, networkState];
+  return [wapi_body, fetch_datetime, isonline];
 }
 
 int wapiGetWindDir(var data) {
@@ -747,7 +747,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
   var wapi_body = wapi[0];
   DateTime fetch_datetime = wapi[1];
-  String networkState = wapi[2];
+  bool isonline = wapi[2];
 
   DateTime lastKnowTime = DateTime.parse(wapi_body["location"]["localtime"]);
 
@@ -806,6 +806,6 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
     minutely_15_precip: Wapi15MinutePrecip.fromJson(wapi_body, settings, 0, start),
 
-    networkState: networkState
+    isonline: isonline
   );
 }

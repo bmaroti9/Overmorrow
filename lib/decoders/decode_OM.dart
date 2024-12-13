@@ -135,9 +135,9 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
   final OMData = jsonDecode(oMResponse);
 
   DateTime fetch_datetime = await oMFile[0].lastModified();
-  String networkState = oMFile[1];
+  bool isonline = oMFile[1];
 
-  return [OMData, fetch_datetime, networkState];
+  return [OMData, fetch_datetime, isonline];
 }
 
 String oMGetName(index, settings, item, dayDif) {
@@ -935,7 +935,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   var oMBody = OM[0];
 
   DateTime fetch_datetime = OM[1];
-  String networkState = OM[2];
+  bool isonline = OM[2];
 
   DateTime localtime = OMGetLocalTime(oMBody);
   String real_time = "jT${localtime.hour}:${localtime.minute}";
@@ -988,6 +988,6 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
     localtime: real_time.split("T")[1],
-    networkState: "offline",
+    isonline: isonline,
     );
 }

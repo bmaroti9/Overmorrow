@@ -259,21 +259,21 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            if (widget.data.networkState == "offline") Padding(
+            if (!widget.data.isonline) Padding(
               padding: const EdgeInsets.only(right: 2),
               child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
             ),
-            if (widget.data.networkState == "offline") Padding(
+            if (!widget.data.isonline) Padding(
               padding: const EdgeInsets.only(right: 7),
               child: comfortatext("offline", 13, widget.data.settings,
                   color: widget.data.current.primary, weight: FontWeight.w600),
             ),
-            if (widget.data.networkState == "online") Padding(
+            if (widget.data.isonline) Padding(
               padding: const EdgeInsets.only(right: 3),
               child: Icon(Icons.access_time, color: widget.data.current.primary, size: 13,),
             ),
             comfortatext('${widget.split[0]},', 13, widget.data.settings,
-                color: widget.data.networkState == "online" ? widget.data.current.primary
+                color: widget.data.isonline ? widget.data.current.primary
                     : widget.data.current.onSurface, weight: FontWeight.w500),
 
             comfortatext(widget.split.length > 1 ? widget.split[1] : "", 13, widget.data.settings,
@@ -284,17 +284,17 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
     } else if (widget.data.current.photographerName != ""){
       List<String> split = translation("photo by x on Unsplash", widget.data.settings["Language"]).split(",");
       return Container(
-        color: widget.data.current.primaryLight,
+        color: widget.data.isonline ? widget.data.current.surface : widget.data.current.primaryLight,
         child: Padding(
           padding: const EdgeInsets.only(top: 0, right: 24),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              if (widget.data.networkState == "offline") Padding(
+              if (!widget.data.isonline) Padding(
                 padding: const EdgeInsets.only(right: 2),
                 child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
               ),
-              if (widget.data.networkState == "offline") Padding(
+              if (!widget.data.isonline) Padding(
                 padding: const EdgeInsets.only(right: 7),
                 child: comfortatext("offline", 13, widget.data.settings,
                     color: widget.data.current.primary, weight: FontWeight.w600),
@@ -694,11 +694,13 @@ Future<List<String>> getOMReccomend(String query, settings) async {
 
   var jsonbody = [];
   try {
-    var file = await cacheManager.getSingleFile(
-        url.toString(), headers: {'cache-control': 'private, max-age=120'});
+    print("got here");
+    var file = await cacheManager.getSingleFile(url.toString(), key: "$query, open-meteo search",
+        headers: {'cache-control': 'private, max-age=120'}).timeout(const Duration(seconds: 3));
+    print("never got here");
     var response = await file.readAsString();
     jsonbody = jsonDecode(response)["results"];
-  } on Error {
+  } catch(e) {
     return [];
   }
 

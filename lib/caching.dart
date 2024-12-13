@@ -43,7 +43,7 @@ class MyGetResponse implements FileServiceResponse {
 
   @override
   DateTime get validTill {
-    if (url.toString().contains("search.json")) { //search results are stored for 40 days
+    if (url.toString().contains("search")) { //search results are stored for 40 days
       return DateTime.now().add(const Duration(days: 40));
     }
 
@@ -125,15 +125,15 @@ class CustomCacheManager {
       if (fileInfo == null || fileInfo.validTill.difference(DateTime.now()).isNegative) {
         print(("got here", fileInfo?.validTill, fileInfo?.validTill.difference(DateTime.now())));
         final file = await _cacheManager.downloadFile(url, key: cacheKey, authHeaders: headers).timeout(Duration(seconds: 3));
-        return [file.file, "online"];
+        return [file.file, true];
       } else {
-        return [fileInfo.file, "online"];
+        return [fileInfo.file, true];
       }
     } catch (error) {
       print("last data");
       try {
         final FileInfo? fileInfo = await _cacheManager.getFileFromCache(cacheKey);
-        return [fileInfo!.file, "offline"];
+        return [fileInfo!.file, false];
       }
       catch (error) {
         print("catched no wifi");
