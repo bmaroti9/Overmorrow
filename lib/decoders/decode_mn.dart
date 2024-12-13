@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
@@ -679,6 +680,13 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
   //removes the outdated hours
   int start = localTime.difference(DateTime(lastKnowTime.year, lastKnowTime.month,
       lastKnowTime.day, lastKnowTime.hour)).inHours;
+
+  //make sure that there is data left
+  if (start >= MnBody["properties"]["timeseries"].length) {
+    throw const SocketException("Cached data expired");
+  }
+
+  //remove outdated hours
   MnBody["properties"]["timeseries"] = MnBody["properties"]["timeseries"].sublist(start);
 
   List<MetNDay> days = [];
@@ -688,7 +696,6 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
   int previous_hour = 0;
   for (int n = 0; n < MnBody["properties"]["timeseries"].length; n++) {
     int hour = (int.parse(MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0]) - hourDif) % 24;
-    print((hourDif, hour, MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0]));
     if (n > 0 && hour - previous_hour < 1) {
       MetNDay day = MetNDay.fromJson(MnBody, settings, begin, n, index, hourDif);
       days.add(day);

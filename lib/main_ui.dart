@@ -87,7 +87,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
     child: SizedBox(
       width: width,
         child: Container(
-            padding: const EdgeInsets.only(top: 25, left: 4, right: 4, bottom: 13),
+            padding: const EdgeInsets.only(top: 34, left: 4, right: 4, bottom: 13),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
@@ -127,8 +128,6 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
 
-  print(oMUrl);
-
   //var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
   var oMFile = await XCustomCacheManager.fetchData(oMUrl.toString(), "$real_loc, open-meteo");
 
@@ -141,10 +140,10 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
   return [OMData, fetch_datetime, networkState];
 }
 
-String oMGetName(index, settings, item) {
-  if (index < 3) {
+String oMGetName(index, settings, item, dayDif) {
+  if ((index - dayDif) < 3) {
     const names = ['Today', 'Tomorrow', 'Overmorrow'];
-    return translation(names[index], settings["Language"]);
+    return translation(names[index - dayDif], settings["Language"]);
   }
   String x = item["daily"]["time"][index].split("T")[0];
   List<String> z = x.split("-");
@@ -440,7 +439,7 @@ class OMDay {
     required this.wind_dir,
   });
 
-  static OMDay? build(item, settings, index, sunstatus, approximatelocal) {
+  static OMDay? build(item, settings, index, sunstatus, approximatelocal, dayDif) {
 
     List<OMHour> hours = buildHours(index, true, item, settings, sunstatus, approximatelocal);
 
@@ -450,7 +449,7 @@ class OMDay {
         icon: oMIconCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
         iconSize: oMIconSizeCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
         text: translation(oMTextCorrection(item["daily"]["weather_code"][index]), settings["Language"]),
-        name: oMGetName(index, settings, item),
+        name: oMGetName(index, settings, item, dayDif),
         windspeed: unit_coversion(item["daily"]["wind_speed_10m_max"][index], settings["Wind"]).round(),
         total_precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][index], settings["Precipitation"]).toStringAsFixed(1)),
         minmaxtemp: "${unit_coversion(item["daily"]["temperature_2m_min"][index], settings["Temperature"]).round().toString()}°"
@@ -932,7 +931,6 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
 
 Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) async {
 
-  print("got here 1");
   var OM = await OMRequestData(lat, lng, real_loc);
   var oMBody = OM[0];
 
@@ -953,13 +951,17 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   int dayDif = DateTime(localtime.year, localtime.month, localtime.day).difference(
       DateTime(lastKnowTime.year, lastKnowTime.month, lastKnowTime.day)).inDays;
 
+  //make sure that there is data left
+  if (dayDif >= oMBody["daily"]["weather_code"].length) {
+    throw const SocketException("Cached data expired");
+  }
+
   print(("start", start, lastKnowTime, localtime, dayDif));
   OMSunstatus sunstatus = OMSunstatus.fromJson(oMBody, settings);
 
-
   List<OMDay> days = [];
   for (int n = 0; n < 14; n++) {
-    OMDay? x = OMDay.build(oMBody, settings, n, sunstatus, approximateLocal);
+    OMDay? x = OMDay.build(oMBody, settings, n, sunstatus, approximateLocal, dayDif);
     if (x != null) {
       days.add(x);
     }
@@ -986,6 +988,6 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
     localtime: real_time.split("T")[1],
-    networkState: networkState,
+    networkState: "offline",
     );
 }

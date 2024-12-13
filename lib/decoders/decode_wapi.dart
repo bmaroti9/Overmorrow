@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
@@ -765,7 +766,10 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
   int dayDif = DateTime(localtime.year, localtime.month, localtime.day).difference(
       DateTime(lastKnowTime.year, lastKnowTime.month, lastKnowTime.day)).inDays;
 
-  print(("local", localtime, start, dayDif));
+  //make sure that there is data left
+  if (dayDif >= wapi_body["forecast"]["forecastday"].length) {
+    throw const SocketException("Cached data expired");
+  }
 
   //remove outdated days
   wapi_body["forecast"]["forecastday"] = wapi_body["forecast"]["forecastday"].sublist(dayDif);
