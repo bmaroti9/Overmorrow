@@ -210,27 +210,30 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
 
     List<String> split = text.split(',');
 
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 1000),
-      transitionBuilder: (Widget child, Animation<double> animation) {
-        final inAnimation = CurvedAnimation(
-          parent: animation,
-          curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
-        );
-        final outAnimation = CurvedAnimation(
-          parent: animation,
-          curve: const Interval(1.0, 0.5, curve: Curves.easeOut),
-        );
-        return FadeTransition(
-          opacity: _isVisible ? outAnimation : inAnimation,
-          child: child,
-        );
-      },
-      child: SinceLastUpdate(
-        key: ValueKey<bool>(_isVisible),
-        split: split,
-        data: widget.data,
-        isVisible: _isVisible,
+    return Container(
+      color: widget.data.isonline ? widget.data.current.surface : widget.data.current.primaryLight,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 1000),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          final inAnimation = CurvedAnimation(
+            parent: animation,
+            curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
+          );
+          final outAnimation = CurvedAnimation(
+            parent: animation,
+            curve: const Interval(1.0, 0.5, curve: Curves.easeOut),
+          );
+          return FadeTransition(
+            opacity: _isVisible ? outAnimation : inAnimation,
+            child: child,
+          );
+        },
+        child: SinceLastUpdate(
+          key: ValueKey<bool>(_isVisible),
+          split: split,
+          data: widget.data,
+          isVisible: _isVisible,
+        ),
       ),
     );
   }
@@ -255,7 +258,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
 
     if (widget.isVisible) {
       return Padding(
-        padding: const EdgeInsets.only(top: 7, right: 24, bottom: 2),
+        padding: const EdgeInsets.only(top: 5, right: 24, bottom: 4),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -283,63 +286,60 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
       );
     } else if (widget.data.current.photographerName != ""){
       List<String> split = translation("photo by x on Unsplash", widget.data.settings["Language"]).split(",");
-      return Container(
-        color: widget.data.isonline ? widget.data.current.surface : widget.data.current.primaryLight,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 0, right: 24),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              if (!widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 2),
-                child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
-              ),
-              if (!widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 7),
-                child: comfortatext("offline", 13, widget.data.settings,
-                    color: widget.data.current.primary, weight: FontWeight.w600),
-              ),
-              TextButton(
-                onPressed: () async {
-                  await _launchUrl(widget.data.current.photoUrl + "?utm_source=overmorrow&utm_medium=referral");
-                },
-                style: TextButton.styleFrom(
-                   padding: const EdgeInsets.all(1),
-                    minimumSize: const Size(0, 22),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
-                child: comfortatext(split[0], 12.5, widget.data.settings, color: widget.data.current.onSurface,
-                    decoration: TextDecoration.underline),
-              ),
-              comfortatext(split[1], 12.5, widget.data.settings, color: widget.data.current.onSurface),
-              TextButton(
-                onPressed: () async {
-                  await _launchUrl(widget.data.current.photographerUrl + "?utm_source=overmorrow&utm_medium=referral");
-                },
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(1),
+      return Padding(
+        padding: const EdgeInsets.only(top: 0, right: 24),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (!widget.data.isonline) Padding(
+              padding: const EdgeInsets.only(right: 2),
+              child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
+            ),
+            if (!widget.data.isonline) Padding(
+              padding: const EdgeInsets.only(right: 7),
+              child: comfortatext("offline", 13, widget.data.settings,
+                  color: widget.data.current.primary, weight: FontWeight.w600),
+            ),
+            TextButton(
+              onPressed: () async {
+                await _launchUrl(widget.data.current.photoUrl + "?utm_source=overmorrow&utm_medium=referral");
+              },
+              style: TextButton.styleFrom(
+                 padding: const EdgeInsets.all(1),
                   minimumSize: const Size(0, 22),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
-                child: comfortatext(widget.data.current.photographerName, 12.5, widget.data.settings, color: widget.data.current.onSurface,
-                    decoration: TextDecoration.underline),
-              ),
-              comfortatext(split[3], 12.5, widget.data.settings, color: widget.data.current.onSurface),
-              TextButton(
-                onPressed: () async {
-                  await _launchUrl("https://unsplash.com/?utm_source=overmorrow&utm_medium=referral");
-                },
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(1),
-                  minimumSize: const Size(0, 22),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
-                child: comfortatext(split[4], 12.5, widget.data.settings, color: widget.data.current.onSurface,
-                    decoration: TextDecoration.underline),
-              ),
-            ],
-          ),
+              child: comfortatext(split[0], 12.5, widget.data.settings, color: widget.data.current.onSurface,
+                  decoration: TextDecoration.underline),
+            ),
+            comfortatext(split[1], 12.5, widget.data.settings, color: widget.data.current.onSurface),
+            TextButton(
+              onPressed: () async {
+                await _launchUrl(widget.data.current.photographerUrl + "?utm_source=overmorrow&utm_medium=referral");
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                minimumSize: const Size(0, 22),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: comfortatext(widget.data.current.photographerName, 12.5, widget.data.settings, color: widget.data.current.onSurface,
+                  decoration: TextDecoration.underline),
+            ),
+            comfortatext(split[3], 12.5, widget.data.settings, color: widget.data.current.onSurface),
+            TextButton(
+              onPressed: () async {
+                await _launchUrl("https://unsplash.com/?utm_source=overmorrow&utm_medium=referral");
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                minimumSize: const Size(0, 22),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: comfortatext(split[4], 12.5, widget.data.settings, color: widget.data.current.onSurface,
+                  decoration: TextDecoration.underline),
+            ),
+          ],
         ),
       );
     }
-    else if (widget.data.networkState == "offline") {
+    else if (!widget.data.isonline) {
       return Padding(
         padding: const EdgeInsets.only(top: 6, right: 24, bottom: 4),
         child: Row(

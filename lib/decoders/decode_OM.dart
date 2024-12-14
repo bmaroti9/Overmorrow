@@ -502,6 +502,8 @@ class OM15MinutePrecip {
 
     int offset15 = minuteOffset ~/ 15;
 
+    print(("offset 15", offset15, minuteOffset));
+
     for (int i = offset15; i < item["minutely_15"]["precipitation"].length; i++) {
       double x = item["minutely_15"]["precipitation"][i];
       if (x > 0.0) {
@@ -947,6 +949,8 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   int start = approximateLocal.difference(DateTime(lastKnowTime.year,
       lastKnowTime.month, lastKnowTime.day)).inHours;
 
+  print(("start", start, lastKnowTime, localtime));
+
   //get day diff
   int dayDif = DateTime(localtime.year, localtime.month, localtime.day).difference(
       DateTime(lastKnowTime.year, lastKnowTime.month, lastKnowTime.day)).inDays;
@@ -956,7 +960,6 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     throw const SocketException("Cached data expired");
   }
 
-  print(("start", start, lastKnowTime, localtime, dayDif));
   OMSunstatus sunstatus = OMSunstatus.fromJson(oMBody, settings);
 
   List<OMDay> days = [];
@@ -971,7 +974,9 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
     radar: await RainviewerRadar.getData(),
     aqi: await OMAqi.fromJson(lat, lng, settings),
     sunstatus: sunstatus,
-    minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings, localtime.difference(lastKnowTime).inMinutes),
+    minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings,
+        DateTime(localtime.year, localtime.month, localtime.day, localtime.hour, localtime.minute).
+        difference(lastKnowTime).inMinutes),
 
     current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng,
         start, dayDif),

@@ -120,10 +120,9 @@ class CustomCacheManager {
     try {
       final fileInfo = await _cacheManager.getFileFromCache(cacheKey);
 
-      print((cacheKey, fileInfo?.validTill.difference(DateTime.now())));
+      //print(("got here", fileInfo?.validTill, fileInfo?.validTill.difference(DateTime.now())));
 
       if (fileInfo == null || fileInfo.validTill.difference(DateTime.now()).isNegative) {
-        print(("got here", fileInfo?.validTill, fileInfo?.validTill.difference(DateTime.now())));
         final file = await _cacheManager.downloadFile(url, key: cacheKey, authHeaders: headers).timeout(Duration(seconds: 3));
         return [file.file, true];
       } else {
@@ -136,7 +135,7 @@ class CustomCacheManager {
         return [fileInfo!.file, false];
       }
       catch (error) {
-        print("catched no wifi");
+        print(("catched no wifi"));
         throw const SocketException("no wifi");
       }
 
