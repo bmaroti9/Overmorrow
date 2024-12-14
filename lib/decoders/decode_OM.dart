@@ -943,7 +943,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
 
   DateTime localtime = OMGetLocalTime(oMBody);
 
-  print(("local", localtime, oMBody["utc_offset_seconds"]));
+  print(("local", localtime, oMBody["utc_offset_seconds"], oMBody["timezone"], oMBody["longitude"], oMBody["latitude"]));
 
   String real_time = "jT${localtime.hour}:${localtime.minute}";
 

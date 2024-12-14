@@ -404,7 +404,7 @@ Future<String> isLocationSafe() async {
 Future<List<String>> getLastPlace() async {
   final prefs = await SharedPreferences.getInstance();
   final place = prefs.getString('LastPlaceN') ?? 'New York';
-  final cord = prefs.getString('LastCord') ?? '40.7128, 74.0060';
+  final cord = prefs.getString('LastCord') ?? '40.7128, -74.0060';
   return [place, cord];
 }
 
