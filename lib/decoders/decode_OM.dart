@@ -128,6 +128,8 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
 
+  print(oMUrl);
+
   //var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
   var oMFile = await XCustomCacheManager.fetchData(oMUrl.toString(), "$real_loc, open-meteo");
 
@@ -940,6 +942,9 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName) as
   bool isonline = OM[2];
 
   DateTime localtime = OMGetLocalTime(oMBody);
+
+  print(("local", localtime, oMBody["utc_offset_seconds"]));
+
   String real_time = "jT${localtime.hour}:${localtime.minute}";
 
   DateTime lastKnowTime = DateTime.parse(oMBody["current"]["time"]);

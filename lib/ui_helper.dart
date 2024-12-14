@@ -258,7 +258,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
 
     if (widget.isVisible) {
       return Padding(
-        padding: const EdgeInsets.only(top: 5, right: 24, bottom: 4),
+        padding: const EdgeInsets.only(top: 5, right: 24, bottom: 5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

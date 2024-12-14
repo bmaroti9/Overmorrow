@@ -114,7 +114,7 @@ String convertTime(String input, {by = " "}) {
   return "$hour:$minute";
 }
 
-double getSunStatus(String sunrise, String sunset, String time, {by = " "}) {
+double getSunStatus(String sunrise, String sunset, DateTime localtime, {by = " "}) {
   List<String> splited1 = sunrise.split(by);
   List<String> num1 = splited1[0].split(":");
   int hour1 = int.parse(num1[0]);
@@ -133,10 +133,8 @@ double getSunStatus(String sunrise, String sunset, String time, {by = " "}) {
   }
   int all2 = (hour2 * 60 + minute2) - all1;
 
-  List<String> splited3 = time.split(" ");
-  List<String> num3 = splited3[1].split(":");
-  int hour3 = int.parse(num3[0]);
-  int minute3 = int.parse(num3[1]);
+  int hour3 = localtime.hour;
+  int minute3 = localtime.minute;
   int all3 = (hour3 * 60 + minute3) - all1;
 
   return min(1, max(all3 / all2, 0));
@@ -583,7 +581,7 @@ class WapiSunstatus {
     required this.absoluteSunriseSunset,
   });
 
-  static WapiSunstatus fromJson(item, settings) => WapiSunstatus(
+  static WapiSunstatus fromJson(item, settings, localtime) => WapiSunstatus(
     sunrise: settings["Time mode"] == "24 hour"
         ? convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"])
         : amPmTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"]),
@@ -593,7 +591,7 @@ class WapiSunstatus {
     absoluteSunriseSunset: "${convertTime(item["forecast"]["forecastday"][0]["astro"]["sunrise"])}/"
         "${convertTime(item["forecast"]["forecastday"][0]["astro"]["sunset"])}",
     sunstatus: getSunStatus(item["forecast"]["forecastday"][0]["astro"]["sunrise"],
-        item["forecast"]["forecastday"][0]["astro"]["sunset"], item["current"]["last_updated"]),
+        item["forecast"]["forecastday"][0]["astro"]["sunset"], localtime),
   );
 }
 
@@ -664,10 +662,15 @@ class Wapi15MinutePrecip { //weatherapi doesn't actaully have 15 minute forecast
 
     int i = 0;
 
+    print(("day", day));
+
     while (i < 6) {
+      if (item["forecast"]["forecastday"].length >= day) {
+        break;
+      }
       if (item["forecast"]["forecastday"][day]["hour"].length > hour) {
         double x;
-        if (i == 0) {
+        if (hour == 0 && day == 0) {
           x = double.parse(item["current"]["precip_mm"].toStringAsFixed(1));
         }
         else {
@@ -775,7 +778,8 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
   wapi_body["forecast"]["forecastday"] = wapi_body["forecast"]["forecastday"].sublist(dayDif);
 
   //int epoch = wapi_body["location"]["localtime_epoch"];
-  WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings);
+  WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings,
+      DateTime(localtime.year, localtime.month, localtime.day, localtime.minute));
 
   List<WapiDay> days = [];
 

@@ -83,7 +83,7 @@ class MyFileService extends HttpFileService {
   @override
   Future<FileServiceResponse> get(String url,
       {Map<String, String>? headers}) async {
-    print(url);
+    //print(url);
     var result = await super.get(url, headers: headers);
 
     var hihi = MyGetResponse(result, url);
