@@ -143,7 +143,7 @@ String metN24HourTime(String date, int hourDif) {
 }
 
 Future<DateTime> MetNGetLocalTime(lat, lng) async {
-  return await MyWorldtime().timeByLocation(
+  return await XWorldTime.timeByLocation(
     latitude: lat,
     longitude: lng,
   );

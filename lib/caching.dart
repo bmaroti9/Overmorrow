@@ -145,6 +145,8 @@ class CustomCacheManager {
   }
 }
 
+Worldtime XWorldTime = MyWorldtime();
+
 //i wanted to rewrite this so it uses the caching
 class MyWorldtime extends Worldtime {
 

@@ -37,12 +37,6 @@ import 'package:flutter/material.dart';
 
 //decodes the whole response from the weatherapi.com api_call
 
-bool RandomSwitch = false;
-
-String WapiGetLocalTime(item) {
-  return item["location"]["localtime"].split(" ")[1];
-}
-
 Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   //gets the json response for weatherapi.com
   final params = {
@@ -53,6 +47,8 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
     'alerts': 'no',
   };
   final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
+
+  print((url, latlong));
 
   //var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
   //    .timeout(const Duration(seconds: 3));
@@ -137,8 +133,18 @@ double getSunStatus(String sunrise, String sunset, DateTime localtime, {by = " "
   int minute3 = localtime.minute;
   int all3 = (hour3 * 60 + minute3) - all1;
 
+  print(("times", hour3, minute3));
+
   return min(1, max(all3 / all2, 0));
 
+}
+
+
+Future<DateTime> WapiGetLocalTime(lat, lng) async {
+  return await XWorldTime.timeByLocation(
+    latitude: lat,
+    longitude: lng,
+  );
 }
 
 double unit_coversion(double value, String unit) {
@@ -752,7 +758,8 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
   DateTime fetch_datetime = wapi[1];
   bool isonline = wapi[2];
 
-  DateTime lastKnowTime = DateTime.parse(wapi_body["location"]["localtime"]);
+  //DateTime lastKnowTime = DateTime.parse(wapi_body["location"]["localtime"]);
+  DateTime lastKnowTime = await WapiGetLocalTime(lat, lng);
 
   //this gives us the time passed since last fetch, this is all basically for offline mode
   Duration realTimeOffset = DateTime.now().difference(fetch_datetime);
@@ -779,7 +786,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
   //int epoch = wapi_body["location"]["localtime_epoch"];
   WapiSunstatus sunstatus = WapiSunstatus.fromJson(wapi_body, settings,
-      DateTime(localtime.year, localtime.month, localtime.day, localtime.minute));
+      DateTime(localtime.year, localtime.month, localtime.day, localtime.hour, localtime.minute));
 
   List<WapiDay> days = [];
 
