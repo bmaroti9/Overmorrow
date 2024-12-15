@@ -617,7 +617,7 @@ class MetN15MinutePrecip { //met norway doesn't actaully have 15 minute forecast
 
       double dif = next - now;
       for (double x = 0; x <= 1; x += 0.25) {
-        double g = now + (dif * x) / 4; //because we are dividing the sum of 1 hour into quarters
+        double g = (now + dif * x) / 4; //because we are dividing the sum of 1 hour into quarters
         sum += g;
         precips.add(g);
       }

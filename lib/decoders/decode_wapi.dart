@@ -48,8 +48,6 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   };
   final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
 
-  print((url, latlong));
-
   //var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
   //    .timeout(const Duration(seconds: 3));
 
@@ -132,8 +130,6 @@ double getSunStatus(String sunrise, String sunset, DateTime localtime, {by = " "
   int hour3 = localtime.hour;
   int minute3 = localtime.minute;
   int all3 = (hour3 * 60 + minute3) - all1;
-
-  print(("times", hour3, minute3));
 
   return min(1, max(all3 / all2, 0));
 
@@ -668,10 +664,8 @@ class Wapi15MinutePrecip { //weatherapi doesn't actaully have 15 minute forecast
 
     int i = 0;
 
-    print(("day", day));
-
     while (i < 6) {
-      if (item["forecast"]["forecastday"].length >= day) {
+      if (item["forecast"]["forecastday"].length <= day) {
         break;
       }
       if (item["forecast"]["forecastday"][day]["hour"].length > hour) {
