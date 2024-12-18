@@ -306,46 +306,40 @@ class OMCurrent {
 
     Image Uimage;
     String photographerName = "";
-    String photorgaperUrl = "";
+    String photographerUrl = "";
     String photoLink = "";
+
+    String currentCondition = oMCurrentTextCorrection(
+        item["hourly"]["weather_code"][start], sunstatus, timenow);
 
     if (settings["Image source"] == "network") {
       try {
-        final ImageData = await getUnsplashImage(oMCurrentTextCorrection(
-            item["hourly"]["weather_code"][start], sunstatus, timenow), real_loc, lat, lng);
+        final ImageData = await getUnsplashImage(currentCondition, real_loc, lat, lng);
         Uimage = ImageData[0];
         photographerName = ImageData[1];
-        photorgaperUrl = ImageData[2];
+        photographerUrl = ImageData[2];
         photoLink = ImageData[3];
       }
       //fallback to asset image when condition changed and there is no image for the new one
       catch (e) {
-        String imagePath = oMBackdropCorrection(
-          oMCurrentTextCorrection(
-              item["hourly"]["weather_code"][start], sunstatus, timenow),
-        );
+        String imagePath = oMBackdropCorrection(currentCondition,);
         Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
           width: double.infinity, height: double.infinity,);
+        List<String> credits = assetImageCredit(currentCondition);
+        photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
       }
     }
     else {
-      String imagePath = oMBackdropCorrection(
-        oMCurrentTextCorrection(
-            item["hourly"]["weather_code"][start], sunstatus, timenow),
-      );
+      String imagePath = oMBackdropCorrection(currentCondition,);
       Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
         width: double.infinity, height: double.infinity,);
+      List<String> credits = assetImageCredit(currentCondition);
+      photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
     }
 
-    Color back = BackColorCorrection(
-      oMCurrentTextCorrection(
-          item["hourly"]["weather_code"][start], sunstatus, timenow),
-    );
+    Color back = BackColorCorrection(currentCondition);
 
-    Color primary = PrimaryColorCorrection(
-      oMCurrentTextCorrection(
-          item["hourly"]["weather_code"][start], sunstatus, timenow),
-    );
+    Color primary = PrimaryColorCorrection(currentCondition);
 
     List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
     List<Color> colors = x[0];
@@ -354,14 +348,12 @@ class OMCurrent {
     return OMCurrent(
       image: Uimage,
       photographerName: photographerName,
-      photographerUrl: photorgaperUrl,
+      photographerUrl: photographerUrl,
       photoUrl: photoLink,
 
       imageDebugColors: imageDebugColors,
 
-      text: translation(oMCurrentTextCorrection(
-          item["hourly"]["weather_code"][start], sunstatus, timenow),
-          settings["Language"]),
+      text: translation(currentCondition, settings["Language"]),
       uv: item["daily"]["uv_index_max"][dayDif].round(),
       feels_like: unit_coversion(
           item["current"]["apparent_temperature"], settings["Temperature"])
@@ -517,6 +509,11 @@ class OM15MinutePrecip {
       sum += x;
 
       precips.add(x);
+    }
+
+    //make it still be the same length so it doesn't mess up the labeling
+    for (int i = 0; i < offset15; i++) {
+      precips.add(0);
     }
 
     sum = max(sum, 0.1); //if there is rain then it shouldn't write 0

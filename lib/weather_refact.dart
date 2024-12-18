@@ -38,6 +38,79 @@ Map<String, IconData> textMaterialIcon = {
   'Cloudy Night' : OvermorrowWeatherIcons.cloudy_night2,
 };
 
+Map<String, List<String>> assetPhotoCredits = {
+  'Clear Night': [
+    'https://unsplash.com/photos/time-lapse-photography-of-stars-at-nighttime-YvOT1lJ0NPQ',
+    'Jack B',
+    'https://unsplash.com/@nervum'
+  ],
+  'Partly Cloudy': [
+    'https://unsplash.com/photos/ocean-under-clouds-Plkff-dVfNM',
+    'Edvinas Bruzas',
+    'https://unsplash.com/@edvinasbruzas'
+  ],
+  'Clear Sky': [
+    'https://unsplash.com/photos/blue-and-white-sky-d12K_FkCUN8',
+    'Irina Iriser',
+    'https://unsplash.com/@iriser'
+  ],
+  'Overcast':[
+    'https://unsplash.com/photos/view-of-calm-sea-nQM2oClouhY',
+    'Lionel Gustave',
+    'https://unsplash.com/@lionel_gustave'
+  ],
+  'Haze': [
+    'https://unsplash.com/photos/silhouette-of-trees-and-sea-L-HxY2XlaaY',
+    'Casey Horner',
+    'https://unsplash.com/@mischievous_penguins'
+  ],
+  'Rain': [
+    'https://unsplash.com/photos/water-droplets-on-clear-glass-1YHXFeOYpN0',
+    'Max Bender',
+    'https://unsplash.com/@maxwbender'
+  ],
+  'Sleet': [
+    'https://unsplash.com/photos/snow-covered-trees-and-road-during-daytime-wyM1KmMUSbA',
+    'Nikola Johnny Mirkovic',
+    'https://unsplash.com/@thejohnnyme'
+  ],
+  'Drizzle': [
+    'https://unsplash.com/photos/a-view-of-a-plane-through-a-rain-covered-window-UsYOap7yIMg',
+    'Thom Milkovic',
+    'https://unsplash.com/@thommilkovic',
+  ],
+  'Thunderstorm': [
+    'https://unsplash.com/photos/lightning-strike-on-the-sky-ley4Kf2iG7Y',
+    'Jonas Kaiser',
+    'https://unsplash.com/@kaiser1310'
+  ],
+  'Heavy Snow': [
+    'https://unsplash.com/photos/snowy-forest-on-mountainside-during-daytime-t4hA-zCALUQ',
+    'Willian Justen de Vasconcellos',
+    'https://unsplash.com/@willianjusten',
+  ],
+  'Fog':[
+    'https://unsplash.com/photos/green-trees-on-mountain-under-white-clouds-during-daytime-obQacWYxB1I',
+    'Federico Bottos',
+    'https://unsplash.com/@landscapeplaces'
+  ],
+  'Snow': [
+    'https://unsplash.com/photos/bokeh-photography-of-snows-SH4GNXNj1RA',
+    'Jessica Fadel',
+    'https://unsplash.com/@jessicalfadel',
+  ],
+  'Heavy Rain':[
+    'https://unsplash.com/photos/dew-drops-on-glass-panel-bWtd1ZyEy6w',
+    'Valentin Müller',
+    'https://unsplash.com/@wackeltin_meem'
+  ],
+  'Cloudy Night': [
+    'https://unsplash.com/photos/blue-and-white-starry-night-sky-NpF9JLGYfeQ',
+    'Shot by Cerqueira',
+    'https://unsplash.com/@shotbycerqueira'
+  ],
+};
+
 Map<String, double> textIconSizeNormalize = {
   'Clear Night': 0.77,
   'Partly Cloudy': 0.8,

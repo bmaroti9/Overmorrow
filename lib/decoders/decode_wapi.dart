@@ -320,7 +320,7 @@ class WapiCurrent {
     Image Uimage;
 
     String photographerName = "";
-    String photorgaperUrl = "";
+    String photographerUrl = "";
     String photoLink = "";
 
     if (settings["Image source"] == "network") {
@@ -332,7 +332,7 @@ class WapiCurrent {
         final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
         Uimage = ImageData[0];
         photographerName = ImageData[1];
-        photorgaperUrl = ImageData[2];
+        photographerUrl = ImageData[2];
         photoLink = ImageData[3];
       }
       //fallback to asset image when condition changed and there is no image for the new one
@@ -342,6 +342,11 @@ class WapiCurrent {
         );
         Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
           width: double.infinity, height: double.infinity,);
+
+        List<String> credits = assetImageCredit(textCorrection(
+            item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
+            language: "English"));
+        photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
       }
     }
     else {
@@ -350,6 +355,11 @@ class WapiCurrent {
       );
       Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
         width: double.infinity, height: double.infinity,);
+
+      List<String> credits = assetImageCredit(textCorrection(
+          item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
+          language: "English"));
+      photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
     }
 
     Color back = BackColorCorrection(
@@ -409,7 +419,7 @@ class WapiCurrent {
       wind_dir: item["hour"][start]["wind_degree"],
 
       photographerName: photographerName,
-      photographerUrl: photorgaperUrl,
+      photographerUrl: photographerUrl,
       photoUrl: photoLink,
       imageDebugColors: imageDebugColors,
     );
@@ -485,24 +495,6 @@ class WapiDay {
       }
     }
     return hourly;
-
-    /*
-    List<WapiHour> hourly = [];
-    if (index == 0 && get_rid_first) {
-      for (var i = 0; i < data.length; i++) {
-        if (data[i]["time_epoch"] > timenow) {
-          hourly.add(WapiHour.fromJson(data[i], settings));
-        }
-      }
-    }
-    else {
-      for (var i = 0; i < data.length; i++) {
-        hourly.add(WapiHour.fromJson(data[i], settings));
-      }
-    }
-    return hourly;
-
-     */
   }
 }
 

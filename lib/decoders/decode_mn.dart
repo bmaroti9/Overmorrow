@@ -250,8 +250,10 @@ class MetNCurrent {
     Image Uimage;
 
     String photographerName = "";
-    String photorgaperUrl = "";
+    String photographerUrl = "";
     String photoLink = "";
+
+    String currentCondition = metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]);
 
     if (settings["Image source"] == "network") {
       final text = metNTextCorrection(
@@ -261,30 +263,34 @@ class MetNCurrent {
         final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
         Uimage = ImageData[0];
         photographerName = ImageData[1];
-        photorgaperUrl = ImageData[2];
+        photographerUrl = ImageData[2];
         photoLink = ImageData[3];
       }
       //fallback to asset image when condition changed and there is no image for the new one
       catch (e) {
         String imagePath = metNBackdropCorrection(
-          metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+          currentCondition,
         );
         Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
+        List<String> credits = assetImageCredit(currentCondition);
+        photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
       }
     }
     else {
       String imagePath = metNBackdropCorrection(
-        metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+        currentCondition,
       );
       Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
+      List<String> credits = assetImageCredit(currentCondition);
+      photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
     }
 
     Color back = metNAccentColorCorrection(
-      metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+      currentCondition,
     );
 
     Color primary = metNBackColorCorrection(
-      metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+      currentCondition,
     );
 
     List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
@@ -296,7 +302,7 @@ class MetNCurrent {
     return MetNCurrent(
       image: Uimage,
       photographerName: photographerName,
-      photographerUrl: photorgaperUrl,
+      photographerUrl: photographerUrl,
       photoUrl: photoLink,
 
       text: metNTextCorrection(

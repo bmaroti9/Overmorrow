@@ -501,3 +501,7 @@ class RainviewerRadar {
   return RainviewerRadar.fromJson(images, times);
   }
 }
+
+List<String> assetImageCredit(String name){
+  return assetPhotoCredits[name] ?? ["", "", ""];
+}

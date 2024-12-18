@@ -256,6 +256,8 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
   @override
   Widget build(BuildContext context) {
 
+    print(("name", widget.data.current.photographerName));
+
     if (widget.isVisible) {
       return Padding(
         padding: const EdgeInsets.only(top: 5, right: 24, bottom: 5),
@@ -284,7 +286,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
           ],
         ),
       );
-    } else if (widget.data.current.photographerName != ""){
+    } else{
       List<String> split = translation("photo by x on Unsplash", widget.data.settings["Language"]).split(",");
       return Padding(
         padding: const EdgeInsets.only(top: 0, right: 24),
@@ -338,28 +340,6 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
           ],
         ),
       );
-    }
-    else if (!widget.data.isonline) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 6, right: 24, bottom: 4),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 2),
-              child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 7),
-              child: comfortatext("offline", 13, widget.data.settings,
-                  color: widget.data.current.primary, weight: FontWeight.w600),
-            ),
-          ],
-        ),
-      );
-    }
-    else {
-      return Container();
     }
   }
 }
