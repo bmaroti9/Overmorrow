@@ -58,8 +58,8 @@ Widget searchBar(Color color, List<String> recommend,
         fontWeight: FontWeight.w100,
       ),
 
-      margins: secondColor == highlightColor ? const EdgeInsets.only(left: 10, right: 10, top: 20)
-                    :  EdgeInsets.only(left: 17, right: 17, top: MediaQuery.of(context).padding.top + 15),
+      margins: secondColor == highlightColor ? const EdgeInsets.only(left: 10, right: 10, top: 20) //tablet
+            :  EdgeInsets.only(left: 22, right: 22, top: MediaQuery.of(context).padding.top + 15), //phone
 
       borderRadius: BorderRadius.circular(23),
       backgroundColor: color,
@@ -457,6 +457,8 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
   }
 }
 
+
+
 class dumbySearch extends StatelessWidget {
   final errorMessage;
   final updateLocation;
@@ -502,7 +504,7 @@ class dumbySearch extends StatelessWidget {
         },
         headerData: HeaderData(
             blurContent: false,
-            headerHeight: max(size.height * 0.525, 400), //we don't want it to be smaller than 400
+            headerHeight: max(size.height * 0.51, 400), //we don't want it to be smaller than 400
             header: ParrallaxBackground(image: Image.asset("assets/backdrops/grayscale_snow2.jpg", fit: BoxFit.cover,), key: Key(place),
               color: darken(colors[0], 0.1),),
             overlay: Stack(

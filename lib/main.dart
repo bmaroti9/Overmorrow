@@ -138,7 +138,7 @@ class _MyAppState extends State<MyApp> {
           return dumbySearch(
             errorMessage: '${translation('Place not found', settings["Language"]!)}: \n $backupName',
             updateLocation: updateLocation,
-            icon: Icons.location_disabled,
+            icon: Icons.location_disabled, key: Key(backupName),
             place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
         }
       }
@@ -150,13 +150,13 @@ class _MyAppState extends State<MyApp> {
 
       var weatherdata;
 
+      print(("backupName", backupName));
       try {
         weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weather_provider);
-
       } on TimeoutException {
         return dumbySearch(errorMessage: translation("Weak or no wifi connection", settings["Language"]!),
           updateLocation: updateLocation,
-          icon: Icons.wifi_off,
+          icon: Icons.wifi_off, key: Key(backupName),
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
       } on HttpExceptionWithStatus catch (hihi){
         return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
@@ -166,12 +166,19 @@ class _MyAppState extends State<MyApp> {
       } on SocketException {
         return dumbySearch(errorMessage: translation("Not connected to the internet", settings["Language"]!),
           updateLocation: updateLocation,
-          icon: Icons.wifi_off,
+          icon: Icons.wifi_off, key: Key(backupName),
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+      }
+      catch (e, stacktrace) {
+        print(stacktrace);
+        return dumbySearch(errorMessage: "general error at place 1: ${e.toString()}", updateLocation: updateLocation,
+          icon: Icons.bug_report,
+          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,
+          shouldAdd: "Please try another weather provider!",);
       }
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
-                                // then this will be the new startup
+                                // then this will be the new startup place
 
       return WeatherPage(data: weatherdata, updateLocation: updateLocation);
 
@@ -191,6 +198,7 @@ class _MyAppState extends State<MyApp> {
           shouldAdd: "Please try another weather provider!",);
       }
       else {
+        //retry after clearing cache
         return getDays(true, proposedLoc, backupName, startup);
       }
     }
@@ -204,9 +212,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-
     //defaults to new york when no previous location was found
-    updateLocation('40.7128, 74.0060', "New York", time: 300, startup: true); //just for testing
+    updateLocation('40.7128, -74.0060', "New York", time: 300, startup: true); //just for testing
   }
 
   Future<void> updateLocation(proposedLoc, backupName, {time = 0, startup = false}) async {

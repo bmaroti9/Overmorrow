@@ -95,7 +95,7 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
             UnitsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
             context, updatePage),
         mainSettingEntry("Layout", "widget order, customization", containerLow, primary, onSurface, surface,
-            Icons.pie_chart_outline, settings,
+            Icons.splitscreen, settings,
             LayoutPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
             context, updatePage),
       ],
@@ -504,7 +504,9 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
               padding: const EdgeInsets.only(top: 30, bottom: 60),
               child: Column(
                 children: [
-                  settingEntry(Icons.access_time_filled_sharp, "Time mode", settings, highlight, updatePage,
+                  settingEntry(Icons.access_time_outlined, "Time mode", settings, highlight, updatePage,
+                      onSurface, primaryLight, primary),
+                  settingEntry(Icons.date_range, "Date format", settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
                   settingEntry(CupertinoIcons.textformat_size, "Font size", settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
@@ -657,10 +659,23 @@ class _LayoutPageState extends State<LayoutPage> {
 
   late List<String> _items;
 
+  //also the default order
+  static const allNames = ["sunstatus", "rain indicator", "air quality", "radar", "forecast", "daily"];
+
+  List<String> removed = [];
+
   @override
   void initState() {
     super.initState();
-    _items = settings["Layout order"].split(",");
+    _items = settings["Layout order"] == "" ? [] : settings["Layout order"].split(",");
+
+    for (int i = 0; i < allNames.length; i++) {
+      if (!_items.contains(allNames[i])) {
+        removed.add(allNames[i]);
+      }
+    }
+
+    print(removed);
   }
 
   void updatePage(String name, String to) {
@@ -682,6 +697,7 @@ class _LayoutPageState extends State<LayoutPage> {
     Color primary = colors[1];
     Color onSurface = colors[4];
     Color surface = colors[0];
+    Color outline = colors[5];
 
     return Material(
       color: surface,
@@ -695,46 +711,118 @@ class _LayoutPageState extends State<LayoutPage> {
                 goBack();
               },
             ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: IconButton(
+                  icon: Icon(Icons.restore, color: surface, size: 26,),
+                  onPressed: () {
+                    setState(() {
+                      _items = allNames.toList();
+                      removed = [];
+                    });
+                  },
+                ),
+              ),
+            ],
             title: comfortatext("Layout", 30, settings, color: surface),
             backgroundColor: primary,
             pinned: false,
           ),
           SliverToBoxAdapter(
-            child: ReorderableListView(
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 50),
-              children: <Widget>[
-                for (int index = 0; index < _items.length; index += 1)
-                  Container(
-                    key: Key("$index"),
-                    color: surface,
-                    padding: const EdgeInsets.all(4),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: highlight,
-                        borderRadius: BorderRadius.circular(18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ReorderableListView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 50),
+                  children: <Widget>[
+                    for (int index = 0; index < _items.length; index += 1)
+                      Container(
+                        key: Key("$index"),
+                        color: surface,
+                        padding: const EdgeInsets.all(4),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: highlight,
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          height: 70,
+                          padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              comfortatext(_items[index], 19, settings, color: onSurface),
+                              const Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print((_items[index], _items));
+                                    setState(() {
+                                      removed.add(_items[index]);
+                                      _items.remove(_items[index]);
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: primaryLight,
+                                      borderRadius: BorderRadius.circular(40)
+                                    ),
+                                    padding: const EdgeInsets.all(5),
+                                    child: Icon(Icons.remove_rounded, color: highlight, size: 21,),
+                                  ),
+                                ),
+                              ),
+                              Icon(Icons.reorder_rounded, color: primary, size: 21,),
+                            ],
+                          ),
+                        ),
                       ),
-                      height: 70,
-                      padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 20),
-                      child: Row(
-                        children: [
-                          comfortatext(_items[index], 19, settings, color: onSurface),
-                          const Spacer(),
-                          Icon(Icons.reorder_rounded, color: primaryLight, size: 21,),
-                        ],
-                      ),
-                    ),
+                  ],
+                  onReorder: (int oldIndex, int newIndex) {
+                    setState(() {
+                      if (oldIndex < newIndex) {
+                        newIndex -= 1;
+                      }
+                      final String item = _items.removeAt(oldIndex);
+                      _items.insert(newIndex, item);
+                    });
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top:0, left: 20, right: 20),
+                  child: Wrap(
+                    spacing: 4,
+                    runSpacing: 4,
+                    children: List.generate(removed.length, (i) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _items.add(removed[i]);
+                            removed.remove(removed[i]);
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(width: 1.2, color: outline)
+                          ),
+                          padding: EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.add_rounded, color: primaryLight, size: 21,),
+                              comfortatext(removed[i], 16, settings, color: onSurface),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
                   ),
+                )
               ],
-              onReorder: (int oldIndex, int newIndex) {
-                setState(() {
-                  if (oldIndex < newIndex) {
-                    newIndex -= 1;
-                  }
-                  final String item = _items.removeAt(oldIndex);
-                  _items.insert(newIndex, item);
-                });
-              },
             ),
           ),
         ],

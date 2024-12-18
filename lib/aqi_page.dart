@@ -47,8 +47,8 @@ class SquigglyCirclePainter extends CustomPainter {
     double centerX = size.width / 2;
     double centerY = size.height / 2;
 
-    double waves = 10;
-    double waveAmplitude = size.width / 50;
+    double waves = 12;
+    double waveAmplitude = size.width / 52;
 
     for (double i = 0; i <= 360; i += 0.1) {
       double angle = i * pi / 180;
@@ -122,7 +122,7 @@ class ThreeQuarterCirclePainter extends CustomPainter {
     // Background Circle
     Paint baseCircle = Paint()
       ..color = secondColor
-      ..strokeWidth = 9
+      ..strokeWidth = 10
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
     canvas.drawArc(
@@ -239,10 +239,29 @@ class _AllergensPageState extends State<AllergensPage> {
                   );
                 } else if (snapshot.hasError) {
                   print((snapshot.error, snapshot.stackTrace));
+                  //this was the best way i found to detect no wifi
+                  if (snapshot.error.toString().contains("Socket")) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 100),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(14.0),
+                            child: Icon(Icons.wifi_off_rounded, color: data.current.primaryLight, size: 23,),
+                          ),
+                          comfortatext("no wifi connection", 18, data.settings, color: data.current.primary),
+                        ],
+                      ),
+                    );
+                  }
                   return Padding(
                     padding: const EdgeInsets.only(top: 100),
                     child: Column(
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.all(14.0),
+                          child: Icon(Icons.wifi_off_rounded, color: data.current.primaryLight, size: 23,),
+                        ),
                         comfortatext("unable to load air quality data", 18, data.settings, color: data.current.primary),
                         Padding(
                           padding: const EdgeInsets.all(30.0),
@@ -260,20 +279,27 @@ class _AllergensPageState extends State<AllergensPage> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 50, right: 50, top: 50, bottom: 30),
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: CustomPaint(
-                            painter: SquigglyCirclePainter(data.current.primaryLight),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 15),
-                                  child: comfortatext(data.aqi.aqi_index.toString(), 52, data.settings, color: data.current.primary, weight: FontWeight.w300),
+                        padding: const EdgeInsets.only(top: 30, bottom: 30),
+                        child: FractionallySizedBox(
+                          widthFactor: 0.76,
+                          alignment: FractionalOffset.center,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: CustomPaint(
+                                painter: SquigglyCirclePainter(data.current.primaryLight),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 15),
+                                      child: comfortatext(data.aqi.aqi_index.toString(), 52, data.settings, color: data.current.primary, weight: FontWeight.w300),
+                                    ),
+                                    comfortatext(data.aqi.aqi_title, 23, data.settings, color: data.current.primary, weight: FontWeight.w600),
+                                  ],
                                 ),
-                                comfortatext(data.aqi.aqi_title, 23, data.settings, color: data.current.primary, weight: FontWeight.w600),
-                              ],
+                              ),
                             ),
                           ),
                         ),
@@ -283,28 +309,6 @@ class _AllergensPageState extends State<AllergensPage> {
                         padding: const EdgeInsets.only(top: 10, bottom: 20, left: 10, right: 10),
                         child: comfortatext(data.aqi.aqi_desc, 17, data.settings, color: data.current.onSurface, weight: FontWeight.w400, align: TextAlign.center),
                       ),
-
-
-                      /*
-                      GridView.count(
-                          padding: const EdgeInsets.only(top: 15, bottom: 20, left: 10, right: 10),
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          crossAxisCount: 3,
-                          childAspectRatio: 4.8,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            NewAqiDataPoints("PM2.5", data.aqi.pm2_5, data, 18.0),
-                            NewAqiDataPoints("PM10", data.aqi.pm10, data, 18.0),
-                            NewAqiDataPoints("O3", data.aqi.o3, data, 18.0),
-                            NewAqiDataPoints("NO2", data.aqi.no2, data, 18.0),
-                            NewAqiDataPoints("CO", extendedAqi.co, data, 18.0),
-                            NewAqiDataPoints("SO2", extendedAqi.so2, data, 18.0),
-                          ]
-                      ),
-                       */
-
 
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 5),

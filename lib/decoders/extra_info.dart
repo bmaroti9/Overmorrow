@@ -76,10 +76,14 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
 
   final url2 = Uri.https('api.unsplash.com', 'photos/random', params2);
 
-  var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$text_query $loc")
-      .timeout(const Duration(seconds: 6));
+  //await cacheManager2.removeFile("$text_query $loc");
 
-  var response2 = await file2.readAsString();
+  //var file2 = await cacheManager2.getSingleFile(url2.toString(), key: "$text_query $loc")
+  //    .timeout(const Duration(seconds: 6));
+
+  var file2 = await XCustomCacheManager.fetchData(url2.toString(), "$text_query $loc unsplash");
+
+  var response2 = await file2[0].readAsString();
 
   var unsplash_body = jsonDecode(response2);
 
@@ -146,7 +150,7 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
 
   //i don't want emojis because they ruin the one color aspect of the app
   String username = unsplash_body[index]["user"]["name"] ?? "";
-  final RegExp regExp = RegExp(r'(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])');
+  final RegExp regExp = RegExp(r'[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff]');
   username = username.replaceAll(regExp, "_");
 
   final String photoLink = unsplash_body[index]["links"]["html"] ?? "";
@@ -403,6 +407,8 @@ class WeatherData {
 
   final updatedTime;
   final fetch_datetime;
+  final bool isonline;
+
   final localtime;
 
   final days;
@@ -425,6 +431,7 @@ class WeatherData {
     required this.days,
     required this.current,
     required this.fetch_datetime,
+    required this.isonline,
     required this.updatedTime,
     required this.localtime,
 
@@ -466,8 +473,9 @@ class RainviewerRadar {
   static Future<RainviewerRadar> getData() async {
   const String url = 'https://api.rainviewer.com/public/weather-maps.json';
 
-  var file = await cacheManager2.getSingleFile(url.toString());
-  var response = await file.readAsString();
+  //var file = await cacheManager2.getSingleFile(url.toString());
+  var file = await XCustomCacheManager.fetchData(url.toString(), url.toString());
+  var response = await file[0].readAsString();
   final Map<String, dynamic> data = json.decode(response);
 
   final String host = data["host"];
@@ -492,4 +500,8 @@ class RainviewerRadar {
 
   return RainviewerRadar.fromJson(images, times);
   }
+}
+
+List<String> assetImageCredit(String name){
+  return assetPhotoCredits[name] ?? ["", "", ""];
 }

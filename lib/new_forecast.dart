@@ -25,6 +25,34 @@ import 'package:flutter/services.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'ui_helper.dart';
 
+Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0, iconSize = 21.0}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Icon(icon,
+          color: data.current.primaryLight, size: iconSize),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 5, top: 3),
+            child: comfortatext(number.toString(), 18, data.settings,
+                color: data.current.primary),
+          ),
+          comfortatext(addon, 15, data.settings, color: data.current.primary)
+        ],
+      ),
+      if (addWind) Padding(
+          padding: const EdgeInsets.only(left: 5, right: 3),
+          child: RotationTransition(
+              turns: AlwaysStoppedAnimation(windDir / 360),
+              child: Icon(Icons.arrow_circle_right_outlined,
+                color: data.current.primaryLight, size: 20)
+          )
+      ),
+    ],
+  );
+}
 
 class NewDay extends StatefulWidget {
   final data;
@@ -138,10 +166,10 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                 child: RainWidget(data, day, highlight, data.current.containerHigh)
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8, top: 18, bottom: 10),
+              padding: const EdgeInsets.only(left: 8, right: 8, top: 18, bottom: 8),
               child: Container(
-                height: 85,
-                padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+                height: 87,
+                padding: const EdgeInsets.only(top: 9, bottom: 9, left: 15, right: 15),
                 decoration: BoxDecoration(
                   //border: Border.all(width: 1, color: data.current.outline),
                   color: state ? data.current.container : data.current.containerLow,
@@ -157,80 +185,11 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                           crossAxisCount: 2,
                           childAspectRatio: constraints.maxWidth / constraints.maxHeight,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, right: 8),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.water_drop_outlined,
-                                      color: data.current.primaryLight, size: 21),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10, top: 3),
-                                    child: comfortatext('${day.precip_prob}%', 18, data.settings,
-                                        color: data.current.primary),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, right: 8),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                      Icons.water_drop, color: data.current.primaryLight, size: 21),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3, left: 10),
-                                    child: comfortatext(day.total_precip.toString() +
-                                        data.settings["Precipitation"], 18, data.settings,
-                                        color: data.current.primary),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, right: 8),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    CupertinoIcons.wind, color: data.current.primaryLight, size: 21,),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3, left: 10),
-                                    child: comfortatext('${day.windspeed} ${data
-                                        .settings["Wind"]}', 18, data.settings,
-                                        color: data.current.primary),
-                                  ),
-                                  Padding(
-                                      padding: const EdgeInsets.only(left: 5, right: 3),
-                                      child: RotationTransition(
-                                          turns: AlwaysStoppedAnimation(day.wind_dir / 360),
-                                          child: Icon(CupertinoIcons.arrow_down_circle,
-                                            color: data.current.primaryLight, size: 18,)
-                                      )
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, right: 8),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(CupertinoIcons.sun_max,
-                                      color: data.current.primaryLight, size: 21),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3, left: 10),
-                                    child: comfortatext('${day.uv} UV', 18, data.settings,
-                                        color: data.current.primary),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            dayStat(data, Icons.umbrella_rounded, day.precip_prob, "%"),
+                            dayStat(data, Icons.water_drop_outlined, day.total_precip, data.settings["Precipitation"]),
+                            dayStat(data, Icons.air, day.windspeed, data.settings["Wind"], addWind: true,
+                                windDir: day.wind_dir),
+                            dayStat(data, Icons.wb_sunny_outlined, day.uv, "UV", iconSize: 20.0),
                           ]
                       );
                     }
@@ -296,7 +255,7 @@ Widget buildNewDays(data) {
     padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
-    itemCount: 3,
+    itemCount: min(3, data.days.length),
     itemBuilder: (BuildContext context, int index) {
       final day = data.days[index];
       return Padding(
@@ -334,8 +293,8 @@ Widget buildTemp(List<dynamic> hours, data, Color highlight) => ListView(
                 ),
               ),
               Container(
-                width: 13,
-                height: hour.raw_temp * 1.8 + 30,
+                width: 14,
+                height: min(max(hour.raw_temp * 1.8 + 30, 14), 105),
                 decoration: BoxDecoration(
                     color: data.current.primaryLight,
                   //border: Border.all(color: data.current.primaryLight, width: 2),
@@ -543,8 +502,8 @@ Widget buildUV(List<dynamic> hours, data, highlight) => ListView(
                   if (index < min(max(10 - hour.uv, 0), 10)) {
                     return Center(
                       child: Container(
-                        width: 10,
-                        height: 5,
+                        width: 14,
+                        height: 6,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: highlight,
@@ -555,8 +514,8 @@ Widget buildUV(List<dynamic> hours, data, highlight) => ListView(
                   else {
                     return Center(
                       child: Container(
-                        width: 10,
-                        height: 5,
+                        width: 14,
+                        height: 6,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: data.current.primaryLight,
@@ -885,63 +844,15 @@ Widget GlanceDayEntry(data, index, day, onExpandTapped) {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.water_drop_outlined,
-                            color: data.current.primaryLight,
-                            size: 18,),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 2, right: 8),
-                            child: comfortatext(
-                                '${day.precip_prob}%', 17,
-                                data.settings,
-                                color: data.current.onSurface),
-                          ),
-                          Icon(
-                            Icons.water_drop,
-                            color: data.current.primaryLight,
-                            size: 18,),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 2, right: 2),
-                            child: comfortatext(
-                                day.total_precip.toString() +
-                                    data.settings["Precipitation"],
-                                17, data.settings,
-                                color: data.current.onSurface),
-                          ),
-                        ],
+                          dayStat(data, Icons.umbrella_rounded, day.precip_prob, "%", iconSize: 20.0),
+                          const SizedBox(width: 6,),
+                          dayStat(data, Icons.water_drop_outlined, day.total_precip,
+                              data.settings["Precipitation"], iconSize: 20.0),
+                        ]
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          CupertinoIcons.wind,
-                          color: data.current.primaryLight,
-                          size: 18,),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 2, right: 2),
-                          child: comfortatext(
-                              '${day.windspeed} ${data
-                                  .settings["Wind"]}', 17,
-                              data.settings,
-                              color: data.current.onSurface),
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.only(
-                                left: 3, right: 3, bottom: 1),
-                            child: RotationTransition(
-                                turns: AlwaysStoppedAnimation(
-                                    day.wind_dir / 360),
-                                child: Icon(
-                                  CupertinoIcons.arrow_down_circle,
-                                  color: data.current.primary,
-                                  size: 16,)
-                            )
-                        ),
-                      ],
-                    )
+                    dayStat(data, Icons.air, day.windspeed, data.settings["Wind"], addWind: true,
+                        windDir: day.wind_dir),
                   ],
                 ),
               ),

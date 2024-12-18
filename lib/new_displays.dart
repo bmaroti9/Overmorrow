@@ -158,7 +158,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         final textWidth = textPainter.width;
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 11),
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 13),
           child: Column(
             children: [
               Padding(

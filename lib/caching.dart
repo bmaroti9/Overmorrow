@@ -16,8 +16,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'dart:async';
+import 'package:worldtime/worldtime.dart';
+import 'package:worldtime/constants.dart';
 
 class MyGetResponse implements FileServiceResponse {
   var url;
@@ -37,10 +43,9 @@ class MyGetResponse implements FileServiceResponse {
 
   @override
   DateTime get validTill {
-    if (url.toString().contains("search.json")) { //search results are stored for 20 days
-      return DateTime.now().add(const Duration(days: 20));
+    if (url.toString().contains("search")) { //search results are stored for 40 days
+      return DateTime.now().add(const Duration(days: 40));
     }
-
 
     //snap to the next quarter hour because that's when the weather data updates
     DateTime now = DateTime.now();
@@ -78,6 +83,7 @@ class MyFileService extends HttpFileService {
   @override
   Future<FileServiceResponse> get(String url,
       {Map<String, String>? headers}) async {
+    //print(url);
     var result = await super.get(url, headers: headers);
 
     var hihi = MyGetResponse(result, url);
@@ -99,3 +105,65 @@ CacheManager cacheManager2 = CacheManager(Config(
   stalePeriod: const Duration(hours: 3),
   fileService: MyFileService(),
 ));
+
+CustomCacheManager XCustomCacheManager = CustomCacheManager();
+
+class CustomCacheManager {
+  static const cacheKey = "myCacheKey";
+  static final CacheManager _cacheManager = CacheManager(Config(
+    "hehekey",
+    stalePeriod: const Duration(days: 7),
+    fileService: MyFileService(),
+  ));
+
+  Future<List<dynamic>> fetchData(String url, String cacheKey, {headers}) async {
+    try {
+      final fileInfo = await _cacheManager.getFileFromCache(cacheKey);
+
+      //print(("got here", fileInfo?.validTill, fileInfo?.validTill.difference(DateTime.now())));
+
+      if (fileInfo == null || fileInfo.validTill.difference(DateTime.now()).isNegative) {
+        final file = await _cacheManager.downloadFile(url, key: cacheKey, authHeaders: headers).timeout(Duration(seconds: 3));
+        return [file.file, true];
+      } else {
+        return [fileInfo.file, true];
+      }
+    } catch (error) {
+      print("last data");
+      try {
+        final FileInfo? fileInfo = await _cacheManager.getFileFromCache(cacheKey);
+        return [fileInfo!.file, false];
+      }
+      catch (error) {
+        print(("catched no wifi"));
+        throw const SocketException("no wifi");
+      }
+
+      //final cachedFile = await _cacheManager.getSingleFile(url);
+      //return cachedFile;
+    }
+  }
+}
+
+Worldtime XWorldTime = MyWorldtime();
+
+//i wanted to rewrite this so it uses the caching
+class MyWorldtime extends Worldtime {
+
+  @override
+  Future<DateTime> timeByLocation({
+    required double latitude,
+    required double longitude,
+  }) async {
+    final String url = '${urlLocation}latitude=$latitude&longitude=$longitude';
+    try {
+      var file = await XCustomCacheManager.fetchData(url.toString(), "$latitude, $longitude timeapi",
+          headers: headers).timeout(Duration(seconds: 3));
+      var response = await file[0].readAsString();
+      final Map json = jsonDecode(response);
+      return DateTime.tryParse(json['dateTime']) ?? defaultDateTime;
+    } catch (e) {
+      rethrow;
+    }
+  }
+}

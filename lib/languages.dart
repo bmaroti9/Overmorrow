@@ -114,7 +114,7 @@ Map<String, List<String>> mainTranslate = {
     '降水',
     '降水量',
     'Opady',
-    'Βροχόπτωση'
+    'Υετός'
   ],
   'Settings': [
     'Settings',
@@ -282,7 +282,7 @@ Map<String, List<String>> mainTranslate = {
     '晴朗的夜晚',
     '快晴の夜',
     'Bezchmurna noc',
-    'Καθαρή Βραδυά'
+    'Καθαρή Βραδιά'
   ],
   'Partly Cloudy': [
     'Partly Cloudy',
@@ -605,7 +605,7 @@ Map<String, List<String>> mainTranslate = {
     '空气质量',
     '空気の質',
     'jakość powietrza',
-    'ποιότητα αέρος'
+    'ποιότητα αέρα'
   ],
 
   'good': [
@@ -620,7 +620,7 @@ Map<String, List<String>> mainTranslate = {
     '好',
     '良い',
     'dobry',
-    'καλός'
+    'εξαιρετική'
   ],
   'fair': [
     'fair',
@@ -634,7 +634,7 @@ Map<String, List<String>> mainTranslate = {
     '公平',
     '公平',
     'dopuszczalny',
-    'δίκαιος'
+    'καλή'
   ],
   'moderate': [
     'moderate',
@@ -648,7 +648,7 @@ Map<String, List<String>> mainTranslate = {
     '适中',
     '適度',
     'umiarkowany',
-    'μέτριος'
+    'ασθενής'
   ],
   'poor': [
     'poor',
@@ -662,7 +662,7 @@ Map<String, List<String>> mainTranslate = {
     '较差',
     '悪い',
     'słaby',
-    'κακός'
+    'ανθυγιεινή'
   ],
   'very poor': [
     'very poor',
@@ -676,7 +676,7 @@ Map<String, List<String>> mainTranslate = {
     '非常差',
     '非常に悪い',
     'bardzo słaby',
-    'πολύ κακός'
+    'πολύ ανθυγιεινή'
   ],
   'unhealthy': [
     'unhealthy',
@@ -690,7 +690,7 @@ Map<String, List<String>> mainTranslate = {
     '不健康',
     '不健康',
     'niezdrowy',
-    'ανθυγιεινός'
+    'επικίνδυνη'
   ],
 
   'precipitation': [
@@ -1555,7 +1555,7 @@ Map<String, List<String>> mainTranslate = {
     '主要污染物',
     '主要汚染物質',
     'główny zanieczyszczający',
-    'κύριος ρύπος'
+    'κύριο ρυπογόνο'
   ],
   "Alder Pollen": [
     'Alder Pollen',
@@ -1653,7 +1653,22 @@ Map<String, List<String>> mainTranslate = {
     '每日空气质量指数',
     '毎日のAQI',
     'dzienne AQI',
-    'καθημερινό AQI'
+    'καθημερινός AQI'
+  ],
+
+  "Date format": [
+    "Date format",
+    "Dátumformátum",
+    "Formato de fecha",
+    "Format de date",
+    "Datumsformat",
+    "Formato Data",
+    "Formato de Data",
+    "Формат Даты",
+    "日期格式",
+    "日付形式",
+    "Format Daty",
+    "Μορφή Ημερομηνίας"
   ],
 
   //day
@@ -1728,7 +1743,20 @@ Map<String, List<String>> mainTranslate = {
     "amerykański aqi",
     "aqi ηπα"
   ],
-
+  "offline": [
+    "offline",
+    "offline",
+    "sin conexión",
+    "hors ligne",
+    "offline",
+    "offline",
+    "offline",
+    "офлайн",
+    "离线",
+    "オフライン",
+    "offline",
+    "εκτός σύνδεσης"
+  ],
 
   'Search translation': [ //used for getting the codes used for translation of city names
                           //If none are available then en (english) is the default

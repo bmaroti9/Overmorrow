@@ -37,7 +37,10 @@ Map<String, List<String>> settingSwitches = {
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
   'Wind': ['m/s', 'kph', 'mph', 'kn'],
+
   'Time mode': ['12 hour', '24 hour'],
+  'Date format': ['mm/dd', 'dd/mm'],
+
   'Font size': ['normal', 'small', 'very small', 'big'],
 
   'Color mode' : ['auto', 'original', 'colorful', 'mono', 'light', 'dark'],
@@ -401,7 +404,7 @@ Future<String> isLocationSafe() async {
 Future<List<String>> getLastPlace() async {
   final prefs = await SharedPreferences.getInstance();
   final place = prefs.getString('LastPlaceN') ?? 'New York';
-  final cord = prefs.getString('LastCord') ?? '40.7128, 74.0060';
+  final cord = prefs.getString('LastCord') ?? '40.7128, -74.0060';
   return [place, cord];
 }
 
@@ -543,25 +546,32 @@ class _SettingsPageState extends State<SettingsPage> {
 Widget SettingsMain(Color primary, Map<String, String>? settings, Function updatePage,
     Function goBack, Color back, Image image, context, colors, allColors) {
 
-  return  Material(
-    color: colors[0],
-    child: CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar.large(
-          leading:
-          IconButton(icon: Icon(Icons.arrow_back, color: colors[0],), onPressed: () {
-            HapticFeedback.selectionClick();
-            goBack();
-          }),
-          title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[0]),
-          backgroundColor: colors[1],
-          pinned: false,
-        ),
-        // Just some content big enough to have something to scroll.
-        SliverToBoxAdapter(
-          child: NewSettings(settings, updatePage, image, colors, allColors, context),
-        ),
-      ],
+  return  PopScope(
+    canPop: false,
+    onPopInvoked: (bool didPop) async {
+      goBack();
+    },
+    child: Material(
+      color: colors[0],
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            leading:
+            IconButton(icon: Icon(Icons.arrow_back, color: colors[0],),
+              onPressed: () {
+              HapticFeedback.selectionClick();
+              goBack();
+            }),
+            title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[0]),
+            backgroundColor: colors[1],
+            pinned: false,
+          ),
+          // Just some content big enough to have something to scroll.
+          SliverToBoxAdapter(
+            child: NewSettings(settings, updatePage, image, colors, allColors, context),
+          ),
+        ],
+      ),
     ),
   );
 }

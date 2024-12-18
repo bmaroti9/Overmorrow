@@ -138,10 +138,12 @@ class _NewMainState extends State<NewMain> {
       'daily': buildNewGlanceDay(data: data),
     };
 
-    final List<String> order = data.settings["Layout order"].split(",");
-    print(order);
+    final List<String> order = data.settings["Layout order"] == "" ? [] : data.settings["Layout order"].split(",");
+    List<Widget> orderedWidgets = [];
+    if (order.isNotEmpty && order[0] != "") {
+      orderedWidgets = order.map((name) => widgetsMap[name]!).toList();
+    }
 
-    final List<Widget> orderedWidgets = order.map((name) => widgetsMap[name]!).toList();
 
     String colorMode = data.settings["Color mode"];
     if (colorMode == "auto") {
@@ -164,7 +166,7 @@ class _NewMainState extends State<NewMain> {
         headerData: HeaderData(
             //backgroundColor: WHITE,
             blurContent: false,
-            headerHeight: max(size.height * 0.518, 400),
+            headerHeight: max(size.height * 0.51, 400),
             //we don't want it to be smaller than 400
             header: ParrallaxBackground(image: data.current.image, key: Key(data.place),
                 color: data.current.surface == BLACK ? BLACK
@@ -217,9 +219,10 @@ class _NewMainState extends State<NewMain> {
         children: [
           Stack(
             children: [
-              FadingWidget(data: data,
-                  time: data.updatedTime,
-                  key: Key(data.updatedTime.toString())),
+              FadingWidget(
+                data: data,
+                time: data.updatedTime,
+              ),
               LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     if (constraints.maxWidth > 500.0) {

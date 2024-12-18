@@ -47,8 +47,7 @@ class WeatherPage extends StatelessWidget {
     }
 
     return NewMain(data: data, updateLocation: updateLocation, context: context,
-        key: Key("${data.place}, ${data.current.surface} ${data.current.image} ${data.provider}"),);
-
+        key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
   }
 }
 
@@ -88,7 +87,8 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
     child: SizedBox(
       width: width,
         child: Container(
-            padding: const EdgeInsets.only(top: 25, left: 4, right: 4, bottom: 13),
+            //top padding is slightly bigger because of the offline colored bar
+            padding: EdgeInsets.only(top: data.isonline ? 26 : 33, left: 4, right: 4, bottom: 13),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -166,6 +166,9 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
             padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
             child: DropdownButton(
               underline: Container(),
+              onTap: () {
+                HapticFeedback.mediumImpact();
+              },
               borderRadius: BorderRadius.circular(20),
               icon: Padding(
                 padding: const EdgeInsets.only(left:5),

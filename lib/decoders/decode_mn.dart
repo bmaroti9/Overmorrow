@@ -17,11 +17,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
-import 'package:worldtime/worldtime.dart';
 
 import '../caching.dart';
 import '../settings_page.dart';
@@ -40,7 +40,14 @@ String metNTextCorrection(String text, {language = 'English'}) {
 int metNCalculateHourDif(DateTime timeThere) {
   DateTime now = DateTime.now().toUtc();
 
+  print(("hourdif", now.hour, timeThere.hour));
+
   return now.hour - timeThere.hour;
+}
+
+Duration metNCalculateTimeOffset(DateTime timeThere) {
+  DateTime now = DateTime.now().toUtc();
+  return now.difference(timeThere);
 }
 
 int metNcalculateFeelsLike(double t, double r, double v) {
@@ -85,7 +92,9 @@ String metNGetName(index, settings, item, start, hourDif) {
   DateTime time = time_before.add(-Duration(hours: hourDif));
   const weeks = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   String weekname = translation(weeks[time.weekday - 1], settings["Language"]);
-  return "$weekname, ${time.month}/${time.day}";
+  final String date = settings["Date format"] == "mm/dd" ? "${time.month}/${time.day}"
+      :"${time.day}/${time.month}";
+  return "$weekname, $date";
 }
 
 String metNBackdropCorrection(String text) {
@@ -115,12 +124,8 @@ String metNTimeCorrect(String date, int hourDif) {
   if (num == 0) {
     return '12am';
   }
-  else if (num < 10) {
-    final minusHour = (num % 10).toString();
-    return '${minusHour}am';
-  }
   else if (num < 12) {
-    return '${realhour}am';
+    return '${num}am';
   }
   else if (num == 12) {
     return '12pm';
@@ -138,7 +143,7 @@ String metN24HourTime(String date, int hourDif) {
 }
 
 Future<DateTime> MetNGetLocalTime(lat, lng) async {
-  return await Worldtime().timeByLocation(
+  return await XWorldTime.timeByLocation(
     latitude: lat,
     longitude: lng,
   );
@@ -155,14 +160,17 @@ Future<List<dynamic>> MetNMakeRequest(double lat, double lng, String real_loc) a
     "User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"
   };
   final MnUrl = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/complete', MnParams);
-  print(MnUrl);
 
-  var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$real_loc, met.no", headers: headers).timeout(const Duration(seconds: 6));
-  var MnResponse = await MnFile.readAsString();
+  //var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$real_loc, met.no", headers: headers).timeout(const Duration(seconds: 6));
+  var MnFile = await XCustomCacheManager.fetchData(MnUrl.toString(), "$real_loc, met.no", headers: headers);
+
+  var MnResponse = await MnFile[0].readAsString();
+  bool isonline = MnFile[1];
+
   final MnData = jsonDecode(MnResponse);
 
-  DateTime fetch_datetime = await MnFile.lastModified();
-  return [MnData, fetch_datetime];
+  DateTime fetch_datetime = await MnFile[0].lastModified();
+  return [MnData, fetch_datetime, isonline];
 
 }
 
@@ -242,32 +250,47 @@ class MetNCurrent {
     Image Uimage;
 
     String photographerName = "";
-    String photorgaperUrl = "";
+    String photographerUrl = "";
     String photoLink = "";
+
+    String currentCondition = metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]);
 
     if (settings["Image source"] == "network") {
       final text = metNTextCorrection(
           item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"],
           language: "English");
-      final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
-      Uimage = ImageData[0];
-      photographerName = ImageData[1];
-      photorgaperUrl = ImageData[2];
-      photoLink = ImageData[3];
+      try {
+        final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
+        Uimage = ImageData[0];
+        photographerName = ImageData[1];
+        photographerUrl = ImageData[2];
+        photoLink = ImageData[3];
+      }
+      //fallback to asset image when condition changed and there is no image for the new one
+      catch (e) {
+        String imagePath = metNBackdropCorrection(
+          currentCondition,
+        );
+        Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
+        List<String> credits = assetImageCredit(currentCondition);
+        photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
+      }
     }
     else {
       String imagePath = metNBackdropCorrection(
-        metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+        currentCondition,
       );
       Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
+      List<String> credits = assetImageCredit(currentCondition);
+      photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
     }
 
     Color back = metNAccentColorCorrection(
-      metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+      currentCondition,
     );
 
     Color primary = metNBackColorCorrection(
-      metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"]),
+      currentCondition,
     );
 
     List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
@@ -279,16 +302,15 @@ class MetNCurrent {
     return MetNCurrent(
       image: Uimage,
       photographerName: photographerName,
-      photographerUrl: photorgaperUrl,
+      photographerUrl: photographerUrl,
       photoUrl: photoLink,
 
       text: metNTextCorrection(
           it["next_1_hours"]["summary"]["symbol_code"],
           language: settings["Language"]),
-
-      precip: unit_coversion(
+      precip: double.parse(unit_coversion(
           it["next_1_hours"]["details"]["precipitation_amount"],
-          settings["Precipitation"]),
+          settings["Precipitation"]).toStringAsFixed(1)),
       temp: unit_coversion(
           it["instant"]["details"]["air_temperature"],
           settings["Temperature"]).round(),
@@ -462,6 +484,7 @@ class MetNHour {
 
   static MetNHour fromJson(item, settings, hourDif) {
     var nextHours = item["data"]["next_1_hours"] ?? item["data"]["next_6_hours"];
+
     return MetNHour(
         rawText: metNTextCorrection(
             nextHours["summary"]["symbol_code"]),
@@ -513,19 +536,20 @@ class MetNSunstatus {
     required this.absoluteSunriseSunset,
   });
 
-  static Future<MetNSunstatus> fromJson(item, settings, lat, lng, int dif, DateTime timeThere) async {
+  static Future<MetNSunstatus> fromJson(item, settings, lat, lng, int dif, DateTime timeThere, DateTime fetchDate) async {
     final MnParams = {
       "lat" : lat.toString(),
       "lon" : lng.toString(),
-      "date" : "${timeThere.year}-${timeThere.month.toString().padLeft(2, "0")}-${timeThere.day.toString().padLeft(2, "0")}",
+      "date" : "${fetchDate.year}-${fetchDate.month.toString().padLeft(2, "0")}-${fetchDate.day.toString().padLeft(2, "0")}",
     };
     final headers = {
       "User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"
     };
     final MnUrl = Uri.https("api.met.no", 'weatherapi/sunrise/3.0/sun', MnParams);
 
-    var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$lat, $lng, sunstatus met.no", headers: headers).timeout(const Duration(seconds: 6));
-    var MnResponse = await MnFile.readAsString();
+    //var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$lat, $lng, sunstatus met.no", headers: headers).timeout(const Duration(seconds: 6));
+    var MnFile = await XCustomCacheManager.fetchData(MnUrl.toString(), "$lat, $lng met.no aqi", headers: headers);
+    var MnResponse = await MnFile[0].readAsString();
     final item = jsonDecode(MnResponse);
 
     List<String> sunriseString = item["properties"]["sunrise"]["time"].split("T")[1].split("+")[0].split(":");
@@ -599,7 +623,7 @@ class MetN15MinutePrecip { //met norway doesn't actaully have 15 minute forecast
 
       double dif = next - now;
       for (double x = 0; x <= 1; x += 0.25) {
-        double g = now + (dif * x);
+        double g = (now + dif * x) / 4; //because we are dividing the sum of 1 hour into quarters
         sum += g;
         precips.add(g);
       }
@@ -636,23 +660,42 @@ class MetN15MinutePrecip { //met norway doesn't actaully have 15 minute forecast
     );
 
   }
-
 }
 
 Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) async {
 
-  DateTime localTime = await MetNGetLocalTime(lat, lng);
-  int hourDif = metNCalculateHourDif(localTime);
-
   var Mn = await MetNMakeRequest(lat, lng, real_loc);
   var MnBody = Mn[0];
 
+  DateTime lastKnowTime = await MetNGetLocalTime(lat, lng);
   DateTime fetch_datetime = Mn[1];
 
-  MetNSunstatus sunstatus = await MetNSunstatus.fromJson(MnBody, settings, lat, lng, hourDif, localTime);
+  //this gives us the time passed since last fetch, this is all basically for offline mode
+  Duration realTimeOffset = DateTime.now().difference(fetch_datetime);
+
+  //now we just need to apply this time offset to get the real current time
+  DateTime localTime = lastKnowTime.add(realTimeOffset);
+
+  int hourDif = metNCalculateHourDif(localTime);
+
+  bool isonline = Mn[2];
+
+  //I have to use the fetch date because on offline it wouldn't work because it changes
+  MetNSunstatus sunstatus = await MetNSunstatus.fromJson(MnBody, settings, lat, lng, hourDif, localTime, fetch_datetime);
+
+  //removes the outdated hours
+  int start = localTime.difference(DateTime(lastKnowTime.year, lastKnowTime.month,
+      lastKnowTime.day, lastKnowTime.hour)).inHours;
+
+  //make sure that there is data left
+  if (start >= MnBody["properties"]["timeseries"].length) {
+    throw const SocketException("Cached data expired");
+  }
+
+  //remove outdated hours
+  MnBody["properties"]["timeseries"] = MnBody["properties"]["timeseries"].sublist(start);
 
   List<MetNDay> days = [];
-
   int begin = 0;
   int index = 0;
 
@@ -687,6 +730,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName) 
 
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
-    localtime: "${localTime.hour}:${localTime.minute}"
+    localtime: "${localTime.hour}:${localTime.minute}",
+    isonline: isonline,
   );
 }
