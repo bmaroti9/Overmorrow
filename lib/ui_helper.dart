@@ -256,88 +256,95 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
   @override
   Widget build(BuildContext context) {
 
-    print(("name", widget.data.current.photographerName));
+    Color text = widget.data.isonline ? widget.data.current.onSurface : widget.data.current.onPrimaryLight;
+    Color highlight = widget.data.isonline ? widget.data.current.primary : widget.data.current.onPrimaryLight;
 
     if (widget.isVisible) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 5, right: 24, bottom: 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (!widget.data.isonline) Padding(
-              padding: const EdgeInsets.only(right: 2),
-              child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
-            ),
-            if (!widget.data.isonline) Padding(
-              padding: const EdgeInsets.only(right: 7),
-              child: comfortatext("offline", 13, widget.data.settings,
-                  color: widget.data.current.primary, weight: FontWeight.w600),
-            ),
-            if (widget.data.isonline) Padding(
-              padding: const EdgeInsets.only(right: 3),
-              child: Icon(Icons.access_time, color: widget.data.current.primary, size: 13,),
-            ),
-            comfortatext('${widget.split[0]},', 13, widget.data.settings,
-                color: widget.data.isonline ? widget.data.current.primary
-                    : widget.data.current.onSurface, weight: FontWeight.w500),
+      return SizedBox(
+        height: 21,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (!widget.data.isonline) Padding(
+                padding: const EdgeInsets.only(right: 2),
+                child: Icon(Icons.download_for_offline_outlined, color: highlight, size: 13,),
+              ),
+              if (!widget.data.isonline) Padding(
+                padding: const EdgeInsets.only(right: 7),
+                child: comfortatext(translation("offline", widget.data.settings["Language"]), 13, widget.data.settings,
+                    color: highlight, weight: FontWeight.w600),
+              ),
+              if (widget.data.isonline) Padding(
+                padding: const EdgeInsets.only(right: 3),
+                child: Icon(Icons.access_time, color: highlight, size: 13,),
+              ),
+              comfortatext('${widget.split[0]},', 13, widget.data.settings,
+                  color: widget.data.isonline ? highlight
+                      : text, weight: FontWeight.w500),
 
-            comfortatext(widget.split.length > 1 ? widget.split[1] : "", 13, widget.data.settings,
-                color: widget.data.current.onSurface, weight: FontWeight.w500),
-          ],
+              comfortatext(widget.split.length > 1 ? widget.split[1] : "", 13, widget.data.settings,
+                  color: text, weight: FontWeight.w500),
+            ],
+          ),
         ),
       );
     } else{
       List<String> split = translation("photo by x on Unsplash", widget.data.settings["Language"]).split(",");
-      return Padding(
-        padding: const EdgeInsets.only(top: 0, right: 24),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (!widget.data.isonline) Padding(
-              padding: const EdgeInsets.only(right: 2),
-              child: Icon(Icons.download_for_offline_outlined, color: widget.data.current.primary, size: 13,),
-            ),
-            if (!widget.data.isonline) Padding(
-              padding: const EdgeInsets.only(right: 7),
-              child: comfortatext("offline", 13, widget.data.settings,
-                  color: widget.data.current.primary, weight: FontWeight.w600),
-            ),
-            TextButton(
-              onPressed: () async {
-                await _launchUrl(widget.data.current.photoUrl + "?utm_source=overmorrow&utm_medium=referral");
-              },
-              style: TextButton.styleFrom(
-                 padding: const EdgeInsets.all(1),
+      return SizedBox(
+        height: 21,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (!widget.data.isonline) Padding(
+                padding: const EdgeInsets.only(right: 2),
+                child: Icon(Icons.download_for_offline_outlined, color: highlight, size: 13,),
+              ),
+              if (!widget.data.isonline) Padding(
+                padding: const EdgeInsets.only(right: 7),
+                child: comfortatext(translation("offline", widget.data.settings["Language"]), 13, widget.data.settings,
+                    color: highlight, weight: FontWeight.w600),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await _launchUrl(widget.data.current.photoUrl + "?utm_source=overmorrow&utm_medium=referral");
+                },
+                style: TextButton.styleFrom(
+                   padding: const EdgeInsets.all(1),
+                    minimumSize: const Size(0, 22),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+                child: comfortatext(split[0], 12.5, widget.data.settings, color: text,
+                    decoration: TextDecoration.underline),
+              ),
+              comfortatext(split[1], 12.5, widget.data.settings, color: text),
+              TextButton(
+                onPressed: () async {
+                  await _launchUrl(widget.data.current.photographerUrl + "?utm_source=overmorrow&utm_medium=referral");
+                },
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.all(1),
                   minimumSize: const Size(0, 22),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
-              child: comfortatext(split[0], 12.5, widget.data.settings, color: widget.data.current.onSurface,
-                  decoration: TextDecoration.underline),
-            ),
-            comfortatext(split[1], 12.5, widget.data.settings, color: widget.data.current.onSurface),
-            TextButton(
-              onPressed: () async {
-                await _launchUrl(widget.data.current.photographerUrl + "?utm_source=overmorrow&utm_medium=referral");
-              },
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.all(1),
-                minimumSize: const Size(0, 22),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
-              child: comfortatext(widget.data.current.photographerName, 12.5, widget.data.settings, color: widget.data.current.onSurface,
-                  decoration: TextDecoration.underline),
-            ),
-            comfortatext(split[3], 12.5, widget.data.settings, color: widget.data.current.onSurface),
-            TextButton(
-              onPressed: () async {
-                await _launchUrl("https://unsplash.com/?utm_source=overmorrow&utm_medium=referral");
-              },
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.all(1),
-                minimumSize: const Size(0, 22),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
-              child: comfortatext(split[4], 12.5, widget.data.settings, color: widget.data.current.onSurface,
-                  decoration: TextDecoration.underline),
-            ),
-          ],
+                child: comfortatext(widget.data.current.photographerName, 12.5, widget.data.settings, color: text,
+                    decoration: TextDecoration.underline),
+              ),
+              comfortatext(split[3], 12.5, widget.data.settings, color: text),
+              TextButton(
+                onPressed: () async {
+                  await _launchUrl("https://unsplash.com/?utm_source=overmorrow&utm_medium=referral");
+                },
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.all(1),
+                  minimumSize: const Size(0, 22),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+                child: comfortatext(split[4], 12.5, widget.data.settings, color: text,
+                    decoration: TextDecoration.underline),
+              ),
+            ],
+          ),
         ),
       );
     }

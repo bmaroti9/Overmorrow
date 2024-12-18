@@ -1743,7 +1743,20 @@ Map<String, List<String>> mainTranslate = {
     "amerykański aqi",
     "aqi ηπα"
   ],
-
+  "offline": [
+    "offline",
+    "offline",
+    "sin conexión",
+    "hors ligne",
+    "offline",
+    "offline",
+    "offline",
+    "офлайн",
+    "离线",
+    "オフライン",
+    "offline",
+    "εκτός σύνδεσης"
+  ],
 
   'Search translation': [ //used for getting the codes used for translation of city names
                           //If none are available then en (english) is the default
