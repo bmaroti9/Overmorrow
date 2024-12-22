@@ -54,18 +54,18 @@ minimalist colorful weather app
 ## Screenshots
 
 <div align="left">
-<img src="Screenshots/Screenshot_20241205_212848.png" alt="colorful2" width="100">
-<img src="Screenshots/Screenshot_20241221_140407.png" alt="colorful1" width="100">
-<img src="Screenshots/Screenshot_20241221_135813.png" alt="colorful3" width="100">
-<img src="Screenshots/Screenshot_20241205_210845.png" alt="colorful4" width="100">
-<img src="Screenshots/Screenshot_20241221_135351.png" alt="colorful5" width="100">
+<img src="Screenshots/Screenshot_20241205_212848.png" alt="colorful2" width="120">
+<img src="Screenshots/Screenshot_20241221_140407.png" alt="colorful1" width="120">
+<img src="Screenshots/Screenshot_20241221_135813.png" alt="colorful3" width="120">
+<img src="Screenshots/Screenshot_20241205_210845.png" alt="colorful4" width="120">
+<img src="Screenshots/Screenshot_20241221_135351.png" alt="colorful5" width="120">
 </div>
 
 ## Tablet mode
 
 <div align="left">
-<img src="Screenshots/Screenshot_20240820_085425.png" alt="colorful2" width="300">
-<img src="Screenshots/Screenshot_20240820_084013.png" alt="colorful1" width="300">
+<img src="Screenshots/Screenshot_20240820_085425.png" alt="colorful2" width="350">
+<img src="Screenshots/Screenshot_20240820_084013.png" alt="colorful1" width="350">
 </div>
 
 ## Why make Overmorrow?
