@@ -35,7 +35,7 @@ Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 5, top: 3),
+            padding: const EdgeInsets.only(left: 4, top: 3),
             child: comfortatext(number.toString(), 18, data.settings,
                 color: data.current.primary),
           ),
