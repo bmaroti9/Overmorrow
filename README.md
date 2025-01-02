@@ -77,11 +77,9 @@ is free and ad free, but after diving into the whole thing i realized that i wou
 So instead here is my take on the weather app ui (but i did kep it free and ad free too). I tried to go for a minimalist and organized interface. 
 
 ## Localization
-Localization is hosted on [Weblate](https://hosted.weblate.org/projects/overmorrow-weather/). Translations are welcome!
+Localizations are hosted on [Weblate](https://hosted.weblate.org/projects/overmorrow-weather/). Translations are welcome!
 
-<a href="https://hosted.weblate.org/engage/overmorrow-weather/">
 <img src="https://hosted.weblate.org/widget/overmorrow-weather/horizontal-auto.svg" alt="Translation status" />
-</a>
 
 ## Milestones:
   - ✅ Add place searching
