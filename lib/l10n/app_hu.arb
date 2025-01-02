@@ -1,4 +1,6 @@
 {
+  "@@locale" : "hu",
+
   "Feels like": "Hőérzet",
   "Precip.": "Csapad.",
   "Humidity": "Páratart.",

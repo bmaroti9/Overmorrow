@@ -1,4 +1,6 @@
 {
+  "@@locale" : "ru",
+
   "Feels like": "Ощущается",
   "Precip.": "Осадки",
   "Humidity": "Влажность",

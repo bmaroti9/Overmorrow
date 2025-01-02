@@ -1,4 +1,6 @@
 {
+  "@@locale" : "ja",
+
   "Feels like": "体感",
   "Precip.": "降水",
   "Humidity": "湿度",

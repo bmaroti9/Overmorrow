@@ -1,4 +1,6 @@
 {
+  "@@locale" : "it",
+
   "Feels like": "Percepito",
   "Precip.": "Precip.",
   "Humidity": "Umidità",

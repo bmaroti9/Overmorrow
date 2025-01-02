@@ -1,4 +1,6 @@
 {
+  "@@locale" : "el",
+
   "Feels like": "Αίσθηση",
   "Precip.": "Κατ. βροχ.",
   "Humidity": "Υγρασία",

@@ -1,4 +1,6 @@
 {
+  "@@locale" : "de",
+
   "Feels like": "Gefühlt",
   "Precip.": "Niedersch.",
   "Humidity": "Luftfeuch.",

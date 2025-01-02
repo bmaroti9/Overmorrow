@@ -1,4 +1,6 @@
 {
+  "@@locale" : "pl",
+
   "Feels like": "Odczuwaln.",
   "Precip.": "Opady",
   "Humidity": "Wilgot.",

@@ -1,21 +1,28 @@
 {
+  "@@locale" : "en",
+
   "Feels like": "Feels like",
   "Precip.": "Precip.",
   "Humidity": "Humidity",
   "Wind": "Wind",
   "UV": "UV",
   "precip.": "Precip.",
+
   "Settings": "Settings",
   "Donate": "Donate",
   "About": "About",
+
   "Today": "Today",
   "Tomorrow": "Tomorrow",
   "Overmorrow": "Overmorrow",
+
   "Language": "Language",
+
   "Temperature": "Temperature",
   "Rain": "Rain",
   "Precipitation": "Precipitation",
   "Favorites": "Favorites",
+
   "Clear Night": "Clear Night",
   "Partly Cloudy": "Partly Cloudy",
   "Clear Sky": "Clear Sky",
@@ -29,6 +36,7 @@
   "Snow": "Snow",
   "Heavy Rain": "Heavy Rain",
   "Cloudy Night": "Cloudy Night",
+
   "Weak or no wifi connection": "Weak or no wifi connection",
   "Not connected to the internet": "Not connected to the internet",
   "Place not found": "Place not found",
@@ -37,8 +45,11 @@
   "location permission is denied": "location permission is denied",
   "location permission denied forever": "location permission denied forever",
   "failed to access gps": "failed to access gps",
+
   "Search...": "Search...",
+
   "sunrise/sunset": "sunrise/sunset",
+
   "air quality": "air quality",
   "good": "good",
   "fair": "fair",
@@ -46,11 +57,13 @@
   "poor": "poor",
   "very poor": "very poor",
   "unhealthy": "unhealthy",
+
   "precipitation": "precipitation",
   "radar": "radar",
   "Color mode": "Color mode",
   "Weather provider": "Weather provider",
   "Time mode": "Time mode",
+
   "Mon": "Mon",
   "Tue": "Tue",
   "Wed": "Wed",
@@ -62,7 +75,12 @@
   "Error Screen": "Error Screen",
   "Daily": "Daily",
   "Search provider": "Search provider",
+
   "updated, x min ago": "updated, x min ago",
+  "@updated x min ago" : {
+    "description" : "x will be replaced by the actual number"
+  },
+
   "updated, just now": "updated, just now",
   "Color source": "Color source",
   "Image source": "Image source",
@@ -103,7 +121,12 @@
   "Enable": "Enable",
   "Layout": "Layout",
   "widget order, customization": "widget order, customization",
+
   "30m": "30m",
+  "@30m" : {
+    "description" : "30 minutes"
+  },
+
   "Air Quality": "Air Quality",
   "main pollutant": "main pollutant",
   "Alder Pollen": "Alder Pollen",
@@ -114,7 +137,12 @@
   "Ragweed Pollen": "Ragweed Pollen",
   "daily aqi": "daily AQI",
   "Date format": "Date format",
+
   "d": "d",
+  "@d" : {
+    "description" : "short for day"
+  },
+
   "aerosol optical depth": "aerosol optical depth",
   "dust": "dust",
   "european aqi": "european aqi",
