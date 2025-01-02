@@ -29,7 +29,7 @@ import 'package:stretchy_header/stretchy_header.dart';
 import 'main_ui.dart';
 import 'new_displays.dart';
 import 'ui_helper.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewMain extends StatefulWidget {
   final data;
@@ -263,6 +263,8 @@ class _NewMainState extends State<NewMain> {
             ),
           ),
            */
+
+          Text(AppLocalizations.of(context)!.hihi),
 
           Column(
             children: orderedWidgets.map((widget) {
