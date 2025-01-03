@@ -264,7 +264,7 @@ class _NewMainState extends State<NewMain> {
           ),
            */
 
-          Text(AppLocalizations.of(context)!.hihi),
+          Text(AppLocalizations.of(context)!.feelsLike),
 
           Column(
             children: orderedWidgets.map((widget) {

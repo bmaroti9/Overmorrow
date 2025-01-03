@@ -45,18 +45,21 @@ Widget mainSettingEntry(String title, String desc, Color highlight, Color primar
         ),
         padding: const EdgeInsets.all(23),
         child: Row(
+          mainAxisSize: MainAxisSize.max,
           children: [
             Padding(
               padding: const EdgeInsets.only(right: 18),
               child: Icon(icon, color: primary, size: 24,),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                comfortatext(translation(title, settings["Language"]), 21, settings, color: onSurface),
-                comfortatext(translation(desc, settings["Language"]), 16, settings, color: onSurface)
-              ],
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  comfortatext(translation(title, settings["Language"]), 21, settings, color: onSurface),
+                  comfortatext(translation(desc, settings["Language"]), 16, settings, color: onSurface),
+                ],
+              ),
             )
           ],
         )
