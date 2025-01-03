@@ -31,12 +31,10 @@ import '../weather_refact.dart';
 import 'decode_wapi.dart';
 import 'extra_info.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-String metNTextCorrection(String text, bool shouldTranslate, context) {
+String metNTextCorrection(String text, bool shouldTranslate, localizations) {
   String p = metNWeatherToText[text] ?? 'Clear Sky';
   if (shouldTranslate) {
-    p = conditionTranslation(p, context) ?? "TranslationErr";
+    p = conditionTranslation(p, localizations) ?? "TranslationErr";
   }
   return p;
 }
@@ -84,12 +82,12 @@ int metNcalculateFeelsLike(double t, double r, double v) {
 
 }
 
-String metNGetName(index, settings, item, start, hourDif, context) {
+String metNGetName(index, settings, item, start, hourDif, localizations) {
   if (index < 3) {
     List<String> names = [
-      AppLocalizations.of(context)!.today,
-      AppLocalizations.of(context)!.tomorrow,
-      AppLocalizations.of(context)!.overmorrow,
+      localizations.today,
+      localizations.tomorrow,
+      localizations.overmorrow,
     ];
     return names[index];
   }
@@ -99,13 +97,13 @@ String metNGetName(index, settings, item, start, hourDif, context) {
   DateTime time_before = DateTime(int.parse(z[0]), int.parse(z[1]), int.parse(z[2]), int.parse(hour));
   DateTime time = time_before.add(-Duration(hours: hourDif));
   List<String> weeks = [
-    AppLocalizations.of(context)!.mon,
-    AppLocalizations.of(context)!.tue,
-    AppLocalizations.of(context)!.wed,
-    AppLocalizations.of(context)!.thu,
-    AppLocalizations.of(context)!.fri,
-    AppLocalizations.of(context)!.sat,
-    AppLocalizations.of(context)!.sun
+    localizations.mon,
+    localizations.tue,
+    localizations.wed,
+    localizations.thu,
+    localizations.fri,
+    localizations.sat,
+    localizations.sun
   ];
   String weekname = weeks[time.weekday - 1];
   final String date = settings["Date format"] == "mm/dd" ? "${time.month}/${time.day}"
@@ -262,7 +260,7 @@ class MetNCurrent {
     required this.imageDebugColors,
   });
 
-  static Future<MetNCurrent> fromJson(item, settings, real_loc, lat, lng, context) async {
+  static Future<MetNCurrent> fromJson(item, settings, real_loc, lat, lng, localizations) async {
 
     Image Uimage;
 
@@ -272,7 +270,7 @@ class MetNCurrent {
 
     String currentCondition = metNTextCorrection(
         item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"],
-        false, context
+        false, localizations
     );
 
     if (settings["Image source"] == "network") {
@@ -324,7 +322,7 @@ class MetNCurrent {
 
       text: metNTextCorrection(
           it["next_1_hours"]["summary"]["symbol_code"],
-          true, context),
+          true, localizations),
       precip: double.parse(unit_coversion(
           it["next_1_hours"]["details"]["precipitation_amount"],
           settings["Precipitation"]).toStringAsFixed(1)),
@@ -402,7 +400,7 @@ class MetNDay {
     required this.wind_dir,
   });
 
-  static MetNDay fromJson(item, settings, start, end, index, hourDif, context) {
+  static MetNDay fromJson(item, settings, start, end, index, hourDif, localizations) {
     
     List<int> temperatures = [];
     List<double> windspeeds = [];
@@ -421,7 +419,7 @@ class MetNDay {
     List<MetNHour> hours = [];
     
     for (int n = start; n < end; n++) {
-      MetNHour hour = MetNHour.fromJson(item["properties"]["timeseries"][n], settings, hourDif, context);
+      MetNHour hour = MetNHour.fromJson(item["properties"]["timeseries"][n], settings, hourDif, localizations);
       temperatures.add(hour.temp);
       windspeeds.add(hour.wind);
       winddirs.add(hour.wind_dir);
@@ -451,8 +449,8 @@ class MetNDay {
       hourly_for_precip: hours,
       total_precip: double.parse(precip.reduce((a, b) => a + b).toStringAsFixed(1)),
       windspeed: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
-      name: metNGetName(index, settings, item, start, hourDif, context),
-      text: conditionTranslation(weather_names[BIndex], context) ?? "TranslationErr",
+      name: metNGetName(index, settings, item, start, hourDif, localizations),
+      text: conditionTranslation(weather_names[BIndex], localizations) ?? "TranslationErr",
       icon: metNIconCorrection(weather_names[BIndex]),
       iconSize: oMIconSizeCorrection(weather_names[BIndex]),
       wind_dir: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
@@ -499,14 +497,14 @@ class MetNHour {
         required this.rawText,
       });
 
-  static MetNHour fromJson(item, settings, hourDif, context) {
+  static MetNHour fromJson(item, settings, hourDif, localizations) {
     var nextHours = item["data"]["next_1_hours"] ?? item["data"]["next_6_hours"];
 
     return MetNHour(
         rawText: metNTextCorrection(
-            nextHours["summary"]["symbol_code"], false, context),
+            nextHours["summary"]["symbol_code"], false, localizations),
         text: metNTextCorrection(
-            nextHours["summary"]["symbol_code"], true, context),
+            nextHours["summary"]["symbol_code"], true, localizations),
         temp: unit_coversion(
             item["data"]["instant"]["details"]["air_temperature"],
             settings["Temperature"]).round(),
@@ -517,7 +515,7 @@ class MetNHour {
             0).round(),
         icon: metNIconCorrection(
           metNTextCorrection(
-              nextHours["summary"]["symbol_code"], false, context),
+              nextHours["summary"]["symbol_code"], false, localizations),
         ),
         time: settings["Time mode"] == "24 hour" ?
           metN24HourTime(item["time"], hourDif) : metNTimeCorrect(item["time"], hourDif),
@@ -533,7 +531,7 @@ class MetNHour {
         raw_precip: nextHours["details"]["precipitation_amount"],
         raw_temp: item["data"]["instant"]["details"]["air_temperature"],
         iconSize: oMIconSizeCorrection(metNTextCorrection(
-            nextHours["summary"]["symbol_code"], false, context),)
+            nextHours["summary"]["symbol_code"], false, localizations),)
     );
   }
 }
@@ -678,7 +676,7 @@ class MetN15MinutePrecip { //met norway doesn't actaully have 15 minute forecast
   }
 }
 
-Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, context) async {
+Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, localizations) async {
 
   var Mn = await MetNMakeRequest(lat, lng, real_loc);
   var MnBody = Mn[0];
@@ -719,7 +717,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
   for (int n = 0; n < MnBody["properties"]["timeseries"].length; n++) {
     int hour = (int.parse(MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0]) - hourDif) % 24;
     if (n > 0 && hour - previous_hour < 1) {
-      MetNDay day = MetNDay.fromJson(MnBody, settings, begin, n, index, hourDif, context);
+      MetNDay day = MetNDay.fromJson(MnBody, settings, begin, n, index, hourDif, localizations);
       days.add(day);
       index += 1;
       begin = n;
@@ -729,11 +727,11 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
 
   return WeatherData(
     radar: await RainviewerRadar.getData(),
-    aqi: await OMAqi.fromJson(lat, lng, settings, context),
+    aqi: await OMAqi.fromJson(lat, lng, settings, localizations),
     sunstatus: sunstatus,
     minutely_15_precip: MetN15MinutePrecip.fromJson(MnBody, settings),
 
-    current: await MetNCurrent.fromJson(MnBody, settings, real_loc, lat, lng, context),
+    current: await MetNCurrent.fromJson(MnBody, settings, real_loc, lat, lng, localizations),
     days: days,
 
     lat: lat,

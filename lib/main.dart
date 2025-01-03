@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
 
     // I have no idea why this works but thank you for https://stackoverflow.com/a/72754385
     return const MaterialApp(
-      locale: Locale("es"),
+      locale: Locale("hu"),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         AppLocalizations.delegate,

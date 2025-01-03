@@ -41,6 +41,7 @@
   "search": "Search...",
   "sunriseSunset": "sunrise/sunset",
   "airQuality": "Air Quality",
+  "airQualityLowercase": "air quality",
   "good": "good",
   "fair": "fair",
   "moderate": "moderate",

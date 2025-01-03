@@ -260,7 +260,7 @@ Widget NewAirQuality(var data, context) {
               Padding(
                 padding: const EdgeInsets.only(bottom: 0, left: 5),
                 child: comfortatext(
-                    AppLocalizations.of(context)!.airQuality,
+                    AppLocalizations.of(context)!.airQualityLowercase,
                     16,
                     data.settings,
                     color: data.current.onSurface),
