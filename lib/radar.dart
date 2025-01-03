@@ -24,9 +24,9 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'decoders/decode_OM.dart';
 
@@ -124,7 +124,7 @@ class _RadarSmallState extends State<RadarSmall> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: comfortatext(
-                translation('radar', data.settings["Language"]), 16,
+                AppLocalizations.of(context)!.radar, 16,
                 data.settings,
                 color: data.current.onSurface),
           ),
@@ -311,26 +311,26 @@ class _RadarSmallState extends State<RadarSmall> {
                       padding: const EdgeInsets.only(left: 16, right: 16, top: 9),
                       child: Row(
                         children: <Widget>[
-                          comfortatext('-2${translation('hr', data.settings['Language'])}', 13, data.settings, color: data.current.onSurface),
+                          comfortatext('-2${AppLocalizations.of(context)!.hr}', 13, data.settings, color: data.current.onSurface),
                           Expanded(
                             flex: 6,
                             child: Align(
                                 alignment: Alignment.centerRight,
-                                child: comfortatext('-1${translation('hr', data.settings['Language'])}', 13, data.settings, color: data.current.onSurface)
+                                child: comfortatext('-1${AppLocalizations.of(context)!.hr}', 13, data.settings, color: data.current.onSurface)
                             ),
                           ),
                           Expanded(
                             flex: 6,
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: comfortatext(translation('now', data.settings["Language"]), 13, data.settings, color: data.current.onSurface)
+                              child: comfortatext(AppLocalizations.of(context)!.now, 13, data.settings, color: data.current.onSurface)
                             ),
                           ),
                           Expanded(
                             flex: 3,
                             child: Align(
                                 alignment: Alignment.centerRight,
-                                child: comfortatext(translation('30m', data.settings["Language"]), 13, data.settings, color: data.current.onSurface)
+                                child: comfortatext(AppLocalizations.of(context)!.thirtyMinutes, 13, data.settings, color: data.current.onSurface)
                             ),
                           ),
                         ],
@@ -570,26 +570,26 @@ class _RadarBigState extends State<RadarBig> {
                               padding: const EdgeInsets.only(left: 16, right: 16, top: 9),
                               child: Row(
                                 children: <Widget>[
-                                  comfortatext('-2${translation('hr', data.settings['Language'])}', 13, data.settings, color: data.current.onSurface),
+                                  comfortatext('-2${AppLocalizations.of(context)!.hr}', 13, data.settings, color: data.current.onSurface),
                                   Expanded(
                                     flex: 6,
                                     child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: comfortatext('-1${translation('hr', data.settings['Language'])}', 13, data.settings, color: data.current.onSurface)
+                                        child: comfortatext('-1${AppLocalizations.of(context)!.hr}', 13, data.settings, color: data.current.onSurface)
                                     ),
                                   ),
                                   Expanded(
                                     flex: 6,
                                     child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: comfortatext(translation('now', data.settings["Language"]), 13, data.settings, color: data.current.onSurface)
+                                        child: comfortatext(AppLocalizations.of(context)!.now, 13, data.settings, color: data.current.onSurface)
                                     ),
                                   ),
                                   Expanded(
                                     flex: 3,
                                     child: Align(
                                         alignment: Alignment.centerRight,
-                                        child: comfortatext(translation('30m', data.settings["Language"]), 13, data.settings, color: data.current.onSurface)
+                                        child: comfortatext(AppLocalizations.of(context)!.thirtyMinutes, 13, data.settings, color: data.current.onSurface)
                                     ),
                                   ),
                                 ],

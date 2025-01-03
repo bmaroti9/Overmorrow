@@ -38,6 +38,27 @@ Map<String, IconData> textMaterialIcon = {
   'Cloudy Night' : OvermorrowWeatherIcons.cloudy_night2,
 };
 
+String? conditionTranslation(String key, localizations) {
+  final localizationMap = {
+    'Clear Night': localizations.clearNight,
+    'Partly Cloudy': localizations.partlyCloudy,
+    'Clear Sky':localizations.clearSky,
+    'Overcast': localizations.overcast,
+    'Haze': localizations.haze,
+    'Rain': localizations.rain,
+    'Sleet': localizations.sleet,
+    'Drizzle': localizations.drizzle,
+    'Thunderstorm': localizations.thunderstorm,
+    'Heavy Snow': localizations.heavySnow,
+    'Fog': localizations.fog,
+    'Snow': localizations.snow,
+    'Heavy Rain': localizations.heavyRain,
+    'Cloudy Night' : localizations.cloudyNight,
+  };
+
+  return localizationMap[key];
+}
+
 Map<String, List<String>> assetPhotoCredits = {
   'Clear Night': [
     'https://unsplash.com/photos/time-lapse-photography-of-stars-at-nighttime-YvOT1lJ0NPQ',
@@ -178,7 +199,6 @@ Map<int, String> weatherTextMap = {
   1279: 'Thunderstorm',
   1282: 'Thunderstorm',
 };
-
 
 Map<String, String> metNWeatherToText = {
   'clearsky_day': 'Clear Sky',

@@ -28,6 +28,7 @@ import 'decoders/extra_info.dart';
 import 'languages.dart';
 import 'main.dart';
 import 'ui_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Map<String, List<String>> settingSwitches = {
   'Language' : [
@@ -54,7 +55,7 @@ Map<String, List<String>> settingSwitches = {
   'Layout order' : ["sunstatus,rain indicator,air quality,radar,forecast,daily"],
 };
 
-String translation(String text, String language) {
+String translation2(String text, String language) {
   int index = languageIndex[language] ?? 0;
   String translated = mainTranslate[text]![index];
   return translated;
@@ -378,27 +379,27 @@ Future<Map<String, String>> getSettingsUsed() async {
   return settings;
 }
 
-Future<String> isLocationSafe() async {
+Future<String> isLocationSafe(translationProv) async {
   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    return "location services are disabled.";
+    return translationProv.locationServicesAreDisabled;
   }
 
   LocationPermission permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      return "location permission is denied";
+      return translationProv.locationPermissionIsDenied;
     }
   }
   if (permission == LocationPermission.deniedForever) {
-    return "location permission denied forever";
+    return translationProv.locationPermissionDeniedForever;
   }
   if (permission == LocationPermission.whileInUse ||
       permission == LocationPermission.always) {
     return "enabled";
   }
-  return "failed to access gps";
+  return translationProv.failedToAccessGps;
 }
 
 Future<List<String>> getLastPlace() async {
@@ -469,7 +470,7 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
         Expanded(
           flex: 10,
           child: comfortatext(
-            translation(text, settings["Language"]!),
+            text,
             19,
             settings,
             color: textcolor,
@@ -557,13 +558,13 @@ Widget SettingsMain(Color primary, Map<String, String>? settings, Function updat
             HapticFeedback.selectionClick();
             goBack();
           }),
-          title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[0]),
+          title: comfortatext(AppLocalizations.of(context)!.settings, 30, settings, color: colors[0]),
           backgroundColor: colors[1],
           pinned: false,
         ),
         // Just some content big enough to have something to scroll.
         SliverToBoxAdapter(
-          child: NewSettings(settings, updatePage, image, colors, allColors, context),
+          child: NewSettings(settings!, updatePage, image, colors, allColors, context),
         ),
       ],
     ),
@@ -612,7 +613,7 @@ class MyDrawer extends StatelessWidget {
             height: 15,
           ),
           ListTile(
-            title: comfortatext(translation('Settings', settings["Language"]), 24,
+            title: comfortatext(AppLocalizations.of(context)!.settings, 24,
                 settings, color: onSurface),
             leading: Icon(Icons.settings_outlined, color: primary, size: 24,),
             onTap: () {
@@ -625,7 +626,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext(translation('About', settings["Language"]), 24,
+            title: comfortatext(AppLocalizations.of(context)!.about, 24,
                 settings, color: onSurface),
             leading: Icon(Icons.info_outline, color: primary,),
             onTap: () {
@@ -638,7 +639,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext(translation('Donate', settings["Language"]), 24,
+            title: comfortatext(AppLocalizations.of(context)!.donate, 24,
                 settings, color: onSurface),
             leading: Icon(Icons.favorite_outline_sharp, color: primary,),
             onTap: () {

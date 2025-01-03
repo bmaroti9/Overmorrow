@@ -25,6 +25,7 @@ import 'package:overmorrow/ui_helper.dart';
 
 import 'decoders/decode_wapi.dart';
 import 'main_ui.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget mainSettingEntry(String title, String desc, Color highlight, Color primary, Color onSurface, Color surface,
     IconData icon, settings, Widget pushTo, context, updatePage) {
@@ -56,8 +57,8 @@ Widget mainSettingEntry(String title, String desc, Color highlight, Color primar
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  comfortatext(translation(title, settings["Language"]), 21, settings, color: onSurface),
-                  comfortatext(translation(desc, settings["Language"]), 16, settings, color: onSurface),
+                  comfortatext(title, 21, settings, color: onSurface),
+                  comfortatext(desc, 16, settings, color: onSurface),
                 ],
               ),
             )
@@ -80,24 +81,24 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
     padding: const EdgeInsets.only(top: 20, bottom: 20),
     child: Column(
       children: [
-        mainSettingEntry("Appearance", "color theme, image source", containerLow, primary, onSurface, surface,
-            Icons.palette_outlined, settings,
-          AppearancePage(settings: settings, image: image, allColors: allColors, updateMainPage: updatePage,),
-          context, updatePage
+        mainSettingEntry(AppLocalizations.of(context)!.appearance, AppLocalizations.of(context)!.appearanceSettingDesc,
+            containerLow, primary, onSurface, surface, Icons.palette_outlined, settings,
+            AppearancePage(settings: settings, image: image, allColors: allColors, updateMainPage: updatePage,),
+            context, updatePage
         ),
-        mainSettingEntry("General", "time mode, font size", containerLow, primary, onSurface, surface,
-            Icons.settings_applications, settings,
+        mainSettingEntry(AppLocalizations.of(context)!.general, AppLocalizations.of(context)!.generalSettingDesc,
+            containerLow, primary, onSurface, surface, Icons.settings_applications, settings,
             GeneralSettingsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
             context, updatePage),
-        mainSettingEntry("Language", "the language used", containerLow, primary, onSurface, surface,
-            Icons.language, settings,
+        mainSettingEntry(AppLocalizations.of(context)!.language, AppLocalizations.of(context)!.languageSettingDesc,
+            containerLow, primary, onSurface, surface, Icons.language, settings,
             LangaugePage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
             context, updatePage),
-        mainSettingEntry("Units", "the units used in the app", containerLow, primary, onSurface, surface,
-            Icons.pie_chart_outline, settings,
+        mainSettingEntry(AppLocalizations.of(context)!.units, AppLocalizations.of(context)!.unitsSettingdesc,
+            containerLow, primary, onSurface, surface, Icons.pie_chart_outline, settings,
             UnitsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
             context, updatePage),
-        mainSettingEntry("Layout", "widget order, customization", containerLow, primary, onSurface, surface,
+        mainSettingEntry(AppLocalizations.of(context)!.layout, AppLocalizations.of(context)!.layoutSettingDesc, containerLow, primary, onSurface, surface,
             Icons.splitscreen, settings,
             LayoutPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
             context, updatePage),
@@ -216,7 +217,7 @@ class _AppearancePageState extends State<AppearancePage> {
                   goBack();
                 }),
             title: comfortatext(
-                translation('Appearance', settings["Language"]), 30, settings,
+                AppLocalizations.of(context)!.appearance, 30, settings,
                 color: surface),
             backgroundColor: primary,
             pinned: false,
@@ -253,7 +254,7 @@ class _AppearancePageState extends State<AppearancePage> {
                                       children: [
                                         comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 42,
                                             settings, color: colorPop, weight: FontWeight.w300),
-                                        comfortatext(translation("Clear Sky", settings["Language"]!), 22,
+                                        comfortatext(AppLocalizations.of(context)!.clearNight, 22,
                                             settings, color: descColor, weight: FontWeight.w500)
                                       ],
                                     ),
@@ -334,9 +335,9 @@ class _AppearancePageState extends State<AppearancePage> {
                     )
                 ),
 
-                settingEntry(Icons.colorize_rounded, "Color source", settings, highlight, updatePage,
+                settingEntry(Icons.colorize_rounded, AppLocalizations.of(context)!.colorSource, settings, highlight, updatePage,
                     onSurface, primaryLight, primary),
-                settingEntry(Icons.landscape_outlined, "Image source", settings, highlight, updatePage,
+                settingEntry(Icons.landscape_outlined, AppLocalizations.of(context)!.imageSource, settings, highlight, updatePage,
                     onSurface, primaryLight, primary),
                 const SizedBox(height: 70,),
               ],
@@ -409,7 +410,7 @@ class _UnitsPageState extends State<UnitsPage> {
                   goBack();
                 }),
             title: comfortatext(
-                translation("Units", settings["Language"]), 30, settings,
+                AppLocalizations.of(context)!.units, 30, settings,
                 color: surface),
             backgroundColor: primary,
             pinned: false,
@@ -419,11 +420,11 @@ class _UnitsPageState extends State<UnitsPage> {
               padding: const EdgeInsets.only(top: 30, bottom: 60),
               child: Column(
                 children: [
-                  settingEntry(CupertinoIcons.thermometer, "Temperature", settings, highlight, updatePage,
+                  settingEntry(CupertinoIcons.thermometer, AppLocalizations.of(context)!.temperature, settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
-                  settingEntry(Icons.water_drop_outlined, "Precipitation", settings, highlight, updatePage,
+                  settingEntry(Icons.water_drop_outlined, AppLocalizations.of(context)!.precipitaion, settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
-                  settingEntry(CupertinoIcons.wind, "Wind", settings, highlight, updatePage,
+                  settingEntry(CupertinoIcons.wind, AppLocalizations.of(context)!.windCapital, settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
                 ],
               ),
@@ -497,7 +498,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                   goBack();
                 }),
             title: comfortatext(
-                translation("General", settings["Language"]), 30, settings,
+                AppLocalizations.of(context)!.general, 30, settings,
                 color: surface),
             backgroundColor: primary,
             pinned: false,
@@ -507,14 +508,14 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
               padding: const EdgeInsets.only(top: 30, bottom: 60),
               child: Column(
                 children: [
-                  settingEntry(Icons.access_time_outlined, "Time mode", settings, highlight, updatePage,
+                  settingEntry(Icons.access_time_outlined, AppLocalizations.of(context)!.timeMode, settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
-                  settingEntry(Icons.date_range, "Date format", settings, highlight, updatePage,
+                  settingEntry(Icons.date_range, AppLocalizations.of(context)!.dateFormat, settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
-                  settingEntry(CupertinoIcons.textformat_size, "Font size", settings, highlight, updatePage,
+                  settingEntry(CupertinoIcons.textformat_size, AppLocalizations.of(context)!.fontSize, settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
 
-                  settingEntry(Icons.manage_search_outlined, "Search provider", settings, highlight, updatePage,
+                  settingEntry(Icons.manage_search_outlined, AppLocalizations.of(context)!.searchProvider, settings, highlight, updatePage,
                       onSurface, primaryLight, primary),
                 ],
               ),
@@ -599,7 +600,7 @@ class _LangaugePageState extends State<LangaugePage> {
                   goBack();
                 }),
             title: comfortatext(
-                translation("Language", selected), 30, settings,
+                AppLocalizations.of(context)!.language, 30, settings,
                 color: surface),
             backgroundColor: primary,
             pinned: false,

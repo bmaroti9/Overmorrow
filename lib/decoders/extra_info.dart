@@ -440,20 +440,20 @@ class WeatherData {
     required this.minutely_15_precip,
   });
 
-  static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
+  static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider, localizations) async {
 
     List<String> split = latlong.split(",");
     double lat = double.parse(split[0]);
     double lng = double.parse(split[1]);
 
     if (provider == 'weatherapi.com') {
-      return WapiGetWeatherData(lat, lng, real_loc, settings, placeName);
+      return WapiGetWeatherData(lat, lng, real_loc, settings, placeName, localizations);
     }
     else if (provider == "met norway"){
-      return MetNGetWeatherData(lat, lng, real_loc, settings, placeName);
+      return MetNGetWeatherData(lat, lng, real_loc, settings, placeName, localizations);
     }
     else {
-      return OMGetWeatherData(lat, lng, real_loc, settings, placeName);
+      return OMGetWeatherData(lat, lng, real_loc, settings, placeName, localizations);
     }
   }
 }

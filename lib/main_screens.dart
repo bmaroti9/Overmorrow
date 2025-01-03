@@ -29,7 +29,6 @@ import 'package:stretchy_header/stretchy_header.dart';
 import 'main_ui.dart';
 import 'new_displays.dart';
 import 'ui_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewMain extends StatefulWidget {
   final data;
@@ -131,7 +130,7 @@ class _NewMainState extends State<NewMain> {
 
     final Map<String, Widget> widgetsMap = {
       'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-      'rain indicator': NewRain15MinuteIndicator(data),
+      'rain indicator': NewRain15MinuteIndicator(data, context),
       'air quality': NewAirQuality(data, context),
       'radar': RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
       'forecast': buildNewDays(data),
@@ -226,10 +225,10 @@ class _NewMainState extends State<NewMain> {
               LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     if (constraints.maxWidth > 500.0) {
-                      return Circles(500, data, 0.5, data.current.primary);
+                      return Circles(500, data, 0.5, data.current.primary, context);
                     } else {
                       return Circles(constraints.maxWidth * 0.97, data, 0.5,
-                          data.current.primary);
+                          data.current.primary, context);
                     }
                   }
               ),
@@ -264,8 +263,6 @@ class _NewMainState extends State<NewMain> {
           ),
            */
 
-          Text(AppLocalizations.of(context)!.feelsLike),
-
           Column(
             children: orderedWidgets.map((widget) {
               return widget;
@@ -276,7 +273,7 @@ class _NewMainState extends State<NewMain> {
             padding: const EdgeInsets.only(top: 10, bottom: 30),
             child: providerSelector(data.settings, updateLocation, data.current.onSurface,
                 data.current.containerLow, data.current.primary, data.provider,
-                "${data.lat}, ${data.lng}", data.real_loc),
+                "${data.lat}, ${data.lng}", data.real_loc, context),
           ),
 
 
@@ -382,7 +379,7 @@ Widget TabletLayout(data, updateLocation, context) {
                               FadingWidget(data: data,
                                   time: data.updatedTime,
                                   key: Key(data.updatedTime.toString())),
-                              Circles(420, data, 0.3, data.current.primary),
+                              Circles(420, data, 0.3, data.current.primary, context),
                             ],
                           ),
                         ],
@@ -399,7 +396,7 @@ Widget TabletLayout(data, updateLocation, context) {
                   child: Column(
                     children: [
                       NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-                      NewRain15MinuteIndicator(data),
+                      NewRain15MinuteIndicator(data, context),
                       NewAirQuality(data, context),
                       RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
                       buildNewGlanceDay(data: data, key: Key("${data.place}, ${data.current.primary}"),),
@@ -407,7 +404,7 @@ Widget TabletLayout(data, updateLocation, context) {
                         padding: const EdgeInsets.only(top: 10, bottom: 30),
                         child: providerSelector(data.settings, updateLocation, data.current.onSurface,
                             data.current.containerLow, data.current.primary, data.provider,
-                            "${data.lat}, ${data.lng}", data.real_loc),
+                            "${data.lat}, ${data.lng}", data.real_loc, context),
                       ),
                     ],
                   ),

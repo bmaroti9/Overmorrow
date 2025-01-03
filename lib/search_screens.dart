@@ -30,6 +30,7 @@ import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'api_key.dart';
 
@@ -41,7 +42,7 @@ Widget searchBar(Color color, List<String> recommend,
     Color textColor, Color highlightColor, Color extraTextColor) {
 
   return FloatingSearchBar(
-      hint: translation('Search...', settings["Language"]!),
+      hint: AppLocalizations.of(context)!.search,
       title: Container(
         padding: const EdgeInsets.only(left: 5, top: 3),
         child: comfortatext(place, 24, settings, color: secondColor, weight: FontWeight.w400)
@@ -164,7 +165,7 @@ Widget searchBar(Color color, List<String> recommend,
             },
             child: decideSearch(color, recommend, updateLocation,
                 controller, updateIsEditing, isEditing, updateFav,
-                favorites, controller.query, settings, textColor, extraTextColor)
+                favorites, controller.query, settings, textColor, extraTextColor, context)
         );
       }
   );
@@ -173,11 +174,12 @@ Widget searchBar(Color color, List<String> recommend,
 Widget decideSearch(Color color, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, String entered, Map<String, String> settings, textColor, extraTextColor) {
+    List<String> favorites, String entered, Map<String, String> settings, textColor, extraTextColor,
+    context) {
 
   if (entered == '') {
     return defaultSearchScreen(color, updateLocation,
-        controller, updateIsEditing, isEditing, updateFav, favorites, settings, textColor, extraTextColor);
+        controller, updateIsEditing, isEditing, updateFav, favorites, settings, textColor, extraTextColor, context);
   }
   else{
     if (recommend.isNotEmpty) {
@@ -189,10 +191,9 @@ Widget decideSearch(Color color, List<String> recommend,
   return Container();
 }
 
-Widget defaultSearchScreen(Color color,
-    Function updateLocation, FloatingSearchBarController controller,
+Widget defaultSearchScreen(Color color, Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, Map<String, String> settings, textColor, extraTextColor) {
+    List<String> favorites, Map<String, String> settings, textColor, extraTextColor, context) {
 
   List<Icon> Myicon = [
     const Icon(null),
@@ -231,7 +232,7 @@ Widget defaultSearchScreen(Color color,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: comfortatext(
-                    translation('Favorites', settings["Language"] ?? "English"), 20,
+                    AppLocalizations.of(context)!.favorites, 20,
                     settings,
                     color: extraTextColor),
               ),
@@ -546,7 +547,7 @@ class dumbySearch extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: providerSelector(settings, updateLocation, colors[4], colors[7],
-                    colors[1], provider, latlng, place),
+                    colors[1], provider, latlng, place, context),
               ),
             ],
           ),

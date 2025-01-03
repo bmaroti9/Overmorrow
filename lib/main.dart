@@ -23,6 +23,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:overmorrow/search_screens.dart';
@@ -61,9 +62,46 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  Future<Widget> getDays(bool recall, proposedLoc, backupName, startup) async {
+  @override
+  Widget build(BuildContext context) {
+    final EdgeInsets systemGestureInsets = MediaQuery.of(context).systemGestureInsets;
+    if (systemGestureInsets.left > 0) {
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.transparent,
+        ),
+      );
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    }
 
+    // I have no idea why this works but thank you for https://stackoverflow.com/a/72754385
+    return const MaterialApp(
+      locale: Locale("es"),
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  Future<Widget> getDays(bool recall, proposedLoc, backupName, startup) async {
     try {
+
+      AppLocalizations localizations = AppLocalizations.of(context)!;
 
       Map<String, String> settings = await getSettingsUsed();
       String weather_provider = await getWeatherProvider();
@@ -79,25 +117,24 @@ class _MyAppState extends State<MyApp> {
       bool isItCurrentLocation = false;
 
       if (backupName == 'CurrentLocation') {
-        String loc_status = await isLocationSafe();
+        String loc_status = await isLocationSafe(localizations);
         if (loc_status == "enabled") {
           Position position;
           try {
             position = await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.medium, timeLimit: const Duration(seconds: 2));
+                desiredAccuracy: LocationAccuracy.medium, timeLimit: const Duration(seconds: 2));
           } on TimeoutException {
             try {
               position = (await Geolocator.getLastKnownPosition())!;
             } on Error {
-              return dumbySearch(errorMessage: translation(
-                  "Unable to locate device", settings["Language"]!),
-                updateLocation: updateLocation,
-                icon: Icons.gps_off,
-                place: backupName,
-                settings: settings, provider: weather_provider, latlng: absoluteProposed);
+              return dumbySearch(errorMessage: localizations.unableToLocateDevice,
+                  updateLocation: updateLocation,
+                  icon: Icons.gps_off,
+                  place: backupName,
+                  settings: settings, provider: weather_provider, latlng: absoluteProposed);
             }
           } on LocationServiceDisabledException {
-            return dumbySearch(errorMessage: translation("location services are disabled.", settings["Language"]!),
+            return dumbySearch(errorMessage: localizations.locationServicesAreDisabled,
               updateLocation: updateLocation,
               icon: Icons.gps_off,
               place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
@@ -121,9 +158,7 @@ class _MyAppState extends State<MyApp> {
           }
         }
         else {
-          return dumbySearch(errorMessage: translation(loc_status, settings["Language"]!),
-            updateLocation: updateLocation,
-            icon: Icons.gps_off,
+          return dumbySearch(errorMessage: loc_status, updateLocation: updateLocation, icon: Icons.gps_off,
             place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
         }
       }
@@ -137,7 +172,7 @@ class _MyAppState extends State<MyApp> {
         }
         else {
           return dumbySearch(
-            errorMessage: '${translation('Place not found', settings["Language"]!)}: \n $backupName',
+            errorMessage: '${localizations.placeNotFound}: \n $backupName',
             updateLocation: updateLocation,
             icon: Icons.location_disabled, key: Key(backupName),
             place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
@@ -153,9 +188,9 @@ class _MyAppState extends State<MyApp> {
 
       print(("backupName", backupName));
       try {
-        weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weather_provider);
+        weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weather_provider, localizations);
       } on TimeoutException {
-        return dumbySearch(errorMessage: translation("Weak or no wifi connection", settings["Language"]!),
+        return dumbySearch(errorMessage: localizations.weakOrNoWifiConnection,
           updateLocation: updateLocation,
           icon: Icons.wifi_off, key: Key(backupName),
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
@@ -165,7 +200,7 @@ class _MyAppState extends State<MyApp> {
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,
           shouldAdd: "Please try another weather provider!",);
       } on SocketException {
-        return dumbySearch(errorMessage: translation("Not connected to the internet", settings["Language"]!),
+        return dumbySearch(errorMessage: localizations.notConnectedToTheInternet,
           updateLocation: updateLocation,
           icon: Icons.wifi_off, key: Key(backupName),
           place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
@@ -179,7 +214,7 @@ class _MyAppState extends State<MyApp> {
       }
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
-                                // then this will be the new startup place
+      // then this will be the new startup place
 
       return WeatherPage(data: weatherdata, updateLocation: updateLocation);
 
@@ -229,6 +264,7 @@ class _MyAppState extends State<MyApp> {
     await Future.delayed(Duration(milliseconds: time));
 
     try {
+
       Widget screen = await getDays(false, proposedLoc, backupName, startup);
 
       setState(() {
@@ -246,7 +282,9 @@ class _MyAppState extends State<MyApp> {
         isLoading = false;
       });
 
-    } catch (error) {
+    } catch (error,s) {
+
+      print((error, s));
 
       setState(() {
         isLoading = false;
@@ -258,41 +296,25 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  List<Color> colors = getStartBackColor();
+
   @override
   Widget build(BuildContext context) {
-    List<Color> colors = getStartBackColor();
-
-    final EdgeInsets systemGestureInsets = MediaQuery.of(context).systemGestureInsets;
-    if (systemGestureInsets.left > 0) {
-      SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.transparent,
-        ),
-      );
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    }
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      locale: Locale('es'),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: Scaffold(
-        backgroundColor: WHITE,
-        body: Stack(
-          children: [
-            w1,
-            if (isLoading) Container(
-              color: startup2 ? colors[0] : const Color.fromRGBO(0, 0, 0, 0.7),
-              child: Center(
-                child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: startup2 ? colors[1] : WHITE,
-                  size: 40,
-                ),
+    return Scaffold(
+      backgroundColor: WHITE,
+      body: Stack(
+        children: [
+          w1,
+          if (isLoading) Container(
+            color: startup2 ? colors[0] : const Color.fromRGBO(0, 0, 0, 0.7),
+            child: Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: startup2 ? colors[1] : WHITE,
+                size: 40,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -24,6 +24,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/main_screens.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'ui_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WeatherPage extends StatelessWidget {
   final data;
@@ -81,7 +82,7 @@ class ParrallaxBackground extends StatelessWidget {
 }
 
 
-Widget Circles(double width, var data, double bottom, color, {align = Alignment.center}) {
+Widget Circles(double width, var data, double bottom, color, context, {align = Alignment.center}) {
   return Align(
     alignment: align,
     child: SizedBox(
@@ -95,7 +96,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                   DescriptionCircle(
                     color: color,
                     text: '${data.current.feels_like}°',
-                    undercaption: translation('Feels like', data.settings["Language"]),
+                    undercaption: AppLocalizations.of(context)!.feelsLike,
                     extra: '',
                     size: width,
                     settings: data.settings,
@@ -105,7 +106,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                   DescriptionCircle(
                     color: color,
                     text: '${data.current.humidity}',
-                    undercaption: translation('Humidity', data.settings["Language"]),
+                    undercaption: AppLocalizations.of(context)!.humidity,
                     extra: '%',
                     size: width,
                     settings: data.settings,
@@ -115,7 +116,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                   DescriptionCircle(
                     color: color,
                     text: '${data.current.precip}',
-                    undercaption: translation('precip.', data.settings["Language"]),
+                    undercaption: AppLocalizations.of(context)!.precipLowercase,
                     extra: data.settings["Precipitation"],
                     size: width,
                     settings: data.settings,
@@ -125,7 +126,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
                   DescriptionCircle(
                     color: color,
                     text: '${data.current.wind}',
-                    undercaption: translation('Wind', data.settings["Language"]),
+                    undercaption: AppLocalizations.of(context)!.windCapital,
                     extra: data.settings["Wind"],
                     size: width,
                     settings: data.settings,
@@ -140,7 +141,7 @@ Widget Circles(double width, var data, double bottom, color, {align = Alignment.
 }
 
 Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
-    provider, latlng, real_loc) {
+    provider, latlng, real_loc, context) {
   return Padding(
     padding: const EdgeInsets.only(left: 23, right: 23, bottom: 30, top: 5),
     child: Column(
@@ -151,7 +152,7 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
           child: Align(
             alignment: Alignment.centerLeft,
             child: comfortatext(
-                translation('Weather provider', settings["Language"]), 16,
+                AppLocalizations.of(context)!.weatherProvider, 16,
                 settings,
                 color: textcolor),
           ),
