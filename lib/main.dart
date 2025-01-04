@@ -80,10 +80,7 @@ class _MyAppState extends State<MyApp> {
 
   void setPreferedLocale() async {
     String loc = await getLanguageUsed();
-    print(("loc", loc));
-    Locale to = languageNameToLocale[loc] ?? Locale('en');
-
-    print(('to', to));
+    Locale to = languageNameToLocale[loc] ?? const Locale('en');
 
     setState(() {
       _locale = to;

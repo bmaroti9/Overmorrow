@@ -336,9 +336,9 @@ class _AppearancePageState extends State<AppearancePage> {
                 ),
 
                 settingEntry(Icons.colorize_rounded, AppLocalizations.of(context)!.colorSource, settings, highlight, updatePage,
-                    onSurface, primaryLight, primary),
+                    onSurface, primaryLight, primary, 'Color source'),
                 settingEntry(Icons.landscape_outlined, AppLocalizations.of(context)!.imageSource, settings, highlight, updatePage,
-                    onSurface, primaryLight, primary),
+                    onSurface, primaryLight, primary, 'Image source'),
                 const SizedBox(height: 70,),
               ],
             ),
@@ -421,11 +421,11 @@ class _UnitsPageState extends State<UnitsPage> {
               child: Column(
                 children: [
                   settingEntry(CupertinoIcons.thermometer, AppLocalizations.of(context)!.temperature, settings, highlight, updatePage,
-                      onSurface, primaryLight, primary),
+                      onSurface, primaryLight, primary, 'Temperature'),
                   settingEntry(Icons.water_drop_outlined, AppLocalizations.of(context)!.precipitaion, settings, highlight, updatePage,
-                      onSurface, primaryLight, primary),
+                      onSurface, primaryLight, primary, 'Precipitation'),
                   settingEntry(CupertinoIcons.wind, AppLocalizations.of(context)!.windCapital, settings, highlight, updatePage,
-                      onSurface, primaryLight, primary),
+                      onSurface, primaryLight, primary, 'Wind'),
                 ],
               ),
             ),
@@ -509,14 +509,14 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
               child: Column(
                 children: [
                   settingEntry(Icons.access_time_outlined, AppLocalizations.of(context)!.timeMode, settings, highlight, updatePage,
-                      onSurface, primaryLight, primary),
+                      onSurface, primaryLight, primary, 'Time mode'),
                   settingEntry(Icons.date_range, AppLocalizations.of(context)!.dateFormat, settings, highlight, updatePage,
-                      onSurface, primaryLight, primary),
+                      onSurface, primaryLight, primary, 'Date format'),
                   settingEntry(CupertinoIcons.textformat_size, AppLocalizations.of(context)!.fontSize, settings, highlight, updatePage,
-                      onSurface, primaryLight, primary),
+                      onSurface, primaryLight, primary, 'Font size'),
 
                   settingEntry(Icons.manage_search_outlined, AppLocalizations.of(context)!.searchProvider, settings, highlight, updatePage,
-                      onSurface, primaryLight, primary),
+                      onSurface, primaryLight, primary, 'Search provider'),
                 ],
               ),
             ),

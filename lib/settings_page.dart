@@ -445,8 +445,9 @@ SetData(String name, String to) async {
 }
 
 Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, settings, textcolor,
-    Color primary) {
-  List<String> Items = settingSwitches[name] ?? ['˚C', '˚F'];
+    Color primary, rawName) {
+  List<String> Items = settingSwitches[rawName] ?? ['˚C', '˚F'];
+
   return DropdownButton(
     elevation: 0,
     underline: Container(),
@@ -476,7 +477,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
   );
 }
 
-Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primaryLight, primary) {
+Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primaryLight, primary, rawText) {
   return Padding(
     padding: const EdgeInsets.only(top: 3, bottom: 3, left: 25, right: 25),
     child: Row(
@@ -496,7 +497,7 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
         ),
         const Spacer(),
         dropdown(
-            highlight, text, updatePage, settings[text]!, settings, textcolor, primaryLight
+            highlight, text, updatePage, settings[rawText]!, settings, textcolor, primaryLight, rawText
         ),
       ],
     ),
