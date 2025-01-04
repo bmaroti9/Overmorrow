@@ -1,1 +1,26 @@
-{}
+{
+  "donate": "Bağış yap",
+  "@donate": {},
+  "precipCapital": "Yağış.",
+  "@precipCapital": {},
+  "humidity": "Nem",
+  "@humidity": {},
+  "windCapital": "Rüzgar",
+  "@windCapital": {},
+  "uvCapital": "UV",
+  "@uvCapital": {},
+  "settings": "Ayarlar",
+  "@settings": {},
+  "today": "Bugün",
+  "@today": {},
+  "overmorrow": "Yarından sonra",
+  "@overmorrow": {},
+  "language": "Dil",
+  "@language": {},
+  "feelsLike": "Hissedilen",
+  "@feelsLike": {},
+  "about": "Hakkında",
+  "@about": {},
+  "tomorrow": "Yarın",
+  "@tomorrow": {}
+}
