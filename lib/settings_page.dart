@@ -26,7 +26,6 @@ import 'package:overmorrow/settings_screens.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'decoders/extra_info.dart';
-import 'languages.dart';
 import 'main.dart';
 import 'ui_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -67,12 +66,6 @@ Map<String, List<String>> settingSwitches = {
 
   'Layout order' : ["sunstatus,rain indicator,air quality,radar,forecast,daily"],
 };
-
-String translation2(String text, String language) {
-  int index = languageIndex[language] ?? 0;
-  String translated = mainTranslate[text]![index];
-  return translated;
-}
 
 List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
 
