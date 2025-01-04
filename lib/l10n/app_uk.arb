@@ -212,5 +212,9 @@
   "settings": "Налаштування",
   "@settings": {},
   "fri": "Пт",
-  "@fri": {}
+  "@fri": {},
+  "airQualityLowercase": "Якість повітря",
+  "@airQualityLowercase": {},
+  "precipitaion": "Опади",
+  "@precipitaion": {}
 }
