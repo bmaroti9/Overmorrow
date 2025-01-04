@@ -23,6 +23,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/donation_page.dart';
 import 'package:overmorrow/settings_screens.dart';
+import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'decoders/extra_info.dart';
 import 'languages.dart';
@@ -523,23 +524,21 @@ class _SettingsPageState extends State<SettingsPage> {
   final back;
   final image;
 
+  String _locale = 'English';
+
   _SettingsPageState({required this.primary, required this.back, required this.image});
 
   void updatePage(String name, String to) {
     setState(() {
       //selected_temp_unit = newSelect;
       SetData('setting$name', to);
+      if (name == "Language") {
+        _locale = to;
+      }
     });
   }
   void goBack() {
     Navigator.of(context).pop();
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) {
-          return const MyApp();
-        },
-      ),
-    );
   }
 
   @override
@@ -556,38 +555,55 @@ class _SettingsPageState extends State<SettingsPage> {
             child: ErrorWidget(snapshot.error as Object),
           );
         }
-        return SettingsMain(primary, snapshot.data?[0], updatePage, goBack, back, image, context,
-            snapshot.data?[1][0], snapshot.data?[1][1]);
+        _locale = snapshot.data?[0]["Language"];
+        print(("locale", _locale));
+        return Localizations.override(
+          context: context,
+          locale: languageNameToLocale[_locale] ?? const Locale('en'),
+          child: SettingsMain(settings: snapshot.data?[0], updatePage: updatePage, goBack: goBack, image: image,
+              colors: snapshot.data?[1][0], allColors: snapshot.data?[1][1]),
+        );
       },
     );
   }
 }
 
-Widget SettingsMain(Color primary, Map<String, String>? settings, Function updatePage,
-    Function goBack, Color back, Image image, context, colors, allColors) {
 
-  return  Material(
-    color: colors[0],
-    child: CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar.large(
-          leading:
-          IconButton(icon: Icon(Icons.arrow_back, color: colors[0],),
-            onPressed: () {
-            HapticFeedback.selectionClick();
-            goBack();
-          }),
-          title: comfortatext(AppLocalizations.of(context)!.settings, 30, settings, color: colors[0]),
-          backgroundColor: colors[1],
-          pinned: false,
-        ),
-        // Just some content big enough to have something to scroll.
-        SliverToBoxAdapter(
-          child: NewSettings(settings!, updatePage, image, colors, allColors, context),
-        ),
-      ],
-    ),
-  );
+class SettingsMain extends StatelessWidget {
+  final colors;
+  final goBack;
+  final settings;
+  final updatePage;
+  final image;
+  final allColors;
+
+  const SettingsMain({super.key, this.settings, this.updatePage, this.goBack, this.image, this.colors, this.allColors});
+
+  @override
+  Widget build(BuildContext context) {
+    return  Material(
+      color: colors[0],
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            leading:
+            IconButton(icon: Icon(Icons.arrow_back, color: colors[0],),
+                onPressed: () {
+                  HapticFeedback.selectionClick();
+                  goBack();
+                }),
+            title: comfortatext(AppLocalizations.of(context)!.settings, 30, settings, color: colors[0]),
+            backgroundColor: colors[1],
+            pinned: false,
+          ),
+          // Just some content big enough to have something to scroll.
+          SliverToBoxAdapter(
+            child: NewSettings(settings!, updatePage, image, colors, allColors, context),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class MyDrawer extends StatelessWidget {
@@ -639,9 +655,22 @@ class MyDrawer extends StatelessWidget {
               HapticFeedback.selectionClick();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SettingsPage(primary: backupprimary,
-                    back: backupback, image: image,)),
-              );
+                MaterialPageRoute(
+                  builder: (context) => SettingsPage(
+                    primary: backupprimary,
+                    back: backupback,
+                    image: image,
+                  ),
+                ),
+              ).then((value) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const MyApp();
+                    },
+                  ),
+                );
+              });
             },
           ),
           ListTile(

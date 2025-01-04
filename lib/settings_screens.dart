@@ -22,6 +22,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
+import 'package:overmorrow/weather_refact.dart';
 
 import 'decoders/decode_wapi.dart';
 import 'main_ui.dart';
@@ -552,16 +553,12 @@ class _LangaugePageState extends State<LangaugePage> {
 
   _LangaugePageState({required this.image, required this.settings, required this.colors, required this.updateMainPage});
 
+  String _locale = 'English';
 
   @override
   void initState() {
     super.initState();
-  }
-
-  void updatePage(String name, String to) {
-    setState(() {
-      updateMainPage(name, to);
-    });
+    _locale = settings["Language"];
   }
 
   void goBack() {
@@ -585,10 +582,36 @@ class _LangaugePageState extends State<LangaugePage> {
         if (value != null) {
           settings["Language"] = value;
           updateMainPage("Language", value);
+          _locale = value;
         }
       });
     }
 
+    return Localizations.override(
+      context: context,
+      locale: languageNameToLocale[_locale] ?? const Locale('en'),
+      child: TranslationSelection(settings: settings, goBack: goBack, onSurface: onSurface,
+      primary: primary, onTap: onTap, options: options, selected: selected, surface: surface,)
+    );
+  }
+}
+
+class TranslationSelection extends StatelessWidget {
+  final surface;
+  final onSurface;
+  final goBack;
+  final onTap;
+  final primary;
+  final settings;
+  final options;
+  final selected;
+
+
+  const TranslationSelection({super.key, this.settings, this.goBack, this.onSurface, this.primary,
+  this.onTap, this.options, this.selected, this.surface});
+
+  @override
+  Widget build(BuildContext context) {
     return Material(
       color: surface,
       child: CustomScrollView(
@@ -634,6 +657,7 @@ class _LangaugePageState extends State<LangaugePage> {
     );
   }
 }
+
 
 
 class LayoutPage extends StatefulWidget {
