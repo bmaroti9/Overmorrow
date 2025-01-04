@@ -32,8 +32,20 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Map<String, List<String>> settingSwitches = {
   'Language' : [
-    'English', 'Español', 'Français', 'Deutsch', 'Italiano',
-    'Português', 'Русский', 'Magyar', 'Polski', 'Ελληνικά', '简体中文', '日本語',
+    'English', //English
+    'Español', //Spanish
+    'Français', //French
+    'Deutsch', //German
+    'Italiano', //Italian
+    'Português', //Portuguese
+    'Русский', //Russian
+    'Magyar', //Hungarian
+    'Polski', //Polish
+    'Ελληνικά', //Greek
+    '简体中文', //Chinese
+    '日本語', //Japanese
+    'українська', //Ukrainian
+    'türkçe'//Turkish
   ],
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
@@ -418,6 +430,12 @@ setLastPlace(String place, String cord) async {
 Future<String> getWeatherProvider() async {
   final prefs = await SharedPreferences.getInstance();
   final used = prefs.getString('weather_provider') ?? 'open-meteo';
+  return used;
+}
+
+Future<String> getLanguageUsed() async {
+  final prefs = await SharedPreferences.getInstance();
+  final used = prefs.getString('settingLanguage') ?? 'English';
   return used;
 }
 

@@ -21,6 +21,23 @@ import 'package:flutter/material.dart';
 
 import 'ui_helper.dart';
 
+Map<String, Locale> languageNameToLocale = {
+  'English': const Locale('en'),
+  'Español': const Locale('es'),
+  'Français': const Locale('fr'),
+  'Deutsch': const Locale('de'),
+  'Italiano': const Locale('it'),
+  'Português': const Locale('pt'),
+  'Русский': const Locale('ru'),
+  'Magyar': const Locale('hu'),
+  'Polski': const Locale('pl'),
+  'Ελληνικά': const Locale('el'),
+  '简体中文': const Locale('zh'),
+  '日本語': const Locale('ja'),
+  'українська': const Locale('uk'),
+  'türkçe': const Locale('tr'),
+};
+
 Map<String, IconData> textMaterialIcon = {
   'Clear Night': OvermorrowWeatherIcons.moon2,
   'Partly Cloudy': OvermorrowWeatherIcons.partly_cloudy2,

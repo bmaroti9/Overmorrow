@@ -212,8 +212,6 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
     }
   }
 
-  primeColor = Color(0xff335E5A);
-
   if (settings["Color source"] == "image") {
     palette = await _materialPalette(Uimage, color_mode, primeColor);
   }

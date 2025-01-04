@@ -29,6 +29,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:overmorrow/weather_refact.dart';
 import 'caching.dart';
 import 'decoders/extra_info.dart';
 import 'main_ui.dart';
@@ -62,6 +63,33 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  Locale _locale = const Locale('en');
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    setPreferedLocale();
+  }
+
+  void setPreferedLocale() async {
+    String loc = await getLanguageUsed();
+    print(("loc", loc));
+    Locale to = languageNameToLocale[loc] ?? Locale('en');
+
+    print(('to', to));
+
+    setState(() {
+      _locale = to;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final EdgeInsets systemGestureInsets = MediaQuery.of(context).systemGestureInsets;
@@ -73,25 +101,24 @@ class _MyAppState extends State<MyApp> {
       );
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     }
-
-    // I have no idea why this works but thank you for https://stackoverflow.com/a/72754385
-    return const MaterialApp(
-      locale: Locale("hu"),
+    // I have no idea why this works but thank you to https://stackoverflow.com/a/72754385
+    return MaterialApp(
+      locale: _locale,
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: HomePage(),
+      home: HomePage(key: Key(_locale.toString()),),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -253,6 +280,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> updateLocation(proposedLoc, backupName, {time = 0, startup = false}) async {
+
     setState(() {
       HapticFeedback.lightImpact();
       if (startup) {
