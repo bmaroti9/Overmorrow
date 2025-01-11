@@ -1,16 +1,16 @@
-![page48](Screenshots/meant_to_be_coast.png)
+![page48](Screenshots/weather_clean_purple.png)
 
-<h1 align="center">Overmorrow</h1>
+<h1 align="center">overmorrow</h1>
 
 <div align="center">
-  <img alt="GitHub License" src="https://img.shields.io/github/license/bmaroti9/Overmorrow?style=flat-square&labelColor=%231B262E&color=%23E7F5F4">
- <img alt="GitHub Release" src="https://img.shields.io/github/v/release/bmaroti9/Overmorrow?style=flat-square&labelColor=%231B262E&color=%23E7F5F4">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF8F9&color=%23F0BD48">
+ <img alt="GitHub Release" src="https://img.shields.io/github/v/release/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF8F9&color=%235AB8D8">
   <img alt="GitHub Downloads (all assets, all releases)" 
-  src="https://img.shields.io/github/downloads/bmaroti9/Overmorrow/total?style=flat-square&labelColor=%231B262E&color=%23E7F5F4">
+  src="https://img.shields.io/github/downloads/bmaroti9/Overmorrow/total?style=flat-square&labelColor=%23FFF8F9&color=%23915C7F">
 
   <img alt="GitHub Downloads (all assets, all releases)"
-  src="https://img.shields.io/github/stars/bmaroti9/Overmorrow?style=flat-square&labelColor=%231B262E&color=%23E7F5F4">
-  <img alt="GitHub Release" src="https://img.shields.io/github/forks/bmaroti9/Overmorrow?style=flat-square&labelColor=%231B262E&color=%23E7F5F4">
+  src="https://img.shields.io/github/stars/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF8F9&color=%23D37D7C">
+  <img alt="GitHub Release" src="https://img.shields.io/github/forks/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF8F9&color=%23726B85">
 </a>
 
 minimalist colorful weather app
@@ -54,18 +54,19 @@ minimalist colorful weather app
 ## Screenshots
 
 <div align="left">
-<img src="Screenshots/Screenshot_20241205_212848.png" alt="colorful2" width="120">
-<img src="Screenshots/Screenshot_20241221_140407.png" alt="colorful1" width="120">
-<img src="Screenshots/Screenshot_20241221_135813.png" alt="colorful3" width="120">
-<img src="Screenshots/Screenshot_20241205_210845.png" alt="colorful4" width="120">
-<img src="Screenshots/Screenshot_20241221_135351.png" alt="colorful5" width="120">
+<img src="Screenshots/overmorrow_evolved1.png" alt="colorful2" width="130">
+<img src="Screenshots/overmorrow_evolved2.png" alt="colorful1" width="130">
+<img src="Screenshots/overmorrow_evolved3.png" alt="colorful3" width="130">
+<img src="Screenshots/overmorrow_evolved4.png" alt="colorful4" width="130">
+<img src="Screenshots/overmorrow_evolved5.png" alt="colorful5" width="130">
+<img src="Screenshots/overmorrow_evolved6.png" alt="colorful5" width="130">
 </div>
 
 ## Tablet mode
 
 <div align="left">
-<img src="Screenshots/Screenshot_20240820_085425.png" alt="colorful2" width="350">
-<img src="Screenshots/Screenshot_20240820_084013.png" alt="colorful1" width="350">
+<img src="Screenshots/overmorrow_evolved_tablet1.png" alt="colorful2" width="350">
+<img src="Screenshots/overmorrow_evolved_tablet2.png" alt="colorful1" width="350">
 </div>
 
 ## Why make Overmorrow?

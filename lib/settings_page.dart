@@ -75,7 +75,6 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
     x = brightness == Brightness.dark ? "dark" : "light";
   }
 
-
   //surface
   //primary
   //primaryLight
