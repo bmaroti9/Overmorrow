@@ -472,7 +472,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
 
 Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primaryLight, primary, rawText) {
   return Padding(
-    padding: const EdgeInsets.only(top: 3, bottom: 3, left: 25, right: 25),
+    padding: const EdgeInsets.only(top: 3, bottom: 3, left: 35, right: 35),
     child: Row(
       children: [
         Padding(
@@ -579,13 +579,13 @@ class SettingsMain extends StatelessWidget {
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: colors[0],),
+            IconButton(icon: Icon(Icons.arrow_back, color: colors[1],),
                 onPressed: () {
                   HapticFeedback.selectionClick();
                   goBack();
                 }),
-            title: comfortatext(AppLocalizations.of(context)!.settings, 30, settings, color: colors[0]),
-            backgroundColor: colors[1],
+            title: comfortatext(AppLocalizations.of(context)!.settings, 30, settings, color: colors[1]),
+            backgroundColor: colors[0],
             pinned: false,
           ),
           // Just some content big enough to have something to scroll.

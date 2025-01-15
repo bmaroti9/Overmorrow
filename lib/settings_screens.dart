@@ -23,15 +23,23 @@ import 'package:flutter/services.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:overmorrow/weather_refact.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'decoders/decode_wapi.dart';
 import 'main_ui.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+Future<void> _launchUrl(String url) async {
+  final Uri _url = Uri.parse(url);
+  if (!await launchUrl(_url)) {
+    throw Exception('Could not launch $_url');
+  }
+}
+
 Widget mainSettingEntry(String title, String desc, Color highlight, Color primary, Color onSurface, Color surface,
     IconData icon, settings, Widget pushTo, context, updatePage) {
   return Padding(
-    padding: const EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
+    padding: const EdgeInsets.only(left: 25, right: 25, top: 5, bottom: 5),
     child: GestureDetector(
       onTap: () {
         HapticFeedback.selectionClick();
@@ -58,8 +66,11 @@ Widget mainSettingEntry(String title, String desc, Color highlight, Color primar
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  comfortatext(title, 21, settings, color: onSurface),
-                  comfortatext(desc, 16, settings, color: onSurface),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 3),
+                    child: comfortatext(title, 21, settings, color: onSurface),
+                  ),
+                  comfortatext(desc, 15, settings, color: onSurface),
                 ],
               ),
             )
@@ -76,6 +87,7 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
   Color containerLow = colors[6];
   Color onSurface = colors[4];
   Color primary = colors[1];
+  Color primaryLight = colors[2];
   Color surface = colors[0];
 
   return Padding(
@@ -93,13 +105,14 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
             context, updatePage),
         mainSettingEntry(AppLocalizations.of(context)!.language, AppLocalizations.of(context)!.languageSettingDesc,
             containerLow, primary, onSurface, surface, Icons.language, settings,
-            LangaugePage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
+            LangaugePage(colors: colors, settings: settings, image: image, updateMainPage: updatePage, highlight: primaryLight,),
             context, updatePage),
         mainSettingEntry(AppLocalizations.of(context)!.units, AppLocalizations.of(context)!.unitsSettingdesc,
             containerLow, primary, onSurface, surface, Icons.pie_chart_outline, settings,
             UnitsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
             context, updatePage),
-        mainSettingEntry(AppLocalizations.of(context)!.layout, AppLocalizations.of(context)!.layoutSettingDesc, containerLow, primary, onSurface, surface,
+        mainSettingEntry(AppLocalizations.of(context)!.layout, AppLocalizations.of(context)!.layoutSettingDesc,
+            containerLow, primary, onSurface, surface,
             Icons.splitscreen, settings,
             LayoutPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
             context, updatePage),
@@ -213,14 +226,14 @@ class _AppearancePageState extends State<AppearancePage> {
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
+            IconButton(icon: Icon(Icons.arrow_back, color: primary,),
                 onPressed: () {
                   goBack();
                 }),
             title: comfortatext(
                 AppLocalizations.of(context)!.appearance, 30, settings,
-                color: surface),
-            backgroundColor: primary,
+                color: primary),
+            backgroundColor: surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
@@ -228,7 +241,7 @@ class _AppearancePageState extends State<AppearancePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 50, bottom: 10),
+                  padding: const EdgeInsets.only(top: 30, bottom: 10),
                   child: Center(
                     child: Container(
                       decoration: BoxDecoration(
@@ -406,14 +419,14 @@ class _UnitsPageState extends State<UnitsPage> {
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
+            IconButton(icon: Icon(Icons.arrow_back, color: primary,),
                 onPressed: () {
                   goBack();
                 }),
             title: comfortatext(
                 AppLocalizations.of(context)!.units, 30, settings,
-                color: surface),
-            backgroundColor: primary,
+                color: primary),
+            backgroundColor: surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
@@ -494,14 +507,14 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
+            IconButton(icon: Icon(Icons.arrow_back, color: primary,),
                 onPressed: () {
                   goBack();
                 }),
             title: comfortatext(
                 AppLocalizations.of(context)!.general, 30, settings,
-                color: surface),
-            backgroundColor: primary,
+                color: primary),
+            backgroundColor: surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
@@ -533,15 +546,16 @@ class LangaugePage extends StatefulWidget {
   final image;
   final colors;
   final updateMainPage;
+  final highlight;
 
   const LangaugePage({Key? key, required this.colors, required this.settings,
-    required this.image, required this.updateMainPage})
+    required this.image, required this.updateMainPage, required this.highlight})
       : super(key: key);
 
   @override
   _LangaugePageState createState() =>
       _LangaugePageState(image: image, settings: settings, colors: colors,
-          updateMainPage: updateMainPage);
+          updateMainPage: updateMainPage, highlight: highlight);
 }
 
 class _LangaugePageState extends State<LangaugePage> {
@@ -550,8 +564,10 @@ class _LangaugePageState extends State<LangaugePage> {
   final settings;
   final colors;
   final updateMainPage;
+  final highlight;
 
-  _LangaugePageState({required this.image, required this.settings, required this.colors, required this.updateMainPage});
+  _LangaugePageState({required this.image, required this.settings, required this.colors,
+    required this.updateMainPage, required this.highlight});
 
   String _locale = 'English';
 
@@ -591,7 +607,7 @@ class _LangaugePageState extends State<LangaugePage> {
       context: context,
       locale: languageNameToLocale[_locale] ?? const Locale('en'),
       child: TranslationSelection(settings: settings, goBack: goBack, onSurface: onSurface,
-      primary: primary, onTap: onTap, options: options, selected: selected, surface: surface,)
+      primary: primary, onTap: onTap, options: options, selected: selected, surface: surface, highlight: highlight,)
     );
   }
 }
@@ -605,10 +621,10 @@ class TranslationSelection extends StatelessWidget {
   final settings;
   final options;
   final selected;
-
+  final highlight;
 
   const TranslationSelection({super.key, this.settings, this.goBack, this.onSurface, this.primary,
-  this.onTap, this.options, this.selected, this.surface});
+  this.onTap, this.options, this.selected, this.surface, this.highlight});
 
   @override
   Widget build(BuildContext context) {
@@ -618,19 +634,46 @@ class TranslationSelection extends StatelessWidget {
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
+            IconButton(icon: Icon(Icons.arrow_back, color: primary,),
                 onPressed: () {
                   goBack();
                 }),
             title: comfortatext(
                 AppLocalizations.of(context)!.language, 30, settings,
-                color: surface),
-            backgroundColor: primary,
+                color: primary),
+            backgroundColor: surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30, left: 25, right: 25, bottom: 10),
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  _launchUrl("https://hosted.weblate.org/projects/overmorrow-weather/");
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: highlight,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Row(
+                      children: [
+                        comfortatext("help translate", 21, settings, color: onSurface),
+                        const Spacer(),
+                        Icon(Icons.arrow_forward, color: onSurface, size: 21,)
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
             child: ListView.builder(
-              padding: const EdgeInsets.only(top: 30, left: 10, right: 20, bottom: 40),
+              padding: const EdgeInsets.only(top: 10, left: 25, right: 25, bottom: 40),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: options.length,
@@ -639,8 +682,11 @@ class TranslationSelection extends StatelessWidget {
                   onTap: () {
                     onTap(options[index]);
                   },
-                  title: comfortatext(options[index], 20, settings, color: onSurface),
-                  leading: Radio<String>(
+                  title: Padding(
+                    padding: const EdgeInsets.only(top: 15, bottom: 15),
+                    child: comfortatext(options[index], 20, settings, color: onSurface),
+                  ),
+                  trailing: Radio<String>(
                     fillColor: WidgetStateProperty.all(primary),
                     value: options[index],
                     groupValue: selected,
@@ -733,7 +779,7 @@ class _LayoutPageState extends State<LayoutPage> {
         slivers: <Widget>[
           SliverAppBar.large(
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: surface),
+              icon: Icon(Icons.arrow_back, color: primary),
               onPressed: () {
                 updatePage('Layout order', _items.join(","));
                 goBack();
@@ -743,7 +789,7 @@ class _LayoutPageState extends State<LayoutPage> {
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: IconButton(
-                  icon: Icon(Icons.restore, color: surface, size: 26,),
+                  icon: Icon(Icons.restore, color: primary, size: 26,),
                   onPressed: () {
                     setState(() {
                       _items = allNames.toList();
@@ -753,8 +799,8 @@ class _LayoutPageState extends State<LayoutPage> {
                 ),
               ),
             ],
-            title: comfortatext("Layout", 30, settings, color: surface),
-            backgroundColor: primary,
+            title: comfortatext("Layout", 30, settings, color: primary),
+            backgroundColor: surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
@@ -837,7 +883,7 @@ class _LayoutPageState extends State<LayoutPage> {
                             borderRadius: BorderRadius.circular(18),
                             border: Border.all(width: 1.2, color: outline)
                           ),
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
