@@ -25,6 +25,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../caching.dart';
 import '../settings_page.dart';
@@ -757,6 +758,8 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
 
   final int european_aqi;
   final int us_aqi;
+  final String european_desc;
+  final String us_desc;
 
   final double aod;
   final String aod_desc;
@@ -780,6 +783,8 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
 
     required this.european_aqi,
     required this.us_aqi,
+    required this.european_desc,
+    required this.us_desc,
 
     required this.no2_h,
     required this.o3_h,
@@ -800,7 +805,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     required this.mainPollutant,
   });
 
-  static Future<OMExtendedAqi> fromJson(lat, lng, settings) async {
+  static Future<OMExtendedAqi> fromJson(lat, lng, settings, AppLocalizations localizations) async {
     final params = {
       "latitude": lat.toString(),
       "longitude": lng.toString(),
@@ -831,6 +836,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     // https://www.airnow.gov/publications/air-quality-index/technical-assistance-document-for-reporting-the-daily-aqi/
 
     const List<int> aqiCategories = [0, 51, 101, 151, 201, 301, 500];
+    const List<int> europeanAqiCategories = [0, 26, 51, 151, 76, 101, 500];
     const List<String> pollutantNames = ["ozone", "pm2.5", "pm10", "carbon monoxide", "sulphur dioxide", "nitrogen dioxide"];
     const List<List<double>> breakpoints = [
       [0, 0.055, 0.071, 0.086, 0.106, 0.201, 0.604], //o3
@@ -893,7 +899,15 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       dailyAqi.add(biggest);
     }
 
-    const aod_names = ["extremely clear", "very clear", "clear", "slightly hazy", "hazy", "very hazy", "extremely hazy"];
+    final aod_names = [
+      localizations.extremelyHazy,
+      localizations.veryClear,
+      localizations.clear,
+      localizations.slightlyHazy,
+      localizations.haze,
+      localizations.veryHazy,
+      localizations.extremelyHazy
+    ];
     const aod_breakpoints = [0, 0.05, 0.1, 0.2, 0.4, 0.7, 1.0];
 
     final aod_value = item["current"]["aerosol_optical_depth"];
@@ -906,6 +920,20 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     }
 
     final String aod_desc = aod_names[aod_index];
+
+    int usIndex = 0;
+    int europeanIndex = 0;
+    for (int i = 0; i < aqiCategories.length; i++) {
+      if (item["current"]["european_aqi"] > aqiCategories[i])  {
+        usIndex = i;
+      }
+      if (item["current"]["us_aqi"] > europeanAqiCategories[i])  {
+        europeanIndex = i;
+      }
+    }
+
+    String usDesc = OmAqiTitle(usIndex + 1, localizations); //because the function expects values between 1 and something
+    String europeanDesc = OmAqiTitle(europeanIndex + 1, localizations);
 
     return OMExtendedAqi(
       co: item["current"]["carbon_monoxide"],
@@ -936,7 +964,8 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
 
       european_aqi: item["current"]["european_aqi"],
       us_aqi: item["current"]["us_aqi"],
-
+      us_desc: usDesc,
+      european_desc: europeanDesc,
 
       //i am looking at the one before last because the last is basically only for calculating the high
       //and not actually expected to be reached

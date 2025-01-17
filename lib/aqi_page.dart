@@ -225,7 +225,7 @@ class _AllergensPageState extends State<AllergensPage> {
           ),
           SliverToBoxAdapter(
             child: FutureBuilder<OMExtendedAqi>(
-              future: OMExtendedAqi.fromJson(data.lat, data.lng, data.settings),
+              future: OMExtendedAqi.fromJson(data.lat, data.lng, data.settings, AppLocalizations.of(context)!),
               builder: (BuildContext context,
                   AsyncSnapshot<OMExtendedAqi> snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
@@ -411,7 +411,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                         comfortatext(extendedAqi.european_aqi.toString(), 25, data.settings, color: data.current.primary, weight: FontWeight.w400),
                                         Padding(
                                           padding: const EdgeInsets.only(left: 2, top: 1),
-                                          child: comfortatext("good", 15, data.settings, color: data.current.outline, weight: FontWeight.w600),
+                                          child: comfortatext(extendedAqi.european_desc, 15, data.settings, color: data.current.outline, weight: FontWeight.w600),
                                         ),
                                       ],
                                     ),
@@ -438,7 +438,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                         comfortatext(extendedAqi.us_aqi.toString(), 25, data.settings, color: data.current.primary, weight: FontWeight.w400),
                                         Padding(
                                           padding: const EdgeInsets.only(left: 2, top: 1),
-                                          child: comfortatext("good", 15, data.settings, color: data.current.outline, weight: FontWeight.w600),
+                                          child: comfortatext(extendedAqi.us_desc, 15, data.settings, color: data.current.outline, weight: FontWeight.w600),
                                         ),
                                       ],
                                     ),
@@ -583,7 +583,7 @@ class _AllergensPageState extends State<AllergensPage> {
                         alignment: Alignment.center,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 60, bottom: 70),
-                          child: comfortatext("powered by open-meteo", 15, data.settings, color: data.current.outline),
+                          child: comfortatext(AppLocalizations.of(context)!.poweredByOpenMeteo, 15, data.settings, color: data.current.outline),
                         ),
                       )
 

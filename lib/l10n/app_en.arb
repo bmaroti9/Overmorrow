@@ -109,5 +109,18 @@
   "dust": "dust",
   "europeanAqi": "european aqi",
   "unitedStatesAqi": "united states aqi",
-  "offline": "offline"
+  "offline": "offline",
+  "helpTranslate": "help translate",
+  "extremelyClear": "extremely clear" ,
+  "veryClear":  "very clear",
+  "clear":  "clear",
+  "slightlyHazy":  "slightly hazy",
+  "hazy":  "hazy",
+  "veryHazy":  "very hazy",
+  "extremelyHazy": "extremely hazy",
+  "poweredByOpenMeteo": "powered by open-meteo",
+  "@poweredByOpenMeteo": {
+    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+  },
+  "donationPageText": "Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nIf however you like using it and you feel like it's worth 1 of your money then please consider supporting the project on my Patreon."
 }

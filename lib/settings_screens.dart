@@ -299,27 +299,16 @@ class _AppearancePageState extends State<AppearancePage> {
                               )
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
                               child: Container(
-                                width: 150,
-                                height: 4,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: onSurface,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10, top: 8),
-                              child: Container(
-                                width: 70,
-                                height: 4,
+                                height: 3,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: primaryLight,
                                 ),
                               ),
-                            )
+                            ),
+
                           ],
                         ),
                       ),
@@ -661,7 +650,7 @@ class TranslationSelection extends StatelessWidget {
                     padding: const EdgeInsets.all(30.0),
                     child: Row(
                       children: [
-                        comfortatext("help translate", 21, settings, color: onSurface),
+                        comfortatext(AppLocalizations.of(context)!.helpTranslate, 21, settings, color: onSurface),
                         const Spacer(),
                         Icon(Icons.arrow_forward, color: onSurface, size: 21,)
                       ],

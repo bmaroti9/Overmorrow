@@ -84,8 +84,8 @@ class _DonationPageState extends State<DonationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      comfortatext("placeholder donate text" //TODO: add real text
-                         , 18, settings, color: onSurface),
+                      comfortatext(AppLocalizations.of(context)!.donationPageText,
+                         18, settings, color: onSurface),
 
                       Padding(
                         padding: const EdgeInsets.only(top: 40),
