@@ -216,5 +216,27 @@
   "airQualityLowercase": "Якість повітря",
   "@airQualityLowercase": {},
   "precipitaion": "Опади",
-  "@precipitaion": {}
+  "@precipitaion": {},
+  "helpTranslate": "допомогти з перекладом",
+  "@helpTranslate": {},
+  "hazy": "Туман",
+  "@hazy": {},
+  "veryHazy": "Дуже туманно",
+  "@veryHazy": {},
+  "extremelyHazy": "Вкрай туманно",
+  "@extremelyHazy": {},
+  "extremelyClear": "Вкрай ясно",
+  "@extremelyClear": {},
+  "veryClear": "Дуже ясно",
+  "@veryClear": {},
+  "poweredByOpenMeteo": "на базі open-meteo",
+  "@poweredByOpenMeteo": {
+    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+  },
+  "donationPageText": "Overmorrow завжди задумувався як повністю безплатний застосунок, без реклами та внутрішніх покупок. \n \nТож якщо ви хочете користуватися ним просто так, то користуйтеся на здоров'я. \n \nЯкщо ж вам подобається користуватися ним і ви відчуваєте, що він вартий ваших грошей, тоді, підтримайте проєкт на моєму Patreon.",
+  "@donationPageText": {},
+  "slightlyHazy": "Легкий туман",
+  "@slightlyHazy": {},
+  "clear": "Ясно",
+  "@clear": {}
 }
