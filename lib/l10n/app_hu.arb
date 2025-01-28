@@ -215,5 +215,13 @@
   "offline": "offline",
   "@offline": {},
   "precipitaion": "Csapadék",
-  "@precipitaion": {}
+  "@precipitaion": {},
+  "helpTranslate": "segíts fodítani",
+  "@helpTranslate": {},
+  "rainInHalfHour": "eső fél óra múlva",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "airQualityLowercase": "légszennyezettség",
+  "@airQualityLowercase": {}
 }
