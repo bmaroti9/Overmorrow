@@ -26,6 +26,7 @@ import '../Icons/overmorrow_weather_icons_icons.dart';
 import '../api_key.dart';
 import '../caching.dart';
 import '../settings_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../weather_refact.dart' as weather_refactor;
 import '../weather_refact.dart';
@@ -628,7 +629,7 @@ class Wapi15MinutePrecip { //weatherapi doesn't actaully have 15 minute forecast
     required this.precips,
   });
 
-  static Wapi15MinutePrecip fromJson(item, settings, day, hour) {
+  static Wapi15MinutePrecip fromJson(item, settings, day, hour, AppLocalizations localizations) {
     int closest = 100;
     int end = -1;
     double sum = 0;
@@ -691,21 +692,17 @@ class Wapi15MinutePrecip { //weatherapi doesn't actaully have 15 minute forecast
     if (closest != 100) {
       if (closest <= 2) {
         if (end <= 1) {
-          t_minus = "rain expected in the next 1 hour";
+          t_minus = localizations.rainInOneHour;
         }
         else {
-          String x = " $end ";
-          t_minus = "rain expected in the next x hours";
-          t_minus = t_minus.replaceAll(" x ", x);
+          t_minus = localizations.rainInHours(end);
         }
       }
       else if (closest < 1) {
-        t_minus = "rain expected in 1 hour";
+        t_minus = localizations.rainExpectedInOneHour;
       }
       else {
-        String x = " $closest ";
-        t_minus = "rain expected in x hours";
-        t_minus = t_minus.replaceAll(" x ", x);
+        t_minus = localizations.rainExpectedInHours(closest);
       }
     }
 
@@ -786,7 +783,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName, 
     updatedTime: DateTime.now(),
     localtime: "${localtime.hour}:${localtime.minute}",
 
-    minutely_15_precip: Wapi15MinutePrecip.fromJson(wapi_body, settings, 0, start),
+    minutely_15_precip: Wapi15MinutePrecip.fromJson(wapi_body, settings, 0, start, localizations),
 
     isonline: isonline
   );

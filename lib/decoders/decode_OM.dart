@@ -503,7 +503,7 @@ class OM15MinutePrecip {
     required this.precips,
   });
 
-  static OM15MinutePrecip fromJson(item, settings, minuteOffset) {
+  static OM15MinutePrecip fromJson(item, settings, minuteOffset, AppLocalizations localizations) {
 
     int closest = 100;
     int end = -1;
@@ -541,34 +541,30 @@ class OM15MinutePrecip {
     if (closest != 100) {
       if (closest <= 2) {
         if (end == 2) {
-          t_minus = "rain expected in the next half an hour";
+          t_minus = localizations.rainInHalfHour;
         }
         else if (end < 4) {
-          String x = " ${[15, 30, 45][end - 1]} ";
-          t_minus = "rain expected in the next x minutes";
-          t_minus = t_minus.replaceAll(" x ", x);
+          int x = [15, 30, 45][end - 1];
+          t_minus = localizations.rainInMinutes(x);
         }
         else if (end ~/ 4 == 1) {
-          t_minus = "rain expected in the next 1 hour";
+          t_minus = localizations.rainInOneHour;
         }
         else {
-          String x = " ${end ~/ 4} ";
-          t_minus = "rain expected in the next x hours";
-          t_minus = t_minus.replaceAll(" x ", x);
+          int x = end ~/ 4;
+          t_minus = localizations.rainInHours(x);
         }
       }
       else if (closest < 4) {
-        String x = " ${[15, 30, 45][closest - 1]} ";
-        t_minus = "rain expected in x minutes";
-        t_minus = t_minus.replaceAll(" x ", x);
+        int x = [15, 30, 45][closest - 1];
+        t_minus = localizations.rainExpectedInMinutes(x);
       }
       else if (closest ~/ 4 == 1) {
-        t_minus = "rain expected in 1 hour";
+        t_minus = localizations.rainExpectedInOneHour;
       }
       else {
-        String x = " ${closest ~/ 4} ";
-        t_minus = "rain expected in x hours";
-        t_minus = t_minus.replaceAll(" x ", x);
+        int x = closest ~/ 4;
+        t_minus = localizations.rainExpectedInHours(x);
       }
     }
 
@@ -1022,7 +1018,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
     sunstatus: sunstatus,
     minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings,
         DateTime(localtime.year, localtime.month, localtime.day, localtime.hour, localtime.minute).
-        difference(lastKnowTime).inMinutes),
+        difference(lastKnowTime).inMinutes, localizations),
 
     current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng,
         start, dayDif, localizations),
