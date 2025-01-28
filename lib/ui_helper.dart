@@ -184,7 +184,7 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
     String text = AppLocalizations.of(context)!.updatedJustNow;
 
     if (dif > 0 && dif < 45) {
-      text = AppLocalizations.of(context)!.updatedXMinAgo(dif);
+      text = AppLocalizations.of(context)!.updatedXMinutesAgo(dif);
     }
     else if (dif >= 45 && dif < 1440) {
       int hour = (dif + 30) ~/ 60;

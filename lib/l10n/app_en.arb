@@ -172,7 +172,7 @@
     }
   },
 
-  "updatedXMinAgo": "updated, {minutes} min ago",
+  "updatedXMinutesAgo": "updated, {minutes} min ago",
   "updatedXHoursAgo": "updated, {hours, plural, =1 {1 hour} other {{hours} hours}} ago",
   "updatedXDaysAgo": "updated, {days, plural, =1 {1 day} other {{days} days}} ago",
   "@updatedXMinAgo": {
