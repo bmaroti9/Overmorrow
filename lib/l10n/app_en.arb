@@ -62,7 +62,6 @@
   "fontSize": "Font size",
   "daily": "Daily",
   "searchProvider": "Search provider",
-  "updatedXMinAgo": "updated, x min ago",
   "updatedJustNow": "updated, just now",
   "colorSource": "Color source",
   "imageSource": "Image source",
@@ -168,6 +167,34 @@
     "description": "rain expected in the next X hours",
     "placeholders": {
       "hours": {
+        "type": "int"
+      }
+    }
+  },
+
+  "updatedXMinAgo": "updated, {minutes} min ago",
+  "updatedXHoursAgo": "updated, {hours, plural, =1 {1 hour} other {{hours} hours}} ago",
+  "updatedXDaysAgo": "updated, {days, plural, =1 {1 day} other {{days} days}} ago",
+  "@updatedXMinAgo": {
+    "description": "updated x minutes ago",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
         "type": "int"
       }
     }

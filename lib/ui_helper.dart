@@ -184,30 +184,15 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
     String text = AppLocalizations.of(context)!.updatedJustNow;
 
     if (dif > 0 && dif < 45) {
-      text = AppLocalizations.of(context)!.updatedXMinAgo;
-      text = text.replaceAll('x', dif.toString());
+      text = AppLocalizations.of(context)!.updatedXMinAgo(dif);
     }
     else if (dif >= 45 && dif < 1440) {
       int hour = (dif + 30) ~/ 60;
-      if (hour == 1) {
-        text = "updated, x hour ago";
-      }
-      else {
-        text = "updated, x hours ago";
-      }
-
-      text = text.replaceAll('x', hour.toString());
+      text = AppLocalizations.of(context)!.updatedXHoursAgo(hour);
     }
     else if (dif >= 1440) { //number of minutes in a day
       int day = (dif + 720) ~/ 1440;
-      if (day == 1) {
-        text = "updated, x day ago";
-      }
-      else {
-        text = "updated, x days ago";
-      }
-
-      text = text.replaceAll('x', day.toString());
+      text = AppLocalizations.of(context)!.updatedXDaysAgo(day);
     }
 
     List<String> split = text.split(',');
@@ -279,7 +264,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
                     color: highlight, weight: FontWeight.w600),
               ),
               if (widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 3),
+                padding: const EdgeInsets.only(right: 3, bottom: 2),
                 child: Icon(Icons.access_time, color: highlight, size: 13,),
               ),
               comfortatext('${widget.split[0]},', 13, widget.data.settings,

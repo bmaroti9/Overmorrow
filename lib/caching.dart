@@ -123,7 +123,7 @@ class CustomCacheManager {
       //print(("got here", fileInfo?.validTill, fileInfo?.validTill.difference(DateTime.now())));
 
       if (fileInfo == null || fileInfo.validTill.difference(DateTime.now()).isNegative) {
-        final file = await _cacheManager.downloadFile(url, key: cacheKey, authHeaders: headers).timeout(Duration(seconds: 3));
+        final file = await _cacheManager.downloadFile(url, key: cacheKey, authHeaders: headers).timeout(const Duration(seconds: 5));
         return [file.file, true];
       } else {
         return [fileInfo.file, true];
@@ -135,7 +135,6 @@ class CustomCacheManager {
         return [fileInfo!.file, false];
       }
       catch (error) {
-        print(("catched no wifi"));
         throw const SocketException("no wifi");
       }
 
@@ -158,7 +157,7 @@ class MyWorldtime extends Worldtime {
     final String url = '${urlLocation}latitude=$latitude&longitude=$longitude';
     try {
       var file = await XCustomCacheManager.fetchData(url.toString(), "$latitude, $longitude timeapi",
-          headers: headers).timeout(Duration(seconds: 3));
+          headers: headers).timeout(const Duration(seconds: 6));
       var response = await file[0].readAsString();
       final Map json = jsonDecode(response);
       return DateTime.tryParse(json['dateTime']) ?? defaultDateTime;
