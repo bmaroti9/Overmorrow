@@ -627,13 +627,13 @@ class MyDrawer extends StatelessWidget {
           Container(
             height: 240,
             decoration: BoxDecoration(
-              color: primary,
+              color: hihglight,
             ),
             child: Align(
               alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: comfortatext('OVRMRW', 40, settings, color: surface, weight: FontWeight.w300),
+                  child: comfortatext('OVRMRW', 40, settings, color: primary, weight: FontWeight.w400),
                 )
             ),
           ),

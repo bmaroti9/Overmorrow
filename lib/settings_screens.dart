@@ -89,6 +89,7 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
   Color primary = colors[1];
   Color primaryLight = colors[2];
   Color surface = colors[0];
+  Color onPrimaryLight = colors[10];
 
   return Padding(
     padding: const EdgeInsets.only(top: 20, bottom: 20),
@@ -105,7 +106,8 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
             context, updatePage),
         mainSettingEntry(AppLocalizations.of(context)!.language, AppLocalizations.of(context)!.languageSettingDesc,
             containerLow, primary, onSurface, surface, Icons.language, settings,
-            LangaugePage(colors: colors, settings: settings, image: image, updateMainPage: updatePage, highlight: primaryLight,),
+            LangaugePage(colors: colors, settings: settings, image: image, updateMainPage: updatePage, highlight:
+            primaryLight, onPrimaryLight: onPrimaryLight,),
             context, updatePage),
         mainSettingEntry(AppLocalizations.of(context)!.units, AppLocalizations.of(context)!.unitsSettingdesc,
             containerLow, primary, onSurface, surface, Icons.pie_chart_outline, settings,
@@ -268,7 +270,7 @@ class _AppearancePageState extends State<AppearancePage> {
                                       children: [
                                         comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 42,
                                             settings, color: colorPop, weight: FontWeight.w300),
-                                        comfortatext(AppLocalizations.of(context)!.clearNight, 22,
+                                        comfortatext(AppLocalizations.of(context)!.clearSky, 22,
                                             settings, color: descColor, weight: FontWeight.w500)
                                       ],
                                     ),
@@ -536,15 +538,16 @@ class LangaugePage extends StatefulWidget {
   final colors;
   final updateMainPage;
   final highlight;
+  final onPrimaryLight;
 
   const LangaugePage({Key? key, required this.colors, required this.settings,
-    required this.image, required this.updateMainPage, required this.highlight})
+    required this.image, required this.updateMainPage, required this.highlight, required this.onPrimaryLight})
       : super(key: key);
 
   @override
   _LangaugePageState createState() =>
       _LangaugePageState(image: image, settings: settings, colors: colors,
-          updateMainPage: updateMainPage, highlight: highlight);
+          updateMainPage: updateMainPage, highlight: highlight, onPrimaryLight: onPrimaryLight);
 }
 
 class _LangaugePageState extends State<LangaugePage> {
@@ -554,9 +557,10 @@ class _LangaugePageState extends State<LangaugePage> {
   final colors;
   final updateMainPage;
   final highlight;
+  final onPrimaryLight;
 
   _LangaugePageState({required this.image, required this.settings, required this.colors,
-    required this.updateMainPage, required this.highlight});
+    required this.updateMainPage, required this.highlight, required this.onPrimaryLight});
 
   String _locale = 'English';
 
@@ -596,7 +600,8 @@ class _LangaugePageState extends State<LangaugePage> {
       context: context,
       locale: languageNameToLocale[_locale] ?? const Locale('en'),
       child: TranslationSelection(settings: settings, goBack: goBack, onSurface: onSurface,
-      primary: primary, onTap: onTap, options: options, selected: selected, surface: surface, highlight: highlight,)
+      primary: primary, onTap: onTap, options: options, selected: selected, surface: surface,
+        highlight: highlight, onPrimaryLight: onPrimaryLight,)
     );
   }
 }
@@ -604,6 +609,7 @@ class _LangaugePageState extends State<LangaugePage> {
 class TranslationSelection extends StatelessWidget {
   final surface;
   final onSurface;
+  final onPrimaryLight;
   final goBack;
   final onTap;
   final primary;
@@ -613,7 +619,7 @@ class TranslationSelection extends StatelessWidget {
   final highlight;
 
   const TranslationSelection({super.key, this.settings, this.goBack, this.onSurface, this.primary,
-  this.onTap, this.options, this.selected, this.surface, this.highlight});
+  this.onTap, this.options, this.selected, this.surface, this.highlight, this.onPrimaryLight});
 
   @override
   Widget build(BuildContext context) {
@@ -650,9 +656,9 @@ class TranslationSelection extends StatelessWidget {
                     padding: const EdgeInsets.all(30.0),
                     child: Row(
                       children: [
-                        comfortatext(AppLocalizations.of(context)!.helpTranslate, 21, settings, color: onSurface),
+                        comfortatext(AppLocalizations.of(context)!.helpTranslate, 21, settings, color: onPrimaryLight),
                         const Spacer(),
-                        Icon(Icons.arrow_forward, color: onSurface, size: 21,)
+                        Icon(Icons.arrow_forward, color: onPrimaryLight, size: 21,)
                       ],
                     ),
                   ),
