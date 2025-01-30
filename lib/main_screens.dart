@@ -173,12 +173,7 @@ class _NewMainState extends State<NewMain> {
             overlay: Stack(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 25,
-                      top: MediaQuery
-                          .of(context)
-                          .padding
-                          .top + 20, right: 25, bottom: 25
-                  ),
+                  padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -194,8 +189,7 @@ class _NewMainState extends State<NewMain> {
                         padding: const EdgeInsets.only(left: 0),
                         child: comfortatext(
                             data.current.text, 32, data.settings,
-                            weight: estimateBrightnessForColor(data.current.descColor)
-                                ? FontWeight.w400 : FontWeight.w600,
+                            weight: FontWeight.w600,
                             color: data.current.descColor),
                       )
                     ],

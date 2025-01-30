@@ -91,32 +91,37 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
   Color surface = colors[0];
   Color onPrimaryLight = colors[10];
 
+  AppLocalizations localizations = AppLocalizations.of(context)!;
+
   return Padding(
     padding: const EdgeInsets.only(top: 20, bottom: 20),
     child: Column(
       children: [
-        mainSettingEntry(AppLocalizations.of(context)!.appearance, AppLocalizations.of(context)!.appearanceSettingDesc,
+        mainSettingEntry(localizations.appearance, localizations.appearanceSettingDesc,
             containerLow, primary, onSurface, surface, Icons.palette_outlined, settings,
-            AppearancePage(settings: settings, image: image, allColors: allColors, updateMainPage: updatePage,),
+            AppearancePage(settings: settings, image: image, allColors: allColors, updateMainPage: updatePage, localizations: localizations,),
             context, updatePage
         ),
-        mainSettingEntry(AppLocalizations.of(context)!.general, AppLocalizations.of(context)!.generalSettingDesc,
+        mainSettingEntry(localizations.general, localizations.generalSettingDesc,
             containerLow, primary, onSurface, surface, Icons.settings_applications, settings,
-            GeneralSettingsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
+            GeneralSettingsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage,
+              localizations: localizations,),
             context, updatePage),
-        mainSettingEntry(AppLocalizations.of(context)!.language, AppLocalizations.of(context)!.languageSettingDesc,
+        mainSettingEntry(localizations.language, localizations.languageSettingDesc,
             containerLow, primary, onSurface, surface, Icons.language, settings,
             LangaugePage(colors: colors, settings: settings, image: image, updateMainPage: updatePage, highlight:
             primaryLight, onPrimaryLight: onPrimaryLight,),
             context, updatePage),
-        mainSettingEntry(AppLocalizations.of(context)!.units, AppLocalizations.of(context)!.unitsSettingdesc,
+        mainSettingEntry(localizations.units, localizations.unitsSettingdesc,
             containerLow, primary, onSurface, surface, Icons.pie_chart_outline, settings,
-            UnitsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
+            UnitsPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage,
+            localizations: localizations,),
             context, updatePage),
-        mainSettingEntry(AppLocalizations.of(context)!.layout, AppLocalizations.of(context)!.layoutSettingDesc,
+        mainSettingEntry(localizations.layout, localizations.layoutSettingDesc,
             containerLow, primary, onSurface, surface,
             Icons.splitscreen, settings,
-            LayoutPage(colors: colors, settings: settings, image: image, updateMainPage: updatePage),
+            LayoutPage(colors: colors, settings: settings, image: image,
+              updateMainPage: updatePage, localizations: localizations,),
             context, updatePage),
       ],
     ),
@@ -157,15 +162,16 @@ class AppearancePage extends StatefulWidget {
   final image;
   final allColors;
   final updateMainPage;
+  final localizations;
 
   const AppearancePage({Key? key, required this.allColors, required this.settings,
-    required this.image, required this.updateMainPage})
+    required this.image, required this.updateMainPage, required this.localizations})
       : super(key: key);
 
   @override
   _AppearancePageState createState() =>
       _AppearancePageState(image: image, settings: settings, allColors: allColors,
-          updateMainPage: updateMainPage);
+          updateMainPage: updateMainPage, localizations: localizations);
 }
 
 class _AppearancePageState extends State<AppearancePage> {
@@ -174,8 +180,10 @@ class _AppearancePageState extends State<AppearancePage> {
   final settings;
   final allColors;
   final updateMainPage;
+  final localizations;
 
-  _AppearancePageState({required this.image, required this.settings, required this.allColors, required this.updateMainPage});
+  _AppearancePageState({required this.image, required this.settings, required this.allColors, required this.updateMainPage,
+  required this.localizations});
 
   Map<String, String> copySettings = {};
 
@@ -233,7 +241,7 @@ class _AppearancePageState extends State<AppearancePage> {
                   goBack();
                 }),
             title: comfortatext(
-                AppLocalizations.of(context)!.appearance, 30, settings,
+                localizations.appearance, 30, settings,
                 color: primary),
             backgroundColor: surface,
             pinned: false,
@@ -270,7 +278,7 @@ class _AppearancePageState extends State<AppearancePage> {
                                       children: [
                                         comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 42,
                                             settings, color: colorPop, weight: FontWeight.w300),
-                                        comfortatext(AppLocalizations.of(context)!.clearSky, 22,
+                                        comfortatext(localizations.clearSky, 22,
                                             settings, color: descColor, weight: FontWeight.w500)
                                       ],
                                     ),
@@ -340,9 +348,9 @@ class _AppearancePageState extends State<AppearancePage> {
                     )
                 ),
 
-                settingEntry(Icons.colorize_rounded, AppLocalizations.of(context)!.colorSource, settings, highlight, updatePage,
+                settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, highlight, updatePage,
                     onSurface, primaryLight, primary, 'Color source'),
-                settingEntry(Icons.landscape_outlined, AppLocalizations.of(context)!.imageSource, settings, highlight, updatePage,
+                settingEntry(Icons.landscape_outlined, localizations.imageSource, settings, highlight, updatePage,
                     onSurface, primaryLight, primary, 'Image source'),
                 const SizedBox(height: 70,),
               ],
@@ -359,15 +367,16 @@ class UnitsPage extends StatefulWidget {
   final image;
   final colors;
   final updateMainPage;
+  final localizations;
 
   const UnitsPage({Key? key, required this.colors, required this.settings,
-    required this.image, required this.updateMainPage})
+    required this.image, required this.updateMainPage, required this.localizations})
       : super(key: key);
 
   @override
   _UnitsPageState createState() =>
       _UnitsPageState(image: image, settings: settings, colors: colors,
-          updateMainPage: updateMainPage);
+          updateMainPage: updateMainPage, localizations: localizations);
 }
 
 class _UnitsPageState extends State<UnitsPage> {
@@ -376,8 +385,10 @@ class _UnitsPageState extends State<UnitsPage> {
   final settings;
   final colors;
   final updateMainPage;
+  final localizations;
 
-  _UnitsPageState({required this.image, required this.settings, required this.colors, required this.updateMainPage});
+  _UnitsPageState({required this.image, required this.settings, required this.colors,
+    required this.updateMainPage, required this.localizations});
 
   @override
   void initState() {
@@ -415,7 +426,7 @@ class _UnitsPageState extends State<UnitsPage> {
                   goBack();
                 }),
             title: comfortatext(
-                AppLocalizations.of(context)!.units, 30, settings,
+                localizations.units, 30, settings,
                 color: primary),
             backgroundColor: surface,
             pinned: false,
@@ -425,11 +436,11 @@ class _UnitsPageState extends State<UnitsPage> {
               padding: const EdgeInsets.only(top: 30, bottom: 60),
               child: Column(
                 children: [
-                  settingEntry(CupertinoIcons.thermometer, AppLocalizations.of(context)!.temperature, settings, highlight, updatePage,
+                  settingEntry(CupertinoIcons.thermometer, localizations.temperature, settings, highlight, updatePage,
                       onSurface, primaryLight, primary, 'Temperature'),
-                  settingEntry(Icons.water_drop_outlined, AppLocalizations.of(context)!.precipitaion, settings, highlight, updatePage,
+                  settingEntry(Icons.water_drop_outlined, localizations.precipitaion, settings, highlight, updatePage,
                       onSurface, primaryLight, primary, 'Precipitation'),
-                  settingEntry(CupertinoIcons.wind, AppLocalizations.of(context)!.windCapital, settings, highlight, updatePage,
+                  settingEntry(CupertinoIcons.wind, localizations.windCapital, settings, highlight, updatePage,
                       onSurface, primaryLight, primary, 'Wind'),
                 ],
               ),
@@ -447,15 +458,16 @@ class GeneralSettingsPage extends StatefulWidget {
   final image;
   final colors;
   final updateMainPage;
+  final localizations;
 
   const GeneralSettingsPage({Key? key, required this.colors, required this.settings,
-    required this.image, required this.updateMainPage})
+    required this.image, required this.updateMainPage, required this.localizations})
       : super(key: key);
 
   @override
   _GeneralSettingsPageState createState() =>
       _GeneralSettingsPageState(image: image, settings: settings, colors: colors,
-          updateMainPage: updateMainPage);
+          updateMainPage: updateMainPage, localizations: localizations);
 }
 
 class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
@@ -464,8 +476,10 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
   final settings;
   final colors;
   final updateMainPage;
+  final localizations;
 
-  _GeneralSettingsPageState({required this.image, required this.settings, required this.colors, required this.updateMainPage});
+  _GeneralSettingsPageState({required this.image, required this.settings, required this.colors,
+    required this.updateMainPage, required this.localizations});
 
   @override
   void initState() {
@@ -503,7 +517,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                   goBack();
                 }),
             title: comfortatext(
-                AppLocalizations.of(context)!.general, 30, settings,
+                localizations.general, 30, settings,
                 color: primary),
             backgroundColor: surface,
             pinned: false,
@@ -513,14 +527,14 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
               padding: const EdgeInsets.only(top: 30, bottom: 60),
               child: Column(
                 children: [
-                  settingEntry(Icons.access_time_outlined, AppLocalizations.of(context)!.timeMode, settings, highlight, updatePage,
+                  settingEntry(Icons.access_time_outlined, localizations.timeMode, settings, highlight, updatePage,
                       onSurface, primaryLight, primary, 'Time mode'),
-                  settingEntry(Icons.date_range, AppLocalizations.of(context)!.dateFormat, settings, highlight, updatePage,
+                  settingEntry(Icons.date_range, localizations.dateFormat, settings, highlight, updatePage,
                       onSurface, primaryLight, primary, 'Date format'),
-                  settingEntry(CupertinoIcons.textformat_size, AppLocalizations.of(context)!.fontSize, settings, highlight, updatePage,
+                  settingEntry(CupertinoIcons.textformat_size, localizations.fontSize, settings, highlight, updatePage,
                       onSurface, primaryLight, primary, 'Font size'),
 
-                  settingEntry(Icons.manage_search_outlined, AppLocalizations.of(context)!.searchProvider, settings, highlight, updatePage,
+                  settingEntry(Icons.manage_search_outlined, localizations.searchProvider, settings, highlight, updatePage,
                       onSurface, primaryLight, primary, 'Search provider'),
                 ],
               ),
@@ -618,6 +632,7 @@ class TranslationSelection extends StatelessWidget {
   final selected;
   final highlight;
 
+
   const TranslationSelection({super.key, this.settings, this.goBack, this.onSurface, this.primary,
   this.onTap, this.options, this.selected, this.surface, this.highlight, this.onPrimaryLight});
 
@@ -706,15 +721,16 @@ class LayoutPage extends StatefulWidget {
   final image;
   final colors;
   final updateMainPage;
+  final localizations;
 
   const LayoutPage({Key? key, required this.colors, required this.settings,
-    required this.image, required this.updateMainPage})
+    required this.image, required this.updateMainPage, required this.localizations})
       : super(key: key);
 
   @override
   _LayoutPageState createState() =>
       _LayoutPageState(image: image, settings: settings, colors: colors,
-          updateMainPage: updateMainPage);
+          updateMainPage: updateMainPage, localizations: localizations);
 }
 
 class _LayoutPageState extends State<LayoutPage> {
@@ -723,8 +739,10 @@ class _LayoutPageState extends State<LayoutPage> {
   final settings;
   final colors;
   final updateMainPage;
+  final AppLocalizations localizations;
 
-  _LayoutPageState({required this.image, required this.settings, required this.colors, required this.updateMainPage});
+  _LayoutPageState({required this.image, required this.settings, required this.colors,
+    required this.updateMainPage, required this.localizations});
 
   late List<String> _items;
 
@@ -794,7 +812,7 @@ class _LayoutPageState extends State<LayoutPage> {
                 ),
               ),
             ],
-            title: comfortatext("Layout", 30, settings, color: primary),
+            title: comfortatext(localizations.layout, 30, settings, color: primary),
             backgroundColor: surface,
             pinned: false,
           ),
