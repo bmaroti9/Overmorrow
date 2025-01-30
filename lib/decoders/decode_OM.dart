@@ -456,7 +456,7 @@ class OMDay {
 
     if (hours.length > 0) {
       return OMDay(
-        uv: item["daily"]["uv_index_max"][0].round(),
+        uv: item["daily"]["uv_index_max"][index].round(),
         icon: oMIconCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
         iconSize: oMIconSizeCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
         text: conditionTranslation(oMTextCorrection(item["daily"]["weather_code"][index]), localizations) ?? "TranslationErr",
