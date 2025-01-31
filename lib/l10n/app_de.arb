@@ -4,7 +4,7 @@
   "@feelsLike": {},
   "precipCapital": "Niedersch.",
   "@precipCapital": {},
-  "humidity": "Luftfeuch.",
+  "humidity": "Luftfeuchtigkeit",
   "@humidity": {},
   "windCapital": "Wind",
   "@windCapital": {},
@@ -126,13 +126,13 @@
   "@colorSource": {},
   "imageSource": "Bildquelle",
   "@imageSource": {},
-  "temp": "temp",
+  "temp": "Temp",
   "@temp": {},
   "precipLowercase": "Niederschl.",
   "@precipLowercase": {},
-  "windLowercase": "wind",
+  "windLowercase": "Wind",
   "@windLowercase": {},
-  "uvLowercase": "uv",
+  "uvLowercase": "UV",
   "@uvLowercase": {},
   "goodAqiDesc": "Die Luftqualität ist ausgezeichnet; kein Gesundheitsrisiko.",
   "@goodAqiDesc": {},
@@ -140,7 +140,7 @@
   "@fairAqiDesc": {},
   "moderateAqiDesc": "Empfindliche Personen können leichte Auswirkungen erfahren.",
   "@moderateAqiDesc": {},
-  "poorAqiDesc": "Gesundheitliche Auswirkungen möglich für alle, ernst für empfindliche Gruppen.",
+  "poorAqiDesc": "Gesundheitliche Auswirkungen für alle möglich, ernst für empfindliche Gruppen.",
   "@poorAqiDesc": {},
   "veryPoorAqiDesc": "Schwere gesundheitliche Auswirkungen für alle.",
   "@veryPoorAqiDesc": {},
@@ -206,12 +206,106 @@
   "@d": {},
   "aerosolOpticalDepth": "aerosol-optische tiefe",
   "@aerosolOpticalDepth": {},
-  "dust": "staub",
+  "dust": "Staub",
   "@dust": {},
   "europeanAqi": "eu aqi",
   "@europeanAqi": {},
   "unitedStatesAqi": "us aqi",
   "@unitedStatesAqi": {},
   "offline": "offline",
-  "@offline": {}
+  "@offline": {},
+  "clear": "klar",
+  "@clear": {},
+  "slightlyHazy": "leicht trüb",
+  "@slightlyHazy": {},
+  "hazy": "trüb",
+  "@hazy": {},
+  "veryHazy": "sehr trüb",
+  "@veryHazy": {},
+  "extremelyHazy": "extrem trüb",
+  "@extremelyHazy": {},
+  "poweredByOpenMeteo": "Bereitgestellt von Open-Meteo",
+  "@poweredByOpenMeteo": {
+    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+  },
+  "rainInHalfHour": "Regen in der nächsten halben Stunde",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "rainInMinutes": "Regen in den nächsten {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInOneHour": "Regen in der nächsten Stunde",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  },
+  "rainInHours": "Regen in den nächsten {hours, plural, =1 {hour} other {{hours} hours}}",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInMinutes": "Regen erwartet in {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInOneHour": "Regen erwartet in der nächsten Stunde",
+  "@rainExpectedInOneHour": {
+    "description": "rain expected in the next hour"
+  },
+  "rainExpectedInHours": "Regen erwartet in {hours, plural, =1 {hour} other {{hours} hours}}",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXHoursAgo": "Aktualisiert vor {hours, plural, =1 {1 hour} other {{hours} hours}} Stunden",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "Aktualisiert vor {days, plural, =1 {1 day} other {{days} days}} Tagen",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXMinutesAgo": "Aktualisiert vor {minutes} Minuten",
+  "@updatedXMinutesAgo": {},
+  "airQualityLowercase": "Luftqualität",
+  "@airQualityLowercase": {},
+  "precipitaion": "Niederschlag",
+  "@precipitaion": {},
+  "helpTranslate": "Beim Übersetzen helfen",
+  "@helpTranslate": {},
+  "extremelyClear": "extrem klar",
+  "@extremelyClear": {},
+  "veryClear": "sehr klar",
+  "@veryClear": {},
+  "donationPageText": "Overmorrow sollte immer eine völlig kostenlose App sein, ohne Werbung oder In-App-Käufe.\n\nWenn Sie sie also einfach so verwenden möchten, dann viel Spaß damit.\n\nWenn Sie sie jedoch gerne verwenden und der Meinung sind, dass sie ein bisschen Geld wert ist, dann denken Sie bitte darüber nach, das Projekt auf meinem Patreon zu unterstützen.",
+  "@donationPageText": {}
 }

@@ -238,5 +238,19 @@
   "slightlyHazy": "Легкий туман",
   "@slightlyHazy": {},
   "clear": "Ясно",
-  "@clear": {}
+  "@clear": {},
+  "rainInHalfHour": "Дощ у найближчі півгодини",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "rainInOneHour": "Дощ у найближчу годину",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  },
+  "rainExpectedInOneHour": "За годину очікується дощ",
+  "@rainExpectedInOneHour": {
+    "description": "rain expected in the next hour"
+  },
+  "updatedXMinutesAgo": "Оновлено, {minutes} хв тому",
+  "@updatedXMinutesAgo": {}
 }
