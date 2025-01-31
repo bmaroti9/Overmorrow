@@ -465,8 +465,8 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
     }).toList(),
     onChanged: (Object? value) {
       HapticFeedback.lightImpact();
-      settings[name] = value;
-      updatePage(name, value);
+      settings[rawName] = value;
+      updatePage(rawName, value);
     }
   );
 }

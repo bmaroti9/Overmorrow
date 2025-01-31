@@ -454,7 +454,7 @@ class OMDay {
 
     List<OMHour> hours = buildHours(index, true, item, settings, sunstatus, approximatelocal, localizations);
 
-    if (hours.length > 0) {
+    if (hours.isNotEmpty) {
       return OMDay(
         uv: item["daily"]["uv_index_max"][index].round(),
         icon: oMIconCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
