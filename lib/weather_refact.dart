@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2024>  <Balint Maroti>
+Copyright (C) <2025>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,6 +21,24 @@ import 'package:flutter/material.dart';
 
 import 'ui_helper.dart';
 
+Map<String, Locale> languageNameToLocale = {
+  'English': const Locale('en'),
+  'Español': const Locale('es'),
+  'Français': const Locale('fr'),
+  'Deutsch': const Locale('de'),
+  'Italiano': const Locale('it'),
+  'Português': const Locale('pt'),
+  'Русский': const Locale('ru'),
+  'Magyar': const Locale('hu'),
+  'Polski': const Locale('pl'),
+  'Ελληνικά': const Locale('el'),
+  '简体中文': const Locale('zh'),
+  '日本語': const Locale('ja'),
+  'українська': const Locale('uk'),
+  'türkçe': const Locale('tr'),
+  'தமிழ்' : const Locale('ta')
+};
+
 Map<String, IconData> textMaterialIcon = {
   'Clear Night': OvermorrowWeatherIcons.moon2,
   'Partly Cloudy': OvermorrowWeatherIcons.partly_cloudy2,
@@ -37,6 +55,27 @@ Map<String, IconData> textMaterialIcon = {
   'Heavy Rain': OvermorrowWeatherIcons.heavy_rain2,
   'Cloudy Night' : OvermorrowWeatherIcons.cloudy_night2,
 };
+
+String? conditionTranslation(String key, localizations) {
+  final localizationMap = {
+    'Clear Night': localizations.clearNight,
+    'Partly Cloudy': localizations.partlyCloudy,
+    'Clear Sky':localizations.clearSky,
+    'Overcast': localizations.overcast,
+    'Haze': localizations.haze,
+    'Rain': localizations.rain,
+    'Sleet': localizations.sleet,
+    'Drizzle': localizations.drizzle,
+    'Thunderstorm': localizations.thunderstorm,
+    'Heavy Snow': localizations.heavySnow,
+    'Fog': localizations.fog,
+    'Snow': localizations.snow,
+    'Heavy Rain': localizations.heavyRain,
+    'Cloudy Night' : localizations.cloudyNight,
+  };
+
+  return localizationMap[key];
+}
 
 Map<String, List<String>> assetPhotoCredits = {
   'Clear Night': [
@@ -115,16 +154,16 @@ Map<String, double> textIconSizeNormalize = {
   'Clear Night': 0.77,
   'Partly Cloudy': 0.8,
   'Clear Sky': 0.8,
-  'Overcast': 0.74,
+  'Overcast': 0.71,
   'Haze': 0.8,
   'Rain': 0.95,
   'Sleet': 1,
   'Drizzle': 1,
   'Thunderstorm': 1,
-  'Heavy Snow': 1,
+  'Heavy Snow': 0.93,
   'Fog': 0.8,
-  'Snow': 0.8,
-  'Heavy Rain': 0.95,
+  'Snow': 0.95,
+  'Heavy Rain': 0.93,
   'Cloudy Night' : 0.8,
 };
 
@@ -178,7 +217,6 @@ Map<int, String> weatherTextMap = {
   1279: 'Thunderstorm',
   1282: 'Thunderstorm',
 };
-
 
 Map<String, String> metNWeatherToText = {
   'clearsky_day': 'Clear Sky',

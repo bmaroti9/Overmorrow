@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2024>  <Balint Maroti>
+Copyright (C) <2025>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,11 +20,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 
 import 'aqi_page.dart';
 import 'decoders/decode_OM.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WavePainter extends CustomPainter {
   final double waveValue;
@@ -260,7 +260,7 @@ Widget NewAirQuality(var data, context) {
               Padding(
                 padding: const EdgeInsets.only(bottom: 0, left: 5),
                 child: comfortatext(
-                    translation('air quality', data.settings["Language"]),
+                    AppLocalizations.of(context)!.airQualityLowercase,
                     16,
                     data.settings,
                     color: data.current.onSurface),
@@ -338,7 +338,7 @@ Widget NewAirQuality(var data, context) {
   );
 }
 
-Widget NewRain15MinuteIndicator(var data) {
+Widget NewRain15MinuteIndicator(var data, context) {
   return Visibility(
     visible: data.minutely_15_precip.t_minus != "",
     child: Padding(
@@ -412,9 +412,9 @@ Widget NewRain15MinuteIndicator(var data) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  comfortatext(translation('now', data.settings["Language"]), 13, data.settings, color: data.current.onSurface),
-                  comfortatext('3${translation("hr", data.settings["Language"])}', 13, data.settings, color: data.current.onSurface),
-                  comfortatext('6${translation("hr", data.settings["Language"])}', 13, data.settings, color: data.current.onSurface)
+                  comfortatext(AppLocalizations.of(context)!.now, 13, data.settings, color: data.current.onSurface),
+                  comfortatext('3${AppLocalizations.of(context)!.hr}', 13, data.settings, color: data.current.onSurface),
+                  comfortatext('6${AppLocalizations.of(context)!.hr}', 13, data.settings, color: data.current.onSurface)
                 ],
               ),
             )

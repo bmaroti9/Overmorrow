@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2024>  <Balint Maroti>
+Copyright (C) <2025>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -222,64 +222,95 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
   final List<Color> used_colors = getNetworkColors([palette, BLACK, BLACK], settings);
 
   final List<Color> dominant = pali.colors.toList();
-  Color startcolor = used_colors[2];
+  Color startcolor = used_colors[0];
 
-  Color bestcolor = startcolor;
-  int bestDif = difFromBackColors(bestcolor, dominant);
+  Color bestcolor = startcolor; //start with surface as it's the intended color
+  double bestDif = difFromBackColors(bestcolor, dominant);
+  print(("dif1", bestDif));
 
-  int base = (diffBetweenBackColors(dominant) * 0.7).round();
-  //print(("base", base));
+  Color newcolor = Colors.amber;
+  double newdif = 0;
 
-  if (bestDif <= base + 120) {
-    for (int i = 1; i < 5; i++) {
-      //LIGHT
-      Color newcolor = lighten(startcolor, i / 4);
-      int newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < base + 200) {
-        bestDif = newdif;
+  if (bestDif < 2) {
+    //try if primaryLight color works better
+    newcolor = used_colors[2];
+    newdif = difFromBackColors(newcolor, dominant);
+    print(("dif2", newdif, newcolor));
+    if (newdif > 2) {
+      bestcolor = newcolor;
+    }
+    else {
+      //try if primary works better
+      newcolor = used_colors[1];
+      newdif = difFromBackColors(newcolor, dominant);
+      print(("dif3", newdif));
+      if (newdif > 2) {
         bestcolor = newcolor;
       }
+      else {
+        //loop through all brightnesses to see which works best
+        for (int i = 1; i < 5; i++) {
+          //LIGHT
+          newcolor = lighten(startcolor, i / 4);
+          newdif = difFromBackColors(newcolor, dominant);
+          if (newdif > bestDif) {
+            bestDif = newdif;
+            bestcolor = newcolor;
+          }
 
-      //DARK
-      newcolor = darken(startcolor, i / 4);
-      newdif = difFromBackColors(newcolor, dominant);
-      if (newdif > bestDif && newdif < base + 200) {
-        bestDif = newdif;
-        bestcolor = newcolor;
+          //DARK
+          newcolor = darken(startcolor, i / 4);
+          newdif = difFromBackColors(newcolor, dominant);
+          if (newdif > bestDif) {
+            bestDif = newdif;
+            bestcolor = newcolor;
+          }
+        }
       }
     }
   }
 
+  //this is to check if description contrast is good
   Color desc_color = used_colors[0];
-  int desc_dif = difFromBackColors(desc_color, dominant);
+  double desc_dif = difFromBackColors(desc_color, dominant);
 
   //print(("diffs", bestDif, desc_dif));
 
-  if (desc_dif < base + 100) {
+  if (desc_dif < 10) {
     desc_color = bestcolor;
   }
 
   return [[palette, bestcolor, desc_color], paliTotal.colors.toList()];
 }
 
-int difFromBackColors(Color frontColor, List<Color> backcolors) {
-  int smallest = 2000;
+double difFromBackColors(Color frontColor, List<Color> backcolors) {
+  double smallest = 2000;
   for (int i = 0; i < backcolors.length; i++) {
-    smallest = min(smallest, difBetweenTwoColors(frontColor, backcolors[i]));
+    smallest = min(smallest, contrastRatio(frontColor, backcolors[i]));
   }
   return smallest;
 }
 
-int diffBetweenBackColors(List<Color> backcolors) {
-  int diff_sum = 0;
-  for (int a = 0; a < backcolors.length; a ++) {
-    for (int b = 0; b < backcolors.length; b ++) {
-      if (a != b) {
-        diff_sum += difBetweenTwoColors(backcolors[a], backcolors[b]);
-      }
-    }
+double getRelativeLuminance(Color color) {
+  double linearize(int value) {
+    double v = value / 255.0;
+    return v <= 0.03928 ? v / 12.92 : pow((v + 0.055) / 1.055, 2.4).toDouble();
   }
-  return (diff_sum / max((backcolors.length * (backcolors.length - 1)), 1)).round();
+
+  return 0.2126 * linearize(color.red) +
+      0.7152 * linearize(color.green) +
+      0.0722 * linearize(color.blue);
+}
+
+double contrastRatio(Color color1, Color color2) {
+  double l1 = getRelativeLuminance(color1);
+  double l2 = getRelativeLuminance(color2);
+
+  double lighter = l1 > l2 ? l1 : l2;
+  double darker = l1 > l2 ? l2 : l1;
+
+  //print(("contrast:", color1, color2, (lighter + 0.05) / (darker + 0.05)));
+  return (lighter + 0.05) / (darker + 0.05);
 }
 
 int difBetweenTwoColors(Color color1, Color color2) {
@@ -287,22 +318,6 @@ int difBetweenTwoColors(Color color1, Color color2) {
   int g = (color1.green - color2.green).abs();
   int b = (color1.blue - color2.blue).abs();
   return r + g + b;
-}
-
-Color averageColor(List<Color> colors) {
-  if (colors.length > 0) {
-    int r = 0;
-    int g = 0;
-    int b = 0;
-    for (int i = 0; i < colors.length; i++) {
-      r += colors[i].red; g += colors[i].green; b += colors[i].blue;
-    }
-    r = r ~/ colors.length;
-    g = g ~/ colors.length;
-    b = b ~/ colors.length;
-    return Color.fromARGB(255, r, g, b);
-  }
-  return Colors.grey;
 }
 
 Color BackColorCorrection(String text) {
@@ -438,20 +453,20 @@ class WeatherData {
     required this.minutely_15_precip,
   });
 
-  static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider) async {
+  static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider, localizations) async {
 
     List<String> split = latlong.split(",");
     double lat = double.parse(split[0]);
     double lng = double.parse(split[1]);
 
     if (provider == 'weatherapi.com') {
-      return WapiGetWeatherData(lat, lng, real_loc, settings, placeName);
+      return WapiGetWeatherData(lat, lng, real_loc, settings, placeName, localizations);
     }
     else if (provider == "met norway"){
-      return MetNGetWeatherData(lat, lng, real_loc, settings, placeName);
+      return MetNGetWeatherData(lat, lng, real_loc, settings, placeName, localizations);
     }
     else {
-      return OMGetWeatherData(lat, lng, real_loc, settings, placeName);
+      return OMGetWeatherData(lat, lng, real_loc, settings, placeName, localizations);
     }
   }
 }

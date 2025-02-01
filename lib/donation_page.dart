@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2024>  <Balint Maroti>
+Copyright (C) <2025>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -71,7 +71,7 @@ class _DonationPageState extends State<DonationPage> {
                   goBack();
                 }),
             title: comfortatext(
-                translation('Donate', settings!["Language"]!), 30, settings,
+                AppLocalizations.of(context)!.donate, 30, settings,
                 color: surface),
             backgroundColor: primary,
             pinned: false,
@@ -84,8 +84,8 @@ class _DonationPageState extends State<DonationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      comfortatext(translation("Overmorrow donate text", settings["Language"])
-                         , 18, settings, color: onSurface),
+                      comfortatext(AppLocalizations.of(context)!.donationPageText,
+                         18, settings, color: onSurface),
 
                       Padding(
                         padding: const EdgeInsets.only(top: 40),
@@ -100,7 +100,7 @@ class _DonationPageState extends State<DonationPage> {
                           onPressed: () async {
                             await _launchUrl('https://www.patreon.com/MarotiDevel');
                           },
-                          child: comfortatext(translation('Support on Patreon', settings["Language"]),
+                          child: comfortatext(AppLocalizations.of(context)!.supportOnPatreon,
                               18, settings, color: surface, weight: FontWeight.w600),
                         ),
                       ),
@@ -159,7 +159,7 @@ class _InfoPageState extends State<InfoPage> {
                   goBack();
                 }),
             title: comfortatext(
-                translation('About', settings!["Language"]!), 30, settings,
+                AppLocalizations.of(context)!.about, 30, settings,
                 color: surface),
             backgroundColor: primary,
             pinned: false,
@@ -177,7 +177,7 @@ class _InfoPageState extends State<InfoPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 30, bottom: 10),
                       child: comfortatext(
-                          translation("developed by:", settings["Language"]), 16,
+                          AppLocalizations.of(context)!.developedBy, 16,
                           settings,
                           color: onSurface),
                     ),
@@ -200,7 +200,7 @@ class _InfoPageState extends State<InfoPage> {
                               HapticFeedback.selectionClick();
                               _launchUrl("https://github.com/bmaroti9/Overmorrow");
                             },
-                            child: comfortatext(translation("source code", settings["Language"]), 16, settings, color: primary,
+                            child: comfortatext(AppLocalizations.of(context)!.sourceCode, 16, settings, color: primary,
                                 decoration: TextDecoration.underline),
                           ),
                           GestureDetector(
@@ -208,7 +208,7 @@ class _InfoPageState extends State<InfoPage> {
                               HapticFeedback.selectionClick();
                               _launchUrl("https://github.com/bmaroti9/Overmorrow/issues");
                             },
-                            child: comfortatext(translation("report an issue", settings["Language"]), 16, settings, color: primary,
+                            child: comfortatext(AppLocalizations.of(context)!.reportAnIssue, 16, settings, color: primary,
                                 decoration: TextDecoration.underline),
                           ),
                         ],
@@ -217,12 +217,12 @@ class _InfoPageState extends State<InfoPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 50, bottom: 10),
                       child: comfortatext(
-                          translation("weather data:", settings["Language"]), 16,
+                          AppLocalizations.of(context)!.weatherData, 16,
                           settings,
                           color: onSurface),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 20),
+                      padding: const EdgeInsets.only(left: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -256,12 +256,12 @@ class _InfoPageState extends State<InfoPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 30, bottom: 10),
                       child: comfortatext(
-                          "${translation("radar", settings["Language"])}:", 16,
+                          "${AppLocalizations.of(context)!.radar}:", 16,
                           settings,
                           color: onSurface),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 20),
+                      padding: const EdgeInsets.only(left: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -285,11 +285,11 @@ class _InfoPageState extends State<InfoPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 50),
+                      padding: const EdgeInsets.only(top: 50),
                       child: Wrap(
                         spacing: 10,
                         children: [
-                          comfortatext(translation("all images used are from:", settings["Language"]), 16, settings, color: onSurface),
+                          comfortatext(AppLocalizations.of(context)!.allImagesUsedAreFrom, 16, settings, color: onSurface),
                           GestureDetector(
                             onTap: () {
                               HapticFeedback.selectionClick();

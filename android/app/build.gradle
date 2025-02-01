@@ -12,7 +12,6 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
     flutterVersionCode = '1'
@@ -64,8 +63,8 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 44
-        versionName "2.4.4"
+        versionCode 45
+        versionName "2.4.5"
     }
 
     buildTypes {

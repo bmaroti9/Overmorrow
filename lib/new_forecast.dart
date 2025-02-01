@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2024>  <Balint Maroti>
+Copyright (C) <2025>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:overmorrow/settings_page.dart';
 import 'ui_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0, iconSize = 21.0}) {
   return Row(
@@ -35,7 +35,7 @@ Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 5, top: 3),
+            padding: const EdgeInsets.only(left: 4, top: 3),
             child: comfortatext(number.toString(), 18, data.settings,
                 color: data.current.primary),
           ),
@@ -214,8 +214,15 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
                         return state ? data.current.containerLow : data.current.surface;
                       }),
                       side: BorderSide(color: data.current.primaryLighter, width: 1.5),
+                      //translation(['temp', 'precip', 'wind', 'uv'][index], data.settings["Language"])
                       label: comfortatext(
-                          translation(['temp', 'precip', 'wind', 'uv'][index], data.settings["Language"]), 14, data.settings,
+                          [
+                            AppLocalizations.of(context)!.temp,
+                            AppLocalizations.of(context)!.precipLowercase,
+                            AppLocalizations.of(context)!.windLowercase,
+                            AppLocalizations.of(context)!.uvLowercase,
+                          ][index],
+                          14, data.settings,
                           color: _value == index ? data.current.onPrimaryLight : data.current.onSurface),
                       selected: _value == index,
                       onSelected: (bool selected) {

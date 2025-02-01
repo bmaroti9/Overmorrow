@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2024>  <Balint Maroti>
+Copyright (C) <2025>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,9 +25,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:overmorrow/settings_page.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'api_key.dart';
 import 'caching.dart';
@@ -179,33 +181,18 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
 
     final dif = widget.time.difference(widget.data.fetch_datetime).inMinutes;
 
-    String text = translation('updated, just now', widget.data.settings["Language"]);
+    String text = AppLocalizations.of(context)!.updatedJustNow;
 
     if (dif > 0 && dif < 45) {
-      text = translation('updated, x min ago', widget.data.settings["Language"]);
-      text = text.replaceAll('x', dif.toString());
+      text = AppLocalizations.of(context)!.updatedXMinutesAgo(dif);
     }
     else if (dif >= 45 && dif < 1440) {
       int hour = (dif + 30) ~/ 60;
-      if (hour == 1) {
-        text = "updated, x hour ago";
-      }
-      else {
-        text = "updated, x hours ago";
-      }
-
-      text = text.replaceAll('x', hour.toString());
+      text = AppLocalizations.of(context)!.updatedXHoursAgo(hour);
     }
     else if (dif >= 1440) { //number of minutes in a day
       int day = (dif + 720) ~/ 1440;
-      if (day == 1) {
-        text = "updated, x day ago";
-      }
-      else {
-        text = "updated, x days ago";
-      }
-
-      text = text.replaceAll('x', day.toString());
+      text = AppLocalizations.of(context)!.updatedXDaysAgo(day);
     }
 
     List<String> split = text.split(',');
@@ -273,11 +260,11 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
               ),
               if (!widget.data.isonline) Padding(
                 padding: const EdgeInsets.only(right: 7),
-                child: comfortatext(translation("offline", widget.data.settings["Language"]), 13, widget.data.settings,
+                child: comfortatext(AppLocalizations.of(context)!.offline, 13, widget.data.settings,
                     color: highlight, weight: FontWeight.w600),
               ),
               if (widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 3),
+                padding: const EdgeInsets.only(right: 3, bottom: 2),
                 child: Icon(Icons.access_time, color: highlight, size: 13,),
               ),
               comfortatext('${widget.split[0]},', 13, widget.data.settings,
@@ -291,7 +278,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
         ),
       );
     } else{
-      List<String> split = translation("photo by x on Unsplash", widget.data.settings["Language"]).split(",");
+      List<String> split = AppLocalizations.of(context)!.photoByXOnUnsplash.split(",");
       return SizedBox(
         height: 21,
         child: Padding(
@@ -305,7 +292,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
               ),
               if (!widget.data.isonline) Padding(
                 padding: const EdgeInsets.only(right: 7),
-                child: comfortatext(translation("offline", widget.data.settings["Language"]), 13, widget.data.settings,
+                child: comfortatext(AppLocalizations.of(context)!.offline, 13, widget.data.settings,
                     color: highlight, weight: FontWeight.w600),
               ),
               TextButton(
@@ -674,7 +661,7 @@ Future<List<String>> getOMReccomend(String query, settings) async {
   var params = {
     'name': query,
     'count': '4',
-    'language': translation('Search translation', settings["Language"]),
+    'language': 'en',
   };
 
   var url = Uri.http('geocoding-api.open-meteo.com', 'v1/search', params);

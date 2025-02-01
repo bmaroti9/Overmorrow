@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2024>  <Balint Maroti>
+Copyright (C) <2025>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,16 +23,30 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/donation_page.dart';
 import 'package:overmorrow/settings_screens.dart';
+import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'decoders/extra_info.dart';
-import 'languages.dart';
 import 'main.dart';
 import 'ui_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Map<String, List<String>> settingSwitches = {
   'Language' : [
-    'English', 'Español', 'Français', 'Deutsch', 'Italiano',
-    'Português', 'Русский', 'Magyar', 'Polski', 'Ελληνικά', '简体中文', '日本語',
+    'English', //English
+    'Español', //Spanish
+    'Français', //French
+    'Deutsch', //German
+    'Italiano', //Italian
+    'Português', //Portuguese
+    'Русский', //Russian
+    'Magyar', //Hungarian
+    'Polski', //Polish
+    'Ελληνικά', //Greek
+    '简体中文', //Chinese
+    '日本語', //Japanese
+    'українська', //Ukrainian
+    'türkçe', //Turkish
+    'தமிழ்', //Tamil
   ],
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
@@ -54,12 +68,6 @@ Map<String, List<String>> settingSwitches = {
   'Layout order' : ["sunstatus,rain indicator,air quality,radar,forecast,daily"],
 };
 
-String translation(String text, String language) {
-  int index = languageIndex[language] ?? 0;
-  String translated = mainTranslate[text]![index];
-  return translated;
-}
-
 List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
 
   String x = force == "-1" ? settings["Color mode"] : force;
@@ -67,7 +75,6 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
     var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
     x = brightness == Brightness.dark ? "dark" : "light";
   }
-
 
   //surface
   //primary
@@ -378,27 +385,27 @@ Future<Map<String, String>> getSettingsUsed() async {
   return settings;
 }
 
-Future<String> isLocationSafe() async {
+Future<String> isLocationSafe(translationProv) async {
   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    return "location services are disabled.";
+    return translationProv.locationServicesAreDisabled;
   }
 
   LocationPermission permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      return "location permission is denied";
+      return translationProv.locationPermissionIsDenied;
     }
   }
   if (permission == LocationPermission.deniedForever) {
-    return "location permission denied forever";
+    return translationProv.locationPermissionDeniedForever;
   }
   if (permission == LocationPermission.whileInUse ||
       permission == LocationPermission.always) {
     return "enabled";
   }
-  return "failed to access gps";
+  return translationProv.failedToAccessGps;
 }
 
 Future<List<String>> getLastPlace() async {
@@ -420,14 +427,21 @@ Future<String> getWeatherProvider() async {
   return used;
 }
 
+Future<String> getLanguageUsed() async {
+  final prefs = await SharedPreferences.getInstance();
+  final used = prefs.getString('settingLanguage') ?? 'English';
+  return used;
+}
+
 SetData(String name, String to) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString(name, to);
 }
 
 Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, settings, textcolor,
-    Color primary) {
-  List<String> Items = settingSwitches[name] ?? ['˚C', '˚F'];
+    Color primary, rawName) {
+  List<String> Items = settingSwitches[rawName] ?? ['˚C', '˚F'];
+
   return DropdownButton(
     elevation: 0,
     underline: Container(),
@@ -451,15 +465,15 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
     }).toList(),
     onChanged: (Object? value) {
       HapticFeedback.lightImpact();
-      settings[name] = value;
-      updatePage(name, value);
+      settings[rawName] = value;
+      updatePage(rawName, value);
     }
   );
 }
 
-Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primaryLight, primary) {
+Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primaryLight, primary, rawText) {
   return Padding(
-    padding: const EdgeInsets.only(top: 3, bottom: 3, left: 25, right: 25),
+    padding: const EdgeInsets.only(top: 3, bottom: 3, left: 35, right: 35),
     child: Row(
       children: [
         Padding(
@@ -469,7 +483,7 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
         Expanded(
           flex: 10,
           child: comfortatext(
-            translation(text, settings["Language"]!),
+            text,
             19,
             settings,
             color: textcolor,
@@ -477,7 +491,7 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
         ),
         const Spacer(),
         dropdown(
-            highlight, text, updatePage, settings[text]!, settings, textcolor, primaryLight
+            highlight, text, updatePage, settings[rawText]!, settings, textcolor, primaryLight, rawText
         ),
       ],
     ),
@@ -503,23 +517,21 @@ class _SettingsPageState extends State<SettingsPage> {
   final back;
   final image;
 
+  String _locale = 'English';
+
   _SettingsPageState({required this.primary, required this.back, required this.image});
 
   void updatePage(String name, String to) {
     setState(() {
       //selected_temp_unit = newSelect;
       SetData('setting$name', to);
+      if (name == "Language") {
+        _locale = to;
+      }
     });
   }
   void goBack() {
     Navigator.of(context).pop();
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) {
-          return const MyApp();
-        },
-      ),
-    );
   }
 
   @override
@@ -536,38 +548,55 @@ class _SettingsPageState extends State<SettingsPage> {
             child: ErrorWidget(snapshot.error as Object),
           );
         }
-        return SettingsMain(primary, snapshot.data?[0], updatePage, goBack, back, image, context,
-            snapshot.data?[1][0], snapshot.data?[1][1]);
+        _locale = snapshot.data?[0]["Language"];
+        print(("locale", _locale));
+        return Localizations.override(
+          context: context,
+          locale: languageNameToLocale[_locale] ?? const Locale('en'),
+          child: SettingsMain(settings: snapshot.data?[0], updatePage: updatePage, goBack: goBack, image: image,
+              colors: snapshot.data?[1][0], allColors: snapshot.data?[1][1]),
+        );
       },
     );
   }
 }
 
-Widget SettingsMain(Color primary, Map<String, String>? settings, Function updatePage,
-    Function goBack, Color back, Image image, context, colors, allColors) {
 
-  return  Material(
-    color: colors[0],
-    child: CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar.large(
-          leading:
-          IconButton(icon: Icon(Icons.arrow_back, color: colors[0],),
-            onPressed: () {
-            HapticFeedback.selectionClick();
-            goBack();
-          }),
-          title: comfortatext(translation('Settings', settings!["Language"]!), 30, settings, color: colors[0]),
-          backgroundColor: colors[1],
-          pinned: false,
-        ),
-        // Just some content big enough to have something to scroll.
-        SliverToBoxAdapter(
-          child: NewSettings(settings, updatePage, image, colors, allColors, context),
-        ),
-      ],
-    ),
-  );
+class SettingsMain extends StatelessWidget {
+  final colors;
+  final goBack;
+  final settings;
+  final updatePage;
+  final image;
+  final allColors;
+
+  const SettingsMain({super.key, this.settings, this.updatePage, this.goBack, this.image, this.colors, this.allColors});
+
+  @override
+  Widget build(BuildContext context) {
+    return  Material(
+      color: colors[0],
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            leading:
+            IconButton(icon: Icon(Icons.arrow_back, color: colors[1],),
+                onPressed: () {
+                  HapticFeedback.selectionClick();
+                  goBack();
+                }),
+            title: comfortatext(AppLocalizations.of(context)!.settings, 30, settings, color: colors[1]),
+            backgroundColor: colors[0],
+            pinned: false,
+          ),
+          // Just some content big enough to have something to scroll.
+          SliverToBoxAdapter(
+            child: NewSettings(settings!, updatePage, image, colors, allColors, context),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class MyDrawer extends StatelessWidget {
@@ -598,13 +627,13 @@ class MyDrawer extends StatelessWidget {
           Container(
             height: 240,
             decoration: BoxDecoration(
-              color: primary,
+              color: hihglight,
             ),
             child: Align(
               alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: comfortatext('OVRMRW', 40, settings, color: surface, weight: FontWeight.w300),
+                  child: comfortatext('OVRMRW', 40, settings, color: primary, weight: FontWeight.w400),
                 )
             ),
           ),
@@ -612,20 +641,33 @@ class MyDrawer extends StatelessWidget {
             height: 15,
           ),
           ListTile(
-            title: comfortatext(translation('Settings', settings["Language"]), 24,
+            title: comfortatext(AppLocalizations.of(context)!.settings, 24,
                 settings, color: onSurface),
             leading: Icon(Icons.settings_outlined, color: primary, size: 24,),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SettingsPage(primary: backupprimary,
-                    back: backupback, image: image,)),
-              );
+                MaterialPageRoute(
+                  builder: (context) => SettingsPage(
+                    primary: backupprimary,
+                    back: backupback,
+                    image: image,
+                  ),
+                ),
+              ).then((value) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const MyApp();
+                    },
+                  ),
+                );
+              });
             },
           ),
           ListTile(
-            title: comfortatext(translation('About', settings["Language"]), 24,
+            title: comfortatext(AppLocalizations.of(context)!.about, 24,
                 settings, color: onSurface),
             leading: Icon(Icons.info_outline, color: primary,),
             onTap: () {
@@ -638,7 +680,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: comfortatext(translation('Donate', settings["Language"]), 24,
+            title: comfortatext(AppLocalizations.of(context)!.donate, 24,
                 settings, color: onSurface),
             leading: Icon(Icons.favorite_outline_sharp, color: primary,),
             onTap: () {
