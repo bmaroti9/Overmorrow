@@ -2,9 +2,9 @@
   "@@locale": "hu",
   "feelsLike": "Hőérzet",
   "@feelsLike": {},
-  "precipCapital": "Csapad.",
+  "precipCapital": "Csapadék.",
   "@precipCapital": {},
-  "humidity": "Páratart.",
+  "humidity": "Páratartalom",
   "@humidity": {},
   "windCapital": "Szél",
   "@windCapital": {},
@@ -223,5 +223,60 @@
     "description": "rain in the next half an hour"
   },
   "airQualityLowercase": "légszennyezettség",
-  "@airQualityLowercase": {}
+  "@airQualityLowercase": {},
+  "extremelyClear": "extrém tiszta",
+  "@extremelyClear": {},
+  "veryClear": "Teljesen tiszta",
+  "@veryClear": {},
+  "clear": "tiszta",
+  "@clear": {},
+  "veryHazy": "nagyon ködös",
+  "@veryHazy": {},
+  "extremelyHazy": "extrém ködös",
+  "@extremelyHazy": {},
+  "slightlyHazy": "kissé ködös",
+  "@slightlyHazy": {},
+  "hazy": "ködös",
+  "@hazy": {},
+  "poweredByOpenMeteo": "Meghajtja: open-meteo",
+  "@poweredByOpenMeteo": {
+    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+  },
+  "rainInMinutes": "eső a következő {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInHours": "eső a következő {hours, plural, =1 {hour} other {{hours} hours}}",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInMinutes": "eső várható a következő {minutes, plural, =1 {minute} other {{minutes} minutes}}percben",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXMinutesAgo": "Frissítve: {minutes}percel ezelőtt",
+  "@updatedXMinutesAgo": {},
+  "rainInOneHour": "eső a következő órában",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  },
+  "rainExpectedInOneHour": "eső várható a következő órában",
+  "@rainExpectedInOneHour": {
+    "description": "rain expected in the next hour"
+  }
 }
