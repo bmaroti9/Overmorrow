@@ -213,5 +213,47 @@
   "unitedStatesAqi": "aqi des états-unis",
   "@unitedStatesAqi": {},
   "offline": "hors ligne",
-  "@offline": {}
+  "@offline": {},
+  "updatedXMinutesAgo": "actualisé, il y a {minutes} min",
+  "@updatedXMinutesAgo": {},
+  "rainInOneHour": "pluie dans la prochaine heure",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  },
+  "precipitaion": "Précipitation",
+  "@precipitaion": {},
+  "veryClear": "très clair",
+  "@veryClear": {},
+  "rainInHalfHour": "pluie dans la prochaine demi-heure",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "extremelyClear": "extrêmement clair",
+  "@extremelyClear": {},
+  "clear": "clair",
+  "@clear": {},
+  "rainExpectedInOneHour": "pluie attendue dans une heure",
+  "@rainExpectedInOneHour": {
+    "description": "rain expected in the next hour"
+  },
+  "rainExpectedInMinutes": "pluie attendue dans {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInHours": "pluie attendue dans {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "airQualityLowercase": "qualité de l'air",
+  "@airQualityLowercase": {}
 }
