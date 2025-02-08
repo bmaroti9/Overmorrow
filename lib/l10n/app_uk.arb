@@ -252,5 +252,59 @@
     "description": "rain expected in the next hour"
   },
   "updatedXMinutesAgo": "Оновлено, {minutes} хв тому",
-  "@updatedXMinutesAgo": {}
+  "@updatedXMinutesAgo": {},
+  "rainInMinutes": "Дощ в наступні {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInHours": "Дощ в наступні {hours, plural, =1 {hour} other {{hours} hours}}",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInHours": "Дощ очікується через {hours, plural, =1 {hour} other {{hours} hours}}",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInMinutes": "Дощ очікується через {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXHoursAgo": "Оновлено, {hours, plural, =1 {1 hour} other {{hours} hours}} тому",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "Оновлено, {days, plural, =1 {1 day} other {{days} days}} тому",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  }
 }
