@@ -245,7 +245,7 @@
       }
     }
   },
-  "rainExpectedInHours": "pluie attendue dans {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "rainExpectedInHours": "pluie attendue dans {hours, plural, =1 {hours} other {{hours} minutes}}",
   "@rainExpectedInHours": {
     "description": "rain expected in the next X hours",
     "placeholders": {

@@ -205,7 +205,9 @@
   "dateFormat": "Date format",
   "@dateFormat": {},
   "d": "d",
-  "@d": {},
+  "@d": {
+    "description": "short for day"
+  },
   "aerosolOpticalDepth": "aerosol optical depth",
   "@aerosolOpticalDepth": {},
   "dust": "dust",
