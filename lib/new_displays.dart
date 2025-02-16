@@ -338,6 +338,47 @@ Widget NewAirQuality(var data, context) {
   );
 }
 
+Widget AlertWidget(var data, context) {
+  if (data.alerts.length > 0) {
+    return Padding(
+        padding: const EdgeInsets.only(
+            left: 21, right: 21, bottom: 33, top: 13),
+        child: Column(
+          children: List.generate(data.alerts.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: data.current.containerLow,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.warning_amber_rounded,
+                          color: data.current.primary,),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, top: 3),
+                          child: comfortatext(data.alerts[index].event, 20,
+                              data.settings, color: data.current.primary,
+                              weight: FontWeight.w600),
+                        )
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
+            );
+          }),
+        )
+    );
+  }
+  return Container();
+}
+
 Widget NewRain15MinuteIndicator(var data, context) {
   return Visibility(
     visible: data.minutely_15_precip.t_minus != "",

@@ -432,6 +432,7 @@ class WeatherData {
   final sunstatus;
   final radar;
   final minutely_15_precip;
+  final alerts;
 
   WeatherData({
     required this.place,
@@ -451,6 +452,7 @@ class WeatherData {
     required this.localtime,
 
     required this.minutely_15_precip,
+    required this.alerts,
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider, localizations) async {

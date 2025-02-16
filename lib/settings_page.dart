@@ -68,7 +68,7 @@ Map<String, List<String>> settingSwitches = {
   'Search provider' : ['weatherapi', 'open-meteo'],
   'networkImageDialogShown' : ["false", "true"],
 
-  'Layout order' : ["sunstatus,rain indicator,air quality,radar,forecast,daily"],
+  'Layout order' : ["sunstatus,rain indicator,alerts,air quality,radar,forecast,daily"],
 };
 
 List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {

@@ -747,7 +747,7 @@ class _LayoutPageState extends State<LayoutPage> {
   late List<String> _items;
 
   //also the default order
-  static const allNames = ["sunstatus", "rain indicator", "air quality", "radar", "forecast", "daily"];
+  static const allNames = ["sunstatus", "rain indicator", "alerts", "air quality", "radar", "forecast", "daily"];
 
   List<String> removed = [];
 

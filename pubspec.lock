@@ -257,10 +257,10 @@ packages:
     dependency: transitive
     description:
       name: geolocator_apple
-      sha256: "6154ea2682563f69fc0125762ed7e91e7ed85d0b9776595653be33918e064807"
+      sha256: c4ecead17985ede9634f21500072edfcb3dba0ef7b97f8d7bc556d2d722b3ba3
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.8+1"
+    version: "2.3.9"
   geolocator_platform_interface:
     dependency: transitive
     description:
@@ -293,14 +293,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.0"
-  handy_window:
-    dependency: "direct main"
-    description:
-      name: handy_window
-      sha256: "458a9f7d4ae23816e8f33c76596f943a04e7eff13d864e0867f3b40f1647d63d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.1"
   http:
     dependency: "direct main"
     description:
@@ -342,7 +334,7 @@ packages:
     source: hosted
     version: "4.9.0"
   latlong2:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: latlong2
       sha256: "98227922caf49e6056f91b6c56945ea1c7b166f28ffcd5fb8e72fc0b453cc8fe"
@@ -457,10 +449,10 @@ packages:
     dependency: "direct main"
     description:
       name: palette_generator
-      sha256: "0b20245c451f14a5ca0818ab7a377765162389f8e8f0db361cceabf0fed9d1ea"
+      sha256: "5a96b78983752faeb94866b30cb8f52e94ef176722bf51d1c5541d6a3044368f"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.3+5"
+    version: "0.3.3+6"
   path:
     dependency: transitive
     description:
@@ -842,14 +834,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
-  worldtime:
-    dependency: "direct main"
-    description:
-      name: worldtime
-      sha256: "942d2e2bc09342b4c6e6c25027ba33dcec5e456a78bcec19809e8ccc136f83a8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.3.0"
   xdg_directories:
     dependency: transitive
     description:
@@ -875,5 +859,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.4.0 <3.7.0"
+  dart: ">=3.4.0 <4.0.0"
   flutter: ">=3.22.0"

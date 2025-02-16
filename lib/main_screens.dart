@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/new_forecast.dart';
@@ -131,6 +132,7 @@ class _NewMainState extends State<NewMain> {
     final Map<String, Widget> widgetsMap = {
       'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), size: size,),
       'rain indicator': NewRain15MinuteIndicator(data, context),
+      'alerts' : AlertWidget(data, context),
       'air quality': NewAirQuality(data, context),
       'radar': RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
       'forecast': buildNewDays(data),

@@ -44,7 +44,7 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
     'q': latlong,
     'days': '3',
     'aqi': 'yes',
-    'alerts': 'no',
+    'alerts': 'yes',
   };
   final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
 
@@ -70,6 +70,15 @@ int wapiGetWindDir(var data) {
     total += x;
   }
   return (total / data.length).round();
+}
+
+List<WapiAlert> getWapiAlerts(var data) {
+  final List<WapiAlert> alerts = [];
+  final alertList = data["alerts"]["alert"];
+  for (int i = 0; i < alertList.length; i++) {
+    alerts.add(WapiAlert.fromJson(alertList[i]));
+  }
+  return alerts;
 }
 
 String amPmTime(String time) {
@@ -137,10 +146,26 @@ double getSunStatus(String sunrise, String sunset, DateTime localtime, {by = " "
 
 
 Future<DateTime> WapiGetLocalTime(lat, lng) async {
+  /*
   return await XWorldTime.timeByLocation(
     latitude: lat,
     longitude: lng,
   );
+   */
+
+  final params = {
+    'key': timezonedbKey,
+    'lat': lat.toString(),
+    'lng': lng.toString(),
+    'format': 'json',
+    'by': 'position'
+  };
+  final url = Uri.http('api.timezonedb.com', 'v2.1/get-time-zone', params);
+  var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng timezonedb.com");
+  var response = await file[0].readAsString();
+  var body = jsonDecode(response);
+  
+  return DateTime.parse(body["formatted"]);
 }
 
 double unit_coversion(double value, String unit) {
@@ -615,8 +640,34 @@ class WapiAqi {
   );
 }
 
+class WapiAlert {
+  final String headline;
+  final String start;
+  final String end;
+  final String desc;
+  final String event;
 
-class Wapi15MinutePrecip { //weatherapi doesn't actaully have 15 minute forecast, but i figured i could just use the
+  const WapiAlert({
+    required this.headline,
+    required this.start,
+    required this.end,
+    required this.desc,
+    required this.event,
+  });
+
+  static WapiAlert fromJson(item) {
+
+    return WapiAlert(
+      headline: item["headline"] ?? "No Headline",
+      start: item["effective"] ?? "No Start",
+      end: item["expires"] ?? "No End",
+      event: item["event"] ?? "No Event",
+      desc: item["desc"] ?? "No Desc",
+    );
+  }
+}
+
+class Wapi15MinutePrecip { //weatherapi doesn't actaully have 15 minute forecast(well it does but it's paid), but i figured i could just use the
                           //hourly data and just use some smoothing between the hours to emulate the 15 minutes
                           //still better than not having it
   final String t_minus;
@@ -784,6 +835,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName, 
     localtime: "${localtime.hour}:${localtime.minute}",
 
     minutely_15_precip: Wapi15MinutePrecip.fromJson(wapi_body, settings, 0, start, localizations),
+    alerts: getWapiAlerts(wapi_body),
 
     isonline: isonline
   );

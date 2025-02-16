@@ -1019,6 +1019,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
     minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings,
         DateTime(localtime.year, localtime.month, localtime.day, localtime.hour, localtime.minute).
         difference(lastKnowTime).inMinutes, localizations),
+    alerts: [],
 
     current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng,
         start, dayDif, localizations),

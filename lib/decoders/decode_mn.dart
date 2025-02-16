@@ -24,6 +24,7 @@ import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../api_key.dart';
 import '../caching.dart';
 import '../settings_page.dart';
 import '../ui_helper.dart';
@@ -158,10 +159,25 @@ String metN24HourTime(String date, int hourDif) {
 }
 
 Future<DateTime> MetNGetLocalTime(lat, lng) async {
+  /*
   return await XWorldTime.timeByLocation(
     latitude: lat,
     longitude: lng,
   );
+   */
+  final params = {
+    'key': timezonedbKey,
+    'lat': lat.toString(),
+    'lng': lng.toString(),
+    'format': 'json',
+    'by': 'position'
+  };
+  final url = Uri.http('api.timezonedb.com', 'v2.1/get-time-zone', params);
+  var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng timezonedb.com");
+  var response = await file[0].readAsString();
+  var body = jsonDecode(response);
+
+  return DateTime.parse(body["formatted"]);
 }
 
 Future<List<dynamic>> MetNMakeRequest(double lat, double lng, String real_loc) async {
@@ -726,6 +742,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
     radar: await RainviewerRadar.getData(),
     aqi: await OMAqi.fromJson(lat, lng, settings, localizations),
     sunstatus: sunstatus,
+    alerts: [],
     minutely_15_precip: MetN15MinutePrecip.fromJson(MnBody, settings, localizations),
 
     current: await MetNCurrent.fromJson(MnBody, settings, real_loc, lat, lng, localizations),
