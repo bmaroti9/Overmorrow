@@ -348,26 +348,42 @@ Widget AlertWidget(var data, context) {
             return Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 4),
               child: Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.only(left: 25, top: 20, bottom: 20),
                 decoration: BoxDecoration(
                   color: data.current.containerLow,
                   borderRadius: BorderRadius.circular(18),
                 ),
-                child: Column(
+                child: Row(
                   children: [
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.warning_amber_rounded,
-                          color: data.current.primary,),
+                        Row(
+                          children: [
+                            Icon(Icons.warning_amber_rounded,
+                              color: data.current.primary, size: 21,),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 7, top: 3),
+                              child: comfortatext(data.alerts[index].event, 20,
+                                  data.settings, color: data.current.primary,
+                                  weight: FontWeight.w600),
+                            )
+                          ],
+                        ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 10, top: 3),
-                          child: comfortatext(data.alerts[index].event, 20,
-                              data.settings, color: data.current.primary,
-                              weight: FontWeight.w600),
+                          padding: const EdgeInsets.only(top: 7),
+                          child: comfortatext("${data.alerts[index].start} - ${data.alerts[index].end}", 15, data.settings,
+                          color: data.current.outline),
                         )
                       ],
                     ),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () {
 
+                      },
+                      icon: Icon(Icons.keyboard_arrow_right, color: data.current.primary,),
+                    )
                   ],
                 ),
               ),
@@ -424,9 +440,9 @@ Widget NewRain15MinuteIndicator(var data, context) {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 14, bottom: 8),
+              padding: const EdgeInsets.only(top: 14, bottom: 10),
               child: SizedBox(
-                height: 30,
+                height: 28,
                 child: ListView.builder(
                   itemExtent: 11,
                   scrollDirection: Axis.horizontal,

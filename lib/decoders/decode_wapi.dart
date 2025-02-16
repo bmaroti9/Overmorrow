@@ -72,11 +72,11 @@ int wapiGetWindDir(var data) {
   return (total / data.length).round();
 }
 
-List<WapiAlert> getWapiAlerts(var data) {
+List<WapiAlert> getWapiAlerts(var data, localizations) {
   final List<WapiAlert> alerts = [];
   final alertList = data["alerts"]["alert"];
   for (int i = 0; i < alertList.length; i++) {
-    alerts.add(WapiAlert.fromJson(alertList[i]));
+    alerts.add(WapiAlert.fromJson(alertList[i], localizations));
   }
   return alerts;
 }
@@ -655,12 +655,24 @@ class WapiAlert {
     required this.event,
   });
 
-  static WapiAlert fromJson(item) {
+  static WapiAlert fromJson(item, localizations) {
+    final DateTime start = DateTime.parse(item["effective"]);
+    final DateTime end = DateTime.parse(item["expires"]);
+
+    List<String> weeks = [
+      localizations.mon,
+      localizations.tue,
+      localizations.wed,
+      localizations.thu,
+      localizations.fri,
+      localizations.sat,
+      localizations.sun
+    ];
 
     return WapiAlert(
       headline: item["headline"] ?? "No Headline",
-      start: item["effective"] ?? "No Start",
-      end: item["expires"] ?? "No End",
+      start: "${weeks[start.weekday - 1]} ${amPmTime("${start.hour}:${start.minute} j")}",
+      end: "${weeks[end.weekday - 1]} ${amPmTime("${end.hour}:${end.minute} j")}",
       event: item["event"] ?? "No Event",
       desc: item["desc"] ?? "No Desc",
     );
@@ -835,7 +847,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName, 
     localtime: "${localtime.hour}:${localtime.minute}",
 
     minutely_15_precip: Wapi15MinutePrecip.fromJson(wapi_body, settings, 0, start, localizations),
-    alerts: getWapiAlerts(wapi_body),
+    alerts: getWapiAlerts(wapi_body, localizations),
 
     isonline: isonline
   );
