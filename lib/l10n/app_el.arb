@@ -213,5 +213,55 @@
   "unitedStatesAqi": "aqi ηπα",
   "@unitedStatesAqi": {},
   "offline": "εκτός σύνδεσης",
-  "@offline": {}
+  "@offline": {},
+  "rainInHalfHour": "βροχή στο επόμενο μισάωρο",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "rainInMinutes": "Βροχή στα επόμενα {minutes, plural, =1 {minute} other {{minutes} λεπτά}}",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInOneHour": "βροχή μέσα στην επόμενη ώρα",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  },
+  "rainInHours": "βροχή τις επόμενες {hours, plural, =1 {hours} other {{hours} ώρες}}",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "airQualityLowercase": "ποιότητα αέρα",
+  "@airQualityLowercase": {},
+  "precipitaion": "Υετός",
+  "@precipitaion": {},
+  "donationPageText": "Ο στόχος της εφαρμογής overmorrow είναι να παρέχεται απολύτως δωρεάν.\nΟπότε αν ο σκοπός σας είναι αποκλειστικά η χρήση της απολαύστε δίχως προβληματισμούς.\n.\nΩστοσο, αν σας αρέσει πολύ η εφαρμογή μπορείτε να στηρίξετε το project στο Patreon.",
+  "@donationPageText": {},
+  "helpTranslate": "συνέβαλε στη μετάφραση",
+  "@helpTranslate": {},
+  "extremelyClear": "αίθριος",
+  "@extremelyClear": {},
+  "veryClear": "αίθριος",
+  "@veryClear": {},
+  "slightlyHazy": "αραιή ομίχλη",
+  "@slightlyHazy": {},
+  "extremelyHazy": "υπερβολική ομίχλη",
+  "@extremelyHazy": {},
+  "poweredByOpenMeteo": "παρέχεται από το open-meteo",
+  "@poweredByOpenMeteo": {
+    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+  },
+  "hazy": "ομίχλη",
+  "@hazy": {},
+  "veryHazy": "πολύ ομίχλη",
+  "@veryHazy": {}
 }
