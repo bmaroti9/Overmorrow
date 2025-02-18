@@ -213,5 +213,29 @@
   "unitedStatesAqi": "aqi de ee. uu.",
   "@unitedStatesAqi": {},
   "offline": "sin conexión",
-  "@offline": {}
+  "@offline": {},
+  "extremelyClear": "Extremadamente despejado",
+  "@extremelyClear": {},
+  "veryClear": "Muy despejado",
+  "@veryClear": {},
+  "clear": "Despejado",
+  "@clear": {},
+  "slightlyHazy": "ligeramente brumoso",
+  "@slightlyHazy": {},
+  "hazy": "brumoso",
+  "@hazy": {},
+  "veryHazy": "muy brumoso",
+  "@veryHazy": {},
+  "extremelyHazy": "extremadamente brumoso",
+  "@extremelyHazy": {},
+  "poweredByOpenMeteo": "con tecnología de OpenMeteo",
+  "@poweredByOpenMeteo": {
+    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+  },
+  "airQualityLowercase": "calidad del aire",
+  "@airQualityLowercase": {},
+  "precipitaion": "Precipitación",
+  "@precipitaion": {},
+  "helpTranslate": "Ayuda a traducir",
+  "@helpTranslate": {}
 }
