@@ -26,6 +26,7 @@ import 'package:overmorrow/weather_refact.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'decoders/decode_wapi.dart';
+import 'decoders/extra_info.dart';
 import 'main_ui.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -93,13 +94,15 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
 
   AppLocalizations localizations = AppLocalizations.of(context)!;
 
+  print(("prime", primary));
+
   return Padding(
     padding: const EdgeInsets.only(top: 20, bottom: 20),
     child: Column(
       children: [
         mainSettingEntry(localizations.appearance, localizations.appearanceSettingDesc,
             containerLow, primary, onSurface, surface, Icons.palette_outlined, settings,
-            AppearancePage(settings: settings, image: image, allColors: allColors, updateMainPage: updatePage, localizations: localizations,),
+            AppearancePage(settings: settings, image: image, colors: colors, updateMainPage: updatePage, localizations: localizations),
             context, updatePage
         ),
         mainSettingEntry(localizations.general, localizations.generalSettingDesc,
@@ -160,17 +163,17 @@ Widget ColorThemeButton(String name, IconData icon, Color highlight, Color prima
 class AppearancePage extends StatefulWidget {
   final settings;
   final image;
-  final allColors;
+  final colors;
   final updateMainPage;
   final localizations;
 
-  const AppearancePage({Key? key, required this.allColors, required this.settings,
+  const AppearancePage({Key? key, required this.colors, required this.settings,
     required this.image, required this.updateMainPage, required this.localizations})
       : super(key: key);
 
   @override
   _AppearancePageState createState() =>
-      _AppearancePageState(image: image, settings: settings, allColors: allColors,
+      _AppearancePageState(image: image, settings: settings, colors: colors,
           updateMainPage: updateMainPage, localizations: localizations);
 }
 
@@ -178,11 +181,11 @@ class _AppearancePageState extends State<AppearancePage> {
 
   final image;
   final settings;
-  final allColors;
+  final colors;
   final updateMainPage;
   final localizations;
 
-  _AppearancePageState({required this.image, required this.settings, required this.allColors, required this.updateMainPage,
+  _AppearancePageState({required this.image, required this.settings, required this.colors, required this.updateMainPage,
   required this.localizations});
 
   Map<String, String> copySettings = {};
@@ -218,8 +221,32 @@ class _AppearancePageState extends State<AppearancePage> {
       x = copySettings["Color mode"] ?? "light";
     }
 
-    final colors = allColors[["original", "colorful", "mono", "light", "dark"]
-        .indexOf(x)];
+    //final colors = allColors[["original", "colorful", "mono", "light", "dark"].indexOf(x)];
+
+    print(("here", colors[1]));
+
+    return AppearanceSelector(image: image, settings: copySettings,
+        colors: colors, updatePage: updatePage, localizations: localizations, goBack: goBack);
+
+  }
+}
+
+
+class AppearanceSelector extends StatelessWidget {
+
+  final image;
+  final settings;
+  final colors;
+  final updatePage;
+  final localizations;
+  final goBack;
+
+  AppearanceSelector({required this.image, required this.settings, required this.colors,
+    required this.updatePage, required this.localizations, required this.goBack});
+
+
+  @override
+  Widget build(BuildContext context) {
 
     Color highlight = colors[7];
     Color primaryLight = colors[2];
@@ -229,6 +256,8 @@ class _AppearancePageState extends State<AppearancePage> {
 
     Color colorPop = colors[12];
     Color descColor = colors[13];
+
+    print(("primary", primary));
 
     return Material(
       color: surface,
@@ -255,8 +284,8 @@ class _AppearancePageState extends State<AppearancePage> {
                   child: Center(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                        color: highlight
+                          borderRadius: BorderRadius.circular(18),
+                          color: highlight
                       ),
                       width: 240,
                       height: 350,
@@ -287,26 +316,26 @@ class _AppearancePageState extends State<AppearancePage> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 10, right: 4, left: 4, bottom: 15),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: List.generate(4, (index) {
-                                  return Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: AspectRatio(
-                                        aspectRatio: 1,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(40),
-                                            border: Border.all(color: primary, width: 2),
+                                padding: const EdgeInsets.only(top: 10, right: 4, left: 4, bottom: 15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: List.generate(4, (index) {
+                                    return Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: AspectRatio(
+                                          aspectRatio: 1,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(40),
+                                              border: Border.all(color: primary, width: 2),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                }),
-                              )
+                                    );
+                                  }),
+                                )
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
@@ -350,6 +379,41 @@ class _AppearancePageState extends State<AppearancePage> {
 
                 settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, highlight, updatePage,
                     onSurface, primaryLight, primary, 'Color source'),
+                if (settings["Color source"] == "custom") SizedBox(
+                  height: 80,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: settingSwitches["Custom color"]!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          HapticFeedback.mediumImpact();
+                          updatePage("Custom color", settingSwitches["Custom color"]![index]);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Color(getColorFromHex(settingSwitches["Custom color"]![index])),
+                                      borderRadius: BorderRadius.circular(100)
+                                  ),
+                                ),
+                                if (settings["Custom color"] == settingSwitches["Custom color"]![index]) const Center(
+                                    child: Icon(Icons.check, color: WHITE,))
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 settingEntry(Icons.landscape_outlined, localizations.imageSource, settings, highlight, updatePage,
                     onSurface, primaryLight, primary, 'Image source'),
                 const SizedBox(height: 70,),
@@ -359,7 +423,9 @@ class _AppearancePageState extends State<AppearancePage> {
         ],
       ),
     );
+
   }
+
 }
 
 class UnitsPage extends StatefulWidget {

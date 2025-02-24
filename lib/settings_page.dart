@@ -62,8 +62,11 @@ Map<String, List<String>> settingSwitches = {
 
   'Color mode' : ['auto', 'original', 'colorful', 'mono', 'light', 'dark'],
 
-  'Color source' : ['image', 'wallpaper'],
+  'Color source' : ['image', 'wallpaper', 'custom'],
   'Image source' : ['network', 'asset'],
+  'Custom color': ['#c62828', '#ff80ab', '#7b1fa2', '#9575cd', '#3949ab', '#90caf9', '#40c4ff',
+        '#18ffff', '#4db6ac', '#4caf50', '#b2ff59', '#eeff41', '#ffff00', '#ffd740', '#ffab40',
+        '#5d4037'],
 
   'Search provider' : ['weatherapi', 'open-meteo'],
   'networkImageDialogShown' : ["false", "true"],
@@ -552,7 +555,6 @@ class _SettingsPageState extends State<SettingsPage> {
           );
         }
         _locale = snapshot.data?[0]["Language"];
-        print(("locale", _locale));
         return Localizations.override(
           context: context,
           locale: languageNameToLocale[_locale] ?? const Locale('en'),

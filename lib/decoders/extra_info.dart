@@ -36,16 +36,12 @@ import '../ui_helper.dart';
 import '../weather_refact.dart';
 import 'decode_wapi.dart';
 
-class HexColor extends Color {
-  static int _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll("#", "");
-    if (hexColor.length == 6) {
-      hexColor = "FF$hexColor";
-    }
-    return int.parse(hexColor, radix: 16);
+int getColorFromHex(String hexColor) {
+  hexColor = hexColor.toUpperCase().replaceAll("#", "");
+  if (hexColor.length == 6) {
+    hexColor = "FF$hexColor";
   }
-
-  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+  return int.parse(hexColor, radix: 16);
 }
 
 Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat, double lng) async {
@@ -190,6 +186,25 @@ Future<ColorScheme> MaterialYouColor(String theme) async {
   return palette;
 }
 
+Future<ColorScheme> CustomSetColor(String theme, settings) async {
+  Color mainColor = Color(getColorFromHex(settings["Custom color"]));
+
+  if (theme == "auto") {
+    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    theme= brightness == Brightness.dark ? "dark" : "light";
+  }
+
+  final ColorScheme palette = ColorScheme.fromSeed(
+    seedColor: mainColor,
+    brightness: theme == 'light' ? Brightness.light : Brightness.dark,
+    dynamicSchemeVariant: theme == 'original' || theme == 'mono' ? DynamicSchemeVariant.tonalSpot :
+    DynamicSchemeVariant.tonalSpot,
+  );
+
+  return palette;
+}
+
+
 Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
 
   final List<PaletteGenerator> genPalette = await _generatorPalette(Uimage);
@@ -215,8 +230,11 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
   if (settings["Color source"] == "image") {
     palette = await _materialPalette(Uimage, color_mode, primeColor);
   }
-  else {
+  else if (settings["Color source"] == "wallpaper"){
     palette = await MaterialYouColor(color_mode);
+  }
+  else {
+    palette = await CustomSetColor(color_mode, settings);
   }
 
   final List<Color> used_colors = getNetworkColors([palette, BLACK, BLACK], settings);
@@ -309,15 +327,7 @@ double contrastRatio(Color color1, Color color2) {
   double lighter = l1 > l2 ? l1 : l2;
   double darker = l1 > l2 ? l2 : l1;
 
-  //print(("contrast:", color1, color2, (lighter + 0.05) / (darker + 0.05)));
   return (lighter + 0.05) / (darker + 0.05);
-}
-
-int difBetweenTwoColors(Color color1, Color color2) {
-  int r = (color1.red - color2.red).abs();
-  int g = (color1.green - color2.green).abs();
-  int b = (color1.blue - color2.blue).abs();
-  return r + g + b;
 }
 
 Color BackColorCorrection(String text) {
