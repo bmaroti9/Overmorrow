@@ -213,5 +213,41 @@
   "unitedStatesAqi": "美国aqi",
   "@unitedStatesAqi": {},
   "offline": "离线",
-  "@offline": {}
+  "@offline": {},
+  "rainInOneHour": "未来一小时内降雨",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  },
+  "updatedXHoursAgo": "{hours}小时前更新",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "{days}天前更新",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInHalfHour": "未来半小时内降雨",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "airQualityLowercase": "空气质量",
+  "@airQualityLowercase": {},
+  "precipitaion": "降水",
+  "@precipitaion": {},
+  "helpTranslate": "帮助翻译",
+  "@helpTranslate": {},
+  "poweredByOpenMeteo": "由 open-meteo 驱动",
+  "@poweredByOpenMeteo": {
+    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+  }
 }
