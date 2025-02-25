@@ -238,7 +238,7 @@ class _NewDayState extends State<NewDay> with AutomaticKeepAliveClientMixin {
               ),
             ),
             SizedBox(
-              height: state? 280 : 260,
+              height: 260,
               child: PageView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: _pageController,
@@ -696,38 +696,33 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
             ListView.builder(
                 shrinkWrap: true,
                 padding: const EdgeInsets.only(
-                    top: 5, bottom: 5, left: 0, right: 0),
+                    top: 5, bottom: 5),
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: data.days.length - 3,
                 itemBuilder: (context, index) {
                   final day = data.days[index + 3];
                   return Padding(
                     padding: const EdgeInsets.only(top: 3, bottom: 3),
-                    child: AnimatedContainer(
-                      height: expand[index] ? (day.mm_precip > 0.1
-                          ? (MediaQuery.of(context).size.width - 110) / 2.2 + 610: 528.0) : 73.0,
-                      duration: const Duration(milliseconds:250),
-                      child: SingleChildScrollView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        child: expand[index] ? Container(
-                          decoration: BoxDecoration(
-                              borderRadius:
-                              index == 0 ? const BorderRadius.vertical(
-                                  top: Radius.circular(18.0),
-                                  bottom: Radius.circular(8))
-                                  : index == data.days.length - 4 ? const BorderRadius
-                                  .vertical(bottom: Radius.circular(18.0),
-                                  top: Radius.circular(8))
-                                  : BorderRadius.circular(8),
-                              color: data.current.containerLow),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 5, left: 3, right: 3),
-                            child: NewDay(data: data, index: index, state: true,
-                              onExpandTapped: _onExpandTapped, day: day,),
-                          ),
-                        )
-                            : GlanceDayEntry(data, index, day, _onExpandTapped),
-                      ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius:
+                          index == 0 ? const BorderRadius.vertical(
+                              top: Radius.circular(18.0),
+                              bottom: Radius.circular(8))
+                              : index == data.days.length - 4 ? const BorderRadius
+                              .vertical(bottom: Radius.circular(18.0),
+                              top: Radius.circular(8))
+                              : BorderRadius.circular(8),
+                          color: data.current.containerLow),
+                      child: AnimatedSize(
+                        duration: const Duration(milliseconds: 250),
+                        curve: Curves.easeInOut,
+                        child: expand[index] ? Padding(
+                          padding: const EdgeInsets.only(top: 5, left: 3, right: 3),
+                          child: NewDay(data: data, index: index, state: true,
+                            onExpandTapped: _onExpandTapped, day: day,)
+                        ) : GlanceDayEntry(data, index, day, _onExpandTapped)
+                      )
                     ),
                   );
                 }
@@ -745,143 +740,132 @@ class _buildNewGlanceDayState extends State<buildNewGlanceDay> with AutomaticKee
 
 Widget GlanceDayEntry(data, index, day, onExpandTapped) {
   return GestureDetector(
+    behavior: HitTestBehavior.translucent,
     onTap: () {
       onExpandTapped(index);
     },
-    child: Container(
-      decoration: BoxDecoration(
-          borderRadius:
-          index == 0 ? const BorderRadius.vertical(
-              top: Radius.circular(18.0),
-              bottom: Radius.circular(8))
-              : index == data.days.length - 4 ? const BorderRadius
-              .vertical(bottom: Radius.circular(18.0),
-              top: Radius.circular(8))
-              : BorderRadius.circular(8),
-          color: data.current.containerLow),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              SizedBox(
-                width: 60,
-                height: 73,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      comfortatext(day.name.split(", ")[0], 18,
-                          data.settings,
-                          color: data.current.primary),
-                      comfortatext(day.name.split(", ")[1], 14,
-                          data.settings,
-                          color: data.current.onSurface),
-                    ],
-                  ),
+    child: Column(
+      children: [
+        Row(
+          children: [
+            SizedBox(
+              width: 60,
+              height: 73,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 18),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    comfortatext(day.name.split(", ")[0], 18,
+                        data.settings,
+                        color: data.current.primary),
+                    comfortatext(day.name.split(", ")[1], 14,
+                        data.settings,
+                        color: data.current.onSurface),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: 30,
+            ),
+            SizedBox(
+              height: 30,
+              width: 43,
+              child: Icon(
+                day.icon,
+                color: data.current.primary,
+                size: 31.0 * day.iconSize,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 10, top: 2, bottom: 2),
+              child: Container(
+                height: 56,
                 width: 43,
-                child: Icon(
-                  day.icon,
-                  color: data.current.primary,
-                  size: 31.0 * day.iconSize,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(13),
+                    //border: Border.all(width: 1.5, color: data.current.primaryLight)
+                    color: data.current.primaryLighter
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 10, top: 2, bottom: 2),
-                child: Container(
-                  height: 56,
-                  width: 43,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(13),
-                      //border: Border.all(width: 1.5, color: data.current.primaryLight)
-                      color: data.current.primaryLighter
-                  ),
-                  child: Row(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                child: Row(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: 2),
+                          child: Icon(Icons.keyboard_arrow_up,
+                            color: data.current.onPrimaryLight,
+                            size: 14,),
+                        ),
+                        Icon(Icons.keyboard_arrow_down,
+                          color: data.current.onPrimaryLight, size: 14,),
+                      ],
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment
+                            .center,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(
                                 bottom: 2),
-                            child: Icon(Icons.keyboard_arrow_up,
-                              color: data.current.onPrimaryLight,
-                              size: 14,),
-                          ),
-                          Icon(Icons.keyboard_arrow_down,
-                            color: data.current.onPrimaryLight, size: 14,),
-                        ],
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment
-                              .center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: 2),
-                              child: comfortatext(
-                                  day.minmaxtemp.split("/")[1], 14,
-                                  data.settings,
-                                  color: data.current.onPrimaryLight),
-                            ),
-                            comfortatext(
-                                day.minmaxtemp.split("/")[0], 14,
+                            child: comfortatext(
+                                day.minmaxtemp.split("/")[1], 14,
                                 data.settings,
                                 color: data.current.onPrimaryLight),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          dayStat(data, Icons.umbrella_rounded, day.precip_prob, "%", iconSize: 20.0),
-                          const SizedBox(width: 6,),
-                          dayStat(data, Icons.water_drop_outlined, day.total_precip,
-                              data.settings["Precipitation"], iconSize: 20.0),
-                        ]
+                          ),
+                          comfortatext(
+                              day.minmaxtemp.split("/")[0], 14,
+                              data.settings,
+                              color: data.current.onPrimaryLight),
+                        ],
                       ),
                     ),
-                    dayStat(data, Icons.air, day.windspeed, data.settings["Wind"], addWind: true,
-                        windDir: day.wind_dir),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: SizedBox(
-                  width: 28,
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    icon: Icon(Icons.expand_more, color: data
-                        .current.primaryLight, size: 20,),
-                    onPressed: () {
-                      onExpandTapped(index);
-                    },
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        dayStat(data, Icons.umbrella_rounded, day.precip_prob, "%", iconSize: 20.0),
+                        const SizedBox(width: 6,),
+                        dayStat(data, Icons.water_drop_outlined, day.total_precip,
+                            data.settings["Precipitation"], iconSize: 20.0),
+                      ]
+                    ),
                   ),
+                  dayStat(data, Icons.air, day.windspeed, data.settings["Wind"], addWind: true,
+                      windDir: day.wind_dir),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: SizedBox(
+                width: 28,
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  icon: Icon(Icons.expand_more, color: data
+                      .current.primaryLight, size: 20,),
+                  onPressed: () {
+                    onExpandTapped(index);
+                  },
                 ),
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ],
     ),
   );
 }

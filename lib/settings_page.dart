@@ -65,8 +65,7 @@ Map<String, List<String>> settingSwitches = {
   'Color source' : ['image', 'wallpaper', 'custom'],
   'Image source' : ['network', 'asset'],
   'Custom color': ['#c62828', '#ff80ab', '#7b1fa2', '#9575cd', '#3949ab', '#40c4ff',
-        '#4db6ac', '#4caf50', '#b2ff59', '#ffeb3b', '#ffab40',
-        '#5d4037'],
+        '#4db6ac', '#4caf50', '#b2ff59', '#ffeb3b', '#ffab40',],
 
   'Search provider' : ['weatherapi', 'open-meteo'],
   'networkImageDialogShown' : ["false", "true"],

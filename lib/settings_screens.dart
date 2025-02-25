@@ -716,7 +716,7 @@ class TranslationSelection extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   HapticFeedback.selectionClick();
-                  _launchUrl("https://hosted.weblate.org/projects/overmorrow-weather/");
+                  _launchUrl("https://hosted.weblate.org/engage/overmorrow-weather/");
                 },
                 child: Container(
                   decoration: BoxDecoration(
