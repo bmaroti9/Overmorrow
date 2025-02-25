@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
@@ -82,8 +81,7 @@ Widget mainSettingEntry(String title, String desc, Color highlight, Color primar
   );
 }
 
-Widget NewSettings(Map<String, String> settings, Function updatePage, Image image, List<Color> colors,
-    allColors, context) {
+Widget NewSettings(Map<String, String> settings, Function updatePage, Image image, List<Color> colors, context, colornotify) {
 
   Color containerLow = colors[6];
   Color onSurface = colors[4];
@@ -102,7 +100,8 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
       children: [
         mainSettingEntry(localizations.appearance, localizations.appearanceSettingDesc,
             containerLow, primary, onSurface, surface, Icons.palette_outlined, settings,
-            AppearancePage(settings: settings, image: image, colors: colors, updateMainPage: updatePage, localizations: localizations),
+            AppearancePage(settings: settings, image: image, colors: colornotify, updateMainPage: updatePage,
+                localizations: localizations),
             context, updatePage
         ),
         mainSettingEntry(localizations.general, localizations.generalSettingDesc,
@@ -212,21 +211,17 @@ class _AppearancePageState extends State<AppearancePage> {
   @override
   Widget build(BuildContext context) {
 
-    String x = "light";
-    if (copySettings["Color mode"] == "auto") {
-      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      x = brightness == Brightness.dark ? "dark" : "light";
-    }
-    else {
-      x = copySettings["Color mode"] ?? "light";
-    }
-
-    //final colors = allColors[["original", "colorful", "mono", "light", "dark"].indexOf(x)];
-
-    print(("here", colors[1]));
-
-    return AppearanceSelector(image: image, settings: copySettings,
-        colors: colors, updatePage: updatePage, localizations: localizations, goBack: goBack);
+    return ValueListenableBuilder(
+      valueListenable: colors,
+      builder: (context, value, child) {
+        return AppearanceSelector(image: image,
+            settings: copySettings,
+            colors: value,
+            updatePage: updatePage,
+            localizations: localizations,
+            goBack: goBack);
+      }
+    );
 
   }
 }
@@ -284,18 +279,21 @@ class AppearanceSelector extends StatelessWidget {
                   child: Center(
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                            topRight: Radius.circular(25),
+                          ),
                           color: highlight
                       ),
                       width: 240,
                       height: 350,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(18),
+                        borderRadius: BorderRadius.circular(25),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              height: 220,
+                              height: 240,
                               child: Stack(
                                 children: [
                                   ParrallaxBackground(image: image, color: surface),
@@ -316,7 +314,7 @@ class AppearanceSelector extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                                padding: const EdgeInsets.only(top: 10, right: 4, left: 4, bottom: 15),
+                                padding: const EdgeInsets.only(top: 15, right: 4, left: 4, bottom: 15),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: List.generate(4, (index) {
@@ -336,16 +334,6 @@ class AppearanceSelector extends StatelessWidget {
                                     );
                                   }),
                                 )
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-                              child: Container(
-                                height: 3,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: primaryLight,
-                                ),
-                              ),
                             ),
 
                           ],

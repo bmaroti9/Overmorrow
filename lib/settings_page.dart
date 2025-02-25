@@ -64,8 +64,8 @@ Map<String, List<String>> settingSwitches = {
 
   'Color source' : ['image', 'wallpaper', 'custom'],
   'Image source' : ['network', 'asset'],
-  'Custom color': ['#c62828', '#ff80ab', '#7b1fa2', '#9575cd', '#3949ab', '#90caf9', '#40c4ff',
-        '#18ffff', '#4db6ac', '#4caf50', '#b2ff59', '#eeff41', '#ffff00', '#ffd740', '#ffab40',
+  'Custom color': ['#c62828', '#ff80ab', '#7b1fa2', '#9575cd', '#3949ab', '#40c4ff',
+        '#4db6ac', '#4caf50', '#b2ff59', '#ffeb3b', '#ffab40',
         '#5d4037'],
 
   'Search provider' : ['weatherapi', 'open-meteo'],
@@ -328,50 +328,9 @@ Future<List<dynamic>> getMainColor(settings, primary, back, image) async {
   return [colors, x[1]];
 }
 
-Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
-  List<Color> colors;
-  List<List<Color>> allColor = [];
-
-  String mode = settings["Color mode"];
-
-  if (mode == "auto") {
-    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-    mode = brightness == Brightness.dark ? "dark" : "light";
-  }
-
-  List<dynamic> lightPalette = (await getImageColors(image, "light" , settings))[0];
-  List<dynamic> darkPalette = (await getImageColors(image, "dark" , settings))[0];
-
-  if (settings["Image source"] == 'network' || settings["Color source"] == 'wallpaper') {
-    allColor.add(getNetworkColors(darkPalette, settings, force: "original"));
-    allColor.add(getNetworkColors(darkPalette, settings, force: "colorful"));
-    allColor.add(getNetworkColors(darkPalette, settings, force: "mono"));
-    allColor.add(getNetworkColors(lightPalette, settings, force: "light"));
-    allColor.add(getNetworkColors(darkPalette, settings, force: "dark"));
-  }
-  else {
-    allColor.add(getColors(primary, back, settings, 0, force: "original"));
-    allColor.add(getColors(primary, back, settings, 0, force: "colorful"));
-    allColor.add(getColors(primary, back, settings, 0, force: "mono"));
-    allColor.add(getNetworkColors(lightPalette, settings, force: "light")); //because the light and dark use the
-    allColor.add(getNetworkColors(darkPalette, settings, force: "dark")); // material palette generator anyway
-  }
-
-  if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network'
-      || settings["Color source"] == 'wallpaper') {
-
-    colors = getNetworkColors(mode == "light" ? lightPalette : darkPalette ,settings);
-  }
-  else {
-    colors = getColors(primary, back, settings, 0);
-  }
-
-  return [colors, allColor];
-}
-
 Future<List<dynamic>> getSettingsAndColors(primary, back, image) async {
   Map<String, String> settings = await getSettingsUsed();
-  List<dynamic> colors = await getTotalColor(settings, primary, back, image);
+  List<Color> colors = (await getMainColor(settings, primary, back, image))[0];
   return [settings, colors];
 }
 
@@ -524,6 +483,8 @@ class _SettingsPageState extends State<SettingsPage> {
   final image;
 
   String _locale = 'English';
+  //this is so that appearance page setting changes take effect in place rather that having to exit the page
+  final ValueNotifier<List<Color>> colornotify = ValueNotifier<List<Color>>([]);
 
   _SettingsPageState({required this.primary, required this.back, required this.image});
 
@@ -541,6 +502,12 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   @override
+  void dispose() {
+    colornotify.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
       future: getSettingsAndColors(primary, back, image),
@@ -555,11 +522,15 @@ class _SettingsPageState extends State<SettingsPage> {
           );
         }
         _locale = snapshot.data?[0]["Language"];
+        //this is needed so flutter wont complain about setstate during build
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          colornotify.value = snapshot.data?[1];
+        });
         return Localizations.override(
           context: context,
           locale: languageNameToLocale[_locale] ?? const Locale('en'),
           child: SettingsMain(settings: snapshot.data?[0], updatePage: updatePage, goBack: goBack, image: image,
-              colors: snapshot.data?[1][0], allColors: snapshot.data?[1][1]),
+              colors: snapshot.data?[1], colornotify: colornotify,),
         );
       },
     );
@@ -573,9 +544,9 @@ class SettingsMain extends StatelessWidget {
   final settings;
   final updatePage;
   final image;
-  final allColors;
+  final colornotify;
 
-  const SettingsMain({super.key, this.settings, this.updatePage, this.goBack, this.image, this.colors, this.allColors});
+  const SettingsMain({super.key, this.settings, this.updatePage, this.goBack, this.image, this.colors, this.colornotify});
 
   @override
   Widget build(BuildContext context) {
@@ -596,7 +567,7 @@ class SettingsMain extends StatelessWidget {
           ),
           // Just some content big enough to have something to scroll.
           SliverToBoxAdapter(
-            child: NewSettings(settings!, updatePage, image, colors, allColors, context),
+            child: NewSettings(settings!, updatePage, image, colors, context, colornotify),
           ),
         ],
       ),
