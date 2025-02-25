@@ -72,6 +72,7 @@ Map<String, List<String>> settingSwitches = {
   'networkImageDialogShown' : ["false", "true"],
 
   'Layout order' : ["sunstatus,rain indicator,alerts,air quality,radar,forecast,daily"],
+  'Radar haptics': ["on", "off"],
 };
 
 List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
@@ -442,8 +443,8 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
     child: Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(right: 13),
-          child: Icon(icon, color: primary),
+          padding: const EdgeInsets.only(right: 13, bottom: 2),
+          child: Icon(icon, color: primary, size: 21,),
         ),
         Expanded(
           flex: 10,

@@ -590,6 +590,8 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
 
                   settingEntry(Icons.manage_search_outlined, localizations.searchProvider, settings, highlight, updatePage,
                       onSurface, primaryLight, primary, 'Search provider'),
+                  settingEntry(Icons.vibration_rounded, localizations.radarHaptics, settings, highlight, updatePage,
+                      onSurface, primaryLight, primary, 'Radar haptics'),
                 ],
               ),
             ),
