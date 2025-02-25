@@ -154,7 +154,7 @@ String oMGetName(index, settings, item, dayDif, localizations) {
       localizations.tomorrow,
       localizations.overmorrow,
     ];
-    return names[index];
+    return names[index - dayDif];
   }
   String x = item["daily"]["time"][index].split("T")[0];
   List<String> z = x.split("-");

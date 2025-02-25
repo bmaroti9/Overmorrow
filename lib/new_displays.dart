@@ -176,7 +176,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
               Padding(
                 padding: EdgeInsets.only(
                     top: 6,
-                    left: min(max((progress * (widget.size.width - 53)), 2),
+                    left: min(max((progress * (widget.size.width - 54)), 2),
                         widget.size.width - 52)),
                 child: Align(
                   alignment: Alignment.centerLeft,
