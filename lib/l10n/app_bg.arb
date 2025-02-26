@@ -304,5 +304,9 @@
   "thu": "Чт",
   "@thu": {},
   "donationPageText": "Overmorrow винаги е бил предназначен за напълно безплатно приложение, без реклами или покупки в приложението. \n \nТака че, ако просто искате да го използвате по този начин, моля, наслаждавайте се. \n \nАко обаче ви харесва да го използвате и чувствате, че си струва 1 от парите ви, моля, помислете за подкрепа на проекта на моя Patreon..",
-  "@donationPageText": {}
+  "@donationPageText": {},
+  "radarHaptics": "Радарна тактилност",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
+  }
 }
