@@ -646,6 +646,10 @@ class WapiAlert {
   final String end;
   final String desc;
   final String event;
+  final String urgency;
+  final String severity;
+  final String certainty;
+  final String areas;
 
   const WapiAlert({
     required this.headline,
@@ -653,6 +657,10 @@ class WapiAlert {
     required this.end,
     required this.desc,
     required this.event,
+    required this.urgency,
+    required this.severity,
+    required this.certainty,
+    required this.areas,
   });
 
   static WapiAlert fromJson(item, localizations) {
@@ -670,11 +678,15 @@ class WapiAlert {
     ];
 
     return WapiAlert(
-      headline: item["headline"] ?? "No Headline",
+      headline: item["headline"].trim() ?? "No Headline",
       start: "${weeks[start.weekday - 1]} ${amPmTime("${start.hour}:${start.minute} j")}",
       end: "${weeks[end.weekday - 1]} ${amPmTime("${end.hour}:${end.minute} j")}",
-      event: item["event"] ?? "No Event",
-      desc: item["desc"] ?? "No Desc",
+      event: item["event"].trim() ?? "No Event",
+      desc: item["desc"].trim() ?? "No Desc",
+      urgency: item["urgency"] ?? "--",
+      severity: item["severity"] ?? "--",
+      certainty: item["certainty"] ?? "--",
+      areas: item["areas"] ?? "--",
     );
   }
 }

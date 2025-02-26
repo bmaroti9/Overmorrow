@@ -311,5 +311,6 @@
   "radarHaptics": "Radar haptics",
   "@radarHaptics": {
     "description": "setting for enabling or disabling haptic feedback for the radar"
-  }
+  },
+  "alertsCapital": "Alerts"
 }

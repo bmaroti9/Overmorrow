@@ -335,7 +335,6 @@ class AppearanceSelector extends StatelessWidget {
                                   }),
                                 )
                             ),
-
                           ],
                         ),
                       ),

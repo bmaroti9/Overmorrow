@@ -316,7 +316,7 @@ class _AllergensPageState extends State<AllergensPage> {
                             //border: Border.all(width: 1.5, color: data.current.containerHigh),
                             borderRadius: BorderRadius.circular(18),
                           ),
-                          padding: const EdgeInsets.all(17),
+                          padding: const EdgeInsets.all(19),
                           child: Row(
                             children: [
                               comfortatext(AppLocalizations.of(context)!.mainPollutant, 16, data.settings, color: data.current.onSurface),

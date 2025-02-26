@@ -19,9 +19,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/ui_helper.dart';
 
+import 'alerts_page.dart';
 import 'aqi_page.dart';
 import 'decoders/decode_OM.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -248,6 +250,7 @@ Widget NewAirQuality(var data, context) {
     child: GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: (){
+        HapticFeedback.lightImpact();
         Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AllergensPage(data: data))
@@ -347,44 +350,54 @@ Widget AlertWidget(var data, context) {
           children: List.generate(data.alerts.length, (index) {
             return Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 4),
-              child: Container(
-                padding: const EdgeInsets.only(left: 25, top: 20, bottom: 20),
-                decoration: BoxDecoration(
-                  color: data.current.containerLow,
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AlertsPage(data: data))
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.only(left: 25, top: 20, bottom: 20),
+                  decoration: BoxDecoration(
+                    color: data.current.containerLow,
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(Icons.warning_amber_rounded,
-                              color: data.current.primary, size: 21,),
+                            Row(
+                              children: [
+                                Icon(Icons.warning_amber_rounded,
+                                  color: data.current.primary, size: 21,),
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 7, top: 3),
+                                    child: comfortatext(data.alerts[index].event, 20,
+                                        data.settings, color: data.current.primary,
+                                        weight: FontWeight.w600),
+                                  ),
+                                )
+                              ],
+                            ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 7, top: 3),
-                              child: comfortatext(data.alerts[index].event, 20,
-                                  data.settings, color: data.current.primary,
-                                  weight: FontWeight.w600),
+                              padding: const EdgeInsets.only(top: 7),
+                              child: comfortatext("${data.alerts[index].start} - ${data.alerts[index].end}", 15, data.settings,
+                                  color: data.current.outline),
                             )
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 7),
-                          child: comfortatext("${data.alerts[index].start} - ${data.alerts[index].end}", 15, data.settings,
-                          color: data.current.outline),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () {
-
-                      },
-                      icon: Icon(Icons.keyboard_arrow_right, color: data.current.primary,),
-                    )
-                  ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Icon(Icons.keyboard_arrow_right_rounded, color: data.current.primary,),
+                      )
+                    ],
+                  ),
                 ),
               ),
             );

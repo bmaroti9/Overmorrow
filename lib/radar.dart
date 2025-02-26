@@ -79,7 +79,6 @@ class _RadarSmallState extends State<RadarSmall> {
       if (isPlaying) {
         if (data.settings["Radar haptics"] == "on") {
           HapticFeedback.lightImpact();
-          print("haptic");
         }
         setState(() {
           currentFrameIndex =
@@ -303,7 +302,6 @@ class _RadarSmallState extends State<RadarSmall> {
                           onChanged: (double value) {
                             if (data.settings["Radar haptics"] == "on") {
                               HapticFeedback.lightImpact();
-                              print("haptic");
                             }
                             setState(() {
                               hasBeenPlayed = true;
@@ -403,7 +401,6 @@ class _RadarBigState extends State<RadarBig> {
       if (isPlaying) {
         if (data.settings["Radar haptics"] == "on") {
           HapticFeedback.lightImpact();
-          print("haptic");
         }
         setState(() {
           currentFrameIndex =
@@ -568,7 +565,6 @@ class _RadarBigState extends State<RadarBig> {
                                   onChanged: (double value) {
                                     if (data.settings["Radar haptics"] == "on") {
                                       HapticFeedback.lightImpact();
-                                      print("haptic");
                                     }
                                     setState(() {
                                       hasBeenPlayed = true;
