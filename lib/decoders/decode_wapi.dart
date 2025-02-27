@@ -48,6 +48,7 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   };
   final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
 
+  print(url);
   //var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
   //    .timeout(const Duration(seconds: 3));
 
@@ -75,8 +76,16 @@ int wapiGetWindDir(var data) {
 List<WapiAlert> getWapiAlerts(var data, localizations) {
   final List<WapiAlert> alerts = [];
   final alertList = data["alerts"]["alert"];
+  //for some reason weatherapi sometimes returns like 5 of the same alerts, so i have to manually remove duplicates
+  List<String> seenDescs = [];
   for (int i = 0; i < alertList.length; i++) {
-    alerts.add(WapiAlert.fromJson(alertList[i], localizations));
+    String d = alertList[i]["desc"];
+    //i thought this was a joke when i came across it at first,
+    // but it seems like nws has test messages in their alerts...
+    if (!seenDescs.contains(d) && !alertList[i].toString().toLowerCase().contains("test message")) {
+      alerts.add(WapiAlert.fromJson(alertList[i], localizations));
+      seenDescs.add(d);
+    }
   }
   return alerts;
 }

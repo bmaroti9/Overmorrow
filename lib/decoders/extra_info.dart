@@ -272,6 +272,9 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
           newcolor = lighten(startcolor, i / 4);
           newdif = difFromBackColors(newcolor, dominant);
           if (newdif > bestDif) {
+            if (newdif > 2) { //try to keep it close as possible to the palette while still readable
+              break;
+            }
             bestDif = newdif;
             bestcolor = newcolor;
           }
@@ -280,6 +283,9 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
           newcolor = darken(startcolor, i / 4);
           newdif = difFromBackColors(newcolor, dominant);
           if (newdif > bestDif) {
+            if (newdif > 2) { //try to keep it close as possible to the palette while still readable
+              break;
+            }
             bestDif = newdif;
             bestcolor = newcolor;
           }
