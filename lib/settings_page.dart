@@ -413,7 +413,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
     dropdownColor: bgcolor,
     borderRadius: BorderRadius.circular(18),
     icon: Padding(
-      padding: const EdgeInsets.only(left:5),
+      padding: const EdgeInsets.only(left:10),
       child: Icon(Icons.arrow_drop_down_circle_rounded, color: primary,),
     ),
     style: GoogleFonts.comfortaa(
@@ -421,6 +421,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
       fontSize: 19 * getFontSize(settings["Font size"]),
       fontWeight: FontWeight.w300,
     ),
+    alignment: Alignment.centerRight,
     value: unit,
     items: Items.map((item) {
       return DropdownMenuItem(

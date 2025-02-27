@@ -303,10 +303,10 @@ class AppearanceSelector extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 42,
+                                        comfortatext("${unit_coversion(32, settings["Temperature"]!).toInt()}°", 42,
                                             settings, color: colorPop, weight: FontWeight.w300),
-                                        comfortatext(localizations.clearSky, 22,
-                                            settings, color: descColor, weight: FontWeight.w500)
+                                        comfortatext(localizations.clearSky, 24,
+                                            settings, color: descColor, weight: FontWeight.w600)
                                       ],
                                     ),
                                   ),
