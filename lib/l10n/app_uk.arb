@@ -306,5 +306,9 @@
         "type": "int"
       }
     }
+  },
+  "radarHaptics": "Тактильна віддача на радарі",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
   }
 }
