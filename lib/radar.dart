@@ -210,6 +210,9 @@ class _RadarSmallState extends State<RadarSmall> {
                             ),
                             onPressed: () {
                               HapticFeedback.selectionClick();
+                              setState(() {
+                                isPlaying = false;
+                              });
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) =>
@@ -633,6 +636,9 @@ class _RadarBigState extends State<RadarBig> {
                     ),
                     onPressed: () {
                       HapticFeedback.selectionClick();
+                      setState(() {
+                        isPlaying = false;
+                      });
                       Navigator.of(context).pop();
                     },
                     child: Icon(CupertinoIcons.fullscreen_exit,
