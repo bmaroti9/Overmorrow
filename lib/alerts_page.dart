@@ -38,7 +38,7 @@ Widget alertBadge(name, text, data) {
               borderRadius: BorderRadius.circular(11),
               color: data.current.primaryLight,
             ),
-            padding: const EdgeInsets.only(left: 5, right: 5, top: 5.5, bottom: 4.5),
+            padding: const EdgeInsets.only(left: 6, right: 6, top: 5.5, bottom: 4.5),
             child: comfortatext(text, 13, data.settings, color: data.current.onPrimaryLight),
           ),
         )

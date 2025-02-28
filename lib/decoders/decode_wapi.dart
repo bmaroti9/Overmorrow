@@ -80,9 +80,7 @@ List<WapiAlert> getWapiAlerts(var data, localizations) {
   List<String> seenDescs = [];
   for (int i = 0; i < alertList.length; i++) {
     String d = alertList[i]["desc"];
-    //i thought this was a joke when i came across it at first,
-    // but it seems like nws has test messages in their alerts...
-    if (!seenDescs.contains(d) && !alertList[i].toString().toLowerCase().contains("test message")) {
+    if (!seenDescs.contains(d)) {
       alerts.add(WapiAlert.fromJson(alertList[i], localizations));
       seenDescs.add(d);
     }

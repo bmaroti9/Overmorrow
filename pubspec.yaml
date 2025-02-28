@@ -35,6 +35,7 @@ dependencies:
   shared_preferences: ^2.2.2
   flutter_launcher_icons: ^0.13.1
   url_launcher: ^6.1.14
+  latlong2: ^0.9.1
 
   geolocator: ^10.1.0
   geocoding: ^3.0.0
