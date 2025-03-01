@@ -310,5 +310,7 @@
   "radarHaptics": "Тактильна віддача на радарі",
   "@radarHaptics": {
     "description": "setting for enabling or disabling haptic feedback for the radar"
-  }
+  },
+  "alertsCapital": "Оповіщення",
+  "@alertsCapital": {}
 }
