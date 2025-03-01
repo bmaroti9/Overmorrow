@@ -2,7 +2,7 @@
   "@@locale": "pt",
   "feelsLike": "Sensação",
   "@feelsLike": {},
-  "precipCapital": "Precip.",
+  "precipCapital": "Capital Da Precipitação",
   "@precipCapital": {},
   "humidity": "Humidade",
   "@humidity": {},
@@ -213,5 +213,105 @@
   "unitedStatesAqi": "aqi dos eua",
   "@unitedStatesAqi": {},
   "offline": "offline",
-  "@offline": {}
+  "@offline": {},
+  "extremelyClear": "Extremamente Limpo",
+  "@extremelyClear": {},
+  "veryClear": "Muito Limpo",
+  "@veryClear": {},
+  "clear": "Limpo",
+  "@clear": {},
+  "slightlyHazy": "Ligeiramente Nebuloso",
+  "@slightlyHazy": {},
+  "hazy": "Nebuloso",
+  "@hazy": {},
+  "veryHazy": "Muito Nebuloso",
+  "@veryHazy": {},
+  "extremelyHazy": "Extremamente Nebuloso",
+  "@extremelyHazy": {},
+  "poweredByOpenMeteo": "Alimentado por Open-Meteo",
+  "@poweredByOpenMeteo": {
+    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+  },
+  "rainInHalfHour": "Chuva na Próxima Meia Hora",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "rainInOneHour": "Chuva na Próxima Hora",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  },
+  "rainExpectedInHours": "chuva esperada em 1 hora",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInHours": "Chuva Nas Próximas Horas",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInMinutes": "Chuva Esperada Em Minutos",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInMinutes": "Chuva Nos Próximos Minutos",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXHoursAgo": "Atualizado Há Horas Atrás",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "Atualizado Há Dias Atrás",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXMinutesAgo": "atualizado, há minutos atrás",
+  "@updatedXMinutesAgo": {},
+  "rainExpectedInOneHour": "Chuva Esperada Em Uma Hora",
+  "@rainExpectedInOneHour": {
+    "description": "rain expected in the next hour"
+  },
+  "airQualityLowercase": "Qualidade do Ar",
+  "@airQualityLowercase": {},
+  "donationPageText": "Overmorrow sempre foi concebido para ser um aplicativo totalmente gratuito, sem anúncios ou compras no aplicativo.Então, se você quiser apenas usá-lo assim, aproveite. Se no entanto, você gosta de usá-lo e acha que vale 1 do seu dinheiro, considere apoiar o projeto no meu Patreon.",
+  "@donationPageText": {},
+  "radarHaptics": "Háptica De Radar",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
+  },
+  "precipitaion": "Precipitação",
+  "@precipitaion": {},
+  "helpTranslate": "Ajude a Traduzir",
+  "@helpTranslate": {},
+  "alertsCapital": "Alerta",
+  "@alertsCapital": {}
 }
