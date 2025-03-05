@@ -132,15 +132,15 @@ class _AlertsPageState extends State<AlertsPage> {
                         
                         Wrap(
                           children: [
-                            alertBadge("severity", alert.severity, data),
-                            alertBadge("certainty", alert.certainty, data),
-                            alertBadge("urgency", alert.urgency, data),
+                            alertBadge(AppLocalizations.of(context)!.severity, alert.severity, data),
+                            alertBadge(AppLocalizations.of(context)!.certainty, alert.certainty, data),
+                            alertBadge(AppLocalizations.of(context)!.urgency, alert.urgency, data),
                           ],
                         ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 2, top: 15),
-                          child: comfortatext("areas:", 16, data.settings, color: data.current.primary),
+                          child: comfortatext("${AppLocalizations.of(context)!.areas}:", 16, data.settings, color: data.current.primary),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 20, top: 5),
