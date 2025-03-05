@@ -485,7 +485,8 @@ class dumbySearch extends StatelessWidget {
 
     const replacement = "<api_key>";
     String newStr = errorMessage.toString().replaceAll(wapi_Key, replacement);
-    //String newStr = newStr2.replaceAll(owm_Key, replacement);
+    newStr = newStr.replaceAll(access_key, replacement);
+    newStr = newStr.replaceAll(timezonedbKey, replacement);
 
     Color primary = const Color(0xffc2b9c2);
     Color back = const Color(0xff847F83);

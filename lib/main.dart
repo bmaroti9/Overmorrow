@@ -288,12 +288,15 @@ class _HomePageState extends State<HomePage> {
 
     await Future.delayed(Duration(milliseconds: time));
 
+    if (!mounted) return;
+
     try {
 
       Widget screen = await getDays(false, proposedLoc, backupName, startup);
 
       setState(() {
         w1 = screen;
+        if (!mounted) return;
         if (startup) {
           startup2 = false;
         }

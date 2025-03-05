@@ -47,8 +47,7 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
     'alerts': 'yes',
   };
   final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
-
-  print(url);
+  
   //var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
   //    .timeout(const Duration(seconds: 3));
 
