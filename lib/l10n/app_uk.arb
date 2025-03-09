@@ -312,5 +312,13 @@
     "description": "setting for enabling or disabling haptic feedback for the radar"
   },
   "alertsCapital": "Оповіщення",
-  "@alertsCapital": {}
+  "@alertsCapital": {},
+  "severity": "Серйозність",
+  "@severity": {},
+  "certainty": "Достовірність",
+  "@certainty": {},
+  "urgency": "Терміновість",
+  "@urgency": {},
+  "areas": "Райони",
+  "@areas": {}
 }
