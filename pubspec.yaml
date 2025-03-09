@@ -33,7 +33,7 @@ dependencies:
   http: ^1.1.0
   material_floating_search_bar_2: ^0.5.0
   shared_preferences: ^2.2.2
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.3
   url_launcher: ^6.1.14
   latlong2: ^0.9.1
 
@@ -59,25 +59,11 @@ dependencies:
   google_fonts: ^5.1.0
 
 flutter_launcher_icons:
-  image_path_android: "assets/icons/Overmorrow_white_circle.png"
-  image_path_ios: "assets/icons/Overmorrow_white_classic.png"
-  android: true # can specify file name here e.g. "ic_launcher"
-  ios: true # can specify file name here e.g. "My-Launcher-Icon"
-  remove_alpha_ios: true
-  image_path: "assets/icons/Overmorrow_white_classic.png"
-  min_sdk_android: 21 # android min sdk min:16, default 21
-  web:
-    generate: true
-    image_path: "assets/icons/Overmorrow_white_classic.png"
-    background_color: "#b1c4cf"
-    theme_color: "#b1c4cf"
-  windows:
-    generate: true
-    image_path: "assets/icons/Overmorrow_white_classic.png"
-    icon_size: 48 # min:48, max:256, default: 48
-  macos:
-    generate: true
-    image_path: "assets/icons/Overmorrow_white_classic.png"
+  android: true
+  image_path: "assets/icons/icon.png"
+  adaptive_icon_background: "#053960"
+  adaptive_icon_foreground: "assets/icons/icon_inside.png"
+  adaptive_icon_monochrome: "assets/icons/icon_material.png"
 
 dev_dependencies:
   flutter_test:
