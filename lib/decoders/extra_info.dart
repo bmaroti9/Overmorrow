@@ -254,7 +254,7 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
     newcolor = used_colors[2];
     newdif = difFromBackColors(newcolor, dominant);
     print(("dif2", newdif, newcolor));
-    if (newdif > 2) {
+    if (newdif > 1.9) {
       bestcolor = newcolor;
     }
     else {
@@ -262,7 +262,7 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
       newcolor = used_colors[1];
       newdif = difFromBackColors(newcolor, dominant);
       print(("dif3", newdif));
-      if (newdif > 2) {
+      if (newdif > 1.8) {
         bestcolor = newcolor;
       }
       else {

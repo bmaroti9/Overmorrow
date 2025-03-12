@@ -66,21 +66,21 @@ class _DonationPageState extends State<DonationPage> {
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
+            IconButton(icon: Icon(Icons.arrow_back, color: primary,),
                 onPressed: () {
                   goBack();
                 }),
             title: comfortatext(
                 AppLocalizations.of(context)!.donate, 30, settings,
-                color: surface),
-            backgroundColor: primary,
+                color: primary),
+            backgroundColor: surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
             child: Container(
                 color: surface,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
+                  padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -154,26 +154,24 @@ class _InfoPageState extends State<InfoPage> {
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
+            IconButton(icon: Icon(Icons.arrow_back, color: primary,),
                 onPressed: () {
                   goBack();
                 }),
             title: comfortatext(
                 AppLocalizations.of(context)!.about, 30, settings,
-                color: surface),
-            backgroundColor: primary,
+                color: primary),
+            backgroundColor: surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
             child: Container(
               color: surface,
               child: Padding(
-                padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
+                padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    comfortatext('OVRMRW', 40, settings, color: primary, weight: FontWeight.w400),
-
                     Padding(
                       padding: const EdgeInsets.only(top: 30, bottom: 10),
                       child: comfortatext(
