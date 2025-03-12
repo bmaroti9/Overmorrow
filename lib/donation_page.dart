@@ -84,9 +84,8 @@ class _DonationPageState extends State<DonationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      comfortatext(AppLocalizations.of(context)!.donationPageText,
-                         18, settings, color: onSurface),
-
+                      comfortatext(AppLocalizations.of(context)!.donationPageTextNew,
+                         17, settings, color: onSurface),
                       Padding(
                         padding: const EdgeInsets.only(top: 40),
                         child: ElevatedButton(
@@ -98,10 +97,19 @@ class _DonationPageState extends State<DonationPage> {
                                 borderRadius: BorderRadius.circular(12)),
                           ),
                           onPressed: () async {
-                            await _launchUrl('https://www.patreon.com/MarotiDevel');
+                            await _launchUrl('https://paypal.me/miklosmaroti');
                           },
-                          child: comfortatext(AppLocalizations.of(context)!.supportOnPatreon,
-                              18, settings, color: surface, weight: FontWeight.w600),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              comfortatext(AppLocalizations.of(context)!.buyMeACoffee,
+                                  18, settings, color: surface, weight: FontWeight.w600),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Icon(Icons.coffee, color: surface,),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ],
