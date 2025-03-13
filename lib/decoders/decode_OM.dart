@@ -698,7 +698,7 @@ class OMAqi{
 
 
     //var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 6));
-    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 3));
+    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi open-meteo");
 
     var response = await file[0].readAsString();
     final item = jsonDecode(response)["current"];
@@ -815,7 +815,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
 
     //var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo extended").timeout(const Duration(seconds: 3));
-    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi-extended open-meteo").timeout(const Duration(seconds: 3));
+    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi-extended open-meteo");
 
     var response = await file[0].readAsString();
     final item = jsonDecode(response);
