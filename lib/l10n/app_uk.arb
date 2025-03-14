@@ -219,9 +219,9 @@
   "@precipitaion": {},
   "helpTranslate": "допомогти з перекладом",
   "@helpTranslate": {},
-  "hazy": "Туман",
+  "hazy": "Туманність",
   "@hazy": {},
-  "veryHazy": "Дуже туманно",
+  "veryHazy": "Сильна туманність",
   "@veryHazy": {},
   "extremelyHazy": "Вкрай туманно",
   "@extremelyHazy": {},
@@ -235,7 +235,7 @@
   },
   "donationPageText": "Overmorrow завжди задумувався як повністю безплатний застосунок, без реклами та внутрішніх покупок. \n \nТож якщо ви хочете користуватися ним просто так, то користуйтеся на здоров'я. \n \nЯкщо ж вам подобається користуватися ним і ви відчуваєте, що він вартий ваших грошей, тоді, підтримайте проєкт на моєму Patreon.",
   "@donationPageText": {},
-  "slightlyHazy": "Легкий туман",
+  "slightlyHazy": "Легка туманність",
   "@slightlyHazy": {},
   "clear": "Ясно",
   "@clear": {},
@@ -252,5 +252,77 @@
     "description": "rain expected in the next hour"
   },
   "updatedXMinutesAgo": "Оновлено, {minutes} хв тому",
-  "@updatedXMinutesAgo": {}
+  "@updatedXMinutesAgo": {},
+  "rainInMinutes": "Дощ в наступні {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInHours": "Дощ в наступні {hours, plural, =1 {hour} other {{hours} hours}}",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInHours": "Дощ очікується через {hours, plural, =1 {hour} other {{hours} hours}}",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInMinutes": "Дощ очікується через {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXHoursAgo": "Оновлено, {hours, plural, =1 {1 hour} other {{hours} hours}} тому",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "Оновлено, {days, plural, =1 {1 day} other {{days} days}} тому",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "radarHaptics": "Тактильна віддача на радарі",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
+  },
+  "alertsCapital": "Оповіщення",
+  "@alertsCapital": {},
+  "severity": "Серйозність",
+  "@severity": {},
+  "certainty": "Достовірність",
+  "@certainty": {},
+  "urgency": "Терміновість",
+  "@urgency": {},
+  "areas": "Райони",
+  "@areas": {},
+  "donationPageTextNew": "Overmorrow завжди задумувався як абсолютно безплатний застосунок, без реклами та внутрішніх покупок. \n \nТож якщо ви хочете користуватися ним просто так, то насолоджуйтеся. \n \nАле якщо вам подобається користуватися застосунком, будь ласка, не забувайте залишати невеликі чайові. \n\nСпасибі!",
+  "@donationPageTextNew": {},
+  "buyMeACoffee": "Пригостіть мене кавою!",
+  "@buyMeACoffee": {}
 }

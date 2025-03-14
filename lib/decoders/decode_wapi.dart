@@ -44,10 +44,10 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
     'q': latlong,
     'days': '3',
     'aqi': 'yes',
-    'alerts': 'no',
+    'alerts': 'yes',
   };
   final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
-
+  
   //var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
   //    .timeout(const Duration(seconds: 3));
 
@@ -70,6 +70,21 @@ int wapiGetWindDir(var data) {
     total += x;
   }
   return (total / data.length).round();
+}
+
+List<WapiAlert> getWapiAlerts(var data, localizations) {
+  final List<WapiAlert> alerts = [];
+  final alertList = data["alerts"]["alert"];
+  //for some reason weatherapi sometimes returns like 5 of the same alerts, so i have to manually remove duplicates
+  List<String> seenDescs = [];
+  for (int i = 0; i < alertList.length; i++) {
+    String d = alertList[i]["desc"];
+    if (!seenDescs.contains(d)) {
+      alerts.add(WapiAlert.fromJson(alertList[i], localizations));
+      seenDescs.add(d);
+    }
+  }
+  return alerts;
 }
 
 String amPmTime(String time) {
@@ -137,10 +152,26 @@ double getSunStatus(String sunrise, String sunset, DateTime localtime, {by = " "
 
 
 Future<DateTime> WapiGetLocalTime(lat, lng) async {
+  /*
   return await XWorldTime.timeByLocation(
     latitude: lat,
     longitude: lng,
   );
+   */
+
+  final params = {
+    'key': timezonedbKey,
+    'lat': lat.toString(),
+    'lng': lng.toString(),
+    'format': 'json',
+    'by': 'position'
+  };
+  final url = Uri.http('api.timezonedb.com', 'v2.1/get-time-zone', params);
+  var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng timezonedb.com");
+  var response = await file[0].readAsString();
+  var body = jsonDecode(response);
+  
+  return DateTime.parse(body["formatted"]);
 }
 
 double unit_coversion(double value, String unit) {
@@ -615,8 +646,58 @@ class WapiAqi {
   );
 }
 
+class WapiAlert {
+  final String headline;
+  final String start;
+  final String end;
+  final String desc;
+  final String event;
+  final String urgency;
+  final String severity;
+  final String certainty;
+  final String areas;
 
-class Wapi15MinutePrecip { //weatherapi doesn't actaully have 15 minute forecast, but i figured i could just use the
+  const WapiAlert({
+    required this.headline,
+    required this.start,
+    required this.end,
+    required this.desc,
+    required this.event,
+    required this.urgency,
+    required this.severity,
+    required this.certainty,
+    required this.areas,
+  });
+
+  static WapiAlert fromJson(item, localizations) {
+    final DateTime start = DateTime.parse(item["effective"]);
+    final DateTime end = DateTime.parse(item["expires"]);
+
+    List<String> weeks = [
+      localizations.mon,
+      localizations.tue,
+      localizations.wed,
+      localizations.thu,
+      localizations.fri,
+      localizations.sat,
+      localizations.sun
+    ];
+
+    return WapiAlert(
+      headline: item["headline"].trim() ?? "No Headline",
+      start: "${weeks[start.weekday - 1]} ${amPmTime("${start.hour}:${start.minute} j")}",
+      end: "${weeks[end.weekday - 1]} ${amPmTime("${end.hour}:${end.minute} j")}",
+      event: item["event"].trim() ?? "No Event",
+      desc: item["desc"].trim() ?? "No Desc",
+      urgency: item["urgency"] ?? "--",
+      severity: item["severity"] ?? "--",
+      certainty: item["certainty"] ?? "--",
+      areas: item["areas"] ?? "--",
+    );
+  }
+}
+
+class Wapi15MinutePrecip { //weatherapi doesn't actaully have 15 minute forecast(well it does but it's paid), but i figured i could just use the
                           //hourly data and just use some smoothing between the hours to emulate the 15 minutes
                           //still better than not having it
   final String t_minus;
@@ -784,6 +865,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName, 
     localtime: "${localtime.hour}:${localtime.minute}",
 
     minutely_15_precip: Wapi15MinutePrecip.fromJson(wapi_body, settings, 0, start, localizations),
+    alerts: getWapiAlerts(wapi_body, localizations),
 
     isonline: isonline
   );

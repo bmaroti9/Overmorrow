@@ -54,19 +54,19 @@ minimalist colorful weather app
 ## Screenshots
 
 <div align="left">
-<img src="Screenshots/overmorrow_evolved1.png" alt="colorful2" width="130">
-<img src="Screenshots/overmorrow_evolved2.png" alt="colorful1" width="130">
-<img src="Screenshots/overmorrow_evolved3.png" alt="colorful3" width="130">
-<img src="Screenshots/overmorrow_evolved4.png" alt="colorful4" width="130">
-<img src="Screenshots/overmorrow_evolved5.png" alt="colorful5" width="130">
-<img src="Screenshots/overmorrow_evolved6.png" alt="colorful5" width="130">
+<img src="Screenshots/overmorrow_evolved1.png" alt="colorful2" width="150">
+<img src="Screenshots/overmorrow_evolved2.png" alt="colorful1" width="150">
+<img src="Screenshots/overmorrow_evolved3.png" alt="colorful3" width="150">
+<img src="Screenshots/overmorrow_evolved4.png" alt="colorful4" width="150">
+<img src="Screenshots/overmorrow_evolved5.png" alt="colorful5" width="150">
+<img src="Screenshots/overmorrow_evolved6.png" alt="colorful5" width="150">
 </div>
 
 ## Tablet mode
 
 <div align="left">
-<img src="Screenshots/overmorrow_evolved_tablet1.png" alt="colorful2" width="350">
-<img src="Screenshots/overmorrow_evolved_tablet2.png" alt="colorful1" width="350">
+<img src="Screenshots/overmorrow_evolved_tablet1.png" alt="colorful2" width="380">
+<img src="Screenshots/overmorrow_evolved_tablet2.png" alt="colorful1" width="380">
 </div>
 
 ## Why make Overmorrow?
@@ -78,7 +78,7 @@ is free and ad free, but after diving into the whole thing i realized that i wou
 So instead here is my take on the weather app ui (but i did kep it free and ad free too). I tried to go for a minimalist and organized interface. 
 
 ## Localization
-Localizations are hosted on [Weblate](https://hosted.weblate.org/projects/overmorrow-weather/). Translations are welcome!
+Localizations are hosted on [Weblate](https://hosted.weblate.org/engage/overmorrow-weather/). Translations are welcome!
 
 <img src="https://hosted.weblate.org/widget/overmorrow-weather/horizontal-auto.svg" alt="Translation status" />
 
@@ -94,11 +94,3 @@ Localizations are hosted on [Weblate](https://hosted.weblate.org/projects/overmo
   - ✅ more than one weather provider
   - ✅ add network images
   - ✅ material you
-
-## Support me!
-
-If you want to help, or just simply want to support me.
-this is my patreon: https://www.patreon.com/MarotiDevel.
-Thank you so much!
-
-also if you like this app please consider leaving it a star on github.

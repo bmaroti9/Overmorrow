@@ -66,27 +66,26 @@ class _DonationPageState extends State<DonationPage> {
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
+            IconButton(icon: Icon(Icons.arrow_back, color: primary,),
                 onPressed: () {
                   goBack();
                 }),
             title: comfortatext(
                 AppLocalizations.of(context)!.donate, 30, settings,
-                color: surface),
-            backgroundColor: primary,
+                color: primary),
+            backgroundColor: surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
             child: Container(
                 color: surface,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
+                  padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      comfortatext(AppLocalizations.of(context)!.donationPageText,
-                         18, settings, color: onSurface),
-
+                      comfortatext(AppLocalizations.of(context)!.donationPageTextNew,
+                         17, settings, color: onSurface),
                       Padding(
                         padding: const EdgeInsets.only(top: 40),
                         child: ElevatedButton(
@@ -98,10 +97,19 @@ class _DonationPageState extends State<DonationPage> {
                                 borderRadius: BorderRadius.circular(12)),
                           ),
                           onPressed: () async {
-                            await _launchUrl('https://www.patreon.com/MarotiDevel');
+                            await _launchUrl('https://paypal.me/miklosmaroti');
                           },
-                          child: comfortatext(AppLocalizations.of(context)!.supportOnPatreon,
-                              18, settings, color: surface, weight: FontWeight.w600),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              comfortatext(AppLocalizations.of(context)!.buyMeACoffee,
+                                  18, settings, color: surface, weight: FontWeight.w600),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Icon(Icons.coffee, color: surface,),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -154,26 +162,24 @@ class _InfoPageState extends State<InfoPage> {
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: surface,),
+            IconButton(icon: Icon(Icons.arrow_back, color: primary,),
                 onPressed: () {
                   goBack();
                 }),
             title: comfortatext(
                 AppLocalizations.of(context)!.about, 30, settings,
-                color: surface),
-            backgroundColor: primary,
+                color: primary),
+            backgroundColor: surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
             child: Container(
               color: surface,
               child: Padding(
-                padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
+                padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    comfortatext('OVRMRW', 40, settings, color: primary, weight: FontWeight.w400),
-
                     Padding(
                       padding: const EdgeInsets.only(top: 30, bottom: 10),
                       child: comfortatext(

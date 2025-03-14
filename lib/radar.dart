@@ -77,8 +77,10 @@ class _RadarSmallState extends State<RadarSmall> {
 
     timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer t) {
       if (isPlaying) {
-        setState(() {
+        if (data.settings["Radar haptics"] == "on") {
           HapticFeedback.lightImpact();
+        }
+        setState(() {
           currentFrameIndex =
           ((currentFrameIndex + 1) % (data.radar.images.length - 1));
         });
@@ -208,6 +210,9 @@ class _RadarSmallState extends State<RadarSmall> {
                             ),
                             onPressed: () {
                               HapticFeedback.selectionClick();
+                              setState(() {
+                                isPlaying = false;
+                              });
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) =>
@@ -298,8 +303,10 @@ class _RadarSmallState extends State<RadarSmall> {
                           //thumbColor: data.current.primary,
 
                           onChanged: (double value) {
-                            setState(() {
+                            if (data.settings["Radar haptics"] == "on") {
                               HapticFeedback.lightImpact();
+                            }
+                            setState(() {
                               hasBeenPlayed = true;
                               currentFrameIndex = value;
                             });
@@ -395,7 +402,9 @@ class _RadarBigState extends State<RadarBig> {
 
     timer = Timer.periodic(const Duration(milliseconds: 1600), (Timer t) {
       if (isPlaying) {
-        HapticFeedback.lightImpact();
+        if (data.settings["Radar haptics"] == "on") {
+          HapticFeedback.lightImpact();
+        }
         setState(() {
           currentFrameIndex =
           ((currentFrameIndex + 1) % (data.radar.images.length - 1));
@@ -557,8 +566,10 @@ class _RadarBigState extends State<RadarBig> {
                                   //thumbColor: data.current.primary,
 
                                   onChanged: (double value) {
-                                    setState(() {
+                                    if (data.settings["Radar haptics"] == "on") {
                                       HapticFeedback.lightImpact();
+                                    }
+                                    setState(() {
                                       hasBeenPlayed = true;
                                       currentFrameIndex = value;
                                     });
@@ -625,6 +636,9 @@ class _RadarBigState extends State<RadarBig> {
                     ),
                     onPressed: () {
                       HapticFeedback.selectionClick();
+                      setState(() {
+                        isPlaying = false;
+                      });
                       Navigator.of(context).pop();
                     },
                     child: Icon(CupertinoIcons.fullscreen_exit,

@@ -19,9 +19,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/ui_helper.dart';
 
+import 'alerts_page.dart';
 import 'aqi_page.dart';
 import 'decoders/decode_OM.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -176,7 +178,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
               Padding(
                 padding: EdgeInsets.only(
                     top: 6,
-                    left: min(max((progress * (widget.size.width - 53)), 2),
+                    left: min(max((progress * (widget.size.width - 54)), 2),
                         widget.size.width - 52)),
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -248,6 +250,7 @@ Widget NewAirQuality(var data, context) {
     child: GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: (){
+        HapticFeedback.lightImpact();
         Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AllergensPage(data: data))
@@ -338,6 +341,65 @@ Widget NewAirQuality(var data, context) {
   );
 }
 
+Widget AlertWidget(var data, context) {
+  if (data.alerts.length > 0) {
+    return Padding(
+        padding: const EdgeInsets.only(
+            left: 21, right: 21, bottom: 25, top: 11),
+        child: Column(
+          children: List.generate(data.alerts.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AlertsPage(data: data))
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.only(left: 25, top: 23, bottom: 23, right: 22),
+                  decoration: BoxDecoration(
+                    color: data.current.containerLow,
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min, //first time i realised this makes it wrap the content size
+                          children: [
+                            Flexible(
+                              child: comfortatext(data.alerts[index].event, 20,
+                                  data.settings, color: data.current.primary,
+                                  weight: FontWeight.w600),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 6),
+                              child: comfortatext("${data.alerts[index].start} - ${data.alerts[index].end}", 14, data.settings,
+                                  color: data.current.outline),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5, left: 20),
+                        child: Icon(Icons.warning_amber_rounded, color: data.current.primaryLight, size: 28,),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+        )
+    );
+  }
+  return Container();
+}
+
 Widget NewRain15MinuteIndicator(var data, context) {
   return Visibility(
     visible: data.minutely_15_precip.t_minus != "",
@@ -383,9 +445,9 @@ Widget NewRain15MinuteIndicator(var data, context) {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 14, bottom: 8),
+              padding: const EdgeInsets.only(top: 14, bottom: 10),
               child: SizedBox(
-                height: 30,
+                height: 28,
                 child: ListView.builder(
                   itemExtent: 11,
                   scrollDirection: Axis.horizontal,

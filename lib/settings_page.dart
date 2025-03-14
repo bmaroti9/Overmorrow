@@ -47,6 +47,9 @@ Map<String, List<String>> settingSwitches = {
     'українська', //Ukrainian
     'türkçe', //Turkish
     'தமிழ்', //Tamil
+    'български', //Bulgarian
+    'Indonesia', //Indonesian
+    'عربي' //Arablic
   ],
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
@@ -59,13 +62,16 @@ Map<String, List<String>> settingSwitches = {
 
   'Color mode' : ['auto', 'original', 'colorful', 'mono', 'light', 'dark'],
 
-  'Color source' : ['image', 'wallpaper'],
+  'Color source' : ['image', 'wallpaper', 'custom'],
   'Image source' : ['network', 'asset'],
+  'Custom color': ['#c62828', '#ff80ab', '#7b1fa2', '#9575cd', '#3949ab', '#40c4ff',
+        '#4db6ac', '#4caf50', '#b2ff59', '#ffeb3b', '#ffab40',],
 
   'Search provider' : ['weatherapi', 'open-meteo'],
   'networkImageDialogShown' : ["false", "true"],
 
-  'Layout order' : ["sunstatus,rain indicator,air quality,radar,forecast,daily"],
+  'Layout order' : ["sunstatus,rain indicator,alerts,air quality,radar,forecast,daily"],
+  'Radar haptics': ["on", "off"],
 };
 
 List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
@@ -322,50 +328,9 @@ Future<List<dynamic>> getMainColor(settings, primary, back, image) async {
   return [colors, x[1]];
 }
 
-Future<List<dynamic>> getTotalColor(settings, primary, back, image) async {
-  List<Color> colors;
-  List<List<Color>> allColor = [];
-
-  String mode = settings["Color mode"];
-
-  if (mode == "auto") {
-    var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-    mode = brightness == Brightness.dark ? "dark" : "light";
-  }
-
-  List<dynamic> lightPalette = (await getImageColors(image, "light" , settings))[0];
-  List<dynamic> darkPalette = (await getImageColors(image, "dark" , settings))[0];
-
-  if (settings["Image source"] == 'network' || settings["Color source"] == 'wallpaper') {
-    allColor.add(getNetworkColors(darkPalette, settings, force: "original"));
-    allColor.add(getNetworkColors(darkPalette, settings, force: "colorful"));
-    allColor.add(getNetworkColors(darkPalette, settings, force: "mono"));
-    allColor.add(getNetworkColors(lightPalette, settings, force: "light"));
-    allColor.add(getNetworkColors(darkPalette, settings, force: "dark"));
-  }
-  else {
-    allColor.add(getColors(primary, back, settings, 0, force: "original"));
-    allColor.add(getColors(primary, back, settings, 0, force: "colorful"));
-    allColor.add(getColors(primary, back, settings, 0, force: "mono"));
-    allColor.add(getNetworkColors(lightPalette, settings, force: "light")); //because the light and dark use the
-    allColor.add(getNetworkColors(darkPalette, settings, force: "dark")); // material palette generator anyway
-  }
-
-  if ((mode == "light" || mode == "dark") || settings["Image source"] == 'network'
-      || settings["Color source"] == 'wallpaper') {
-
-    colors = getNetworkColors(mode == "light" ? lightPalette : darkPalette ,settings);
-  }
-  else {
-    colors = getColors(primary, back, settings, 0);
-  }
-
-  return [colors, allColor];
-}
-
 Future<List<dynamic>> getSettingsAndColors(primary, back, image) async {
   Map<String, String> settings = await getSettingsUsed();
-  List<dynamic> colors = await getTotalColor(settings, primary, back, image);
+  List<Color> colors = (await getMainColor(settings, primary, back, image))[0];
   return [settings, colors];
 }
 
@@ -448,7 +413,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
     dropdownColor: bgcolor,
     borderRadius: BorderRadius.circular(18),
     icon: Padding(
-      padding: const EdgeInsets.only(left:5),
+      padding: const EdgeInsets.only(left:10),
       child: Icon(Icons.arrow_drop_down_circle_rounded, color: primary,),
     ),
     style: GoogleFonts.comfortaa(
@@ -456,6 +421,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
       fontSize: 19 * getFontSize(settings["Font size"]),
       fontWeight: FontWeight.w300,
     ),
+    alignment: Alignment.centerRight,
     value: unit,
     items: Items.map((item) {
       return DropdownMenuItem(
@@ -477,8 +443,8 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
     child: Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(right: 13),
-          child: Icon(icon, color: primary),
+          padding: const EdgeInsets.only(right: 13, bottom: 2),
+          child: Icon(icon, color: primary, size: 21,),
         ),
         Expanded(
           flex: 10,
@@ -518,6 +484,8 @@ class _SettingsPageState extends State<SettingsPage> {
   final image;
 
   String _locale = 'English';
+  //this is so that appearance page setting changes take effect in place rather that having to exit the page
+  final ValueNotifier<List<Color>> colornotify = ValueNotifier<List<Color>>([]);
 
   _SettingsPageState({required this.primary, required this.back, required this.image});
 
@@ -535,6 +503,12 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   @override
+  void dispose() {
+    colornotify.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
       future: getSettingsAndColors(primary, back, image),
@@ -549,12 +523,15 @@ class _SettingsPageState extends State<SettingsPage> {
           );
         }
         _locale = snapshot.data?[0]["Language"];
-        print(("locale", _locale));
+        //this is needed so flutter wont complain about setstate during build
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          colornotify.value = snapshot.data?[1];
+        });
         return Localizations.override(
           context: context,
           locale: languageNameToLocale[_locale] ?? const Locale('en'),
           child: SettingsMain(settings: snapshot.data?[0], updatePage: updatePage, goBack: goBack, image: image,
-              colors: snapshot.data?[1][0], allColors: snapshot.data?[1][1]),
+              colors: snapshot.data?[1], colornotify: colornotify,),
         );
       },
     );
@@ -568,9 +545,9 @@ class SettingsMain extends StatelessWidget {
   final settings;
   final updatePage;
   final image;
-  final allColors;
+  final colornotify;
 
-  const SettingsMain({super.key, this.settings, this.updatePage, this.goBack, this.image, this.colors, this.allColors});
+  const SettingsMain({super.key, this.settings, this.updatePage, this.goBack, this.image, this.colors, this.colornotify});
 
   @override
   Widget build(BuildContext context) {
@@ -591,7 +568,7 @@ class SettingsMain extends StatelessWidget {
           ),
           // Just some content big enough to have something to scroll.
           SliverToBoxAdapter(
-            child: NewSettings(settings!, updatePage, image, colors, allColors, context),
+            child: NewSettings(settings!, updatePage, image, colors, context, colornotify),
           ),
         ],
       ),

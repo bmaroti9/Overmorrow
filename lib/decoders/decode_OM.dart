@@ -154,7 +154,7 @@ String oMGetName(index, settings, item, dayDif, localizations) {
       localizations.tomorrow,
       localizations.overmorrow,
     ];
-    return names[index];
+    return names[index - dayDif];
   }
   String x = item["daily"]["time"][index].split("T")[0];
   List<String> z = x.split("-");
@@ -698,7 +698,7 @@ class OMAqi{
 
 
     //var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 6));
-    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 3));
+    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi open-meteo");
 
     var response = await file[0].readAsString();
     final item = jsonDecode(response)["current"];
@@ -815,7 +815,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
 
     //var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo extended").timeout(const Duration(seconds: 3));
-    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi-extended open-meteo").timeout(const Duration(seconds: 3));
+    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi-extended open-meteo");
 
     var response = await file[0].readAsString();
     final item = jsonDecode(response);
@@ -1019,6 +1019,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
     minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings,
         DateTime(localtime.year, localtime.month, localtime.day, localtime.hour, localtime.minute).
         difference(lastKnowTime).inMinutes, localizations),
+    alerts: [],
 
     current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng,
         start, dayDif, localizations),

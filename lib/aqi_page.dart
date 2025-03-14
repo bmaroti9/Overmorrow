@@ -16,8 +16,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -27,7 +25,6 @@ import 'package:overmorrow/decoders/decode_OM.dart';
 
 import 'package:overmorrow/ui_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 
 class SquigglyCirclePainter extends CustomPainter {
 
@@ -157,7 +154,7 @@ class ThreeQuarterCirclePainter extends CustomPainter {
 
 Widget pollutantWidget(data, name, value, percent) {
   return Padding(
-    padding: EdgeInsets.all(14),
+    padding: const EdgeInsets.all(14),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -319,7 +316,7 @@ class _AllergensPageState extends State<AllergensPage> {
                             //border: Border.all(width: 1.5, color: data.current.containerHigh),
                             borderRadius: BorderRadius.circular(18),
                           ),
-                          padding: const EdgeInsets.all(17),
+                          padding: const EdgeInsets.all(19),
                           child: Row(
                             children: [
                               comfortatext(AppLocalizations.of(context)!.mainPollutant, 16, data.settings, color: data.current.onSurface),

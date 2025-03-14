@@ -16,14 +16,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'dart:async';
-import 'package:worldtime/worldtime.dart';
-import 'package:worldtime/constants.dart';
 
 class MyGetResponse implements FileServiceResponse {
   var url;
@@ -140,29 +137,6 @@ class CustomCacheManager {
 
       //final cachedFile = await _cacheManager.getSingleFile(url);
       //return cachedFile;
-    }
-  }
-}
-
-Worldtime XWorldTime = MyWorldtime();
-
-//i wanted to rewrite this so it uses the caching
-class MyWorldtime extends Worldtime {
-
-  @override
-  Future<DateTime> timeByLocation({
-    required double latitude,
-    required double longitude,
-  }) async {
-    final String url = '${urlLocation}latitude=$latitude&longitude=$longitude';
-    try {
-      var file = await XCustomCacheManager.fetchData(url.toString(), "$latitude, $longitude timeapi",
-          headers: headers).timeout(const Duration(seconds: 6));
-      var response = await file[0].readAsString();
-      final Map json = jsonDecode(response);
-      return DateTime.tryParse(json['dateTime']) ?? defaultDateTime;
-    } catch (e) {
-      rethrow;
     }
   }
 }

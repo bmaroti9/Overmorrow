@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
@@ -26,6 +25,7 @@ import 'package:overmorrow/weather_refact.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'decoders/decode_wapi.dart';
+import 'decoders/extra_info.dart';
 import 'main_ui.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -81,8 +81,7 @@ Widget mainSettingEntry(String title, String desc, Color highlight, Color primar
   );
 }
 
-Widget NewSettings(Map<String, String> settings, Function updatePage, Image image, List<Color> colors,
-    allColors, context) {
+Widget NewSettings(Map<String, String> settings, Function updatePage, Image image, List<Color> colors, context, colornotify) {
 
   Color containerLow = colors[6];
   Color onSurface = colors[4];
@@ -93,13 +92,16 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
 
   AppLocalizations localizations = AppLocalizations.of(context)!;
 
+  print(("prime", primary));
+
   return Padding(
     padding: const EdgeInsets.only(top: 20, bottom: 20),
     child: Column(
       children: [
         mainSettingEntry(localizations.appearance, localizations.appearanceSettingDesc,
             containerLow, primary, onSurface, surface, Icons.palette_outlined, settings,
-            AppearancePage(settings: settings, image: image, allColors: allColors, updateMainPage: updatePage, localizations: localizations,),
+            AppearancePage(settings: settings, image: image, colors: colornotify, updateMainPage: updatePage,
+                localizations: localizations),
             context, updatePage
         ),
         mainSettingEntry(localizations.general, localizations.generalSettingDesc,
@@ -160,17 +162,17 @@ Widget ColorThemeButton(String name, IconData icon, Color highlight, Color prima
 class AppearancePage extends StatefulWidget {
   final settings;
   final image;
-  final allColors;
+  final colors;
   final updateMainPage;
   final localizations;
 
-  const AppearancePage({Key? key, required this.allColors, required this.settings,
+  const AppearancePage({Key? key, required this.colors, required this.settings,
     required this.image, required this.updateMainPage, required this.localizations})
       : super(key: key);
 
   @override
   _AppearancePageState createState() =>
-      _AppearancePageState(image: image, settings: settings, allColors: allColors,
+      _AppearancePageState(image: image, settings: settings, colors: colors,
           updateMainPage: updateMainPage, localizations: localizations);
 }
 
@@ -178,11 +180,11 @@ class _AppearancePageState extends State<AppearancePage> {
 
   final image;
   final settings;
-  final allColors;
+  final colors;
   final updateMainPage;
   final localizations;
 
-  _AppearancePageState({required this.image, required this.settings, required this.allColors, required this.updateMainPage,
+  _AppearancePageState({required this.image, required this.settings, required this.colors, required this.updateMainPage,
   required this.localizations});
 
   Map<String, String> copySettings = {};
@@ -209,17 +211,37 @@ class _AppearancePageState extends State<AppearancePage> {
   @override
   Widget build(BuildContext context) {
 
-    String x = "light";
-    if (copySettings["Color mode"] == "auto") {
-      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      x = brightness == Brightness.dark ? "dark" : "light";
-    }
-    else {
-      x = copySettings["Color mode"] ?? "light";
-    }
+    return ValueListenableBuilder(
+      valueListenable: colors,
+      builder: (context, value, child) {
+        return AppearanceSelector(image: image,
+            settings: copySettings,
+            colors: value,
+            updatePage: updatePage,
+            localizations: localizations,
+            goBack: goBack);
+      }
+    );
 
-    final colors = allColors[["original", "colorful", "mono", "light", "dark"]
-        .indexOf(x)];
+  }
+}
+
+
+class AppearanceSelector extends StatelessWidget {
+
+  final image;
+  final settings;
+  final colors;
+  final updatePage;
+  final localizations;
+  final goBack;
+
+  AppearanceSelector({required this.image, required this.settings, required this.colors,
+    required this.updatePage, required this.localizations, required this.goBack});
+
+
+  @override
+  Widget build(BuildContext context) {
 
     Color highlight = colors[7];
     Color primaryLight = colors[2];
@@ -229,6 +251,8 @@ class _AppearancePageState extends State<AppearancePage> {
 
     Color colorPop = colors[12];
     Color descColor = colors[13];
+
+    print(("primary", primary));
 
     return Material(
       color: surface,
@@ -255,18 +279,21 @@ class _AppearancePageState extends State<AppearancePage> {
                   child: Center(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                        color: highlight
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                            topRight: Radius.circular(25),
+                          ),
+                          color: highlight
                       ),
                       width: 240,
                       height: 350,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(18),
+                        borderRadius: BorderRadius.circular(25),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              height: 220,
+                              height: 240,
                               child: Stack(
                                 children: [
                                   ParrallaxBackground(image: image, color: surface),
@@ -276,10 +303,10 @@ class _AppearancePageState extends State<AppearancePage> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        comfortatext("${unit_coversion(29, settings["Temperature"]!).toInt()}°", 42,
+                                        comfortatext("${unit_coversion(32, settings["Temperature"]!).toInt()}°", 42,
                                             settings, color: colorPop, weight: FontWeight.w300),
-                                        comfortatext(localizations.clearSky, 22,
-                                            settings, color: descColor, weight: FontWeight.w500)
+                                        comfortatext(localizations.clearSky, 24,
+                                            settings, color: descColor, weight: FontWeight.w600)
                                       ],
                                     ),
                                   ),
@@ -287,38 +314,27 @@ class _AppearancePageState extends State<AppearancePage> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 10, right: 4, left: 4, bottom: 15),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: List.generate(4, (index) {
-                                  return Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: AspectRatio(
-                                        aspectRatio: 1,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(40),
-                                            border: Border.all(color: primary, width: 2),
+                                padding: const EdgeInsets.only(top: 15, right: 4, left: 4, bottom: 15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: List.generate(4, (index) {
+                                    return Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: AspectRatio(
+                                          aspectRatio: 1,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(40),
+                                              border: Border.all(color: primary, width: 2),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                }),
-                              )
+                                    );
+                                  }),
+                                )
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-                              child: Container(
-                                height: 3,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: primaryLight,
-                                ),
-                              ),
-                            ),
-
                           ],
                         ),
                       ),
@@ -350,6 +366,41 @@ class _AppearancePageState extends State<AppearancePage> {
 
                 settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, highlight, updatePage,
                     onSurface, primaryLight, primary, 'Color source'),
+                if (settings["Color source"] == "custom") SizedBox(
+                  height: 80,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: settingSwitches["Custom color"]!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          HapticFeedback.mediumImpact();
+                          updatePage("Custom color", settingSwitches["Custom color"]![index]);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Color(getColorFromHex(settingSwitches["Custom color"]![index])),
+                                      borderRadius: BorderRadius.circular(100)
+                                  ),
+                                ),
+                                if (settings["Custom color"] == settingSwitches["Custom color"]![index]) const Center(
+                                    child: Icon(Icons.check, color: WHITE,))
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 settingEntry(Icons.landscape_outlined, localizations.imageSource, settings, highlight, updatePage,
                     onSurface, primaryLight, primary, 'Image source'),
                 const SizedBox(height: 70,),
@@ -359,7 +410,9 @@ class _AppearancePageState extends State<AppearancePage> {
         ],
       ),
     );
+
   }
+
 }
 
 class UnitsPage extends StatefulWidget {
@@ -536,6 +589,8 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
 
                   settingEntry(Icons.manage_search_outlined, localizations.searchProvider, settings, highlight, updatePage,
                       onSurface, primaryLight, primary, 'Search provider'),
+                  settingEntry(Icons.vibration_rounded, localizations.radarHaptics, settings, highlight, updatePage,
+                      onSurface, primaryLight, primary, 'Radar haptics'),
                 ],
               ),
             ),
@@ -660,7 +715,7 @@ class TranslationSelection extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   HapticFeedback.selectionClick();
-                  _launchUrl("https://hosted.weblate.org/projects/overmorrow-weather/");
+                  _launchUrl("https://hosted.weblate.org/engage/overmorrow-weather/");
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -747,7 +802,7 @@ class _LayoutPageState extends State<LayoutPage> {
   late List<String> _items;
 
   //also the default order
-  static const allNames = ["sunstatus", "rain indicator", "air quality", "radar", "forecast", "daily"];
+  static const allNames = ["sunstatus", "rain indicator", "alerts", "air quality", "radar", "forecast", "daily"];
 
   List<String> removed = [];
 

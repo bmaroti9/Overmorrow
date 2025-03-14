@@ -36,7 +36,10 @@ Map<String, Locale> languageNameToLocale = {
   '日本語': const Locale('ja'),
   'українська': const Locale('uk'),
   'türkçe': const Locale('tr'),
-  'தமிழ்' : const Locale('ta')
+  'தமிழ்' : const Locale('ta'),
+  'български': const Locale('bg'),
+  'Indonesia': const Locale('id'),
+  'عربي': const Locale('ar'),
 };
 
 Map<String, IconData> textMaterialIcon = {

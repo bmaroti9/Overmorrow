@@ -116,7 +116,7 @@ Widget Circles(double width, var data, double bottom, color, context, {align = A
                   DescriptionCircle(
                     color: color,
                     text: '${data.current.precip}',
-                    undercaption: AppLocalizations.of(context)!.precipLowercase,
+                    undercaption: AppLocalizations.of(context)!.precipCapital,
                     extra: data.settings["Precipitation"],
                     size: width,
                     settings: data.settings,

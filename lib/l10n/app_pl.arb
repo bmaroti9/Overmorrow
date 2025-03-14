@@ -217,5 +217,105 @@
   "airQualityLowercase": "jakość powietrza",
   "@airQualityLowercase": {},
   "precipitaion": "Opady",
-  "@precipitaion": {}
+  "@precipitaion": {},
+  "areas": "obszary",
+  "@areas": {},
+  "helpTranslate": "pomóż przetłumaczyć",
+  "@helpTranslate": {},
+  "extremelyClear": "niezwykle czyste",
+  "@extremelyClear": {},
+  "veryClear": "bardzo czyste",
+  "@veryClear": {},
+  "rainInHalfHour": "przez następne pół godziny będzie padać",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "rainInOneHour": "deszcz w ciągu następnej godziny",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  },
+  "updatedXHoursAgo": "zaktualizowano, {hours, plural, =1 {1 hour} other {{hours} hours}} temu",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "zaktualizowano, {days, plural, =1 {1 day} other {{days} days}} temu",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXMinutesAgo": "zaktualizowano, {minutes} min. temu",
+  "@updatedXMinutesAgo": {},
+  "rainExpectedInOneHour": "spodziewany deszcz za godzinę",
+  "@rainExpectedInOneHour": {
+    "description": "rain expected in the next hour"
+  },
+  "buyMeACoffee": "Kup mi kawę!",
+  "@buyMeACoffee": {},
+  "donationPageTextNew": "Overmorrow zawsze miał być całkowicie bezpłatną aplikacją, bez żadnych reklam i zakupów w aplikacji.\n\nWięc jeśli chcesz po prostu z niego korzystać, to baw się dobrze.\n\nJeśli jednak lubisz jej używać, rozważ proszę pozostawienie małego napiwku.\n\nDziękuję!",
+  "@donationPageTextNew": {},
+  "rainExpectedInMinutes": "spodziewany deszcz za {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "radarHaptics": "Haptyka radarowa",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
+  },
+  "rainInMinutes": "deszcz w ciągu następnych {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInHours": "deszcz w ciągu następnych {hours, plural, =1 {hour} other {{hours} hours}}",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInHours": "spodziewany deszcz za {hours, plural, =1 {hour} other {{hours} hours}}",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "slightlyHazy": "lekko zamglone",
+  "@slightlyHazy": {},
+  "hazy": "mglisto",
+  "@hazy": {},
+  "veryHazy": "bardzo mglisto",
+  "@veryHazy": {},
+  "extremelyHazy": "wyjątkowo zamglone",
+  "@extremelyHazy": {},
+  "poweredByOpenMeteo": "obsługiwane przez open-meteo",
+  "@poweredByOpenMeteo": {
+    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+  },
+  "clear": "czyste",
+  "@clear": {},
+  "alertsCapital": "Alerty",
+  "@alertsCapital": {}
 }
