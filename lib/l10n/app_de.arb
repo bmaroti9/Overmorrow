@@ -307,5 +307,21 @@
   "veryClear": "sehr klar",
   "@veryClear": {},
   "donationPageText": "Overmorrow sollte immer eine völlig kostenlose App sein, ohne Werbung oder In-App-Käufe.\n\nWenn Sie sie also einfach so verwenden möchten, dann viel Spaß damit.\n\nWenn Sie sie jedoch gerne verwenden und der Meinung sind, dass sie ein bisschen Geld wert ist, dann denken Sie bitte darüber nach, das Projekt auf meinem Patreon zu unterstützen.",
-  "@donationPageText": {}
+  "@donationPageText": {},
+  "areas": "Gebiete",
+  "@areas": {},
+  "urgency": "Dringlichkeit",
+  "@urgency": {},
+  "radarHaptics": "Radar-Haptik",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
+  },
+  "buyMeACoffee": "Kauf mir einen Kaffee!",
+  "@buyMeACoffee": {},
+  "severity": "Schweregrad",
+  "@severity": {},
+  "certainty": "bestimmte",
+  "@certainty": {},
+  "alertsCapital": "Warnungen",
+  "@alertsCapital": {}
 }
