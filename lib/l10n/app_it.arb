@@ -215,5 +215,9 @@
   "offline": "offline",
   "@offline": {},
   "helpTranslate": "aiuta a tradurre",
-  "@helpTranslate": {}
+  "@helpTranslate": {},
+  "airQualityLowercase": "Qualità dell'aria",
+  "@airQualityLowercase": {},
+  "precipitaion": "Precipitazioni",
+  "@precipitaion": {}
 }
