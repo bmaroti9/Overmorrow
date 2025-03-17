@@ -5,7 +5,7 @@
   "@birchPollen": {},
   "clear": "ясно",
   "@clear": {},
-  "rainExpectedInMinutes": "очаква се дъжд в следващите {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "rainExpectedInMinutes": "очаква се дъжд в следващите {minutes, plural, =1 {minute} other {{minutes} минути}}",
   "@rainExpectedInMinutes": {
     "description": "rain expected in the next X minutes",
     "placeholders": {
@@ -26,7 +26,7 @@
   },
   "veryHazy": "много мъгливо",
   "@veryHazy": {},
-  "rainInHours": "дъжд в следващите {hours, plural, =1 {hour} other {{hours} hours}}",
+  "rainInHours": "дъжд в следващите {hours, plural, =1 {hour} other {{hours} часа}}",
   "@rainInHours": {
     "description": "rain in the next X hours",
     "placeholders": {
@@ -35,7 +35,7 @@
       }
     }
   },
-  "updatedXHoursAgo": "актуализирано, преди {hours, plural, =1 {1 hour} other {{hours} hours}}",
+  "updatedXHoursAgo": "актуализирано, преди {hours, plural, =1 {1 hour} other {{hours} часа}}",
   "@updatedXHoursAgo": {
     "description": "updated x hours ago",
     "placeholders": {
@@ -80,9 +80,9 @@
   "@weatherProvider": {},
   "poorAqiDesc": "Възможни са последици за здравето на всички, но сериозни за чувствителните групи.",
   "@poorAqiDesc": {},
-  "uvCapital": "UV",
+  "uvCapital": "UV индекс",
   "@uvCapital": {},
-  "precipCapital": "Валежи.",
+  "precipCapital": "Валежи",
   "@precipCapital": {},
   "humidity": "Влажност",
   "@humidity": {},
@@ -130,7 +130,7 @@
   "@locationPermissionDeniedForever": {},
   "failedToAccessGps": "не успя да получи достъп до gps",
   "@failedToAccessGps": {},
-  "sunriseSunset": "изгрев/залез",
+  "sunriseSunset": "изгрев / залез",
   "@sunriseSunset": {},
   "airQuality": "Качество на въздуха",
   "@airQuality": {},
@@ -146,9 +146,9 @@
   "@poor": {},
   "veryPoor": "много лошо",
   "@veryPoor": {},
-  "radar": "радар",
+  "radar": "Радар",
   "@radar": {},
-  "timeMode": "Режим на време",
+  "timeMode": "Формат на време",
   "@timeMode": {},
   "mon": "Пн",
   "@mon": {},
@@ -170,7 +170,7 @@
   "@precipLowercase": {},
   "windLowercase": "вятър",
   "@windLowercase": {},
-  "uvLowercase": "uv",
+  "uvLowercase": "uv индекс",
   "@uvLowercase": {},
   "temp": "темп.",
   "@temp": {},
@@ -188,9 +188,9 @@
   "@general": {},
   "appearanceSettingDesc": "цветна тема, източник на изображения",
   "@appearanceSettingDesc": {},
-  "generalSettingDesc": "режим на време, размер на шрифта",
+  "generalSettingDesc": "формат на време, размер на шрифта",
   "@generalSettingDesc": {},
-  "languageSettingDesc": "езикът, който се използва",
+  "languageSettingDesc": "използван език",
   "@languageSettingDesc": {},
   "units": "Мерни единици",
   "@units": {},
@@ -204,11 +204,11 @@
   "@layout": {},
   "layoutSettingDesc": "ред на приспособление, персонализиране",
   "@layoutSettingDesc": {},
-  "thirtyMinutes": "30м",
+  "thirtyMinutes": "30мин.",
   "@thirtyMinutes": {},
   "mainPollutant": "основен замърсител",
   "@mainPollutant": {},
-  "hr": "ч",
+  "hr": "ч.",
   "@hr": {},
   "alderPollen": "Прашец от елша",
   "@alderPollen": {},
@@ -244,7 +244,7 @@
   "@poweredByOpenMeteo": {
     "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
   },
-  "rainInMinutes": "дъжд в следващите {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "rainInMinutes": "дъжд в следващите {minutes, plural, =1 {minute} other {{minutes} минути}}",
   "@rainInMinutes": {
     "description": "rain in the next X minutes",
     "placeholders": {
@@ -263,7 +263,7 @@
   },
   "updatedXMinutesAgo": "актуализирано, преди {minutes} минути",
   "@updatedXMinutesAgo": {},
-  "updatedXDaysAgo": "актуализирано, преди {days, plural, =1 {1 day} other {{days} days}}",
+  "updatedXDaysAgo": "актуализирано, преди {days, plural, =1 {1 day} other {{days} дни}}",
   "@updatedXDaysAgo": {
     "description": "updated x days ago",
     "placeholders": {
@@ -272,7 +272,7 @@
       }
     }
   },
-  "rainExpectedInHours": "очаква се дъжд в следващите {hours, plural, =1 {hour} other {{hours} hours}}",
+  "rainExpectedInHours": "очаква се дъжд в следващите {hours, plural, =1 {hour} other {{hours} часа}}",
   "@rainExpectedInHours": {
     "description": "rain expected in the next X hours",
     "placeholders": {
