@@ -213,5 +213,7 @@
   "unitedStatesAqi": "aqi degli stati uniti",
   "@unitedStatesAqi": {},
   "offline": "offline",
-  "@offline": {}
+  "@offline": {},
+  "helpTranslate": "aiuta a tradurre",
+  "@helpTranslate": {}
 }
