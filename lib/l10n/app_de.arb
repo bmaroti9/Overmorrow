@@ -128,7 +128,7 @@
   "@imageSource": {},
   "temp": "Temp",
   "@temp": {},
-  "precipLowercase": "Niederschl.",
+  "precipLowercase": "Niederschlag",
   "@precipLowercase": {},
   "windLowercase": "Wind",
   "@windLowercase": {},
@@ -160,7 +160,7 @@
   "@allImagesUsedAreFrom": {},
   "supportOnPatreon": "Unterstützung auf Patreon",
   "@supportOnPatreon": {},
-  "appearance": "Erscheinungsbild",
+  "appearance": "Aussehen",
   "@appearance": {},
   "general": "Allgemein",
   "@general": {},
@@ -204,7 +204,7 @@
   "@dateFormat": {},
   "d": "T",
   "@d": {},
-  "aerosolOpticalDepth": "aerosol-optische tiefe",
+  "aerosolOpticalDepth": "aerosol-optische Tiefe",
   "@aerosolOpticalDepth": {},
   "dust": "Staub",
   "@dust": {},
@@ -312,7 +312,7 @@
   "@areas": {},
   "urgency": "Dringlichkeit",
   "@urgency": {},
-  "radarHaptics": "Radar-Haptik",
+  "radarHaptics": "Radar Haptik",
   "@radarHaptics": {
     "description": "setting for enabling or disabling haptic feedback for the radar"
   },
@@ -323,5 +323,7 @@
   "certainty": "bestimmte",
   "@certainty": {},
   "alertsCapital": "Warnungen",
-  "@alertsCapital": {}
+  "@alertsCapital": {},
+  "donationPageTextNew": "Overmorrow sollte immer eine völlig kostenlose App sein, ohne Werbung oder In-App-Käufe. \n\nWenn Sie sie also einfach nur so benutzen wollen, dann genießen Sie sie bitte. \n\nWenn Sie die App jedoch gerne nutzen, dann geben Sie bitte ein kleines Trinkgeld. \n\nVielen Dank dafür!",
+  "@donationPageTextNew": {}
 }
