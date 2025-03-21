@@ -849,7 +849,6 @@ class _LayoutPageState extends State<LayoutPage> {
             leading: IconButton(
               icon: Icon(Icons.arrow_back, color: primary),
               onPressed: () {
-                updatePage('Layout order', _items.join(","));
                 goBack();
               },
             ),
@@ -862,6 +861,7 @@ class _LayoutPageState extends State<LayoutPage> {
                     setState(() {
                       _items = allNames.toList();
                       removed = [];
+                      updatePage('Layout order', _items.join(","));
                     });
                   },
                 ),
@@ -905,6 +905,7 @@ class _LayoutPageState extends State<LayoutPage> {
                                     setState(() {
                                       removed.add(_items[index]);
                                       _items.remove(_items[index]);
+                                      updatePage('Layout order', _items.join(","));
                                     });
                                   },
                                   child: Container(
@@ -930,6 +931,7 @@ class _LayoutPageState extends State<LayoutPage> {
                       }
                       final String item = _items.removeAt(oldIndex);
                       _items.insert(newIndex, item);
+                      updatePage('Layout order', _items.join(","));
                     });
                   },
                 ),
