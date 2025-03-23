@@ -157,16 +157,16 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
             textDirection: TextDirection.ltr);
         textPainter.layout();
 
-        final textWidth = textPainter.width;
+        final textWidth = textPainter.width + 1;
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 13),
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 15),
           child: Column(
             children: [
               Padding(
                 padding: EdgeInsets.only(
                     left: min(
-                        max((progress * (widget.size.width - 53)) - textWidth / 2 + 2, 0),
+                        max((progress * (widget.size.width - 53)) - textWidth / 2 + 3, 0),
                         widget.size.width - 55 - textWidth)),
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -276,12 +276,9 @@ Widget NewAirQuality(var data, context) {
                         MaterialPageRoute(builder: (context) => AllergensPage(data: data))
                     );
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 1),
-                    child: SizedBox(
-                        width: 40, height: 36,
-                        child: Icon(Icons.keyboard_arrow_right, color: data.current.primary, size: 21,)),
-                  )
+                  child: SizedBox(
+                      width: 40, height: 36,
+                      child: Icon(Icons.keyboard_arrow_right, color: data.current.primary, size: 21,))
               ),
             ],
           ),

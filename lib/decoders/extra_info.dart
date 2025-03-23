@@ -58,6 +58,7 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
 
   String text_query = textToUnsplashText[_text]![0];
   String placeName = shouldUsePlaceName[_text]! ? " $loc" : "";
+  placeName = "";
 
   //print(("textquery", "$text_query, $loc", _text, text_query + placeName));
 
@@ -131,7 +132,7 @@ Future<List<dynamic>> getUnsplashImage(String _text, String real_loc, double lat
 
     unaccuracy -= min(ratings, 2000);
 
-    //print((i, unaccuracy.toStringAsFixed(6), (desc1 ?? "null").trim() + ", " +  desc2, unsplash_body[i]["likes"], unsplash_body[i]["downloads"]));
+    //print((i, unaccuracy.toStringAsFixed(6), (desc1 ?? "null").trim() + ", " +  unsplash_body[i]["likes"], unsplash_body[i]["downloads"]));
     if (unaccuracy < best) {
       index = i;
       best = unaccuracy;
@@ -240,9 +241,9 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
   final List<Color> used_colors = getNetworkColors([palette, BLACK, BLACK], settings);
 
   final List<Color> dominant = pali.colors.toList();
-  Color startcolor = used_colors[0];
+  Color startcolor = used_colors[2];
 
-  Color bestcolor = startcolor; //start with surface as it's the intended color
+  Color bestcolor = startcolor; //start with primaryLight as it's the intended color
   double bestDif = difFromBackColors(bestcolor, dominant);
   print(("dif1", bestDif));
 
@@ -250,8 +251,8 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
   double newdif = 0;
 
   if (bestDif < 2) {
-    //try if primaryLight color works better
-    newcolor = used_colors[2];
+    //try if primary color works better
+    newcolor = used_colors[0];
     newdif = difFromBackColors(newcolor, dominant);
     print(("dif2", newdif, newcolor));
     if (newdif > 1.9) {
@@ -300,7 +301,7 @@ Future<List<dynamic>> getImageColors(Image Uimage, color_mode, settings) async {
 
   //print(("diffs", bestDif, desc_dif));
 
-  if (desc_dif < 10) {
+  if (desc_dif < 2) {
     desc_color = bestcolor;
   }
 
