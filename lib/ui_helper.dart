@@ -52,18 +52,18 @@ double getFontSize(String set) {
 }
 
 Widget comfortatext(String text, double size, settings,
-    {Color color = WHITE, TextAlign align = TextAlign.left, weight = FontWeight.w400,
+    {Color color = WHITE, TextAlign align = TextAlign.left, weight = FontWeight.w300,
       decoration = TextDecoration.none}) {
 
   double x = getFontSize(settings["Font size"]);
   return Text(
     text,
-    style: GoogleFonts.comfortaa(
+    style: GoogleFonts.outfit(
       color: color,
-      fontSize: size * x,
+      fontSize: size * x * 1.1,
       fontWeight: weight,
-      height: 1.1,
       decoration: decoration,
+      height: 1.05,
       decorationColor: color,
     ),
     overflow: TextOverflow.ellipsis,
@@ -719,44 +719,32 @@ Future<List<String>> getRecommend(String query, searchProvider, settings) async 
 }
 class MySearchParent extends StatefulWidget{
   final updateLocation;
-  final color;
+  final colors;
   final place;
   final controller;
   final settings;
   final real_loc;
-  final secondColor;
-  final textColor;
-  final highlightColor;
-  final extraTextColor;
 
   const MySearchParent({super.key, required this.updateLocation,
-    required this.color, required this.place, required this.controller, required this.settings,
-    required this.real_loc, required this.secondColor, required this.textColor,
-    required this.highlightColor, required this.extraTextColor});
+    required this.colors, required this.place, required this.controller, required this.settings,
+    required this.real_loc});
 
   @override
-  _MySearchParentState createState() => _MySearchParentState(color: color,
-  place: place, controller: controller, settings: settings, real_loc: real_loc,
-      secondColor: secondColor, textColor: textColor, highlightColor: highlightColor,
-    extraTextColor: extraTextColor);
+  _MySearchParentState createState() => _MySearchParentState(colors: colors,
+  place: place, controller: controller, settings: settings, real_loc: real_loc,);
 }
 
 class _MySearchParentState extends State<MySearchParent> {
   bool isEditing = false;
 
-  final color;
+  final colors;
   final place;
   final controller;
   final settings;
   final real_loc;
-  final secondColor;
-  final textColor;
-  final highlightColor;
-  final extraTextColor;
 
-  _MySearchParentState({required this.color, required this.place,
-  required this.controller, required this.settings, required this.real_loc, required this.secondColor,
-  required this.textColor, required this.highlightColor, required this.extraTextColor});
+  _MySearchParentState({required this.colors, required this.place,
+  required this.controller, required this.settings, required this.real_loc});
 
   late Future<SharedPreferences> _prefsFuture;
 
@@ -800,17 +788,15 @@ class _MySearchParentState extends State<MySearchParent> {
         List<String> favorites = getFavorites(snapshot.data);
         //return buildWholeThing(snapshot.data);
         return MySearchWidget(updateLocation: widget.updateLocation,
-            color: color, favorites: favorites, prefs: snapshot.data,
-        place: place, controller: controller, settings: settings, real_loc: real_loc,
-        secondColor: secondColor, textColor: textColor, highlightColor: highlightColor,
-        extraTextColor: extraTextColor,);
+            colors: colors, favorites: favorites, prefs: snapshot.data,
+        place: place, controller: controller, settings: settings, real_loc: real_loc);
       },
     );
   }
 }
 
 class MySearchWidget extends StatefulWidget{
-  final color;
+  final colors;
   final place;
   final updateLocation;
   final favorites;
@@ -818,49 +804,35 @@ class MySearchWidget extends StatefulWidget{
   final controller;
   final settings;
   final real_loc;
-  final secondColor;
-  final textColor;
-  final highlightColor;
-  final extraTextColor;
 
-  const MySearchWidget({super.key, required this.color, required this.updateLocation,
+  const MySearchWidget({super.key, required this.colors, required this.updateLocation,
   required this.favorites, required this.prefs, required this.place,
-  required this.controller, required this.settings, required this.real_loc,
-    required this.secondColor, required this.textColor, required this.highlightColor,
-    required this.extraTextColor});
+  required this.controller, required this.settings, required this.real_loc});
 
   @override
-  _MySearchWidgetState createState() => _MySearchWidgetState(color: color,
+  _MySearchWidgetState createState() => _MySearchWidgetState(colors: colors,
   updateLocation: updateLocation, favorites: favorites,
-      prefs: prefs, place: place, controller: controller, settings: settings, real_loc: real_loc,
-  secondColor: secondColor, textColor: textColor, highlightColor: highlightColor,
-  extraTextColor: extraTextColor);
+      prefs: prefs, place: place, controller: controller, settings: settings, real_loc: real_loc);
 }
 
 class _MySearchWidgetState extends State<MySearchWidget> {
   //final FloatingSearchBarController _controller = FloatingSearchBarController();
   final controller;
-  final color;
+  final colors;
   final place;
   final updateLocation;
   final prefs;
   final settings;
   final real_loc;
-  final secondColor;
-  final textColor;
-  final highlightColor;
-  final extraTextColor;
 
   List<String> favorites;
 
   bool isEditing = false;
   bool prog = false;
 
-  _MySearchWidgetState({required this.color, required this.updateLocation,
+  _MySearchWidgetState({required this.colors, required this.updateLocation,
         required this.favorites, required this.prefs, required this.place,
-  required this.controller, required this.settings, required this.real_loc,
-    required this.secondColor, required this.textColor, required this.highlightColor,
-  required this.extraTextColor});
+  required this.controller, required this.settings, required this.real_loc});
 
   List<String> recommend = [];
 
@@ -890,23 +862,22 @@ class _MySearchWidgetState extends State<MySearchWidget> {
 
   @override
   Widget build(BuildContext context){
-    return buildHihiSearch(color);
+    return buildHihiSearch();
   }
 
-  Widget buildHihiSearch(Color color) {
+  Widget buildHihiSearch() {
     return Stack(
       fit: StackFit.expand,
       children: [
-        buildFloatingSearchBar(color),
+        buildFloatingSearchBar(),
       ],
     );
   }
 
-  Widget buildFloatingSearchBar(Color color) {
-    return searchBar(color, recommend, updateLocation,
+  Widget buildFloatingSearchBar() {
+    return searchBar2(colors, recommend, updateLocation,
         controller, updateIsEditing, isEditing, updateFav, favorites,
-        updateRec, place, context, prog, updateProg, settings, real_loc, secondColor,
-    textColor, highlightColor, extraTextColor);
+        updateRec, place, context, prog, updateProg, settings, real_loc);
 
   }
 }

@@ -31,6 +31,8 @@ import 'main_ui.dart';
 import 'new_displays.dart';
 import 'ui_helper.dart';
 
+
+
 class NewMain extends StatefulWidget {
   final data;
   final updateLocation;
@@ -125,7 +127,7 @@ class _NewMainState extends State<NewMain> {
   Widget build(BuildContext context) {
 
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-    final Size size = view.physicalSize / view.devicePixelRatio;
+    final Size size = (view.physicalSize) / view.devicePixelRatio;
 
     final FloatingSearchBarController controller = FloatingSearchBarController();
 
@@ -167,7 +169,7 @@ class _NewMainState extends State<NewMain> {
         headerData: HeaderData(
             //backgroundColor: WHITE,
             blurContent: false,
-            headerHeight: max(size.height * 0.51, 400),
+            headerHeight: max((size.height ) * 0.505, 400),
             //we don't want it to be smaller than 400
             header: ParrallaxBackground(image: data.current.image, key: Key(data.place),
                 color: data.current.surface == BLACK ? BLACK
@@ -175,7 +177,7 @@ class _NewMainState extends State<NewMain> {
             overlay: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
+                  padding: const EdgeInsets.only(left: 25, right: 25, bottom: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -184,34 +186,30 @@ class _NewMainState extends State<NewMain> {
                         padding: const EdgeInsets.only(left: 0, bottom: 0),
                         child: comfortatext(
                             "${data.current.temp}°", 69, data.settings,
-                            color: data.current.colorPop, weight: FontWeight.w300,
+                            color: data.current.colorPop, weight: FontWeight.w200,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 0),
                         child: comfortatext(
                             data.current.text, 32, data.settings,
-                            weight: FontWeight.w600,
+                            weight: FontWeight.w300,
                             color: data.current.descColor),
                       )
                     ],
                   ),
                 ),
                 MySearchParent(updateLocation: updateLocation,
-                  color: data.current.surface,
+                  colors: data.current.colors,
                   place: data.place,
                   controller: controller,
                   settings: data.settings,
-                  real_loc: data.real_loc,
-                  secondColor: colorMode == "light" ? data.current.primary : data.current.onSurface,
-                  textColor: colorMode == "light" ? data.current.primaryLight : data.current.primary,
-                  highlightColor: data.current.container,
-                  key: Key("${data.place}, ${data.current.surface}"),
-                  extraTextColor: data.current.onSurface,),
+                  real_loc: data.real_loc),
               ],
             )
         ),
         children: [
+          /*
           Stack(
             children: [
               FadingWidget(
@@ -230,6 +228,8 @@ class _NewMainState extends State<NewMain> {
               ),
             ],
           ),
+
+           */
 
           /*
           Padding(
@@ -259,18 +259,24 @@ class _NewMainState extends State<NewMain> {
           ),
            */
 
+          /*
           Column(
             children: orderedWidgets.map((widget) {
               return widget;
             }).toList(),
           ),
 
+           */
+
+          /*
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 30),
             child: providerSelector(data.settings, updateLocation, data.current.onSurface,
                 data.current.containerLow, data.current.primary, data.provider,
                 "${data.lat}, ${data.lng}", data.real_loc, context),
           ),
+
+           */
 
 
           const Padding(padding: EdgeInsets.only(bottom: 20))
@@ -336,16 +342,11 @@ Widget TabletLayout(data, updateLocation, context) {
                                 ),
                               ),
                               MySearchParent(updateLocation: updateLocation,
-                                color: data.current.container,
+                                colors: data.current.colors,
                                 place: data.place,
                                 controller: controller,
                                 settings: data.settings,
-                                real_loc: data.real_loc,
-                                secondColor: data.settings["Color mode"] == "light" ? data.current.primary : data.current.onSurface,
-                                textColor: data.settings["Color mode"] == "light" ? data.current.primaryLight : data.current.primary,
-                                highlightColor: data.settings["Color mode"] == "light" ? data.current.primary : data.current.onSurface,
-                                key: Key("${data.place}, ${data.current.surface}"),
-                                extraTextColor: data.current.onSurface,),
+                                real_loc: data.real_loc,)
                             ],
                           ),
                         ),

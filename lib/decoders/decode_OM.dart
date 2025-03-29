@@ -276,6 +276,7 @@ class OMCurrent {
   final Color surfaceVariant;
   final Color onPrimaryLight;
   final Color primarySecond;
+  final List<Color> colors;
 
   final Color backup_primary;
   final Color backup_backcolor;
@@ -313,6 +314,7 @@ class OMCurrent {
     required this.surfaceVariant,
     required this.onPrimaryLight,
     required this.primarySecond,
+    required this.colors,
 
     required this.image,
     required this.photographerName,
@@ -390,6 +392,7 @@ class OMCurrent {
       surfaceVariant: colors[9],
       onPrimaryLight: colors[10],
       primarySecond: colors[11],
+      colors: colors,
 
       colorPop: colors[12],
       descColor: colors[13],

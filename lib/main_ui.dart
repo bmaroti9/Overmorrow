@@ -47,6 +47,8 @@ class WeatherPage extends StatelessWidget {
       return TabletLayout(data, updateLocation, context);
     }
 
+    //return SearchHeroDemo();
+
     return NewMain(data: data, updateLocation: updateLocation, context: context,
         key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
   }

@@ -33,43 +33,194 @@ import 'package:stretchy_header/stretchy_header.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'api_key.dart';
+import 'main_screens.dart';
 
-Widget searchBar(Color color, List<String> recommend,
+Widget searchBar2(List<Color> colors, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
     List<String> favorites, Function updateRec, String place, var context,
-    bool prog, Function updateProg, Map<String, String> settings, String real_loc, Color secondColor, 
-    Color textColor, Color highlightColor, Color extraTextColor) {
+    bool prog, Function updateProg, Map<String, String> settings, String real_loc) {
+
+  Color highlight = colors[7];
+  Color primaryLight = colors[2];
+  Color primary = colors[1];
+  Color onSurface = colors[4];
+  Color surface = colors[0];
+  Color outline = colors[5];
+  Color containerLow = colors[6];
+
+  return Align(
+    alignment: Alignment.topCenter,
+    child: GestureDetector(
+      child: Hero(
+        tag: 'searchBarHero',
+        child: Container(
+          height: 66,
+          margin: EdgeInsets.only(left: 27, right: 27, top: MediaQuery.of(context).padding.top + 15),
+          decoration: BoxDecoration(
+            color: surface,
+            borderRadius: BorderRadius.circular(33)
+          ),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 10),
+                child: Icon(Icons.place_outlined, color: primary,),
+              ),
+              Expanded(child: comfortatext(place, 24, settings, color: onSurface)),
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: IconButton(
+                  icon: Icon(Icons.settings_outlined, color: primary, size: 25,),
+                  onPressed: () {
+                    HapticFeedback.selectionClick();
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => HeroSearchPage(colors: colors, place: place, settings: settings,),
+            fullscreenDialog: true,
+          ),
+        );
+      },
+    ),
+  );
+}
+
+class HeroSearchPage extends StatelessWidget {
+
+  final List<Color> colors;
+  final String place;
+  final settings;
+
+  HeroSearchPage({Key? key, required this.colors, required this.place, required this.settings}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+    final Color surface = colors[0];
+    final Color primary = colors[1];
+    final Color outline = colors[5];
+    final Color highlight = colors[7];
+    final Color primaryLight = colors[2];
+    Color onSurface = colors[4];
+
+    return Scaffold(
+      // A transparent AppBar can be used for a clean, full-screen look.
+      backgroundColor: surface,
+      appBar: AppBar(
+        backgroundColor: surface,
+        foregroundColor: primary,
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          // The same Hero tag is used to match the widget in the previous page.
+          Hero(
+            tag: 'searchBarHero',
+            child: Material(
+              color: surface,
+              child: Container(
+                height: 66,
+                margin: EdgeInsets.only(left: 27, right: 27, top: 30),
+                decoration: BoxDecoration(
+                    color: highlight,
+                    borderRadius: BorderRadius.circular(33)
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 23),
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        textSelectionTheme: TextSelectionThemeData(
+                          selectionHandleColor: primary,
+                        ),
+                      ),
+                      child: TextField(
+                        autofocus: true,
+                        cursorColor: primary,
+                        cursorWidth: 2,
+                        style: GoogleFonts.outfit(
+                          color: onSurface,
+                          fontSize: 23 * getFontSize(settings["Font size"]!),
+                          fontWeight: FontWeight.w300,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Search...',
+                          hintStyle:  GoogleFonts.outfit(
+                            color: outline,
+                            fontSize: 20 * getFontSize(settings["Font size"]!),
+                            fontWeight: FontWeight.w300,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // The rest of the page could display search results or additional UI.
+          Column(
+
+          )
+        ],
+      ),
+    );
+  }
+}
+
+Widget searchBar(List<Color> colors, List<String> recommend,
+    Function updateLocation, FloatingSearchBarController controller,
+    Function updateIsEditing, bool isEditing, Function updateFav,
+    List<String> favorites, Function updateRec, String place, var context,
+    bool prog, Function updateProg, Map<String, String> settings, String real_loc) {
+
+  Color highlight = colors[7];
+  Color primaryLight = colors[2];
+  Color primary = colors[1];
+  Color onSurface = colors[4];
+  Color surface = colors[0];
+  Color outline = colors[5];
+  Color containerLow = colors[6];
 
   return FloatingSearchBar(
       hint: AppLocalizations.of(context)!.search,
       title: Container(
-        padding: const EdgeInsets.only(left: 5, top: 3),
-        child: comfortatext(place, 24, settings, color: secondColor, weight: FontWeight.w400)
+        padding: const EdgeInsets.only(left: 2),
+        child: comfortatext(place, 24, settings, color: onSurface, weight: FontWeight.w300)
       ),
-      hintStyle: GoogleFonts.comfortaa(
-        color: extraTextColor,
-        fontSize: 16 * getFontSize(settings["Font size"]!),
-        fontWeight: FontWeight.w100,
-      ),
-
-      queryStyle: GoogleFonts.comfortaa(
-        color: extraTextColor,
-        fontSize: 21 * getFontSize(settings["Font size"]!),
-        fontWeight: FontWeight.w100,
+      hintStyle: GoogleFonts.outfit(
+        color: onSurface,
+        fontSize: 20 * getFontSize(settings["Font size"]!),
+        fontWeight: FontWeight.w300,
       ),
 
-      margins: secondColor == highlightColor ? const EdgeInsets.only(left: 10, right: 10, top: 20) //tablet
-            :  EdgeInsets.only(left: 27, right: 27, top: MediaQuery.of(context).padding.top + 15), //phone
+      queryStyle: GoogleFonts.outfit(
+        color: onSurface,
+        fontSize: 23 * getFontSize(settings["Font size"]!),
+        fontWeight: FontWeight.w300,
+      ),
 
-      borderRadius: BorderRadius.circular(24),
-      backgroundColor: color,
-      accentColor: textColor,
+      margins: EdgeInsets.only(left: 27, right: 27, top: MediaQuery.of(context).padding.top + 15),
+
+      borderRadius: BorderRadius.circular(30),
+      backgroundColor: surface,
+      accentColor: primary,
 
       elevation: 0,
-      height: 62,
+      height: 64,
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
-      transitionDuration: const Duration(milliseconds: 700),
+      transitionDuration: const Duration(milliseconds: 500),
       transitionCurve: Curves.easeInOut,
       physics: const BouncingScrollPhysics(),
       debounceDelay: const Duration(milliseconds: 500),
@@ -94,11 +245,11 @@ Widget searchBar(Color color, List<String> recommend,
 
       insets: EdgeInsets.zero,
       automaticallyImplyDrawerHamburger: false,
-      padding: const EdgeInsets.only(left: 13),
-      iconColor: secondColor,
-      backdropColor: highlightColor,
+      padding: const EdgeInsets.only(left: 10, right: 10),
+      iconColor: primary,
+      backdropColor: containerLow,
       closeOnBackdropTap: true,
-      transition: SlideFadeFloatingSearchBarTransition(),
+      transition: ExpandingFloatingSearchBarTransition(),
       automaticallyImplyBackButton: false,
       leadingActions: [
         FloatingSearchBarAction(
@@ -107,7 +258,7 @@ Widget searchBar(Color color, List<String> recommend,
           child: Padding(
             padding: const EdgeInsets.only(right: 12),
             child: CircularButton(
-              icon: Icon(Icons.arrow_back_outlined, color: secondColor, size: 22,),
+              icon: Icon(Icons.arrow_back_outlined, color: primary, size: 22,),
               onPressed: () {
                 HapticFeedback.selectionClick();
                 controller.close();
@@ -118,16 +269,14 @@ Widget searchBar(Color color, List<String> recommend,
         FloatingSearchBarAction(
           showIfOpened: false,
           showIfClosed: true,
-          child: IconButton(
-            icon: Icon(Icons.menu_rounded, color: textColor, size: 25,),
-            onPressed: () {
-              HapticFeedback.selectionClick();
-              Scaffold.of(context).openDrawer();
-            },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 11, right: 10),
+            child: Icon(Icons.place_outlined, color: primary, size: 25,),
           ),
         ),
       ],
       actions: [
+        /*
         FloatingSearchBarAction(
           showIfOpened: false,
           child: Padding(
@@ -139,6 +288,21 @@ Widget searchBar(Color color, List<String> recommend,
             ),
           ),
         ),
+
+         */
+
+        FloatingSearchBarAction(
+          showIfOpened: false,
+          showIfClosed: true,
+          child: IconButton(
+            icon: Icon(Icons.settings_outlined, color: primary, size: 25,),
+            onPressed: () {
+              HapticFeedback.selectionClick();
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ),
+
         FloatingSearchBarAction(
           showIfOpened: true,
           showIfClosed: false,
@@ -147,7 +311,7 @@ Widget searchBar(Color color, List<String> recommend,
             child: Padding(
               padding: const EdgeInsets.only(right: 12),
               child: CircularButton(
-                icon: Icon(Icons.close, color: textColor,),
+                icon: Icon(Icons.close, color: primary,),
                 onPressed: () {
                   HapticFeedback.lightImpact();
                   controller.clear();
@@ -158,43 +322,38 @@ Widget searchBar(Color color, List<String> recommend,
         ),
       ],
       builder: (context, transition) {
-        return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return SizeTransition(sizeFactor: animation, child: child);
-            },
-            child: decideSearch(color, recommend, updateLocation,
-                controller, updateIsEditing, isEditing, updateFav,
-                favorites, controller.query, settings, textColor, extraTextColor, context)
-        );
+        return Container();
       }
   );
 }
 
-Widget decideSearch(Color color, List<String> recommend,
+Widget decideSearch(List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, String entered, Map<String, String> settings, textColor, extraTextColor,
-    context) {
+    List<String> favorites, String entered, Map<String, String> settings,
+    context, List<Color> colors) {
 
   if (entered == '') {
-    return defaultSearchScreen(color, updateLocation,
-        controller, updateIsEditing, isEditing, updateFav, favorites, settings, textColor, extraTextColor, context);
+    return defaultSearchScreen(updateLocation,
+        controller, updateIsEditing, isEditing, updateFav, favorites, settings, context, colors);
   }
   else{
     if (recommend.isNotEmpty) {
       return recommendSearchScreen(
-          color, recommend, updateLocation, controller,
-          favorites, updateFav, settings, textColor, extraTextColor);
+          recommend, updateLocation, controller,
+          favorites, updateFav, settings, colors);
     }
   }
   return Container();
 }
 
-Widget defaultSearchScreen(Color color, Function updateLocation, FloatingSearchBarController controller,
+Widget defaultSearchScreen(Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, Map<String, String> settings, textColor, extraTextColor, context) {
+    List<String> favorites, Map<String, String> settings, context, colors) {
 
+  return Container(color: Colors.pink,);
+
+  /*
   List<Icon> Myicon = [
     const Icon(null),
     Icon(Icons.close, color: color, size: 20,),
@@ -332,12 +491,18 @@ Widget defaultSearchScreen(Color color, Function updateLocation, FloatingSearchB
       ),
     ],
   );
+
+   */
 }
 
-Widget recommendSearchScreen(Color color, List<String> recommend,
+Widget recommendSearchScreen(List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller, List<String> favorites,
-    Function updateFav, var settings, textColor, extraTextColor) {
+    Function updateFav, var settings, colors) {
   List<Icon> icons = [];
+
+  return Container();
+
+  /*
 
   for (String n in recommend) {
     if (favorites.contains(n)) {
@@ -444,7 +609,7 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
               backgroundColor: color,
               side: BorderSide(width: 1.7, color: secondColor),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20)
+              borderRadius: BorderRadius.circular(30)
             )
           ),
           onPressed: () async {
@@ -456,6 +621,8 @@ Widget LocationButton(Function updateProg, Function updateLocation, Color color,
       ),
     );
   }
+
+   */
 }
 
 
@@ -529,12 +696,8 @@ class dumbySearch extends StatelessWidget {
                   ),
                 ),
                 MySearchParent(updateLocation: updateLocation,
-                    color: colors[0], place: place, controller: controller, settings: settings,
-                  real_loc: place,
-                  secondColor: settings["Color mode"] == "light" ? colors[1] : colors[4],
-                  textColor: settings["Color mode"] == "light" ? colors[2] : colors[1],
-                  highlightColor: colors[6],
-                  extraTextColor: colors[4],),
+                    colors: colors, place: place, controller: controller, settings: settings,
+                  real_loc: place,)
               ],
             )
         ),
