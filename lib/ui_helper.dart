@@ -811,7 +811,7 @@ class MySearchWidget extends StatefulWidget{
 
   @override
   _MySearchWidgetState createState() => _MySearchWidgetState(colors: colors,
-  updateLocation: updateLocation, favorites: favorites,
+  updateLocation: updateLocation, beginFavorites: favorites,
       prefs: prefs, place: place, controller: controller, settings: settings, real_loc: real_loc);
 }
 
@@ -825,21 +825,28 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   final settings;
   final real_loc;
 
-  List<String> favorites;
+  final List<String> beginFavorites;
 
   bool isEditing = false;
   bool prog = false;
 
   _MySearchWidgetState({required this.colors, required this.updateLocation,
-        required this.favorites, required this.prefs, required this.place,
+        required this.beginFavorites, required this.prefs, required this.place,
   required this.controller, required this.settings, required this.real_loc});
 
   final ValueNotifier<List<String>> recommend = ValueNotifier<List<String>>([]);
+  ValueNotifier<List<String>> favorites = ValueNotifier<List<String>>([]);
+
+  @override
+  void initState() {
+    super.initState();
+    favorites = ValueNotifier<List<String>>(beginFavorites);
+  }
 
   void updateFav(List<String> fav){
     prefs.setStringList('favorites', fav);
     setState(() {
-      favorites = fav;
+      favorites.value = fav;
     });
   }
   void updateProg(bool to) {

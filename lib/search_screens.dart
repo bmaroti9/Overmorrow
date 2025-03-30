@@ -39,7 +39,7 @@ import 'api_key.dart';
 Widget searchBar2(List<Color> colors, recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, Function updateRec, String place, var context,
+    favorites, Function updateRec, String place, var context,
     bool prog, Function updateProg, Map<String, String> settings, String real_loc) {
 
   Color primary = colors[1];
@@ -84,7 +84,7 @@ Widget searchBar2(List<Color> colors, recommend,
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => HeroSearchPage(colors: colors, place: place, settings: settings, recommend: recommend,
-            updateRec: updateRec, updateLocation: updateLocation,),
+            updateRec: updateRec, updateLocation: updateLocation, favorites: favorites,),
 
             fullscreenDialog: true,
           ),
@@ -102,13 +102,14 @@ class HeroSearchPage extends StatefulWidget {
   final recommend;
   final updateRec;
   final updateLocation;
+  final favorites;
 
   const HeroSearchPage({super.key, required this.colors, required this.place, required this.settings,
-    required this.recommend, required this.updateRec, required this.updateLocation});
+    required this.recommend, required this.updateRec, required this.updateLocation, required this.favorites});
 
   @override
   State<HeroSearchPage> createState() => _HeroSearchPageState(colors: colors, place: place, settings: settings,
-  recommend: recommend, updateRec: updateRec, updateLocation: updateLocation);
+  recommend: recommend, updateRec: updateRec, updateLocation: updateLocation, favorites: favorites);
 }
 
 
@@ -120,9 +121,10 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   final recommend;
   final updateRec;
   final updateLocation;
+  final favorites;
 
   _HeroSearchPageState({required this.colors, required this.place, required this.settings,
-    required this.recommend, required this.updateRec, required this.updateLocation});
+    required this.recommend, required this.updateRec, required this.updateLocation, required this.favorites});
 
   String text = "";
 
@@ -233,7 +235,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
             transitionBuilder: (Widget child, Animation<double> animation) {
               return FadeTransition(opacity: animation, child: child);
             },
-            child: buildRecommend(text, colors, settings, ["London", "Paris", "New York"], recommend,
+            child: buildRecommend(text, colors, settings, favorites, recommend,
             updateLocation),
           )
         ],
@@ -242,7 +244,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   }
 }
 
-Widget buildRecommend(String text, colors, settings, List<String> favorites,
+Widget buildRecommend(String text, colors, settings, ValueListenable<List<String>> favoritesListen,
     ValueListenable<List<String>> recommend, updateLocation) {
 
   final Color primary = colors[1];
@@ -253,84 +255,101 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites,
   Color onSurface = colors[4];
 
   if (text == "") {
-    return Padding(
-      key: const ValueKey<String>("favorites"),
-      padding: const EdgeInsets.only(left: 30, top: 40, right: 30),
-      child: AnimationLimiter(
-        child: Column(
-          children: AnimationConfiguration.toStaggeredList(
-            duration: const Duration(milliseconds: 475),
-            childAnimationBuilder: (widget) => SlideAnimation(
-              horizontalOffset: 0.0,
-              verticalOffset: 50,
-              child: FadeInAnimation(
-                child: widget,
-              ),
-            ),
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10, top: 2),
-                    child: Icon(Icons.gps_fixed, color: outline, size: 17,),
-                  ),
-                  comfortatext("current location", 18, settings, color: outline),
-                ],
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 20, bottom: 30),
-                padding: const EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 20),
-                height: 66,
-                decoration: BoxDecoration(
-                  color: primaryLight,
-                  borderRadius: BorderRadius.circular(40),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: comfortatext("Nashville, Tennessee", 19, settings, color: onPrimaryLight)
+    return ValueListenableBuilder(
+        key: const ValueKey<String>("favorites"),
+        valueListenable: favoritesListen,
+        builder: (context, value, child) {
+          List<String> favorites = value;
+          return Padding(
+            key: const ValueKey<String>("favorites"),
+            padding: const EdgeInsets.only(left: 30, top: 40, right: 30),
+            child: AnimationLimiter(
+              child: Column(
+                children: AnimationConfiguration.toStaggeredList(
+                  duration: const Duration(milliseconds: 475),
+                  childAnimationBuilder: (widget) => SlideAnimation(
+                    horizontalOffset: 0.0,
+                    verticalOffset: 50,
+                    child: FadeInAnimation(
+                      child: widget,
                     ),
-                    Icon(Icons.keyboard_arrow_right_rounded, color: onPrimaryLight,)
+                  ),
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10, top: 2),
+                          child: Icon(Icons.gps_fixed, color: outline, size: 17,),
+                        ),
+                        comfortatext("current location", 18, settings, color: outline),
+                      ],
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 20, bottom: 30),
+                      padding: const EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 20),
+                      height: 66,
+                      decoration: BoxDecoration(
+                        color: primaryLight,
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: comfortatext("Nashville, Tennessee", 19, settings, color: onPrimaryLight)
+                          ),
+                          Icon(Icons.keyboard_arrow_right_rounded, color: onPrimaryLight,)
+                        ],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10, top: 0),
+                          child: Icon(Icons.star_outline, color: outline, size: 18,),
+                        ),
+                        comfortatext("favorites", 18, settings, color: outline),
+                      ],
+                    ),
+                    Container(
+                        margin: const EdgeInsets.only(top: 20, bottom: 30),
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: highlight,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Column(
+                            children: List.generate(favorites.length, (index) {
+                              var split = json.decode(favorites[index]);
+                              String name = split["name"];
+                              String country = generateAbbreviation(split["country"]);
+                              return GestureDetector(
+                                onTap: () {
+                                  HapticFeedback.selectionClick();
+                                  updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
+                                  Navigator.pop(context);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10, right: 7, top: 6, bottom: 6),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                          child: comfortatext("$name, $country", 19, settings, color: onSurface)
+                                      ),
+                                      Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
+                                    ],
+                                  ),
+                                ),
+                              );
+
+                            })
+                        )
+                    ),
                   ],
                 ),
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10, top: 0),
-                    child: Icon(Icons.star_outline, color: outline, size: 18,),
-                  ),
-                  comfortatext("favorites", 18, settings, color: outline),
-                ],
-              ),
-              Container(
-                  margin: const EdgeInsets.only(top: 20, bottom: 30),
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: highlight,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Column(
-                      children: List.generate(favorites.length, (index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: comfortatext(favorites[index], 19, settings, color: onSurface)
-                              ),
-                              Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
-                            ],
-                          ),
-                        );
-
-                      })
-                  )
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        }
     );
   }
   else{
@@ -360,6 +379,7 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites,
                       var split = json.decode(rec[index]);
                       String name = split["name"];
                       String country = generateAbbreviation(split["country"]);
+
                       return GestureDetector(
                         onTap: () {
                           HapticFeedback.selectionClick();
@@ -367,13 +387,18 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites,
                           Navigator.pop(context);
                         },
                         child: Padding(
-                          padding: const EdgeInsets.all(17.0),
+                          padding: const EdgeInsets.only(left: 10, right: 7, top: 6, bottom: 6),
                           child: Row(
                             children: [
                               Expanded(
                                   child: comfortatext("$name, $country", 19, settings, color: onSurface)
                               ),
-                              Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
+                              IconButton(
+                                onPressed: () {
+
+                                },
+                                icon: Icon(Icons.favorite_outline, color: primary, size: 22,),
+                              )
                             ],
                           ),
                         ),
