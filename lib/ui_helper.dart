@@ -659,7 +659,7 @@ Future<List<String>> getWapiRecomend(String query) async {
 Future<List<String>> getOMReccomend(String query, settings) async {
   var params = {
     'name': query,
-    'count': '4',
+    'count': '6',
     'language': 'en',
   };
 

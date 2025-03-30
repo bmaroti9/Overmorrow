@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
@@ -126,6 +127,22 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
 
   String text = "";
 
+  Timer? _debounce;
+
+  _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 400), () async {
+      var result = await getRecommend(query, settings["Search provider"], settings);
+      updateRec(result);
+    });
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -182,8 +199,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                           setState(() {
                             text = to;
                           });
-                          var result = await getRecommend(to, settings["Search provider"], settings);
-                          updateRec(result);
+                          _onSearchChanged(to);
                         },
                         autofocus: true,
                         cursorColor: primary,
@@ -252,7 +268,7 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites, Val
               ),
               Container(
                 margin: const EdgeInsets.only(top: 20, bottom: 30),
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 20),
                 height: 66,
                 decoration: BoxDecoration(
                   color: primaryLight,
@@ -261,9 +277,9 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites, Val
                 child: Row(
                   children: [
                     Expanded(
-                        child: comfortatext("Nashville, Tennessee", 19, settings, color: onSurface)
+                        child: comfortatext("Nashville, Tennessee", 19, settings, color: onPrimaryLight)
                     ),
-                    Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
+                    Icon(Icons.keyboard_arrow_right_rounded, color: onPrimaryLight,)
                   ],
                 ),
               ),
@@ -311,19 +327,27 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites, Val
         valueListenable: recommend,
         builder: (context, value, child) {
           List<String> rec = value;
-          if (rec.isNotEmpty) {
-            return Container(
-                margin: const EdgeInsets.only(top: 20, bottom: 30, left: 30, right: 30),
-                decoration: BoxDecoration(
-                  color: highlight,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                padding: const EdgeInsets.all(10),
-                child: Column(
+          return Padding(
+            padding: const EdgeInsets.only(top: 20, bottom: 30, left: 30, right: 30),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return SizeTransition(sizeFactor: animation, child: child);
+                },
+                child: Container(
+                  key: ValueKey<String>(rec.toString()),
+                  decoration: BoxDecoration(
+                    color: highlight,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: rec.isEmpty ? const EdgeInsets.all(0) : const EdgeInsets.all(10),
+                  child: Column(
                     children: List.generate(rec.length, (index) {
                       var split = json.decode(rec[index]);
                       String name = split["name"];
-                      String country = split["country"];
+                      String country = generateAbbreviation(split["country"]);
                       return Padding(
                         padding: const EdgeInsets.all(17.0),
                         child: Row(
@@ -335,18 +359,16 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites, Val
                           ],
                         ),
                       );
-
-                    })
+                    }
+                  )
                 )
-            );
-          }
-          return Container();
-
-        }
+              )
+            ),
+          ),
+        );
+      }
     );
-
   }
-  
 }
 
 Widget searchBar(List<Color> colors, List<String> recommend,
