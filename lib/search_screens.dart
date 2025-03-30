@@ -16,10 +16,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,9 +29,9 @@ import 'package:overmorrow/ui_helper.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'api_key.dart';
-import 'main_screens.dart';
 
 Widget searchBar2(List<Color> colors, List<String> recommend,
     Function updateLocation, FloatingSearchBarController controller,
@@ -94,13 +92,28 @@ Widget searchBar2(List<Color> colors, List<String> recommend,
   );
 }
 
-class HeroSearchPage extends StatelessWidget {
+class HeroSearchPage extends StatefulWidget {
 
   final List<Color> colors;
   final String place;
   final settings;
 
-  HeroSearchPage({Key? key, required this.colors, required this.place, required this.settings}) : super(key: key);
+  const HeroSearchPage({super.key, required this.colors, required this.place, required this.settings});
+
+  @override
+  State<HeroSearchPage> createState() => _HeroSearchPageState(colors: colors, place: place, settings: settings);
+}
+
+
+class _HeroSearchPageState extends State<HeroSearchPage> {
+
+  final List<Color> colors;
+  final String place;
+  final settings;
+
+  _HeroSearchPageState({required this.colors, required this.place, required this.settings});
+
+  String text = "";
 
   @override
   Widget build(BuildContext context) {
@@ -113,31 +126,40 @@ class HeroSearchPage extends StatelessWidget {
     Color onSurface = colors[4];
 
     return Scaffold(
-      // A transparent AppBar can be used for a clean, full-screen look.
       backgroundColor: surface,
       appBar: AppBar(
         backgroundColor: surface,
         foregroundColor: primary,
         elevation: 0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 13),
+            child: IconButton(
+              icon: Icon(Icons.edit_outlined, color: primary, size: 25,),
+              onPressed: () {
+
+              },
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
-          // The same Hero tag is used to match the widget in the previous page.
           Hero(
             tag: 'searchBarHero',
-            child: Material(
-              color: surface,
-              child: Container(
-                height: 66,
-                margin: EdgeInsets.only(left: 27, right: 27, top: 30),
-                decoration: BoxDecoration(
+            child: Container(
+              height: 66,
+              margin: const EdgeInsets.only(left: 27, right: 27, top: 30),
+              decoration: BoxDecoration(
+                  color: highlight,
+                  borderRadius: BorderRadius.circular(33)
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 23, right: 23),
+                  child: Material(
                     color: highlight,
-                    borderRadius: BorderRadius.circular(33)
-                ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 23),
                     child: Theme(
                       data: Theme.of(context).copyWith(
                         textSelectionTheme: TextSelectionThemeData(
@@ -145,6 +167,9 @@ class HeroSearchPage extends StatelessWidget {
                         ),
                       ),
                       child: TextField(
+                        onChanged: (String to) {
+                          text = to;
+                        },
                         autofocus: true,
                         cursorColor: primary,
                         cursorWidth: 2,
@@ -169,14 +194,99 @@ class HeroSearchPage extends StatelessWidget {
               ),
             ),
           ),
-          // The rest of the page could display search results or additional UI.
-          Column(
-
-          )
+          buildRecommend(text, colors, settings, ["London", "Paris", "New York"]),
         ],
       ),
     );
   }
+}
+
+Widget buildRecommend(String text, colors, settings, List<String> favorites, ) {
+
+  final Color surface = colors[0];
+  final Color primary = colors[1];
+  final Color outline = colors[5];
+  final Color highlight = colors[7];
+  final Color primaryLight = colors[2];
+  final Color onPrimaryLight = colors[10];
+  Color onSurface = colors[4];
+
+  if (text == "") {
+    return Padding(
+      padding: const EdgeInsets.only(left: 30, top: 40, right: 30),
+      child: AnimationLimiter(
+        child: Column(
+          children: AnimationConfiguration.toStaggeredList(
+            duration: const Duration(milliseconds: 475),
+            childAnimationBuilder: (widget) => SlideAnimation(
+              horizontalOffset: 0.0,
+              verticalOffset: 50,
+              child: FadeInAnimation(
+                child: widget,
+              ),
+            ),
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10, top: 2),
+                    child: Icon(Icons.gps_fixed, color: outline, size: 17,),
+                  ),
+                  comfortatext("current location", 18, settings, color: outline),
+                ],
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 20, bottom: 30),
+                padding: EdgeInsets.all(20),
+                height: 66,
+                decoration: BoxDecoration(
+                  color: primaryLight,
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: comfortatext("Nashville, TN", 19, settings, color: onPrimaryLight)
+                ),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10, top: 0),
+                    child: Icon(Icons.star_outline, color: outline, size: 18,),
+                  ),
+                  comfortatext("favorites", 18, settings, color: outline),
+                ],
+              ),
+              Container(
+                  margin: const EdgeInsets.only(top: 20, bottom: 30),
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: highlight,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Column(
+                      children: List.generate(favorites.length, (index) {
+                        return Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: comfortatext(favorites[index], 19, settings, color: onSurface),
+                          ),
+                        );
+
+                      })
+                  )
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  else {
+    return Container();
+  }
+  
 }
 
 Widget searchBar(List<Color> colors, List<String> recommend,
