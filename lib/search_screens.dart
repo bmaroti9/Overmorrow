@@ -16,10 +16,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,7 +35,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'api_key.dart';
 
-Widget searchBar2(List<Color> colors, List<String> recommend,
+Widget searchBar2(List<Color> colors, recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
     List<String> favorites, Function updateRec, String place, var context,
@@ -83,7 +85,9 @@ Widget searchBar2(List<Color> colors, List<String> recommend,
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => HeroSearchPage(colors: colors, place: place, settings: settings,),
+            builder: (context) => HeroSearchPage(colors: colors, place: place, settings: settings, recommend: recommend,
+            updateRec: updateRec,),
+
             fullscreenDialog: true,
           ),
         );
@@ -97,11 +101,15 @@ class HeroSearchPage extends StatefulWidget {
   final List<Color> colors;
   final String place;
   final settings;
+  final recommend;
+  final updateRec;
 
-  const HeroSearchPage({super.key, required this.colors, required this.place, required this.settings});
+  const HeroSearchPage({super.key, required this.colors, required this.place, required this.settings,
+    required this.recommend, required this.updateRec});
 
   @override
-  State<HeroSearchPage> createState() => _HeroSearchPageState(colors: colors, place: place, settings: settings);
+  State<HeroSearchPage> createState() => _HeroSearchPageState(colors: colors, place: place, settings: settings,
+  recommend: recommend, updateRec: updateRec);
 }
 
 
@@ -110,8 +118,11 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   final List<Color> colors;
   final String place;
   final settings;
+  final recommend;
+  final updateRec;
 
-  _HeroSearchPageState({required this.colors, required this.place, required this.settings});
+  _HeroSearchPageState({required this.colors, required this.place, required this.settings,
+    required this.recommend, required this.updateRec});
 
   String text = "";
 
@@ -167,8 +178,12 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                         ),
                       ),
                       child: TextField(
-                        onChanged: (String to) {
-                          text = to;
+                        onChanged: (String to) async{
+                          setState(() {
+                            text = to;
+                          });
+                          var result = await getRecommend(to, settings["Search provider"], settings);
+                          updateRec(result);
                         },
                         autofocus: true,
                         cursorColor: primary,
@@ -194,14 +209,14 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               ),
             ),
           ),
-          buildRecommend(text, colors, settings, ["London", "Paris", "New York"]),
+          buildRecommend(text, colors, settings, ["London", "Paris", "New York"], recommend),
         ],
       ),
     );
   }
 }
 
-Widget buildRecommend(String text, colors, settings, List<String> favorites, ) {
+Widget buildRecommend(String text, colors, settings, List<String> favorites, ValueListenable<List<String>> recommend) {
 
   final Color surface = colors[0];
   final Color primary = colors[1];
@@ -237,15 +252,19 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites, ) {
               ),
               Container(
                 margin: const EdgeInsets.only(top: 20, bottom: 30),
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 height: 66,
                 decoration: BoxDecoration(
                   color: primaryLight,
                   borderRadius: BorderRadius.circular(40),
                 ),
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: comfortatext("Nashville, TN", 19, settings, color: onPrimaryLight)
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: comfortatext("Nashville, Tennessee", 19, settings, color: onSurface)
+                    ),
+                    Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
+                  ],
                 ),
               ),
               Row(
@@ -259,18 +278,22 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites, ) {
               ),
               Container(
                   margin: const EdgeInsets.only(top: 20, bottom: 30),
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: highlight,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Column(
                       children: List.generate(favorites.length, (index) {
-                        return Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: comfortatext(favorites[index], 19, settings, color: onSurface),
+                        return Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: comfortatext(favorites[index], 19, settings, color: onSurface)
+                              ),
+                              Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
+                            ],
                           ),
                         );
 
@@ -283,8 +306,45 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites, ) {
       ),
     );
   }
-  else {
-    return Container();
+  else{
+    return ValueListenableBuilder(
+        valueListenable: recommend,
+        builder: (context, value, child) {
+          List<String> rec = value;
+          if (rec.isNotEmpty) {
+            return Container(
+                margin: const EdgeInsets.only(top: 20, bottom: 30, left: 30, right: 30),
+                decoration: BoxDecoration(
+                  color: highlight,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                    children: List.generate(rec.length, (index) {
+                      var split = json.decode(rec[index]);
+                      String name = split["name"];
+                      String country = split["country"];
+                      return Padding(
+                        padding: const EdgeInsets.all(17.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: comfortatext("$name, $country", 19, settings, color: onSurface)
+                            ),
+                            Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
+                          ],
+                        ),
+                      );
+
+                    })
+                )
+            );
+          }
+          return Container();
+
+        }
+    );
+
   }
   
 }

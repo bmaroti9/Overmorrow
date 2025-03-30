@@ -834,7 +834,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
         required this.favorites, required this.prefs, required this.place,
   required this.controller, required this.settings, required this.real_loc});
 
-  List<String> recommend = [];
+  final ValueNotifier<List<String>> recommend = ValueNotifier<List<String>>([]);
 
   void updateFav(List<String> fav){
     prefs.setStringList('favorites', fav);
@@ -849,8 +849,9 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   }
 
   void updateRec(List<String> rec) {
+    print(rec);
     setState(() {
-      recommend = rec;
+      recommend.value = rec;
     });
   }
 
@@ -866,15 +867,11 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   }
 
   Widget buildHihiSearch() {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        buildFloatingSearchBar(),
-      ],
-    );
+    return buildFloatingSearchBar();
   }
 
   Widget buildFloatingSearchBar() {
+
     return searchBar2(colors, recommend, updateLocation,
         controller, updateIsEditing, isEditing, updateFav, favorites,
         updateRec, place, context, prog, updateProg, settings, real_loc);

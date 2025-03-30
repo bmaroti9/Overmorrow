@@ -24,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/new_forecast.dart';
 import 'package:overmorrow/radar.dart';
+import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
@@ -199,12 +200,14 @@ class _NewMainState extends State<NewMain> {
                     ],
                   ),
                 ),
+
                 MySearchParent(updateLocation: updateLocation,
                   colors: data.current.colors,
                   place: data.place,
                   controller: controller,
                   settings: data.settings,
                   real_loc: data.real_loc),
+
               ],
             )
         ),
