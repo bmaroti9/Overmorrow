@@ -42,13 +42,9 @@ Widget searchBar2(List<Color> colors, recommend,
     List<String> favorites, Function updateRec, String place, var context,
     bool prog, Function updateProg, Map<String, String> settings, String real_loc) {
 
-  Color highlight = colors[7];
-  Color primaryLight = colors[2];
   Color primary = colors[1];
   Color onSurface = colors[4];
   Color surface = colors[0];
-  Color outline = colors[5];
-  Color containerLow = colors[6];
 
   return Align(
     alignment: Alignment.topCenter,
@@ -84,10 +80,11 @@ Widget searchBar2(List<Color> colors, recommend,
         ),
       ),
       onTap: () {
+        HapticFeedback.lightImpact();
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => HeroSearchPage(colors: colors, place: place, settings: settings, recommend: recommend,
-            updateRec: updateRec,),
+            updateRec: updateRec, updateLocation: updateLocation,),
 
             fullscreenDialog: true,
           ),
@@ -104,13 +101,14 @@ class HeroSearchPage extends StatefulWidget {
   final settings;
   final recommend;
   final updateRec;
+  final updateLocation;
 
   const HeroSearchPage({super.key, required this.colors, required this.place, required this.settings,
-    required this.recommend, required this.updateRec});
+    required this.recommend, required this.updateRec, required this.updateLocation});
 
   @override
   State<HeroSearchPage> createState() => _HeroSearchPageState(colors: colors, place: place, settings: settings,
-  recommend: recommend, updateRec: updateRec);
+  recommend: recommend, updateRec: updateRec, updateLocation: updateLocation);
 }
 
 
@@ -121,9 +119,10 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   final settings;
   final recommend;
   final updateRec;
+  final updateLocation;
 
   _HeroSearchPageState({required this.colors, required this.place, required this.settings,
-    required this.recommend, required this.updateRec});
+    required this.recommend, required this.updateRec, required this.updateLocation});
 
   String text = "";
 
@@ -150,7 +149,6 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     final Color primary = colors[1];
     final Color outline = colors[5];
     final Color highlight = colors[7];
-    final Color primaryLight = colors[2];
     Color onSurface = colors[4];
 
     return Scaffold(
@@ -201,6 +199,11 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                           });
                           _onSearchChanged(to);
                         },
+                        onSubmitted: (String submission) {
+                          HapticFeedback.lightImpact();
+                          updateLocation('query', submission);
+                          Navigator.pop(context);
+                        },
                         autofocus: true,
                         cursorColor: primary,
                         cursorWidth: 2,
@@ -225,16 +228,23 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               ),
             ),
           ),
-          buildRecommend(text, colors, settings, ["London", "Paris", "New York"], recommend),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 150),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: buildRecommend(text, colors, settings, ["London", "Paris", "New York"], recommend,
+            updateLocation),
+          )
         ],
       ),
     );
   }
 }
 
-Widget buildRecommend(String text, colors, settings, List<String> favorites, ValueListenable<List<String>> recommend) {
+Widget buildRecommend(String text, colors, settings, List<String> favorites,
+    ValueListenable<List<String>> recommend, updateLocation) {
 
-  final Color surface = colors[0];
   final Color primary = colors[1];
   final Color outline = colors[5];
   final Color highlight = colors[7];
@@ -244,6 +254,7 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites, Val
 
   if (text == "") {
     return Padding(
+      key: const ValueKey<String>("favorites"),
       padding: const EdgeInsets.only(left: 30, top: 40, right: 30),
       child: AnimationLimiter(
         child: Column(
@@ -324,6 +335,7 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites, Val
   }
   else{
     return ValueListenableBuilder(
+        key: const ValueKey<String>("recommend"),
         valueListenable: recommend,
         builder: (context, value, child) {
           List<String> rec = value;
@@ -348,15 +360,22 @@ Widget buildRecommend(String text, colors, settings, List<String> favorites, Val
                       var split = json.decode(rec[index]);
                       String name = split["name"];
                       String country = generateAbbreviation(split["country"]);
-                      return Padding(
-                        padding: const EdgeInsets.all(17.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: comfortatext("$name, $country", 19, settings, color: onSurface)
-                            ),
-                            Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
-                          ],
+                      return GestureDetector(
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
+                          Navigator.pop(context);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(17.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: comfortatext("$name, $country", 19, settings, color: onSurface)
+                              ),
+                              Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
+                            ],
+                          ),
                         ),
                       );
                     }
@@ -377,12 +396,10 @@ Widget searchBar(List<Color> colors, List<String> recommend,
     List<String> favorites, Function updateRec, String place, var context,
     bool prog, Function updateProg, Map<String, String> settings, String real_loc) {
 
-  Color highlight = colors[7];
-  Color primaryLight = colors[2];
+
   Color primary = colors[1];
   Color onSurface = colors[4];
   Color surface = colors[0];
-  Color outline = colors[5];
   Color containerLow = colors[6];
 
   return FloatingSearchBar(

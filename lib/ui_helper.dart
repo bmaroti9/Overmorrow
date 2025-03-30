@@ -849,7 +849,6 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   }
 
   void updateRec(List<String> rec) {
-    print(rec);
     setState(() {
       recommend.value = rec;
     });
