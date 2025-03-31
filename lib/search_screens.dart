@@ -36,7 +36,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'api_key.dart';
 
-String generateSimplifyer(var split) {
+String generateSimplifier(var split) {
   return "${split["name"]}, ${split["lat"].toStringAsFixed(2)}, ${split["lon"].toStringAsFixed(2)}";
 }
 
@@ -136,6 +136,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   required this.updateFav});
 
   String text = "";
+  bool isEditing = false;
 
   Timer? _debounce;
 
@@ -150,6 +151,12 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   onFavChanged(List<String> fav) {
     setState(() {
       updateFav(fav);
+    });
+  }
+
+  onIsEditingChanged() {
+    setState(() {
+      isEditing = !isEditing;
     });
   }
 
@@ -178,9 +185,13 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
           Padding(
             padding: const EdgeInsets.only(right: 13),
             child: IconButton(
-              icon: Icon(Icons.edit_outlined, color: primary, size: 25,),
+              icon: Icon(
+                isEditing ? Icons.check : Icons.edit_outlined,
+                color: primary, size: 25,
+              ),
               onPressed: () {
-
+                HapticFeedback.lightImpact();
+                onIsEditingChanged();
               },
             ),
           ),
@@ -251,7 +262,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               return FadeTransition(opacity: animation, child: child);
             },
             child: Align(
-              key: ValueKey<String>(text),
+              key: ValueKey<bool>(text == ""),
               alignment: Alignment.topCenter,
               child: buildRecommend(text, colors, settings, favorites, recommend,
               updateLocation, onFavChanged),
@@ -277,7 +288,6 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
     valueListenable: favoritesListen,
     builder: (context, value, child) {
       List<String> favorites = value;
-      print(("fav", favorites));
       if (text == "") {
         return Padding(
           padding: const EdgeInsets.only(left: 30, top: 40, right: 30),
@@ -336,8 +346,9 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
                       comfortatext("favorites", 18, settings, color: outline),
                     ],
                   ),
+                  reorderFavorites(favorites, settings, onFavChanged, highlight, onSurface, primary, primaryLight, outline),
                   Container(
-                    margin: const EdgeInsets.only(top: 20, bottom: 30),
+                    margin: const EdgeInsets.only(top: 20),
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: highlight,
@@ -389,7 +400,7 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
         List<String> favoriteNarrow = [];
         for (int i = 0; i < favorites.length; i++) {
           var d = jsonDecode(favorites[i]);
-          favoriteNarrow.add(generateSimplifyer(d));
+          favoriteNarrow.add(generateSimplifier(d));
         }
         return ValueListenableBuilder(
           valueListenable: recommend,
@@ -422,8 +433,9 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
                         String name = split["name"];
                         String country = generateAbbreviation(split["country"]);
                         String region = split["region"];
+                        String simplifier = generateSimplifier(split);
 
-                        bool contained = favoriteNarrow.contains(generateSimplifyer(split));
+                        bool contained = favoriteNarrow.contains(simplifier);
                         return GestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
@@ -451,7 +463,8 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
                                   onPressed: () {
                                     if (contained) {
                                       HapticFeedback.mediumImpact();
-                                      favorites.remove(rec[index]);
+                                      int z = favoriteNarrow.indexOf(simplifier);
+                                      favorites.removeAt(z);
                                       onFavChanged(favorites);
                                     }
                                     else{
@@ -480,6 +493,79 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
         );
       }
     }
+  );
+}
+
+Widget reorderFavorites(_items, settings, onFavChanged, highlight, onSurface, primary, primaryLight, outline) {
+  return Container(
+    decoration: BoxDecoration(
+      color: highlight,
+      borderRadius: BorderRadius.circular(30),
+    ),
+    margin: const EdgeInsets.only(top: 20),
+    child: ReorderableListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      proxyDecorator: (child, index, animation) => Material(
+        borderRadius: BorderRadius.circular(12),
+        child: child,
+      ),
+      padding: const EdgeInsets.all(12),
+      children: <Widget>[
+        for (int index = 0; index < _items.length; index += 1)
+          reorderableItem(_items, index, settings, highlight, onSurface, outline, primary, onFavChanged)
+      ],
+      onReorder: (int oldIndex, int newIndex) {
+        if (oldIndex < newIndex) {
+          newIndex -= 1;
+        }
+        final String item = _items.removeAt(oldIndex);
+        _items.insert(newIndex, item);
+        onFavChanged(_items);
+      },
+    ),
+  );
+}
+
+Widget reorderableItem(List<dynamic> items, index, settings, highlight, onSurface, outline, primary, onFavChanged) {
+  var split = json.decode(items[index]);
+  String name = split["name"];
+  String country = generateAbbreviation(split["country"]);
+  String region = split["region"];
+  return Container(
+    key: Key("$name, $country, $region"),
+    color: highlight,
+    child: Padding(
+      padding: const EdgeInsets.only(left: 5, right: 5, top: 4, bottom: 4),
+      child:
+      Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Icon(Icons.drag_indicator, color: outline,),
+          ),
+          Expanded(
+              child: Column(
+                crossAxisAlignment : CrossAxisAlignment.start,
+                children: [
+                  comfortatext(name, 20, settings, color: onSurface),
+                  comfortatext("$region, $country", 15, settings, color: outline)
+                ],
+              )
+          ),
+          IconButton(
+            onPressed: () {
+              items.removeAt(index);
+              onFavChanged(items);
+            },
+            icon: Icon(
+              Icons.delete_outline,
+              color: primary, size: 23,
+            ),
+          )
+        ],
+      ),
+    ),
   );
 }
 
