@@ -36,6 +36,10 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'api_key.dart';
 
+String generateSimplifyer(var split) {
+  return "${split["name"]}, ${split["lat"].toStringAsFixed(2)}, ${split["lon"].toStringAsFixed(2)}";
+}
+
 Widget searchBar2(List<Color> colors, recommend,
     Function updateLocation, FloatingSearchBarController controller,
     Function updateIsEditing, bool isEditing, Function updateFav,
@@ -235,8 +239,12 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
             transitionBuilder: (Widget child, Animation<double> animation) {
               return FadeTransition(opacity: animation, child: child);
             },
-            child: buildRecommend(text, colors, settings, favorites, recommend,
-            updateLocation),
+            child: Align(
+              key: ValueKey<String>(text),
+              alignment: Alignment.topCenter,
+              child: buildRecommend(text, colors, settings, favorites, recommend,
+              updateLocation),
+            ),
           )
         ],
       ),
@@ -254,165 +262,204 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
   final Color onPrimaryLight = colors[10];
   Color onSurface = colors[4];
 
-  if (text == "") {
-    return ValueListenableBuilder(
-        key: const ValueKey<String>("favorites"),
-        valueListenable: favoritesListen,
-        builder: (context, value, child) {
-          List<String> favorites = value;
-          return Padding(
-            key: const ValueKey<String>("favorites"),
-            padding: const EdgeInsets.only(left: 30, top: 40, right: 30),
-            child: AnimationLimiter(
-              child: Column(
-                children: AnimationConfiguration.toStaggeredList(
-                  duration: const Duration(milliseconds: 475),
-                  childAnimationBuilder: (widget) => SlideAnimation(
-                    horizontalOffset: 0.0,
-                    verticalOffset: 50,
-                    child: FadeInAnimation(
-                      child: widget,
+  return ValueListenableBuilder(
+    valueListenable: favoritesListen,
+    builder: (context, value, child) {
+      List<String> favorites = value;
+      if (text == "") {
+        return Padding(
+          padding: const EdgeInsets.only(left: 30, top: 40, right: 30),
+          child: AnimationLimiter(
+            child: Column(
+              children: AnimationConfiguration.toStaggeredList(
+                duration: const Duration(milliseconds: 475),
+                childAnimationBuilder: (widget) =>
+                    SlideAnimation(
+                      horizontalOffset: 0.0,
+                      verticalOffset: 50,
+                      child: FadeInAnimation(
+                        child: widget,
+                      ),
+                    ),
+                children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10, top: 2),
+                        child: Icon(
+                          Icons.gps_fixed, color: outline, size: 17,),
+                      ),
+                      comfortatext(
+                          "current location", 18, settings, color: outline),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20, bottom: 30),
+                    padding: const EdgeInsets.only(
+                        left: 25, right: 25, top: 20, bottom: 20),
+                    height: 66,
+                    decoration: BoxDecoration(
+                      color: primaryLight,
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: comfortatext(
+                                "Nashville, Tennessee", 19, settings,
+                                color: onPrimaryLight)
+                        ),
+                        Icon(Icons.keyboard_arrow_right_rounded,
+                          color: onPrimaryLight,)
+                      ],
                     ),
                   ),
-                  children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10, top: 2),
-                          child: Icon(Icons.gps_fixed, color: outline, size: 17,),
-                        ),
-                        comfortatext("current location", 18, settings, color: outline),
-                      ],
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20, bottom: 30),
-                      padding: const EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 20),
-                      height: 66,
-                      decoration: BoxDecoration(
-                        color: primaryLight,
-                        borderRadius: BorderRadius.circular(40),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10, top: 0),
+                        child: Icon(
+                          Icons.star_outline, color: outline, size: 18,),
                       ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: comfortatext("Nashville, Tennessee", 19, settings, color: onPrimaryLight)
-                          ),
-                          Icon(Icons.keyboard_arrow_right_rounded, color: onPrimaryLight,)
-                        ],
-                      ),
+                      comfortatext("favorites", 18, settings, color: outline),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20, bottom: 30),
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: highlight,
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10, top: 0),
-                          child: Icon(Icons.star_outline, color: outline, size: 18,),
-                        ),
-                        comfortatext("favorites", 18, settings, color: outline),
-                      ],
-                    ),
-                    Container(
-                        margin: const EdgeInsets.only(top: 20, bottom: 30),
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: highlight,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Column(
-                            children: List.generate(favorites.length, (index) {
-                              var split = json.decode(favorites[index]);
-                              String name = split["name"];
-                              String country = generateAbbreviation(split["country"]);
-                              return GestureDetector(
-                                onTap: () {
-                                  HapticFeedback.selectionClick();
-                                  updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
-                                  Navigator.pop(context);
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10, right: 7, top: 6, bottom: 6),
-                                  child: Row(
+                    child: Column(
+                      children: List.generate(favorites.length, (index) {
+                        var split = json.decode(favorites[index]);
+                        String name = split["name"];
+                        String country = generateAbbreviation(split["country"]);
+                        String region = split["region"];
+                        return GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            HapticFeedback.selectionClick();
+                            updateLocation(
+                                '${split["lat"]}, ${split["lon"]}', split["name"]);
+                            Navigator.pop(context);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 7, top: 6, bottom: 6),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment : CrossAxisAlignment.start,
                                     children: [
-                                      Expanded(
-                                          child: comfortatext("$name, $country", 19, settings, color: onSurface)
-                                      ),
-                                      Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
+                                      comfortatext(name, 20, settings, color: onSurface),
+                                      comfortatext("$region, $country", 15, settings, color: outline)
                                     ],
-                                  ),
+                                  )
                                 ),
-                              );
-
-                            })
-                        )
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }
-    );
-  }
-  else{
-    return ValueListenableBuilder(
-        key: const ValueKey<String>("recommend"),
-        valueListenable: recommend,
-        builder: (context, value, child) {
-          List<String> rec = value;
-          return Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 30, left: 30, right: 30),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                transitionBuilder: (Widget child, Animation<double> animation) {
-                  return SizeTransition(sizeFactor: animation, child: child);
-                },
-                child: Container(
-                  key: ValueKey<String>(rec.toString()),
-                  decoration: BoxDecoration(
-                    color: highlight,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  padding: rec.isEmpty ? const EdgeInsets.all(0) : const EdgeInsets.all(10),
-                  child: Column(
-                    children: List.generate(rec.length, (index) {
-                      var split = json.decode(rec[index]);
-                      String name = split["name"];
-                      String country = generateAbbreviation(split["country"]);
-
-                      return GestureDetector(
-                        onTap: () {
-                          HapticFeedback.selectionClick();
-                          updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
-                          Navigator.pop(context);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 7, top: 6, bottom: 6),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: comfortatext("$name, $country", 19, settings, color: onSurface)
-                              ),
-                              IconButton(
-                                onPressed: () {
-
-                                },
-                                icon: Icon(Icons.favorite_outline, color: primary, size: 22,),
-                              )
-                            ],
+                                Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                  )
-                )
-              )
+                        );
+                      })
+                    )
+                  ),
+                ],
+              ),
             ),
           ),
         );
       }
-    );
-  }
+      else {
+        List<String> favoriteNarrow = [];
+        for (int i = 0; i < favorites.length; i++) {
+          var d = jsonDecode(favorites[i]);
+          favoriteNarrow.add(generateSimplifyer(d));
+        }
+        return ValueListenableBuilder(
+          valueListenable: recommend,
+          builder: (context, value, child) {
+            List<String> rec = value;
+            return Padding(
+              padding: const EdgeInsets.only(
+                  top: 20, bottom: 30, left: 30, right: 30),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (Widget child,
+                    Animation<double> animation) {
+                    return SizeTransition(
+                        sizeFactor: animation, child: child);
+                  },
+                  child: Container(
+                    key: ValueKey<String>(rec.toString()),
+                    decoration: BoxDecoration(
+                      color: highlight,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding: rec.isEmpty
+                        ? const EdgeInsets.all(0)
+                        : const EdgeInsets.all(10),
+                    child: Column(
+                      children: List.generate(rec.length, (index) {
+                        var split = json.decode(rec[index]);
+                        String name = split["name"];
+                        String country = generateAbbreviation(split["country"]);
+                        String region = split["region"];
+
+                        bool contained = favoriteNarrow.contains(generateSimplifyer(split));
+                        return GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            HapticFeedback.selectionClick();
+                            updateLocation(
+                                '${split["lat"]}, ${split["lon"]}',
+                                split["name"]);
+                            Navigator.pop(context);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 7, top: 6, bottom: 6),
+                            child:
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: Column(
+                                      crossAxisAlignment : CrossAxisAlignment.start,
+                                      children: [
+                                        comfortatext(name, 20, settings, color: onSurface),
+                                        comfortatext("$region, $country", 15, settings, color: outline)
+                                      ],
+                                    )
+                                ),
+                                IconButton(
+                                  onPressed: () {
+
+                                  },
+                                  icon: Icon(
+                                    contained? Icons.star : Icons.star_outline,
+                                    color: primary, size: 24,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                      )
+                    )
+                  )
+                ),
+              ),
+            );
+          }
+        );
+      }
+    }
+  );
 }
 
 Widget searchBar(List<Color> colors, List<String> recommend,
