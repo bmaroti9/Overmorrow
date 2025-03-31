@@ -265,7 +265,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               key: ValueKey<bool>(text == ""),
               alignment: Alignment.topCenter,
               child: buildRecommend(text, colors, settings, favorites, recommend,
-              updateLocation, onFavChanged),
+              updateLocation, onFavChanged, isEditing),
             ),
           )
         ],
@@ -275,7 +275,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
 }
 
 Widget buildRecommend(String text, colors, settings, ValueListenable<List<String>> favoritesListen,
-    ValueListenable<List<String>> recommend, updateLocation, onFavChanged) {
+    ValueListenable<List<String>> recommend, updateLocation, onFavChanged, isEditing) {
 
   final Color primary = colors[1];
   final Color outline = colors[5];
@@ -336,60 +336,33 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
                       ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10, top: 0),
-                        child: Icon(
-                          Icons.star_outline, color: outline, size: 18,),
-                      ),
-                      comfortatext("favorites", 18, settings, color: outline),
-                    ],
-                  ),
-                  reorderFavorites(favorites, settings, onFavChanged, highlight, onSurface, primary, primaryLight, outline),
-                  Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: highlight,
-                      borderRadius: BorderRadius.circular(30),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10, top: 0),
+                          child: Icon(
+                            Icons.star_outline, color: outline, size: 18,),
+                        ),
+                        comfortatext("favorites", 18, settings, color: outline),
+                      ],
                     ),
-                    child: Column(
-                      children: List.generate(favorites.length, (index) {
-                        var split = json.decode(favorites[index]);
-                        String name = split["name"];
-                        String country = generateAbbreviation(split["country"]);
-                        String region = split["region"];
-                        return GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            HapticFeedback.selectionClick();
-                            updateLocation(
-                                '${split["lat"]}, ${split["lon"]}', split["name"]);
-                            Navigator.pop(context);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10, right: 7, top: 6, bottom: 6),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment : CrossAxisAlignment.start,
-                                    children: [
-                                      comfortatext(name, 20, settings, color: onSurface),
-                                      comfortatext("$region, $country", 15, settings, color: outline)
-                                    ],
-                                  )
-                                ),
-                                Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
-                              ],
-                            ),
-                          ),
-                        );
-                      })
-                    )
                   ),
+                  if (favorites.isNotEmpty)
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      transitionBuilder: (Widget child,
+                          Animation<double> animation) {
+                        return SizeTransition(
+                            sizeFactor: animation, child: child);
+                      },
+                      child: favoritesOrReorder(isEditing, favorites, settings, onFavChanged, highlight,
+                          onSurface, primary, primaryLight, outline, updateLocation, context),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -496,13 +469,65 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
   );
 }
 
+Widget favoritesOrReorder(isEditing, favorites, settings, onFavChanged,
+    highlight, onSurface, primary, primaryLight, outline, updateLocation, context) {
+  if (isEditing) {
+    return reorderFavorites(favorites, settings, onFavChanged, highlight, onSurface, primary, primaryLight, outline);
+  }
+  else {
+    return Container(
+      key: const ValueKey<String>("normal"),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: highlight,
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Column(
+            children: List.generate(favorites.length, (index) {
+              var split = json.decode(favorites[index]);
+              String name = split["name"];
+              String country = generateAbbreviation(split["country"]);
+              String region = split["region"];
+              return GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  updateLocation(
+                      '${split["lat"]}, ${split["lon"]}', split["name"]);
+                  Navigator.pop(context);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 7, top: 7, bottom: 7),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Column(
+                            crossAxisAlignment : CrossAxisAlignment.start,
+                            children: [
+                              comfortatext(name, 20, settings, color: onSurface),
+                              comfortatext("$region, $country", 15, settings, color: outline)
+                            ],
+                          )
+                      ),
+                      Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
+                    ],
+                  ),
+                ),
+              );
+            })
+        )
+    );
+  }
+}
+
 Widget reorderFavorites(_items, settings, onFavChanged, highlight, onSurface, primary, primaryLight, outline) {
   return Container(
+    key: const ValueKey<String>("editing"),
     decoration: BoxDecoration(
       color: highlight,
       borderRadius: BorderRadius.circular(30),
     ),
-    margin: const EdgeInsets.only(top: 20),
     child: ReorderableListView(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
