@@ -88,7 +88,7 @@ Widget searchBar2(List<Color> colors, recommend,
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => HeroSearchPage(colors: colors, place: place, settings: settings, recommend: recommend,
-            updateRec: updateRec, updateLocation: updateLocation, favorites: favorites,),
+            updateRec: updateRec, updateLocation: updateLocation, favorites: favorites, updateFav: updateFav,),
 
             fullscreenDialog: true,
           ),
@@ -107,13 +107,16 @@ class HeroSearchPage extends StatefulWidget {
   final updateRec;
   final updateLocation;
   final favorites;
+  final updateFav;
 
   const HeroSearchPage({super.key, required this.colors, required this.place, required this.settings,
-    required this.recommend, required this.updateRec, required this.updateLocation, required this.favorites});
+    required this.recommend, required this.updateRec, required this.updateLocation, required this.favorites,
+  required this.updateFav});
 
   @override
   State<HeroSearchPage> createState() => _HeroSearchPageState(colors: colors, place: place, settings: settings,
-  recommend: recommend, updateRec: updateRec, updateLocation: updateLocation, favorites: favorites);
+  recommend: recommend, updateRec: updateRec, updateLocation: updateLocation, favorites: favorites,
+  updateFav: updateFav);
 }
 
 
@@ -126,9 +129,11 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   final updateRec;
   final updateLocation;
   final favorites;
+  final updateFav;
 
   _HeroSearchPageState({required this.colors, required this.place, required this.settings,
-    required this.recommend, required this.updateRec, required this.updateLocation, required this.favorites});
+    required this.recommend, required this.updateRec, required this.updateLocation, required this.favorites,
+  required this.updateFav});
 
   String text = "";
 
@@ -139,6 +144,12 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     _debounce = Timer(const Duration(milliseconds: 400), () async {
       var result = await getRecommend(query, settings["Search provider"], settings);
       updateRec(result);
+    });
+  }
+
+  onFavChanged(List<String> fav) {
+    setState(() {
+      updateFav(fav);
     });
   }
 
@@ -243,7 +254,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               key: ValueKey<String>(text),
               alignment: Alignment.topCenter,
               child: buildRecommend(text, colors, settings, favorites, recommend,
-              updateLocation),
+              updateLocation, onFavChanged),
             ),
           )
         ],
@@ -253,7 +264,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
 }
 
 Widget buildRecommend(String text, colors, settings, ValueListenable<List<String>> favoritesListen,
-    ValueListenable<List<String>> recommend, updateLocation) {
+    ValueListenable<List<String>> recommend, updateLocation, onFavChanged) {
 
   final Color primary = colors[1];
   final Color outline = colors[5];
@@ -266,6 +277,7 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
     valueListenable: favoritesListen,
     builder: (context, value, child) {
       List<String> favorites = value;
+      print(("fav", favorites));
       if (text == "") {
         return Padding(
           padding: const EdgeInsets.only(left: 30, top: 40, right: 30),
@@ -437,7 +449,16 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
                                 ),
                                 IconButton(
                                   onPressed: () {
-
+                                    if (contained) {
+                                      HapticFeedback.mediumImpact();
+                                      favorites.remove(rec[index]);
+                                      onFavChanged(favorites);
+                                    }
+                                    else{
+                                      HapticFeedback.lightImpact();
+                                      favorites.add(rec[index]);
+                                      onFavChanged(favorites);
+                                    }
                                   },
                                   icon: Icon(
                                     contained? Icons.star : Icons.star_outline,
