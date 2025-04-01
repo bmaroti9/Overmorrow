@@ -146,7 +146,10 @@ class _HomePageState extends State<HomePage> {
           Position position;
           try {
             position = await Geolocator.getCurrentPosition(
-                desiredAccuracy: LocationAccuracy.medium, timeLimit: const Duration(seconds: 2));
+                locationSettings: AndroidSettings(accuracy: LocationAccuracy.medium,
+                    timeLimit: const Duration(seconds: 2)
+                )
+            );
           } on TimeoutException {
             try {
               position = (await Geolocator.getLastKnownPosition())!;

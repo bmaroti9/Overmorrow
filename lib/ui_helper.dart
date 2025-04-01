@@ -102,26 +102,26 @@ Color darken2(Color c, [double amount = 0.1]) {
   assert(0 <= amount && amount <= 1);
   var f = 1 - amount;
   return Color.fromARGB(
-      c.alpha,
-      (c.red * f).round(),
-      (c.green  * f).round(),
-      (c.blue * f).round()
+      c.a.toInt(),
+      (c.r * f).round(),
+      (c.g  * f).round(),
+      (c.b * f).round()
   );
 }
 
 Color lighten2(Color c, [double amount = 0.1]) {
   assert(0 <= amount && amount <= 1);
   return Color.fromARGB(
-      c.alpha,
-      c.red + ((255 - c.red) * amount).round(),
-      c.green + ((255 - c.green) * amount).round(),
-      c.blue + ((255 - c.blue) * amount).round()
+      c.a.toInt(),
+      c.r.toInt() + ((255 - c.r) * amount).round(),
+      c.g.toInt() + ((255 - c.g) * amount).round(),
+      c.b.toInt() + ((255 - c.b) * amount).round()
   );
 }
 
 Color lightAccent(Color color, int intensity) {
-  double x = intensity / (color.red + color.green + color.blue);
-  return Color.fromRGBO(sqrt(color.red * x).toInt(), sqrt(color.green * x).toInt(), sqrt(color.blue * x).toInt(), 1);
+  double x = intensity / (color.r + color.g + color.b);
+  return Color.fromRGBO(sqrt(color.r * x).toInt(), sqrt(color.g * x).toInt(), sqrt(color.b* x).toInt(), 1);
 }
 
 Future<void> _launchUrl(String url) async {

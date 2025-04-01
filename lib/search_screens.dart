@@ -171,7 +171,10 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     Position position;
     try {
       position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high, timeLimit: const Duration(seconds: 2));
+          locationSettings: AndroidSettings(accuracy: LocationAccuracy.medium,
+              timeLimit: const Duration(seconds: 20)
+          )
+      );
     } on TimeoutException {
       try {
         position = (await Geolocator.getLastKnownPosition())!;
@@ -229,9 +232,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
       return "deniedForever";
     }
     String x = await checkIfLocationSafe(true);
-    await Future.delayed(const Duration(milliseconds: 500));
     if (x == "enabled") {
-      findCurrentPosition();
+      await findCurrentPosition();
     }
   }
 
