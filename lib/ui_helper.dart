@@ -717,21 +717,19 @@ Future<List<String>> getRecommend(String query, searchProvider, settings) async 
     return getOMReccomend(query, settings);
   }
 }
+
 class MySearchParent extends StatefulWidget{
   final updateLocation;
   final colors;
   final place;
-  final controller;
   final settings;
-  final real_loc;
 
   const MySearchParent({super.key, required this.updateLocation,
-    required this.colors, required this.place, required this.controller, required this.settings,
-    required this.real_loc});
+    required this.colors, required this.place, required this.settings,});
 
   @override
   _MySearchParentState createState() => _MySearchParentState(colors: colors,
-  place: place, controller: controller, settings: settings, real_loc: real_loc,);
+  place: place,settings: settings);
 }
 
 class _MySearchParentState extends State<MySearchParent> {
@@ -739,12 +737,9 @@ class _MySearchParentState extends State<MySearchParent> {
 
   final colors;
   final place;
-  final controller;
   final settings;
-  final real_loc;
 
-  _MySearchParentState({required this.colors, required this.place,
-  required this.controller, required this.settings, required this.real_loc});
+  _MySearchParentState({required this.colors, required this.place, required this.settings});
 
   late Future<SharedPreferences> _prefsFuture;
 
@@ -789,7 +784,7 @@ class _MySearchParentState extends State<MySearchParent> {
         //return buildWholeThing(snapshot.data);
         return MySearchWidget(updateLocation: widget.updateLocation,
             colors: colors, favorites: favorites, prefs: snapshot.data,
-        place: place, controller: controller, settings: settings, real_loc: real_loc);
+        place: place, settings: settings);
       },
     );
   }
@@ -801,38 +796,30 @@ class MySearchWidget extends StatefulWidget{
   final updateLocation;
   final favorites;
   final prefs;
-  final controller;
   final settings;
-  final real_loc;
 
   const MySearchWidget({super.key, required this.colors, required this.updateLocation,
-  required this.favorites, required this.prefs, required this.place,
-  required this.controller, required this.settings, required this.real_loc});
+  required this.favorites, required this.prefs, required this.place, required this.settings});
 
   @override
   _MySearchWidgetState createState() => _MySearchWidgetState(colors: colors,
   updateLocation: updateLocation, beginFavorites: favorites,
-      prefs: prefs, place: place, controller: controller, settings: settings, real_loc: real_loc);
+      prefs: prefs, place: place, settings: settings);
 }
 
 class _MySearchWidgetState extends State<MySearchWidget> {
   //final FloatingSearchBarController _controller = FloatingSearchBarController();
-  final controller;
   final colors;
   final place;
   final updateLocation;
   final prefs;
   final settings;
-  final real_loc;
 
   final List<String> beginFavorites;
 
-  bool isEditing = false;
-  bool prog = false;
-
   _MySearchWidgetState({required this.colors, required this.updateLocation,
         required this.beginFavorites, required this.prefs, required this.place,
-  required this.controller, required this.settings, required this.real_loc});
+  required this.settings, });
 
   final ValueNotifier<List<String>> recommend = ValueNotifier<List<String>>([]);
   ValueNotifier<List<String>> favorites = ValueNotifier<List<String>>([]);
@@ -849,21 +836,10 @@ class _MySearchWidgetState extends State<MySearchWidget> {
       favorites.value = fav;
     });
   }
-  void updateProg(bool to) {
-    setState(() {
-      prog = to;
-    });
-  }
 
   void updateRec(List<String> rec) {
     setState(() {
       recommend.value = rec;
-    });
-  }
-
-  void updateIsEditing(bool h) {
-    setState(() {
-      isEditing = h;
     });
   }
 
@@ -879,8 +855,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   Widget buildFloatingSearchBar() {
 
     return searchBar2(colors, recommend, updateLocation,
-        controller, updateIsEditing, isEditing, updateFav, favorites,
-        updateRec, place, context, prog, updateProg, settings, real_loc);
+        updateFav, favorites, updateRec, place, context, settings);
 
   }
 }

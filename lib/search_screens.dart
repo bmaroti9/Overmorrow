@@ -25,6 +25,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/main_ui.dart';
 import 'package:overmorrow/settings_page.dart';
@@ -36,15 +38,15 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'api_key.dart';
 
+//before this the same place from 2 different providers would be registered as different,
+//I am trying to fix this with this
 String generateSimplifier(var split) {
   return "${split["name"]}, ${split["lat"].toStringAsFixed(2)}, ${split["lon"].toStringAsFixed(2)}";
 }
 
 Widget searchBar2(List<Color> colors, recommend,
-    Function updateLocation, FloatingSearchBarController controller,
-    Function updateIsEditing, bool isEditing, Function updateFav,
-    favorites, Function updateRec, String place, var context,
-    bool prog, Function updateProg, Map<String, String> settings, String real_loc) {
+    Function updateLocation, Function updateFav, favorites, Function updateRec, String place,
+    var context, Map<String, String> settings) {
 
   Color primary = colors[1];
   Color onSurface = colors[4];
@@ -138,6 +140,11 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   String text = "";
   bool isEditing = false;
 
+  String locationSafe = "unknown";
+  String placeName = "-";
+  String country = "-";
+  String region = "-";
+
   Timer? _debounce;
 
   _onSearchChanged(String query) {
@@ -157,6 +164,117 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   onIsEditingChanged() {
     setState(() {
       isEditing = !isEditing;
+    });
+  }
+
+  findCurrentPosition() async {
+
+    Position position;
+    try {
+      position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high, timeLimit: const Duration(seconds: 2));
+    } on TimeoutException {
+      try {
+        position = (await Geolocator.getLastKnownPosition())!;
+    } on Error {
+      setState(() {
+        locationSafe = "unableToLocate";
+      });
+      return "unableToLocate";
+    }
+    } on LocationServiceDisabledException {
+      setState(() {
+        locationSafe = "locationServiceDisabled";
+      });
+      return "locationServiceDisabled";
+    }
+
+    try {
+
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          position.latitude, position.longitude);
+      Placemark place = placemarks[0];
+
+      setState(() {
+        placeName = place.locality ?? "";
+        country = place.isoCountryCode ?? "";
+        region = place.administrativeArea ?? "";
+      });
+
+
+    } on FormatException {
+      setState(() {
+        placeName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
+      });
+
+    } on PlatformException {
+      setState(() {
+        placeName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
+      });
+    }
+  }
+
+  askGrantLocationPermission() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      setState(() {
+        locationSafe = "disabled";
+      });
+      return "disabled";
+    }
+    await Geolocator.requestPermission();
+    String x = await checkIfLocationSafe();
+    if (x == "enabled") {
+      findCurrentPosition();
+    }
+  }
+
+  Future<String> checkIfLocationSafe() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      setState(() {
+        locationSafe = "disabled";
+      });
+      return "disabled";
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      setState(() {
+        locationSafe = "denied";
+      });
+      return "denied";
+    }
+    if (permission == LocationPermission.deniedForever) {
+      setState(() {
+        locationSafe = "deniedForever";
+      });
+      return "deniedForever";
+    }
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      setState(() {
+        locationSafe = "enabled";
+      });
+      return "enabled";
+    }
+    setState(() {
+      locationSafe = "failed";
+    });
+    return "failed";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      checkIfLocationSafe().then((x) {
+        if (x == "enabled") {
+          WidgetsBinding.instance.addPostFrameCallback((_){
+            findCurrentPosition();
+          });
+        }
+      });
     });
   }
 
@@ -211,7 +329,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 23, right: 23),
+                  padding: const EdgeInsets.only(left: 25, right: 25),
                   child: Material(
                     color: highlight,
                     child: Theme(
@@ -265,7 +383,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               key: ValueKey<bool>(text == ""),
               alignment: Alignment.topCenter,
               child: buildRecommend(text, colors, settings, favorites, recommend,
-              updateLocation, onFavChanged, isEditing),
+              updateLocation, onFavChanged, isEditing, locationSafe, askGrantLocationPermission,
+              placeName, country, region),
             ),
           )
         ],
@@ -275,7 +394,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
 }
 
 Widget buildRecommend(String text, colors, settings, ValueListenable<List<String>> favoritesListen,
-    ValueListenable<List<String>> recommend, updateLocation, onFavChanged, isEditing) {
+    ValueListenable<List<String>> recommend, updateLocation, onFavChanged, isEditing, locationSafe,
+    askGrantLocationPermission, placeName, country, region) {
 
   final Color primary = colors[1];
   final Color outline = colors[5];
@@ -315,27 +435,8 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
                           "current location", 18, settings, color: outline),
                     ],
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 20, bottom: 30),
-                    padding: const EdgeInsets.only(
-                        left: 25, right: 25, top: 20, bottom: 20),
-                    height: 66,
-                    decoration: BoxDecoration(
-                      color: primaryLight,
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: comfortatext(
-                                "Nashville, Tennessee", 19, settings,
-                                color: onPrimaryLight)
-                        ),
-                        Icon(Icons.keyboard_arrow_right_rounded,
-                          color: onPrimaryLight,)
-                      ],
-                    ),
-                  ),
+                  CurrentLocationWidget(settings, locationSafe, primaryLight, onPrimaryLight, outline,
+                      askGrantLocationPermission, placeName, country, region, updateLocation, context),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: Row(
@@ -467,6 +568,76 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
       }
     }
   );
+}
+
+Widget CurrentLocationWidget(settings, locationSafe, primaryLight, onPrimaryLight, outline, askGrantLocationPermission,
+    String placeName, String country, String region, updateLocation, context) {
+  if (locationSafe == "denied") {
+    return GestureDetector(
+      onTap: () {
+        askGrantLocationPermission();
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 20, bottom: 30),
+        padding: const EdgeInsets.only(
+            left: 25, right: 25, top: 20, bottom: 20),
+        height: 66,
+        decoration: BoxDecoration(
+          color: primaryLight,
+          borderRadius: BorderRadius.circular(40),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.gps_fixed,
+              color: onPrimaryLight, size: 19,),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10, bottom: 2),
+                child: comfortatext(
+                      "grant location permission", 19, settings,
+                      color: onPrimaryLight),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+  if (locationSafe == "enabled") {
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        updateLocation('40.7128, -74.0060', 'CurrentLocation'); // this is new york for backup
+        Navigator.pop(context);
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 20, bottom: 30),
+        padding: const EdgeInsets.only(
+            left: 25, right: 25, top: 19, bottom: 19),
+        decoration: BoxDecoration(
+          color: primaryLight,
+          borderRadius: BorderRadius.circular(40),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+                child: Column(
+                  crossAxisAlignment : CrossAxisAlignment.start,
+                  children: [
+                    comfortatext(placeName, 20, settings, color: onPrimaryLight),
+                    comfortatext("$region, $country", 15, settings, color: onPrimaryLight)
+                  ],
+                )
+            ),
+            Icon(Icons.keyboard_arrow_right_rounded,
+              color: onPrimaryLight,)
+          ],
+        ),
+      ),
+    );
+  }
+  return comfortatext(locationSafe, 18, settings, color: outline);
 }
 
 Widget favoritesOrReorder(isEditing, favorites, settings, onFavChanged,
@@ -1109,8 +1280,7 @@ class dumbySearch extends StatelessWidget {
                   ),
                 ),
                 MySearchParent(updateLocation: updateLocation,
-                    colors: colors, place: place, controller: controller, settings: settings,
-                  real_loc: place,)
+                    colors: colors, place: place, settings: settings,)
               ],
             )
         ),

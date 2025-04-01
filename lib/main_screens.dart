@@ -204,10 +204,7 @@ class _NewMainState extends State<NewMain> {
                 MySearchParent(updateLocation: updateLocation,
                   colors: data.current.colors,
                   place: data.place,
-                  controller: controller,
-                  settings: data.settings,
-                  real_loc: data.real_loc),
-
+                  settings: data.settings),
               ],
             )
         ),
@@ -347,9 +344,7 @@ Widget TabletLayout(data, updateLocation, context) {
                               MySearchParent(updateLocation: updateLocation,
                                 colors: data.current.colors,
                                 place: data.place,
-                                controller: controller,
-                                settings: data.settings,
-                                real_loc: data.real_loc,)
+                                settings: data.settings,)
                             ],
                           ),
                         ),
