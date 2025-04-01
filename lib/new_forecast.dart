@@ -23,7 +23,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'ui_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0, iconSize = 21.0}) {
   return Row(

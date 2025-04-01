@@ -27,7 +27,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'decoders/decode_wapi.dart';
 import 'decoders/extra_info.dart';
 import 'main_ui.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 Future<void> _launchUrl(String url) async {
   final Uri _url = Uri.parse(url);

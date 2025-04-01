@@ -26,7 +26,7 @@ import '../Icons/overmorrow_weather_icons_icons.dart';
 import '../api_key.dart';
 import '../caching.dart';
 import '../settings_page.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 import '../weather_refact.dart' as weather_refactor;
 import '../weather_refact.dart';

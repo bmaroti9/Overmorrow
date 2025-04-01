@@ -28,7 +28,7 @@ import 'package:overmorrow/search_screens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 import 'api_key.dart';
 import 'caching.dart';

@@ -21,7 +21,6 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +32,7 @@ import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'api_key.dart';
@@ -222,14 +221,21 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
       });
       return "disabled";
     }
-    await Geolocator.requestPermission();
-    String x = await checkIfLocationSafe();
+    LocationPermission permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.deniedForever) {
+      setState(() {
+        locationSafe = "deniedForever";
+      });
+      return "deniedForever";
+    }
+    String x = await checkIfLocationSafe(true);
+    await Future.delayed(const Duration(milliseconds: 500));
     if (x == "enabled") {
       findCurrentPosition();
     }
   }
 
-  Future<String> checkIfLocationSafe() async {
+  Future<String> checkIfLocationSafe([bool afterAsk = false]) async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       setState(() {
@@ -239,17 +245,17 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     }
 
     LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      setState(() {
-        locationSafe = "denied";
-      });
-      return "denied";
-    }
     if (permission == LocationPermission.deniedForever) {
       setState(() {
         locationSafe = "deniedForever";
       });
       return "deniedForever";
+    }
+    if (permission == LocationPermission.denied) {
+      setState(() {
+        locationSafe = "denied";
+      });
+      return "denied";
     }
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
@@ -637,7 +643,31 @@ Widget CurrentLocationWidget(settings, locationSafe, primaryLight, onPrimaryLigh
       ),
     );
   }
-  return comfortatext(locationSafe, 18, settings, color: outline);
+  return Container(
+    margin: const EdgeInsets.only(top: 20, bottom: 30),
+    padding: const EdgeInsets.only(
+        left: 25, right: 25, top: 20, bottom: 20),
+    height: 66,
+    decoration: BoxDecoration(
+      color: primaryLight,
+      borderRadius: BorderRadius.circular(40),
+    ),
+    child: Row(
+      children: [
+        Icon(Icons.gps_off,
+          color: onPrimaryLight, size: 19,),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, bottom: 2),
+            child: comfortatext(
+                locationSafe, 19, settings,
+                color: onPrimaryLight),
+          ),
+        ),
+
+      ],
+    ),
+  );
 }
 
 Widget favoritesOrReorder(isEditing, favorites, settings, onFavChanged,

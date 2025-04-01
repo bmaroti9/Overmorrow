@@ -34,7 +34,7 @@ import 'caching.dart';
 import 'decoders/extra_info.dart';
 import 'main_ui.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 import 'settings_page.dart';
 

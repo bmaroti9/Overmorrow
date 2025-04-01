@@ -28,7 +28,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'decoders/extra_info.dart';
 import 'main.dart';
 import 'ui_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 Map<String, List<String>> settingSwitches = {
   'Language' : [

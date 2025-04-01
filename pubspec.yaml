@@ -32,19 +32,19 @@ dependencies:
     sdk: flutter
   http: ^1.1.0
   material_floating_search_bar_2: ^0.5.0
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.5.3
   flutter_launcher_icons: ^0.14.3
   url_launcher: ^6.1.14
   latlong2: ^0.9.1
 
-  geolocator: ^10.1.0
+  geolocator: ^13.0.4
   geocoding: ^3.0.0
 
-  flutter_cache_manager: ^3.3.1
-  flutter_map: ^6.1.0
+  flutter_cache_manager: ^3.4.1
+  flutter_map: ^8.1.1
   loading_animation_widget: ^1.2.0+4
   stretchy_header: ^2.0.0
-  cached_network_image: ^3.3.1
+  cached_network_image: ^3.4.1
   palette_generator: ^0.3.3+4
   dynamic_color: ^1.7.0
   flutter_staggered_animations: ^1.1.1

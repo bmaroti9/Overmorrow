@@ -24,7 +24,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/main_screens.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'ui_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 class WeatherPage extends StatelessWidget {
   final data;

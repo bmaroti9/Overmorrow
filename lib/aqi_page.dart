@@ -24,7 +24,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 
 import 'package:overmorrow/ui_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 class SquigglyCirclePainter extends CustomPainter {
 

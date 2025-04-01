@@ -26,7 +26,7 @@ import 'package:overmorrow/ui_helper.dart';
 import 'alerts_page.dart';
 import 'aqi_page.dart';
 import 'decoders/decode_OM.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 class WavePainter extends CustomPainter {
   final double waveValue;
