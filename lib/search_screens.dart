@@ -58,7 +58,7 @@ Widget searchBar2(List<Color> colors, recommend,
         tag: 'searchBarHero',
         child: Container(
           height: 66,
-          margin: EdgeInsets.only(left: 27, right: 27, top: MediaQuery.of(context).padding.top + 15),
+          margin: EdgeInsets.only(left: 30, right: 30, top: MediaQuery.of(context).padding.top + 15),
           decoration: BoxDecoration(
             color: surface,
             borderRadius: BorderRadius.circular(33)
@@ -90,7 +90,6 @@ Widget searchBar2(List<Color> colors, recommend,
           MaterialPageRoute(
             builder: (context) => HeroSearchPage(colors: colors, place: place, settings: settings, recommend: recommend,
             updateRec: updateRec, updateLocation: updateLocation, favorites: favorites, updateFav: updateFav,),
-
             fullscreenDialog: true,
           ),
         );

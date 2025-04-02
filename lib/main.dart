@@ -304,10 +304,6 @@ class _HomePageState extends State<HomePage> {
           startup2 = false;
         }
       });
-      if (time > 0) {
-        await Future.delayed(Duration(milliseconds: (800 - time).toInt()));
-      }
-      await Future.delayed(const Duration(milliseconds: 200));
 
       setState(() {
         isLoading = false;

@@ -24,7 +24,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/new_forecast.dart';
 import 'package:overmorrow/radar.dart';
-import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
@@ -130,7 +129,6 @@ class _NewMainState extends State<NewMain> {
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     final Size size = (view.physicalSize) / view.devicePixelRatio;
 
-    final FloatingSearchBarController controller = FloatingSearchBarController();
 
     final Map<String, Widget> widgetsMap = {
       'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), size: size,),
@@ -170,7 +168,7 @@ class _NewMainState extends State<NewMain> {
         headerData: HeaderData(
             //backgroundColor: WHITE,
             blurContent: false,
-            headerHeight: max((size.height ) * 0.505, 400),
+            headerHeight: max((size.height ) * 0.5, 400),
             //we don't want it to be smaller than 400
             header: ParrallaxBackground(image: data.current.image, key: Key(data.place),
                 color: data.current.surface == BLACK ? BLACK
@@ -178,7 +176,7 @@ class _NewMainState extends State<NewMain> {
             overlay: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 26, right: 25, bottom: 30),
+                  padding: const EdgeInsets.only(left: 28, right: 25, bottom: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -186,7 +184,7 @@ class _NewMainState extends State<NewMain> {
                       Padding(
                         padding: const EdgeInsets.only(left: 0, bottom: 0),
                         child: comfortatext(
-                            "${data.current.temp}°", 69, data.settings,
+                            "${data.current.temp}°", 65, data.settings,
                             color: data.current.colorPop, weight: FontWeight.w200,
                         ),
                       ),
@@ -209,27 +207,17 @@ class _NewMainState extends State<NewMain> {
             )
         ),
         children: [
-          /*
+
           Stack(
             children: [
               FadingWidget(
                 data: data,
                 time: data.updatedTime,
               ),
-              LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    if (constraints.maxWidth > 500.0) {
-                      return Circles(500, data, 0.5, data.current.primary, context);
-                    } else {
-                      return Circles(constraints.maxWidth * 0.97, data, 0.5,
-                          data.current.primary, context);
-                    }
-                  }
-              ),
+              Circles(data, 0.5, context, data.current.primary, data.current.onSurface, data.current.outline)
             ],
           ),
 
-           */
 
           /*
           Padding(
@@ -288,8 +276,6 @@ class _NewMainState extends State<NewMain> {
 }
 
 Widget TabletLayout(data, updateLocation, context) {
-
-  final FloatingSearchBarController controller = FloatingSearchBarController();
 
   FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
 
@@ -374,7 +360,7 @@ Widget TabletLayout(data, updateLocation, context) {
                               FadingWidget(data: data,
                                   time: data.updatedTime,
                                   key: Key(data.updatedTime.toString())),
-                              Circles(420, data, 0.3, data.current.primary, context),
+                              Circles(data, 0.3, context, data.current.primary, data.current.onSurface, data.current.outline),
                             ],
                           ),
                         ],
