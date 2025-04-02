@@ -176,7 +176,7 @@ class _NewMainState extends State<NewMain> {
             overlay: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 28, right: 25, bottom: 30),
+                  padding: const EdgeInsets.only(left: 27, right: 25, bottom: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -217,6 +217,8 @@ class _NewMainState extends State<NewMain> {
               Circles(data, 0.5, context, data.current.primary, data.current.onSurface, data.current.outline)
             ],
           ),
+
+          NewSunriseSunset(data: data, key: Key(data.place), size: size,),
 
 
           /*

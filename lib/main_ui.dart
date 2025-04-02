@@ -173,7 +173,7 @@ class DescriptionCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(left: 4, right: 4),
+        padding: const EdgeInsets.only(left: 4.5, right: 4.5),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

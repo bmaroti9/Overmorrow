@@ -160,7 +160,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         final textWidth = textPainter.width + 1;
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 15),
+          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 15, top: 15),
           child: Column(
             children: [
               Padding(
@@ -171,8 +171,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: comfortatext(write, 15, widget.data.settings,
-                      color: widget.data.current.onSurface,
-                      weight: FontWeight.w500),
+                      color: widget.data.current.onSurface, weight: FontWeight.w300),
                 ),
               ),
               Padding(
@@ -208,26 +207,26 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                 child: Row(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 4),
                       child: Icon(
                         Icons.wb_sunny_outlined,
-                        color: widget.data.current.primarySecond,
+                        color: widget.data.current.primary,
                         size: 14,
                       ),
                     ),
                     comfortatext(
                         widget.data.sunstatus.sunrise, 15, widget.data.settings,
-                        color: widget.data.current.primarySecond,
-                        weight: FontWeight.w500),
+                        color: widget.data.current.primary,
+                        weight: FontWeight.w300),
                     const Spacer(),
                     comfortatext(
                         widget.data.sunstatus.sunset, 15, widget.data.settings,
                         color: widget.data.current.outline,
-                        weight: FontWeight.w500),
+                        weight: FontWeight.w300),
                     Padding(
                       padding: const EdgeInsets.only(left: 4),
                       child: Icon(Icons.nightlight_outlined,
