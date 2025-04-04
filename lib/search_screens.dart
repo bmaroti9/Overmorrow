@@ -69,7 +69,7 @@ Widget searchBar2(List<Color> colors, recommend,
                 padding: const EdgeInsets.only(left: 20, right: 10),
                 child: Icon(Icons.place_outlined, color: primary,),
               ),
-              Expanded(child: comfortatext(place, 24, settings, color: onSurface)),
+              Expanded(child: comfortatext(place, 24, settings, color: onSurface, maxLines: 1)),
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: IconButton(

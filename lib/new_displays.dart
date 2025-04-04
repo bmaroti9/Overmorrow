@@ -149,25 +149,25 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         final textPainter = TextPainter(
             text: TextSpan(
               text: write,
-              style: GoogleFonts.comfortaa(
+              style: GoogleFonts.outfit(
                   fontSize:
                       15.0 * getFontSize(widget.data.settings["Font size"]),
-                  fontWeight: FontWeight.w500),
+                  fontWeight: FontWeight.w300),
             ),
             textDirection: TextDirection.ltr);
         textPainter.layout();
 
-        final textWidth = textPainter.width + 1;
+        final textWidth = textPainter.width * 1.1;
 
         return Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 15, top: 15),
+          padding: const EdgeInsets.only(left: 28, right: 28, bottom: 15, top: 15),
           child: Column(
             children: [
               Padding(
                 padding: EdgeInsets.only(
                     left: min(
-                        max((progress * (widget.size.width - 53)) - textWidth / 2 + 3, 0),
-                        widget.size.width - 55 - textWidth)),
+                        max((progress * (widget.size.width - 60)) - textWidth / 2 + 4, 0),
+                        widget.size.width - 66 - textWidth)),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: comfortatext(write, 15, widget.data.settings,
@@ -177,8 +177,8 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
               Padding(
                 padding: EdgeInsets.only(
                     top: 6,
-                    left: min(max((progress * (widget.size.width - 54)), 2),
-                        widget.size.width - 52)),
+                    left: min(max((progress * (widget.size.width - 60)), 2),
+                        widget.size.width - 66)),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Container(

@@ -50,7 +50,7 @@ double getFontSize(String set) {
 
 Widget comfortatext(String text, double size, settings,
     {Color color = WHITE, TextAlign align = TextAlign.left, weight = FontWeight.w300,
-      decoration = TextDecoration.none}) {
+      decoration = TextDecoration.none, maxLines = 40}) {
 
   double x = getFontSize(settings["Font size"]);
   return Text(
@@ -64,7 +64,7 @@ Widget comfortatext(String text, double size, settings,
       decorationColor: color,
     ),
     overflow: TextOverflow.ellipsis,
-    maxLines: 40,
+    maxLines: maxLines,
     textAlign: align,
 
 );
