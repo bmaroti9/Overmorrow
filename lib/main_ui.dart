@@ -97,7 +97,7 @@ class ParrallaxBackground extends StatelessWidget {
 Widget Circles(var data, double bottom, context, primary, onSurface, outline) {
   return Padding(
       //top padding is slightly bigger because of the offline colored bar
-      padding: EdgeInsets.only(top: data.isonline ? 28 : 33, left: 20, right: 20, bottom: 13),
+      padding: EdgeInsets.only(top: data.isonline ? 28 : 33, left: 21, right: 21, bottom: 13),
       child: Row(
           children: [
             DescriptionCircle(
@@ -195,7 +195,7 @@ class DescriptionCircle extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.baseline,
                             textBaseline: TextBaseline.alphabetic,
                             children: [
-                              comfortatext(text, 20, settings, color: primary),
+                              comfortatext(text, 20, settings, color: primary, weight: FontWeight.w400),
                               Flexible(
                                   child: comfortatext(extra, 16, settings, color: primary, weight: FontWeight.w400)
                               ),

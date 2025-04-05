@@ -25,6 +25,50 @@ import 'package:flutter/services.dart';
 import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
 
+Widget hourBoxes(hours, data, ) {
+  return Container(
+    margin: const EdgeInsets.only(left: 27, right: 27, top: 20, bottom: 200),
+    height: 200,
+    child: ListView(
+      scrollDirection: Axis.horizontal,
+      shrinkWrap: true,
+      children: hours.map<Widget>((hour) {
+        return Container(
+          margin: const EdgeInsets.all(2),
+          padding: EdgeInsets.only(top: 10, bottom: 10),
+          width: 64,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(40),
+            color: data.current.container,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              comfortatext('${hour.temp}°', 19, data.settings, color: data.current.primary, weight: FontWeight.w400),
+              SizedBox(
+                height: 30,
+                child: Icon(
+                  hour.icon,
+                  color: data.current.onSurface,
+                  size: 33.0 * hour.iconSize,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.umbrella, size: 15, color: data.current.outline,),
+                  comfortatext("${hour.precip_prob.toString()}%", 16, data.settings, color: data.current.primary)
+                ],
+              ),
+              comfortatext(hour.time, 15, data.settings, color: data.current.outline)
+            ],
+          ),
+        );
+      }).toList(),
+    ),
+  );
+}
+
 Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0, iconSize = 21.0}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,

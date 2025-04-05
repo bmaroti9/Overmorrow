@@ -168,7 +168,7 @@ class _NewMainState extends State<NewMain> {
         headerData: HeaderData(
             //backgroundColor: WHITE,
             blurContent: false,
-            headerHeight: max((size.height ) * 0.498, 400),
+            headerHeight: max((size.height ) * 0.491, 400),
             //we don't want it to be smaller than 400
             header: ParrallaxBackground(image: data.current.image, key: Key(data.place),
                 color: data.current.surface == BLACK ? BLACK
@@ -219,6 +219,7 @@ class _NewMainState extends State<NewMain> {
           ),
 
           NewSunriseSunset(data: data, key: Key(data.place), size: size,),
+          hourBoxes(data.days[0].hourly, data),
 
 
           /*
