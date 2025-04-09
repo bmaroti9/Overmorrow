@@ -30,6 +30,7 @@ import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/weather_refact.dart';
+import 'package:overmorrow/services/location_service.dart';
 import 'caching.dart';
 import 'decoders/extra_info.dart';
 import 'main_ui.dart';
@@ -191,18 +192,22 @@ class _HomePageState extends State<HomePage> {
       }
 
       if (proposedLoc == 'query') {
-        List<dynamic> x = await getRecommend(backupName, settings["Search provider"], settings);
-        if (x.length > 0) {
-          var split = json.decode(x[0]);
+        List<dynamic> suggestedLocations = await LocationService.getRecommendation(backupName, settings["Search provider"], settings);
+        if (suggestedLocations.isNotEmpty) {
+          var split = json.decode(suggestedLocations[0]);
           absoluteProposed = "${split["lat"]},${split["lon"]}";
           backupName = split["name"];
-        }
-        else {
+        } else {
           return dumbySearch(
             errorMessage: '${localizations.placeNotFound}: \n $backupName',
             updateLocation: updateLocation,
-            icon: Icons.location_disabled, key: Key(backupName),
-            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+            icon: Icons.location_disabled,
+            key: Key(backupName),
+            place: backupName,
+            settings: settings,
+            provider: weather_provider,
+            latlng: absoluteProposed,
+          );
         }
       }
 
@@ -213,7 +218,6 @@ class _HomePageState extends State<HomePage> {
 
       var weatherdata;
 
-      print(("backupName", backupName));
       try {
         weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weather_provider, localizations);
       } on TimeoutException {
