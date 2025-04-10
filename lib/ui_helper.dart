@@ -16,19 +16,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/search_screens.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'api_key.dart';
-import 'caching.dart';
 
 const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);
@@ -315,105 +312,14 @@ String generateAbbreviation(String countryName) {
 
   if (words.length == 1) {
     return countryName;
-
   } else {
-
     String abbreviation = '';
-
     for (String word in words) {
       if (word.isNotEmpty && isUppercase(word[0])) {
         abbreviation += word[0];
       }
     }
-
     return abbreviation;
-  }
-}
-
-Future<List<String>> getWapiRecomend(String query) async {
-  var params = {
-    'key': wapi_Key,
-    'q': query,
-  };
-  var url = Uri.http('api.weatherapi.com', 'v1/search.json', params);
-  //var response = await http.post(url);
-
-  var jsonbody = [];
-  try {
-    var file = await cacheManager.getSingleFile(url.toString(), headers: {'cache-control': 'private, max-age=120'});
-    var response = await file.readAsString();
-    jsonbody = jsonDecode(response);
-  } on SocketException{
-    return [];
-  }
-
-  List<String> recomendations = [];
-  for (var item in jsonbody) {
-    recomendations.add(json.encode(item));
-  }
-
-  return recomendations;
-}
-
-Future<List<String>> getOMReccomend(String query, settings) async {
-  var params = {
-    'name': query,
-    'count': '6',
-    'language': 'en',
-  };
-
-  var url = Uri.http('geocoding-api.open-meteo.com', 'v1/search', params);
-
-  var jsonbody = [];
-  try {
-    print("got here");
-    var file = await cacheManager.getSingleFile(url.toString(), key: "$query, open-meteo search",
-        headers: {'cache-control': 'private, max-age=120'}).timeout(const Duration(seconds: 3));
-    print("never got here");
-    var response = await file.readAsString();
-    jsonbody = jsonDecode(response)["results"];
-  } catch(e) {
-    return [];
-  }
-
-  //jsonbody = jsonDecode(response.body);
-
-  List<String> recomendations = [];
-  for (var item in jsonbody) {
-    String pre = json.encode(item);
-
-    if (!pre.contains('"admin1"')) {
-      item["region"] = "";
-    }
-    else {
-      item["region"] = item['admin1'];
-    }
-
-    if (!pre.contains('"country"')) {
-      item["country"] = "";
-    }
-
-    String x = json.encode(item);
-
-    x = x.replaceAll('latitude', "lat");
-    x = x.replaceAll('longitude', "lon");
-
-    recomendations.add(x);
-  }
-  return recomendations;
-}
-
-Future<List<String>> getRecommend(String query, searchProvider, settings) async {
-
-  if (query == '') {
-    return [];
-  }
-
-  if (searchProvider == "weatherapi") {
-    return getWapiRecomend(query);
-  }
-  else {
-    return getOMReccomend(query, settings);
   }
 }
 

@@ -46,7 +46,7 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
     'aqi': 'yes',
     'alerts': 'yes',
   };
-  final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
+  final url = Uri.https('api.weatherapi.com', 'v1/forecast.json', params);
   
   //var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
   //    .timeout(const Duration(seconds: 3));
@@ -166,7 +166,7 @@ Future<DateTime> WapiGetLocalTime(lat, lng) async {
     'format': 'json',
     'by': 'position'
   };
-  final url = Uri.http('api.timezonedb.com', 'v2.1/get-time-zone', params);
+  final url = Uri.https('api.timezonedb.com', 'v2.1/get-time-zone', params);
   var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng timezonedb.com");
   var response = await file[0].readAsString();
   var body = jsonDecode(response);
