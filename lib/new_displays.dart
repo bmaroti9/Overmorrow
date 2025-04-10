@@ -151,7 +151,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
               text: write,
               style: GoogleFonts.outfit(
                   fontSize:
-                      15.0 * getFontSize(widget.data.settings["Font size"]),
+                      15.0 * 1.1 * getFontSize(widget.data.settings["Font size"]),
                   fontWeight: FontWeight.w300),
             ),
             textDirection: TextDirection.ltr);
