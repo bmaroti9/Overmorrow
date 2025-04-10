@@ -23,7 +23,7 @@ class LocationService {
       'key': wapi_Key,
       'q': query,
     };
-    var url = Uri.http('api.weatherapi.com', 'v1/search.json', params);
+    var url = Uri.https('api.weatherapi.com', 'v1/search.json', params);
 
     var jsonbody = [];
     try {
@@ -50,7 +50,7 @@ class LocationService {
       'language': 'en',
     };
 
-    var url = Uri.http('geocoding-api.open-meteo.com', 'v1/search', params);
+    var url = Uri.https('geocoding-api.open-meteo.com', 'v1/search', params);
 
     var jsonbody = [];
     try {
