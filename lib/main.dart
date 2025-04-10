@@ -123,13 +123,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String _sanitizePlaceName(String input) {
+    final safe = input.replaceAll(RegExp(r'[^\w\s\-,]'), '');
+    return safe.trim().substring(0, safe.length.clamp(0, 100));
+  }
+
   Future<Widget> getDays(bool recall, proposedLoc, backupName, startup) async {
     try {
 
       AppLocalizations localizations = AppLocalizations.of(context)!;
 
       Map<String, String> settings = await getSettingsUsed();
-      String weather_provider = await getWeatherProvider();
+      String weatherProvider = await getWeatherProvider();
+      backupName = _sanitizePlaceName(backupName);
 
       if (startup) {
         List<String> n = await getLastPlace();  //loads the last place you visited
@@ -159,13 +165,13 @@ class _HomePageState extends State<HomePage> {
                   updateLocation: updateLocation,
                   icon: Icons.gps_off,
                   place: backupName,
-                  settings: settings, provider: weather_provider, latlng: absoluteProposed);
+                  settings: settings, provider: weatherProvider, latlng: absoluteProposed);
             }
           } on LocationServiceDisabledException {
             return dumbySearch(errorMessage: localizations.locationServicesAreDisabled,
               updateLocation: updateLocation,
               icon: Icons.gps_off,
-              place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+              place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
           }
 
           isItCurrentLocation = true;
@@ -187,7 +193,7 @@ class _HomePageState extends State<HomePage> {
         }
         else {
           return dumbySearch(errorMessage: loc_status, updateLocation: updateLocation, icon: Icons.gps_off,
-            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+            place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
         }
       }
 
@@ -205,7 +211,7 @@ class _HomePageState extends State<HomePage> {
             key: Key(backupName),
             place: backupName,
             settings: settings,
-            provider: weather_provider,
+            provider: weatherProvider,
             latlng: absoluteProposed,
           );
         }
@@ -216,38 +222,38 @@ class _HomePageState extends State<HomePage> {
         backupName = 'CurrentLocation';
       }
 
-      var weatherdata;
+      WeatherData weatherData;
 
       try {
-        weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weather_provider, localizations);
+        weatherData = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weatherProvider, localizations);
       } on TimeoutException {
         return dumbySearch(errorMessage: localizations.weakOrNoWifiConnection,
           updateLocation: updateLocation,
           icon: Icons.wifi_off, key: Key(backupName),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+          place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
       } on HttpExceptionWithStatus catch (hihi){
         return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
           icon: Icons.bug_report,
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,
+          place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,
           shouldAdd: "Please try another weather provider!",);
       } on SocketException {
         return dumbySearch(errorMessage: localizations.notConnectedToTheInternet,
           updateLocation: updateLocation,
           icon: Icons.wifi_off, key: Key(backupName),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+          place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
       }
       catch (e, stacktrace) {
         print(stacktrace);
         return dumbySearch(errorMessage: "general error at place 1: ${e.toString()}", updateLocation: updateLocation,
           icon: Icons.bug_report,
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,
+          place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,
           shouldAdd: "Please try another weather provider!",);
       }
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
       // then this will be the new startup place
 
-      return WeatherPage(data: weatherdata, updateLocation: updateLocation);
+      return WeatherPage(data: weatherData, updateLocation: updateLocation);
 
     } catch (e, stacktrace) {
       Map<String, String> settings = await getSettingsUsed();

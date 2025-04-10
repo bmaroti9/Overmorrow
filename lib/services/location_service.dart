@@ -4,7 +4,9 @@ import '../api_key.dart';
 import '../caching.dart';
 
 class LocationService {
-    static Future<List<String>> getRecommendation(String query, String? searchProvider, settings) async {
+
+  static Future<List<String>> getRecommendation(String query, String? searchProvider, settings) async {
+    query = _sanitizeQuery(query);
     if (query == '') {
       return [];
     }
@@ -83,5 +85,11 @@ class LocationService {
       recommendations.add(x);
     }
     return recommendations;
+  }
+
+  /// Sanitizes the input query string by removing unsafe characters and limiting length
+  static String _sanitizeQuery(String input) {
+    final safeInput = input.replaceAll(RegExp(r'[^\w\s,\-]'), '');
+    return safeInput.trim().substring(0, input.length.clamp(0, 100));
   }
 }
