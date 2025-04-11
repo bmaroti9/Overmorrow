@@ -172,7 +172,7 @@ Future<DateTime> MetNGetLocalTime(lat, lng) async {
     'format': 'json',
     'by': 'position'
   };
-  final url = Uri.http('api.timezonedb.com', 'v2.1/get-time-zone', params);
+  final url = Uri.https('api.timezonedb.com', 'v2.1/get-time-zone', params);
   var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng timezonedb.com");
   var response = await file[0].readAsString();
   var body = jsonDecode(response);

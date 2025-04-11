@@ -28,6 +28,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/main_ui.dart';
+import 'package:overmorrow/services/location_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
@@ -148,7 +149,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 400), () async {
-      var result = await getRecommend(query, settings["Search provider"], settings);
+      var result = await LocationService.getRecommendation(query, settings["Search provider"], settings);
       updateRec(result);
     });
   }
@@ -849,7 +850,7 @@ Widget searchBar(List<Color> colors, List<String> recommend,
 
       onQueryChanged: (query) async {
         isEditing = false;
-        var result = await getRecommend(query, settings["Search provider"], settings);
+        var result = await LocationService.getRecommendation(query, settings["Search provider"], settings);
         updateRec(result);
       },
       onSubmitted: (submission) {
