@@ -40,8 +40,6 @@ import '../l10n/app_localizations.dart';
 import 'settings_page.dart';
 
 void main() {
-  //runApp(const MyApp());
-
   WidgetsFlutterBinding.ensureInitialized();
 
   final data = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
@@ -244,7 +242,7 @@ class _HomePageState extends State<HomePage> {
           place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
       }
       catch (e, stacktrace) {
-        print(stacktrace);
+        debugPrint('Stack trace: $stacktrace');
         return dumbySearch(errorMessage: "general error at place 1: ${e.toString()}", updateLocation: updateLocation,
           icon: Icons.bug_report,
           place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,
@@ -258,20 +256,25 @@ class _HomePageState extends State<HomePage> {
 
     } catch (e, stacktrace) {
       Map<String, String> settings = await getSettingsUsed();
-      String weather_provider = await getWeatherProvider();
+      String weatherProvider = await getWeatherProvider();
 
-      print("ERRRRRRRRROR");
-      print(stacktrace);
+      debugPrint('Error fetching weather data: $e');
+      debugPrint('Stack trace: $stacktrace');
 
-      cacheManager2.emptyCache();
+      await cacheManager2.emptyCache();
 
       if (recall) {
-        return dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
+        return dumbySearch(
+          errorMessage: "An error occurred while fetching data",
+          updateLocation: updateLocation,
           icon: Icons.bug_report,
-          place: backupName, settings: settings, provider: weather_provider, latlng: 'query',
-          shouldAdd: "Please try another weather provider!",);
-      }
-      else {
+          place: backupName,
+          settings: settings,
+          provider: weatherProvider,
+          latlng: 'query',
+          shouldAdd: "Please try another weather provider!",
+        );
+      } else {
         //retry after clearing cache
         return getDays(true, proposedLoc, backupName, startup);
       }
