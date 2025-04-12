@@ -90,6 +90,7 @@ class LocationService {
   /// Sanitizes the input query string by removing unsafe characters and limiting length
   static String _sanitizeQuery(String input) {
     final safeInput = input.replaceAll(RegExp(r'[^\w\s,\-]'), '');
-    return safeInput.trim().substring(0, input.length.clamp(0, 100));
+    final trimmedInput = safeInput.trim();
+    return trimmedInput.length > 100 ? trimmedInput.substring(0, 100) : trimmedInput;
   }
 }

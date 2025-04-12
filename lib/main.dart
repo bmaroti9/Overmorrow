@@ -124,8 +124,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _sanitizePlaceName(String input) {
-    final safe = input.replaceAll(RegExp(r'[^\w\s\-,]'), '');
-    return safe.trim().substring(0, safe.length.clamp(0, 100));
+    final safe = input.replaceAll(RegExp(r'[^\w\s\-,]'), '').trim();
+    if (safe.isEmpty) return ''; // Handle empty input after sanitization
+    return safe.length > 100 ? safe.substring(0, 100) : safe;
   }
 
   Future<Widget> getDays(bool recall, proposedLoc, backupName, startup) async {
