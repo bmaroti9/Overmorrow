@@ -219,7 +219,8 @@ class _NewMainState extends State<NewMain> {
           ),
 
           NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-          //hourBoxes(data.days[0].hourly, data),
+          hourBoxes(data.days[1].hourly, data),
+          //SizedBox(height:230, child: buildTemp(data.days[1].hourly, data, data.current.container)),
 
 
           /*

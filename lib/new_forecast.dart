@@ -27,42 +27,63 @@ import '../l10n/app_localizations.dart';
 
 Widget hourBoxes(hours, data, ) {
   return Container(
-    margin: const EdgeInsets.only(left: 27, right: 27, top: 20, bottom: 200),
+    margin: const EdgeInsets.only(left: 22, right: 22, top: 17, bottom: 200),
     height: 200,
     child: ListView(
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       children: hours.map<Widget>((hour) {
+
+        //return buildTemp(hours, data, data.current.container);
+
         return Container(
-          margin: const EdgeInsets.all(2),
-          padding: EdgeInsets.only(top: 10, bottom: 10),
+          margin: const EdgeInsets.all(3),
+          padding: EdgeInsets.only(top: 20, bottom: 20),
           width: 64,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(40),
             color: data.current.container,
           ),
+
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              comfortatext('${hour.temp}°', 19, data.settings, color: data.current.primary, weight: FontWeight.w400),
-              SizedBox(
-                height: 30,
-                child: Icon(
-                  hour.icon,
-                  color: data.current.onSurface,
-                  size: 33.0 * hour.iconSize,
-                ),
+              Padding(
+                padding: const EdgeInsets.only(left: 2, bottom: 16),
+                child: comfortatext("${hour.temp}°", 20, data.settings, color: data.current.primary),
               ),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 5, left: 3, right: 3, bottom: 22),
+                child: SizedBox(
+                  height: 30,
+                  child: Icon(
+                    hour.icon,
+                    color: data.current.onSurface,
+                    size: 31.0 * hour.iconSize,
+                  ),
+                )
+              ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.umbrella, size: 15, color: data.current.outline,),
-                  comfortatext("${hour.precip_prob.toString()}%", 16, data.settings, color: data.current.primary)
+                  Icon(Icons.umbrella, size: 14, color: data.current.primary),
+                  Padding(
+                    padding: EdgeInsets.only(left: 1),
+                    child: comfortatext("${hour.precip_prob}%", 14, data.settings, color: data.current.primary,
+                    weight: FontWeight.w400),
+                  )
                 ],
               ),
-              comfortatext(hour.time, 15, data.settings, color: data.current.outline)
+
+              Padding(
+                  padding: const EdgeInsets.only(top:25),
+                  child: comfortatext(hour.time, 15, data.settings, color: data.current.outline, weight: FontWeight.w400)
+              )
             ],
           ),
+
         );
       }).toList(),
     ),
@@ -324,19 +345,19 @@ Widget buildTemp(List<dynamic> hours, data, Color highlight) => ListView(
   shrinkWrap: true,
   children: hours.map<Widget>((hour) {
     return SizedBox(
-      width: 55, //this is all to ensure that nothing shifts when you switch categories
+      width: 56, //this is all to ensure that nothing shifts when you switch categories
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            child: comfortatext('${hour.temp}°', 19, data.settings, color: data.current.primary),
+            padding: const EdgeInsets.only(top: 0, bottom: 13, left: 2),
+            child: comfortatext('${hour.temp}°', 20, data.settings, color: data.current.onSurface),
           ),
           Stack(
             alignment: Alignment.bottomCenter,
             children: [
               Container(
-                width: 14,
-                height: 105,
+                width: 17,
+                height: 100,
                 decoration: BoxDecoration(
                   color: highlight,
                     //border: Border.all(color: data.current..outline,),
@@ -344,8 +365,8 @@ Widget buildTemp(List<dynamic> hours, data, Color highlight) => ListView(
                 ),
               ),
               Container(
-                width: 14,
-                height: min(max(hour.raw_temp * 1.8 + 30, 14), 105),
+                width: 17,
+                height: min(max(hour.raw_temp * 1.8 + 30, 14), 100),
                 decoration: BoxDecoration(
                     color: data.current.primaryLight,
                   //border: Border.all(color: data.current.primaryLight, width: 2),
@@ -360,14 +381,14 @@ Widget buildTemp(List<dynamic> hours, data, Color highlight) => ListView(
               height: 30,
               child: Icon(
                 hour.icon,
-                color: data.current.primary,
-                size: 31.0 * hour.iconSize,
+                color: data.current.onSurface,
+                size: 31.5 * hour.iconSize,
               ),
             )
           ),
           Padding(
               padding: const EdgeInsets.only(top:13),
-              child: comfortatext(hour.time, 15, data.settings, color: data.current.onSurface)
+              child: comfortatext(hour.time, 15, data.settings, color: data.current.outline)
           )
         ],
       ),

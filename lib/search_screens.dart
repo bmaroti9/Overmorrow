@@ -58,7 +58,7 @@ Widget searchBar2(List<Color> colors, recommend,
       child: Hero(
         tag: 'searchBarHero',
         child: Container(
-          height: 66,
+          height: 67,
           margin: EdgeInsets.only(left: 29, right: 29, top: MediaQuery.of(context).padding.top + 15),
           decoration: BoxDecoration(
             color: surface,
@@ -328,7 +328,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
           Hero(
             tag: 'searchBarHero',
             child: Container(
-              height: 66,
+              height: 67,
               margin: const EdgeInsets.only(left: 27, right: 27, top: 30),
               decoration: BoxDecoration(
                   color: highlight,
