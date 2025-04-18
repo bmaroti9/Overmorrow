@@ -167,6 +167,9 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
       const Color.fromARGB(250, 245, 245, 245),
       const Color.fromARGB(250, 240, 240, 240),
       const Color.fromARGB(250, 230, 230, 230),
+      const Color.fromARGB(250, 210, 210, 210),
+      BLACK,
+      primary,
 
     ];
   }
@@ -182,6 +185,10 @@ List<Color> getColors(primary, back, settings, dif, {force = "-1"}) {
       const Color.fromARGB(250, 15, 15, 15),
       const Color.fromARGB(250, 25, 25, 25),
       const Color.fromARGB(250, 35, 35, 35),
+      const Color.fromARGB(250, 45, 45, 45),
+      BLACK,
+      primary
+
     ];
   }
 

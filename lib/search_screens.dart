@@ -67,7 +67,7 @@ Widget searchBar2(List<Color> colors, recommend,
           child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 20, right: 10),
+                padding: const EdgeInsets.only(left: 20, right: 13),
                 child: Icon(Icons.place_outlined, color: primary,),
               ),
               Expanded(child: comfortatext(place, 24, settings, color: onSurface, maxLines: 1)),
