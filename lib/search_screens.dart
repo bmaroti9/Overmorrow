@@ -28,6 +28,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/main_ui.dart';
+import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/location_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
@@ -44,13 +45,10 @@ String generateSimplifier(var split) {
   return "${split["name"]}, ${split["lat"].toStringAsFixed(2)}, ${split["lon"].toStringAsFixed(2)}";
 }
 
-Widget searchBar2(List<Color> colors, recommend,
+Widget searchBar2(ColorScheme palette, recommend,
     Function updateLocation, Function updateFav, favorites, Function updateRec, String place,
     var context, Map<String, String> settings) {
 
-  Color primary = colors[1];
-  Color onSurface = colors[4];
-  Color surface = colors[0];
 
   return Align(
     alignment: Alignment.topCenter,
@@ -61,20 +59,20 @@ Widget searchBar2(List<Color> colors, recommend,
           height: 67,
           margin: EdgeInsets.only(left: 29, right: 29, top: MediaQuery.of(context).padding.top + 15),
           decoration: BoxDecoration(
-            color: surface,
+            color: palette.surface,
             borderRadius: BorderRadius.circular(33)
           ),
           child: Row(
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 13),
-                child: Icon(Icons.place_outlined, color: primary,),
+                child: Icon(Icons.place_outlined, color: palette.primary,),
               ),
-              Expanded(child: comfortatext(place, 24, settings, color: onSurface, maxLines: 1)),
+              Expanded(child: comfortatext(place, 24, settings, color: palette.onSurface, maxLines: 1)),
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: IconButton(
-                  icon: Icon(Icons.settings_outlined, color: primary, size: 25,),
+                  icon: Icon(Icons.settings_outlined, color: palette.primary, size: 25,),
                   onPressed: () {
                     HapticFeedback.selectionClick();
                     Scaffold.of(context).openDrawer();
@@ -89,7 +87,7 @@ Widget searchBar2(List<Color> colors, recommend,
         HapticFeedback.lightImpact();
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => HeroSearchPage(colors: colors, place: place, settings: settings, recommend: recommend,
+            builder: (context) => HeroSearchPage(palette: palette, place: place, settings: settings, recommend: recommend,
             updateRec: updateRec, updateLocation: updateLocation, favorites: favorites, updateFav: updateFav,),
             fullscreenDialog: true,
           ),
@@ -101,7 +99,7 @@ Widget searchBar2(List<Color> colors, recommend,
 
 class HeroSearchPage extends StatefulWidget {
 
-  final List<Color> colors;
+  final ColorScheme palette;
   final String place;
   final settings;
   final recommend;
@@ -110,12 +108,12 @@ class HeroSearchPage extends StatefulWidget {
   final favorites;
   final updateFav;
 
-  const HeroSearchPage({super.key, required this.colors, required this.place, required this.settings,
+  const HeroSearchPage({super.key, required this.palette, required this.place, required this.settings,
     required this.recommend, required this.updateRec, required this.updateLocation, required this.favorites,
   required this.updateFav});
 
   @override
-  State<HeroSearchPage> createState() => _HeroSearchPageState(colors: colors, place: place, settings: settings,
+  State<HeroSearchPage> createState() => _HeroSearchPageState(palette: palette, place: place, settings: settings,
   recommend: recommend, updateRec: updateRec, updateLocation: updateLocation, favorites: favorites,
   updateFav: updateFav);
 }
@@ -123,7 +121,7 @@ class HeroSearchPage extends StatefulWidget {
 
 class _HeroSearchPageState extends State<HeroSearchPage> {
 
-  final List<Color> colors;
+  final ColorScheme palette;
   final String place;
   final settings;
   final recommend;
@@ -132,7 +130,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   final favorites;
   final updateFav;
 
-  _HeroSearchPageState({required this.colors, required this.place, required this.settings,
+  _HeroSearchPageState({required this.palette, required this.place, required this.settings,
     required this.recommend, required this.updateRec, required this.updateLocation, required this.favorites,
   required this.updateFav});
 
@@ -295,17 +293,11 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   @override
   Widget build(BuildContext context) {
 
-    final Color surface = colors[0];
-    final Color primary = colors[1];
-    final Color outline = colors[5];
-    final Color highlight = colors[7];
-    Color onSurface = colors[4];
-
     return Scaffold(
-      backgroundColor: surface,
+      backgroundColor: palette.surface,
       appBar: AppBar(
-        backgroundColor: surface,
-        foregroundColor: primary,
+        backgroundColor: palette.surface,
+        foregroundColor: palette.primary,
         elevation: 0,
         actions: [
           Padding(
@@ -313,7 +305,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
             child: IconButton(
               icon: Icon(
                 isEditing ? Icons.check : Icons.edit_outlined,
-                color: primary, size: 25,
+                color: palette.primary, size: 25,
               ),
               onPressed: () {
                 HapticFeedback.lightImpact();
@@ -329,9 +321,9 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
             tag: 'searchBarHero',
             child: Container(
               height: 67,
-              margin: const EdgeInsets.only(left: 27, right: 27, top: 30),
+              margin: const EdgeInsets.only(left: 27, right: 27, top: 25),
               decoration: BoxDecoration(
-                  color: highlight,
+                  color: palette.surfaceContainer,
                   borderRadius: BorderRadius.circular(33)
               ),
               child: Align(
@@ -339,11 +331,11 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 25, right: 25),
                   child: Material(
-                    color: highlight,
+                    color: palette.surfaceContainer,
                     child: Theme(
                       data: Theme.of(context).copyWith(
                         textSelectionTheme: TextSelectionThemeData(
-                          selectionHandleColor: primary,
+                          selectionHandleColor: palette.primary,
                         ),
                       ),
                       child: TextField(
@@ -359,17 +351,17 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                           Navigator.pop(context);
                         },
                         autofocus: true,
-                        cursorColor: primary,
+                        cursorColor: palette.primary,
                         cursorWidth: 2,
                         style: GoogleFonts.outfit(
-                          color: onSurface,
+                          color: palette.onSurface,
                           fontSize: 23 * getFontSize(settings["Font size"]!),
                           fontWeight: FontWeight.w300,
                         ),
                         decoration: InputDecoration(
                           hintText: 'Search...',
                           hintStyle:  GoogleFonts.outfit(
-                            color: outline,
+                            color: palette.outline,
                             fontSize: 20 * getFontSize(settings["Font size"]!),
                             fontWeight: FontWeight.w300,
                           ),
@@ -390,7 +382,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
             child: Align(
               key: ValueKey<bool>(text == ""),
               alignment: Alignment.topCenter,
-              child: buildRecommend(text, colors, settings, favorites, recommend,
+              child: buildRecommend(text, palette, settings, favorites, recommend,
               updateLocation, onFavChanged, isEditing, locationSafe, askGrantLocationPermission,
               placeName, country, region),
             ),
@@ -401,16 +393,9 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   }
 }
 
-Widget buildRecommend(String text, colors, settings, ValueListenable<List<String>> favoritesListen,
+Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenable<List<String>> favoritesListen,
     ValueListenable<List<String>> recommend, updateLocation, onFavChanged, isEditing, locationSafe,
     askGrantLocationPermission, placeName, country, region) {
-
-  final Color primary = colors[1];
-  final Color outline = colors[5];
-  final Color highlight = colors[7];
-  final Color primaryLight = colors[2];
-  final Color onPrimaryLight = colors[10];
-  Color onSurface = colors[4];
 
   return ValueListenableBuilder(
     valueListenable: favoritesListen,
@@ -418,7 +403,7 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
       List<String> favorites = value;
       if (text == "") {
         return Padding(
-          padding: const EdgeInsets.only(left: 30, top: 40, right: 30),
+          padding: const EdgeInsets.only(left: 30, top: 35, right: 30),
           child: AnimationLimiter(
             child: Column(
               children: AnimationConfiguration.toStaggeredList(
@@ -437,13 +422,13 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
                       Padding(
                         padding: const EdgeInsets.only(right: 10, top: 2),
                         child: Icon(
-                          Icons.gps_fixed, color: outline, size: 17,),
+                          Icons.gps_fixed, color: palette.outline, size: 17,),
                       ),
                       comfortatext(
-                          "current location", 18, settings, color: outline),
+                          "current location", 18, settings, color: palette.outline),
                     ],
                   ),
-                  CurrentLocationWidget(settings, locationSafe, primaryLight, onPrimaryLight, outline,
+                  CurrentLocationWidget(settings, locationSafe, palette.primaryContainer, palette.onPrimaryContainer, palette.outline,
                       askGrantLocationPermission, placeName, country, region, updateLocation, context),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20),
@@ -452,9 +437,9 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
                         Padding(
                           padding: const EdgeInsets.only(right: 10, top: 0),
                           child: Icon(
-                            Icons.star_outline, color: outline, size: 18,),
+                            Icons.star_outline, color: palette.outline, size: 18,),
                         ),
-                        comfortatext("favorites", 18, settings, color: outline),
+                        comfortatext("favorites", 18, settings, color: palette.outline),
                       ],
                     ),
                   ),
@@ -468,8 +453,7 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
                         return SizeTransition(
                             sizeFactor: animation, child: child);
                       },
-                      child: favoritesOrReorder(isEditing, favorites, settings, onFavChanged, highlight,
-                          onSurface, primary, primaryLight, outline, updateLocation, context),
+                      child: favoritesOrReorder(isEditing, favorites, settings, onFavChanged, palette, updateLocation, context),
                     ),
                   )
                 ],
@@ -503,7 +487,7 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
                   child: Container(
                     key: ValueKey<String>(rec.toString()),
                     decoration: BoxDecoration(
-                      color: highlight,
+                      color: palette.surfaceContainer,
                       borderRadius: BorderRadius.circular(30),
                     ),
                     padding: rec.isEmpty
@@ -536,8 +520,8 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
                                     child: Column(
                                       crossAxisAlignment : CrossAxisAlignment.start,
                                       children: [
-                                        comfortatext(name, 20, settings, color: onSurface),
-                                        comfortatext("$region, $country", 15, settings, color: outline)
+                                        comfortatext(name, 20, settings, color: palette.onSurface),
+                                        comfortatext("$region, $country", 15, settings, color: palette.outline)
                                       ],
                                     )
                                 ),
@@ -557,7 +541,7 @@ Widget buildRecommend(String text, colors, settings, ValueListenable<List<String
                                   },
                                   icon: Icon(
                                     contained? Icons.star : Icons.star_outline,
-                                    color: primary, size: 24,
+                                    color: palette.primary, size: 24,
                                   ),
                                 )
                               ],
@@ -673,16 +657,16 @@ Widget CurrentLocationWidget(settings, locationSafe, primaryLight, onPrimaryLigh
 }
 
 Widget favoritesOrReorder(isEditing, favorites, settings, onFavChanged,
-    highlight, onSurface, primary, primaryLight, outline, updateLocation, context) {
+    ColorScheme palette, updateLocation, context) {
   if (isEditing) {
-    return reorderFavorites(favorites, settings, onFavChanged, highlight, onSurface, primary, primaryLight, outline);
+    return reorderFavorites(favorites, settings, onFavChanged, palette);
   }
   else {
     return Container(
       key: const ValueKey<String>("normal"),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: highlight,
+          color: palette.surfaceContainer,
           borderRadius: BorderRadius.circular(30),
         ),
         child: Column(
@@ -708,12 +692,12 @@ Widget favoritesOrReorder(isEditing, favorites, settings, onFavChanged,
                           child: Column(
                             crossAxisAlignment : CrossAxisAlignment.start,
                             children: [
-                              comfortatext(name, 20, settings, color: onSurface),
-                              comfortatext("$region, $country", 15, settings, color: outline)
+                              comfortatext(name, 20, settings, color: palette.onSurface),
+                              comfortatext("$region, $country", 15, settings, color: palette.outline)
                             ],
                           )
                       ),
-                      Icon(Icons.keyboard_arrow_right_rounded, color: primary,)
+                      Icon(Icons.keyboard_arrow_right_rounded, color: palette.primary,)
                     ],
                   ),
                 ),
@@ -724,11 +708,11 @@ Widget favoritesOrReorder(isEditing, favorites, settings, onFavChanged,
   }
 }
 
-Widget reorderFavorites(_items, settings, onFavChanged, highlight, onSurface, primary, primaryLight, outline) {
+Widget reorderFavorites(_items, settings, onFavChanged, ColorScheme palette) {
   return Container(
     key: const ValueKey<String>("editing"),
     decoration: BoxDecoration(
-      color: highlight,
+      color: palette.surfaceContainer,
       borderRadius: BorderRadius.circular(30),
     ),
     child: ReorderableListView(
@@ -741,7 +725,7 @@ Widget reorderFavorites(_items, settings, onFavChanged, highlight, onSurface, pr
       padding: const EdgeInsets.all(12),
       children: <Widget>[
         for (int index = 0; index < _items.length; index += 1)
-          reorderableItem(_items, index, settings, highlight, onSurface, outline, primary, onFavChanged)
+          reorderableItem(_items, index, settings, palette, onFavChanged)
       ],
       onReorder: (int oldIndex, int newIndex) {
         if (oldIndex < newIndex) {
@@ -755,14 +739,14 @@ Widget reorderFavorites(_items, settings, onFavChanged, highlight, onSurface, pr
   );
 }
 
-Widget reorderableItem(List<dynamic> items, index, settings, highlight, onSurface, outline, primary, onFavChanged) {
+Widget reorderableItem(List<dynamic> items, index, settings, ColorScheme palette, onFavChanged) {
   var split = json.decode(items[index]);
   String name = split["name"];
   String country = generateAbbreviation(split["country"]);
   String region = split["region"];
   return Container(
     key: Key("$name, $country, $region"),
-    color: highlight,
+    color: palette.surfaceContainer,
     child: Padding(
       padding: const EdgeInsets.only(left: 5, right: 5, top: 4, bottom: 4),
       child:
@@ -770,14 +754,14 @@ Widget reorderableItem(List<dynamic> items, index, settings, highlight, onSurfac
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: Icon(Icons.drag_indicator, color: outline,),
+            child: Icon(Icons.drag_indicator, color: palette.outline,),
           ),
           Expanded(
               child: Column(
                 crossAxisAlignment : CrossAxisAlignment.start,
                 children: [
-                  comfortatext(name, 20, settings, color: onSurface),
-                  comfortatext("$region, $country", 15, settings, color: outline)
+                  comfortatext(name, 20, settings, color: palette.onSurface),
+                  comfortatext("$region, $country", 15, settings, color: palette.outline)
                 ],
               )
           ),
@@ -788,7 +772,7 @@ Widget reorderableItem(List<dynamic> items, index, settings, highlight, onSurfac
             },
             icon: Icon(
               Icons.delete_outline,
-              color: primary, size: 23,
+              color: palette.primary, size: 23,
             ),
           )
         ],
@@ -796,451 +780,6 @@ Widget reorderableItem(List<dynamic> items, index, settings, highlight, onSurfac
     ),
   );
 }
-
-Widget searchBar(List<Color> colors, List<String> recommend,
-    Function updateLocation, FloatingSearchBarController controller,
-    Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, Function updateRec, String place, var context,
-    bool prog, Function updateProg, Map<String, String> settings, String real_loc) {
-
-
-  Color primary = colors[1];
-  Color onSurface = colors[4];
-  Color surface = colors[0];
-  Color containerLow = colors[6];
-
-  return FloatingSearchBar(
-      hint: AppLocalizations.of(context)!.search,
-      title: Container(
-        padding: const EdgeInsets.only(left: 2),
-        child: comfortatext(place, 24, settings, color: onSurface, weight: FontWeight.w300)
-      ),
-      hintStyle: GoogleFonts.outfit(
-        color: onSurface,
-        fontSize: 20 * getFontSize(settings["Font size"]!),
-        fontWeight: FontWeight.w300,
-      ),
-
-      queryStyle: GoogleFonts.outfit(
-        color: onSurface,
-        fontSize: 23 * getFontSize(settings["Font size"]!),
-        fontWeight: FontWeight.w300,
-      ),
-
-      margins: EdgeInsets.only(left: 27, right: 27, top: MediaQuery.of(context).padding.top + 15),
-
-      borderRadius: BorderRadius.circular(30),
-      backgroundColor: surface,
-      accentColor: primary,
-
-      elevation: 0,
-      height: 64,
-      scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
-      transitionDuration: const Duration(milliseconds: 500),
-      transitionCurve: Curves.easeInOut,
-      physics: const BouncingScrollPhysics(),
-      debounceDelay: const Duration(milliseconds: 500),
-
-      controller: controller,
-      width: 800,
-
-      onFocusChanged: (to) {
-        HapticFeedback.selectionClick();
-      },
-
-      onQueryChanged: (query) async {
-        isEditing = false;
-        var result = await LocationService.getRecommendation(query, settings["Search provider"], settings);
-        updateRec(result);
-      },
-      onSubmitted: (submission) {
-        HapticFeedback.lightImpact();
-        updateLocation('query', submission);
-        controller.close();
-      },
-
-      insets: EdgeInsets.zero,
-      automaticallyImplyDrawerHamburger: false,
-      padding: const EdgeInsets.only(left: 10, right: 10),
-      iconColor: primary,
-      backdropColor: containerLow,
-      closeOnBackdropTap: true,
-      transition: ExpandingFloatingSearchBarTransition(),
-      automaticallyImplyBackButton: false,
-      leadingActions: [
-        FloatingSearchBarAction(
-          showIfOpened: true,
-          showIfClosed: false,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: CircularButton(
-              icon: Icon(Icons.arrow_back_outlined, color: primary, size: 22,),
-              onPressed: () {
-                HapticFeedback.selectionClick();
-                controller.close();
-              },
-            ),
-          ),
-        ),
-        FloatingSearchBarAction(
-          showIfOpened: false,
-          showIfClosed: true,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 11, right: 10),
-            child: Icon(Icons.place_outlined, color: primary, size: 25,),
-          ),
-        ),
-      ],
-      actions: [
-        /*
-        FloatingSearchBarAction(
-          showIfOpened: false,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 3, bottom: 3),
-            child: Visibility(
-              visible: !Platform.isLinux,
-              child: LocationButton(updateProg, updateLocation, color, real_loc, secondColor,
-              textColor)
-            ),
-          ),
-        ),
-
-         */
-
-        FloatingSearchBarAction(
-          showIfOpened: false,
-          showIfClosed: true,
-          child: IconButton(
-            icon: Icon(Icons.settings_outlined, color: primary, size: 25,),
-            onPressed: () {
-              HapticFeedback.selectionClick();
-              Scaffold.of(context).openDrawer();
-            },
-          ),
-        ),
-
-        FloatingSearchBarAction(
-          showIfOpened: true,
-          showIfClosed: false,
-          child: Visibility(
-            visible: controller.query != '',
-            child: Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: CircularButton(
-                icon: Icon(Icons.close, color: primary,),
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  controller.clear();
-                },
-              ),
-            ),
-          ),
-        ),
-      ],
-      builder: (context, transition) {
-        return Container();
-      }
-  );
-}
-
-Widget decideSearch(List<String> recommend,
-    Function updateLocation, FloatingSearchBarController controller,
-    Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, String entered, Map<String, String> settings,
-    context, List<Color> colors) {
-
-  if (entered == '') {
-    return defaultSearchScreen(updateLocation,
-        controller, updateIsEditing, isEditing, updateFav, favorites, settings, context, colors);
-  }
-  else{
-    if (recommend.isNotEmpty) {
-      return recommendSearchScreen(
-          recommend, updateLocation, controller,
-          favorites, updateFav, settings, colors);
-    }
-  }
-  return Container();
-}
-
-Widget defaultSearchScreen(Function updateLocation, FloatingSearchBarController controller,
-    Function updateIsEditing, bool isEditing, Function updateFav,
-    List<String> favorites, Map<String, String> settings, context, colors) {
-
-  return Container(color: Colors.pink,);
-
-  /*
-  List<Icon> Myicon = [
-    const Icon(null),
-    Icon(Icons.close, color: color, size: 20,),
-  ];
-
-  Icon editIcon = const Icon(Icons.icecream, color: WHITE,);
-  Color rectColor = textColor;
-  Color text = textColor;
-  List<int> icons = [];
-  if (isEditing) {
-    for (String _ in favorites) {
-      icons.add(1);
-    }
-    editIcon = Icon(Icons.check, color: color, size: 20,);
-    rectColor = textColor;
-    text = color;
-  }
-  else{
-    for (String _ in favorites) {
-      icons.add(0);
-    }
-    editIcon = Icon(Icons.create_outlined, color: textColor, size: 20,);
-    rectColor = color;
-    text = textColor;
-  }
-
-  return Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(top:5, bottom: 8, right: 20, left: 20),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 1, top: 4, bottom: 0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: comfortatext(
-                    AppLocalizations.of(context)!.favorites, 20,
-                    settings,
-                    color: extraTextColor),
-              ),
-            ),
-            const Spacer(),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                  return ScaleTransition(scale: animation, child: child,);
-              },
-              child: SizedBox(
-                key: ValueKey<bool> (isEditing),
-                height: 45,
-                width: 45,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      padding: const EdgeInsets.all(2),
-                      backgroundColor: rectColor,
-                      shape: RoundedRectangleBorder(
-                        //side: BorderSide(color: rectColor, width: 1.5),
-                          borderRadius: BorderRadius.circular(18)
-                      )
-                  ),
-                  onPressed: () async {
-                    HapticFeedback.lightImpact();
-                    updateIsEditing(!isEditing);
-                  },
-                  child: editIcon,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return ScaleTransition(scale: animation, child: child,);
-          },
-          child: Container(
-            key: ValueKey<Color>(rectColor),
-            padding: const EdgeInsets.only(top:10, bottom: 10),
-            decoration: BoxDecoration(
-              color: rectColor,
-              //border: Border.all(width: 1.2, color: WHITE),
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: ListView.builder(
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(top: 0, bottom: 0),
-              itemCount: favorites.length,
-              itemBuilder: (context, index) {
-                var split = json.decode(favorites[index]);
-                //var split = favorites[index].split("/");
-                return GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    HapticFeedback.lightImpact();
-                    updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
-                    controller.close();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 20, bottom: 1, right: 10, top: 1),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          flex: 100,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              comfortatext(split["name"], 24 * getFontSize(settings["Font size"]!), settings,
-                                  color: text),
-                              comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 16
-                                  * getFontSize(settings["Font size"]!), settings, color: extraTextColor)
-                            ],
-                          ),
-                        ),
-                        IconButton(
-                          icon: Myicon[icons[index]],
-                          onPressed: () {
-                            if (isEditing) {
-                              HapticFeedback.mediumImpact();
-                              favorites.remove(favorites[index]);
-                              updateFav(favorites);
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-      ),
-    ],
-  );
-
-   */
-}
-
-Widget recommendSearchScreen(List<String> recommend,
-    Function updateLocation, FloatingSearchBarController controller, List<String> favorites,
-    Function updateFav, var settings, colors) {
-  List<Icon> icons = [];
-
-  return Container();
-
-  /*
-
-  for (String n in recommend) {
-    if (favorites.contains(n)) {
-      icons.add(Icon(Icons.favorite, color: textColor, size: 21,),);
-    }
-    else{
-      icons.add(Icon(Icons.favorite_border, color: textColor, size: 21,),);
-    }
-  }
-
-  return Container(
-    key: ValueKey<int>(recommend.length),
-    padding: const EdgeInsets.only(top:10, bottom: 10),
-    decoration: BoxDecoration(
-      color: color,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: ListView.builder(
-      shrinkWrap: true,
-      padding: const EdgeInsets.only(top: 0),
-      itemCount: recommend.length,
-      itemBuilder: (context, index) {
-        var split = json.decode(recommend[index]);
-        //var split = recommend[index].split("/");
-        return GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            HapticFeedback.selectionClick();
-            updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
-            controller.close();
-          },
-          child: Container(
-            padding: const EdgeInsets.only(left: 20, bottom: 1,
-                  right: 10, top: 1),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      comfortatext(split["name"], 24 * getFontSize(settings["Font size"]),
-                          settings, color: textColor),
-                      comfortatext(split["region"] + ", " +  generateAbbreviation(split["country"]), 16 * getFontSize(settings["Font size"]),
-                          settings, color: extraTextColor)
-                      //comfortatext(split[0], 23)
-                    ],
-                  ),
-                ),
-
-                IconButton(onPressed: () {
-                  if (favorites.contains(recommend[index])) {
-                    HapticFeedback.mediumImpact();
-                    favorites.remove(recommend[index]);
-                    updateFav(favorites);
-                  }
-                  else{
-                    HapticFeedback.lightImpact();
-                    favorites.add(recommend[index]);
-                    updateFav(favorites);
-                  }
-                },
-                  icon: icons[index]
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    ),
-  );
-}
-
-Widget LocationButton(Function updateProg, Function updateLocation, Color color, String real_loc,
-    Color secondColor, Color textColor) {
-  if (real_loc == 'CurrentLocation') {
-    return Padding(
-      padding: const EdgeInsets.only(right: 7, top: 4.5, bottom: 4.5),
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              elevation: 0,
-              padding: const EdgeInsets.all(10),
-              backgroundColor: textColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(19)
-              )
-          ),
-          onPressed: () async {},
-          child: Icon(Icons.place_outlined, color: color,),
-        ),
-      ),
-    );
-  }
-  else{
-    return Padding(
-      padding: const EdgeInsets.only(right: 6, top: 3, bottom: 3),
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              elevation: 0,
-              padding: const EdgeInsets.all(10),
-              backgroundColor: color,
-              side: BorderSide(width: 1.7, color: secondColor),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30)
-            )
-          ),
-          onPressed: () async {
-            HapticFeedback.lightImpact();
-            updateLocation('40.7128, 74.0060', 'CurrentLocation');
-          },                   //^ this is new york for backup
-          child: Icon(Icons.place_outlined, color: textColor,),
-        ),
-      ),
-    );
-  }
-
-   */
-}
-
 
 
 class dumbySearch extends StatelessWidget {
@@ -1255,7 +794,7 @@ class dumbySearch extends StatelessWidget {
 
   dumbySearch({super.key, required this.errorMessage,
     required this.updateLocation, required this.icon, required this.place,
-  required this.settings, required this.provider, required this.latlng, this.shouldAdd});
+  required this.settings, required this.provider, required this.latlng,  this.shouldAdd});
 
   final FloatingSearchBarController controller = FloatingSearchBarController();
 
@@ -1271,66 +810,83 @@ class dumbySearch extends StatelessWidget {
     newStr = newStr.replaceAll(access_key, replacement);
     newStr = newStr.replaceAll(timezonedbKey, replacement);
 
-    Color primary = const Color(0xffc2b9c2);
-    Color back = const Color(0xff847F83);
+    Image image = Image.asset("assets/backdrops/grayscale_snow2.jpg",
+        fit: BoxFit.cover, width: double.infinity, height: double.infinity);
 
-    List<Color> colors = getColors(primary, back, settings, 0);
+    return FutureBuilder<ColorPalette>(
+      future: ColorPalette.getColorPalette(image, settings["Color mode"], settings),
+      builder: (BuildContext context,
+          AsyncSnapshot<ColorPalette> snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Container();
+        } else if (snapshot.hasError) {
+          print((snapshot.error, snapshot.stackTrace));
+          return Center(
+            child: ErrorWidget(snapshot.error as Object),
+          );
+        }
 
-    return Scaffold(
-      drawer: MyDrawer(backupprimary: primary, settings: settings, backupback: back, image: Image.asset("assets/backdrops/grayscale_snow2.jpg",
-        fit: BoxFit.cover, width: double.infinity, height: double.infinity), surface: colors[0],
-        onSurface: colors[4], primary: colors[1], hihglight: colors[6]
-      ),
-      backgroundColor: colors[0],
-      body: StretchyHeader.singleChild(
-        displacement: 150,
-        onRefresh: () async {
-          await updateLocation(latlng, place, time: 400);
-        },
-        headerData: HeaderData(
-            blurContent: false,
-            headerHeight: max(size.height * 0.51, 400), //we don't want it to be smaller than 400
-            header: ParrallaxBackground(image: Image.asset("assets/backdrops/grayscale_snow2.jpg", fit: BoxFit.cover,), key: Key(place),
-              color: darken(colors[0], 0.1),),
-            overlay: Stack(
+        ColorScheme palette = snapshot.data!.palette;
+
+        return Scaffold(
+          drawer: MyDrawer(backupprimary: primary, settings: settings, backupback: back, image: image, surface: colors[0],
+              onSurface: colors[4], primary: colors[1], hihglight: colors[6]
+          ),
+          backgroundColor: palette.surface,
+          body: StretchyHeader.singleChild(
+            displacement: 150,
+            onRefresh: () async {
+              await updateLocation(latlng, place, time: 400);
+            },
+            headerData: HeaderData(
+                blurContent: false,
+                headerHeight: max(size.height * 0.5, 400), //we don't want it to be smaller than 400
+                header: ParrallaxBackground(image: Image.asset("assets/backdrops/grayscale_snow2.jpg", fit: BoxFit.cover,), key: Key(place),
+                  color: palette.surfaceContainerHigh),
+                overlay: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(40),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 50, bottom: 20),
+                              child: Icon(icon, color: Colors.black54, size: 20),
+                            ),
+                            comfortatext(newStr, 17, settings, color: Colors.black54, weight: FontWeight.w500,
+                                align: TextAlign.center),
+                          ],
+                        ),
+                      ),
+                    ),
+                    MySearchParent(updateLocation: updateLocation,
+                      colors: colors, place: place, settings: settings,)
+                  ],
+                )
+            ),
+            child:
+            Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(40),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 50, bottom: 20),
-                          child: Icon(icon, color: Colors.black54, size: 20),
-                        ),
-                        comfortatext(newStr, 17, settings, color: Colors.black54, weight: FontWeight.w500,
-                        align: TextAlign.center),
-                      ],
-                    ),
-                  ),
+                  padding: const EdgeInsets.only(top: 20),
+                  child: comfortatext(shouldAdd ?? "", 16, settings, color: colors[4], weight: FontWeight.w400,),
                 ),
-                MySearchParent(updateLocation: updateLocation,
-                    colors: colors, place: place, settings: settings,)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: providerSelector(settings, updateLocation, colors[4], colors[7],
+                      colors[1], provider, latlng, place, context),
+                ),
               ],
-            )
-        ),
-        child:
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: comfortatext(shouldAdd ?? "", 16, settings, color: colors[4], weight: FontWeight.w400,),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: providerSelector(settings, updateLocation, colors[4], colors[7],
-                    colors[1], provider, latlng, place, context),
-              ),
-            ],
+            ),
           ),
-      ),
+        );
+
+      },
     );
+
+
   }
 }

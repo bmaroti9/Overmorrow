@@ -26,72 +26,156 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
 
-Widget hourBoxes(hours, data, ) {
-  return Container(
-    margin: const EdgeInsets.only(left: 22, right: 22, top: 0, bottom: 200),
-    height: 195,
-    child: AnimationLimiter(
-      child: ListView.builder(
-        itemCount: hours.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (BuildContext context, int index) {
-          var hour = hours[index];
-          return AnimationConfiguration.staggeredList(
-            position: index,
-            duration: const Duration(milliseconds: 375),
-            child: SlideAnimation(
-              horizontalOffset: 50.0,
-              child: FadeInAnimation(
-                child: Container(
-                  margin: const EdgeInsets.all(3),
-                  padding: const EdgeInsets.only(top: 4, bottom: 4),
-                  width: 66,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    color: data.current.container,
-                  ),
 
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 2),
-                        child: comfortatext("${hour.temp}°", 20, data.settings, color: data.current.primary),
-                      ),
+class NewHourly extends StatefulWidget {
+  final data;
 
-                      Padding(
-                          padding: const EdgeInsets.only(left: 3, right: 3),
-                          child: SizedBox(
-                            height: 30,
-                            child: Icon(
-                              hour.icon,
-                              color: data.current.onSurface,
-                              size: 31.0 * hour.iconSize,
-                            ),
-                          )
-                      ),
+  NewHourly({Key? key, required this.data}) : super(key: key);
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.umbrella, size: 14, color: data.current.primary),
-                          comfortatext("${hour.precip_prob}%", 14, data.settings, color: data.current.primary,
-                              weight: FontWeight.w400)
-                        ],
-                      ),
+  @override
+  _NewHourlyState createState() => _NewHourlyState(data);
+}
 
-                      comfortatext(hour.time, 15, data.settings, color: data.current.outline, weight: FontWeight.w400)
-                    ],
-                  ),
+class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixin {
+  final data;
+  int _value = 0;
 
-                ),
-              ),
+  PageController _pageController = PageController();
+
+  void _onItemTapped(int index) {
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.fastEaseInToSlowEaseOut,
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
+  _NewHourlyState(this.data);
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 22, right: 22, top: 0, bottom: 200),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 200,
+            child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              children: <Widget>[
+                hourBoxes(data.days[1].hourly, data),
+                hourBoxes(data.days[1].hourly, data),
+              ],
             ),
-          );
-        },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 0),
+            child: Wrap(
+              spacing: 5.0,
+              children: List<Widget>.generate(
+                4,
+                    (int index) {
+
+                  return ChoiceChip(
+                    elevation: 0.0,
+                    checkmarkColor: data.current.onPrimaryLight,
+                    color: WidgetStateProperty.resolveWith((states) {
+                      if (index == _value) {
+                        return data.current.secondaryContainer;
+                      }
+                      return data.current.surface;
+                    }),
+                    side: BorderSide(
+                        color: index == _value ? data.current.secondaryContainer : data.current.outlineVariant,
+                        width: 1.3),
+                    //translation(['temp', 'precip', 'wind', 'uv'][index], data.settings["Language"])
+                    label: comfortatext(
+                        [
+                          AppLocalizations.of(context)!.temp,
+                          AppLocalizations.of(context)!.precipLowercase,
+                          AppLocalizations.of(context)!.windLowercase,
+                          AppLocalizations.of(context)!.uvLowercase,
+                        ][index],
+                        14, data.settings,
+                        color: _value == index ? data.current.onPrimaryLight : data.current.onSurface),
+                    selected: _value == index,
+                    onSelected: (bool selected) {
+                      _value = index;
+                      setState(() {
+                        HapticFeedback.lightImpact();
+                        _onItemTapped(index);
+                      });
+                    },
+                  );
+                },
+              ).toList(),
+            ),
+          ),
+        ],
       ),
-    ),
+    );
+  }
+}
+
+Widget hourBoxes(hours, data) {
+  return ListView.builder(
+    itemCount: hours.length,
+    scrollDirection: Axis.horizontal,
+    itemBuilder: (BuildContext context, int index) {
+      var hour = hours[index];
+      return Container(
+        margin: const EdgeInsets.all(3),
+        padding: const EdgeInsets.only(top: 4, bottom: 5),
+        width: 66,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(40),
+          color: data.current.container,
+        ),
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 2),
+              child: comfortatext("${hour.temp}°", 19, data.settings, color: data.current.primary,
+              weight: FontWeight.w400),
+            ),
+
+            Padding(
+                padding: const EdgeInsets.only(left: 3, right: 3),
+                child: SizedBox(
+                  height: 30,
+                  child: Icon(
+                    hour.icon,
+                    color: data.current.onSurface,
+                    size: 31.0 * hour.iconSize,
+                  ),
+                )
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.umbrella, size: 14, color: data.current.primary),
+                comfortatext("${hour.precip_prob}%", 14, data.settings, color: data.current.primary,
+                    weight: FontWeight.w400)
+              ],
+            ),
+
+            comfortatext(hour.time, 15, data.settings, color: data.current.outline, weight: FontWeight.w400)
+          ],
+        ),
+
+      );
+    },
   );
 }
 

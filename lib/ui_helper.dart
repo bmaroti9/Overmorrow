@@ -325,26 +325,26 @@ String generateAbbreviation(String countryName) {
 
 class MySearchParent extends StatefulWidget{
   final updateLocation;
-  final colors;
+  final ColorScheme palette;
   final place;
   final settings;
 
   const MySearchParent({super.key, required this.updateLocation,
-    required this.colors, required this.place, required this.settings,});
+    required this.palette, required this.place, required this.settings,});
 
   @override
-  _MySearchParentState createState() => _MySearchParentState(colors: colors,
+  _MySearchParentState createState() => _MySearchParentState(palette: palette,
   place: place,settings: settings);
 }
 
 class _MySearchParentState extends State<MySearchParent> {
   bool isEditing = false;
 
-  final colors;
+  final ColorScheme palette;
   final place;
   final settings;
 
-  _MySearchParentState({required this.colors, required this.place, required this.settings});
+  _MySearchParentState({required this.palette, required this.place, required this.settings});
 
   late Future<SharedPreferences> _prefsFuture;
 
@@ -388,7 +388,7 @@ class _MySearchParentState extends State<MySearchParent> {
         List<String> favorites = getFavorites(snapshot.data);
         //return buildWholeThing(snapshot.data);
         return MySearchWidget(updateLocation: widget.updateLocation,
-            colors: colors, favorites: favorites, prefs: snapshot.data,
+            palette: palette, favorites: favorites, prefs: snapshot.data,
         place: place, settings: settings);
       },
     );
@@ -396,25 +396,25 @@ class _MySearchParentState extends State<MySearchParent> {
 }
 
 class MySearchWidget extends StatefulWidget{
-  final colors;
+  final ColorScheme palette;
   final place;
   final updateLocation;
   final favorites;
   final prefs;
   final settings;
 
-  const MySearchWidget({super.key, required this.colors, required this.updateLocation,
+  const MySearchWidget({super.key, required this.palette, required this.updateLocation,
   required this.favorites, required this.prefs, required this.place, required this.settings});
 
   @override
-  _MySearchWidgetState createState() => _MySearchWidgetState(colors: colors,
+  _MySearchWidgetState createState() => _MySearchWidgetState(palette: palette,
   updateLocation: updateLocation, beginFavorites: favorites,
       prefs: prefs, place: place, settings: settings);
 }
 
 class _MySearchWidgetState extends State<MySearchWidget> {
   //final FloatingSearchBarController _controller = FloatingSearchBarController();
-  final colors;
+  final ColorScheme palette;
   final place;
   final updateLocation;
   final prefs;
@@ -422,7 +422,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
 
   final List<String> beginFavorites;
 
-  _MySearchWidgetState({required this.colors, required this.updateLocation,
+  _MySearchWidgetState({required this.palette, required this.updateLocation,
         required this.beginFavorites, required this.prefs, required this.place,
   required this.settings, });
 
@@ -459,7 +459,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
 
   Widget buildFloatingSearchBar() {
 
-    return searchBar2(colors, recommend, updateLocation,
+    return searchBar2(palette, recommend, updateLocation,
         updateFav, favorites, updateRec, place, context, settings);
 
   }

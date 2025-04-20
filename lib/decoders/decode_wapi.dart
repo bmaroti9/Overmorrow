@@ -25,6 +25,7 @@ import 'dart:ui';
 import '../Icons/overmorrow_weather_icons_icons.dart';
 import '../api_key.dart';
 import '../caching.dart';
+import '../services/color_service.dart';
 import '../settings_page.dart';
 import '../l10n/app_localizations.dart';
 
@@ -273,31 +274,15 @@ class WapiCurrent {
   final int wind;
   final int wind_dir;
 
-  final Color surface;
-  final Color primary;
-  final Color primaryLight;
-  final Color primaryLighter;
-  final Color onSurface;
-  final Color outline;
-  final Color containerLow;
-  final Color container;
-  final Color containerHigh;
+  final Image image;
+
+  final ColorScheme palette;
   final Color colorPop;
   final Color descColor;
-  final Color surfaceVariant;
-  final Color onPrimaryLight;
-  final Color primarySecond;
-
-  final Color backup_primary;
-  final Color backup_backcolor;
-
-  final Image image;
 
   final String photographerName;
   final String photographerUrl;
   final String photoUrl;
-
-  final List<Color> imageDebugColors;
 
   const WapiCurrent({
     required this.precip,
@@ -307,35 +292,22 @@ class WapiCurrent {
     required this.text,
     required this.uv,
     required this.wind,
-    required this.backup_backcolor,
-    required this.backup_primary,
     required this.wind_dir,
 
-    required this.surface,
-    required this.primary,
-    required this.primaryLight,
-    required this.primaryLighter,
-    required this.onSurface,
-    required this.outline,
-    required this.containerLow,
-    required this.container,
-    required this.containerHigh,
+    required this.image,
+
+    required this.palette,
     required this.colorPop,
     required this.descColor,
-    required this.surfaceVariant,
-    required this.onPrimaryLight,
-    required this.primarySecond,
 
-    required this.image,
     required this.photographerName,
     required this.photographerUrl,
     required this.photoUrl,
-    required this.imageDebugColors,
   });
 
   static Future<WapiCurrent> fromJson(item, settings, real_loc, lat, lng, start, localizations) async {
 
-    Image Uimage;
+    Image image;
 
     String photographerName = "";
     String photographerUrl = "";
@@ -348,7 +320,7 @@ class WapiCurrent {
             false, localizations
         );
         final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
-        Uimage = ImageData[0];
+        image = ImageData[0];
         photographerName = ImageData[1];
         photographerUrl = ImageData[2];
         photoLink = ImageData[3];
@@ -358,7 +330,7 @@ class WapiCurrent {
         String imagePath = backdropCorrection(
             item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"], localizations
         );
-        Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
+        image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
           width: double.infinity, height: double.infinity,);
 
         List<String> credits = assetImageCredit(textCorrection(
@@ -371,7 +343,7 @@ class WapiCurrent {
       String imagePath = backdropCorrection(
           item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"], localizations
       );
-      Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
+      image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
         width: double.infinity, height: double.infinity,);
 
       List<String> credits = assetImageCredit(textCorrection(
@@ -379,48 +351,23 @@ class WapiCurrent {
       photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
     }
 
-    Color back = BackColorCorrection(
-      textCorrection(
-        item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"], false, localizations
-      ),
-    );
-
-    Color primary = PrimaryColorCorrection(
-        textCorrection(
-          item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"], false, localizations
-        )
-    );
-
-    List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
-    List<Color> colors = x[0];
-    List<Color> imageDebugColors = x[1];
+    ColorPalette colorPalette = await ColorPalette.getColorPalette(image, settings["Color mode"], settings);
 
     return WapiCurrent(
 
-      surface: colors[0],
-      primary: colors[1],
-      primaryLight: colors[2],
-      primaryLighter: colors[3],
-      onSurface: colors[4],
-      outline: colors[5],
-      containerLow: colors[6],
-      container: colors[7],
-      containerHigh: colors[8],
-      surfaceVariant: colors[9],
-      onPrimaryLight: colors[10],
-      primarySecond: colors[11],
+      photographerName: photographerName,
+      photographerUrl: photographerUrl,
+      photoUrl: photoLink,
 
-      colorPop: colors[12],
-      descColor: colors[13],
-
-      backup_backcolor: back,
-      backup_primary: primary,
+      palette: colorPalette.palette,
+      colorPop: colorPalette.colorPop,
+      descColor: colorPalette.descColor,
 
       text: textCorrection(
           item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
           true, localizations,
       ),
-      image: Uimage,
+      image: image,
       temp: unit_coversion(item["hour"][start]["temp_c"], settings["Temperature"])
           .round(),
       feels_like: unit_coversion(
@@ -434,11 +381,6 @@ class WapiCurrent {
       wind: unit_coversion(item["hour"][start]["wind_kph"], settings["Wind"])
           .round(),
       wind_dir: item["hour"][start]["wind_degree"],
-
-      photographerName: photographerName,
-      photographerUrl: photographerUrl,
-      photoUrl: photoLink,
-      imageDebugColors: imageDebugColors,
     );
   }
 }

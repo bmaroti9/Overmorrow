@@ -20,7 +20,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
@@ -28,7 +27,7 @@ import 'package:overmorrow/decoders/decode_wapi.dart';
 import '../l10n/app_localizations.dart';
 
 import '../caching.dart';
-import '../settings_page.dart';
+import '../services/color_service.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart';
@@ -262,31 +261,15 @@ class OMCurrent {
   final int wind;
   final int wind_dir;
 
-  final Color surface;
-  final Color primary;
-  final Color primaryLight;
-  final Color primaryLighter;
-  final Color onSurface;
-  final Color outline;
-  final Color containerLow;
-  final Color container;
-  final Color containerHigh;
+  final Image image;
+
+  final ColorScheme palette;
   final Color colorPop;
   final Color descColor;
-  final Color surfaceVariant;
-  final Color onPrimaryLight;
-  final Color primarySecond;
-  final List<Color> colors;
-
-  final Color backup_primary;
-  final Color backup_backcolor;
-
-  final Image image;
 
   final String photographerName;
   final String photographerUrl;
   final String photoUrl;
-  final List<Color> imageDebugColors;
 
   const OMCurrent({
     required this.precip,
@@ -296,36 +279,22 @@ class OMCurrent {
     required this.text,
     required this.uv,
     required this.wind,
-    required this.backup_backcolor,
-    required this.backup_primary,
     required this.wind_dir,
 
-    required this.surface,
-    required this.primary,
-    required this.primaryLight,
-    required this.primaryLighter,
-    required this.onSurface,
-    required this.outline,
-    required this.containerLow,
-    required this.container,
-    required this.containerHigh,
+    required this.image,
+
+    required this.palette,
     required this.colorPop,
     required this.descColor,
-    required this.surfaceVariant,
-    required this.onPrimaryLight,
-    required this.primarySecond,
-    required this.colors,
 
-    required this.image,
     required this.photographerName,
     required this.photographerUrl,
     required this.photoUrl,
-    required this.imageDebugColors
   });
 
   static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng, start, dayDif, context) async {
 
-    Image Uimage;
+    Image image;
     String photographerName = "";
     String photographerUrl = "";
     String photoLink = "";
@@ -336,7 +305,7 @@ class OMCurrent {
     if (settings["Image source"] == "network") {
       try {
         final ImageData = await getUnsplashImage(currentCondition, real_loc, lat, lng);
-        Uimage = ImageData[0];
+        image = ImageData[0];
         photographerName = ImageData[1];
         photographerUrl = ImageData[2];
         photoLink = ImageData[3];
@@ -344,7 +313,7 @@ class OMCurrent {
       //fallback to asset image when condition changed and there is no image for the new one
       catch (e) {
         String imagePath = oMBackdropCorrection(currentCondition,);
-        Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
+        image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
           width: double.infinity, height: double.infinity,);
         List<String> credits = assetImageCredit(currentCondition);
         photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
@@ -352,53 +321,29 @@ class OMCurrent {
     }
     else {
       String imagePath = oMBackdropCorrection(currentCondition,);
-      Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
+      image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
         width: double.infinity, height: double.infinity,);
       List<String> credits = assetImageCredit(currentCondition);
       photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
     }
 
-    Color back = BackColorCorrection(currentCondition);
-
-    Color primary = PrimaryColorCorrection(currentCondition);
-
-    List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
-    List<Color> colors = x[0];
-    List<Color> imageDebugColors = x[1];
+    ColorPalette colorPalette = await ColorPalette.getColorPalette(image, settings["Color mode"], settings);
 
     return OMCurrent(
-      image: Uimage,
+      image: image,
       photographerName: photographerName,
       photographerUrl: photographerUrl,
       photoUrl: photoLink,
 
-      imageDebugColors: imageDebugColors,
+      palette: colorPalette.palette,
+      colorPop: colorPalette.colorPop,
+      descColor: colorPalette.descColor,
 
       text: conditionTranslation(currentCondition, context) ?? "TranslationErr",
       uv: item["daily"]["uv_index_max"][dayDif].round(),
       feels_like: unit_coversion(
           item["current"]["apparent_temperature"], settings["Temperature"])
           .round(),
-
-      surface: colors[0],
-      primary: colors[1],
-      primaryLight: colors[2],
-      primaryLighter: colors[3],
-      onSurface: colors[4],
-      outline: colors[5],
-      containerLow: colors[6],
-      container: colors[7],
-      containerHigh: colors[8],
-      surfaceVariant: colors[9],
-      onPrimaryLight: colors[10],
-      primarySecond: colors[11],
-      colors: colors,
-
-      colorPop: colors[12],
-      descColor: colors[13],
-
-      backup_backcolor: back,
-      backup_primary: primary,
 
       precip: double.parse(unit_coversion(
           item["daily"]["precipitation_sum"][dayDif], settings["Precipitation"])

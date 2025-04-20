@@ -26,7 +26,7 @@ import 'package:overmorrow/decoders/decode_OM.dart';
 import '../api_key.dart';
 import '../caching.dart';
 import '../l10n/app_localizations.dart';
-import '../settings_page.dart';
+import '../services/color_service.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart';
@@ -217,31 +217,15 @@ class MetNCurrent {
   final int wind;
   final int wind_dir;
 
-  final Color surface;
-  final Color primary;
-  final Color primaryLight;
-  final Color primaryLighter;
-  final Color onSurface;
-  final Color outline;
-  final Color containerLow;
-  final Color container;
-  final Color containerHigh;
+  final Image image;
+
+  final ColorScheme palette;
   final Color colorPop;
   final Color descColor;
-  final Color surfaceVariant;
-  final Color onPrimaryLight;
-  final Color primarySecond;
-
-  final Color backup_primary;
-  final Color backup_backcolor;
-
-  final Image image;
 
   final String photographerName;
   final String photographerUrl;
   final String photoUrl;
-
-  final List<Color> imageDebugColors;
 
   const MetNCurrent({
     required this.precip,
@@ -251,35 +235,22 @@ class MetNCurrent {
     required this.text,
     required this.uv,
     required this.wind,
-    required this.backup_backcolor,
-    required this.backup_primary,
     required this.wind_dir,
 
-    required this.surface,
-    required this.primary,
-    required this.primaryLight,
-    required this.primaryLighter,
-    required this.onSurface,
-    required this.outline,
-    required this.containerLow,
-    required this.container,
-    required this.containerHigh,
+    required this.image,
+
+    required this.palette,
     required this.colorPop,
     required this.descColor,
-    required this.surfaceVariant,
-    required this.onPrimaryLight,
-    required this.primarySecond,
 
-    required this.image,
     required this.photographerName,
     required this.photographerUrl,
     required this.photoUrl,
-    required this.imageDebugColors,
   });
 
   static Future<MetNCurrent> fromJson(item, settings, real_loc, lat, lng, localizations) async {
 
-    Image Uimage;
+    Image image;
 
     String photographerName = "";
     String photographerUrl = "";
@@ -293,7 +264,7 @@ class MetNCurrent {
     if (settings["Image source"] == "network") {
       try {
         final ImageData = await getUnsplashImage(currentCondition, real_loc, lat, lng);
-        Uimage = ImageData[0];
+        image = ImageData[0];
         photographerName = ImageData[1];
         photographerUrl = ImageData[2];
         photoLink = ImageData[3];
@@ -303,7 +274,7 @@ class MetNCurrent {
         String imagePath = metNBackdropCorrection(
           currentCondition,
         );
-        Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
+        image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
         List<String> credits = assetImageCredit(currentCondition);
         photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
       }
@@ -312,30 +283,24 @@ class MetNCurrent {
       String imagePath = metNBackdropCorrection(
         currentCondition,
       );
-      Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
+      image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
       List<String> credits = assetImageCredit(currentCondition);
       photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
     }
 
-    Color back = metNAccentColorCorrection(
-      currentCondition,
-    );
-
-    Color primary = metNBackColorCorrection(
-      currentCondition,
-    );
-
-    List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
-    List<Color> colors = x[0];
-    List<Color> imageDebugColors = x[1];
-
     var it = item["properties"]["timeseries"][0]["data"];
 
+    ColorPalette colorPalette = await ColorPalette.getColorPalette(image, settings["Color mode"], settings);
+
     return MetNCurrent(
-      image: Uimage,
+      image: image,
       photographerName: photographerName,
       photographerUrl: photographerUrl,
       photoUrl: photoLink,
+
+      palette: colorPalette.palette,
+      colorPop: colorPalette.colorPop,
+      descColor: colorPalette.descColor,
 
       text: metNTextCorrection(
           it["next_1_hours"]["summary"]["symbol_code"],
@@ -353,27 +318,9 @@ class MetNCurrent {
       uv: it["instant"]["details"]["ultraviolet_index_clear_sky"].round(),
       feels_like: metNcalculateFeelsLike(it["instant"]["details"]["air_temperature"],
         it["instant"]["details"]["relative_humidity"], it["instant"]["details"]["wind_speed"] * 3.6),
-      imageDebugColors: imageDebugColors,
       wind_dir: it["instant"]["details"]["wind_from_direction"].round(),
 
-      surface: colors[0],
-      primary: colors[1],
-      primaryLight: colors[2],
-      primaryLighter: colors[3],
-      onSurface: colors[4],
-      outline: colors[5],
-      containerLow: colors[6],
-      container: colors[7],
-      containerHigh: colors[8],
-      surfaceVariant: colors[9],
-      onPrimaryLight: colors[10],
-      primarySecond: colors[11],
 
-      colorPop: colors[12],
-      descColor: colors[13],
-
-      backup_backcolor: back,
-      backup_primary: primary,
     );
   }
 }

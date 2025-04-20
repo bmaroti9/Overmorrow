@@ -184,7 +184,7 @@ class _NewMainState extends State<NewMain> {
                       Padding(
                         padding: const EdgeInsets.only(left: 0, bottom: 0),
                         child: comfortatext(
-                            "${data.current.temp}°", 65, data.settings,
+                            "${data.current.temp}°", 69, data.settings,
                             color: data.current.colorPop, weight: FontWeight.w200,
                         ),
                       ),
@@ -200,7 +200,7 @@ class _NewMainState extends State<NewMain> {
                 ),
 
                 MySearchParent(updateLocation: updateLocation,
-                  colors: data.current.colors,
+                  palette: data.current.palette,
                   place: data.place,
                   settings: data.settings),
               ],
@@ -219,8 +219,10 @@ class _NewMainState extends State<NewMain> {
           ),
 
           NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-          hourBoxes(data.days[1].hourly, data),
-          //SizedBox(height:230, child: buildTemp(data.days[1].hourly, data, data.current.container)),
+          //hourBoxes(data.days[1].hourly, data),
+          NewHourly(data: data),
+
+          //Container(padding: const EdgeInsets.only(left: 17, right: 17, top: 20), height:230, child: buildTemp(data.days[1].hourly, data, data.current.container)),
 
 
           /*
@@ -332,7 +334,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                 ),
                               ),
                               MySearchParent(updateLocation: updateLocation,
-                                colors: data.current.colors,
+                                palette: data.current.palette,
                                 place: data.place,
                                 settings: data.settings,)
                             ],
