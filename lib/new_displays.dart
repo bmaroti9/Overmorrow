@@ -131,6 +131,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme palette = widget.data.current.palette;
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
@@ -160,7 +161,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         final textWidth = textPainter.width * 1.1;
 
         return Padding(
-          padding: const EdgeInsets.only(left: 28, right: 28, bottom: 23, top: 13),
+          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 23, top: 13),
           child: Column(
             children: [
               Padding(
@@ -171,7 +172,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: comfortatext(write, 15, widget.data.settings,
-                      color: widget.data.current.onSurface, weight: FontWeight.w300),
+                      color: palette.onSurface, weight: FontWeight.w300),
                 ),
               ),
               Padding(
@@ -185,7 +186,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                     height: 4,
                     width: 4,
                     decoration: BoxDecoration(
-                      color: widget.data.current.primarySecond,
+                      color: palette.primaryFixedDim,
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
@@ -197,8 +198,8 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                 child: CustomPaint(
                   painter: WavePainter(
                       _controller.value,
-                      widget.data.current.primarySecond,
-                      darken(widget.data.current.surfaceVariant, 0.03),
+                      palette.primaryFixedDim,
+                      palette.surfaceContainerHighest,
                       progress),
                   child: Container(
                     width: double.infinity,
@@ -214,23 +215,23 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                       padding: const EdgeInsets.only(right: 4),
                       child: Icon(
                         Icons.wb_sunny_outlined,
-                        color: widget.data.current.primary,
+                        color: palette.primary,
                         size: 14,
                       ),
                     ),
                     comfortatext(
                         widget.data.sunstatus.sunrise, 15, widget.data.settings,
-                        color: widget.data.current.primary,
+                        color: palette.primary,
                         weight: FontWeight.w300),
                     const Spacer(),
                     comfortatext(
                         widget.data.sunstatus.sunset, 15, widget.data.settings,
-                        color: widget.data.current.outline,
+                        color: palette.outline,
                         weight: FontWeight.w300),
                     Padding(
                       padding: const EdgeInsets.only(left: 4),
                       child: Icon(Icons.nightlight_outlined,
-                          color: widget.data.current.outline, size: 14),
+                          color: palette.outline, size: 14),
                     ),
                   ],
                 ),

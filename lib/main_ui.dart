@@ -94,10 +94,10 @@ class ParrallaxBackground extends StatelessWidget {
 }
 
 
-Widget Circles(var data, double bottom, context, primary, onSurface, outline) {
+Widget Circles(var data, double bottom, context, ColorScheme palette) {
   return Padding(
       //top padding is slightly bigger because of the offline colored bar
-      padding: EdgeInsets.only(top: data.isonline ? 28 : 33, left: 21, right: 21, bottom: 13),
+      padding: EdgeInsets.only(top: data.isonline ? 25 : 33, left: 18, right: 18, bottom: 13),
       child: Row(
           children: [
             DescriptionCircle(
@@ -107,9 +107,7 @@ Widget Circles(var data, double bottom, context, primary, onSurface, outline) {
               settings: data.settings,
               bottom: bottom,
               dir: -1,
-              primary: primary,
-              outline: outline,
-              onSurface: onSurface,
+              palette: palette
             ),
             DescriptionCircle(
               text: '${data.current.humidity}',
@@ -119,9 +117,7 @@ Widget Circles(var data, double bottom, context, primary, onSurface, outline) {
               settings: data.settings,
               bottom: bottom,
               dir: -1,
-              primary: primary,
-              outline: outline,
-              onSurface: onSurface,
+              palette: palette
             ),
             DescriptionCircle(
               text: '${data.current.precip}',
@@ -130,9 +126,7 @@ Widget Circles(var data, double bottom, context, primary, onSurface, outline) {
               settings: data.settings,
               bottom: bottom,
               dir: -1,
-              primary: primary,
-              outline: outline,
-              onSurface: onSurface,
+              palette: palette
             ),
             DescriptionCircle(
               text: '${data.current.wind}',
@@ -141,9 +135,7 @@ Widget Circles(var data, double bottom, context, primary, onSurface, outline) {
               settings: data.settings,
               bottom: bottom,
               dir: data.current.wind_dir + 180,
-              primary: primary,
-              outline: outline,
-              onSurface: onSurface,
+              palette: palette
             ),
           ]
       )
@@ -160,14 +152,12 @@ class DescriptionCircle extends StatelessWidget {
   final bottom;
   final dir;
 
-  final Color primary;
-  final Color onSurface;
-  final Color outline;
+  final ColorScheme palette;
 
   const DescriptionCircle({super.key, required this.text,
     required this.undercaption,  required this.extra,
     required this.settings, required this.bottom, required this.dir,
-    required this.primary, required this.onSurface, required this.outline});
+    required this.palette});
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +175,7 @@ class DescriptionCircle extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
 
-                          border: Border.all(width: 2.0, color: primary),
+                          border: Border.all(width: 2.0, color: palette.primary),
                           //color: WHITE,
                           //borderRadius: BorderRadius.circular(size * 0.09)
                         ),
@@ -195,9 +185,9 @@ class DescriptionCircle extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.baseline,
                             textBaseline: TextBaseline.alphabetic,
                             children: [
-                              comfortatext(text, 20, settings, color: primary, weight: FontWeight.w400),
+                              comfortatext(text, 20, settings, color: palette.primary, weight: FontWeight.w400),
                               Flexible(
-                                  child: comfortatext(extra, 16, settings, color: primary, weight: FontWeight.w400)
+                                  child: comfortatext(extra, 16, settings, color: palette.primary, weight: FontWeight.w400)
                               ),
                             ],
                           ),
@@ -215,7 +205,7 @@ class DescriptionCircle extends StatelessWidget {
                                     turns: AlwaysStoppedAnimation(dir / 360),
                                     child: Padding(
                                         padding: EdgeInsets.only(bottom: constraints.maxWidth * 0.70),
-                                        child: Icon(Icons.keyboard_arrow_up_outlined, color: onSurface, size: 17,)
+                                        child: Icon(Icons.keyboard_arrow_up_outlined, color: palette.onSurface, size: 17,)
                                     )
                                 ),
                               )
@@ -228,7 +218,7 @@ class DescriptionCircle extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top:6),
-                  child: comfortatext(undercaption, 15, settings, align: TextAlign.center, color: outline)
+                  child: comfortatext(undercaption, 15, settings, align: TextAlign.center, color: palette.outline)
                 )
               )
             ]
@@ -304,8 +294,10 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
 
     List<String> split = text.split(',');
 
+    ColorScheme palette = widget.data.current.palette;
+
     return Container(
-      color: widget.data.isonline ? widget.data.current.surface : widget.data.current.primaryLight,
+      color: widget.data.isonline ? palette.surface : palette.primaryContainer,
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 1000),
         transitionBuilder: (Widget child, Animation<double> animation) {
@@ -350,14 +342,16 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
   @override
   Widget build(BuildContext context) {
 
-    Color text = widget.data.isonline ? widget.data.current.onSurface : widget.data.current.onPrimaryLight;
-    Color highlight = widget.data.isonline ? widget.data.current.primary : widget.data.current.onPrimaryLight;
+    Color text = widget.data.isonline ? widget.data.current.palette.onSurface
+        : widget.data.current.palette.onPrimaryContainer;
+    Color highlight = widget.data.isonline ? widget.data.current.palette.primary
+        : widget.data.current.palette.onPrimaryContainer;
 
     if (widget.isVisible) {
       return SizedBox(
         height: 21,
         child: Padding(
-          padding: const EdgeInsets.only(right: 24),
+          padding: const EdgeInsets.only(right: 28),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -389,7 +383,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
       return SizedBox(
         height: 21,
         child: Padding(
-          padding: const EdgeInsets.only(right: 24),
+          padding: const EdgeInsets.only(right: 28),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

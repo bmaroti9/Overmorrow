@@ -25,7 +25,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/new_forecast.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/settings_page.dart';
-import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'main_ui.dart';
 import 'new_displays.dart';
@@ -174,25 +173,19 @@ class _NewMainState extends State<NewMain> {
             overlay: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 27, right: 25, bottom: 30),
+                  padding: const EdgeInsets.only(left: 26, right: 25, bottom: 26),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 0, bottom: 0),
-                        child: comfortatext(
-                            "${data.current.temp}°", 69, data.settings,
-                            color: data.current.colorPop, weight: FontWeight.w200,
-                        ),
+                      comfortatext(
+                          "${data.current.temp}°", 69, data.settings,
+                          color: data.current.colorPop, weight: FontWeight.w200,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 0),
-                        child: comfortatext(
-                            data.current.text, 32, data.settings,
-                            weight: FontWeight.w300,
-                            color: data.current.descColor),
-                      )
+                      comfortatext(
+                          data.current.text, 32, data.settings,
+                          weight: FontWeight.w300,
+                          color: data.current.descColor)
                     ],
                   ),
                 ),
@@ -206,26 +199,25 @@ class _NewMainState extends State<NewMain> {
         ),
         children: [
 
-          /*
+
           Stack(
             children: [
               FadingWidget(
                 data: data,
                 time: data.updatedTime,
               ),
-              Circles(data, 0.5, context, data.current.primary, data.current.onSurface, data.current.outline)
+              Circles(data, 0.5, context, data.current.palette)
             ],
           ),
-           */
 
-          //NewSunriseSunset(data: data, key: Key(data.place), size: size,),
+          NewSunriseSunset(data: data, key: Key(data.place), size: size,),
           //hourBoxes(data.days[1].hourly, data),
-          //NewHourly(data: data),
+          NewHourly(data: data),
 
           //Container(padding: const EdgeInsets.only(left: 17, right: 17, top: 20), height:230, child: buildTemp(data.days[1].hourly, data, data.current.container)),
 
 
-
+          /*
           Padding(
             padding: const EdgeInsets.only(left: 30),
             child: SizedBox(
@@ -251,6 +243,7 @@ class _NewMainState extends State<NewMain> {
               ),
             ),
           ),
+           */
 
 
           /*
@@ -361,7 +354,7 @@ Widget TabletLayout(data, updateLocation, context) {
                               FadingWidget(data: data,
                                   time: data.updatedTime,
                                   key: Key(data.updatedTime.toString())),
-                              Circles(data, 0.3, context, data.current.primary, data.current.onSurface, data.current.outline),
+                              Circles(data, 0.3, context, data.current.palette),
                             ],
                           ),
                         ],

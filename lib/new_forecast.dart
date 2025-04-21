@@ -59,13 +59,14 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     super.build(context);
 
+    ColorScheme palette = data.current.palette;
     return Padding(
-      padding: const EdgeInsets.only(left: 22, right: 22, top: 0, bottom: 200),
+      padding: const EdgeInsets.only(left: 18, right: 18, top: 0, bottom: 200),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: 200,
+            height: 195,
             child: PageView(
               physics: const NeverScrollableScrollPhysics(),
               controller: _pageController,
@@ -85,16 +86,16 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
 
                   return ChoiceChip(
                     elevation: 0.0,
-                    checkmarkColor: data.current.onPrimaryLight,
+                    checkmarkColor: palette.onSecondaryContainer,
                     color: WidgetStateProperty.resolveWith((states) {
                       if (index == _value) {
-                        return data.current.secondaryContainer;
+                        return palette.secondaryContainer;
                       }
-                      return data.current.surface;
+                      return palette.surface;
                     }),
                     side: BorderSide(
-                        color: index == _value ? data.current.secondaryContainer : data.current.outlineVariant,
-                        width: 1.3),
+                        color: index == _value ? palette.secondaryContainer : palette.outlineVariant,
+                        width: 1.5),
                     //translation(['temp', 'precip', 'wind', 'uv'][index], data.settings["Language"])
                     label: comfortatext(
                         [
@@ -104,7 +105,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
                           AppLocalizations.of(context)!.uvLowercase,
                         ][index],
                         14, data.settings,
-                        color: _value == index ? data.current.onPrimaryLight : data.current.onSurface),
+                        color: _value == index ? palette.onSecondaryContainer : palette.onSurface),
                     selected: _value == index,
                     onSelected: (bool selected) {
                       _value = index;
@@ -125,6 +126,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
 }
 
 Widget hourBoxes(hours, data) {
+  ColorScheme palette = data.current.palette;
   return ListView.builder(
     itemCount: hours.length,
     scrollDirection: Axis.horizontal,
@@ -136,7 +138,7 @@ Widget hourBoxes(hours, data) {
         width: 66,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(40),
-          color: data.current.container,
+          color: palette.surfaceContainer,
         ),
 
         child: Column(
@@ -145,7 +147,7 @@ Widget hourBoxes(hours, data) {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 2),
-              child: comfortatext("${hour.temp}°", 19, data.settings, color: data.current.primary,
+              child: comfortatext("${hour.temp}°", 19, data.settings, color: palette.primary,
               weight: FontWeight.w400),
             ),
 
@@ -155,7 +157,7 @@ Widget hourBoxes(hours, data) {
                   height: 30,
                   child: Icon(
                     hour.icon,
-                    color: data.current.onSurface,
+                    color: palette.onSurface,
                     size: 31.0 * hour.iconSize,
                   ),
                 )
@@ -164,13 +166,13 @@ Widget hourBoxes(hours, data) {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.umbrella, size: 14, color: data.current.primary),
-                comfortatext("${hour.precip_prob}%", 14, data.settings, color: data.current.primary,
+                Icon(Icons.umbrella, size: 14, color: palette.primary),
+                comfortatext("${hour.precip_prob}%", 14, data.settings, color: palette.primary,
                     weight: FontWeight.w400)
               ],
             ),
 
-            comfortatext(hour.time, 15, data.settings, color: data.current.outline, weight: FontWeight.w400)
+            comfortatext(hour.time, 15, data.settings, color: palette.outline, weight: FontWeight.w400)
           ],
         ),
 

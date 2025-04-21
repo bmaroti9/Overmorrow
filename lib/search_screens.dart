@@ -57,7 +57,7 @@ Widget searchBar2(ColorScheme palette, recommend,
         tag: 'searchBarHero',
         child: Container(
           height: 67,
-          margin: EdgeInsets.only(left: 29, right: 29, top: MediaQuery.of(context).padding.top + 15),
+          margin: EdgeInsets.only(left: 26, right: 26, top: MediaQuery.of(context).padding.top + 15),
           decoration: BoxDecoration(
             color: palette.surface,
             borderRadius: BorderRadius.circular(33)
@@ -329,7 +329,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25),
+                  padding: const EdgeInsets.only(left: 30, right: 30),
                   child: Material(
                     color: palette.surfaceContainer,
                     child: Theme(
@@ -492,7 +492,7 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
                     ),
                     padding: rec.isEmpty
                         ? const EdgeInsets.all(0)
-                        : const EdgeInsets.all(10),
+                        : const EdgeInsets.all(14),
                     child: Column(
                       children: List.generate(rec.length, (index) {
                         var split = json.decode(rec[index]);

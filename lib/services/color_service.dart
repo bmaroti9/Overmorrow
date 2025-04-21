@@ -100,7 +100,7 @@ class ImageColorList {
     );
     PaletteGenerator imageColors = await PaletteGenerator.fromImage(
       imageInfo.image,
-      maximumColorCount: 3,
+      maximumColorCount: 4,
       filters: [],
     );
 
@@ -134,7 +134,7 @@ class ColorPalette {
   //make sure the temperature and description text remain readable
   static List<Color> checkTextContrast(List<Color> regionColors, ColorScheme palette) {
 
-    //the intended look is temperature with primaryContainer and description with surface
+    //the intended look is temperature with primaryFixedDim and description with surface
     //though that can be adjusted to help contrast
 
     double surfaceDif = difFromBackColors(palette.surface, regionColors);
@@ -209,7 +209,7 @@ class ColorPalette {
       palette = getCustomColorPalette(theme, settings);
     }
     else {
-      palette = getImagePalette(theme, regionColors);
+      palette = getImagePalette(theme, imageColors);
     }
 
     List<Color> textColors = checkTextContrast(regionColors, palette);
@@ -223,17 +223,17 @@ class ColorPalette {
     );
   }
 
-  static ColorScheme getImagePalette(String theme, regionColors) {
+  static ColorScheme getImagePalette(String theme, imageColors) {
 
     Color seedColor = Colors.blue;
     int bestValue = -10000;
 
     //try to reduce blue palettes because they are too common
-    for (int i = 0; i < regionColors.length; i++) {
-      double v = regionColors[i].r * 1 + regionColors[i].g * 1 - regionColors[i].b * 5.0;
+    for (int i = 0; i < imageColors.length; i++) {
+      double v = imageColors[i].r * 1 + imageColors[i].g * 1 - imageColors[i].b * 5.0;
       if (v > bestValue) {
         bestValue = v.round();
-        seedColor = regionColors[i];
+        seedColor = imageColors[i];
       }
     }
 
