@@ -34,35 +34,16 @@ int getColorFromHex(String hexColor) {
   return int.parse(hexColor, radix: 16);
 }
 
-double difFromBackColors(Color frontColor, List<Color> backcolors) {
-  double smallest = 2000;
-  for (int i = 0; i < backcolors.length; i++) {
-    smallest = min(smallest, contrastRatio(frontColor, backcolors[i]));
+double difFromBackColors(Color front, List<Color> backs) {
+  double worst = double.infinity;
+  double l1 = front.computeLuminance();
+  for (var b in backs) {
+    final l2 = b.computeLuminance();
+    final lighter = max(l1, l2), darker = min(l1, l2);
+    worst = min(worst, (lighter + 0.05) / (darker + 0.05));
   }
-  return smallest;
+  return worst;
 }
-
-double getRelativeLuminance(Color color) {
-  double linearize(int value) {
-    double v = value / 255.0;
-    return v <= 0.03928 ? v / 12.92 : pow((v + 0.055) / 1.055, 2.4).toDouble();
-  }
-
-  return 0.2126 * linearize(color.r.toInt()) +
-      0.7152 * linearize(color.g.toInt()) +
-      0.0722 * linearize(color.b.toInt());
-}
-
-double contrastRatio(Color color1, Color color2) {
-  double l1 = getRelativeLuminance(color1);
-  double l2 = getRelativeLuminance(color2);
-
-  double lighter = l1 > l2 ? l1 : l2;
-  double darker = l1 > l2 ? l2 : l1;
-
-  return (lighter + 0.05) / (darker + 0.05);
-}
-
 
 class ImageColorList {
   final List<Color> imageColors; //a list of colors for the whole image
@@ -160,11 +141,12 @@ class ColorPalette {
     //if the desc can keep the surface color or has to adapt to help contrast
     bool descUnique = surfaceDif >= 1.9;
 
-    double dif = difFromBackColors(palette.primaryContainer, regionColors);
+    double dif = difFromBackColors(palette.primaryFixedDim, regionColors);
     if (dif >= 1.9) {
-      return [palette.primaryContainer, descUnique ? palette.surface : palette.primaryContainer];
+      return [palette.primaryFixedDim, descUnique ? palette.surface : palette.primaryFixedDim];
     }
 
+    print(("dif surf", surfaceDif));
     if (surfaceDif >= 1.9) {
       return [palette.surface, palette.surface];
     }

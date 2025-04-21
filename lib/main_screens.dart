@@ -130,6 +130,7 @@ class _NewMainState extends State<NewMain> {
     final Size size = (view.physicalSize) / view.devicePixelRatio;
 
 
+    /*
     final Map<String, Widget> widgetsMap = {
       'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), size: size,),
       'rain indicator': NewRain15MinuteIndicator(data, context),
@@ -146,6 +147,8 @@ class _NewMainState extends State<NewMain> {
       orderedWidgets = order.map((name) => widgetsMap[name]!).toList();
     }
 
+     */
+
 
     String colorMode = data.settings["Color mode"];
     if (colorMode == "auto") {
@@ -154,12 +157,8 @@ class _NewMainState extends State<NewMain> {
     }
 
     return Scaffold(
-      backgroundColor: data.current.surface,
-      drawer: MyDrawer(backupprimary: data.current.backup_primary,
-        backupback: data.current.backup_backcolor, settings: data.settings, image: data.current.image,
-        primary: data.current.primary, onSurface: data.current.onSurface,
-        surface: data.current.surface, hihglight: data.current.containerLow,
-      ),
+      backgroundColor: data.current.palette.surface,
+      drawer: MyDrawer(image: data.current.image, settings: data.settings, palette: data.current.palette,),
       body: StretchyHeader.listView(
         displacement: 130,
         onRefresh: () async {
@@ -171,8 +170,7 @@ class _NewMainState extends State<NewMain> {
             headerHeight: max((size.height ) * 0.494, 400),
             //we don't want it to be smaller than 400
             header: ParrallaxBackground(image: data.current.image, key: Key(data.place),
-                color: data.current.surface == BLACK ? BLACK
-                    : lightAccent(data.current.surface, 5000)),
+                color: BLACK),
             overlay: Stack(
               children: [
                 Padding(
@@ -208,6 +206,7 @@ class _NewMainState extends State<NewMain> {
         ),
         children: [
 
+          /*
           Stack(
             children: [
               FadingWidget(
@@ -217,15 +216,16 @@ class _NewMainState extends State<NewMain> {
               Circles(data, 0.5, context, data.current.primary, data.current.onSurface, data.current.outline)
             ],
           ),
+           */
 
-          NewSunriseSunset(data: data, key: Key(data.place), size: size,),
+          //NewSunriseSunset(data: data, key: Key(data.place), size: size,),
           //hourBoxes(data.days[1].hourly, data),
-          NewHourly(data: data),
+          //NewHourly(data: data),
 
           //Container(padding: const EdgeInsets.only(left: 17, right: 17, top: 20), height:230, child: buildTemp(data.days[1].hourly, data, data.current.container)),
 
 
-          /*
+
           Padding(
             padding: const EdgeInsets.only(left: 30),
             child: SizedBox(
@@ -234,7 +234,7 @@ class _NewMainState extends State<NewMain> {
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: data.current.imageDebugColors.length,
+                itemCount: data.current.debugColors.length,
                 itemBuilder: (context, index) {
                   return Padding(
                       padding: EdgeInsets.all(5),
@@ -243,7 +243,7 @@ class _NewMainState extends State<NewMain> {
                         height: 25,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          color: data.current.imageDebugColors[index]
+                          color: data.current.debugColors[index]
                         ),
                       ),
                   );
@@ -251,7 +251,7 @@ class _NewMainState extends State<NewMain> {
               ),
             ),
           ),
-           */
+
 
           /*
           Column(
@@ -265,8 +265,7 @@ class _NewMainState extends State<NewMain> {
           /*
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 30),
-            child: providerSelector(data.settings, updateLocation, data.current.onSurface,
-                data.current.containerLow, data.current.primary, data.provider,
+            child: providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
                 "${data.lat}, ${data.lng}", data.real_loc, context),
           ),
 
@@ -294,11 +293,7 @@ Widget TabletLayout(data, updateLocation, context) {
 
   return Scaffold(
     backgroundColor: data.current.surface,
-    drawer: MyDrawer(backupprimary: data.current.backup_primary,
-      backupback: data.current.backup_backcolor, settings: data.settings, image: data.current.image,
-      primary: data.current.primary, onSurface: data.current.onSurface,
-      surface: data.current.surface, hihglight: data.current.containerLow,
-    ),
+    drawer: MyDrawer(image: data.current.image, settings: data.settings, palette: data.current.palette,),
     body: RefreshIndicator(
       onRefresh: () async {
         await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
@@ -389,8 +384,7 @@ Widget TabletLayout(data, updateLocation, context) {
                       buildNewGlanceDay(data: data, key: Key("${data.place}, ${data.current.primary}"),),
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 30),
-                        child: providerSelector(data.settings, updateLocation, data.current.onSurface,
-                            data.current.containerLow, data.current.primary, data.provider,
+                        child: providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
                             "${data.lat}, ${data.lng}", data.real_loc, context),
                       ),
                     ],

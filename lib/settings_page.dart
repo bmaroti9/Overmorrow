@@ -22,6 +22,7 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/donation_page.dart';
+import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/settings_screens.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,10 +75,10 @@ Map<String, List<String>> settingSwitches = {
   'Radar haptics': ["on", "off"],
 };
 
-Future<List<dynamic>> getSettingsAndColors(primary, back, image) async {
+Future<List<dynamic>> getSettingsAndColors(image) async {
   Map<String, String> settings = await getSettingsUsed();
-  List<Color> colors = (await getMainColor(settings, primary, back, image))[0];
-  return [settings, colors];
+  ColorPalette colorPalette = await ColorPalette.getColorPalette(image, settings["Color mode"]!, settings);
+  return [settings, colorPalette];
 }
 
 Future<Map<String, String>> getSettingsUsed() async {
@@ -183,14 +184,14 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
   );
 }
 
-Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, primaryLight, primary, rawText) {
+Widget settingEntry(icon, text, settings, ColorScheme palette, updatePage, rawText) {
   return Padding(
     padding: const EdgeInsets.only(top: 3, bottom: 3, left: 35, right: 35),
     child: Row(
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 13, bottom: 2),
-          child: Icon(icon, color: primary, size: 21,),
+          child: Icon(icon, color: palette.primary, size: 21,),
         ),
         Expanded(
           flex: 10,
@@ -198,12 +199,12 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
             text,
             19,
             settings,
-            color: textcolor,
+            color: palette.onSurface,
           ),
         ),
         const Spacer(),
         dropdown(
-            highlight, text, updatePage, settings[rawText]!, settings, textcolor, primaryLight, rawText
+            palette.surfaceContainer, text, updatePage, settings[rawText]!, settings, palette.onSurface, palette.primaryContainer, rawText
         ),
       ],
     ),
@@ -212,28 +213,25 @@ Widget settingEntry(icon, text, settings, highlight, updatePage, textcolor, prim
 
 class SettingsPage extends StatefulWidget {
 
-  final primary;
-  final back;
   final image;
 
-  const SettingsPage({Key? key, required this.back, required this.primary,
-  required this.image}) : super(key: key);
+  const SettingsPage({Key? key, required this.image}) : super(key: key);
 
   @override
-  _SettingsPageState createState() => _SettingsPageState(back: back, primary: primary, image: image);
+  _SettingsPageState createState() => _SettingsPageState(image: image);
 }
 
 class _SettingsPageState extends State<SettingsPage> {
 
-  final primary;
-  final back;
   final image;
 
   String _locale = 'English';
   //this is so that appearance page setting changes take effect in place rather that having to exit the page
-  final ValueNotifier<List<Color>> colornotify = ValueNotifier<List<Color>>([]);
+  ValueNotifier<ColorPalette> colornotify = ValueNotifier<ColorPalette>(
+      const ColorPalette(palette: ColorScheme.light(), imageColors: [], regionColors: [],
+          descColor: WHITE, colorPop: WHITE));
 
-  _SettingsPageState({required this.primary, required this.back, required this.image});
+  _SettingsPageState({required this.image});
 
   void updatePage(String name, String to) {
     setState(() {
@@ -257,7 +255,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
-      future: getSettingsAndColors(primary, back, image),
+      future: getSettingsAndColors(image),
       builder: (BuildContext context,
           AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
@@ -277,7 +275,7 @@ class _SettingsPageState extends State<SettingsPage> {
           context: context,
           locale: languageNameToLocale[_locale] ?? const Locale('en'),
           child: SettingsMain(settings: snapshot.data?[0], updatePage: updatePage, goBack: goBack, image: image,
-              colors: snapshot.data?[1], colornotify: colornotify,),
+              palette: snapshot.data?[1].palette, colornotify: colornotify,),
         );
       },
     );
@@ -286,35 +284,35 @@ class _SettingsPageState extends State<SettingsPage> {
 
 
 class SettingsMain extends StatelessWidget {
-  final colors;
+  final ColorScheme palette;
   final goBack;
   final settings;
   final updatePage;
   final image;
   final colornotify;
 
-  const SettingsMain({super.key, this.settings, this.updatePage, this.goBack, this.image, this.colors, this.colornotify});
+  const SettingsMain({super.key, this.settings, this.updatePage, this.goBack, this.image, required this.palette, this.colornotify});
 
   @override
   Widget build(BuildContext context) {
     return  Material(
-      color: colors[0],
+      color: palette.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: colors[1],),
+            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
                 onPressed: () {
                   HapticFeedback.selectionClick();
                   goBack();
                 }),
-            title: comfortatext(AppLocalizations.of(context)!.settings, 30, settings, color: colors[1]),
-            backgroundColor: colors[0],
+            title: comfortatext(AppLocalizations.of(context)!.settings, 30, settings, color: palette.primary),
+            backgroundColor: palette.surface,
             pinned: false,
           ),
           // Just some content big enough to have something to scroll.
           SliverToBoxAdapter(
-            child: NewSettings(settings!, updatePage, image, colors, context, colornotify),
+            child: NewSettings(settings!, updatePage, image, palette, context, colornotify),
           ),
         ],
       ),
@@ -324,25 +322,18 @@ class SettingsMain extends StatelessWidget {
 
 class MyDrawer extends StatelessWidget {
 
-  final backupprimary;
-  final backupback;
   final settings;
   final image;
 
-  final primary;
-  final surface;
-  final onSurface;
-  final hihglight;
+  final ColorScheme palette;
 
-  const MyDrawer({super.key, required this.settings, required this.backupback, required this.backupprimary,
-  required this.image, required this.surface, required this.primary, required this.onSurface,
-  required this.hihglight});
+  const MyDrawer({super.key, required this.settings, required this.image, required this.palette});
 
   @override
   Widget build(BuildContext context) {
 
     return Drawer(
-      backgroundColor: surface,
+      backgroundColor: palette.surface,
       elevation: 0,
       child: ListView(
         padding: EdgeInsets.zero,
@@ -350,13 +341,13 @@ class MyDrawer extends StatelessWidget {
           Container(
             height: 240,
             decoration: BoxDecoration(
-              color: hihglight,
+              color: palette.surfaceContainer,
             ),
             child: Align(
               alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: comfortatext('OVRMRW', 40, settings, color: primary, weight: FontWeight.w400),
+                  child: comfortatext('OVRMRW', 40, settings, color: palette.primary, weight: FontWeight.w400),
                 )
             ),
           ),
@@ -365,18 +356,14 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             title: comfortatext(AppLocalizations.of(context)!.settings, 24,
-                settings, color: onSurface),
-            leading: Icon(Icons.settings_outlined, color: primary, size: 24,),
+                settings, color: palette.onSurface),
+            leading: Icon(Icons.settings_outlined, color: palette.primary, size: 24,),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SettingsPage(
-                    primary: backupprimary,
-                    back: backupback,
-                    image: image,
-                  ),
+                  builder: (context) => SettingsPage(image: image),
                 ),
               ).then((value) {
                 Navigator.of(context).pushReplacement(
@@ -389,6 +376,7 @@ class MyDrawer extends StatelessWidget {
               });
             },
           ),
+          /*
           ListTile(
             title: comfortatext(AppLocalizations.of(context)!.about, 24,
                 settings, color: onSurface),
@@ -415,6 +403,8 @@ class MyDrawer extends StatelessWidget {
               );
             },
           ),
+
+           */
         ],
       ),
     );

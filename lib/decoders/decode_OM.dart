@@ -266,6 +266,7 @@ class OMCurrent {
   final ColorScheme palette;
   final Color colorPop;
   final Color descColor;
+  final List<Color> debugColors;
 
   final String photographerName;
   final String photographerUrl;
@@ -286,6 +287,7 @@ class OMCurrent {
     required this.palette,
     required this.colorPop,
     required this.descColor,
+    required this.debugColors,
 
     required this.photographerName,
     required this.photographerUrl,
@@ -338,6 +340,7 @@ class OMCurrent {
       palette: colorPalette.palette,
       colorPop: colorPalette.colorPop,
       descColor: colorPalette.descColor,
+      debugColors: colorPalette.regionColors,
 
       text: conditionTranslation(currentCondition, context) ?? "TranslationErr",
       uv: item["daily"]["uv_index_max"][dayDif].round(),

@@ -428,7 +428,7 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
                           "current location", 18, settings, color: palette.outline),
                     ],
                   ),
-                  CurrentLocationWidget(settings, locationSafe, palette.primaryContainer, palette.onPrimaryContainer, palette.outline,
+                  CurrentLocationWidget(settings, locationSafe, palette,
                       askGrantLocationPermission, placeName, country, region, updateLocation, context),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20),
@@ -562,7 +562,7 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
   );
 }
 
-Widget CurrentLocationWidget(settings, locationSafe, primaryLight, onPrimaryLight, outline, askGrantLocationPermission,
+Widget CurrentLocationWidget(settings, locationSafe, ColorScheme palette, askGrantLocationPermission,
     String placeName, String country, String region, updateLocation, context) {
   if (locationSafe == "denied") {
     return GestureDetector(
@@ -575,22 +575,21 @@ Widget CurrentLocationWidget(settings, locationSafe, primaryLight, onPrimaryLigh
             left: 25, right: 25, top: 20, bottom: 20),
         height: 66,
         decoration: BoxDecoration(
-          color: primaryLight,
+          color: palette.primaryContainer,
           borderRadius: BorderRadius.circular(40),
         ),
         child: Row(
           children: [
             Icon(Icons.gps_fixed,
-              color: onPrimaryLight, size: 19,),
+              color: palette.onPrimaryContainer, size: 19,),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, bottom: 2),
                 child: comfortatext(
                       "grant location permission", 19, settings,
-                      color: onPrimaryLight),
+                      color: palette.onPrimaryContainer),
               ),
             ),
-
           ],
         ),
       ),
@@ -608,7 +607,7 @@ Widget CurrentLocationWidget(settings, locationSafe, primaryLight, onPrimaryLigh
         padding: const EdgeInsets.only(
             left: 25, right: 25, top: 19, bottom: 19),
         decoration: BoxDecoration(
-          color: primaryLight,
+          color: palette.primaryFixedDim,
           borderRadius: BorderRadius.circular(40),
         ),
         child: Row(
@@ -617,13 +616,13 @@ Widget CurrentLocationWidget(settings, locationSafe, primaryLight, onPrimaryLigh
                 child: Column(
                   crossAxisAlignment : CrossAxisAlignment.start,
                   children: [
-                    comfortatext(placeName, 20, settings, color: onPrimaryLight),
-                    comfortatext("$region, $country", 15, settings, color: onPrimaryLight)
+                    comfortatext(placeName, 20, settings, color: palette.onPrimaryFixed),
+                    comfortatext("$region, $country", 15, settings, color: palette.onPrimaryFixed)
                   ],
                 )
             ),
             Icon(Icons.keyboard_arrow_right_rounded,
-              color: onPrimaryLight,)
+              color: palette.onPrimaryFixed,)
           ],
         ),
       ),
@@ -635,19 +634,19 @@ Widget CurrentLocationWidget(settings, locationSafe, primaryLight, onPrimaryLigh
         left: 25, right: 25, top: 20, bottom: 20),
     height: 66,
     decoration: BoxDecoration(
-      color: primaryLight,
+      color: palette.primaryContainer,
       borderRadius: BorderRadius.circular(40),
     ),
     child: Row(
       children: [
         Icon(Icons.gps_off,
-          color: onPrimaryLight, size: 19,),
+          color: palette.onPrimaryContainer, size: 19,),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(left: 10, bottom: 2),
             child: comfortatext(
                 locationSafe, 19, settings,
-                color: onPrimaryLight),
+                color: palette.onPrimaryContainer),
           ),
         ),
 
@@ -829,9 +828,7 @@ class dumbySearch extends StatelessWidget {
         ColorScheme palette = snapshot.data!.palette;
 
         return Scaffold(
-          drawer: MyDrawer(backupprimary: primary, settings: settings, backupback: back, image: image, surface: colors[0],
-              onSurface: colors[4], primary: colors[1], hihglight: colors[6]
-          ),
+          drawer: MyDrawer(settings: settings, palette: palette, image: image,),
           backgroundColor: palette.surface,
           body: StretchyHeader.singleChild(
             displacement: 150,
@@ -863,7 +860,7 @@ class dumbySearch extends StatelessWidget {
                       ),
                     ),
                     MySearchParent(updateLocation: updateLocation,
-                      colors: colors, place: place, settings: settings,)
+                      palette: palette, place: place, settings: settings,)
                   ],
                 )
             ),
@@ -872,12 +869,11 @@ class dumbySearch extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
-                  child: comfortatext(shouldAdd ?? "", 16, settings, color: colors[4], weight: FontWeight.w400,),
+                  child: comfortatext(shouldAdd ?? "", 16, settings, color: palette.onSurface, weight: FontWeight.w400,),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
-                  child: providerSelector(settings, updateLocation, colors[4], colors[7],
-                      colors[1], provider, latlng, place, context),
+                  child: providerSelector(settings, updateLocation, palette, provider, latlng, place, context),
                 ),
               ],
             ),

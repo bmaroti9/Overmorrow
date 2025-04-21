@@ -446,8 +446,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
 }
 
 
-Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
-    provider, latlng, real_loc, context) {
+Widget providerSelector(settings, updateLocation, ColorScheme palette, provider, latlng, real_loc, context) {
   return Padding(
     padding: const EdgeInsets.only(left: 23, right: 23, bottom: 30, top: 5),
     child: Column(
@@ -460,14 +459,14 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
             child: comfortatext(
                 AppLocalizations.of(context)!.weatherProvider, 16,
                 settings,
-                color: textcolor),
+                color: palette.onSurface),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 12),
           child: Container(
             decoration: BoxDecoration(
-              color: highlight,
+              color: palette.surfaceContainer,
               borderRadius: BorderRadius.circular(20),
             ),
             padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
@@ -479,10 +478,10 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
               borderRadius: BorderRadius.circular(20),
               icon: Padding(
                 padding: const EdgeInsets.only(left:5),
-                child: Icon(Icons.arrow_drop_down_circle_outlined, color: primary, size: 22,),
+                child: Icon(Icons.arrow_drop_down_circle_outlined, color: palette.primary, size: 22,),
               ),
               style: GoogleFonts.comfortaa(
-                color: primary,
+                color: palette.primary,
                 fontSize: 18 * getFontSize(settings["Font size"]),
                 fontWeight: FontWeight.w500,
               ),
@@ -500,7 +499,7 @@ Widget providerSelector(settings, updateLocation, textcolor, highlight, primary,
                 await updateLocation(latlng, real_loc);
               },
               isExpanded: true,
-              dropdownColor: highlight,
+              dropdownColor: palette.surfaceContainer,
               elevation: 0,
             ),
           ),
