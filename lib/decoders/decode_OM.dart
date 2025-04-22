@@ -24,6 +24,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
+import 'package:overmorrow/services/image_service.dart';
 import '../l10n/app_localizations.dart';
 
 import '../caching.dart';
@@ -261,16 +262,12 @@ class OMCurrent {
   final int wind;
   final int wind_dir;
 
-  final Image image;
+  final ImageService imageService;
 
   final ColorScheme palette;
   final Color colorPop;
   final Color descColor;
   final List<Color> debugColors;
-
-  final String photographerName;
-  final String photographerUrl;
-  final String photoUrl;
 
   const OMCurrent({
     required this.precip,
@@ -282,60 +279,24 @@ class OMCurrent {
     required this.wind,
     required this.wind_dir,
 
-    required this.image,
+    required this.imageService,
 
     required this.palette,
     required this.colorPop,
     required this.descColor,
     required this.debugColors,
-
-    required this.photographerName,
-    required this.photographerUrl,
-    required this.photoUrl,
   });
 
   static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng, start, dayDif, context) async {
 
-    Image image;
-    String photographerName = "";
-    String photographerUrl = "";
-    String photoLink = "";
-
     String currentCondition = oMCurrentTextCorrection(
         item["hourly"]["weather_code"][start], sunstatus, timenow);
 
-    if (settings["Image source"] == "network") {
-      try {
-        final ImageData = await getUnsplashImage(currentCondition, real_loc, lat, lng);
-        image = ImageData[0];
-        photographerName = ImageData[1];
-        photographerUrl = ImageData[2];
-        photoLink = ImageData[3];
-      }
-      //fallback to asset image when condition changed and there is no image for the new one
-      catch (e) {
-        String imagePath = oMBackdropCorrection(currentCondition,);
-        image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
-          width: double.infinity, height: double.infinity,);
-        List<String> credits = assetImageCredit(currentCondition);
-        photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
-      }
-    }
-    else {
-      String imagePath = oMBackdropCorrection(currentCondition,);
-      image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
-        width: double.infinity, height: double.infinity,);
-      List<String> credits = assetImageCredit(currentCondition);
-      photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
-    }
-
-    ColorPalette colorPalette = await ColorPalette.getColorPalette(image, settings["Color mode"], settings);
+    ImageService imageService = await ImageService.getImageService(currentCondition, real_loc, settings);
+    ColorPalette colorPalette = await ColorPalette.getColorPalette(imageService.image, settings["Color mode"], settings);
 
     return OMCurrent(
-      image: image,
-      photographerName: photographerName,
-      photographerUrl: photographerUrl,
-      photoUrl: photoLink,
+      imageService: imageService,
 
       palette: colorPalette.palette,
       colorPop: colorPalette.colorPop,

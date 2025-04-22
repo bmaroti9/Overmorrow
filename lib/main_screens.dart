@@ -156,7 +156,7 @@ class _NewMainState extends State<NewMain> {
 
     return Scaffold(
       backgroundColor: data.current.palette.surface,
-      drawer: MyDrawer(image: data.current.image, settings: data.settings, palette: data.current.palette,),
+      drawer: MyDrawer(image: data.current.imageService.image, settings: data.settings, palette: data.current.palette,),
       body: StretchyHeader.listView(
         displacement: 130,
         onRefresh: () async {
@@ -167,7 +167,7 @@ class _NewMainState extends State<NewMain> {
             blurContent: false,
             headerHeight: max((size.height ) * 0.494, 400),
             //we don't want it to be smaller than 400
-            header: ParrallaxBackground(image: data.current.image, key: Key(data.place),
+            header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),
                 color: BLACK),
             overlay: Stack(
               children: [
@@ -285,7 +285,7 @@ Widget TabletLayout(data, updateLocation, context) {
 
   return Scaffold(
     backgroundColor: data.current.surface,
-    drawer: MyDrawer(image: data.current.image, settings: data.settings, palette: data.current.palette,),
+    drawer: MyDrawer(image: data.current.ImageService.image, settings: data.settings, palette: data.current.palette,),
     body: RefreshIndicator(
       onRefresh: () async {
         await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
@@ -316,7 +316,7 @@ Widget TabletLayout(data, updateLocation, context) {
                                 padding: const EdgeInsets.only(top: 100, left: 6, right: 6),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
-                                  child: ParrallaxBackground(image: data.current.image, key: Key(data.place),
+                                  child: ParrallaxBackground(image: data.current.ImageService.image, key: Key(data.place),
                                     color: darken(data.current.surface, 0.1),),
                                 ),
                               ),

@@ -20,13 +20,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'dart:ui';
+
+import 'package:overmorrow/services/image_service.dart';
 
 import '../Icons/overmorrow_weather_icons_icons.dart';
 import '../api_key.dart';
 import '../caching.dart';
 import '../services/color_service.dart';
-import '../settings_page.dart';
 import '../l10n/app_localizations.dart';
 
 import '../weather_refact.dart' as weather_refactor;
@@ -274,15 +274,11 @@ class WapiCurrent {
   final int wind;
   final int wind_dir;
 
-  final Image image;
+  final ImageService imageService;
 
   final ColorScheme palette;
   final Color colorPop;
   final Color descColor;
-
-  final String photographerName;
-  final String photographerUrl;
-  final String photoUrl;
 
   const WapiCurrent({
     required this.precip,
@@ -294,70 +290,26 @@ class WapiCurrent {
     required this.wind,
     required this.wind_dir,
 
-    required this.image,
+    required this.imageService,
 
     required this.palette,
     required this.colorPop,
     required this.descColor,
-
-    required this.photographerName,
-    required this.photographerUrl,
-    required this.photoUrl,
   });
 
   static Future<WapiCurrent> fromJson(item, settings, real_loc, lat, lng, start, localizations) async {
 
-    Image image;
 
-    String photographerName = "";
-    String photographerUrl = "";
-    String photoLink = "";
+    final currentCondition = textCorrection(
+        item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
+        false, localizations
+    );
 
-    if (settings["Image source"] == "network") {
-      try {
-        final text = textCorrection(
-            item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
-            false, localizations
-        );
-        final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
-        image = ImageData[0];
-        photographerName = ImageData[1];
-        photographerUrl = ImageData[2];
-        photoLink = ImageData[3];
-      }
-      //fallback to asset image when condition changed and there is no image for the new one
-      catch(e) {
-        String imagePath = backdropCorrection(
-            item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"], localizations
-        );
-        image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
-          width: double.infinity, height: double.infinity,);
-
-        List<String> credits = assetImageCredit(textCorrection(
-            item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
-            false, localizations));
-        photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
-      }
-    }
-    else {
-      String imagePath = backdropCorrection(
-          item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"], localizations
-      );
-      image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
-        width: double.infinity, height: double.infinity,);
-
-      List<String> credits = assetImageCredit(textCorrection(
-          item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"], false, localizations));
-      photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
-    }
-
-    ColorPalette colorPalette = await ColorPalette.getColorPalette(image, settings["Color mode"], settings);
+    ImageService imageService = await ImageService.getImageService(currentCondition, real_loc, settings);
+    ColorPalette colorPalette = await ColorPalette.getColorPalette(imageService.image, settings["Color mode"], settings);
 
     return WapiCurrent(
-
-      photographerName: photographerName,
-      photographerUrl: photographerUrl,
-      photoUrl: photoLink,
+      imageService: imageService,
 
       palette: colorPalette.palette,
       colorPop: colorPalette.colorPop,
@@ -367,7 +319,6 @@ class WapiCurrent {
           item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
           true, localizations,
       ),
-      image: image,
       temp: unit_coversion(item["hour"][start]["temp_c"], settings["Temperature"])
           .round(),
       feels_like: unit_coversion(

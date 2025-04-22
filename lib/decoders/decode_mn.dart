@@ -22,6 +22,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
+import 'package:overmorrow/services/image_service.dart';
 
 import '../api_key.dart';
 import '../caching.dart';
@@ -217,15 +218,11 @@ class MetNCurrent {
   final int wind;
   final int wind_dir;
 
-  final Image image;
+  final ImageService imageService;
 
   final ColorScheme palette;
   final Color colorPop;
   final Color descColor;
-
-  final String photographerName;
-  final String photographerUrl;
-  final String photoUrl;
 
   const MetNCurrent({
     required this.precip,
@@ -237,66 +234,27 @@ class MetNCurrent {
     required this.wind,
     required this.wind_dir,
 
-    required this.image,
+    required this.imageService,
 
     required this.palette,
     required this.colorPop,
     required this.descColor,
-
-    required this.photographerName,
-    required this.photographerUrl,
-    required this.photoUrl,
   });
 
   static Future<MetNCurrent> fromJson(item, settings, real_loc, lat, lng, localizations) async {
-
-    Image image;
-
-    String photographerName = "";
-    String photographerUrl = "";
-    String photoLink = "";
 
     String currentCondition = metNTextCorrection(
         item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"],
         false, localizations
     );
 
-    if (settings["Image source"] == "network") {
-      try {
-        final ImageData = await getUnsplashImage(currentCondition, real_loc, lat, lng);
-        image = ImageData[0];
-        photographerName = ImageData[1];
-        photographerUrl = ImageData[2];
-        photoLink = ImageData[3];
-      }
-      //fallback to asset image when condition changed and there is no image for the new one
-      catch (e) {
-        String imagePath = metNBackdropCorrection(
-          currentCondition,
-        );
-        image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
-        List<String> credits = assetImageCredit(currentCondition);
-        photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
-      }
-    }
-    else {
-      String imagePath = metNBackdropCorrection(
-        currentCondition,
-      );
-      image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
-      List<String> credits = assetImageCredit(currentCondition);
-      photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
-    }
-
     var it = item["properties"]["timeseries"][0]["data"];
 
-    ColorPalette colorPalette = await ColorPalette.getColorPalette(image, settings["Color mode"], settings);
+    ImageService imageService = await ImageService.getImageService(currentCondition, real_loc, settings);
+    ColorPalette colorPalette = await ColorPalette.getColorPalette(imageService.image, settings["Color mode"], settings);
 
     return MetNCurrent(
-      image: image,
-      photographerName: photographerName,
-      photographerUrl: photographerUrl,
-      photoUrl: photoLink,
+      imageService: imageService,
 
       palette: colorPalette.palette,
       colorPop: colorPalette.colorPop,
