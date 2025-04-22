@@ -26,11 +26,10 @@ import 'package:overmorrow/new_forecast.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:stretchy_header/stretchy_header.dart';
+import 'hourly.dart';
 import 'main_ui.dart';
 import 'new_displays.dart';
 import 'ui_helper.dart';
-
-
 
 class NewMain extends StatefulWidget {
   final data;

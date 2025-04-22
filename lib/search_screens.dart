@@ -575,19 +575,19 @@ Widget CurrentLocationWidget(settings, locationSafe, ColorScheme palette, askGra
             left: 25, right: 25, top: 20, bottom: 20),
         height: 66,
         decoration: BoxDecoration(
-          color: palette.primaryContainer,
+          color: palette.primaryFixedDim,
           borderRadius: BorderRadius.circular(40),
         ),
         child: Row(
           children: [
             Icon(Icons.gps_fixed,
-              color: palette.onPrimaryContainer, size: 19,),
+              color: palette.onPrimaryFixedVariant, size: 19,),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, bottom: 2),
                 child: comfortatext(
                       "grant location permission", 19, settings,
-                      color: palette.onPrimaryContainer),
+                      color: palette.onPrimaryFixedVariant),
               ),
             ),
           ],
@@ -634,19 +634,19 @@ Widget CurrentLocationWidget(settings, locationSafe, ColorScheme palette, askGra
         left: 25, right: 25, top: 20, bottom: 20),
     height: 66,
     decoration: BoxDecoration(
-      color: palette.primaryContainer,
+      color: palette.primaryFixedDim,
       borderRadius: BorderRadius.circular(40),
     ),
     child: Row(
       children: [
         Icon(Icons.gps_off,
-          color: palette.onPrimaryContainer, size: 19,),
+          color: palette.onPrimaryFixedVariant, size: 19,),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(left: 10, bottom: 2),
             child: comfortatext(
                 locationSafe, 19, settings,
-                color: palette.onPrimaryContainer),
+                color: palette.onPrimaryFixedVariant),
           ),
         ),
 

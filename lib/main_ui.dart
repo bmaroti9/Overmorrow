@@ -175,7 +175,7 @@ class DescriptionCircle extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
 
-                          border: Border.all(width: 2.0, color: palette.primary),
+                          border: Border.all(width: 2, color: palette.primary),
                           //color: WHITE,
                           //borderRadius: BorderRadius.circular(size * 0.09)
                         ),
