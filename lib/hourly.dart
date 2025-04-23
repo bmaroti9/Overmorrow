@@ -16,6 +16,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'ui_helper.dart';
@@ -49,7 +51,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: 195,
+            height: 196,
             child: hourBoxes(data.days[1].hourly, data, _value),
           ),
           Padding(
@@ -111,12 +113,12 @@ Widget hourBoxes(hours, data, _value) {
       List<Widget> childWidgets = [
         buildHourlySum(hour, palette, data),
         buildHourlyPrecip(hour, palette, data),
-        buildHourlySum(hour, palette, data),
+        buildHourlyWind(hour, palette, data),
         buildHourlySum(hour, palette, data),
       ];
       return Container(
         margin: const EdgeInsets.all(3),
-        padding: const EdgeInsets.only(top: 4, bottom: 5),
+        padding: const EdgeInsets.only(top: 6, bottom: 5),
         width: 66,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(40),
@@ -196,6 +198,52 @@ Widget buildHourlyPrecip(var hour, ColorScheme palette, data) {
               size: 31.0 * hour.iconSize,
             ),
           )
+      ),
+
+      comfortatext(hour.time, 15, data.settings, color: palette.outline, weight: FontWeight.w400)
+    ],
+  );
+}
+
+
+Widget buildHourlyWind(var hour, ColorScheme palette, data) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          comfortatext('${hour.wind}', 18, data.settings, color: palette.primary,
+              weight: FontWeight.w400),
+          comfortatext('${data.settings["Wind"]}', 9, data.settings, color: palette.primary,
+              weight: FontWeight.w500),
+        ],
+      ),
+
+      Transform.rotate(
+          angle: hour.wind_dir * pi / 180,
+          child: Icon(Icons.navigation_outlined, color: palette.onSurface, size: 18,)
+      ),
+
+      Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Icon(Icons.air, size: 13, color: palette.primary),
+              Padding(
+                padding: const EdgeInsets.only(left: 1),
+                child: comfortatext("${hour.precip_prob}", 14, data.settings, color: palette.primary,
+                    weight: FontWeight.w400),
+              ),
+              comfortatext('${data.settings["Wind"]}', 9, data.settings, color: palette.primary,
+                  weight: FontWeight.w500),
+            ],
+          ),
+        ],
       ),
 
       comfortatext(hour.time, 15, data.settings, color: palette.outline, weight: FontWeight.w400)
