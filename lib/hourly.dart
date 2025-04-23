@@ -114,7 +114,7 @@ Widget hourBoxes(hours, data, _value) {
         buildHourlySum(hour, palette, data),
         buildHourlyPrecip(hour, palette, data),
         buildHourlyWind(hour, palette, data),
-        buildHourlySum(hour, palette, data),
+        buildHourlyUv(hour, palette, data),
       ];
       return Container(
         margin: const EdgeInsets.all(3),
@@ -143,16 +143,13 @@ Widget buildHourlySum(var hour, ColorScheme palette, data) {
             weight: FontWeight.w400),
       ),
 
-      Padding(
-          padding: const EdgeInsets.only(left: 3, right: 3),
-          child: SizedBox(
-            height: 30,
-            child: Icon(
-              hour.icon,
-              color: palette.onSurface,
-              size: 31.0 * hour.iconSize,
-            ),
-          )
+      SizedBox(
+        height: 30,
+        child: Icon(
+          hour.icon,
+          color: palette.onSurface,
+          size: 29.0 * hour.iconSize,
+        ),
       ),
 
       Row(
@@ -164,7 +161,7 @@ Widget buildHourlySum(var hour, ColorScheme palette, data) {
         ],
       ),
 
-      comfortatext(hour.time, 15, data.settings, color: palette.outline, weight: FontWeight.w400)
+      comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
     ],
   );
 }
@@ -188,19 +185,16 @@ Widget buildHourlyPrecip(var hour, ColorScheme palette, data) {
         ],
       ),
 
-      Padding(
-          padding: const EdgeInsets.only(left: 3, right: 3),
-          child: SizedBox(
-            height: 30,
-            child: Icon(
-              hour.icon,
-              color: palette.onSurface,
-              size: 31.0 * hour.iconSize,
-            ),
-          )
+      SizedBox(
+        height: 30,
+        child: Icon(
+          hour.icon,
+          color: palette.onSurface,
+          size: 29.0 * hour.iconSize,
+        ),
       ),
 
-      comfortatext(hour.time, 15, data.settings, color: palette.outline, weight: FontWeight.w400)
+      comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
     ],
   );
 }
@@ -227,26 +221,64 @@ Widget buildHourlyWind(var hour, ColorScheme palette, data) {
           child: Icon(Icons.navigation_outlined, color: palette.onSurface, size: 18,)
       ),
 
-      Column(
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Icon(Icons.air, size: 13, color: palette.primary),
-              Padding(
-                padding: const EdgeInsets.only(left: 1),
-                child: comfortatext("${hour.precip_prob}", 14, data.settings, color: palette.primary,
-                    weight: FontWeight.w400),
-              ),
-              comfortatext('${data.settings["Wind"]}', 9, data.settings, color: palette.primary,
-                  weight: FontWeight.w500),
-            ],
+          Icon(Icons.air, size: 13, color: palette.primary),
+          Padding(
+            padding: const EdgeInsets.only(left: 2),
+            child: comfortatext("${hour.precip_prob}", 14, data.settings, color: palette.primary,
+                weight: FontWeight.w400),
           ),
+          comfortatext('${data.settings["Wind"]}', 9, data.settings, color: palette.primary,
+              weight: FontWeight.w500),
         ],
       ),
 
-      comfortatext(hour.time, 15, data.settings, color: palette.outline, weight: FontWeight.w400)
+      comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
+    ],
+  );
+}
+
+
+Widget buildHourlyUv(var hour, ColorScheme palette, data) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          comfortatext('${hour.uv}', 18, data.settings, color: palette.primary,
+              weight: FontWeight.w400),
+          comfortatext('UV', 9, data.settings, color: palette.primary,
+              weight: FontWeight.w500),
+        ],
+      ),
+
+      Container(
+        width: 15,
+        height: 15,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: hour.uv > 7 ? palette.error
+              : hour.uv > 3 ? palette.primary
+              : palette.primaryFixedDim,
+        ),
+      ),
+
+      SizedBox(
+        height: 30,
+        child: Icon(
+          hour.icon,
+          color: palette.onSurface,
+          size: 29.0 * hour.iconSize,
+        ),
+      ),
+
+      comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
     ],
   );
 }
