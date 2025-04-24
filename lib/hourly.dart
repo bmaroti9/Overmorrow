@@ -186,42 +186,50 @@ Widget buildHourlySum(var hour, ColorScheme palette, data) {
   );
 }
 
-
 Widget buildHourlyPrecip(var hour, ColorScheme palette, data) {
-  return Column(
-    key: const ValueKey("precip"),
-    crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  return Stack(
     children: [
       Column(
+        key: const ValueKey("precip"),
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          comfortatext('${hour.precip}', 17, data.settings, color: palette.primary,
-              weight: FontWeight.w400),
-          comfortatext('${data.settings["Precipitation"]}', 9, data.settings, color: palette.primary,
-              weight: FontWeight.w500),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              comfortatext('${hour.precip}', 17, data.settings, color: palette.primary,
+                  weight: FontWeight.w400),
+              comfortatext('${data.settings["Precipitation"]}', 9, data.settings, color: palette.primary,
+                  weight: FontWeight.w500),
+            ],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.umbrella, size: 14, color: palette.secondary),
+              comfortatext("${hour.precip_prob}%", 14, data.settings, color: palette.secondary,
+                  weight: FontWeight.w400)
+            ],
+          ),
+
+          SizedBox(
+            width: 33,
+            height: 33,
+            child: Center(
+              child: CircularProgressIndicator(
+                value: hour.precip_prob / 100,
+                strokeWidth: 3.5,
+                year2023: false,
+                backgroundColor: palette.outlineVariant,
+                color: palette.primary,
+              ),
+            ),
+          ),
+
+          comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
         ],
       ),
-
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.umbrella, size: 14, color: palette.primary),
-          comfortatext("${hour.precip_prob}%", 14, data.settings, color: palette.primary,
-              weight: FontWeight.w400)
-        ],
-      ),
-
-      SizedBox(
-        height: 30,
-        child: Icon(
-          hour.icon,
-          color: palette.onSurface,
-          size: 29.0 * hour.iconSize,
-        ),
-      ),
-
-      comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
     ],
   );
 }
@@ -295,16 +303,6 @@ Widget buildHourlyUv(var hour, ColorScheme palette, data) {
           color: hour.uv > 7 ? palette.error
               : hour.uv > 3 ? palette.primary
               : palette.primaryFixedDim,
-        ),
-      ),
-  
-      SizedBox(
-        height: 30,
-        width: 50,
-        child: Icon(
-          hour.icon,
-          color: palette.onSurface,
-          size: 29.0 * hour.iconSize,
         ),
       ),
   
