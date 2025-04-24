@@ -20,6 +20,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'ui_helper.dart';
 
 class NewHourly extends StatefulWidget {
@@ -117,33 +118,42 @@ Widget hourBoxes(hours, data, _value) {
         buildHourlyUv(hour, palette, data),
       ];
 
-      return Padding(
-        padding: const EdgeInsets.all(3),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 400),
-          switchInCurve: Curves.decelerate,
-          transitionBuilder: (Widget child,
-              Animation<double> animation) {
-            final  offsetAnimation =
-            Tween<Offset>(begin: const Offset(0.0, 1), end: const Offset(0.0, 0.0)).animate(animation);
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: SlideTransition(
-                position: offsetAnimation,
-                child: Container(
-                  padding: const EdgeInsets.only(top: 6, bottom: 5),
-                  width: 66,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    color: palette.surfaceContainer,
-                  ),
-                  child: child,
-                ),
+      return AnimationConfiguration.staggeredList(
+        position: index,
+        duration: const Duration(milliseconds: 375),
+        child: SlideAnimation(
+          horizontalOffset: 60.0,
+          child: FadeInAnimation(
+            child: Padding(
+              padding: const EdgeInsets.all(3),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 400),
+                switchInCurve: Curves.decelerate,
+                transitionBuilder: (Widget child,
+                    Animation<double> animation) {
+                  final  offsetAnimation =
+                  Tween<Offset>(begin: const Offset(0.0, 1.0), end: const Offset(0.0, 0.0)).animate(animation);
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: SlideTransition(
+                      position: offsetAnimation,
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 6, bottom: 5),
+                        width: 66,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          color: palette.surfaceContainer,
+                        ),
+                        child: child,
+                      ),
+                    ),
+                  );
+                },
+                child: childWidgets[_value],
+
               ),
-            );
-          },
-          child: childWidgets[_value],
-        
+            ),
+          ),
         ),
       );
     },

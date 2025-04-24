@@ -146,7 +146,6 @@ class ColorPalette {
       return [palette.primaryFixedDim, descUnique ? palette.surface : palette.primaryFixedDim];
     }
 
-    print(("dif surf", surfaceDif));
     if (surfaceDif >= 1.9) {
       return [palette.surface, palette.surface];
     }
