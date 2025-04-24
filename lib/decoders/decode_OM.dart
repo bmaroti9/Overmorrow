@@ -125,7 +125,7 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
     "longitude": lng.toString(),
     "minutely_15" : ["precipitation"],
     "current": ["relative_humidity_2m", "apparent_temperature"],
-    "hourly": ["temperature_2m", "precipitation", "weather_code", "wind_speed_10m", "wind_direction_10m", "uv_index", "precipitation_probability"],
+    "hourly": ["temperature_2m", "precipitation", "weather_code", "wind_speed_10m", "wind_direction_10m", "uv_index", "precipitation_probability", "wind_gusts_10m"],
     "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "uv_index_max", "precipitation_sum", "precipitation_probability_max", "wind_speed_10m_max", "wind_direction_10m_dominant", "sunrise", "sunset"],
     "timezone": "auto",
     "forecast_days": "14",
@@ -500,6 +500,7 @@ class OMHour {
   final int precip_prob;
   final double wind;
   final int wind_dir;
+  final int wind_gusts;
   final int uv;
 
   final double raw_temp;
@@ -518,6 +519,7 @@ class OMHour {
     required this.raw_temp,
     required this.raw_wind,
     required this.wind_dir,
+    required this.wind_gusts,
     required this.uv,
     required this.precip_prob,
   });
@@ -542,6 +544,7 @@ class OMHour {
     precip_prob: item["hourly"]["precipitation_probability"][index] ?? 0,
     wind: double.parse(
         unit_coversion(item["hourly"]["wind_speed_10m"][index], settings["Wind"]).toStringAsFixed(1)),
+    wind_gusts: unit_coversion(item["hourly"]["wind_gusts_10m"][index], settings["Wind"]).toInt(),
     wind_dir: item["hourly"]["wind_direction_10m"][index],
     uv: item["hourly"]["uv_index"][index].round(),
 

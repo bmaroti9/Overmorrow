@@ -264,7 +264,7 @@ Widget buildHourlyWind(var hour, ColorScheme palette, data) {
           Icon(Icons.air, size: 13, color: palette.primary),
           Padding(
             padding: const EdgeInsets.only(left: 2),
-            child: comfortatext("${hour.precip_prob}", 14, data.settings, color: palette.primary,
+            child: comfortatext("${hour.wind_gusts}", 14, data.settings, color: palette.primary,
                 weight: FontWeight.w400),
           ),
           comfortatext('${data.settings["Wind"]}', 9, data.settings, color: palette.primary,
