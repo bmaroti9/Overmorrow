@@ -61,14 +61,63 @@ class ImageService {
 
     final url = Uri.https('api.unsplash.com', 'photos/random', params);
 
+    print(url);
+
     var file = await XCustomCacheManager.fetchData(url.toString(), "$condition $loc unsplash");
     var response2 = await file[0].readAsString();
     var unsplashBody = jsonDecode(response2);
 
-    int bestScore = -1000000;
+    double bestScore = -1000000;
     int bestIndex = 0;
 
     for (int i = 0; i < unsplashBody.length; i++) {
+
+      double score = 0;
+
+      var desc1 = unsplashBody[i]["description"] ?? " ";
+      var desc2 = unsplashBody[i]["alt_description"] ?? " ";
+
+      String desc = "${desc1.toLowerCase()} ${desc2.toLowerCase()}";
+      desc = " ${desc.replaceAll("-", " ")} ";
+
+      List<String> keys1 = textFilter.keys.toList();
+      List<String> keys2 = textToUnsplashText.keys.toList();
+
+
+      for (int x = 0; x < textToUnsplashText.length; x ++) {
+        int reward = keys2[x] == condition ? 2000 : -2000;
+        for (int y = 0; y < textToUnsplashText[keys2[x]]!.length; y ++) {
+          String lookFor = textToUnsplashText[keys2[x]]![y];
+
+          //make it neutral if both have the same word for example 'cloud' in partly cloudy and overcast
+          if (textToUnsplashText[condition]!.contains(lookFor)) {
+            if (reward < 0) {
+              reward = 0;
+            }
+          }
+          if (desc.contains(lookFor)) {
+             score += reward;
+          }
+        }
+      }
+
+      for (int x = 0; x < textFilter.length; x ++) {
+        if (desc.contains(keys1[x])) {
+          score += textFilter[keys1[x]]!;
+        }
+      }
+
+      double ratings = unsplashBody[i]["likes"] * 0.02 ?? 0;
+      ratings += unsplashBody[i]["downloads"] * 0.01 ?? 0;
+
+      score += ratings;
+
+      if (score > bestScore) {
+        bestIndex = i;
+        bestScore = score;
+      }
+
+      print((unsplashBody[i]["urls"]["regular"], desc, score));
 
     }
 
@@ -123,7 +172,6 @@ class ImageService {
         print(error);
         return getAssetImage(condition);
       }
-
     }
     else {
       return getAssetImage(condition);
