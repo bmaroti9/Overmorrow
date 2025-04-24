@@ -204,15 +204,6 @@ Widget buildHourlyPrecip(var hour, ColorScheme palette, data) {
             ],
           ),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.umbrella, size: 14, color: palette.secondary),
-              comfortatext("${hour.precip_prob}%", 14, data.settings, color: palette.secondary,
-                  weight: FontWeight.w400)
-            ],
-          ),
-
           SizedBox(
             width: 33,
             height: 33,
@@ -225,6 +216,15 @@ Widget buildHourlyPrecip(var hour, ColorScheme palette, data) {
                 color: palette.primary,
               ),
             ),
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.umbrella, size: 14, color: palette.secondary),
+              comfortatext("${hour.precip_prob}%", 14, data.settings, color: palette.secondary,
+                  weight: FontWeight.w400)
+            ],
           ),
 
           comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
@@ -294,15 +294,40 @@ Widget buildHourlyUv(var hour, ColorScheme palette, data) {
               weight: FontWeight.w500),
         ],
       ),
-  
-      Container(
-        width: 15,
-        height: 15,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: hour.uv > 7 ? palette.error
-              : hour.uv > 3 ? palette.primary
-              : palette.primaryFixedDim,
+
+      SizedBox(
+        height: 65,
+        child: ListView.builder(
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 10,
+            itemExtent: 6.5,
+            itemBuilder: (BuildContext context, int index) {
+              if (index < min(max(10 - hour.uv, 0), 10)) {
+                return Center(
+                  child: Container(
+                    width: 13,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: palette.outlineVariant,
+                    ),
+                  ),
+                );
+              }
+              else {
+                return Center(
+                  child: Container(
+                    width: 13,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: palette.secondary,
+                    ),
+                  ),
+                );
+              }
+            }
         ),
       ),
   
