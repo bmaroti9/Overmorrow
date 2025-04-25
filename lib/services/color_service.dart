@@ -294,4 +294,15 @@ class ColorPalette {
     return palette;
   }
 
+  //i specifically made this because it's always the same,
+  // so there's no point in loading it from the image every time
+  static ColorScheme getErrorPagePalette(theme,) {
+    ColorScheme palette = ColorScheme.fromSeed(
+        seedColor: Colors.deepPurple,
+        brightness: theme == 'light' ? Brightness.light : Brightness.dark
+    );
+
+    return palette;
+  }
+
 }

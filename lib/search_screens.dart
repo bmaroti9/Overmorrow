@@ -812,75 +812,59 @@ class dumbySearch extends StatelessWidget {
     Image image = Image.asset("assets/backdrops/grayscale_snow2.jpg",
         fit: BoxFit.cover, width: double.infinity, height: double.infinity);
 
-    return FutureBuilder<ColorPalette>(
-      future: ColorPalette.getColorPalette(image, settings["Color mode"], settings),
-      builder: (BuildContext context,
-          AsyncSnapshot<ColorPalette> snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Container();
-        } else if (snapshot.hasError) {
-          print((snapshot.error, snapshot.stackTrace));
-          return Center(
-            child: ErrorWidget(snapshot.error as Object),
-          );
-        }
+    ColorScheme palette = ColorPalette.getErrorPagePalette(settings["Color mode"]);
 
-        ColorScheme palette = snapshot.data!.palette;
-
-        return Scaffold(
-          drawer: MyDrawer(settings: settings, palette: palette, image: image,),
-          backgroundColor: palette.surface,
-          body: StretchyHeader.singleChild(
-            displacement: 150,
-            onRefresh: () async {
-              await updateLocation(latlng, place, time: 400);
-            },
-            headerData: HeaderData(
-                blurContent: false,
-                headerHeight: max(size.height * 0.5, 400), //we don't want it to be smaller than 400
-                header: ParrallaxBackground(image: Image.asset("assets/backdrops/grayscale_snow2.jpg", fit: BoxFit.cover,), key: Key(place),
-                  color: palette.surfaceContainerHigh),
-                overlay: Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(40),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 50, bottom: 20),
-                              child: Icon(icon, color: Colors.black54, size: 20),
-                            ),
-                            comfortatext(newStr, 17, settings, color: Colors.black54, weight: FontWeight.w500,
-                                align: TextAlign.center),
-                          ],
-                        ),
-                      ),
-                    ),
-                    MySearchParent(updateLocation: updateLocation,
-                      palette: palette, place: place, settings: settings,)
-                  ],
-                )
-            ),
-            child:
-            Column(
+    return Scaffold(
+      drawer: MyDrawer(settings: settings, palette: palette, image: image,),
+      backgroundColor: palette.surface,
+      body: StretchyHeader.singleChild(
+        displacement: 150,
+        onRefresh: () async {
+          await updateLocation(latlng, place, time: 400);
+        },
+        headerData: HeaderData(
+            blurContent: false,
+            headerHeight: max(size.height * 0.5, 400), //we don't want it to be smaller than 400
+            header: ParrallaxBackground(image: Image.asset("assets/backdrops/grayscale_snow2.jpg", fit: BoxFit.cover,), key: Key(place),
+                color: palette.surfaceContainerHigh),
+            overlay: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: comfortatext(shouldAdd ?? "", 16, settings, color: palette.onSurface, weight: FontWeight.w400,),
+                  padding: const EdgeInsets.all(40),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 50, bottom: 20),
+                          child: Icon(icon, color: Colors.black54, size: 20),
+                        ),
+                        comfortatext(newStr, 17, settings, color: Colors.black54, weight: FontWeight.w500,
+                            align: TextAlign.center),
+                      ],
+                    ),
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: providerSelector(settings, updateLocation, palette, provider, latlng, place, context),
-                ),
+                MySearchParent(updateLocation: updateLocation,
+                  palette: palette, place: place, settings: settings,)
               ],
+            )
+        ),
+        child:
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: comfortatext(shouldAdd ?? "", 16, settings, color: palette.onSurface, weight: FontWeight.w400,),
             ),
-          ),
-        );
-
-      },
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: providerSelector(settings, updateLocation, palette, provider, latlng, place, context),
+            ),
+          ],
+        ),
+      ),
     );
 
 
