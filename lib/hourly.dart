@@ -106,57 +106,59 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
 Widget hourBoxes(hours, data, _value) {
   ColorScheme palette = data.current.palette;
 
-  return ListView.builder(
-    itemCount: hours.length,
-    scrollDirection: Axis.horizontal,
-    itemBuilder: (BuildContext context, int index) {
-      var hour = hours[index];
-      List<Widget> childWidgets = [
-        buildHourlySum(hour, palette, data),
-        buildHourlyPrecip(hour, palette, data),
-        buildHourlyWind(hour, palette, data),
-        buildHourlyUv(hour, palette, data),
-      ];
-
-      return AnimationConfiguration.staggeredList(
-        position: index,
-        duration: const Duration(milliseconds: 375),
-        child: SlideAnimation(
-          horizontalOffset: 60.0,
-          child: FadeInAnimation(
-            child: Padding(
-              padding: const EdgeInsets.all(3),
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 400),
-                switchInCurve: Curves.decelerate,
-                transitionBuilder: (Widget child,
-                    Animation<double> animation) {
-                  final  offsetAnimation =
-                  Tween<Offset>(begin: const Offset(0.0, 1.0), end: const Offset(0.0, 0.0)).animate(animation);
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: SlideTransition(
-                      position: offsetAnimation,
-                      child: Container(
-                        padding: const EdgeInsets.only(top: 6, bottom: 5),
-                        width: 66,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: palette.surfaceContainer,
+  return AnimationLimiter(
+    child: ListView.builder(
+      itemCount: hours.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (BuildContext context, int index) {
+        var hour = hours[index];
+        List<Widget> childWidgets = [
+          buildHourlySum(hour, palette, data),
+          buildHourlyPrecip(hour, palette, data),
+          buildHourlyWind(hour, palette, data),
+          buildHourlyUv(hour, palette, data),
+        ];
+    
+        return AnimationConfiguration.staggeredList(
+          position: index,
+          duration: const Duration(milliseconds: 375),
+          child: SlideAnimation(
+            horizontalOffset: 60.0,
+            child: FadeInAnimation(
+              child: Padding(
+                padding: const EdgeInsets.all(3),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 400),
+                  switchInCurve: Curves.decelerate,
+                  transitionBuilder: (Widget child,
+                      Animation<double> animation) {
+                    final  offsetAnimation =
+                    Tween<Offset>(begin: const Offset(0.0, 1.0), end: const Offset(0.0, 0.0)).animate(animation);
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: SlideTransition(
+                        position: offsetAnimation,
+                        child: Container(
+                          padding: const EdgeInsets.only(top: 6, bottom: 5),
+                          width: 66,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            color: palette.surfaceContainer,
+                          ),
+                          child: child,
                         ),
-                        child: child,
                       ),
-                    ),
-                  );
-                },
-                child: childWidgets[_value],
-
+                    );
+                  },
+                  child: childWidgets[_value],
+    
+                ),
               ),
             ),
           ),
-        ),
-      );
-    },
+        );
+      },
+    ),
   );
 }
 
@@ -223,7 +225,7 @@ Widget buildHourlyPrecip(var hour, ColorScheme palette, data) {
                 strokeWidth: 3.5,
                 year2023: false,
                 backgroundColor: palette.outlineVariant,
-                color: palette.primary,
+                color: palette.onSurface,
               ),
             ),
           ),
@@ -231,8 +233,8 @@ Widget buildHourlyPrecip(var hour, ColorScheme palette, data) {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.umbrella, size: 14, color: palette.secondary),
-              comfortatext("${hour.precip_prob}%", 14, data.settings, color: palette.secondary,
+              Icon(Icons.umbrella, size: 14, color: palette.primary),
+              comfortatext("${hour.precip_prob}%", 14, data.settings, color: palette.primary,
                   weight: FontWeight.w400)
             ],
           ),
@@ -271,7 +273,7 @@ Widget buildHourlyWind(var hour, ColorScheme palette, data) {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Icon(Icons.air, size: 13, color: palette.primary),
+          Icon(Icons.waves, size: 13, color: palette.primary),
           Padding(
             padding: const EdgeInsets.only(left: 2),
             child: comfortatext("${hour.wind_gusts}", 14, data.settings, color: palette.primary,

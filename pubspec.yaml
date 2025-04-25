@@ -123,9 +123,9 @@ flutter:
   #
 
   fonts:
-    - family: OvermorrowWeatherIcons
+    - family: OvermorrowWeatherIcons3
       fonts:
-        - asset: fonts/OvermorrowWeatherIcons.ttf
+        - asset: fonts/OvermorrowWeatherIcons3.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

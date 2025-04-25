@@ -247,7 +247,8 @@ IconData oMIconCorrection(String text) {
 
 double oMIconSizeCorrection(String text) {
   //return textIconMap[text] ?? 'sun.png';
-  return textIconSizeNormalize[text] ?? 1;
+  //return textIconSizeNormalize[text] ?? 1;
+  return 1;
 }
 
 

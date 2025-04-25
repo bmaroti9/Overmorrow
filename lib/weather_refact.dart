@@ -16,7 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
+import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'ui_helper.dart';
@@ -43,20 +43,20 @@ Map<String, Locale> languageNameToLocale = {
 };
 
 Map<String, IconData> textMaterialIcon = {
-  'Clear Night': OvermorrowWeatherIcons.moon2,
-  'Partly Cloudy': OvermorrowWeatherIcons.partly_cloudy2,
-  'Clear Sky': OvermorrowWeatherIcons.sun2,
-  'Overcast': OvermorrowWeatherIcons.cloudy2,
-  'Haze': OvermorrowWeatherIcons.haze2,
-  'Rain': OvermorrowWeatherIcons.rain2,
-  'Sleet': OvermorrowWeatherIcons.sleet2,
-  'Drizzle': OvermorrowWeatherIcons.drizzle2,
-  'Thunderstorm': OvermorrowWeatherIcons.lightning2,
-  'Heavy Snow': OvermorrowWeatherIcons.heavy_snow2,
-  'Fog': OvermorrowWeatherIcons.fog2,
-  'Snow': OvermorrowWeatherIcons.snow2,
-  'Heavy Rain': OvermorrowWeatherIcons.heavy_rain2,
-  'Cloudy Night' : OvermorrowWeatherIcons.cloudy_night2,
+  'Clear Night': OvermorrowWeatherIcons3.clear_night,
+  'Partly Cloudy': OvermorrowWeatherIcons3.partly_cloudy,
+  'Clear Sky': OvermorrowWeatherIcons3.clear_sky,
+  'Overcast': OvermorrowWeatherIcons3.cloudy,
+  'Haze': OvermorrowWeatherIcons3.haze,
+  'Rain': OvermorrowWeatherIcons3.rain,
+  'Sleet': OvermorrowWeatherIcons3.sleet,
+  'Drizzle': OvermorrowWeatherIcons3.drizzle,
+  'Thunderstorm': OvermorrowWeatherIcons3.thunderstorm,
+  'Heavy Snow': OvermorrowWeatherIcons3.heavy_snow,
+  'Fog': OvermorrowWeatherIcons3.fog,
+  'Snow': OvermorrowWeatherIcons3.snow,
+  'Heavy Rain': OvermorrowWeatherIcons3.heavy_rain,
+  'Cloudy Night' : OvermorrowWeatherIcons3.cloudy_night,
 };
 
 String? conditionTranslation(String key, localizations) {
