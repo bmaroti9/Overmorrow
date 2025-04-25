@@ -622,6 +622,8 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
   MnBody["properties"]["timeseries"] = MnBody["properties"]["timeseries"].sublist(start);
 
   List<MetNDay> days = [];
+  List<MetNHour> hourly72 = [];
+
   int begin = 0;
   int index = 0;
 
@@ -631,6 +633,15 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
     if (n > 0 && hour - previous_hour < 1) {
       MetNDay day = MetNDay.fromJson(MnBody, settings, begin, n, index, hourDif, localizations);
       days.add(day);
+
+      if (hourly72.length < 72) {
+        for (int z = 0; z < day.hourly.length; z++) {
+          if (hourly72.length < 72) {
+            hourly72.add(day.hourly[z]);
+          }
+        }
+      }
+
       index += 1;
       begin = n;
     }
@@ -646,6 +657,8 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
 
     current: await MetNCurrent.fromJson(MnBody, settings, real_loc, lat, lng, localizations),
     days: days,
+
+    hourly72: hourly72,
 
     lat: lat,
     lng: lng,

@@ -52,8 +52,8 @@ class WavePainter extends CustomPainter {
 
     final path1 = Path();
 
-    final amplitude = 2.45;
-    final frequency = 24.0;
+    const amplitude = 2.45;
+    const frequency = 24.0;
     final splitPoint = hihi * size.width;
 
     for (double x = 0; x <= splitPoint; x++) {

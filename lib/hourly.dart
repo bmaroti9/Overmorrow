@@ -51,12 +51,13 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           SizedBox(
             height: 196,
-            child: hourBoxes(data.days[1].hourly, data, _value),
+            child: hourBoxes(data.hourly72, data, _value),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 0, left: 5),
+            padding: const EdgeInsets.only(top: 15, bottom: 0, left: 5),
             child: Wrap(
               spacing: 5.0,
               children: List<Widget>.generate(
@@ -272,7 +273,7 @@ Widget buildHourlyWind(var hour, ColorScheme palette, data) {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Icon(Icons.waves, size: 13, color: palette.primary),
+          Icon(Icons.air, size: 13, color: palette.primary),
           Padding(
             padding: const EdgeInsets.only(left: 2),
             child: comfortatext("${hour.wind_gusts}", 14, data.settings, color: palette.primary,

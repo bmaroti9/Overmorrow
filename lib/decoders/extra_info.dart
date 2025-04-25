@@ -167,6 +167,7 @@ class WeatherData {
   final localtime;
 
   final days;
+  final hourly72;
   final current;
   final aqi;
   final sunstatus;
@@ -185,6 +186,7 @@ class WeatherData {
     required this.aqi,
     required this.radar,
     required this.days,
+    required this.hourly72,
     required this.current,
     required this.fetch_datetime,
     required this.isonline,

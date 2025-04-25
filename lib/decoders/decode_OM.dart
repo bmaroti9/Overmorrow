@@ -906,11 +906,22 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
 
   OMSunstatus sunstatus = OMSunstatus.fromJson(oMBody, settings);
 
+
   List<OMDay> days = [];
+  List<OMHour> hourly72 = [];
+
   for (int n = 0; n < 14; n++) {
-    OMDay? x = OMDay.build(oMBody, settings, n, sunstatus, approximateLocal, dayDif, localizations);
-    if (x != null) {
-      days.add(x);
+    OMDay? day = OMDay.build(oMBody, settings, n, sunstatus, approximateLocal, dayDif, localizations);
+    if (day != null) {
+      days.add(day);
+
+      if (hourly72.length < 72) {
+        for (int z = 0; z < day.hourly.length; z++) {
+          if (hourly72.length < 72) {
+            hourly72.add(day.hourly[z]);
+          }
+        }
+      }
     }
   }
 
@@ -922,6 +933,8 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
         DateTime(localtime.year, localtime.month, localtime.day, localtime.hour, localtime.minute).
         difference(lastKnowTime).inMinutes, localizations),
     alerts: [],
+
+    hourly72: hourly72,
 
     current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng,
         start, dayDif, localizations),
