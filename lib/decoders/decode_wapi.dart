@@ -23,7 +23,7 @@ import 'dart:math';
 
 import 'package:overmorrow/services/image_service.dart';
 
-import '../Icons/overmorrow_weather_icons_icons.dart';
+import '../Icons/overmorrow_weather_icons3_icons.dart';
 import '../api_key.dart';
 import '../caching.dart';
 import '../services/color_service.dart';
@@ -31,7 +31,6 @@ import '../l10n/app_localizations.dart';
 
 import '../weather_refact.dart' as weather_refactor;
 import '../weather_refact.dart';
-import 'decode_OM.dart';
 import 'extra_info.dart';
 
 import 'package:flutter/material.dart';
@@ -193,7 +192,7 @@ double temp_multiply_for_scale(int temp, String unit) {
 IconData iconCorrection(name, isday, localizations) {
   String text = textCorrection(name, isday, false, localizations);
   //String p = weather_refactor.textIconMap[text] ?? 'clear_night.png';
-  return textMaterialIcon[text] ?? OvermorrowWeatherIcons.sun2;
+  return textMaterialIcon[text] ?? OvermorrowWeatherIcons3.clear_sky;
 }
 
 String getTime(date, bool ampm) {
@@ -339,7 +338,6 @@ class WapiCurrent {
 class WapiDay {
   final String text;
   final IconData icon;
-  final double iconSize;
   final String name;
   final String minmaxtemp;
   final List<WapiHour> hourly;
@@ -356,7 +354,6 @@ class WapiDay {
   const WapiDay({
     required this.text,
     required this.icon,
-    required this.iconSize,
     required this.name,
     required this.minmaxtemp,
     required this.hourly,
@@ -377,9 +374,6 @@ class WapiDay {
     icon: iconCorrection(
         item["day"]["condition"]["code"], 1, localizations,
     ),
-    iconSize: oMIconSizeCorrection(textCorrection(
-        item["day"]["condition"]["code"], 1, false, localizations,
-    ),),
     name: getName(index, settings, localizations),
     minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings["Temperature"]).round()}°'
         '/${unit_coversion(item["day"]["mintemp_c"], settings["Temperature"]).round()}°',
@@ -412,7 +406,6 @@ class WapiHour {
   final int temp;
 
   final IconData icon;
-  final double iconSize;
 
   final String time;
   final String text;
@@ -434,7 +427,6 @@ class WapiHour {
         required this.text,
         required this.precip,
         required this.wind,
-        required this.iconSize,
         required this.raw_precip,
         required this.raw_temp,
         required this.raw_wind,
@@ -450,9 +442,6 @@ class WapiHour {
     icon: iconCorrection(
         item["condition"]["code"], item["is_day"], localizations
     ),
-    iconSize: oMIconSizeCorrection(textCorrection(
-        item["condition"]["code"], item["is_day"], false, localizations,
-    ),),
     temp: unit_coversion(item["temp_c"], settings["Temperature"]).round(),
     time: getTime(item["time"], settings["Time mode"] == '12 hour'),
     precip: double.parse(

@@ -169,19 +169,15 @@ Widget buildHourlySum(var hour, ColorScheme palette, data) {
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       Padding(
-        padding: const EdgeInsets.only(left: 2),
+        padding: const EdgeInsets.only(left: 2, top: 4),
         child: comfortatext("${hour.temp}°", 19, data.settings, color: palette.primary,
             weight: FontWeight.w400),
       ),
 
-      SizedBox(
-        height: 30,
-        width: 50,
-        child: Icon(
-          hour.icon,
-          color: palette.onSurface,
-          size: 29.0 * hour.iconSize,
-        ),
+      Icon(
+        hour.icon,
+        color: palette.onSurface,
+        size: 45.0,
       ),
 
       Row(
@@ -193,7 +189,10 @@ Widget buildHourlySum(var hour, ColorScheme palette, data) {
         ],
       ),
 
-      comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
+      Padding(
+        padding: const EdgeInsets.only(bottom: 3, top: 4),
+        child: comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400),
+      )
     ],
   );
 }
@@ -225,7 +224,7 @@ Widget buildHourlyPrecip(var hour, ColorScheme palette, data) {
                 strokeWidth: 3.5,
                 year2023: false,
                 backgroundColor: palette.outlineVariant,
-                color: palette.onSurface,
+                color: palette.secondary,
               ),
             ),
           ),

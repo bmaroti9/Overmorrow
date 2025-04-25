@@ -153,23 +153,6 @@ Map<String, List<String>> assetPhotoCredits = {
   ],
 };
 
-Map<String, double> textIconSizeNormalize = {
-  'Clear Night': 0.77,
-  'Partly Cloudy': 0.8,
-  'Clear Sky': 0.8,
-  'Overcast': 0.71,
-  'Haze': 0.8,
-  'Rain': 0.95,
-  'Sleet': 1,
-  'Drizzle': 1,
-  'Thunderstorm': 1,
-  'Heavy Snow': 0.93,
-  'Fog': 0.8,
-  'Snow': 0.95,
-  'Heavy Rain': 0.93,
-  'Cloudy Night' : 0.8,
-};
-
 Map<int, String> weatherTextMap = {
   1000: 'Clear Sky',
   1003: 'Partly Cloudy',

@@ -22,7 +22,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
+import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
 import 'package:overmorrow/services/image_service.dart';
 import '../l10n/app_localizations.dart';
@@ -241,14 +241,7 @@ List<Color> oMtextcolorCorrection(String text) {
 
 IconData oMIconCorrection(String text) {
   //return textIconMap[text] ?? 'sun.png';
-  return textMaterialIcon[text] ?? OvermorrowWeatherIcons.sun2;
-}
-
-
-double oMIconSizeCorrection(String text) {
-  //return textIconMap[text] ?? 'sun.png';
-  //return textIconSizeNormalize[text] ?? 1;
-  return 1;
+  return textMaterialIcon[text] ?? OvermorrowWeatherIcons3.clear_sky;
 }
 
 
@@ -328,7 +321,6 @@ class OMDay {
   final String text;
 
   final IconData icon;
-  final double iconSize;
 
   final String name;
   final String minmaxtemp;
@@ -348,7 +340,6 @@ class OMDay {
     required this.text,
 
     required this.icon,
-    required this.iconSize,
 
     required this.name,
     required this.minmaxtemp,
@@ -371,7 +362,6 @@ class OMDay {
       return OMDay(
         uv: item["daily"]["uv_index_max"][index].round(),
         icon: oMIconCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
-        iconSize: oMIconSizeCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
         text: conditionTranslation(oMTextCorrection(item["daily"]["weather_code"][index]), localizations) ?? "TranslationErr",
         name: oMGetName(index, settings, item, dayDif, localizations),
         windspeed: unit_coversion(item["daily"]["wind_speed_10m_max"][index], settings["Wind"]).round(),
@@ -493,7 +483,6 @@ class OMHour {
   final int temp;
 
   final IconData icon;
-  final double iconSize;
 
   final String time;
   final String text;
@@ -515,7 +504,6 @@ class OMHour {
     required this.text,
     required this.precip,
     required this.wind,
-    required this.iconSize,
     required this.raw_precip,
     required this.raw_temp,
     required this.raw_wind,
@@ -534,8 +522,6 @@ class OMHour {
         localizations
     ) ?? "TranslationErr",
     icon: oMIconCorrection(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
-        sunstatus, item["hourly"]["time"][index])),
-    iconSize: oMIconSizeCorrection(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
         sunstatus, item["hourly"]["time"][index])),
     time: settings["Time mode"] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
 

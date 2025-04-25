@@ -20,7 +20,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
+import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/services/image_service.dart';
 
@@ -131,7 +131,7 @@ List<Color> metNContentColorCorrection(String text) {
 }
 
 IconData metNIconCorrection(String text) {
-  return textMaterialIcon[text] ?? OvermorrowWeatherIcons.sun2;
+  return textMaterialIcon[text] ?? OvermorrowWeatherIcons3.clear_sky;
 }
 
 String metNTimeCorrect(String date, int hourDif) {
@@ -287,7 +287,6 @@ class MetNDay {
   final String text;
 
   final IconData icon;
-  final double iconSize;
 
   final String name;
   final String minmaxtemp;
@@ -307,7 +306,6 @@ class MetNDay {
     required this.text,
 
     required this.icon,
-    required this.iconSize,
 
     required this.name,
     required this.minmaxtemp,
@@ -374,7 +372,6 @@ class MetNDay {
       name: metNGetName(index, settings, item, start, hourDif, localizations),
       text: conditionTranslation(weather_names[BIndex], localizations) ?? "TranslationErr",
       icon: metNIconCorrection(weather_names[BIndex]),
-      iconSize: oMIconSizeCorrection(weather_names[BIndex]),
       wind_dir: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
       uv: uvs.reduce(max)
     );
@@ -385,7 +382,6 @@ class MetNHour {
   final int temp;
 
   final IconData icon;
-  final double iconSize;
 
   final String time;
   final String text;
@@ -409,7 +405,6 @@ class MetNHour {
         required this.text,
         required this.precip,
         required this.wind,
-        required this.iconSize,
         required this.raw_precip,
         required this.raw_temp,
         required this.raw_wind,
@@ -452,8 +447,7 @@ class MetNHour {
         raw_wind: item["data"]["instant"]["details"]["wind_speed"] * 3.6,
         raw_precip: nextHours["details"]["precipitation_amount"],
         raw_temp: item["data"]["instant"]["details"]["air_temperature"],
-        iconSize: oMIconSizeCorrection(metNTextCorrection(
-            nextHours["summary"]["symbol_code"], false, localizations),)
+
     );
   }
 }
