@@ -26,8 +26,7 @@ class OvermorrowWeatherIcons3 {
   static const IconData cloudy_night = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData drizzle = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData rain = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData heavy_rain = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData heavy_rain_1 = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData heavy_rain = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData clear_sky = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData clear_night = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData thunderstorm = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
