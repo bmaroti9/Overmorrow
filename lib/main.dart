@@ -161,14 +161,14 @@ class _HomePageState extends State<HomePage> {
             try {
               position = (await Geolocator.getLastKnownPosition())!;
             } on Error {
-              return dumbySearch(errorMessage: localizations.unableToLocateDevice,
+              return ErrorPage(errorMessage: localizations.unableToLocateDevice,
                   updateLocation: updateLocation,
                   icon: Icons.gps_off,
                   place: backupName,
                   settings: settings, provider: weatherProvider, latlng: absoluteProposed);
             }
           } on LocationServiceDisabledException {
-            return dumbySearch(errorMessage: localizations.locationServicesAreDisabled,
+            return ErrorPage(errorMessage: localizations.locationServicesAreDisabled,
               updateLocation: updateLocation,
               icon: Icons.gps_off,
               place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
@@ -192,7 +192,7 @@ class _HomePageState extends State<HomePage> {
           }
         }
         else {
-          return dumbySearch(errorMessage: loc_status, updateLocation: updateLocation, icon: Icons.gps_off,
+          return ErrorPage(errorMessage: loc_status, updateLocation: updateLocation, icon: Icons.gps_off,
             place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
         }
       }
@@ -204,7 +204,7 @@ class _HomePageState extends State<HomePage> {
           absoluteProposed = "${split["lat"]},${split["lon"]}";
           backupName = split["name"];
         } else {
-          return dumbySearch(
+          return ErrorPage(
             errorMessage: '${localizations.placeNotFound}: \n $backupName',
             updateLocation: updateLocation,
             icon: Icons.location_disabled,
@@ -227,24 +227,24 @@ class _HomePageState extends State<HomePage> {
       try {
         weatherData = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weatherProvider, localizations);
       } on TimeoutException {
-        return dumbySearch(errorMessage: localizations.weakOrNoWifiConnection,
+        return ErrorPage(errorMessage: localizations.weakOrNoWifiConnection,
           updateLocation: updateLocation,
           icon: Icons.wifi_off, key: Key(backupName),
           place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
       } on HttpExceptionWithStatus catch (hihi){
-        return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
+        return ErrorPage(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
           icon: Icons.bug_report,
           place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,
           shouldAdd: "Please try another weather provider!",);
       } on SocketException {
-        return dumbySearch(errorMessage: localizations.notConnectedToTheInternet,
+        return ErrorPage(errorMessage: localizations.notConnectedToTheInternet,
           updateLocation: updateLocation,
           icon: Icons.wifi_off, key: Key(backupName),
           place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
       }
       catch (e, stacktrace) {
         debugPrint('Stack trace: $stacktrace');
-        return dumbySearch(errorMessage: "general error at place 1: ${e.toString()}", updateLocation: updateLocation,
+        return ErrorPage(errorMessage: "general error at place 1: ${e.toString()}", updateLocation: updateLocation,
           icon: Icons.bug_report,
           place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,
           shouldAdd: "Please try another weather provider!",);
@@ -265,7 +265,7 @@ class _HomePageState extends State<HomePage> {
       await cacheManager2.emptyCache();
 
       if (recall) {
-        return dumbySearch(
+        return ErrorPage(
           errorMessage: "An error occurred while fetching data",
           updateLocation: updateLocation,
           icon: Icons.bug_report,

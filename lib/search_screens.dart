@@ -781,7 +781,7 @@ Widget reorderableItem(List<dynamic> items, index, settings, ColorScheme palette
 }
 
 
-class dumbySearch extends StatelessWidget {
+class ErrorPage extends StatelessWidget {
   final errorMessage;
   final updateLocation;
   final place;
@@ -791,7 +791,7 @@ class dumbySearch extends StatelessWidget {
   final latlng;
   final shouldAdd;
 
-  dumbySearch({super.key, required this.errorMessage,
+  ErrorPage({super.key, required this.errorMessage,
     required this.updateLocation, required this.icon, required this.place,
   required this.settings, required this.provider, required this.latlng,  this.shouldAdd});
 
@@ -866,7 +866,5 @@ class dumbySearch extends StatelessWidget {
         ),
       ),
     );
-
-
   }
 }

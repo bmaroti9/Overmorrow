@@ -141,7 +141,7 @@ Widget hourBoxes(hours, data, _value) {
                         position: offsetAnimation,
                         child: Container(
                           padding: const EdgeInsets.only(top: 6, bottom: 5),
-                          width: 66,
+                          width: 67,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(40),
                             color: palette.surfaceContainer,
@@ -170,7 +170,7 @@ Widget buildHourlySum(var hour, ColorScheme palette, data) {
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       Padding(
-        padding: const EdgeInsets.only(left: 2, top: 4),
+        padding: const EdgeInsets.only(left: 2),
         child: comfortatext("${hour.temp}°", 19, data.settings, color: palette.primary,
             weight: FontWeight.w400),
       ),
@@ -178,7 +178,7 @@ Widget buildHourlySum(var hour, ColorScheme palette, data) {
       Icon(
         hour.icon,
         color: palette.onSurface,
-        size: 45.0,
+        size: 37.0,
       ),
 
       Row(
@@ -190,10 +190,7 @@ Widget buildHourlySum(var hour, ColorScheme palette, data) {
         ],
       ),
 
-      Padding(
-        padding: const EdgeInsets.only(bottom: 3, top: 4),
-        child: comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400),
-      )
+      comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
     ],
   );
 }
@@ -273,7 +270,7 @@ Widget buildHourlyWind(var hour, ColorScheme palette, data) {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Icon(Icons.air, size: 13, color: palette.primary),
+          Icon(Icons.show_chart, size: 13, color: palette.primary),
           Padding(
             padding: const EdgeInsets.only(left: 2),
             child: comfortatext("${hour.wind_gusts}", 14, data.settings, color: palette.primary,
