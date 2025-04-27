@@ -46,6 +46,41 @@ class ImageService {
     required this.photolink
   });
 
+  static Future<ImageService> getUnsplashCollectionImage(String condition, String loc) async {
+
+    String collectionId = conditionToCollection[condition] ?? 'XMGA2-GGjyw';
+
+    final params = {
+      'client_id': access_key,
+      'collections': collectionId,
+      'content_filter' : 'high',
+      'count': '1',
+    };
+
+    final url = Uri.https('api.unsplash.com', 'photos/random', params);
+
+    var file = await XCustomCacheManager.fetchData(url.toString(), "$condition $loc unsplash");
+    var response2 = await file[0].readAsString();
+    var unsplashBody = jsonDecode(response2);
+
+    final String image_path = unsplashBody[0]["urls"]["regular"];
+    Image image = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,
+      width: double.infinity, height: double.infinity,);
+
+
+    final String _userLink = (unsplashBody[0]["user"]["links"]["html"]) ?? "";
+    final String _userName = unsplashBody[0]["user"]["name"] ?? "";
+
+    final String _photoLink = unsplashBody[0]["links"]["html"] ?? "";
+
+    return ImageService(
+        image: image,
+        username: _userName,
+        userlink: _userLink,
+        photolink: _photoLink
+    );
+  }
+
   static Future<ImageService> getUnsplashImage(String condition, String loc) async {
 
     String combined = textToUnsplashText[condition]?.join(" ") ?? "Weather";
@@ -54,9 +89,9 @@ class ImageService {
 
     final params = {
       'client_id': access_key,
-      'query' : combined,
+      'collections': 'lH8D73y8two',
       'content_filter' : 'high',
-      'count': '6',
+      'count': '1',
     };
 
     final url = Uri.https('api.unsplash.com', 'photos/random', params);
@@ -164,7 +199,8 @@ class ImageService {
 
     if (settings["Image source"] == "network") {
       try {
-        ImageService i = await getUnsplashImage(condition, loc);
+        //ImageService i = await getUnsplashImage(condition, loc);
+        ImageService i = await getUnsplashCollectionImage(condition, loc);
         return i;
       }
       catch (e) {

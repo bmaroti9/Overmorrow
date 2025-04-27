@@ -59,6 +59,25 @@ Map<String, IconData> textMaterialIcon = {
   'Cloudy Night' : OvermorrowWeatherIcons3.cloudy_night,
 };
 
+//each condition has a separate unsplash collection where i selected the best images i could find
+//this map links the weather conditions to the collection's id
+Map<String, String> conditionToCollection = {
+  'Clear Night': 'QmrZHMXsUjU',
+  'Partly Cloudy': 'HAtvB157RoQ',
+  'Clear Sky': 'XMGA2-GGjyw',
+  'Overcast': 'lH8D73y8two',
+  'Haze': 'p0Z3vz_3QDI',
+  'Rain': 'EHfrmBnBxKE',
+  'Sleet': '6iA4l-qOEjQ',
+  'Drizzle': 'gPoFdup1ER0',
+  'Thunderstorm': 'u5yh41EfPWk',
+  'Heavy Snow': 'Wz6zjLX6zoQ',
+  'Fog': 'lt3McWCS6sk',
+  'Snow': 'IV6PyvU0Vyo',
+  'Heavy Rain': '9w3d8QBzjsw',
+  'Cloudy Night' : 'ymdgzsktNTE'
+};
+
 String? conditionTranslation(String key, localizations) {
   final localizationMap = {
     'Clear Night': localizations.clearNight,

@@ -126,34 +126,40 @@ Widget hourBoxes(hours, data, _value) {
           child: SlideAnimation(
             horizontalOffset: 60.0,
             child: FadeInAnimation(
-              child: Padding(
-                padding: const EdgeInsets.all(3),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 400),
-                  switchInCurve: Curves.decelerate,
-                  transitionBuilder: (Widget child,
-                      Animation<double> animation) {
-                    final  offsetAnimation =
-                    Tween<Offset>(begin: const Offset(0.0, 1.0), end: const Offset(0.0, 0.0)).animate(animation);
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: SlideTransition(
-                        position: offsetAnimation,
-                        child: Container(
-                          padding: const EdgeInsets.only(top: 6, bottom: 5),
-                          width: 67,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            color: palette.surfaceContainer,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 400),
+                      switchInCurve: Curves.decelerate,
+                      transitionBuilder: (Widget child,
+                          Animation<double> animation) {
+                        final  offsetAnimation =
+                        Tween<Offset>(begin: const Offset(0.0, 1.0), end: const Offset(0.0, 0.0)).animate(animation);
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: SlideTransition(
+                            position: offsetAnimation,
+                            child: Container(
+                              padding: const EdgeInsets.only(top: 7, bottom: 5),
+                              width: 67,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(40),
+                                color: palette.surfaceContainer,
+                              ),
+                              child: child,
+                            ),
                           ),
-                          child: child,
-                        ),
-                      ),
-                    );
-                  },
-                  child: childWidgets[_value],
-    
-                ),
+                        );
+                      },
+                      child: childWidgets[_value],
+
+                    ),
+                  ),
+                  dividerWidget(hour, palette, data)
+
+                ],
               ),
             ),
           ),
@@ -161,6 +167,41 @@ Widget hourBoxes(hours, data, _value) {
       },
     ),
   );
+}
+
+Widget dividerWidget(hour, ColorScheme palette, data) {
+  if (hour.time == "11pm" || hour.time == "11:00") {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+      child: Column(
+        children: [
+          Container(
+            width: 2,
+            height: 20,
+            decoration: BoxDecoration(
+              color: palette.tertiary,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 3, bottom: 3, left: 3),
+            child: RotatedBox(
+              quarterTurns: 1,
+              child: comfortatext("monday", 18, data.settings, color: palette.tertiary, weight: FontWeight.w400)
+            ),
+          ),
+          Expanded(
+            child: Container(
+              width: 2,
+              decoration: BoxDecoration(
+                color: palette.tertiary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  return Container();
 }
 
 Widget buildHourlySum(var hour, ColorScheme palette, data) {
@@ -270,7 +311,7 @@ Widget buildHourlyWind(var hour, ColorScheme palette, data) {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Icon(Icons.show_chart, size: 13, color: palette.primary),
+          Icon(Icons.trending_up, size: 13, color: palette.primary),
           Padding(
             padding: const EdgeInsets.only(left: 2),
             child: comfortatext("${hour.wind_gusts}", 14, data.settings, color: palette.primary,
