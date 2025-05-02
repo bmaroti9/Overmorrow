@@ -328,13 +328,14 @@ class MySearchParent extends StatefulWidget{
   final ColorScheme palette;
   final place;
   final settings;
+  final Image image;
 
   const MySearchParent({super.key, required this.updateLocation,
-    required this.palette, required this.place, required this.settings,});
+    required this.palette, required this.place, required this.settings, required this.image});
 
   @override
   _MySearchParentState createState() => _MySearchParentState(palette: palette,
-  place: place,settings: settings);
+  place: place,settings: settings, image: image);
 }
 
 class _MySearchParentState extends State<MySearchParent> {
@@ -343,8 +344,9 @@ class _MySearchParentState extends State<MySearchParent> {
   final ColorScheme palette;
   final place;
   final settings;
+  final Image image;
 
-  _MySearchParentState({required this.palette, required this.place, required this.settings});
+  _MySearchParentState({required this.palette, required this.place, required this.settings, required this.image});
 
   late Future<SharedPreferences> _prefsFuture;
 
@@ -389,7 +391,7 @@ class _MySearchParentState extends State<MySearchParent> {
         //return buildWholeThing(snapshot.data);
         return MySearchWidget(updateLocation: widget.updateLocation,
             palette: palette, favorites: favorites, prefs: snapshot.data,
-        place: place, settings: settings);
+        place: place, settings: settings, image: image);
       },
     );
   }
@@ -402,14 +404,16 @@ class MySearchWidget extends StatefulWidget{
   final favorites;
   final prefs;
   final settings;
+  final Image image;
 
   const MySearchWidget({super.key, required this.palette, required this.updateLocation,
-  required this.favorites, required this.prefs, required this.place, required this.settings});
+  required this.favorites, required this.prefs, required this.place, required this.settings,
+  required this.image});
 
   @override
   _MySearchWidgetState createState() => _MySearchWidgetState(palette: palette,
   updateLocation: updateLocation, beginFavorites: favorites,
-      prefs: prefs, place: place, settings: settings);
+      prefs: prefs, place: place, settings: settings, image: image);
 }
 
 class _MySearchWidgetState extends State<MySearchWidget> {
@@ -419,12 +423,13 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   final updateLocation;
   final prefs;
   final settings;
+  final Image image;
 
   final List<String> beginFavorites;
 
   _MySearchWidgetState({required this.palette, required this.updateLocation,
         required this.beginFavorites, required this.prefs, required this.place,
-  required this.settings, });
+  required this.settings, required this.image});
 
   final ValueNotifier<List<String>> recommend = ValueNotifier<List<String>>([]);
   ValueNotifier<List<String>> favorites = ValueNotifier<List<String>>([]);
@@ -460,7 +465,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   Widget buildFloatingSearchBar() {
 
     return searchBar2(palette, recommend, updateLocation,
-        updateFav, favorites, updateRec, place, context, settings);
+        updateFav, favorites, updateRec, place, context, settings, image);
 
   }
 }

@@ -22,11 +22,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/new_forecast.dart';
 import 'package:overmorrow/radar.dart';
-import 'package:overmorrow/settings_page.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'hourly.dart';
 import 'main_ui.dart';
@@ -158,7 +156,6 @@ class _NewMainState extends State<NewMain> {
 
     return Scaffold(
       backgroundColor: data.current.palette.surface,
-      drawer: MyDrawer(image: data.current.imageService.image, settings: data.settings, palette: data.current.palette,),
       body: StretchyHeader.listView(
         displacement: 130,
         onRefresh: () async {
@@ -194,7 +191,9 @@ class _NewMainState extends State<NewMain> {
                 MySearchParent(updateLocation: updateLocation,
                   palette: data.current.palette,
                   place: data.place,
-                  settings: data.settings),
+                  settings: data.settings,
+                  image: data.current.imageService.image
+                ,),
               ],
             )
         ),
@@ -291,7 +290,6 @@ Widget TabletLayout(data, updateLocation, context) {
 
   return Scaffold(
     backgroundColor: data.current.surface,
-    drawer: MyDrawer(image: data.current.ImageService.image, settings: data.settings, palette: data.current.palette,),
     body: RefreshIndicator(
       onRefresh: () async {
         await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
@@ -329,7 +327,9 @@ Widget TabletLayout(data, updateLocation, context) {
                               MySearchParent(updateLocation: updateLocation,
                                 palette: data.current.palette,
                                 place: data.place,
-                                settings: data.settings,)
+                                settings: data.settings,
+                                image: data.current.imageService.image
+                              ,)
                             ],
                           ),
                         ),

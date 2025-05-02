@@ -17,17 +17,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:overmorrow/donation_page.dart';
 import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/settings_screens.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'decoders/extra_info.dart';
-import 'main.dart';
 import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
 
@@ -314,97 +310,6 @@ class SettingsMain extends StatelessWidget {
           SliverToBoxAdapter(
             child: NewSettings(settings!, updatePage, image, palette, context, colornotify),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class MyDrawer extends StatelessWidget {
-
-  final settings;
-  final image;
-
-  final ColorScheme palette;
-
-  const MyDrawer({super.key, required this.settings, required this.image, required this.palette});
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Drawer(
-      backgroundColor: palette.surface,
-      elevation: 0,
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          Container(
-            height: 240,
-            decoration: BoxDecoration(
-              color: palette.surfaceContainer,
-            ),
-            child: Align(
-              alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: comfortatext('OVRMRW', 40, settings, color: palette.primary, weight: FontWeight.w400),
-                )
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          ListTile(
-            title: comfortatext(AppLocalizations.of(context)!.settings, 24,
-                settings, color: palette.onSurface),
-            leading: Icon(Icons.settings_outlined, color: palette.primary, size: 24,),
-            onTap: () {
-              HapticFeedback.selectionClick();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SettingsPage(image: image),
-                ),
-              ).then((value) {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const MyApp();
-                    },
-                  ),
-                );
-              });
-            },
-          ),
-          /*
-          ListTile(
-            title: comfortatext(AppLocalizations.of(context)!.about, 24,
-                settings, color: onSurface),
-            leading: Icon(Icons.info_outline, color: primary,),
-            onTap: () {
-              HapticFeedback.selectionClick();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => InfoPage(primary: primary, settings: settings,
-                surface: surface, onSurface: onSurface, hihglight: hihglight,)),
-              );
-            },
-          ),
-          ListTile(
-            title: comfortatext(AppLocalizations.of(context)!.donate, 24,
-                settings, color: onSurface),
-            leading: Icon(Icons.favorite_outline_sharp, color: primary,),
-            onTap: () {
-              HapticFeedback.selectionClick();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DonationPage(primary: primary, settings: settings,
-                surface: surface, highlight: hihglight, onSurface: onSurface,)),
-              );
-            },
-          ),
-
-           */
         ],
       ),
     );

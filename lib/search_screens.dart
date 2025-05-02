@@ -34,10 +34,10 @@ import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:stretchy_header/stretchy_header.dart';
-import '../l10n/app_localizations.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'api_key.dart';
+import 'main.dart';
 
 //before this the same place from 2 different providers would be registered as different,
 //I am trying to fix this with this
@@ -47,7 +47,7 @@ String generateSimplifier(var split) {
 
 Widget searchBar2(ColorScheme palette, recommend,
     Function updateLocation, Function updateFav, favorites, Function updateRec, String place,
-    var context, Map<String, String> settings) {
+    var context, Map<String, String> settings, Image image) {
 
 
   return Align(
@@ -75,7 +75,20 @@ Widget searchBar2(ColorScheme palette, recommend,
                   icon: Icon(Icons.settings_outlined, color: palette.primary, size: 25,),
                   onPressed: () {
                     HapticFeedback.selectionClick();
-                    Scaffold.of(context).openDrawer();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SettingsPage(image: image),
+                      ),
+                    ).then((value) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const MyApp();
+                          },
+                        ),
+                      );
+                    });
                   },
                 ),
               ),
@@ -815,7 +828,6 @@ class ErrorPage extends StatelessWidget {
     ColorScheme palette = ColorPalette.getErrorPagePalette(settings["Color mode"]);
 
     return Scaffold(
-      drawer: MyDrawer(settings: settings, palette: palette, image: image,),
       backgroundColor: palette.surface,
       body: StretchyHeader.singleChild(
         displacement: 150,
@@ -847,7 +859,7 @@ class ErrorPage extends StatelessWidget {
                   ),
                 ),
                 MySearchParent(updateLocation: updateLocation,
-                  palette: palette, place: place, settings: settings,)
+                  palette: palette, place: place, settings: settings, image: image,)
               ],
             )
         ),
