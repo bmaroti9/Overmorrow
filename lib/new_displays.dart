@@ -201,7 +201,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                       palette.secondary,
                       palette.surfaceContainerHighest,
                       progress),
-                  child: Container(
+                  child: const SizedBox(
                     width: double.infinity,
                     height: 8.0,
                   ),

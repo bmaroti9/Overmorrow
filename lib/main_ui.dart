@@ -358,12 +358,12 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
             children: [
               if (!widget.data.isonline) Padding(
                 padding: const EdgeInsets.only(right: 2),
-                child: Icon(Icons.download_for_offline_outlined, color: highlight, size: 13,),
+                child: Icon(Icons.download_for_offline_outlined, color: highlight, size: 13),
               ),
               if (!widget.data.isonline) Padding(
                 padding: const EdgeInsets.only(right: 7),
                 child: comfortatext(AppLocalizations.of(context)!.offline, 14, widget.data.settings,
-                    color: highlight),
+                    color: highlight, weight: FontWeight.w300,),
               ),
               if (widget.data.isonline) Padding(
                 padding: const EdgeInsets.only(right: 3, top: 1),
@@ -371,10 +371,10 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
               ),
               comfortatext('${widget.split[0]},', 14, widget.data.settings,
                   color: widget.data.isonline ? highlight
-                      : text),
+                      : text, weight: FontWeight.w300,),
 
               comfortatext(widget.split.length > 1 ? widget.split[1] : "", 14, widget.data.settings,
-                  color: text),
+                  color: text, weight: FontWeight.w300,),
             ],
           ),
         ),

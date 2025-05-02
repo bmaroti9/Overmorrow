@@ -313,28 +313,37 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
         foregroundColor: palette.primary,
         elevation: 0,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 13),
-            child: IconButton(
-              icon: Icon(
-                isEditing ? Icons.check : Icons.edit_outlined,
-                color: palette.primary, size: 25,
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 150),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: (text == "") ? AnimatedSwitcher(
+              duration: Duration(milliseconds: 200),
+              child: Padding(
+                padding: const EdgeInsets.only(right: 13),
+                child: IconButton(
+                  icon: Icon(
+                    isEditing ? Icons.check : Icons.edit_outlined,
+                    color: palette.primary, size: 25,
+                  ),
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    onIsEditingChanged();
+                  },
+                ),
               ),
-              onPressed: () {
-                HapticFeedback.lightImpact();
-                onIsEditingChanged();
-              },
-            ),
-          ),
+            )
+            : Container(),
+          )
         ],
-      ),
-      body: Column(
-        children: [
-          Hero(
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(105),
+          child: Hero(
             tag: 'searchBarHero',
             child: Container(
               height: 67,
-              margin: const EdgeInsets.only(left: 27, right: 27, top: 25),
+              margin: const EdgeInsets.only(left: 27, right: 27, bottom: 20),
               decoration: BoxDecoration(
                   color: palette.surfaceContainer,
                   borderRadius: BorderRadius.circular(33)
@@ -387,17 +396,25 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               ),
             ),
           ),
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 150),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-            child: Align(
-              key: ValueKey<bool>(text == ""),
-              alignment: Alignment.topCenter,
-              child: buildRecommend(text, palette, settings, favorites, recommend,
-              updateLocation, onFavChanged, isEditing, locationSafe, askGrantLocationPermission,
-              placeName, country, region),
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 150),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+              child: Align(
+                key: ValueKey<bool>(text == ""),
+                alignment: Alignment.topCenter,
+                child: SingleChildScrollView(
+                  child: buildRecommend(text, palette, settings, favorites, recommend,
+                  updateLocation, onFavChanged, isEditing, locationSafe, askGrantLocationPermission,
+                  placeName, country, region),
+                ),
+              ),
             ),
           )
         ],
@@ -416,19 +433,19 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
       List<String> favorites = value;
       if (text == "") {
         return Padding(
-          padding: const EdgeInsets.only(left: 30, top: 35, right: 30),
+          padding: const EdgeInsets.only(left: 30, top: 10, right: 30),
           child: AnimationLimiter(
             child: Column(
               children: AnimationConfiguration.toStaggeredList(
                 duration: const Duration(milliseconds: 475),
                 childAnimationBuilder: (widget) =>
-                    SlideAnimation(
-                      horizontalOffset: 0.0,
-                      verticalOffset: 50,
-                      child: FadeInAnimation(
-                        child: widget,
-                      ),
+                  SlideAnimation(
+                    horizontalOffset: 0.0,
+                    verticalOffset: 50,
+                    child: FadeInAnimation(
+                      child: widget,
                     ),
+                  ),
                 children: [
                   Row(
                     children: [
@@ -513,7 +530,7 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
                         String country = generateAbbreviation(split["country"]);
                         String region = split["region"];
                         String simplifier = generateSimplifier(split);
-
+                
                         bool contained = favoriteNarrow.contains(simplifier);
                         return GestureDetector(
                           behavior: HitTestBehavior.translucent,
@@ -674,48 +691,50 @@ Widget favoritesOrReorder(isEditing, favorites, settings, onFavChanged,
     return reorderFavorites(favorites, settings, onFavChanged, palette);
   }
   else {
-    return Container(
-      key: const ValueKey<String>("normal"),
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: palette.surfaceContainer,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Column(
-            children: List.generate(favorites.length, (index) {
-              var split = json.decode(favorites[index]);
-              String name = split["name"];
-              String country = generateAbbreviation(split["country"]);
-              String region = split["region"];
-              return GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  updateLocation(
-                      '${split["lat"]}, ${split["lon"]}', split["name"]);
-                  Navigator.pop(context);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 7, top: 7, bottom: 7),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Column(
-                            crossAxisAlignment : CrossAxisAlignment.start,
-                            children: [
-                              comfortatext(name, 19, settings, color: palette.onSurface),
-                              comfortatext("$region, $country", 15, settings, color: palette.outline)
-                            ],
-                          )
-                      ),
-                      Icon(Icons.keyboard_arrow_right_rounded, color: palette.primary,)
-                    ],
+    return SingleChildScrollView(
+      child: Container(
+        key: const ValueKey<String>("normal"),
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: palette.surfaceContainer,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Column(
+              children: List.generate(favorites.length, (index) {
+                var split = json.decode(favorites[index]);
+                String name = split["name"];
+                String country = generateAbbreviation(split["country"]);
+                String region = split["region"];
+                return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    updateLocation(
+                        '${split["lat"]}, ${split["lon"]}', split["name"]);
+                    Navigator.pop(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 7, top: 7, bottom: 7),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Column(
+                              crossAxisAlignment : CrossAxisAlignment.start,
+                              children: [
+                                comfortatext(name, 19, settings, color: palette.onSurface),
+                                comfortatext("$region, $country", 15, settings, color: palette.outline)
+                              ],
+                            )
+                        ),
+                        Icon(Icons.keyboard_arrow_right_rounded, color: palette.primary,)
+                      ],
+                    ),
                   ),
-                ),
-              );
-            })
-        )
+                );
+              })
+          )
+      ),
     );
   }
 }
