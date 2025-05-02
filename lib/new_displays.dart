@@ -40,13 +40,13 @@ class WavePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final firstPaint = Paint()
       ..color = firstColor
-      ..strokeWidth = 3
+      ..strokeWidth = 2.5
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
     final secondPaint = Paint()
       ..color = secondColor
-      ..strokeWidth = 3
+      ..strokeWidth = 2.5
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 

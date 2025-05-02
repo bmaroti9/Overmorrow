@@ -229,7 +229,7 @@ class ColorPalette {
 
     //try to reduce blue palettes because they are too common
     for (int i = 0; i < imageColors.length; i++) {
-      double v = imageColors[i].r * 1 + imageColors[i].g * 1 - imageColors[i].b * 5.0;
+      double v = imageColors[i].r * 1 + imageColors[i].g * 1 - imageColors[i].b * 3.0;
       if (v > bestValue) {
         bestValue = v.round();
         seedColor = imageColors[i];
