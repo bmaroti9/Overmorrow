@@ -112,6 +112,7 @@ class _RadarSmallState extends State<RadarSmall> {
   @override
   Widget build(BuildContext context) {
 
+    ColorScheme palette = data.current.palette;
     String mode = data.settings["Color mode"];
 
     if (mode == "auto") {
@@ -128,25 +129,25 @@ class _RadarSmallState extends State<RadarSmall> {
             child: comfortatext(
                 AppLocalizations.of(context)!.radar, 16,
                 data.settings,
-                color: data.current.onSurface),
+                color: palette.onSurface),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(
-              left: 25, right: 25, top: 12, bottom: 10,),
+              left: 23, right: 23, top: 12, bottom: 10,),
           child: AspectRatio(
-            aspectRatio: 1.57,
+            aspectRatio: 1.6,
             child: Container(
               decoration: BoxDecoration(
-                  color: data.current.surface,
-                  borderRadius: BorderRadius.circular(18),
+                  color: palette.surface,
+                  borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                      width: 2.5, color: data.current.containerHigh)
+                      width: 2.5, color: palette.outlineVariant)
               ),
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(18),
                     child: (data.isonline) ? FlutterMap(
                       options: MapOptions(
                         onTap: (tapPosition, point) =>
@@ -186,7 +187,7 @@ class _RadarSmallState extends State<RadarSmall> {
                       ],
                     )
                     : Center(
-                        child: comfortatext("not available offline", 15, data.settings, color: data.current.outline)
+                        child: comfortatext("not available offline", 15, data.settings, color: palette.outline)
                     )
                   ),
                   Padding(
@@ -196,13 +197,13 @@ class _RadarSmallState extends State<RadarSmall> {
                       child: Hero(
                         tag: 'switch',
                         child: SizedBox(
-                          height: 48,
-                          width: 48,
+                          height: 53,
+                          width: 53,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(10),
                               elevation: 0.0,
-                              backgroundColor: data.current.container,
+                              backgroundColor: palette.secondaryContainer,
                               //side: BorderSide(width: 3, color: main),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15)
@@ -220,7 +221,7 @@ class _RadarSmallState extends State<RadarSmall> {
                               );
                             },
                             child: Icon(CupertinoIcons.fullscreen,
-                              color: data.current.primaryLight, size: 20,),
+                              color: palette.onSecondaryContainer, size: 20,),
                           ),
                         ),
                       ),
@@ -232,7 +233,7 @@ class _RadarSmallState extends State<RadarSmall> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 38, right: 25, bottom: 50, top: 10),
+          padding: const EdgeInsets.only(left: 30, right: 23, bottom: 50, top: 5),
           child: Row(
             children: [
               AnimatedSwitcher(
@@ -244,16 +245,16 @@ class _RadarSmallState extends State<RadarSmall> {
                   tag: 'playpause',
                   key: ValueKey<bool>(isPlaying),
                   child: SizedBox(
-                    height: 48,
-                    width: 48,
+                    height: 53,
+                    width: 53,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           elevation: 0.0,
                           padding: const EdgeInsets.all(10),
-                          backgroundColor: data.current.container,
+                          backgroundColor: palette.secondaryContainer,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
-                            //side: BorderSide(width: 2, color: data.current.primaryLighter)
+                            //side: BorderSide(width: 2, color: palette.primaryLighter)
                           )
                       ),
                       onPressed: () async {
@@ -261,7 +262,7 @@ class _RadarSmallState extends State<RadarSmall> {
                         togglePlayPause();
                       },
                       child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
-                        color: data.current.primaryLight, size: 18,),
+                        color: palette.onSecondaryContainer, size: 18,),
 
                     ),
                   ),
@@ -271,78 +272,41 @@ class _RadarSmallState extends State<RadarSmall> {
               Expanded(
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      child: SliderTheme(
-                        data: SliderTheme.of(context).copyWith(
-                          trackHeight: 18,
-                          valueIndicatorTextStyle: GoogleFonts.comfortaa(
-                            color: data.current.onPrimaryLight,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-
-                          thumbShape: const RoundSliderThumbShape(
-                              enabledThumbRadius: 10, elevation: 0.0,
-                              pressedElevation: 0),
-
-                          tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 2),
-                          overlayShape: SliderComponentShape.noOverlay
-
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        valueIndicatorColor: palette.inverseSurface,
+                        thumbColor: palette.secondary,
+                        activeTrackColor: palette.secondary,
+                        inactiveTrackColor: palette.secondaryContainer,
+                        inactiveTickMarkColor: palette.secondary,
+                        activeTickMarkColor: palette.surface,
+                        valueIndicatorTextStyle: GoogleFonts.outfit(
+                          color: palette.onInverseSurface,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
                         ),
-                        child: Slider(
-                          value: currentFrameIndex,
-                          min: 0,
-                          max: data.radar.times.length - 1.0,
-                          divisions: data.radar.times.length,
-                          label: times[currentFrameIndex.toInt()]
-                              .toString(),
+                      ),
+                      child: Slider(
+                        value: currentFrameIndex,
+                        year2023: false,
+                        min: 0,
+                        max: data.radar.times.length - 1.0,
+                        divisions: data.radar.times.length,
+                        label: times[currentFrameIndex.toInt()].toString(),
 
-                          activeColor: data.current.primaryLighter,
-                          inactiveColor: data.current.surface,
-                          //thumbColor: data.current.primary,
+                        padding: const EdgeInsets.only(left: 20, right: 15),
 
-                          onChanged: (double value) {
-                            if (data.settings["Radar haptics"] == "on") {
-                              HapticFeedback.lightImpact();
-                            }
-                            setState(() {
-                              hasBeenPlayed = true;
-                              currentFrameIndex = value;
-                            });
-                          },
-                        ),
+                        onChanged: (double value) {
+                          if (data.settings["Radar haptics"] == "on") {
+                            HapticFeedback.lightImpact();
+                          }
+                          setState(() {
+                            hasBeenPlayed = true;
+                            currentFrameIndex = value;
+                          });
+                        },
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, right: 16, top: 9),
-                      child: Row(
-                        children: <Widget>[
-                          comfortatext('-2${AppLocalizations.of(context)!.hr}', 13, data.settings, color: data.current.onSurface),
-                          Expanded(
-                            flex: 6,
-                            child: Align(
-                                alignment: Alignment.centerRight,
-                                child: comfortatext('-1${AppLocalizations.of(context)!.hr}', 13, data.settings, color: data.current.onSurface)
-                            ),
-                          ),
-                          Expanded(
-                            flex: 6,
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: comfortatext(AppLocalizations.of(context)!.now, 13, data.settings, color: data.current.onSurface)
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Align(
-                                alignment: Alignment.centerRight,
-                                child: comfortatext(AppLocalizations.of(context)!.thirtyMinutes, 13, data.settings, color: data.current.onSurface)
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
                   ],
                 ),
               ),

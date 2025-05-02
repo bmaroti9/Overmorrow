@@ -40,13 +40,13 @@ class WavePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final firstPaint = Paint()
       ..color = firstColor
-      ..strokeWidth = 2.5
+      ..strokeWidth = 3
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
     final secondPaint = Paint()
       ..color = secondColor
-      ..strokeWidth = 2.5
+      ..strokeWidth = 3
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
@@ -167,26 +167,26 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
               Padding(
                 padding: EdgeInsets.only(
                     left: min(
-                        max((progress * (widget.size.width - 60)) - textWidth / 2 + 4, 0),
-                        widget.size.width - 66 - textWidth)),
+                        max((progress * (widget.size.width - 53)) - textWidth / 2  + 4, 0),
+                        widget.size.width - 53 - textWidth)),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: comfortatext(write, 15, widget.data.settings,
-                      color: palette.onSurface, weight: FontWeight.w300),
+                      color: palette.onSurface),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(
                     top: 6,
-                    left: min(max((progress * (widget.size.width - 60)), 2),
-                        widget.size.width - 66)),
+                    left: min(max((progress * (widget.size.width - 56)), 2),
+                        widget.size.width - 56)),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
                     height: 4,
                     width: 4,
                     decoration: BoxDecoration(
-                      color: palette.primaryFixedDim,
+                      color: palette.secondary,
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
@@ -194,11 +194,11 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
               ),
               Padding(
                 padding:
-                    const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 5),
+                    const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 7),
                 child: CustomPaint(
                   painter: WavePainter(
                       _controller.value,
-                      palette.primaryFixedDim,
+                      palette.secondary,
                       palette.surfaceContainerHighest,
                       progress),
                   child: Container(
@@ -212,26 +212,26 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 4),
+                      padding: const EdgeInsets.only(right: 4, top: 2),
                       child: Icon(
                         Icons.wb_sunny_outlined,
-                        color: palette.primary,
-                        size: 14,
+                        color: palette.secondary,
+                        size: 13,
                       ),
                     ),
                     comfortatext(
                         widget.data.sunstatus.sunrise, 15, widget.data.settings,
-                        color: palette.primary,
-                        weight: FontWeight.w300),
+                        color: palette.secondary,
+                        weight: FontWeight.w400),
                     const Spacer(),
                     comfortatext(
                         widget.data.sunstatus.sunset, 15, widget.data.settings,
                         color: palette.outline,
-                        weight: FontWeight.w300),
+                        weight: FontWeight.w400),
                     Padding(
-                      padding: const EdgeInsets.only(left: 4),
+                      padding: const EdgeInsets.only(left: 4, top: 2),
                       child: Icon(Icons.nightlight_outlined,
-                          color: palette.outline, size: 14),
+                          color: palette.outline, size: 13),
                     ),
                   ],
                 ),

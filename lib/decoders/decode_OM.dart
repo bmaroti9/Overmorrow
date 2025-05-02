@@ -148,14 +148,6 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
 }
 
 String oMGetName(index, settings, item, dayDif, localizations) {
-  if ((index - dayDif) < 3) {
-    List<String> names = [
-      localizations.today,
-      localizations.tomorrow,
-      localizations.overmorrow,
-    ];
-    return names[index - dayDif];
-  }
   String x = item["daily"]["time"][index].split("T")[0];
   List<String> z = x.split("-");
   DateTime time = DateTime(int.parse(z[0]), int.parse(z[1]), int.parse(z[2]));

@@ -75,7 +75,7 @@ class ParrallaxBackground extends StatelessWidget {
 
     return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 1500),
-      tween: Tween<double>(begin: 0, end: 1),
+      tween: Tween<double>(begin: 0, end: 0.9),
       curve: Curves.decelerate,
       builder: (context, value, child) {
         return Container(
@@ -218,7 +218,8 @@ class DescriptionCircle extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top:6),
-                  child: comfortatext(undercaption, 15, settings, align: TextAlign.center, color: palette.outline)
+                  child: comfortatext(undercaption, 15, settings, align: TextAlign.center, color: palette.outline,
+                  weight: FontWeight.w300)
                 )
               )
             ]
@@ -405,9 +406,9 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
                   minimumSize: const Size(0, 22),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
                 child: comfortatext(split[0], 13, widget.data.settings, color: text,
-                    decoration: TextDecoration.underline),
+                    decoration: TextDecoration.underline, weight: FontWeight.w300),
               ),
-              comfortatext(split[1], 13, widget.data.settings, color: text),
+              comfortatext(split[1], 13, widget.data.settings, color: text, weight: FontWeight.w300),
               TextButton(
                 onPressed: () async {
                   await _launchUrl(widget.data.current.imageService.userlink + "?utm_source=overmorrow&utm_medium=referral");
@@ -417,9 +418,9 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
                   minimumSize: const Size(0, 22),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
                 child: comfortatext(widget.data.current.imageService.username, 13, widget.data.settings, color: text,
-                    decoration: TextDecoration.underline),
+                    decoration: TextDecoration.underline, weight: FontWeight.w300),
               ),
-              comfortatext(split[3], 13, widget.data.settings, color: text),
+              comfortatext(split[3], 13, widget.data.settings, color: text, weight: FontWeight.w300),
               TextButton(
                 onPressed: () async {
                   await _launchUrl("https://unsplash.com/?utm_source=overmorrow&utm_medium=referral");
@@ -429,7 +430,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
                   minimumSize: const Size(0, 22),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
                 child: comfortatext(split[4], 13, widget.data.settings, color: text,
-                    decoration: TextDecoration.underline),
+                    decoration: TextDecoration.underline, weight: FontWeight.w300),
               ),
             ],
           ),

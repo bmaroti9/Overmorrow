@@ -68,7 +68,7 @@ Widget searchBar2(ColorScheme palette, recommend,
                 padding: const EdgeInsets.only(left: 20, right: 13),
                 child: Icon(Icons.place_outlined, color: palette.primary,),
               ),
-              Expanded(child: comfortatext(place, 24, settings, color: palette.onSurface, maxLines: 1)),
+              Expanded(child: comfortatext(place, 23, settings, color: palette.onSurface, maxLines: 1)),
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: IconButton(
@@ -356,14 +356,14 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                         style: GoogleFonts.outfit(
                           color: palette.onSurface,
                           fontSize: 23 * getFontSize(settings["Font size"]!),
-                          fontWeight: FontWeight.w300,
+                          fontWeight: FontWeight.w400,
                         ),
                         decoration: InputDecoration(
                           hintText: 'Search...',
                           hintStyle:  GoogleFonts.outfit(
                             color: palette.outline,
                             fontSize: 20 * getFontSize(settings["Font size"]!),
-                            fontWeight: FontWeight.w300,
+                            fontWeight: FontWeight.w400,
                           ),
                           border: InputBorder.none,
                         ),
@@ -520,7 +520,7 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
                                     child: Column(
                                       crossAxisAlignment : CrossAxisAlignment.start,
                                       children: [
-                                        comfortatext(name, 20, settings, color: palette.onSurface),
+                                        comfortatext(name, 19, settings, color: palette.onSurface),
                                         comfortatext("$region, $country", 15, settings, color: palette.outline)
                                       ],
                                     )
@@ -691,7 +691,7 @@ Widget favoritesOrReorder(isEditing, favorites, settings, onFavChanged,
                           child: Column(
                             crossAxisAlignment : CrossAxisAlignment.start,
                             children: [
-                              comfortatext(name, 20, settings, color: palette.onSurface),
+                              comfortatext(name, 19, settings, color: palette.onSurface),
                               comfortatext("$region, $country", 15, settings, color: palette.outline)
                             ],
                           )
@@ -759,7 +759,7 @@ Widget reorderableItem(List<dynamic> items, index, settings, ColorScheme palette
               child: Column(
                 crossAxisAlignment : CrossAxisAlignment.start,
                 children: [
-                  comfortatext(name, 20, settings, color: palette.onSurface),
+                  comfortatext(name, 19, settings, color: palette.onSurface),
                   comfortatext("$region, $country", 15, settings, color: palette.outline)
                 ],
               )

@@ -23,6 +23,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
+import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/new_forecast.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/settings_page.dart';
@@ -179,11 +180,11 @@ class _NewMainState extends State<NewMain> {
                     children: [
                       const Spacer(),
                       comfortatext(
-                          "${data.current.temp}°", 69, data.settings,
+                          "${data.current.temp}°", 72, data.settings,
                           color: data.current.colorPop, weight: FontWeight.w200,
                       ),
                       comfortatext(
-                          data.current.text, 32, data.settings,
+                          data.current.text, 33, data.settings,
                           weight: FontWeight.w300,
                           color: data.current.descColor)
                     ],
@@ -211,8 +212,12 @@ class _NewMainState extends State<NewMain> {
           ),
 
           NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-          //hourBoxes(data.days[1].hourly, data),
+
           NewHourly(data: data),
+
+          RadarSmall(data: data),
+
+          buildDays(data: data),
 
           //Container(padding: const EdgeInsets.only(left: 17, right: 17, top: 20), height:230, child: buildTemp(data.days[1].hourly, data, data.current.container)),
 

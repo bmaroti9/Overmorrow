@@ -23,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'ui_helper.dart';
 
+
 class NewHourly extends StatefulWidget {
   final data;
 
@@ -47,7 +48,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
 
     ColorScheme palette = data.current.palette;
     return Padding(
-      padding: const EdgeInsets.only(left: 19, right: 19, top: 0, bottom: 200),
+      padding: const EdgeInsets.only(left: 19, right: 19, top: 0, bottom: 50),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -303,7 +304,7 @@ Widget buildHourlyWind(var hour, ColorScheme palette, data) {
       ),
 
       Transform.rotate(
-          angle: hour.wind_dir * pi / 180,
+          angle: (hour.wind_dir + 180) * pi / 180,
           child: Icon(Icons.navigation_outlined, color: palette.onSurface, size: 18,)
       ),
 
