@@ -75,7 +75,7 @@ class ParrallaxBackground extends StatelessWidget {
 
     return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 1500),
-      tween: Tween<double>(begin: 0, end: 0.9),
+      tween: Tween<double>(begin: 0, end: 1.0),
       curve: Curves.decelerate,
       builder: (context, value, child) {
         return Container(

@@ -100,7 +100,7 @@ class ImageColorList {
     );
     PaletteGenerator imageColors = await PaletteGenerator.fromImage(
       imageInfo.image,
-      maximumColorCount: 4,
+      maximumColorCount: 1,
       filters: [],
     );
 
@@ -224,17 +224,7 @@ class ColorPalette {
 
   static ColorScheme getImagePalette(String theme, imageColors) {
 
-    Color seedColor = Colors.blue;
-    int bestValue = -10000;
-
-    //try to reduce blue palettes because they are too common
-    for (int i = 0; i < imageColors.length; i++) {
-      double v = imageColors[i].r * 1 + imageColors[i].g * 1 - imageColors[i].b * 3.0;
-      if (v > bestValue) {
-        bestValue = v.round();
-        seedColor = imageColors[i];
-      }
-    }
+    Color seedColor = imageColors[0];
 
     if (theme == "auto") {
       var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;

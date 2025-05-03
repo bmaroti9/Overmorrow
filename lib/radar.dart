@@ -182,7 +182,7 @@ class _RadarSmallState extends State<RadarSmall> {
                         ),
                         TileLayer(
                           urlTemplate: data.radar.images[currentFrameIndex
-                              .toInt()] + "/256/{z}/{x}/{y}/8/0_1.png",
+                              .toInt()] + "/256/{z}/{x}/{y}/2/0_1.png",
                         ),
                       ],
                     )
@@ -276,6 +276,7 @@ class _RadarSmallState extends State<RadarSmall> {
                     color: palette.surface,
                     child: SliderTheme(
                       data: SliderTheme.of(context).copyWith(
+                        trackHeight: 19,
                         valueIndicatorColor: palette.inverseSurface,
                         thumbColor: palette.secondary,
                         activeTrackColor: palette.secondary,
@@ -331,6 +332,14 @@ class RadarBig extends StatefulWidget {
 }
 
 class _RadarBigState extends State<RadarBig> {
+
+  final List<Color> radarColors = [
+    const Color(0xFF88ddee), const Color(0xFF0099cc), const Color(0xFF0077aa), const Color(0xFF005588),
+    const Color(0xFFffee00), const Color(0xFFffaa00), const Color(0xFFff7700),
+    const Color(0xFFff4400), const Color(0xFFee0000), const Color(0xFF990000),
+    const Color(0xFFffaaff), const Color(0xFFff77ff), const Color(0xFFff00ff),
+  ];
+
   double currentFrameIndex = 12;
   late Timer timer;
 
@@ -438,7 +447,7 @@ class _RadarBigState extends State<RadarBig> {
                     : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
               ),
               TileLayer(
-                urlTemplate: data.radar.images[currentFrameIndex.toInt()] + "/256/{z}/{x}/{y}/8/1_1.png",
+                urlTemplate: data.radar.images[currentFrameIndex.toInt()] + "/256/{z}/{x}/{y}/2/1_1.png",
               ),
               TileLayer(
                 urlTemplate: mode == "dark"
@@ -450,100 +459,139 @@ class _RadarBigState extends State<RadarBig> {
           : Center(
             child: comfortatext("not available offline", 15, data.settings, color: palette.outline)
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, bottom: 35),
-              child: Container(
-                height: 130,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: palette.surface,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 33, right: 25, top: 10, bottom: 10),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 35),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(13),
+                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                      color: palette.inverseSurface,
+                      borderRadius: BorderRadius.circular(20)
+                  ),
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        transitionBuilder: (Widget child, Animation<double> animation) {
-                          return ScaleTransition(scale: animation, child: child,);
-                        },
-                        child: Hero(
-                          tag: 'playpause',
-                          key: ValueKey<bool>(isPlaying),
-                          child: SizedBox(
-                            height: 53,
-                            width: 53,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  elevation: 0.0,
-                                  padding: const EdgeInsets.all(10),
-                                  backgroundColor: palette.secondaryContainer,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                    //side: BorderSide(width: 2, color: palette.primaryLighter)
-                                  )
-                              ),
-                              onPressed: () async {
-                                HapticFeedback.selectionClick();
-                                togglePlayPause();
-                              },
-                              child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
-                                color: palette.onSecondaryContainer, size: 18,),
+                      comfortatext("light", 16, data.settings, color: palette.onInverseSurface),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        child: Row(
+                            children: List<Widget>.generate(radarColors.length, (int index) {
+                              return Container(
+                                width: 10,
+                                height: 15,
+                                decoration: BoxDecoration(
+                                    color: radarColors[index],
+                                    borderRadius: index == 0
+                                        ? const BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6))
+                                        : index == (radarColors.length - 1)
+                                        ? const BorderRadius.only(topRight: Radius.circular(6), bottomRight: Radius.circular(6))
+                                        : BorderRadius.circular(0)
 
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Hero(
-                          tag: "sliderTag",
-                          child: Material(
-                            color: palette.surface,
-                            child: SliderTheme(
-                              data: SliderTheme.of(context).copyWith(
-                                trackHeight: 19,
-                                valueIndicatorColor: palette.inverseSurface,
-                                thumbColor: palette.secondary,
-                                activeTrackColor: palette.secondary,
-                                inactiveTrackColor: palette.secondaryContainer,
-                                inactiveTickMarkColor: palette.secondary,
-                                activeTickMarkColor: palette.surface,
-                                valueIndicatorTextStyle: GoogleFonts.outfit(
-                                  color: palette.onInverseSurface,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
                                 ),
-                                year2023: false
-                              ),
-                              child: Slider(
-                                value: currentFrameIndex,
-                                min: 0,
-                                max: data.radar.times.length - 1.0,
-                                divisions: data.radar.times.length,
-                                label: times[currentFrameIndex.toInt()].toString(),
-
-                                padding: const EdgeInsets.only(left: 20, right: 20),
-
-                                onChanged: (double value) {
-                                  if (data.settings["Radar haptics"] == "on") {
-                                    HapticFeedback.lightImpact();
-                                  }
-                                  setState(() {
-                                    hasBeenPlayed = true;
-                                    currentFrameIndex = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
+                              );
+                            })
                         ),
                       ),
+                      comfortatext("heavy", 16, data.settings, color: palette.onInverseSurface),
                     ],
                   ),
                 ),
-              ),
+                Container(
+                  height: 130,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: palette.surface,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 33, right: 25, top: 10, bottom: 10),
+                    child: Row(
+                      children: [
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 200),
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            return ScaleTransition(scale: animation, child: child,);
+                          },
+                          child: Hero(
+                            tag: 'playpause',
+                            key: ValueKey<bool>(isPlaying),
+                            child: SizedBox(
+                              height: 53,
+                              width: 53,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    padding: const EdgeInsets.all(10),
+                                    backgroundColor: palette.secondaryContainer,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                      //side: BorderSide(width: 2, color: palette.primaryLighter)
+                                    )
+                                ),
+                                onPressed: () async {
+                                  HapticFeedback.selectionClick();
+                                  togglePlayPause();
+                                },
+                                child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
+                                  color: palette.onSecondaryContainer, size: 18,),
+
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Hero(
+                            tag: "sliderTag",
+                            child: Material(
+                              color: palette.surface,
+                              child: SliderTheme(
+                                data: SliderTheme.of(context).copyWith(
+                                  trackHeight: 19,
+                                  valueIndicatorColor: palette.inverseSurface,
+                                  thumbColor: palette.secondary,
+                                  activeTrackColor: palette.secondary,
+                                  inactiveTrackColor: palette.secondaryContainer,
+                                  inactiveTickMarkColor: palette.secondary,
+                                  activeTickMarkColor: palette.surface,
+                                  valueIndicatorTextStyle: GoogleFonts.outfit(
+                                    color: palette.onInverseSurface,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  year2023: false
+                                ),
+                                child: Slider(
+                                  value: currentFrameIndex,
+                                  min: 0,
+                                  max: data.radar.times.length - 1.0,
+                                  divisions: data.radar.times.length,
+                                  label: times[currentFrameIndex.toInt()].toString(),
+
+                                  padding: const EdgeInsets.only(left: 20, right: 20),
+
+                                  onChanged: (double value) {
+                                    if (data.settings["Radar haptics"] == "on") {
+                                      HapticFeedback.lightImpact();
+                                    }
+                                    setState(() {
+                                      hasBeenPlayed = true;
+                                      currentFrameIndex = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(

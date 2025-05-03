@@ -48,7 +48,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
 
     ColorScheme palette = data.current.palette;
     return Padding(
-      padding: const EdgeInsets.only(left: 19, right: 19, top: 0, bottom: 50),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 50),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -61,10 +61,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
             padding: const EdgeInsets.only(top: 15, bottom: 0, left: 5),
             child: Wrap(
               spacing: 5.0,
-              children: List<Widget>.generate(
-                4,
-                    (int index) {
-
+              children: List<Widget>.generate(4, (int index) {
                   return ChoiceChip(
                     elevation: 0.0,
                     checkmarkColor: palette.onSecondaryContainer,
