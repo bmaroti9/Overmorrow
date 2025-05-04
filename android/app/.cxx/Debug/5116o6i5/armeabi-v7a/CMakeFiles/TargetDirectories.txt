@@ -1,2 +1,0 @@
-/home/bmaroti9/StudioProjects/Overmorrow7/android/app/.cxx/Debug/5116o6i5/armeabi-v7a/CMakeFiles/edit_cache.dir
-/home/bmaroti9/StudioProjects/Overmorrow7/android/app/.cxx/Debug/5116o6i5/armeabi-v7a/CMakeFiles/rebuild_cache.dir

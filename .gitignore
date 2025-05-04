@@ -9,6 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
+/android/app/.cxx
 
 # IntelliJ related
 *.iml
