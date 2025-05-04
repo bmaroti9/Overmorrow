@@ -156,6 +156,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   String region = "-";
 
   Timer? _debounce;
+  late FocusNode focusNode;
 
   _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
@@ -286,6 +287,13 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   @override
   void initState() {
     super.initState();
+
+    //this is to fix the wierd hero textField interaction
+    //https://github.com/flutter/flutter/issues/106789
+    focusNode = FocusNode();
+    Future.delayed(const Duration(milliseconds: 400), () {
+      focusNode.requestFocus();
+    });
     WidgetsBinding.instance.addPostFrameCallback((_){
       checkIfLocationSafe().then((x) {
         if (x == "enabled") {
@@ -299,6 +307,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
 
   @override
   void dispose() {
+    focusNode.dispose();
     _debounce?.cancel();
     super.dispose();
   }
@@ -320,7 +329,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               return FadeTransition(opacity: animation, child: child);
             },
             child: (text == "") ? AnimatedSwitcher(
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               child: Padding(
                 padding: const EdgeInsets.only(right: 13),
                 child: IconButton(
@@ -339,7 +348,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
           )
         ],
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(105),
+          preferredSize: const Size.fromHeight(103),
           child: Hero(
             tag: 'searchBarHero',
             child: Container(
@@ -362,6 +371,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                         ),
                       ),
                       child: TextField(
+                        focusNode: focusNode,
+                        autofocus: false,
                         onChanged: (String to) async{
                           setState(() {
                             text = to;
@@ -373,7 +384,6 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                           updateLocation('query', submission);
                           Navigator.pop(context);
                         },
-                        autofocus: true,
                         cursorColor: palette.primary,
                         cursorWidth: 2,
                         style: GoogleFonts.outfit(
@@ -434,7 +444,7 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
       List<String> favorites = value;
       if (text == "") {
         return Padding(
-          padding: const EdgeInsets.only(left: 30, top: 10, right: 30, bottom: 50),
+          padding: const EdgeInsets.only(left: 30, top: 10, right: 30, bottom: 40),
           child: AnimationLimiter(
             child: Column(
               children: AnimationConfiguration.toStaggeredList(
