@@ -397,6 +397,89 @@ Widget AlertWidget(var data, context) {
   return Container();
 }
 
+Widget rain15MinuteChart(var data, ColorScheme palette, context) {
+  if (data.minutely_15_precip.t_minus != "") {
+    return Container(
+      margin: const EdgeInsets.only(left: 24, right: 24, top: 15, bottom: 30),
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        color: palette.secondaryContainer,
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                padding:
+                const EdgeInsets.only(right: 3),
+                child: Icon(
+                  Icons.water_drop_outlined,
+                  color: palette.onSecondaryContainer,
+                  size: 20,
+                ),
+              ),
+              comfortatext(data.minutely_15_precip.precip_sum.toStringAsFixed(1),
+                  19, data.settings,
+                  color: palette.primary),
+              comfortatext(
+                  data.settings["Precipitation"], 16, data.settings,
+                  color: palette.primary),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 4),
+                  child: comfortatext(
+                    data.minutely_15_precip.t_minus,
+                    16,
+                    data.settings,
+                    color: palette.onSecondaryContainer),
+                ),
+              ),
+
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20, bottom: 10, left: 15, right: 15),
+            child: SizedBox(
+                height: 40,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                   children: List<Widget>.generate( data.minutely_15_precip.precips.length, (int index)  {
+                    return Container(
+                      width: 4,
+                      height: 4.0 + data.minutely_15_precip.precips[index] * 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: data.minutely_15_precip.precips[index] == 0 ?
+                        palette.outline : palette.primary,
+                      ),
+                    );
+                  }
+                )
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                comfortatext(AppLocalizations.of(context)!.now, 13, data.settings, color: palette.onSurfaceVariant),
+                comfortatext('3${AppLocalizations.of(context)!.hr}', 13, data.settings, color: palette.onSurfaceVariant),
+                comfortatext('6${AppLocalizations.of(context)!.hr}', 13, data.settings, color: palette.onSurfaceVariant)
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+  return Container();
+}
+
 Widget NewRain15MinuteIndicator(var data, context) {
   return Visibility(
     visible: data.minutely_15_precip.t_minus != "",

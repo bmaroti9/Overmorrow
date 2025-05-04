@@ -257,9 +257,11 @@ Widget buildHourlyPrecip(var hour, ColorScheme palette, data) {
             height: 33,
             child: Center(
               child: CircularProgressIndicator(
+                //this seems to be falsely depreciated, wrapping it in the CircularProgressIndicatorTheme
+                //as instructed also trows the same exception
+                year2023: false,
                 value: hour.precip_prob / 100,
                 strokeWidth: 3.5,
-                year2023: false,
                 backgroundColor: palette.outlineVariant,
                 color: palette.secondary,
               ),

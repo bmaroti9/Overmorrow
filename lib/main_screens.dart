@@ -22,6 +22,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/new_forecast.dart';
 import 'package:overmorrow/radar.dart';
@@ -211,6 +212,8 @@ class _NewMainState extends State<NewMain> {
           ),
 
           NewSunriseSunset(data: data, key: Key(data.place), size: size,),
+
+          rain15MinuteChart(data, data.current.palette, context),
 
           NewHourly(data: data),
 
