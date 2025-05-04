@@ -100,7 +100,7 @@ class ImageColorList {
     );
     PaletteGenerator imageColors = await PaletteGenerator.fromImage(
       imageInfo.image,
-      maximumColorCount: 1,
+      maximumColorCount: 2,
       filters: [],
     );
 
@@ -222,9 +222,19 @@ class ColorPalette {
     );
   }
 
-  static ColorScheme getImagePalette(String theme, imageColors) {
+  static ColorScheme getImagePalette(String theme, List<Color> imageColors) {
 
-    Color seedColor = imageColors[0];
+    Color seedColor = Colors.blue;
+    double bestValue = -100000;
+
+    //my second attempt at trying to minimize the number of blue pallets because there are too many otherwise
+    for (int i = 0; i < imageColors.length; i++) {
+      double score = (imageColors[i].r + imageColors[i].g) / max(imageColors[i].b, 0.1);
+      if (score > bestValue) {
+        bestValue = score;
+        seedColor = imageColors[i];
+      }
+    }
 
     if (theme == "auto") {
       var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;

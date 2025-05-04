@@ -127,14 +127,14 @@ class _RadarSmallState extends State<RadarSmall> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: comfortatext(
-                AppLocalizations.of(context)!.radar, 16,
+                AppLocalizations.of(context)!.radar, 17,
                 data.settings,
                 color: palette.onSurface),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(
-              left: 23, right: 23, top: 12, bottom: 10,),
+              left: 23, right: 23, top: 14, bottom: 10,),
           child: AspectRatio(
             aspectRatio: 1.65,
             child: Container(
@@ -182,7 +182,7 @@ class _RadarSmallState extends State<RadarSmall> {
                         ),
                         TileLayer(
                           urlTemplate: data.radar.images[currentFrameIndex
-                              .toInt()] + "/256/{z}/{x}/{y}/2/0_1.png",
+                              .toInt()] + "/256/{z}/{x}/{y}/2/1_1.png",
                         ),
                       ],
                     )
@@ -502,13 +502,12 @@ class _RadarBigState extends State<RadarBig> {
                   ),
                 ),
                 Container(
-                  height: 130,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     color: palette.surface,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 33, right: 25, top: 10, bottom: 10),
+                    padding: const EdgeInsets.all(30),
                     child: Row(
                       children: [
                         AnimatedSwitcher(
@@ -520,8 +519,8 @@ class _RadarBigState extends State<RadarBig> {
                             tag: 'playpause',
                             key: ValueKey<bool>(isPlaying),
                             child: SizedBox(
-                              height: 53,
-                              width: 53,
+                              height: 55,
+                              width: 55,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     elevation: 0.0,
@@ -571,7 +570,7 @@ class _RadarBigState extends State<RadarBig> {
                                   divisions: data.radar.times.length,
                                   label: times[currentFrameIndex.toInt()].toString(),
 
-                                  padding: const EdgeInsets.only(left: 20, right: 20),
+                                  padding: const EdgeInsets.only(left: 30, right: 5),
 
                                   onChanged: (double value) {
                                     if (data.settings["Radar haptics"] == "on") {
@@ -601,7 +600,7 @@ class _RadarBigState extends State<RadarBig> {
               child: Hero(
                 tag: 'switch',
                 child: SizedBox(
-                  height: 55, //the big space looks ugly with a small button
+                  height: 55,
                   width: 55,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(

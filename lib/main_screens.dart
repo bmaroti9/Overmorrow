@@ -182,7 +182,7 @@ class _NewMainState extends State<NewMain> {
                       ),
                       comfortatext(
                           data.current.text, 33, data.settings,
-                          weight: FontWeight.w300,
+                          weight: FontWeight.w400,
                           color: data.current.descColor)
                     ],
                   ),

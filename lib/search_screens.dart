@@ -311,6 +311,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
       appBar: AppBar(
         backgroundColor: palette.surface,
         foregroundColor: palette.primary,
+        surfaceTintColor: palette.outlineVariant,
         elevation: 0,
         actions: [
           AnimatedSwitcher(
@@ -433,7 +434,7 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
       List<String> favorites = value;
       if (text == "") {
         return Padding(
-          padding: const EdgeInsets.only(left: 30, top: 10, right: 30),
+          padding: const EdgeInsets.only(left: 30, top: 10, right: 30, bottom: 50),
           child: AnimationLimiter(
             child: Column(
               children: AnimationConfiguration.toStaggeredList(
@@ -715,7 +716,7 @@ Widget favoritesOrReorder(isEditing, favorites, settings, onFavChanged,
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        left: 10, right: 7, top: 7, bottom: 7),
+                        left: 10, right: 7, top: 10, bottom: 10),
                     child: Row(
                       children: [
                         Expanded(
