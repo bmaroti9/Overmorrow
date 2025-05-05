@@ -165,8 +165,7 @@ class _NewMainState extends State<NewMain> {
         headerData: HeaderData(
             //backgroundColor: WHITE,
             blurContent: false,
-            headerHeight: max((size.height ) * 0.494, 400),
-            //we don't want it to be smaller than 400
+            headerHeight: (size.height ) * 0.5,
             header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),
                 color: BLACK),
             overlay: Stack(

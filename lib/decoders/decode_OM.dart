@@ -111,7 +111,7 @@ double OMGetSunStatus(item) {
   DateTime sunrise = localtime.copyWith(hour: int.parse(splitted1[0]), minute: int.parse(splitted1[1]));
 
   List<String> splitted2 = item["daily"]["sunset"][0].split("T")[1].split(":");
-  DateTime sunset = localtime.copyWith(hour: int.parse(splitted2[0]), minute: int.parse(splitted1[1]));
+  DateTime sunset = localtime.copyWith(hour: int.parse(splitted2[0]), minute: int.parse(splitted2[1]));
 
   int total = sunset.difference(sunrise).inMinutes;
   int passed = localtime.difference(sunrise).inMinutes;
@@ -124,7 +124,7 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
     "latitude": lat.toString(),
     "longitude": lng.toString(),
     "minutely_15" : ["precipitation"],
-    "current": ["relative_humidity_2m", "apparent_temperature"],
+    "current": ["temperature_2m", "weather_code", "relative_humidity_2m", "apparent_temperature"],
     "hourly": ["temperature_2m", "precipitation", "weather_code", "wind_speed_10m", "wind_direction_10m", "uv_index", "precipitation_probability", "wind_gusts_10m"],
     "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "uv_index_max", "precipitation_sum", "precipitation_probability_max", "wind_speed_10m_max", "wind_direction_10m_dominant", "sunrise", "sunset"],
     "timezone": "auto",
@@ -273,10 +273,16 @@ class OMCurrent {
     required this.debugColors,
   });
 
-  static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng, start, dayDif, context) async {
+  static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng, start, dayDif, context, isonline) async {
 
     String currentCondition = oMCurrentTextCorrection(
-        item["hourly"]["weather_code"][start], sunstatus, timenow);
+        item["current"]["weather_code"], sunstatus, timenow);
+
+    //offline mode
+    if (!isonline) {
+      currentCondition = oMCurrentTextCorrection(
+          item["hourly"]["weather_code"][start], sunstatus, timenow);
+    }
 
     ImageService imageService = await ImageService.getImageService(currentCondition, real_loc, settings);
     ColorPalette colorPalette = await ColorPalette.getColorPalette(imageService.image, settings["Color mode"], settings);
@@ -302,7 +308,8 @@ class OMCurrent {
           .round(),
       humidity: item["current"]["relative_humidity_2m"],
       temp: unit_coversion(
-          item["hourly"]["temperature_2m"][start], settings["Temperature"]).round(),
+        isonline ? item["current"]["temperature_2m"] : item["hourly"]["temperature_2m"][start],
+        settings["Temperature"]).round(),
       wind_dir: item["hourly"]["wind_direction_10m"][start],
     );
   }
@@ -887,6 +894,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
   DateTime approximateLocal = DateTime(localtime.year, localtime.month, localtime.day, localtime.hour);
   int start = approximateLocal.difference(DateTime(lastKnowTime.year,
       lastKnowTime.month, lastKnowTime.day)).inHours;
+
   //get day diff
   int dayDif = DateTime(localtime.year, localtime.month, localtime.day).difference(
       DateTime(lastKnowTime.year, lastKnowTime.month, lastKnowTime.day)).inDays;
@@ -929,7 +937,7 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
     hourly72: hourly72,
 
     current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng,
-        start, dayDif, localizations),
+        start, dayDif, localizations, isonline),
     days: days,
 
     lat: lat,
