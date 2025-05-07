@@ -421,10 +421,10 @@ class OM15MinutePrecip {
       double x = item["minutely_15"]["precipitation"][i];
       if (x > 0.0) {
         if (closest == 100) {
-          closest = i + 1;
+          closest = i;
         }
         if (i > end) {
-          end = i + 1;
+          end = i;
         }
       }
       sum += x;
@@ -439,13 +439,15 @@ class OM15MinutePrecip {
 
     sum = max(sum, 0.1); //if there is rain then it shouldn't write 0
 
+    print(("heerreeee", closest, end));
+
     String t_minus = "";
     if (closest != 100) {
-      if (closest <= 2) {
-        if (end == 2) {
+      if (closest <= 1) {
+        if (end == 1) {
           t_minus = localizations.rainInHalfHour;
         }
-        else if (end < 4) {
+        else if (end <= 3) {
           int x = [15, 30, 45][end - 1];
           t_minus = localizations.rainInMinutes(x);
         }
@@ -453,7 +455,7 @@ class OM15MinutePrecip {
           t_minus = localizations.rainInOneHour;
         }
         else {
-          int x = end ~/ 4;
+          int x = (end + 2) ~/ 4;
           t_minus = localizations.rainInHours(x);
         }
       }
@@ -461,11 +463,11 @@ class OM15MinutePrecip {
         int x = [15, 30, 45][closest - 1];
         t_minus = localizations.rainExpectedInMinutes(x);
       }
-      else if (closest ~/ 4 == 1) {
+      else if ((closest + 2) ~/ 4 == 1) {
         t_minus = localizations.rainExpectedInOneHour;
       }
       else {
-        int x = closest ~/ 4;
+        int x = (closest + 2) ~/ 4;
         t_minus = localizations.rainExpectedInHours(x);
       }
     }

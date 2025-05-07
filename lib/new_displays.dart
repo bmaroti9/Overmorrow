@@ -400,7 +400,7 @@ Widget AlertWidget(var data, context) {
 Widget rain15MinuteChart(var data, ColorScheme palette, context) {
   if (data.minutely_15_precip.t_minus != "") {
     return Container(
-      margin: const EdgeInsets.only(left: 24, right: 24, top: 15, bottom: 30),
+      margin: const EdgeInsets.only(left: 23, right: 23, top: 15, bottom: 30),
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),

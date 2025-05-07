@@ -177,7 +177,7 @@ class _NewMainState extends State<NewMain> {
                     children: [
                       const Spacer(),
                       comfortatext(
-                          "${data.current.temp}°", 72, data.settings,
+                          "${data.current.temp}°", 73, data.settings,
                           color: data.current.colorPop, weight: FontWeight.w200,
                       ),
                       comfortatext(
@@ -198,7 +198,6 @@ class _NewMainState extends State<NewMain> {
             )
         ),
         children: [
-
 
           Stack(
             children: [
