@@ -147,8 +147,8 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette) {
               builder: (BuildContext context, BoxConstraints constraints) {
                 final double width = constraints.maxWidth;
 
-                const lowest = 11;
-                const highest = 31;
+                final lowest = data.dailyMinMaxTemp[0];
+                final highest = data.dailyMinMaxTemp[1];
                 const double smallest = 18;
                 final double minPercent = min(max((day.rawMinTemp - lowest) / (highest - lowest), 0), 1);
                 final double maxPercent = min(max((day.rawMaxTemp - lowest) / (highest - lowest), 0), 1);

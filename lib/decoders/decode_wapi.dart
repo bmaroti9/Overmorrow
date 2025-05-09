@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/services/image_service.dart';
 
 import '../Icons/overmorrow_weather_icons3_icons.dart';
@@ -339,7 +340,12 @@ class WapiDay {
   final String text;
   final IconData icon;
   final String name;
-  final String minmaxtemp;
+
+  final int minTemp;
+  final int maxTemp;
+  final double rawMinTemp; //the unconverted numbers used for charts
+  final double rawMaxTemp;
+
   final List<WapiHour> hourly;
   final List<WapiHour> hourly_for_precip;
 
@@ -355,7 +361,12 @@ class WapiDay {
     required this.text,
     required this.icon,
     required this.name,
-    required this.minmaxtemp,
+
+    required this.minTemp,
+    required this.maxTemp,
+    required this.rawMinTemp,
+    required this.rawMaxTemp,
+
     required this.hourly,
     required this.uv,
 
@@ -375,8 +386,12 @@ class WapiDay {
         item["day"]["condition"]["code"], 1, localizations,
     ),
     name: getName(index, settings, localizations),
-    minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings["Temperature"]).round()}°'
-        '/${unit_coversion(item["day"]["mintemp_c"], settings["Temperature"]).round()}°',
+
+    minTemp: unit_coversion(item["day"]["maxtemp_c"], settings["Temperature"]).round(),
+    maxTemp: unit_coversion(item["day"]["mintemp_c"], settings["Temperature"]).round(),
+
+    rawMinTemp: item["day"]["maxtemp_c"],
+    rawMaxTemp: item["day"]["mintemp_c"],
 
     hourly: buildWapiHour(item["hour"], settings, index, approximatelocal, true, localizations),
     hourly_for_precip: buildWapiHour(item["hour"], settings, index, approximatelocal, false, localizations),
@@ -753,6 +768,8 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName, 
     sunstatus: sunstatus,
     aqi: WapiAqi.fromJson(wapi_body),
     radar: await RainviewerRadar.getData(),
+
+    dailyMinMaxTemp: omGetMaxMinTempForDaily(days),
 
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),

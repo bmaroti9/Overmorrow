@@ -175,6 +175,8 @@ class WeatherData {
   final minutely_15_precip;
   final alerts;
 
+  final List<double> dailyMinMaxTemp;
+
   WeatherData({
     required this.place,
     required this.settings,
@@ -195,6 +197,8 @@ class WeatherData {
 
     required this.minutely_15_precip,
     required this.alerts,
+
+    required this.dailyMinMaxTemp
   });
 
   static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider, localizations) async {

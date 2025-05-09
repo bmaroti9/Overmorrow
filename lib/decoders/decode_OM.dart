@@ -61,6 +61,20 @@ String OmAqiTitle(index, localizations) {
   ][index - 1];
 }
 
+List<double> omGetMaxMinTempForDaily(days) {
+  double minTemp = 100;
+  double maxTemp = -100;
+  for (int i = 0; i < days.length; i++) {
+    if (days[i].rawMinTemp < minTemp) {
+      minTemp = days[i].rawMinTemp;
+    }
+    if (days[i].rawMaxTemp > maxTemp) {
+      maxTemp = days[i].rawMaxTemp;
+    }
+  }
+  return [minTemp, maxTemp];
+}
+
 String OMamPmTime(String time) {
   String a = time.split("T")[1];
   List<String> num = a.split(":");
@@ -922,7 +936,6 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
 
   OMSunstatus sunstatus = OMSunstatus.fromJson(oMBody, settings);
 
-
   List<OMDay> days = [];
   List<OMHour> hourly72 = [];
 
@@ -949,6 +962,8 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
         DateTime(localtime.year, localtime.month, localtime.day, localtime.hour, localtime.minute).
         difference(lastKnowTime).inMinutes, localizations),
     alerts: [],
+
+    dailyMinMaxTemp: omGetMaxMinTempForDaily(days),
 
     hourly72: hourly72,
 

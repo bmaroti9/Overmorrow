@@ -289,7 +289,12 @@ class MetNDay {
   final IconData icon;
 
   final String name;
-  final String minmaxtemp;
+
+  final int minTemp;
+  final int maxTemp;
+  final double rawMinTemp; //the unconverted numbers used for charts
+  final double rawMaxTemp;
+
   final List<MetNHour> hourly;
   final List<MetNHour> hourly_for_precip;
 
@@ -308,7 +313,12 @@ class MetNDay {
     required this.icon,
 
     required this.name,
-    required this.minmaxtemp,
+
+    required this.minTemp,
+    required this.maxTemp,
+    required this.rawMinTemp,
+    required this.rawMaxTemp,
+
     required this.hourly,
 
     required this.precip_prob,
@@ -323,6 +333,7 @@ class MetNDay {
   static MetNDay fromJson(item, settings, start, end, index, hourDif, localizations) {
     
     List<int> temperatures = [];
+    List<double> rawTemps = [];
     List<double> windspeeds = [];
     List<int> winddirs = [];
     List<double> precip_mm = [];
@@ -341,6 +352,7 @@ class MetNDay {
     for (int n = start; n < end; n++) {
       MetNHour hour = MetNHour.fromJson(item["properties"]["timeseries"][n], settings, hourDif, localizations);
       temperatures.add(hour.temp);
+      rawTemps.add(hour.raw_temp);
       windspeeds.add(hour.wind);
       winddirs.add(hour.wind_dir);
       uvs.add(hour.uv);
@@ -364,7 +376,10 @@ class MetNDay {
     return MetNDay(
       mm_precip: precip_mm.reduce((a, b) => a + b),
       precip_prob: precipProb,
-      minmaxtemp: "${temperatures.reduce(min)}°/${temperatures.reduce(max)}°",
+      minTemp: temperatures.reduce(min),
+      maxTemp: temperatures.reduce(max),
+      rawMinTemp: rawTemps.reduce(min),
+      rawMaxTemp:  rawTemps.reduce(max),
       hourly: hours,
       hourly_for_precip: hours,
       total_precip: double.parse(precip.reduce((a, b) => a + b).toStringAsFixed(1)),
@@ -657,6 +672,8 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
 
     current: await MetNCurrent.fromJson(MnBody, settings, real_loc, lat, lng, localizations),
     days: days,
+
+    dailyMinMaxTemp: omGetMaxMinTempForDaily(days),
 
     hourly72: hourly72,
 
