@@ -16,6 +16,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'ui_helper.dart';
@@ -64,12 +66,14 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 1, top: 0, bottom: 6),
-            child: comfortatext("daily", 16, data.settings, color: data.current.palette.onSurface),
+            padding: const EdgeInsets.only(left: 1, bottom: 14),
+            child: comfortatext("daily", 17,
+                data.settings,
+                color: data.current.palette.onSurface),
           ),
           ListView.builder(
               shrinkWrap: true,
-              padding: const EdgeInsets.only(top: 5, bottom: 5),
+              padding: const EdgeInsets.only(top: 0, bottom: 0),
               physics: const NeverScrollableScrollPhysics(),
               itemCount: data.days.length,
               itemBuilder: (context, index) {
@@ -80,12 +84,12 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
                       decoration: BoxDecoration(
                           borderRadius:
                           index == 0 ? const BorderRadius.vertical(
-                              top: Radius.circular(20),
-                              bottom: Radius.circular(8))
+                              top: Radius.circular(33),
+                              bottom: Radius.circular(10))
                               : index == data.days.length - 1 ? const BorderRadius
-                              .vertical(bottom: Radius.circular(20),
-                              top: Radius.circular(8))
-                              : BorderRadius.circular(8),
+                              .vertical(bottom: Radius.circular(33),
+                              top: Radius.circular(10))
+                              : BorderRadius.circular(10),
                           color: data.current.palette.surfaceContainer),
                       child: AnimatedSize(
                           duration: const Duration(milliseconds: 250),
@@ -105,18 +109,18 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
 
 Widget dailyCollapsed(var data, var day, ColorScheme palette) {
   return Padding(
-    padding: const EdgeInsets.all(20.0),
+    padding: const EdgeInsets.only(left: 22, right: 22, top: 22, bottom: 22),
     child: Row(
       children: [
         SizedBox(
-          width: 50,
+          width: 45,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               comfortatext(day.name.split(", ")[0], 18,
                   data.settings,
-                  color: palette.primary),
+                  color: palette.secondary),
               comfortatext(day.name.split(", ")[1], 14,
                   data.settings,
                   color: palette.outline),
@@ -124,27 +128,47 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette) {
           ),
         ),
         Icon(day.icon, size: 37, color: palette.onSurface,),
+        SizedBox(
+          width: 40,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: comfortatext("${day.minTemp.toString()}°", 18, data.settings, color: palette.primary)
+          ),
+        ),
         Expanded(
           child: Container(
-            margin: EdgeInsets.all(13),
-            height: 20,
+            margin: const EdgeInsets.only(left: 12, right: 12),
+            height: 18,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: palette.surfaceContainerHighest
             ),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                width: 40,
-                height: 6,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: palette.secondary
-                ),
-              ),
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                final double width = constraints.maxWidth;
+
+                const lowest = 11;
+                const highest = 31;
+                const double smallest = 18;
+                final double minPercent = min(max((day.rawMinTemp - lowest) / (highest - lowest), 0), 1);
+                final double maxPercent = min(max((day.rawMaxTemp - lowest) / (highest - lowest), 0), 1);
+                return Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    margin: EdgeInsets.only(left: min(width * minPercent, width - smallest)),
+                    width: max(smallest, (maxPercent - minPercent) * width),
+                    height: 18,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: palette.secondaryFixedDim
+                    ),
+                  ),
+                );
+              }
             ),
           )
-        )
+        ),
+        comfortatext("${day.maxTemp.toString()}°", 18, data.settings, color: palette.primary),
       ],
     ),
   );

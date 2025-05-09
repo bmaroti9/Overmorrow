@@ -125,6 +125,7 @@ Widget hourBoxes(hours, data, _value) {
             horizontalOffset: 60.0,
             child: FadeInAnimation(
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(3),
@@ -152,11 +153,9 @@ Widget hourBoxes(hours, data, _value) {
                         );
                       },
                       child: childWidgets[_value],
-
                     ),
                   ),
                   dividerWidget(hour, palette, data)
-
                 ],
               ),
             ),
@@ -171,31 +170,9 @@ Widget dividerWidget(hour, ColorScheme palette, data) {
   if (hour.time == "11pm" || hour.time == "11:00") {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
-      child: Column(
-        children: [
-          Container(
-            width: 2,
-            height: 20,
-            decoration: BoxDecoration(
-              color: palette.tertiary,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 3, bottom: 3, left: 3),
-            child: RotatedBox(
-              quarterTurns: 1,
-              child: comfortatext("monday", 18, data.settings, color: palette.tertiary, weight: FontWeight.w400)
-            ),
-          ),
-          Expanded(
-            child: Container(
-              width: 2,
-              decoration: BoxDecoration(
-                color: palette.tertiary,
-              ),
-            ),
-          ),
-        ],
+      child: RotatedBox(
+        quarterTurns: -1,
+        child: comfortatext("tomorrow", 18, data.settings, color: palette.secondary, weight: FontWeight.w500)
       ),
     );
   }

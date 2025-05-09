@@ -553,7 +553,7 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
                             Navigator.pop(context);
                           },
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 7, top: 6, bottom: 6),
+                            padding: const EdgeInsets.only(left: 10, right: 7, top: 5, bottom: 5),
                             child:
                             Row(
                               children: [
@@ -726,7 +726,7 @@ Widget favoritesOrReorder(isEditing, favorites, settings, onFavChanged,
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        left: 10, right: 7, top: 10, bottom: 10),
+                        left: 10, right: 7, top: 8, bottom: 8),
                     child: Row(
                       children: [
                         Expanded(

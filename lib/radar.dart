@@ -233,7 +233,7 @@ class _RadarSmallState extends State<RadarSmall> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 34, right: 42, bottom: 50, top: 5),
+          padding: const EdgeInsets.only(left: 34, right: 44, bottom: 50, top: 5),
           child: Row(
             children: [
               AnimatedSwitcher(
@@ -487,9 +487,9 @@ class _RadarBigState extends State<RadarBig> {
                                 decoration: BoxDecoration(
                                     color: radarColors[index],
                                     borderRadius: index == 0
-                                        ? const BorderRadius.only(topLeft: Radius.circular(6), bottomLeft: Radius.circular(6))
+                                        ? const BorderRadius.only(topLeft: Radius.circular(7), bottomLeft: Radius.circular(7))
                                         : index == (radarColors.length - 1)
-                                        ? const BorderRadius.only(topRight: Radius.circular(6), bottomRight: Radius.circular(6))
+                                        ? const BorderRadius.only(topRight: Radius.circular(7), bottomRight: Radius.circular(7))
                                         : BorderRadius.circular(0)
 
                                 ),

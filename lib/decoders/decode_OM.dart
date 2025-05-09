@@ -322,7 +322,12 @@ class OMDay {
   final IconData icon;
 
   final String name;
-  final String minmaxtemp;
+
+  final int minTemp;
+  final int maxTemp;
+  final double rawMinTemp; //the unconverted numbers used for charts
+  final double rawMaxTemp;
+
   final List<OMHour> hourly;
   final List<OMHour> hourly_for_precip;
 
@@ -341,7 +346,12 @@ class OMDay {
     required this.icon,
 
     required this.name,
-    required this.minmaxtemp,
+
+    required this.minTemp,
+    required this.maxTemp,
+    required this.rawMinTemp,
+    required this.rawMaxTemp,
+
     required this.hourly,
 
     required this.precip_prob,
@@ -365,8 +375,12 @@ class OMDay {
         name: oMGetName(index, settings, item, dayDif, localizations),
         windspeed: unit_coversion(item["daily"]["wind_speed_10m_max"][index], settings["Wind"]).round(),
         total_precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][index], settings["Precipitation"]).toStringAsFixed(1)),
-        minmaxtemp: "${unit_coversion(item["daily"]["temperature_2m_min"][index], settings["Temperature"]).round().toString()}°"
-            "/${unit_coversion(item["daily"]["temperature_2m_max"][index], settings["Temperature"]).round().toString()}°",
+
+        minTemp: unit_coversion(item["daily"]["temperature_2m_min"][index], settings["Temperature"]).round(),
+        maxTemp: unit_coversion(item["daily"]["temperature_2m_max"][index], settings["Temperature"]).round(),
+        rawMinTemp: item["daily"]["temperature_2m_min"][index],
+        rawMaxTemp: item["daily"]["temperature_2m_max"][index],
+
         precip_prob: item["daily"]["precipitation_probability_max"][index] ?? 0,
         mm_precip: item["daily"]["precipitation_sum"][index],
         hourly_for_precip: buildHours(index, false, item, settings, sunstatus, approximatelocal, localizations),

@@ -443,14 +443,14 @@ Widget rain15MinuteChart(var data, ColorScheme palette, context) {
           Padding(
             padding: const EdgeInsets.only(top: 20, bottom: 10, left: 15, right: 15),
             child: SizedBox(
-                height: 40,
+                height: 45,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                    children: List<Widget>.generate( data.minutely_15_precip.precips.length, (int index)  {
                     return Container(
-                      width: 4,
-                      height: 4.0 + data.minutely_15_precip.precips[index] * 40,
+                      width: 4.5,
+                      height: 4.5 + data.minutely_15_precip.precips[index] * 30,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: data.minutely_15_precip.precips[index] == 0 ?
