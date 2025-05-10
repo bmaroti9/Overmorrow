@@ -60,6 +60,7 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    const daysToShow = 7;
     return Padding(
       padding: const EdgeInsets.only(left: 24, right: 24, bottom: 25),
       child: Column(
@@ -75,28 +76,34 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
               shrinkWrap: true,
               padding: const EdgeInsets.only(top: 0, bottom: 0),
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: data.days.length,
+              itemCount: daysToShow,
               itemBuilder: (context, index) {
                 final day = data.days[index];
                 return Padding(
                   padding: const EdgeInsets.only(top: 3, bottom: 3),
-                  child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius:
-                          index == 0 ? const BorderRadius.vertical(
-                              top: Radius.circular(33),
-                              bottom: Radius.circular(10))
-                              : index == data.days.length - 1 ? const BorderRadius
-                              .vertical(bottom: Radius.circular(33),
-                              top: Radius.circular(10))
-                              : BorderRadius.circular(10),
-                          color: data.current.palette.surfaceContainer),
-                      child: AnimatedSize(
-                          duration: const Duration(milliseconds: 250),
-                          curve: Curves.easeInOut,
-                          child: expand[index] ? dailyExpanded()
-                              : dailyCollapsed(data, day, data.current.palette)
-                      )
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      _onExpandTapped(index);
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius:
+                            index == 0 ? const BorderRadius.vertical(
+                                top: Radius.circular(33),
+                                bottom: Radius.circular(10))
+                                : index == daysToShow - 1 ? const BorderRadius
+                                .vertical(bottom: Radius.circular(33),
+                                top: Radius.circular(10))
+                                : BorderRadius.circular(10),
+                            color: data.current.palette.surfaceContainer),
+                        child: AnimatedSize(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeInOut,
+                            child: expand[index] ? dailyExpanded(day, data, data.current.palette)
+                                : dailyCollapsed(data, day, data.current.palette, index, daysToShow)
+                        )
+                    ),
                   ),
                 );
               }
@@ -107,9 +114,12 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
   }
 }
 
-Widget dailyCollapsed(var data, var day, ColorScheme palette) {
+Widget dailyCollapsed(var data, var day, ColorScheme palette, int index, int daysToShow) {
   return Padding(
-    padding: const EdgeInsets.only(left: 22, right: 22, top: 22, bottom: 22),
+    padding: EdgeInsets.only(left: 21, right: 20,
+      top: index == 0 ? 22 : 21, //evens out the top and bottom sizes with bigger border radii
+      bottom: index == (daysToShow - 1) ? 22 : 21
+    ),
     child: Row(
       children: [
         SizedBox(
@@ -118,10 +128,10 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette) {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              comfortatext(day.name.split(", ")[0], 18,
+              comfortatext(day.name.split(", ")[0], 19,
                   data.settings,
                   color: palette.secondary),
-              comfortatext(day.name.split(", ")[1], 14,
+              comfortatext(day.name.split(", ")[1], 13,
                   data.settings,
                   color: palette.outline),
             ],
@@ -169,12 +179,50 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette) {
           )
         ),
         comfortatext("${day.maxTemp.toString()}°", 18, data.settings, color: palette.primary),
+        Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: Icon(Icons.expand_more, size: 22, color: palette.onSurface,),
+        )
       ],
     ),
   );
 }
 
 
-Widget dailyExpanded() {
-  return Container();
+Widget dailyExpanded(var day, data, ColorScheme palette) {
+  return Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            comfortatext("${day.name.split(", ")[0]}, ", 20, data.settings, color: palette.secondary),
+            comfortatext(day.name.split(", ")[1], 16, data.settings, color: palette.outline),
+            const Spacer(),
+            Icon(Icons.expand_less, size: 22, color: palette.onSurface,),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: Row(
+            children: [
+              Icon(day.icon, size: 37, color: palette.onSurface,),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: comfortatext(day.text, 22, data.settings, color: palette.onSurface),
+              ),
+              const Spacer(),
+              Icon(Icons.keyboard_arrow_down, size: 18, color: palette.outline,),
+              comfortatext("${day.minTemp.toString()}°", 18, data.settings, color: palette.primary),
+              const SizedBox(width: 5,),
+              Icon(Icons.keyboard_arrow_up, size: 18, color: palette.outline,),
+              comfortatext("${day.maxTemp.toString()}°", 18, data.settings, color: palette.primary)
+            ],
+          ),
+        )
+      ],
+    ),
+  );
 }

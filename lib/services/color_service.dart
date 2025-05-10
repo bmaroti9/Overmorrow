@@ -141,18 +141,20 @@ class ColorPalette {
     //if the desc can keep the surface color or has to adapt to help contrast
     bool descUnique = surfaceDif >= 1.9;
 
-    double dif = difFromBackColors(palette.primaryFixedDim, regionColors);
-    if (dif >= 1.9) {
-      return [palette.primaryFixedDim, descUnique ? palette.surface : palette.primaryFixedDim];
-    }
+    //predefined list of colors in order that still match the color scheme
+    final colorList = [palette.primaryFixedDim, palette.surface, palette.secondaryContainer,
+      palette.primaryContainer, palette.primary, palette.secondary, palette.onSurface
+    ];
 
-    if (surfaceDif >= 1.9) {
-      return [palette.surface, palette.surface];
-    }
+    double dif;
 
-    dif = difFromBackColors(palette.primary, regionColors);
-    if (dif >= 1.9) {
-      return [palette.primary, descUnique ? palette.surface : palette.primary];
+    Color color;
+    for (int i = 0; i < colorList.length; i++) {
+      color = colorList[i];
+      dif = difFromBackColors(color, regionColors);
+      if (dif >= 1.9) {
+        return [color, descUnique ? palette.surface : color];
+      }
     }
 
     //at this point neither of the predefined colors have enough contrast
