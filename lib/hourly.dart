@@ -26,21 +26,28 @@ import 'ui_helper.dart';
 
 class NewHourly extends StatefulWidget {
   final data;
+  final hours;
+  final addDayDivider;
+  final elevated;
 
-  NewHourly({Key? key, required this.data}) : super(key: key);
+  NewHourly({Key? key, required this.data, required this.hours, required this.addDayDivider, required this.elevated}) : super(key: key);
 
   @override
-  _NewHourlyState createState() => _NewHourlyState(data);
+  _NewHourlyState createState() => _NewHourlyState(data, hours, addDayDivider, elevated);
 }
 
 class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixin {
   final data;
+  final hours;
+  final addDayDivider;
+  final elevated;
+
   int _value = 0;
 
   @override
   bool get wantKeepAlive => true;
 
-  _NewHourlyState(this.data);
+  _NewHourlyState(this.data, this.hours, this.addDayDivider, this.elevated);
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +55,15 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
 
     ColorScheme palette = data.current.palette;
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 40),
+      padding: elevated ? const EdgeInsets.all(0)
+          : const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 40),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
           SizedBox(
             height: 196,
-            child: hourBoxes(data.hourly72, data, _value),
+            child: hourBoxes(hours, data, _value, addDayDivider, elevated),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 0, left: 5),
@@ -69,7 +77,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
                       if (index == _value) {
                         return palette.secondaryContainer;
                       }
-                      return palette.surface;
+                      return elevated ? palette.surfaceContainer : palette.surface;
                     }),
                     side: BorderSide(
                         color: index == _value ? palette.secondaryContainer : palette.outlineVariant,
@@ -102,7 +110,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
   }
 }
 
-Widget hourBoxes(hours, data, _value) {
+Widget hourBoxes(hours, data, _value, addDayDivider, elevated) {
   ColorScheme palette = data.current.palette;
 
   return AnimationLimiter(
@@ -145,7 +153,7 @@ Widget hourBoxes(hours, data, _value) {
                               width: 67,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(40),
-                                color: palette.surfaceContainer,
+                                color: elevated ? palette.surfaceContainerHighest : palette.surfaceContainer,
                               ),
                               child: child,
                             ),
@@ -155,7 +163,7 @@ Widget hourBoxes(hours, data, _value) {
                       child: childWidgets[_value],
                     ),
                   ),
-                  dividerWidget(hour, palette, data)
+                  dividerWidget(hour, palette, data, addDayDivider)
                 ],
               ),
             ),
@@ -166,8 +174,8 @@ Widget hourBoxes(hours, data, _value) {
   );
 }
 
-Widget dividerWidget(hour, ColorScheme palette, data) {
-  if (hour.time == "11pm" || hour.time == "11:00") {
+Widget dividerWidget(hour, ColorScheme palette, data, addDayDivider) {
+  if (addDayDivider && hour.time == "11pm" || hour.time == "11:00") {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
       child: RotatedBox(

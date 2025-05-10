@@ -27,21 +27,21 @@ import '../l10n/app_localizations.dart';
 
 
 
-Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0, iconSize = 21.0}) {
+Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0, iconSize = 16.0}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Icon(icon,
-          color: data.current.primaryLight, size: iconSize),
+          color: data.current.palette.primary, size: iconSize),
       Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 4, top: 3),
-            child: comfortatext(number.toString(), 18, data.settings,
-                color: data.current.primary),
+            padding: const EdgeInsets.only(left: 4),
+            child: comfortatext(number.toString(), 17, data.settings,
+                color: data.current.palette.onSecondaryContainer),
           ),
-          comfortatext(addon, 15, data.settings, color: data.current.primary)
+          comfortatext(addon, 15, data.settings, color: data.current.palette.onSecondaryContainer)
         ],
       ),
       if (addWind) Padding(
@@ -49,7 +49,7 @@ Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0
           child: RotationTransition(
               turns: AlwaysStoppedAnimation(windDir / 360),
               child: Icon(Icons.arrow_circle_right_outlined,
-                color: data.current.primaryLight, size: 20)
+                color: data.current.palette.primary, size: 18)
           )
       ),
     ],

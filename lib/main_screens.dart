@@ -213,7 +213,7 @@ class _NewMainState extends State<NewMain> {
 
           rain15MinuteChart(data, data.current.palette, context),
 
-          NewHourly(data: data),
+          NewHourly(data: data, hours: data.hourly72, addDayDivider: true, elevated: false,),
 
           RadarSmall(data: data),
 
