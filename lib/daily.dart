@@ -137,8 +137,8 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette) {
         ),
         Expanded(
           child: Container(
-            margin: const EdgeInsets.only(left: 12, right: 12),
-            height: 18,
+            margin: const EdgeInsets.only(left: 14, right: 14),
+            height: 16,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: palette.surfaceContainerHighest
@@ -157,7 +157,7 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette) {
                   child: Container(
                     margin: EdgeInsets.only(left: min(width * minPercent, width - smallest)),
                     width: max(smallest, (maxPercent - minPercent) * width),
-                    height: 18,
+                    height: 16,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: palette.secondaryFixedDim
