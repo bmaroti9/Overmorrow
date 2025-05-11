@@ -134,9 +134,9 @@
   "@windLowercase": {},
   "uvLowercase": "uv",
   "@uvLowercase": {},
-  "goodAqiDesc": "La qualité de l'air est excellente; aucun risque pour la santé.",
+  "goodAqiDesc": "La qualité de l'air est excellente ; il n'y a pas de risque pour la santé.",
   "@goodAqiDesc": {},
-  "fairAqiDesc": "Qualité de l'air acceptable; risque mineur pour les personnes sensibles.",
+  "fairAqiDesc": "Qualité de l'air acceptable ; risque mineur pour les personnes sensibles.",
   "@fairAqiDesc": {},
   "moderateAqiDesc": "Les personnes sensibles peuvent ressentir des effets légers.",
   "@moderateAqiDesc": {},
@@ -144,7 +144,7 @@
   "@poorAqiDesc": {},
   "veryPoorAqiDesc": "Effets graves sur la santé pour tout le monde.",
   "@veryPoorAqiDesc": {},
-  "unhealthyAqiDesc": "Conditions d'urgence; effets graves sur la santé pour tout le monde.",
+  "unhealthyAqiDesc": "Conditions d'urgence ; effets graves sur la santé pour tout le monde.",
   "@unhealthyAqiDesc": {},
   "photoByXOnUnsplash": "Photo, de ,x, sur ,Unsplash",
   "@photoByXOnUnsplash": {},
@@ -255,5 +255,73 @@
     }
   },
   "airQualityLowercase": "qualité de l'air",
-  "@airQualityLowercase": {}
+  "@airQualityLowercase": {},
+  "urgency": "urgence",
+  "@urgency": {},
+  "areas": "zones",
+  "@areas": {},
+  "hazy": "brumeux",
+  "@hazy": {},
+  "veryHazy": "très brumeux",
+  "@veryHazy": {},
+  "poweredByOpenMeteo": "alimenté par open-meteo",
+  "@poweredByOpenMeteo": {
+    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+  },
+  "rainInMinutes": "la pluie dans les prochaines {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "mise à jour, {days, plural, =1 {1 day} other {{days} days}}il y a",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXHoursAgo": "mise à jour ,{hours, plural, =1 {1 hour} other {{hours} hours}}il y a",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "extremelyHazy": "extrêmement brumeux",
+  "@extremelyHazy": {},
+  "rainInHours": "la pluie dans la prochaine {hours, plural, =1 {hour} other {{hours} hours}}",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "helpTranslate": "aidez à traduire",
+  "@helpTranslate": {},
+  "alertsCapital": "Alertes",
+  "@alertsCapital": {},
+  "buyMeACoffee": "Achetez-moi un café !",
+  "@buyMeACoffee": {},
+  "donationPageTextNew": "Overmorrow a toujours été conçu comme une application totalement gratuite, sans publicité ni achat d'application. \n \nSi vous souhaitez l'utiliser comme ça, n'hésitez pas à le faire. \n \nCependant, si vous aimez l'utiliser, pensez à donner un petit pourboire. \n\nMerci de votre compréhension !",
+  "@donationPageTextNew": {},
+  "radarHaptics": "Haptique des radars",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
+  },
+  "severity": "sévérité",
+  "@severity": {},
+  "certainty": "certitude",
+  "@certainty": {},
+  "slightlyHazy": "légèrement brumeux",
+  "@slightlyHazy": {}
 }
