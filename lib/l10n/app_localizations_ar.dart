@@ -231,7 +231,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get unhealthyAqiDesc => 'ظروف طارئة، آثار صحية شديدة للجميع.';
 
   @override
-  String get photoByXOnUnsplash => 'صورة، بواسطة ،x، على ،Unsplash';
+  String get photoByXOnUnsplash => 'صورة, بواسطة ,x, على ,Unsplash';
 
   @override
   String get developedBy => 'تطوير:';

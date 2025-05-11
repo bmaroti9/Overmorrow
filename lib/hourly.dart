@@ -82,7 +82,6 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
                     side: BorderSide(
                         color: index == _value ? palette.secondaryContainer : palette.outlineVariant,
                         width: 1.6),
-                    //translation(['temp', 'precip', 'wind', 'uv'][index], data.settings["Language"])
                     label: comfortatext(
                         [
                           "sum",

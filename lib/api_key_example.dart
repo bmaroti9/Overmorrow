@@ -18,10 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 //USAGE:
 //To test this project with your own api key, first rename this file to api_key.dart.
-//Then add your own api key from weatherapi.com below:
+//Then add your own api keys below:
 
-//IMPORTANT: Overmorrow has two weather providers (open-meteo and weatherapi)
-//but only weatherapi requires an api key. You don't need an api key for open-meteo.
+//IMPORTANT: Overmorrow has 3 weather providers (open-meteo and weatherapi and met-norway)
+//but only weatherapi requires an api key. You don't need an api key for open-meteo or met-norway.
 
 const String wapi_key = "YourWeatherApiKey"; //your api key from weatherapi.com
 //the app works without this if you only use the open-meteo provider

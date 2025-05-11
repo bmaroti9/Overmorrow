@@ -197,8 +197,8 @@ class _RadarSmallState extends State<RadarSmall> {
                       child: Hero(
                         tag: 'switch',
                         child: SizedBox(
-                          height: 53,
-                          width: 53,
+                          height: 55,
+                          width: 55,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(10),
@@ -245,8 +245,8 @@ class _RadarSmallState extends State<RadarSmall> {
                   tag: 'playpause',
                   key: ValueKey<bool>(isPlaying),
                   child: SizedBox(
-                    height: 56,
-                    width: 56,
+                    height: 58,
+                    width: 58,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           elevation: 0.0,
@@ -519,8 +519,8 @@ class _RadarBigState extends State<RadarBig> {
                             tag: 'playpause',
                             key: ValueKey<bool>(isPlaying),
                             child: SizedBox(
-                              height: 57,
-                              width: 57,
+                              height: 58,
+                              width: 58,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     elevation: 0.0,

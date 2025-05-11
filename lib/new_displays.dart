@@ -352,59 +352,69 @@ Widget AqiWidget(var data, ColorScheme palette, context) {
           ),
         ),
       ),
-      Container(
-        padding: const EdgeInsets.all(20),
-        margin: const EdgeInsets.only(left: 25, right: 25, top: 14),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          //color: palette.surfaceContainer,
-          border: Border.all(color: palette.outlineVariant, width: 2)
-        ),
-        child: Row(
-          children: [
-            Container(
-              height: 85,
-              width: 85,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: palette.secondaryContainer,
+      GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: (){
+          HapticFeedback.lightImpact();
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AllergensPage(data: data))
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          margin: const EdgeInsets.only(left: 25, right: 25, top: 14),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            //color: palette.surfaceContainer,
+            border: Border.all(color: palette.outlineVariant, width: 2)
+          ),
+          child: Row(
+            children: [
+              Container(
+                height: 85,
+                width: 85,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: palette.secondaryContainer,
+                ),
+                margin: const EdgeInsets.only(right: 20),
+                child: Center(
+                    child: comfortatext(data.aqi.aqi_index.toString(), 24, data.settings,
+                        color: palette.onSecondaryContainer)
+                ),
               ),
-              margin: const EdgeInsets.only(right: 20),
-              child: Center(
-                  child: comfortatext(data.aqi.aqi_index.toString(), 24, data.settings,
-                      color: palette.onSecondaryContainer)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    comfortatext(
+                      data.aqi.aqi_title, 19, data.settings, color: palette.secondary, align: TextAlign.left,
+                      weight: FontWeight.w500,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6, left: 0),
+                      child: comfortatext(data.aqi.aqi_desc, 14, data.settings,
+                          color: palette.outline,
+                          weight: FontWeight.w500),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  comfortatext(
-                    data.aqi.aqi_title, 19, data.settings, color: palette.secondary, align: TextAlign.left,
-                    weight: FontWeight.w500,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6, left: 0),
-                    child: comfortatext(data.aqi.aqi_desc, 14, data.settings,
-                        color: palette.outline,
-                        weight: FontWeight.w500),
-                  ),
-                ],
+              IconButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AllergensPage(data: data))
+                  );
+                },
+                icon: Icon(Icons.keyboard_arrow_right_rounded, color: palette.primary,),
               ),
-            ),
-            IconButton(
-              onPressed: () {
-                HapticFeedback.lightImpact();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AllergensPage(data: data))
-                );
-              },
-              icon: Icon(Icons.keyboard_arrow_right_rounded, color: palette.primary,),
-            ),
-          ],
-        ),
+            ],
+          ),
 
+        ),
       ),
     ],
   );
