@@ -97,7 +97,7 @@ Widget pollenWidget(IconData icon, String name, double value, data, ColorScheme 
               color: palette.secondaryContainer,
             ),
             padding: const EdgeInsets.only(top: 8, bottom: 8),
-            width: 65,
+            width: 70,
             child: Center(child: comfortatext(severity, 15, data.settings, color: palette.onSecondaryContainer))
         ),
       ],
@@ -218,7 +218,7 @@ class _AllergensPageState extends State<AllergensPage> {
               },
             ),
             title: comfortatext(AppLocalizations.of(context)!.airQuality, 30, data.settings,
-                color: palette.primary),
+                color: palette.secondary),
             backgroundColor: palette.surface,
             pinned: false,
           ),
@@ -397,8 +397,8 @@ class _AllergensPageState extends State<AllergensPage> {
                                       color: palette.surfaceContainer,
                                       borderRadius: BorderRadius.circular(33),
                                     ),
-                                    height: 115,
-                                    padding: const EdgeInsets.only(left: 14, top: 14, right: 10, bottom: 14),
+                                    height: 120,
+                                    padding: const EdgeInsets.all(22),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -406,7 +406,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                             color: palette.onSurface),
                                         const Spacer(),
                                         comfortatext(extendedAqi.european_aqi.toString(), 25, data.settings,
-                                            color: palette.primary, weight: FontWeight.w400),
+                                            color: palette.secondary, weight: FontWeight.w400),
                                         Padding(
                                           padding: const EdgeInsets.only(left: 2, top: 1),
                                           child: comfortatext(extendedAqi.european_desc, 15, data.settings,
@@ -426,8 +426,8 @@ class _AllergensPageState extends State<AllergensPage> {
                                       color: palette.surfaceContainer,
                                       borderRadius: BorderRadius.circular(33),
                                     ),
-                                    height: 115,
-                                    padding: const EdgeInsets.only(left: 14, top: 14, right: 10, bottom: 14),
+                                    height: 120,
+                                    padding: const EdgeInsets.all(22),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -435,7 +435,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                             color: palette.onSurface),
                                         const Spacer(),
                                         comfortatext(extendedAqi.us_aqi.toString(), 25, data.settings,
-                                            color: palette.primary, weight: FontWeight.w400),
+                                            color: palette.secondary, weight: FontWeight.w400),
                                         Padding(
                                           padding: const EdgeInsets.only(left: 2, top: 1),
                                           child: comfortatext(extendedAqi.us_desc, 15, data.settings,
@@ -466,23 +466,21 @@ class _AllergensPageState extends State<AllergensPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 4, right: 4, bottom: 10),
                                   child: SizedBox(
-                                    height: 130,
+                                    height: 150,
                                     child: Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(22),
-                                            color: extendedAqi.dailyAqi[index] == highestAqi ? palette.surface : palette.secondary,
-                                            border: Border.all(color: extendedAqi.dailyAqi[index] == highestAqi ? palette.secondary
-                                                : palette.surface, width: 2)
+                                            borderRadius: BorderRadius.circular(30),
+                                            color: extendedAqi.dailyAqi[index] == highestAqi ? palette.secondary : palette.secondaryContainer,
                                         ),
-                                        width: 43,
+                                        width: 50,
                                         alignment: Alignment.topCenter,
-                                        padding: const EdgeInsets.only(top: 12),
+                                        padding: const EdgeInsets.only(top: 16),
                                         //tried to do some null safety and not allowing the bars to be too short
-                                        height: max(110 / max(highestAqi, 1) * extendedAqi.dailyAqi[index], 42),
+                                        height: max(130 / max(highestAqi, 1) * extendedAqi.dailyAqi[index], 42),
                                         child: comfortatext(extendedAqi.dailyAqi[index].toString(), 16, data.settings,
-                                            color: extendedAqi.dailyAqi[index] == highestAqi ? palette.secondary : palette.surface,
+                                            color: extendedAqi.dailyAqi[index] == highestAqi ? palette.onSecondary : palette.onSecondaryContainer,
                                             weight: FontWeight.w600),
                                       ),
                                     ),
@@ -508,10 +506,10 @@ class _AllergensPageState extends State<AllergensPage> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                       border: Border.all(width: 1.5, color: palette.outlineVariant),
-                                      borderRadius: BorderRadius.circular(18),
+                                      borderRadius: BorderRadius.circular(33),
                                     ),
                                     height: 125,
-                                    padding: const EdgeInsets.only(left: 14, top: 14, right: 10, bottom: 14),
+                                    padding: const EdgeInsets.all(22),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -543,10 +541,10 @@ class _AllergensPageState extends State<AllergensPage> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                       border: Border.all(width: 1.5, color: palette.outlineVariant),
-                                      borderRadius: BorderRadius.circular(18),
+                                      borderRadius: BorderRadius.circular(33),
                                     ),
                                     height: 125,
-                                    padding: const EdgeInsets.only(left: 14, top: 14, right: 10, bottom: 14),
+                                    padding: const EdgeInsets.all(22),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -581,8 +579,8 @@ class _AllergensPageState extends State<AllergensPage> {
                       Align(
                         alignment: Alignment.center,
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 60, bottom: 70),
-                          child: comfortatext(AppLocalizations.of(context)!.poweredByOpenMeteo, 15, data.settings, color: palette.outline),
+                          padding: const EdgeInsets.only(top: 70, bottom: 70),
+                          child: comfortatext(AppLocalizations.of(context)!.poweredByOpenMeteo, 16, data.settings, color: palette.outline),
                         ),
                       )
 
