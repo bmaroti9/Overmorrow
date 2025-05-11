@@ -440,7 +440,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
 
 Widget providerSelector(settings, updateLocation, ColorScheme palette, provider, latlng, real_loc, context) {
   return Padding(
-    padding: const EdgeInsets.only(left: 23, right: 23, bottom: 30, top: 5),
+    padding: const EdgeInsets.only(left: 24, right: 24, bottom: 30, top: 5),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -459,9 +459,9 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
           child: Container(
             decoration: BoxDecoration(
               color: palette.surfaceContainer,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(33),
             ),
-            padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
+            padding: const EdgeInsets.only(left: 23, right: 23, top: 12, bottom: 12),
             child: DropdownButton(
               underline: Container(),
               onTap: () {
@@ -472,10 +472,10 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
                 padding: const EdgeInsets.only(left:5),
                 child: Icon(Icons.arrow_drop_down_circle_outlined, color: palette.primary, size: 22,),
               ),
-              style: GoogleFonts.comfortaa(
-                color: palette.primary,
-                fontSize: 18 * getFontSize(settings["Font size"]),
-                fontWeight: FontWeight.w500,
+              style: GoogleFonts.outfit(
+                color: palette.secondary,
+                fontSize: 20 * getFontSize(settings["Font size"]),
+                fontWeight: FontWeight.w400,
               ),
               //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
               value: provider.toString(),

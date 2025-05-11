@@ -23,6 +23,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/new_forecast.dart';
 import 'package:overmorrow/radar.dart';
@@ -163,39 +164,39 @@ class _NewMainState extends State<NewMain> {
           await updateLocation("${data.lat}, ${data.lng}", data.real_loc, time: 400);
         },
         headerData: HeaderData(
-            //backgroundColor: WHITE,
-            blurContent: false,
-            headerHeight: (size.height ) * 0.495,
-            header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),
-                color: BLACK),
-            overlay: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 26, right: 25, bottom: 26),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Spacer(),
-                      comfortatext(
-                          "${data.current.temp}°", 75, data.settings,
-                          color: data.current.colorPop, weight: FontWeight.w200,
-                      ),
-                      comfortatext(
-                          data.current.text, 33, data.settings,
-                          weight: FontWeight.w400,
-                          color: data.current.descColor)
-                    ],
-                  ),
+          //backgroundColor: WHITE,
+          blurContent: false,
+          headerHeight: (size.height ) * 0.495,
+          header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),
+              color: BLACK),
+          overlay: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 26, right: 25, bottom: 26),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Spacer(),
+                    comfortatext(
+                        "${data.current.temp}°", 75, data.settings,
+                        color: data.current.colorPop, weight: FontWeight.w200,
+                    ),
+                    comfortatext(
+                        data.current.text, 33, data.settings,
+                        weight: FontWeight.w400,
+                        color: data.current.descColor)
+                  ],
                 ),
+              ),
 
-                MySearchParent(updateLocation: updateLocation,
-                  palette: data.current.palette,
-                  place: data.place,
-                  settings: data.settings,
-                  image: data.current.imageService.image
-                ,),
-              ],
-            )
+              MySearchParent(updateLocation: updateLocation,
+                palette: data.current.palette,
+                place: data.place,
+                settings: data.settings,
+                image: data.current.imageService.image
+              ,),
+            ],
+          )
         ),
         children: [
 
@@ -209,72 +210,65 @@ class _NewMainState extends State<NewMain> {
             ],
           ),
 
-          NewSunriseSunset(data: data, key: Key(data.place), size: size,),
+            NewSunriseSunset(data: data, key: Key(data.place), size: size,),
 
-          rain15MinuteChart(data, data.current.palette, context),
+            rain15MinuteChart(data, data.current.palette, context),
 
-          NewHourly(data: data, hours: data.hourly72, addDayDivider: true, elevated: false,),
+            NewHourly(data: data, hours: data.hourly72, addDayDivider: true, elevated: false,),
 
-          RadarSmall(data: data),
+            RadarSmall(data: data),
 
-          buildDays(data: data),
+            buildDays(data: data),
 
-          AqiWidget(data, data.current.palette, context),
+            AqiWidget(data, data.current.palette, context),
 
-          const SizedBox(height: 200,),
-
-          //Container(padding: const EdgeInsets.only(left: 17, right: 17, top: 20), height:230, child: buildTemp(data.days[1].hourly, data, data.current.container)),
+            //Container(padding: const EdgeInsets.only(left: 17, right: 17, top: 20), height:230, child: buildTemp(data.days[1].hourly, data, data.current.container)),
 
 
-          /*
-          Padding(
-            padding: const EdgeInsets.only(left: 30),
-            child: SizedBox(
-              height: 35,
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: data.current.debugColors.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Container(
-                        width: 25,
-                        height: 25,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: data.current.debugColors[index]
+            /*
+            Padding(
+              padding: const EdgeInsets.only(left: 30),
+              child: SizedBox(
+                height: 35,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: data.current.debugColors.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Container(
+                          width: 25,
+                          height: 25,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: data.current.debugColors[index]
+                          ),
                         ),
-                      ),
-                  );
-                }
+                    );
+                  }
+                ),
               ),
             ),
-          ),
-           */
+             */
 
 
-          /*
-          Column(
-            children: orderedWidgets.map((widget) {
-              return widget;
-            }).toList(),
-          ),
+            /*
+            Column(
+              children: orderedWidgets.map((widget) {
+                return widget;
+              }).toList(),
+            ),
 
-           */
-
-          /*
-          Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 30),
-            child: providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
-                "${data.lat}, ${data.lng}", data.real_loc, context),
-          ),
-
-           */
+             */
 
 
-          const Padding(padding: EdgeInsets.only(bottom: 20))
+            Padding(
+              padding: const EdgeInsets.only(top: 40, bottom: 30),
+              child: providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
+                  "${data.lat}, ${data.lng}", data.real_loc, context),
+            ),
 
         ],
       ),

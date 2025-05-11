@@ -140,14 +140,14 @@ class _RadarSmallState extends State<RadarSmall> {
             child: Container(
               decoration: BoxDecoration(
                   color: palette.surface,
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(33),
                   border: Border.all(
                       width: 2, color: palette.outlineVariant)
               ),
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(28),
+                    borderRadius: BorderRadius.circular(31),
                     child: (data.isonline) ? FlutterMap(
                       options: MapOptions(
                         onTap: (tapPosition, point) =>
@@ -191,7 +191,7 @@ class _RadarSmallState extends State<RadarSmall> {
                     )
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 9, top: 9),
+                    padding: const EdgeInsets.only(right: 10, top: 10),
                     child: Align(
                       alignment: Alignment.topRight,
                       child: Hero(
@@ -206,7 +206,7 @@ class _RadarSmallState extends State<RadarSmall> {
                               backgroundColor: palette.secondaryContainer,
                               //side: BorderSide(width: 3, color: main),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18)
+                                  borderRadius: BorderRadius.circular(19)
                               ),
                             ),
                             onPressed: () {
@@ -519,8 +519,8 @@ class _RadarBigState extends State<RadarBig> {
                             tag: 'playpause',
                             key: ValueKey<bool>(isPlaying),
                             child: SizedBox(
-                              height: 58,
-                              width: 58,
+                              height: 60,
+                              width: 60,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     elevation: 0.0,
@@ -600,8 +600,8 @@ class _RadarBigState extends State<RadarBig> {
               child: Hero(
                 tag: 'switch',
                 child: SizedBox(
-                  height: 55,
-                  width: 55,
+                  height: 57,
+                  width: 57,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(10),
@@ -609,7 +609,7 @@ class _RadarBigState extends State<RadarBig> {
                       backgroundColor: palette.secondaryContainer,
                       //side: BorderSide(width: 3, color: main),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16)
+                          borderRadius: BorderRadius.circular(19)
                       ),
                     ),
                     onPressed: () {

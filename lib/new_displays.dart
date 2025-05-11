@@ -366,7 +366,6 @@ Widget AqiWidget(var data, ColorScheme palette, context) {
           margin: const EdgeInsets.only(left: 25, right: 25, top: 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            //color: palette.surfaceContainer,
             border: Border.all(color: palette.outlineVariant, width: 2)
           ),
           child: Row(
@@ -485,7 +484,7 @@ Widget rain15MinuteChart(var data, ColorScheme palette, context) {
       margin: const EdgeInsets.only(left: 23, right: 23, top: 15, bottom: 30),
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(33),
         color: palette.secondaryContainer,
       ),
       child: Column(

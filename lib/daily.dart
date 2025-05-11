@@ -219,7 +219,7 @@ Widget dailyExpanded(var day, data, ColorScheme palette, onExpandTapped, index) 
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 12, left: 6),
+          padding: const EdgeInsets.only(bottom: 20, left: 6),
           child: Row(
             children: [
               Icon(day.icon, size: 38, color: palette.onSurface,),

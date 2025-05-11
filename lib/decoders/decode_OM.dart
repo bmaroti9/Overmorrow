@@ -733,6 +733,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
   });
 
   static Future<OMExtendedAqi> fromJson(lat, lng, settings, AppLocalizations localizations) async {
+
     final params = {
       "latitude": lat.toString(),
       "longitude": lng.toString(),

@@ -127,9 +127,9 @@ Widget hourBoxes(hours, data, _value, addDayDivider, elevated) {
     
         return AnimationConfiguration.staggeredList(
           position: index,
-          duration: const Duration(milliseconds: 375),
+          duration: const Duration(milliseconds: 500),
           child: SlideAnimation(
-            horizontalOffset: 60.0,
+            horizontalOffset: 100.0,
             child: FadeInAnimation(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,

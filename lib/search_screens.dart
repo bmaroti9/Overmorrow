@@ -646,7 +646,7 @@ Widget CurrentLocationWidget(settings, locationSafe, ColorScheme palette, askGra
       child: Container(
         margin: const EdgeInsets.only(top: 20, bottom: 30),
         padding: const EdgeInsets.only(
-            left: 25, right: 25, top: 19, bottom: 19),
+            left: 25, right: 25, top: 20, bottom: 20),
         decoration: BoxDecoration(
           color: palette.primaryFixedDim,
           borderRadius: BorderRadius.circular(40),
