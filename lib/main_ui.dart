@@ -174,10 +174,7 @@ class DescriptionCircle extends StatelessWidget {
                     child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-
                           border: Border.all(width: 2, color: palette.primary),
-                          //color: WHITE,
-                          //borderRadius: BorderRadius.circular(size * 0.09)
                         ),
                         child: Center(
                           child: Row(

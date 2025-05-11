@@ -194,7 +194,7 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette, int index, int day
 Widget dailyExpanded(var day, data, ColorScheme palette, onExpandTapped, index) {
 
   return Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 20),
+    padding: const EdgeInsets.only(left: 12, right: 12, top: 0, bottom: 16),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -204,23 +204,25 @@ Widget dailyExpanded(var day, data, ColorScheme palette, onExpandTapped, index) 
             onExpandTapped(index);
           },
           child: Padding(
-            padding: const EdgeInsets.only(top: 23, bottom: 26),
+            padding: const EdgeInsets.only(top: 23, bottom: 23),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                const SizedBox(width: 8,),
                 comfortatext("${day.name.split(", ")[0]}, ", 19, data.settings, color: palette.secondary),
                 comfortatext(day.name.split(", ")[1], 14, data.settings, color: palette.outline),
                 const Spacer(),
                 Icon(Icons.expand_less, size: 22, color: palette.secondary,),
+                const SizedBox(width: 9,),
               ],
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 18),
+          padding: const EdgeInsets.only(bottom: 12, left: 6),
           child: Row(
             children: [
-              Icon(day.icon, size: 37, color: palette.onSurface,),
+              Icon(day.icon, size: 38, color: palette.onSurface,),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: comfortatext(day.text, 22, data.settings, color: palette.primary),

@@ -9,34 +9,34 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get feelsLike => 'تشعر مثل';
+  String get feelsLike => 'الإحساس بدرجة الحرارة';
 
   @override
-  String get precipCapital => 'Precip.';
+  String get precipCapital => 'هطول.';
 
   @override
-  String get humidity => 'رطوبة الهواء';
+  String get humidity => 'الرطوبة';
 
   @override
   String get windCapital => 'الرياح';
 
   @override
-  String get uvCapital => 'UV';
+  String get uvCapital => 'الأشعة فوق البنفسجية';
 
   @override
-  String get settings => 'الاعدادات';
+  String get settings => 'الإعدادات';
 
   @override
-  String get donate => 'تبرع';
+  String get donate => 'التبرع';
 
   @override
-  String get about => 'عن التطبيق';
+  String get about => 'حول التطبيق';
 
   @override
   String get today => 'اليوم';
 
   @override
-  String get tomorrow => 'غداً';
+  String get tomorrow => 'غدًا';
 
   @override
   String get overmorrow => 'بعد غد';
@@ -45,7 +45,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get language => 'اللغة';
 
   @override
-  String get temperature => 'درجة الحرارة';
+  String get temperature => 'الحرارة';
 
   @override
   String get precipitaion => 'الهطول';
@@ -57,22 +57,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get favorites => 'المفضلة';
 
   @override
-  String get clearNight => 'مساء صافي';
+  String get clearNight => 'ليلة صافية';
 
   @override
-  String get partlyCloudy => 'غائم جزئياً';
+  String get partlyCloudy => 'غائم جزئيًا';
 
   @override
   String get clearSky => 'سماء صافية';
 
   @override
-  String get overcast => 'غائم';
+  String get overcast => 'غائم كليًا';
 
   @override
-  String get haze => 'الضباب';
+  String get haze => 'الضبابية';
 
   @override
-  String get sleet => 'مطر متجمد';
+  String get sleet => 'برد';
 
   @override
   String get drizzle => 'رذاذ';
@@ -81,316 +81,316 @@ class AppLocalizationsAr extends AppLocalizations {
   String get thunderstorm => 'عاصفة رعدية';
 
   @override
-  String get heavySnow => 'Heavy Snow';
+  String get heavySnow => 'ثلج كثيف';
 
   @override
   String get fog => 'ضباب';
 
   @override
-  String get snow => 'ثلح';
+  String get snow => 'ثلج';
 
   @override
-  String get heavyRain => 'Heavy Rain';
+  String get heavyRain => 'مطر غزير';
 
   @override
   String get cloudyNight => 'ليلة غائمة';
 
   @override
-  String get weakOrNoWifiConnection => 'اتصال الإنترنت ضعيف او غير موجود';
+  String get weakOrNoWifiConnection => 'اتصال واي فاي ضعيف أو غير موجود';
 
   @override
   String get notConnectedToTheInternet => 'غير متصل بالإنترنت';
 
   @override
-  String get placeNotFound => 'لم يتم العثور على المكان';
+  String get placeNotFound => 'المكان غير موجود';
 
   @override
-  String get unableToLocateDevice => 'غير قادر على تحديد مكان الجهاز';
+  String get unableToLocateDevice => 'تعذر تحديد موقع الجهاز';
 
   @override
   String get locationServicesAreDisabled => 'خدمات الموقع معطلة.';
 
   @override
-  String get locationPermissionIsDenied => 'location permission is denied';
+  String get locationPermissionIsDenied => 'تم رفض إذن الموقع';
 
   @override
-  String get locationPermissionDeniedForever => 'location permission denied forever';
+  String get locationPermissionDeniedForever => 'تم رفض إذن الموقع نهائيًا';
 
   @override
-  String get failedToAccessGps => 'failed to access gps';
+  String get failedToAccessGps => 'فشل الوصول إلى نظام تحديد المواقع';
 
   @override
-  String get search => 'Search...';
+  String get search => 'البحث...';
 
   @override
-  String get sunriseSunset => 'sunrise/sunset';
+  String get sunriseSunset => 'الشروق/الغروب';
 
   @override
-  String get airQuality => 'Air Quality';
+  String get airQuality => 'جودة الهواء';
 
   @override
-  String get airQualityLowercase => 'air quality';
+  String get airQualityLowercase => 'جودة الهواء';
 
   @override
-  String get good => 'good';
+  String get good => 'ممتاز';
 
   @override
-  String get fair => 'fair';
+  String get fair => 'مقبول';
 
   @override
-  String get moderate => 'moderate';
+  String get moderate => 'متوسط';
 
   @override
-  String get poor => 'poor';
+  String get poor => 'سيء';
 
   @override
-  String get veryPoor => 'very poor';
+  String get veryPoor => 'سيء جدًا';
 
   @override
-  String get unhealthy => 'unhealthy';
+  String get unhealthy => 'غير صحي';
 
   @override
-  String get radar => 'radar';
+  String get radar => 'الرادار';
 
   @override
-  String get colorMode => 'Color mode';
+  String get colorMode => 'وضع الألوان';
 
   @override
-  String get weatherProvider => 'Weather provider';
+  String get weatherProvider => 'مزود الطقس';
 
   @override
-  String get timeMode => 'Time mode';
+  String get timeMode => 'وضع الوقت';
 
   @override
-  String get mon => 'Mon';
+  String get mon => 'الإثنين';
 
   @override
-  String get tue => 'Tue';
+  String get tue => 'الثلاثاء';
 
   @override
-  String get wed => 'Wed';
+  String get wed => 'الأربعاء';
 
   @override
-  String get thu => 'Thu';
+  String get thu => 'الخميس';
 
   @override
-  String get fri => 'Fri';
+  String get fri => 'الجمعة';
 
   @override
-  String get sat => 'Sat';
+  String get sat => 'السبت';
 
   @override
-  String get sun => 'Sun';
+  String get sun => 'الأحد';
 
   @override
-  String get fontSize => 'Font size';
+  String get fontSize => 'حجم الخط';
 
   @override
-  String get daily => 'Daily';
+  String get daily => 'يومي';
 
   @override
-  String get searchProvider => 'Search provider';
+  String get searchProvider => 'مزود البحث';
 
   @override
-  String get updatedJustNow => 'updated, just now';
+  String get updatedJustNow => 'تم التحديث الآن';
 
   @override
-  String get colorSource => 'Color source';
+  String get colorSource => 'مصدر الألوان';
 
   @override
-  String get imageSource => 'Image source';
+  String get imageSource => 'مصدر الصور';
 
   @override
-  String get temp => 'temp';
+  String get temp => 'درجة الحرارة';
 
   @override
-  String get precipLowercase => 'precip';
+  String get precipLowercase => 'هطول';
 
   @override
-  String get windLowercase => 'wind';
+  String get windLowercase => 'الرياح';
 
   @override
-  String get uvLowercase => 'uv';
+  String get uvLowercase => 'الأشعة فوق البنفسجية';
 
   @override
-  String get goodAqiDesc => 'Air quality is excellent; no health risk.';
+  String get goodAqiDesc => 'جودة الهواء ممتازة، لا توجد مخاطر صحية.';
 
   @override
-  String get fairAqiDesc => 'Acceptable air quality; minor risk for sensitive people.';
+  String get fairAqiDesc => 'جودة الهواء مقبولة، مخاطر طفيفة للأشخاص الحساسين.';
 
   @override
-  String get moderateAqiDesc => 'Sensitive individuals may experience mild effects.';
+  String get moderateAqiDesc => 'قد يعاني الأشخاص الحساسون من آثار خفيفة.';
 
   @override
-  String get poorAqiDesc => 'Health effects possible for everyone, serious for sensitive groups.';
+  String get poorAqiDesc => 'ممكن حدوث آثار صحية للجميع، خطيرة للمجموعات الحساسة.';
 
   @override
-  String get veryPoorAqiDesc => 'Serious health effects for everyone.';
+  String get veryPoorAqiDesc => 'آثار صحية خطيرة للجميع.';
 
   @override
-  String get unhealthyAqiDesc => 'Emergency conditions; severe health effects for all.';
+  String get unhealthyAqiDesc => 'ظروف طارئة، آثار صحية شديدة للجميع.';
 
   @override
-  String get photoByXOnUnsplash => 'Photo, by ,x, on ,Unsplash';
+  String get photoByXOnUnsplash => 'صورة، بواسطة ،x، على ،Unsplash';
 
   @override
-  String get developedBy => 'Developed by:';
+  String get developedBy => 'تطوير:';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'الكود المصدري';
 
   @override
-  String get reportAnIssue => 'Report an issue';
+  String get reportAnIssue => 'الإبلاغ عن مشكلة';
 
   @override
-  String get weatherData => 'Weather data:';
+  String get weatherData => 'بيانات الطقس:';
 
   @override
-  String get allImagesUsedAreFrom => 'All images used are from:';
+  String get allImagesUsedAreFrom => 'جميع الصور المستخدمة من:';
 
   @override
-  String get supportOnPatreon => 'Support on Patreon';
+  String get supportOnPatreon => 'الدعم على باتريون';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'المظهر';
 
   @override
-  String get general => 'General';
+  String get general => 'عام';
 
   @override
-  String get units => 'Units';
+  String get units => 'الوحدات';
 
   @override
-  String get appearanceSettingDesc => 'color theme, image source';
+  String get appearanceSettingDesc => 'سمة الألوان، مصدر الصور';
 
   @override
-  String get generalSettingDesc => 'time mode, font size';
+  String get generalSettingDesc => 'وضع الوقت، حجم الخط';
 
   @override
-  String get languageSettingDesc => 'the language used';
+  String get languageSettingDesc => 'اللغة المستخدمة';
 
   @override
-  String get unitsSettingdesc => 'the units used in the app';
+  String get unitsSettingdesc => 'الوحدات المستخدمة في التطبيق';
 
   @override
-  String get now => 'now';
+  String get now => 'الآن';
 
   @override
-  String get hr => 'hr';
+  String get hr => 'ساعة';
 
   @override
-  String get layout => 'Layout';
+  String get layout => 'التخطيط';
 
   @override
-  String get layoutSettingDesc => 'widget order, customization';
+  String get layoutSettingDesc => 'ترتيب الأدوات، التخصيص';
 
   @override
-  String get thirtyMinutes => '30m';
+  String get thirtyMinutes => '30 دقيقة';
 
   @override
-  String get mainPollutant => 'main pollutant';
+  String get mainPollutant => 'الملوث الرئيسي';
 
   @override
-  String get alderPollen => 'Alder Pollen';
+  String get alderPollen => 'حبوب لقاح الآلدر';
 
   @override
-  String get birchPollen => 'Birch Pollen';
+  String get birchPollen => 'حبوب لقاح البتولا';
 
   @override
-  String get grassPollen => 'Grass Pollen';
+  String get grassPollen => 'حبوب لقاح العشب';
 
   @override
-  String get mugwortPollen => 'Mugwort Pollen';
+  String get mugwortPollen => 'حبوب لقاح المغوورت';
 
   @override
-  String get olivePollen => 'Olive Pollen';
+  String get olivePollen => 'حبوب لقاح الزيتون';
 
   @override
-  String get ragweedPollen => 'Ragweed Pollen';
+  String get ragweedPollen => 'حبوب لقاح الرجيد';
 
   @override
-  String get dailyAqi => 'daily AQI';
+  String get dailyAqi => 'مؤشر جودة الهواء اليومي';
 
   @override
-  String get dateFormat => 'Date format';
+  String get dateFormat => 'تنسيق التاريخ';
 
   @override
-  String get d => 'd';
+  String get d => 'يوم';
 
   @override
-  String get aerosolOpticalDepth => 'aerosol optical depth';
+  String get aerosolOpticalDepth => 'العمق البصري للجزيئات';
 
   @override
-  String get dust => 'dust';
+  String get dust => 'الغبار';
 
   @override
-  String get europeanAqi => 'european aqi';
+  String get europeanAqi => 'مؤشر جودة الهواء الأوروبي';
 
   @override
-  String get unitedStatesAqi => 'united states aqi';
+  String get unitedStatesAqi => 'مؤشر جودة الهواء الأمريكي';
 
   @override
-  String get offline => 'offline';
+  String get offline => 'غير متصل';
 
   @override
-  String get helpTranslate => 'help translate';
+  String get helpTranslate => 'ساعد في الترجمة';
 
   @override
-  String get extremelyClear => 'extremely clear';
+  String get extremelyClear => 'صافٍ تمامًا';
 
   @override
-  String get veryClear => 'very clear';
+  String get veryClear => 'صافٍ جدًا';
 
   @override
-  String get clear => 'clear';
+  String get clear => 'صافٍ';
 
   @override
-  String get slightlyHazy => 'slightly hazy';
+  String get slightlyHazy => 'ضبابي قليلاً';
 
   @override
-  String get hazy => 'hazy';
+  String get hazy => 'ضبابي';
 
   @override
-  String get veryHazy => 'very hazy';
+  String get veryHazy => 'ضبابي جدًا';
 
   @override
-  String get extremelyHazy => 'extremely hazy';
+  String get extremelyHazy => 'ضبابي للغاية';
 
   @override
-  String get poweredByOpenMeteo => 'powered by open-meteo';
+  String get poweredByOpenMeteo => 'مدعوم من Open-Meteo';
 
   @override
-  String get buyMeACoffee => 'Buy me a coffee!';
+  String get buyMeACoffee => 'اشترِ لي قهوة!';
 
   @override
-  String get donationPageTextNew => 'Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nHowever if you enjoy using it, then please consider tipping a small amount. \n\nThank you!';
+  String get donationPageTextNew => 'تم تصميم تطبيق Overmorrow ليكون مجانيًا تمامًا، بدون إعلانات أو مشتريات داخل التطبيق.\n\nإذا كنت ترغب في استخدامه مجانًا، فاستمتع به!\n\nولكن إذا أعجبك التطبيق، يرجى التفكير في تقديم تبرع صغير.\n\nشكرًا لك!';
 
   @override
-  String get rainInHalfHour => 'rain in the next half an hour';
+  String get rainInHalfHour => 'مطر متوقع خلال النصف ساعة القادمة';
 
   @override
   String rainInMinutes(int minutes) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes دقيقة',
+      one: 'دقيقة',
     );
-    return 'rain in the next $_temp0';
+    return 'مطر متوقع خلال $_temp0 القادمة';
   }
 
   @override
-  String get rainInOneHour => 'rain in the next hour';
+  String get rainInOneHour => 'مطر متوقع خلال الساعة القادمة';
 
   @override
   String rainInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours ساعات',
+      one: 'ساعة',
     );
-    return 'rain in the next $_temp0';
+    return 'مطر متوقع خلال $_temp0 القادمة';
   }
 
   @override
@@ -398,29 +398,29 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes دقيقة',
+      one: 'دقيقة',
     );
-    return 'rain expected in $_temp0';
+    return 'مطر متوقع بعد $_temp0';
   }
 
   @override
-  String get rainExpectedInOneHour => 'rain expected in an hour';
+  String get rainExpectedInOneHour => 'مطر متوقع بعد ساعة';
 
   @override
   String rainExpectedInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours ساعات',
+      one: 'ساعة',
     );
-    return 'rain expected in $_temp0';
+    return 'مطر متوقع بعد $_temp0';
   }
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return 'updated, $minutes min ago';
+    return 'تم التحديث قبل $minutes دقيقة';
   }
 
   @override
@@ -428,10 +428,10 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
+      other: '$hours ساعات',
+      one: 'ساعة',
     );
-    return 'updated, $_temp0 ago';
+    return 'تم التحديث قبل $_temp0';
   }
 
   @override
@@ -439,27 +439,27 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: '$days days',
-      one: '1 day',
+      other: '$days أيام',
+      one: 'يوم',
     );
-    return 'updated, $_temp0 ago';
+    return 'تم التحديث قبل $_temp0';
   }
 
   @override
-  String get radarHaptics => 'Radar haptics';
+  String get radarHaptics => 'تفعيل الاهتزاز للرادار';
 
   @override
-  String get alertsCapital => 'Alerts';
+  String get alertsCapital => 'التنبيهات';
 
   @override
-  String get severity => 'severity';
+  String get severity => 'الشدة';
 
   @override
-  String get certainty => 'certainty';
+  String get certainty => 'اليقين';
 
   @override
-  String get urgency => 'urgency';
+  String get urgency => 'الإلحاح';
 
   @override
-  String get areas => 'areas';
+  String get areas => 'المناطق';
 }

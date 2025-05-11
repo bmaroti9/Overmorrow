@@ -177,7 +177,7 @@ class _NewMainState extends State<NewMain> {
                     children: [
                       const Spacer(),
                       comfortatext(
-                          "${data.current.temp}°", 73, data.settings,
+                          "${data.current.temp}°", 75, data.settings,
                           color: data.current.colorPop, weight: FontWeight.w200,
                       ),
                       comfortatext(
@@ -218,6 +218,10 @@ class _NewMainState extends State<NewMain> {
           RadarSmall(data: data),
 
           buildDays(data: data),
+
+          AqiWidget(data, data.current.palette, context),
+
+          const SizedBox(height: 200,),
 
           //Container(padding: const EdgeInsets.only(left: 17, right: 17, top: 20), height:230, child: buildTemp(data.days[1].hourly, data, data.current.container)),
 

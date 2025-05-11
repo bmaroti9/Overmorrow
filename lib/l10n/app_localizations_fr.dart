@@ -213,10 +213,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get goodAqiDesc => 'La qualité de l\'air est excellente; aucun risque pour la santé.';
+  String get goodAqiDesc => 'La qualité de l\'air est excellente ; il n\'y a pas de risque pour la santé.';
 
   @override
-  String get fairAqiDesc => 'Qualité de l\'air acceptable; risque mineur pour les personnes sensibles.';
+  String get fairAqiDesc => 'Qualité de l\'air acceptable ; risque mineur pour les personnes sensibles.';
 
   @override
   String get moderateAqiDesc => 'Les personnes sensibles peuvent ressentir des effets légers.';
@@ -228,7 +228,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get veryPoorAqiDesc => 'Effets graves sur la santé pour tout le monde.';
 
   @override
-  String get unhealthyAqiDesc => 'Conditions d\'urgence; effets graves sur la santé pour tout le monde.';
+  String get unhealthyAqiDesc => 'Conditions d\'urgence ; effets graves sur la santé pour tout le monde.';
 
   @override
   String get photoByXOnUnsplash => 'Photo, de ,x, sur ,Unsplash';
@@ -333,7 +333,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get offline => 'hors ligne';
 
   @override
-  String get helpTranslate => 'help translate';
+  String get helpTranslate => 'aidez à traduire';
 
   @override
   String get extremelyClear => 'extrêmement clair';
@@ -345,25 +345,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get clear => 'clair';
 
   @override
-  String get slightlyHazy => 'slightly hazy';
+  String get slightlyHazy => 'légèrement brumeux';
 
   @override
-  String get hazy => 'hazy';
+  String get hazy => 'brumeux';
 
   @override
-  String get veryHazy => 'very hazy';
+  String get veryHazy => 'très brumeux';
 
   @override
-  String get extremelyHazy => 'extremely hazy';
+  String get extremelyHazy => 'extrêmement brumeux';
 
   @override
-  String get poweredByOpenMeteo => 'powered by open-meteo';
+  String get poweredByOpenMeteo => 'alimenté par open-meteo';
 
   @override
-  String get buyMeACoffee => 'Buy me a coffee!';
+  String get buyMeACoffee => 'Achetez-moi un café !';
 
   @override
-  String get donationPageTextNew => 'Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nHowever if you enjoy using it, then please consider tipping a small amount. \n\nThank you!';
+  String get donationPageTextNew => 'Overmorrow a toujours été conçu comme une application totalement gratuite, sans publicité ni achat d\'application. \n \nSi vous souhaitez l\'utiliser comme ça, n\'hésitez pas à le faire. \n \nCependant, si vous aimez l\'utiliser, pensez à donner un petit pourboire. \n\nMerci de votre compréhension !';
 
   @override
   String get rainInHalfHour => 'pluie dans la prochaine demi-heure';
@@ -376,7 +376,7 @@ class AppLocalizationsFr extends AppLocalizations {
       other: '$minutes minutes',
       one: 'minute',
     );
-    return 'rain in the next $_temp0';
+    return 'la pluie dans les prochaines $_temp0';
   }
 
   @override
@@ -390,7 +390,7 @@ class AppLocalizationsFr extends AppLocalizations {
       other: '$hours hours',
       one: 'hour',
     );
-    return 'rain in the next $_temp0';
+    return 'la pluie dans la prochaine $_temp0';
   }
 
   @override
@@ -431,7 +431,7 @@ class AppLocalizationsFr extends AppLocalizations {
       other: '$hours hours',
       one: '1 hour',
     );
-    return 'updated, $_temp0 ago';
+    return 'mise à jour ,${_temp0}il y a';
   }
 
   @override
@@ -442,24 +442,24 @@ class AppLocalizationsFr extends AppLocalizations {
       other: '$days days',
       one: '1 day',
     );
-    return 'updated, $_temp0 ago';
+    return 'mise à jour, ${_temp0}il y a';
   }
 
   @override
-  String get radarHaptics => 'Radar haptics';
+  String get radarHaptics => 'Haptique des radars';
 
   @override
-  String get alertsCapital => 'Alerts';
+  String get alertsCapital => 'Alertes';
 
   @override
-  String get severity => 'severity';
+  String get severity => 'sévérité';
 
   @override
-  String get certainty => 'certainty';
+  String get certainty => 'certitude';
 
   @override
-  String get urgency => 'urgency';
+  String get urgency => 'urgence';
 
   @override
-  String get areas => 'areas';
+  String get areas => 'zones';
 }
