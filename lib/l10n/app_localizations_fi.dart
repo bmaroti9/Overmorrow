@@ -156,7 +156,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get colorMode => 'Väritila';
 
   @override
-  String get weatherProvider => 'Säätietojen tarjoaja';
+  String get weatherProvderLowercase => 'weather provider';
 
   @override
   String get timeMode => 'Aikamuoto';

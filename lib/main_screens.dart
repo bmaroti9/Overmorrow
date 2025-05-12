@@ -263,12 +263,8 @@ class _NewMainState extends State<NewMain> {
 
              */
 
-
-            Padding(
-              padding: const EdgeInsets.only(top: 40, bottom: 30),
-              child: providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
-                  "${data.lat}, ${data.lng}", data.real_loc, context),
-            ),
+            providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
+              "${data.lat}, ${data.lng}", data.real_loc, context),
 
         ],
       ),

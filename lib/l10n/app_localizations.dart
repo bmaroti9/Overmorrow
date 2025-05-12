@@ -423,11 +423,11 @@ abstract class AppLocalizations {
   /// **'Color mode'**
   String get colorMode;
 
-  /// No description provided for @weatherProvider.
+  /// No description provided for @weatherProvderLowercase.
   ///
   /// In en, this message translates to:
-  /// **'Weather provider'**
-  String get weatherProvider;
+  /// **'weather provider'**
+  String get weatherProvderLowercase;
 
   /// No description provided for @timeMode.
   ///

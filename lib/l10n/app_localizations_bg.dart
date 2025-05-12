@@ -156,7 +156,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get colorMode => 'Режим на цвят';
 
   @override
-  String get weatherProvider => 'Доставчик на метеорологични услуги';
+  String get weatherProvderLowercase => 'weather provider';
 
   @override
   String get timeMode => 'Формат на време';

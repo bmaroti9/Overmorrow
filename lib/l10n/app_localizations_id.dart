@@ -156,7 +156,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get colorMode => 'Mode warna';
 
   @override
-  String get weatherProvider => 'Penyedia cuaca';
+  String get weatherProvderLowercase => 'weather provider';
 
   @override
   String get timeMode => 'Mode waktu';

@@ -156,7 +156,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get colorMode => 'Színmód';
 
   @override
-  String get weatherProvider => 'Időjárás szolgáltató';
+  String get weatherProvderLowercase => 'weather provider';
 
   @override
   String get timeMode => 'Idő mód';

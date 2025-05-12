@@ -156,7 +156,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get colorMode => 'Λειτουργεία χρώματος';
 
   @override
-  String get weatherProvider => 'Πάροχος καιρού';
+  String get weatherProvderLowercase => 'weather provider';
 
   @override
   String get timeMode => 'Μορφή ώρας';

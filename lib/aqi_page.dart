@@ -416,7 +416,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                                 color: palette.onSurface),
                                             const Spacer(),
                                             comfortatext(extendedAqi.european_aqi.toString(), 25, data.settings,
-                                                color: palette.secondary, weight: FontWeight.w400),
+                                                color: palette.primary, weight: FontWeight.w400),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 2, top: 1),
                                               child: comfortatext(extendedAqi.european_desc, 15, data.settings,
@@ -445,7 +445,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                                 color: palette.onSurface),
                                             const Spacer(),
                                             comfortatext(extendedAqi.us_aqi.toString(), 25, data.settings,
-                                                color: palette.secondary, weight: FontWeight.w400),
+                                                color: palette.primary, weight: FontWeight.w400),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 2, top: 1),
                                               child: comfortatext(extendedAqi.us_desc, 15, data.settings,

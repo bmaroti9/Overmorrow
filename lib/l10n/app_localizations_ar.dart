@@ -156,7 +156,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get colorMode => 'وضع الألوان';
 
   @override
-  String get weatherProvider => 'مزود الطقس';
+  String get weatherProvderLowercase => 'weather provider';
 
   @override
   String get timeMode => 'وضع الوقت';

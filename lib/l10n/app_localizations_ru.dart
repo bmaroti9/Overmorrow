@@ -156,7 +156,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get colorMode => 'Режим цвета';
 
   @override
-  String get weatherProvider => 'Поставщик погоды';
+  String get weatherProvderLowercase => 'weather provider';
 
   @override
   String get timeMode => 'Режим времени';

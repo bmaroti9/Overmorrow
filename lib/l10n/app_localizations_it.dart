@@ -156,7 +156,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get colorMode => 'Modalità colore';
 
   @override
-  String get weatherProvider => 'Fornitore di previsioni meteorologiche';
+  String get weatherProvderLowercase => 'weather provider';
 
   @override
   String get timeMode => 'Modalità tempo';

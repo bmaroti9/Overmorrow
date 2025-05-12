@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
+import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -97,7 +98,7 @@ class ParrallaxBackground extends StatelessWidget {
 Widget Circles(var data, double bottom, context, ColorScheme palette) {
   return Padding(
       //top padding is slightly bigger because of the offline colored bar
-      padding: EdgeInsets.only(top: data.isonline ? 25 : 33, left: 18, right: 18, bottom: 13),
+      padding: EdgeInsets.only(top: data.isonline ? 25 : 33, left: 19, right: 19, bottom: 13),
       child: Row(
           children: [
             DescriptionCircle(
@@ -163,7 +164,7 @@ class DescriptionCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(left: 4, right: 4),
+        padding: const EdgeInsets.only(left: 3.5, right: 3.5),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -440,7 +441,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
 
 Widget providerSelector(settings, updateLocation, ColorScheme palette, provider, latlng, real_loc, context) {
   return Padding(
-    padding: const EdgeInsets.only(left: 24, right: 24, bottom: 30, top: 5),
+    padding: const EdgeInsets.only(left: 25, right: 25, bottom: 80, top: 46),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -449,7 +450,7 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
           child: Align(
             alignment: Alignment.centerLeft,
             child: comfortatext(
-                AppLocalizations.of(context)!.weatherProvider, 16,
+                AppLocalizations.of(context)!.weatherProvderLowercase, 17,
                 settings,
                 color: palette.onSurface),
           ),
@@ -458,31 +459,29 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
           padding: const EdgeInsets.only(top: 12),
           child: Container(
             decoration: BoxDecoration(
-              color: palette.surfaceContainer,
-              borderRadius: BorderRadius.circular(33),
+              color: palette.secondaryContainer,
+              borderRadius: BorderRadius.circular(16),
+              //border: Border.all(color: palette.outlineVariant, width: 2)
             ),
-            padding: const EdgeInsets.only(left: 23, right: 23, top: 12, bottom: 12),
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
             child: DropdownButton(
               underline: Container(),
               onTap: () {
                 HapticFeedback.mediumImpact();
               },
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(16),
               icon: Padding(
-                padding: const EdgeInsets.only(left:5),
-                child: Icon(Icons.arrow_drop_down_circle_outlined, color: palette.primary, size: 22,),
+                padding: const EdgeInsets.only(right: 8),
+                child: Icon(Icons.unfold_more, color: palette.onSecondaryContainer, size: 22,),
               ),
-              style: GoogleFonts.outfit(
-                color: palette.secondary,
-                fontSize: 20 * getFontSize(settings["Font size"]),
-                fontWeight: FontWeight.w400,
-              ),
-              //value: selected_temp_unit.isNotEmpty ? selected_temp_unit : null, // guard it with null if empty
               value: provider.toString(),
               items: ['weatherapi.com', 'open-meteo', 'met norway'].map((item) {
                 return DropdownMenuItem(
                   value: item,
-                  child: Text(item),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: comfortatext(item, 18, settings, color: palette.onSecondaryContainer),
+                  ),
                 );
               }).toList(),
               onChanged: (String? value) async {
@@ -490,8 +489,9 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
                 SetData('weather_provider', value!);
                 await updateLocation(latlng, real_loc);
               },
+              itemHeight: 53,
               isExpanded: true,
-              dropdownColor: palette.surfaceContainer,
+              dropdownColor: palette.secondaryContainer,
               elevation: 0,
             ),
           ),

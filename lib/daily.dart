@@ -88,11 +88,11 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
                           borderRadius:
                           index == 0 ? const BorderRadius.vertical(
                               top: Radius.circular(33),
-                              bottom: Radius.circular(10))
+                              bottom: Radius.circular(12))
                               : index == daysToShow - 1 ? const BorderRadius
                               .vertical(bottom: Radius.circular(33),
-                              top: Radius.circular(10))
-                              : BorderRadius.circular(10),
+                              top: Radius.circular(12))
+                              : BorderRadius.circular(12),
                           color: data.current.palette.surfaceContainer),
                       child: AnimatedSize(
                           duration: const Duration(milliseconds: 250),
@@ -219,7 +219,7 @@ Widget dailyExpanded(var day, data, ColorScheme palette, onExpandTapped, index) 
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 20, left: 6),
+          padding: const EdgeInsets.only(bottom: 20, left: 6, right: 10),
           child: Row(
             children: [
               Icon(day.icon, size: 38, color: palette.onSurface,),

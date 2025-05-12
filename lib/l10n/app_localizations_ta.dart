@@ -156,7 +156,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get colorMode => 'வண்ண பயன்முறை';
 
   @override
-  String get weatherProvider => 'வானிலை வழங்குநர்';
+  String get weatherProvderLowercase => 'weather provider';
 
   @override
   String get timeMode => 'நேர முறை';

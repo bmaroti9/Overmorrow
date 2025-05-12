@@ -156,7 +156,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get colorMode => '彩色模式';
 
   @override
-  String get weatherProvider => '天气服务提供商';
+  String get weatherProvderLowercase => 'weather provider';
 
   @override
   String get timeMode => '时间模式';

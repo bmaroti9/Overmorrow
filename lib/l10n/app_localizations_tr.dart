@@ -156,7 +156,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get colorMode => 'Renk modu';
 
   @override
-  String get weatherProvider => 'Hava durumu sağlayıcısı';
+  String get weatherProvderLowercase => 'weather provider';
 
   @override
   String get timeMode => 'Zaman modu';
