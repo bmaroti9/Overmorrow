@@ -52,7 +52,7 @@
   "@allImagesUsedAreFrom": {},
   "feelsLike": "Усеща се като",
   "@feelsLike": {},
-  "locationPermissionIsDenied": "разрешение за местоположение е отказано",
+  "locationPermissionIsDenied": "разрешението за местоположение е отказано",
   "@locationPermissionIsDenied": {},
   "fairAqiDesc": "Приемливо качество на въздуха; малък риск за чувствителни хора.",
   "@fairAqiDesc": {},
@@ -126,7 +126,7 @@
   "@unableToLocateDevice": {},
   "weakOrNoWifiConnection": "Слаба или никаква Wi-Fi връзка",
   "@weakOrNoWifiConnection": {},
-  "locationPermissionDeniedForever": "разрешение за местоположение, отказано завинаги",
+  "locationPermissionDeniedForever": "разрешението за местоположение, отказано завинаги",
   "@locationPermissionDeniedForever": {},
   "failedToAccessGps": "не успя да получи достъп до gps",
   "@failedToAccessGps": {},
@@ -322,5 +322,7 @@
   "buyMeACoffee": "Купете ми кафе!",
   "@buyMeACoffee": {},
   "donationPageTextNew": "Overmorrow винаги е бил предназначен за напълно безплатно приложение, без реклами и покупки в приложението. \n \nТака че, ако просто искате да го използвате по този начин, моля, наслаждавайте се. \n \nВъпреки това, ако обичате да го използвате, тогава, моля, помислете за малка сума. \n\nБлагодаря ви!",
-  "@donationPageTextNew": {}
+  "@donationPageTextNew": {},
+  "weatherProvderLowercase": "доставчик на метеорологични услуги",
+  "@weatherProvderLowercase": {}
 }
