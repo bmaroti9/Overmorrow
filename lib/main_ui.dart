@@ -22,6 +22,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/main_screens.dart';
 import 'package:overmorrow/settings_page.dart';
@@ -98,7 +99,7 @@ class ParrallaxBackground extends StatelessWidget {
 Widget Circles(var data, double bottom, context, ColorScheme palette) {
   return Padding(
       //top padding is slightly bigger because of the offline colored bar
-      padding: EdgeInsets.only(top: data.isonline ? 25 : 33, left: 19, right: 19, bottom: 13),
+      padding: EdgeInsets.only(top: data.isonline ? 25 : 33, left: 19.5, right: 19.5, bottom: 13),
       child: Row(
           children: [
             DescriptionCircle(
@@ -114,7 +115,6 @@ Widget Circles(var data, double bottom, context, ColorScheme palette) {
               text: '${data.current.humidity}',
               undercaption: AppLocalizations.of(context)!.humidity,
               extra: '%',
-
               settings: data.settings,
               bottom: bottom,
               dir: -1,
@@ -164,7 +164,7 @@ class DescriptionCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(left: 3.5, right: 3.5),
+        padding: const EdgeInsets.only(left: 3, right: 3),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -441,27 +441,24 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
 
 Widget providerSelector(settings, updateLocation, ColorScheme palette, provider, latlng, real_loc, context) {
   return Padding(
-    padding: const EdgeInsets.only(left: 25, right: 25, bottom: 80, top: 46),
+    padding: const EdgeInsets.only(left: 25, right: 25, bottom: 80, top: 55),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 2, top: 0),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: comfortatext(
-                AppLocalizations.of(context)!.weatherProvderLowercase, 17,
-                settings,
-                color: palette.onSurface),
-          ),
+          child: comfortatext(
+              AppLocalizations.of(context)!.weatherProvderLowercase, 17,
+              settings,
+              color: palette.onSurface),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 12),
           child: Container(
             decoration: BoxDecoration(
-              color: palette.secondaryContainer,
-              borderRadius: BorderRadius.circular(16),
-              //border: Border.all(color: palette.outlineVariant, width: 2)
+              color: palette.surfaceContainerHigh,
+              borderRadius: BorderRadius.circular(18),
+              //border: Border.all(color: palette.secondary, width: 2)
             ),
             padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
             child: DropdownButton(
@@ -469,10 +466,10 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
               onTap: () {
                 HapticFeedback.mediumImpact();
               },
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(18),
               icon: Padding(
                 padding: const EdgeInsets.only(right: 8),
-                child: Icon(Icons.unfold_more, color: palette.onSecondaryContainer, size: 22,),
+                child: Icon(Icons.unfold_more, color: palette.primary, size: 22,),
               ),
               value: provider.toString(),
               items: ['weatherapi.com', 'open-meteo', 'met norway'].map((item) {
@@ -480,7 +477,7 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
                   value: item,
                   child: Padding(
                     padding: const EdgeInsets.all(10),
-                    child: comfortatext(item, 18, settings, color: palette.onSecondaryContainer),
+                    child: comfortatext(item, 18, settings, color: palette.primary),
                   ),
                 );
               }).toList(),
@@ -489,9 +486,9 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
                 SetData('weather_provider', value!);
                 await updateLocation(latlng, real_loc);
               },
-              itemHeight: 53,
+              itemHeight: 55,
               isExpanded: true,
-              dropdownColor: palette.secondaryContainer,
+              dropdownColor: palette.surfaceContainerHigh,
               elevation: 0,
             ),
           ),

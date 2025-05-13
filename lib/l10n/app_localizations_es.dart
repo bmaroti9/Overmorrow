@@ -360,13 +360,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get poweredByOpenMeteo => 'con tecnología de OpenMeteo';
 
   @override
-  String get buyMeACoffee => 'Buy me a coffee!';
+  String get buyMeACoffee => '¡Cómprame un café!';
 
   @override
-  String get donationPageTextNew => 'Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nHowever if you enjoy using it, then please consider tipping a small amount. \n\nThank you!';
+  String get donationPageTextNew => 'Overmorrow se ha concebido desde siempre como una aplicación completamente gratis, sin anuncios ni compras dentro de la aplicación. \n \nAsí que, si solo quieres usarla así, disfrútala mucho. \n \nSin embargo, si te encanta usarla, por favor considera dar una pequeña propina. \n\n¡Gracias!';
 
   @override
-  String get rainInHalfHour => 'rain in the next half an hour';
+  String get rainInHalfHour => 'lluvia en la próxima media hora';
 
   @override
   String rainInMinutes(int minutes) {
@@ -376,11 +376,11 @@ class AppLocalizationsEs extends AppLocalizations {
       other: '$minutes minutes',
       one: 'minute',
     );
-    return 'rain in the next $_temp0';
+    return 'lluvia en los próximos $_temp0';
   }
 
   @override
-  String get rainInOneHour => 'rain in the next hour';
+  String get rainInOneHour => 'lluvia en la próxima hora';
 
   @override
   String rainInHours(int hours) {
@@ -390,7 +390,7 @@ class AppLocalizationsEs extends AppLocalizations {
       other: '$hours hours',
       one: 'hour',
     );
-    return 'rain in the next $_temp0';
+    return 'lluvia en las próximas $_temp0';
   }
 
   @override
@@ -420,7 +420,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return 'updated, $minutes min ago';
+    return 'actualizado hace $minutes min';
   }
 
   @override
@@ -431,7 +431,7 @@ class AppLocalizationsEs extends AppLocalizations {
       other: '$hours hours',
       one: '1 hour',
     );
-    return 'updated, $_temp0 ago';
+    return 'actualizado hace $_temp0 horas';
   }
 
   @override
@@ -442,24 +442,24 @@ class AppLocalizationsEs extends AppLocalizations {
       other: '$days days',
       one: '1 day',
     );
-    return 'updated, $_temp0 ago';
+    return 'actualizado hace $_temp0 días';
   }
 
   @override
-  String get radarHaptics => 'Radar haptics';
+  String get radarHaptics => 'háptica del radar';
 
   @override
-  String get alertsCapital => 'Alerts';
+  String get alertsCapital => 'Alertas';
 
   @override
-  String get severity => 'severity';
+  String get severity => 'gravedad';
 
   @override
-  String get certainty => 'certainty';
+  String get certainty => 'certeza';
 
   @override
-  String get urgency => 'urgency';
+  String get urgency => 'urgencia';
 
   @override
-  String get areas => 'areas';
+  String get areas => 'áreas';
 }

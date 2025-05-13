@@ -62,7 +62,7 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    const daysToShow = 7;
+    final int daysToShow = min(data.days.length, 7);
     return Padding(
       padding: const EdgeInsets.only(left: 24, right: 24, bottom: 25),
       child: Column(
@@ -194,7 +194,7 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette, int index, int day
 Widget dailyExpanded(var day, data, ColorScheme palette, onExpandTapped, index) {
 
   return Padding(
-    padding: const EdgeInsets.only(left: 12, right: 12, top: 0, bottom: 16),
+    padding: const EdgeInsets.only(left: 13, right: 13, top: 0, bottom: 16),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -238,11 +238,12 @@ Widget dailyExpanded(var day, data, ColorScheme palette, onExpandTapped, index) 
         ),
         Container(
           decoration: BoxDecoration(
-            color: palette.secondaryContainer,
-            borderRadius: BorderRadius.circular(40),
+            //color: palette.secondaryContainer,
+            border: Border.all(color: palette.outlineVariant, width: 2),
+            borderRadius: BorderRadius.circular(18),
           ),
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          height: 67,
+          padding: const EdgeInsets.only(left: 10, right: 10, top: 25, bottom: 25),
+          margin: const EdgeInsets.all(2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -256,7 +257,7 @@ Widget dailyExpanded(var day, data, ColorScheme palette, onExpandTapped, index) 
         ),
 
         Padding(
-          padding: const EdgeInsets.only(top: 28),
+          padding: const EdgeInsets.only(top: 20),
           child: NewHourly(data: data, hours: day.hourly, addDayDivider: false, elevated: true,),
         )
 

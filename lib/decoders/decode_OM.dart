@@ -599,23 +599,12 @@ class OMSunstatus {
 class OMAqi{
   final int aqi_index;
 
-  final double pm2_5;
-  final double pm10;
-  final double o3;
-  final double no2;
-
   final String aqi_desc;
   final String aqi_title;
 
   const OMAqi({
-
     required this.aqi_desc,
     required this.aqi_title,
-
-    required this.no2,
-    required this.o3,
-    required this.pm2_5,
-    required this.pm10,
     required this.aqi_index,
   });
 
@@ -623,7 +612,7 @@ class OMAqi{
     final params = {
       "latitude": lat.toString(),
       "longitude": lng.toString(),
-      "current": ["european_aqi", "pm10", "pm2_5", "nitrogen_dioxide", "ozone"],
+      "current": ["european_aqi"],
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
 
@@ -638,10 +627,6 @@ class OMAqi{
 
     return OMAqi(
       aqi_index: index,
-      pm10: item["pm10"],
-      pm2_5: item["pm2_5"],
-      no2: item["nitrogen_dioxide"],
-      o3: item["ozone"],
 
       aqi_title: OmAqiTitle(index, localizations),
 
@@ -653,6 +638,11 @@ class OMAqi{
 
 class OMExtendedAqi{ //this data will only be called if you open the Air quality page
                       //this is done to reduce the amount of unused calls to the open-meteo servers
+
+  final double pm2_5;
+  final double pm10;
+  final double o3;
+  final double no2;
   final double co;
   final double so2;
 
@@ -694,8 +684,13 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
   final double dust;
 
   const OMExtendedAqi({
+    required this.no2,
+    required this.o3,
+    required this.pm2_5,
+    required this.pm10,
     required this.co,
     required this.so2,
+
     required this.alder,
     required this.birch,
     required this.grass,
@@ -737,7 +732,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     final params = {
       "latitude": lat.toString(),
       "longitude": lng.toString(),
-      "current": ['carbon_monoxide', 'sulphur_dioxide',
+      "current": ['carbon_monoxide', 'sulphur_dioxide', "pm10", "pm2_5", "nitrogen_dioxide", "ozone",
         'alder_pollen', 'birch_pollen', 'grass_pollen', 'mugwort_pollen', 'olive_pollen', 'ragweed_pollen',
         'aerosol_optical_depth', 'dust', 'european_aqi', 'us_aqi'],
       "hourly" : ["pm10", "pm2_5", "nitrogen_dioxide", "ozone", "sulphur_dioxide", "carbon_monoxide"],
@@ -864,6 +859,10 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     String europeanDesc = OmAqiTitle(europeanIndex + 1, localizations);
 
     return OMExtendedAqi(
+      pm10: item["current"]["pm10"],
+      pm2_5: item["current"]["pm2_5"],
+      no2: item["current"]["nitrogen_dioxide"],
+      o3: item["current"]["ozone"],
       co: item["current"]["carbon_monoxide"],
       so2: item["current"]["sulphur_dioxide"],
 

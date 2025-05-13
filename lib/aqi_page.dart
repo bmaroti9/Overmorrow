@@ -383,10 +383,10 @@ class _AllergensPageState extends State<AllergensPage> {
                                 shrinkWrap: true,
                                 childAspectRatio: 0.9,
                                 children: <Widget>[
-                                  pollutantWidget(data, "pm2.5", data.aqi.pm2_5, extendedAqi.pm2_5_p, palette),
-                                  pollutantWidget(data, "pm10", data.aqi.pm10, extendedAqi.pm10_p, palette),
-                                  pollutantWidget(data, "o3", data.aqi.o3, extendedAqi.o3_p, palette),
-                                  pollutantWidget(data, "no2", data.aqi.no2, extendedAqi.no2_p, palette),
+                                  pollutantWidget(data, "pm2.5", extendedAqi.pm2_5, extendedAqi.pm2_5_p, palette),
+                                  pollutantWidget(data, "pm10", extendedAqi.pm10, extendedAqi.pm10_p, palette),
+                                  pollutantWidget(data, "o3", extendedAqi.o3, extendedAqi.o3_p, palette),
+                                  pollutantWidget(data, "no2", extendedAqi.no2, extendedAqi.no2_p, palette),
                                   pollutantWidget(data, "co", extendedAqi.co, extendedAqi.co_p, palette),
                                   pollutantWidget(data, "so2", extendedAqi.so2, extendedAqi.so2_p, palette),
                                 ],
@@ -484,7 +484,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                                 borderRadius: BorderRadius.circular(30),
                                                 color: extendedAqi.dailyAqi[index] == highestAqi ? palette.secondary : palette.secondaryContainer,
                                             ),
-                                            width: 50,
+                                            width: 48,
                                             alignment: Alignment.topCenter,
                                             padding: const EdgeInsets.only(top: 16),
                                             //tried to do some null safety and not allowing the bars to be too short

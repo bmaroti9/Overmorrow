@@ -222,13 +222,22 @@ String getTime(date, bool ampm) {
    }
 }
 
-String getName(index, settings, localizations) {
-  List<String> names = [
-    localizations.today,
-    localizations.tomorrow,
-    localizations.overmorrow,
+String wapiGetName(index, settings, localizations, item) {
+  print(item["date"]);
+  DateTime time = DateTime.parse(item["date"]);
+  List<String> weeks = [
+    localizations.mon,
+    localizations.tue,
+    localizations.wed,
+    localizations.thu,
+    localizations.fri,
+    localizations.sat,
+    localizations.sun
   ];
-  return names[index];
+  String weekname = weeks[time.weekday - 1];
+  final String date = settings["Date format"] == "mm/dd" ? "${time.month}/${time.day}"
+      :"${time.day}/${time.month}";
+  return "$weekname, $date";
 }
 
 String backdropCorrection(name, isday, localizations) {
@@ -385,7 +394,7 @@ class WapiDay {
     icon: iconCorrection(
         item["day"]["condition"]["code"], 1, localizations,
     ),
-    name: getName(index, settings, localizations),
+    name: wapiGetName(index, settings, localizations, item),
 
     minTemp: unit_coversion(item["day"]["maxtemp_c"], settings["Temperature"]).round(),
     maxTemp: unit_coversion(item["day"]["mintemp_c"], settings["Temperature"]).round(),
@@ -428,6 +437,7 @@ class WapiHour {
   final int precip_prob;
   final double wind;
   final int wind_dir;
+  final int wind_gusts;
   final int uv;
 
   final double raw_temp;
@@ -435,20 +445,21 @@ class WapiHour {
   final double raw_wind;
 
   const WapiHour(
-      {
-        required this.temp,
-        required this.time,
-        required this.icon,
-        required this.text,
-        required this.precip,
-        required this.wind,
-        required this.raw_precip,
-        required this.raw_temp,
-        required this.raw_wind,
-        required this.wind_dir,
-        required this.uv,
-        required this.precip_prob,
-      });
+    {
+      required this.temp,
+      required this.time,
+      required this.icon,
+      required this.text,
+      required this.precip,
+      required this.wind,
+      required this.raw_precip,
+      required this.raw_temp,
+      required this.raw_wind,
+      required this.wind_dir,
+      required this.wind_gusts,
+      required this.uv,
+      required this.precip_prob,
+    });
 
   static WapiHour fromJson(item, settings, localizations) => WapiHour(
     text: textCorrection(
@@ -468,6 +479,7 @@ class WapiHour {
     raw_wind: item["wind_kph"],
 
     wind: double.parse(unit_coversion(item["wind_kph"], settings["Wind"]).toStringAsFixed(1)),
+    wind_gusts: unit_coversion(item["gust_kph"], settings["Wind"]).round(),
 
     precip_prob: max(item["chance_of_rain"], item["chance_of_snow"]),
     uv: item["uv"].round(),
@@ -505,18 +517,10 @@ class WapiSunstatus {
 
 class WapiAqi {
   final int aqi_index;
-  final double pm2_5;
-  final double pm10;
-  final double o3;
-  final double no2;
   final String aqi_title;
   final String aqi_desc;
 
   const WapiAqi({
-    required this.no2,
-    required this.o3,
-    required this.pm2_5,
-    required this.pm10,
     required this.aqi_index,
     required this.aqi_desc,
     required this.aqi_title,
@@ -524,10 +528,6 @@ class WapiAqi {
 
   static WapiAqi fromJson(item) => WapiAqi(
     aqi_index: item["current"]["air_quality"]["us-epa-index"],
-    pm10: double.parse(item["current"]["air_quality"]["pm10"].toStringAsFixed(1)),
-    pm2_5: double.parse(item["current"]["air_quality"]["pm2_5"].toStringAsFixed(1)),
-    o3: double.parse(item["current"]["air_quality"]["o3"].toStringAsFixed(1)),
-    no2: double.parse(item["current"]["air_quality"]["no2"].toStringAsFixed(1)),
 
     aqi_title: ['good', 'fair', 'moderate', 'poor', 'very poor', 'unhealthy']
     [item["current"]["air_quality"]["us-epa-index"] - 1],
@@ -567,8 +567,16 @@ class WapiAlert {
   });
 
   static WapiAlert fromJson(item, localizations) {
-    final DateTime start = DateTime.parse(item["effective"]);
-    final DateTime end = DateTime.parse(item["expires"]);
+
+    DateTime start = DateTime.now();
+    DateTime end = DateTime.now();
+
+    try {
+      start = DateTime.parse(item["effective"]);
+      end = DateTime.parse(item["expires"]);
+    } on FormatException {
+      print("no format");
+    }
 
     List<String> weeks = [
       localizations.mon,

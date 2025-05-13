@@ -86,14 +86,6 @@ int metNcalculateFeelsLike(double t, double r, double v) {
 }
 
 String metNGetName(index, settings, item, start, hourDif, localizations) {
-  if (index < 3) {
-    List<String> names = [
-      localizations.today,
-      localizations.tomorrow,
-      localizations.overmorrow,
-    ];
-    return names[index];
-  }
   String x = item["properties"]["timeseries"][start]["time"].split("T")[0];
   String hour = item["properties"]["timeseries"][start]["time"].split("T")[1].split(":")[0];
   List<String> z = x.split("-");
@@ -193,6 +185,8 @@ Future<List<dynamic>> MetNMakeRequest(double lat, double lng, String real_loc) a
     "User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"
   };
   final MnUrl = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/complete', MnParams);
+
+  print(MnUrl);
 
   //var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$real_loc, met.no", headers: headers).timeout(const Duration(seconds: 6));
   var MnFile = await XCustomCacheManager.fetchData(MnUrl.toString(), "$real_loc, met.no", headers: headers);
@@ -404,6 +398,7 @@ class MetNHour {
   final int precip_prob;
   final double wind;
   final int wind_dir;
+  final int wind_gusts;
   final int uv;
 
   final double raw_temp;
@@ -424,6 +419,7 @@ class MetNHour {
         required this.raw_temp,
         required this.raw_wind,
         required this.wind_dir,
+        required this.wind_gusts,
         required this.uv,
         required this.precip_prob,
         required this.rawText,
@@ -433,6 +429,7 @@ class MetNHour {
     var nextHours = item["data"]["next_1_hours"] ?? item["data"]["next_6_hours"];
 
     return MetNHour(
+        wind_gusts: 0,
         rawText: metNTextCorrection(
             nextHours["summary"]["symbol_code"], false, localizations),
         text: metNTextCorrection(
