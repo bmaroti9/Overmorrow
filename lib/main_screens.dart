@@ -19,11 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/new_forecast.dart';
 import 'package:overmorrow/radar.dart';
@@ -371,7 +368,6 @@ Widget TabletLayout(data, updateLocation, context) {
                   child: Column(
                     children: [
                       NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-                      NewRain15MinuteIndicator(data, context),
                       NewAirQuality(data, context),
                       RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
                       buildNewGlanceDay(data: data, key: Key("${data.place}, ${data.current.primary}"),),

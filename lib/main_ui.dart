@@ -17,13 +17,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
-import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/main_screens.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -460,7 +457,7 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
               borderRadius: BorderRadius.circular(18),
               //border: Border.all(color: palette.secondary, width: 2)
             ),
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
             child: DropdownButton(
               underline: Container(),
               onTap: () {

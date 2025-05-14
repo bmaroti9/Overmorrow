@@ -111,10 +111,10 @@ class AppLocalizationsBg extends AppLocalizations {
   String get locationServicesAreDisabled => 'услугите за местоположение са деактивирани.';
 
   @override
-  String get locationPermissionIsDenied => 'разрешение за местоположение е отказано';
+  String get locationPermissionIsDenied => 'разрешението за местоположение е отказано';
 
   @override
-  String get locationPermissionDeniedForever => 'разрешение за местоположение, отказано завинаги';
+  String get locationPermissionDeniedForever => 'разрешението за местоположение, отказано завинаги';
 
   @override
   String get failedToAccessGps => 'не успя да получи достъп до gps';
@@ -156,7 +156,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get colorMode => 'Режим на цвят';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'доставчик на метеорологични услуги';
 
   @override
   String get timeMode => 'Формат на време';

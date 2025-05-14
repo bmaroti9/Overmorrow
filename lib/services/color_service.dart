@@ -100,7 +100,7 @@ class ImageColorList {
     );
     PaletteGenerator imageColors = await PaletteGenerator.fromImage(
       imageInfo.image,
-      maximumColorCount: 2,
+      maximumColorCount: 1,
       filters: [],
     );
 

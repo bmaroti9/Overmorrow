@@ -307,7 +307,7 @@ class OMCurrent {
       palette: colorPalette.palette,
       colorPop: colorPalette.colorPop,
       descColor: colorPalette.descColor,
-      debugColors: colorPalette.regionColors,
+      debugColors: colorPalette.imageColors,
 
       text: conditionTranslation(currentCondition, context) ?? "TranslationErr",
       uv: item["daily"]["uv_index_max"][dayDif].round(),

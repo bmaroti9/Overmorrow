@@ -65,7 +65,7 @@ class ImageService {
 
     final String image_path = unsplashBody[0]["urls"]["regular"];
     Image image = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,
-      width: double.infinity, height: double.infinity,);
+      width: double.infinity, height: double.infinity);
 
 
     final String _userLink = (unsplashBody[0]["user"]["links"]["html"]) ?? "";

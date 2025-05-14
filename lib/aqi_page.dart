@@ -75,8 +75,8 @@ Widget pollenWidget(IconData icon, String name, double value, data, ColorScheme 
 
   int categoryIndex = 0;
   for (int i = 0; i < categoryBoundaries.length; i++) {
-    if (value > categoryBoundaries[i]) {
-      categoryIndex = i + 1;
+    if (value >= categoryBoundaries[i]) {
+      categoryIndex = i;
     }
   }
 
@@ -95,10 +95,13 @@ Widget pollenWidget(IconData icon, String name, double value, data, ColorScheme 
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: palette.secondaryContainer,
+              color: categoryIndex >= 4 ? palette.errorContainer
+                : categoryIndex >= 3 ? palette.primaryContainer
+                : categoryIndex >= 2 ? palette.secondaryContainer
+                : palette.surfaceContainerHigh,
             ),
             padding: const EdgeInsets.only(top: 8, bottom: 8),
-            width: 70,
+            width: 75,
             child: Center(child: comfortatext(severity, 15, data.settings, color: palette.onSecondaryContainer))
         ),
       ],

@@ -180,29 +180,81 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
   );
 }
 
-Widget settingEntry(icon, text, settings, ColorScheme palette, updatePage, rawText) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 3, bottom: 3, left: 35, right: 35),
-    child: Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 13, bottom: 2),
-          child: Icon(icon, color: palette.primary, size: 21,),
-        ),
-        Expanded(
-          flex: 10,
-          child: comfortatext(
-            text,
-            19,
-            settings,
-            color: palette.onSurface,
+Widget settingEntry(icon, text, settings, ColorScheme palette, updatePage, rawText, context) {
+  return GestureDetector(
+    behavior: HitTestBehavior.translucent,
+    onTap: () {
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          List<String> options = settingSwitches[rawText] ?? [""];
+          return AlertDialog(
+            backgroundColor: palette.surface,
+            content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20, top: 10, left: 0),
+                      child: comfortatext(text, 22, settings, color: palette.onSurface),
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: List<Widget>.generate(options.length, (int index) {
+                        return GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            Navigator.pop(context);
+                            updatePage(rawText, options[index]);
+                          },
+                          child: Row(
+                            children: [
+                              Radio<String>(
+                                value: options[index],
+                                groupValue: settings[rawText],
+                                activeColor: palette.primary,
+                                onChanged: (String? value) {
+                                  HapticFeedback.lightImpact();
+                                  Navigator.pop(context);
+                                  updatePage(rawText, value);
+                                },
+                              ),
+                              comfortatext(options[index], 18, settings, color: palette.onSurface)
+                            ],
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
+                );
+              },
+            ),
+          );
+        }
+      );
+    },
+    child: Padding(
+      padding: const EdgeInsets.only(top: 14, bottom: 14),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 17),
+            child: Icon(icon, color: palette.primary, size: 22,),
           ),
-        ),
-        const Spacer(),
-        dropdown(
-            palette.surfaceContainer, text, updatePage, settings[rawText]!, settings, palette.onSurface, palette.primaryContainer, rawText
-        ),
-      ],
+          Expanded(
+            child: Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                comfortatext(text, 19, settings, color: palette.onSurface),
+                comfortatext(settings[rawText]!, 15, settings, color: palette.outline,),
+              ],
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

@@ -26,7 +26,6 @@ import 'package:overmorrow/weather_refact.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'decoders/decode_wapi.dart';
-import 'decoders/extra_info.dart';
 import 'main_ui.dart';
 import '../l10n/app_localizations.dart';
 
@@ -42,6 +41,7 @@ Widget mainSettingEntry(String title, String desc, ColorScheme palette,
   return Padding(
     padding: const EdgeInsets.only(left: 25, right: 25, top: 5, bottom: 5),
     child: GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () {
         HapticFeedback.selectionClick();
         Navigator.push(
@@ -49,12 +49,8 @@ Widget mainSettingEntry(String title, String desc, ColorScheme palette,
           MaterialPageRoute(builder: (context) => pushTo)
         );
       },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: palette.surfaceContainer,
-        ),
-        padding: const EdgeInsets.all(23),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15, top: 13, bottom: 13),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -71,12 +67,12 @@ Widget mainSettingEntry(String title, String desc, ColorScheme palette,
                     padding: const EdgeInsets.only(bottom: 3),
                     child: comfortatext(title, 21, settings, color: palette.onSurface),
                   ),
-                  comfortatext(desc, 15, settings, color: palette.onSurface),
+                  comfortatext(desc, 15, settings, color: palette.outline),
                 ],
               ),
             )
           ],
-        )
+        ),
       ),
     ),
   );
@@ -97,7 +93,7 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
             context, updatePage
         ),
         mainSettingEntry(localizations.general, localizations.generalSettingDesc,
-            palette, Icons.settings_applications, settings,
+            palette, Icons.tune, settings,
             GeneralSettingsPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
               localizations: localizations,),
             context, updatePage),
@@ -106,44 +102,14 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
             LangaugePage(palette: palette, settings: settings, image: image, updateMainPage: updatePage),
             context, updatePage),
         mainSettingEntry(localizations.units, localizations.unitsSettingdesc,
-            palette, Icons.pie_chart_outline, settings,
+            palette, Icons.straighten, settings,
             UnitsPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
             localizations: localizations,),
             context, updatePage),
         mainSettingEntry(localizations.layout, localizations.layoutSettingDesc,
-            palette,
-            Icons.splitscreen, settings,
+            palette, Icons.widgets_outlined, settings,
             LayoutPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage, localizations: localizations,), context, updatePage),
       ],
-    ),
-  );
-}
-
-Widget ColorThemeButton(String name, IconData icon, Color highlight, Color primary, settings, updatePage) {
-  bool selected = settings["Color mode"] == name;
-  return Padding(
-    padding: const EdgeInsets.all(3.0),
-    child: GestureDetector(
-      onTap: () {
-        HapticFeedback.mediumImpact();
-        updatePage("Color mode", name);
-      },
-      child: Container(
-        padding: const EdgeInsets.only(top: 22, bottom: 22, left: 10, right: 10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
-          color: selected ? primary : highlight,
-        ),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 4),
-              child: Icon(icon, size: 18, color: selected ? highlight : primary,),
-            ),
-            comfortatext(name, 18, settings, color: selected ? highlight : primary)
-          ],
-        ),
-      ),
     ),
   );
 }
@@ -215,7 +181,6 @@ class _AppearancePageState extends State<AppearancePage> {
   }
 }
 
-
 class AppearanceSelector extends StatelessWidget {
 
   final image;
@@ -227,7 +192,6 @@ class AppearanceSelector extends StatelessWidget {
 
   AppearanceSelector({required this.image, required this.settings, required this.colorPalette,
     required this.updatePage, required this.localizations, required this.goBack});
-
 
   @override
   Widget build(BuildContext context) {
@@ -245,143 +209,131 @@ class AppearanceSelector extends StatelessWidget {
                 }),
             title: comfortatext(
                 localizations.appearance, 30, settings,
-                color: palette.primary),
+                color: palette.secondary),
             backgroundColor: palette.surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 30, bottom: 10),
-                  child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30, bottom: 10),
                     child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(25),
-                            topRight: Radius.circular(25),
-                          ),
-                          color: palette.surfaceContainer,
-                      ),
-                      width: 240,
-                      height: 350,
+                      height: 190,
+                      margin: const EdgeInsets.only(left: 10, right: 10),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(25),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        borderRadius: BorderRadius.circular(100),
+                        child: Stack(
                           children: [
-                            SizedBox(
-                              height: 240,
-                              child: Stack(
+                            ParrallaxBackground(image: image, color: palette.surface),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 40),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ParrallaxBackground(image: image, color: palette.surface),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10, bottom: 15),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        comfortatext("${unit_coversion(32, settings["Temperature"]!).toInt()}°", 42,
-                                            settings, color: colorPalette.colorPop, weight: FontWeight.w300),
-                                        comfortatext(localizations.clearSky, 24,
-                                            settings, color: colorPalette.descColor, weight: FontWeight.w600)
-                                      ],
-                                    ),
-                                  ),
+                                  comfortatext("${unit_coversion(16, settings["Temperature"]!).toInt()}°", 67,
+                                      settings, color: colorPalette.colorPop, weight: FontWeight.w200),
+                                  comfortatext(localizations.clearSky, 26,
+                                      settings, color: colorPalette.descColor, weight: FontWeight.w400)
                                 ],
                               ),
                             ),
-                            Padding(
-                                padding: const EdgeInsets.only(top: 15, right: 4, left: 4, bottom: 15),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: List.generate(4, (index) {
-                                    return Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: AspectRatio(
-                                          aspectRatio: 1,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(40),
-                                              border: Border.all(color: palette.primary, width: 2),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                )
-                            ),
+
                           ],
                         ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.only(top: 15),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ColorThemeButton("light", Icons.light_mode_outlined, palette.surfaceContainer, palette.primary, settings, updatePage),
-                          ColorThemeButton("dark", Icons.dark_mode_outlined, palette.surfaceContainer, palette.primary, settings, updatePage),
-                          ColorThemeButton("auto", Icons.brightness_6_rounded, palette.surfaceContainer, palette.primary, settings, updatePage),
-                        ]
-                    )
-                ),
-                Padding(
-                    padding: const EdgeInsets.only(top: 4, bottom: 30),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ColorThemeButton("original", Icons.circle_outlined, palette.surfaceContainer, palette.primary, settings, updatePage),
-                          ColorThemeButton("colorful", Icons.circle, palette.surfaceContainer, palette.primary, settings, updatePage),
-                          ColorThemeButton("mono", Icons.invert_colors_on_outlined, palette.surfaceContainer, palette.primary, settings, updatePage),
-                        ]
-                    )
-                ),
 
-                settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source'),
-                if (settings["Color source"] == "custom") SizedBox(
-                  height: 80,
-                  child: ListView.builder(
-                    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: settingSwitches["Custom color"]!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          HapticFeedback.mediumImpact();
-                          updatePage("Custom color", settingSwitches["Custom color"]![index]);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: Stack(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: Color(getColorFromHex(settingSwitches["Custom color"]![index])),
-                                      borderRadius: BorderRadius.circular(100)
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 1, bottom: 14, top: 30),
+                        child: comfortatext("app theme", 17,
+                          settings,
+                          color: palette.onSurface),
+                      ),
+                    ],
+                  ),
+
+                  SegmentedButton(
+                    selected: <String>{settings["Color mode"]},
+                    onSelectionChanged: (Set<String> newSelection) {
+                      HapticFeedback.mediumImpact();
+                      updatePage("Color mode", newSelection.first);
+                    },
+                    style: SegmentedButton.styleFrom(
+                      backgroundColor: palette.surface,
+                      foregroundColor: palette.primary,
+                      selectedBackgroundColor: palette.secondaryContainer,
+                      selectedForegroundColor: palette.primary,
+                    ),
+                    segments: [
+                      ButtonSegment(
+                        icon: const Icon(Icons.light_mode_outlined),
+                        value: "light",
+                        label: comfortatext("light", 18, settings, color: palette.onSurface)
+                      ),
+                      ButtonSegment(
+                          icon: const Icon(Icons.dark_mode_outlined),
+                          value: "dark",
+                          label: comfortatext("dark", 18, settings, color: palette.onSurface)
+                      ),
+                      ButtonSegment(
+                          icon: const Icon(Icons.brightness_6_outlined),
+                          value: "auto",
+                          label: comfortatext("auto", 18, settings, color: palette.onSurface)
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20,),
+
+                  settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source', context),
+
+                  if (settings["Color source"] == "custom") SizedBox(
+                    height: 80,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: settingSwitches["Custom color"]!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () {
+                            HapticFeedback.mediumImpact();
+                            updatePage("Custom color", settingSwitches["Custom color"]![index]);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Color(getColorFromHex(settingSwitches["Custom color"]![index])),
+                                        borderRadius: BorderRadius.circular(100)
+                                    ),
                                   ),
-                                ),
-                                if (settings["Custom color"] == settingSwitches["Custom color"]![index]) const Center(
-                                    child: Icon(Icons.check, color: WHITE,))
-                              ],
+                                  if (settings["Custom color"] == settingSwitches["Custom color"]![index]) const Center(
+                                      child: Icon(Icons.check, color: WHITE,))
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-                settingEntry(Icons.landscape_outlined, localizations.imageSource, settings, palette, updatePage, 'Image source'),
-                const SizedBox(height: 70,),
-              ],
+                  settingEntry(Icons.landscape_outlined, localizations.imageSource, settings, palette, updatePage, 'Image source', context),
+                  const SizedBox(height: 70,),
+                ],
+              ),
             ),
           ),
         ],
@@ -457,12 +409,12 @@ class _UnitsPageState extends State<UnitsPage> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 30, bottom: 60),
+              padding: const EdgeInsets.only(top: 30, bottom: 60, left: 30),
               child: Column(
                 children: [
-                  settingEntry(CupertinoIcons.thermometer, localizations.temperature, settings, palette, updatePage, 'Temperature'),
-                  settingEntry(Icons.water_drop_outlined, localizations.precipitaion, settings, palette, updatePage, 'Precipitation'),
-                  settingEntry(CupertinoIcons.wind, localizations.windCapital, settings, palette, updatePage, 'Wind'),
+                  settingEntry(CupertinoIcons.thermometer, localizations.temperature, settings, palette, updatePage, 'Temperature', context),
+                  settingEntry(Icons.water_drop_outlined, localizations.precipitaion, settings, palette, updatePage, 'Precipitation', context),
+                  settingEntry(CupertinoIcons.wind, localizations.windCapital, settings, palette, updatePage, 'Wind', context),
                 ],
               ),
             ),
@@ -539,14 +491,14 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 30, bottom: 60),
+              padding: const EdgeInsets.only(top: 30, bottom: 60, left: 30),
               child: Column(
                 children: [
-                  settingEntry(Icons.access_time_outlined, localizations.timeMode, settings, palette, updatePage, 'Time mode'),
-                  settingEntry(Icons.date_range, localizations.dateFormat, settings, palette, updatePage, 'Date format'),
-                  settingEntry(CupertinoIcons.textformat_size, localizations.fontSize, settings, palette, updatePage, 'Font size'),
-                  settingEntry(Icons.manage_search_outlined, localizations.searchProvider, settings, palette, updatePage, 'Search provider'),
-                  settingEntry(Icons.vibration_rounded, localizations.radarHaptics, settings, palette, updatePage, 'Radar haptics'),
+                  settingEntry(Icons.access_time_outlined, localizations.timeMode, settings, palette, updatePage, 'Time mode', context),
+                  settingEntry(Icons.date_range, localizations.dateFormat, settings, palette, updatePage, 'Date format', context),
+                  settingEntry(CupertinoIcons.textformat_size, localizations.fontSize, settings, palette, updatePage, 'Font size', context),
+                  settingEntry(Icons.manage_search_outlined, localizations.searchProvider, settings, palette, updatePage, 'Search provider', context),
+                  settingEntry(Icons.vibration_rounded, localizations.radarHaptics, settings, palette, updatePage, 'Radar haptics', context),
                 ],
               ),
             ),
