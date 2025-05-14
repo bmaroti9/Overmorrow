@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
@@ -84,33 +85,44 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
 
   return Padding(
     padding: const EdgeInsets.only(top: 20, bottom: 20),
-    child: Column(
-      children: [
-        mainSettingEntry(localizations.appearance, localizations.appearanceSettingDesc,
-            palette, Icons.palette_outlined, settings,
-            AppearancePage(settings: settings, image: image, colornotify: colornotify, updateMainPage: updatePage,
-                localizations: localizations),
-            context, updatePage
+    child: AnimationLimiter(
+      child: Column(
+        children: AnimationConfiguration.toStaggeredList(
+          duration: const Duration(milliseconds: 375),
+          childAnimationBuilder: (widget) => SlideAnimation(
+            horizontalOffset: 50.0,
+            child: FadeInAnimation(
+            child: widget,
+          ),
         ),
-        mainSettingEntry(localizations.general, localizations.generalSettingDesc,
-            palette, Icons.tune, settings,
-            GeneralSettingsPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
+        children: [
+          mainSettingEntry(localizations.appearance, localizations.appearanceSettingDesc,
+              palette, Icons.palette_outlined, settings,
+              AppearancePage(settings: settings, image: image, colornotify: colornotify, updateMainPage: updatePage,
+                  localizations: localizations),
+              context, updatePage
+          ),
+          mainSettingEntry(localizations.general, localizations.generalSettingDesc,
+              palette, Icons.tune, settings,
+              GeneralSettingsPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
+                localizations: localizations,),
+              context, updatePage),
+          mainSettingEntry(localizations.language, localizations.languageSettingDesc,
+              palette, Icons.language, settings,
+              LangaugePage(palette: palette, settings: settings, image: image, updateMainPage: updatePage),
+              context, updatePage),
+          mainSettingEntry(localizations.units, localizations.unitsSettingdesc,
+              palette, Icons.straighten, settings,
+              UnitsPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
               localizations: localizations,),
-            context, updatePage),
-        mainSettingEntry(localizations.language, localizations.languageSettingDesc,
-            palette, Icons.language, settings,
-            LangaugePage(palette: palette, settings: settings, image: image, updateMainPage: updatePage),
-            context, updatePage),
-        mainSettingEntry(localizations.units, localizations.unitsSettingdesc,
-            palette, Icons.straighten, settings,
-            UnitsPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
-            localizations: localizations,),
-            context, updatePage),
-        mainSettingEntry(localizations.layout, localizations.layoutSettingDesc,
-            palette, Icons.widgets_outlined, settings,
-            LayoutPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage, localizations: localizations,), context, updatePage),
-      ],
-    ),
+              context, updatePage),
+          mainSettingEntry(localizations.layout, localizations.layoutSettingDesc,
+              palette, Icons.widgets_outlined, settings,
+              LayoutPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage, localizations: localizations,), context, updatePage),
+          ],
+        ),
+      ),
+    )
   );
 }
 
@@ -216,123 +228,134 @@ class AppearanceSelector extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(left: 30, right: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30, bottom: 10),
-                    child: Container(
-                      height: 190,
-                      margin: const EdgeInsets.only(left: 10, right: 10),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Stack(
-                          children: [
-                            ParrallaxBackground(image: image, color: palette.surface),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 40),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  comfortatext("${unit_coversion(16, settings["Temperature"]!).toInt()}°", 67,
-                                      settings, color: colorPalette.colorPop, weight: FontWeight.w200),
-                                  comfortatext(localizations.clearSky, 26,
-                                      settings, color: colorPalette.descColor, weight: FontWeight.w400)
-                                ],
-                              ),
-                            ),
-
-                          ],
-                        ),
+              child: AnimationLimiter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: AnimationConfiguration.toStaggeredList(
+                    duration: const Duration(milliseconds: 500),
+                    childAnimationBuilder: (widget) => SlideAnimation(
+                      horizontalOffset: 80.0,
+                      child: FadeInAnimation(
+                        child: widget,
                       ),
                     ),
-                  ),
-
-                  Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 1, bottom: 14, top: 30),
-                        child: comfortatext("app theme", 17,
-                          settings,
-                          color: palette.onSurface),
-                      ),
-                    ],
-                  ),
-
-                  SegmentedButton(
-                    selected: <String>{settings["Color mode"]},
-                    onSelectionChanged: (Set<String> newSelection) {
-                      HapticFeedback.mediumImpact();
-                      updatePage("Color mode", newSelection.first);
-                    },
-                    style: SegmentedButton.styleFrom(
-                      backgroundColor: palette.surface,
-                      foregroundColor: palette.primary,
-                      selectedBackgroundColor: palette.secondaryContainer,
-                      selectedForegroundColor: palette.primary,
-                    ),
-                    segments: [
-                      ButtonSegment(
-                        icon: const Icon(Icons.light_mode_outlined),
-                        value: "light",
-                        label: comfortatext("light", 18, settings, color: palette.onSurface)
-                      ),
-                      ButtonSegment(
-                          icon: const Icon(Icons.dark_mode_outlined),
-                          value: "dark",
-                          label: comfortatext("dark", 18, settings, color: palette.onSurface)
-                      ),
-                      ButtonSegment(
-                          icon: const Icon(Icons.brightness_6_outlined),
-                          value: "auto",
-                          label: comfortatext("auto", 18, settings, color: palette.onSurface)
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20,),
-
-                  settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source', context),
-
-                  if (settings["Color source"] == "custom") SizedBox(
-                    height: 80,
-                    child: ListView.builder(
-                      padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: settingSwitches["Custom color"]!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {
-                            HapticFeedback.mediumImpact();
-                            updatePage("Custom color", settingSwitches["Custom color"]![index]);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Color(getColorFromHex(settingSwitches["Custom color"]![index])),
-                                        borderRadius: BorderRadius.circular(100)
-                                    ),
+                        padding: const EdgeInsets.only(top: 30, bottom: 10),
+                        child: Container(
+                          height: 190,
+                          margin: const EdgeInsets.only(left: 10, right: 10),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Stack(
+                              children: [
+                                ParrallaxBackground(image: image, color: palette.surface),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 40),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      comfortatext("${unit_coversion(16, settings["Temperature"]!).toInt()}°", 67,
+                                          settings, color: colorPalette.colorPop, weight: FontWeight.w200),
+                                      comfortatext(localizations.clearSky, 26,
+                                          settings, color: colorPalette.descColor, weight: FontWeight.w400)
+                                    ],
                                   ),
-                                  if (settings["Custom color"] == settingSwitches["Custom color"]![index]) const Center(
-                                      child: Icon(Icons.check, color: WHITE,))
-                                ],
-                              ),
+                                ),
+
+                              ],
                             ),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                  settingEntry(Icons.landscape_outlined, localizations.imageSource, settings, palette, updatePage, 'Image source', context),
-                  const SizedBox(height: 70,),
-                ],
+                        ),
+                      ),
+
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 1, bottom: 14, top: 30),
+                            child: comfortatext("app theme", 17,
+                              settings,
+                              color: palette.onSurface),
+                          ),
+                        ],
+                      ),
+
+                      SegmentedButton(
+                        selected: <String>{settings["Color mode"]},
+                        onSelectionChanged: (Set<String> newSelection) {
+                          HapticFeedback.mediumImpact();
+                          updatePage("Color mode", newSelection.first);
+                        },
+                        style: SegmentedButton.styleFrom(
+                          backgroundColor: palette.surface,
+                          foregroundColor: palette.primary,
+                          selectedBackgroundColor: palette.secondaryContainer,
+                          selectedForegroundColor: palette.primary,
+                        ),
+                        segments: [
+                          ButtonSegment(
+                            icon: const Icon(Icons.light_mode_outlined),
+                            value: "light",
+                            label: comfortatext("light", 18, settings, color: palette.onSurface)
+                          ),
+                          ButtonSegment(
+                              icon: const Icon(Icons.dark_mode_outlined),
+                              value: "dark",
+                              label: comfortatext("dark", 18, settings, color: palette.onSurface)
+                          ),
+                          ButtonSegment(
+                              icon: const Icon(Icons.brightness_6_outlined),
+                              value: "auto",
+                              label: comfortatext("auto", 18, settings, color: palette.onSurface)
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20,),
+
+                      settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source', context),
+
+                      if (settings["Color source"] == "custom") SizedBox(
+                        height: 80,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: settingSwitches["Custom color"]!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                HapticFeedback.mediumImpact();
+                                updatePage("Custom color", settingSwitches["Custom color"]![index]);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Color(getColorFromHex(settingSwitches["Custom color"]![index])),
+                                            borderRadius: BorderRadius.circular(100)
+                                        ),
+                                      ),
+                                      if (settings["Custom color"] == settingSwitches["Custom color"]![index]) const Center(
+                                          child: Icon(Icons.check, color: WHITE,))
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      settingEntry(Icons.image_outlined, localizations.imageSource, settings, palette, updatePage, 'Image source', context),
+                      const SizedBox(height: 70,),
+                    ],
+                  )
+                ),
               ),
             ),
           ),
@@ -410,12 +433,23 @@ class _UnitsPageState extends State<UnitsPage> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 60, left: 30),
-              child: Column(
-                children: [
-                  settingEntry(CupertinoIcons.thermometer, localizations.temperature, settings, palette, updatePage, 'Temperature', context),
-                  settingEntry(Icons.water_drop_outlined, localizations.precipitaion, settings, palette, updatePage, 'Precipitation', context),
-                  settingEntry(CupertinoIcons.wind, localizations.windCapital, settings, palette, updatePage, 'Wind', context),
-                ],
+              child: AnimationLimiter(
+                child: Column(
+                  children: AnimationConfiguration.toStaggeredList(
+                    duration: const Duration(milliseconds: 500),
+                    childAnimationBuilder: (widget) => SlideAnimation(
+                      horizontalOffset: 80.0,
+                      child: FadeInAnimation(
+                        child: widget,
+                      ),
+                    ),
+                    children: [
+                      settingEntry(CupertinoIcons.thermometer, localizations.temperature, settings, palette, updatePage, 'Temperature', context),
+                      settingEntry(Icons.water_drop_outlined, localizations.precipitaion, settings, palette, updatePage, 'Precipitation', context),
+                      settingEntry(CupertinoIcons.wind, localizations.windCapital, settings, palette, updatePage, 'Wind', context),
+                    ],
+                  )
+                ),
               ),
             ),
           ),
@@ -492,14 +526,25 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 60, left: 30),
-              child: Column(
-                children: [
-                  settingEntry(Icons.access_time_outlined, localizations.timeMode, settings, palette, updatePage, 'Time mode', context),
-                  settingEntry(Icons.date_range, localizations.dateFormat, settings, palette, updatePage, 'Date format', context),
-                  settingEntry(CupertinoIcons.textformat_size, localizations.fontSize, settings, palette, updatePage, 'Font size', context),
-                  settingEntry(Icons.manage_search_outlined, localizations.searchProvider, settings, palette, updatePage, 'Search provider', context),
-                  settingEntry(Icons.vibration_rounded, localizations.radarHaptics, settings, palette, updatePage, 'Radar haptics', context),
-                ],
+              child: AnimationLimiter(
+                child: Column(
+                  children: AnimationConfiguration.toStaggeredList(
+                    duration: const Duration(milliseconds: 500),
+                    childAnimationBuilder: (widget) => SlideAnimation(
+                      horizontalOffset: 80.0,
+                      child: FadeInAnimation(
+                        child: widget,
+                      ),
+                    ),
+                    children: [
+                      settingEntry(Icons.access_time_outlined, localizations.timeMode, settings, palette, updatePage, 'Time mode', context),
+                      settingEntry(Icons.date_range, localizations.dateFormat, settings, palette, updatePage, 'Date format', context),
+                      settingEntry(CupertinoIcons.textformat_size, localizations.fontSize, settings, palette, updatePage, 'Font size', context),
+                      settingEntry(Icons.manage_search_outlined, localizations.searchProvider, settings, palette, updatePage, 'Search provider', context),
+                      settingEntry(Icons.vibration_rounded, localizations.radarHaptics, settings, palette, updatePage, 'Radar haptics', context),
+                    ],
+                  )
+                ),
               ),
             ),
           ),
@@ -614,8 +659,8 @@ class TranslationSelection extends StatelessWidget {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: palette.primaryContainer,
+                    borderRadius: BorderRadius.circular(70),
+                    color: palette.primaryFixedDim,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(30.0),
@@ -623,7 +668,7 @@ class TranslationSelection extends StatelessWidget {
                       children: [
                         comfortatext(AppLocalizations.of(context)!.helpTranslate, 21, settings, color: palette.onPrimaryContainer),
                         const Spacer(),
-                        Icon(Icons.arrow_forward, color: palette.onPrimaryContainer, size: 21,)
+                        Icon(Icons.arrow_forward, color: palette.onPrimaryContainer, size: 22,)
                       ],
                     ),
                   ),
@@ -632,30 +677,42 @@ class TranslationSelection extends StatelessWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: ListView.builder(
-              padding: const EdgeInsets.only(top: 10, left: 25, right: 25, bottom: 40),
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: options.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  onTap: () {
-                    onTap(options[index]);
-                  },
-                  title: Padding(
-                    padding: const EdgeInsets.only(top: 15, bottom: 15),
-                    child: comfortatext(options[index], 20, settings, color: palette.onSurface),
-                  ),
-                  trailing: Radio<String>(
-                    fillColor: WidgetStateProperty.all(palette.primary),
-                    value: options[index],
-                    groupValue: selected,
-                    onChanged: (String? value) {
-                      onTap(value);
-                    },
-                  ),
-                );
-              },
+            child: AnimationLimiter(
+              child: ListView.builder(
+                padding: const EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 40),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: options.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 375),
+                    child: SlideAnimation(
+                      verticalOffset: 50.0,
+                      child: FadeInAnimation(
+                        child: ListTile(
+                          onTap: () {
+                            onTap(options[index]);
+                          },
+                          title: Padding(
+                            padding: const EdgeInsets.only(top: 15, bottom: 15, left: 13),
+                            child: comfortatext(options[index], 20, settings, color: palette.onSurface),
+                          ),
+                          contentPadding: EdgeInsets.zero,
+                          trailing: Radio<String>(
+                            fillColor: WidgetStateProperty.all(palette.primary),
+                            value: options[index],
+                            groupValue: selected,
+                            onChanged: (String? value) {
+                              onTap(value);
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ],

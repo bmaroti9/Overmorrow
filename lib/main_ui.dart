@@ -98,13 +98,13 @@ Widget Circles(var data, double bottom, context, ColorScheme palette) {
       //top padding is slightly bigger because of the offline colored bar
       padding: EdgeInsets.only(top: data.isonline ? 25 : 33, left: 19.5, right: 19.5, bottom: 13),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DescriptionCircle(
               text: '${data.current.feels_like}°',
               undercaption: AppLocalizations.of(context)!.feelsLike,
               extra: '',
               settings: data.settings,
-              bottom: bottom,
               dir: -1,
               palette: palette
             ),
@@ -113,7 +113,6 @@ Widget Circles(var data, double bottom, context, ColorScheme palette) {
               undercaption: AppLocalizations.of(context)!.humidity,
               extra: '%',
               settings: data.settings,
-              bottom: bottom,
               dir: -1,
               palette: palette
             ),
@@ -122,7 +121,6 @@ Widget Circles(var data, double bottom, context, ColorScheme palette) {
               undercaption: AppLocalizations.of(context)!.precipCapital,
               extra: data.settings["Precipitation"],
               settings: data.settings,
-              bottom: bottom,
               dir: -1,
               palette: palette
             ),
@@ -131,7 +129,6 @@ Widget Circles(var data, double bottom, context, ColorScheme palette) {
               undercaption: AppLocalizations.of(context)!.windCapital,
               extra: data.settings["Wind"],
               settings: data.settings,
-              bottom: bottom,
               dir: data.current.wind_dir + 180,
               palette: palette
             ),
@@ -147,14 +144,13 @@ class DescriptionCircle extends StatelessWidget {
   final String undercaption;
   final String extra;
   final settings;
-  final bottom;
   final dir;
 
   final ColorScheme palette;
 
   const DescriptionCircle({super.key, required this.text,
     required this.undercaption,  required this.extra,
-    required this.settings, required this.bottom, required this.dir,
+    required this.settings, required this.dir,
     required this.palette});
 
   @override
