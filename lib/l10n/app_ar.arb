@@ -322,5 +322,7 @@
     "description": "setting for enabling or disabling haptic feedback for the radar"
   },
   "alertsCapital": "التنبيهات",
-  "@alertsCapital": {}
+  "@alertsCapital": {},
+  "weatherProvderLowercase": "مزود خدمة الطقس",
+  "@weatherProvderLowercase": {}
 }
