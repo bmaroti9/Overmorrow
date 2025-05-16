@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:overmorrow/donation_page.dart';
 import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
@@ -117,7 +118,11 @@ Widget NewSettings(Map<String, String> settings, Function updatePage, Image imag
               context, updatePage),
           mainSettingEntry(localizations.layout, localizations.layoutSettingDesc,
               palette, Icons.widgets_outlined, settings,
-              LayoutPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage, localizations: localizations,), context, updatePage),
+              LayoutPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
+                localizations: localizations,), context, updatePage),
+          mainSettingEntry(localizations.about, "about this app",
+              palette, Icons.info_outline, settings,
+              AboutPage(settings: settings, palette: palette), context, updatePage),
           ],
         ),
       ),

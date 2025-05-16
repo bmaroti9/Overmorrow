@@ -467,8 +467,6 @@ class OM15MinutePrecip {
 
     sum = max(sum, 0.1); //if there is rain then it shouldn't write 0
 
-    print(("heerreeee", closest, end));
-
     String t_minus = "";
     if (closest != 100) {
       if (closest <= 1) {
@@ -476,7 +474,7 @@ class OM15MinutePrecip {
           t_minus = localizations.rainInHalfHour;
         }
         else if (end <= 3) {
-          int x = [15, 30, 45][end - 1];
+          int x = [15, 30, 45][end];
           t_minus = localizations.rainInMinutes(x);
         }
         else if (end ~/ 4 == 1) {

@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/ui_helper.dart';
 import '../l10n/app_localizations.dart';
 
@@ -322,5 +323,204 @@ Future<void> _launchUrl(String url) async {
   final Uri _url = Uri.parse(url);
   if (!await launchUrl(_url)) {
     throw Exception('Could not launch $_url');
+  }
+}
+
+
+
+class AboutPage extends StatefulWidget {
+  final settings;
+  final ColorScheme palette;
+
+  const AboutPage({Key? key, required this.settings, required this.palette}) : super(key: key);
+
+  @override
+  _AboutPageState createState() =>
+      _AboutPageState(settings: settings, palette: palette);
+}
+
+class _AboutPageState extends State<AboutPage> {
+  final settings;
+  final ColorScheme palette;
+
+  _AboutPageState({required this.settings, required this.palette});
+
+  void goBack() {
+    HapticFeedback.selectionClick();
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Material(
+      color: palette.surface,
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            leading:
+            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
+                onPressed: () {
+                  goBack();
+                }),
+            title: comfortatext(
+                AppLocalizations.of(context)!.about, 30, settings,
+                color: palette.primary),
+            backgroundColor: palette.surface,
+            pinned: false,
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 160,
+                      height: 160,
+                      margin: const EdgeInsets.only(top: 30, bottom: 20),
+                      padding: const EdgeInsets.only(top: 3, right: 3),
+                      decoration: BoxDecoration(
+                        color: palette.secondaryContainer,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Icon(OvermorrowWeatherIcons3.partly_cloudy, size: 100, color: palette.primary,),
+                    ),
+                  ),
+                  Center(child: comfortatext("OVERMORROW", 30, settings, color: palette.primary, weight: FontWeight.w500)),
+                  const SizedBox(height: 45,),
+
+                  Wrap(
+                    spacing: 6.0,
+                    runSpacing: 6.0,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: palette.primary,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.code, color: palette.onPrimary,),
+                            const SizedBox(width: 6,),
+                            comfortatext("source code", 18, settings, color: palette.onPrimary)
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          //color: palette.primary,
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(color: palette.outlineVariant, width: 2)
+                        ),
+                        padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.email_outlined, color: palette.onSurface,),
+                            const SizedBox(width: 6,),
+                            comfortatext("email", 18, settings, color: palette.onSurface)
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          //color: palette.primary,
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(color: palette.outlineVariant, width: 2)
+                        ),
+                        padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.bug_report_outlined, color: palette.onSurface,),
+                            const SizedBox(width: 6,),
+                            comfortatext("report an issue", 18, settings, color: palette.onSurface)
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          //color: palette.primary,
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(color: palette.outlineVariant, width: 2)
+                        ),
+                        padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.volunteer_activism_outlined, color: palette.onSurface,),
+                            const SizedBox(width: 6,),
+                            comfortatext("donate", 18, settings, color: palette.onSurface)
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+
+                  Container(
+                    decoration: BoxDecoration(
+                      color: palette.surfaceContainer,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    margin: const EdgeInsets.only(top: 30),
+                    padding: const EdgeInsets.all(27),
+                    child: Row(
+                      children: [
+                        Icon(Icons.verified_outlined, color: palette.onSurface),
+                        const SizedBox(width: 10,),
+                        comfortatext("Version", 19, settings, color: palette.onSurface),
+                        const Spacer(),
+                        comfortatext("v2.5.0", 19, settings, color: palette.outline),
+                        const SizedBox(width: 10,),
+                        Icon(Icons.update, color: palette.tertiary),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: palette.surfaceContainer,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    margin: const EdgeInsets.only(top: 5),
+                    padding: const EdgeInsets.all(27),
+                    child: Row(
+                      children: [
+                        Icon(Icons.handyman_outlined, color: palette.onSurface),
+                        const SizedBox(width: 10,),
+                        comfortatext("APIs & Services", 19, settings, color: palette.onSurface),
+                        const Spacer(),
+                        Icon(Icons.keyboard_arrow_right_rounded, color: palette.onSurface),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: palette.surfaceContainer,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    margin: const EdgeInsets.only(top: 5),
+                    padding: const EdgeInsets.all(27),
+                    child: Row(
+                      children: [
+                        Icon(Icons.balance, color: palette.onSurface),
+                        const SizedBox(width: 10,),
+                        comfortatext("License", 19, settings, color: palette.onSurface),
+                        const Spacer(),
+                        comfortatext("GPL-3.0 license", 19, settings, color: palette.outline),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
