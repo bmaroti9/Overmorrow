@@ -63,8 +63,7 @@ Widget comfortatext(String text, double size, settings,
     overflow: TextOverflow.ellipsis,
     maxLines: maxLines,
     textAlign: align,
-
-);
+  );
 }
 
 bool estimateBrightnessForColor(Color color) {

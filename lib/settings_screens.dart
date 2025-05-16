@@ -16,7 +16,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -444,9 +443,9 @@ class _UnitsPageState extends State<UnitsPage> {
                       ),
                     ),
                     children: [
-                      settingEntry(CupertinoIcons.thermometer, localizations.temperature, settings, palette, updatePage, 'Temperature', context),
+                      settingEntry(Icons.device_thermostat, localizations.temperature, settings, palette, updatePage, 'Temperature', context),
                       settingEntry(Icons.water_drop_outlined, localizations.precipitaion, settings, palette, updatePage, 'Precipitation', context),
-                      settingEntry(CupertinoIcons.wind, localizations.windCapital, settings, palette, updatePage, 'Wind', context),
+                      settingEntry(Icons.air, localizations.windCapital, settings, palette, updatePage, 'Wind', context),
                     ],
                   )
                 ),
@@ -539,7 +538,7 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                     children: [
                       settingEntry(Icons.access_time_outlined, localizations.timeMode, settings, palette, updatePage, 'Time mode', context),
                       settingEntry(Icons.date_range, localizations.dateFormat, settings, palette, updatePage, 'Date format', context),
-                      settingEntry(CupertinoIcons.textformat_size, localizations.fontSize, settings, palette, updatePage, 'Font size', context),
+                      settingEntry(Icons.format_size, localizations.fontSize, settings, palette, updatePage, 'Font size', context),
                       settingEntry(Icons.manage_search_outlined, localizations.searchProvider, settings, palette, updatePage, 'Search provider', context),
                       settingEntry(Icons.vibration_rounded, localizations.radarHaptics, settings, palette, updatePage, 'Radar haptics', context),
                     ],
@@ -666,9 +665,9 @@ class TranslationSelection extends StatelessWidget {
                     padding: const EdgeInsets.all(30.0),
                     child: Row(
                       children: [
-                        comfortatext(AppLocalizations.of(context)!.helpTranslate, 21, settings, color: palette.onPrimaryContainer),
+                        comfortatext(AppLocalizations.of(context)!.helpTranslate, 21, settings, color: palette.onPrimaryFixedVariant),
                         const Spacer(),
-                        Icon(Icons.arrow_forward, color: palette.onPrimaryContainer, size: 22,)
+                        Icon(Icons.arrow_forward, color: palette.onPrimaryFixedVariant, size: 22,)
                       ],
                     ),
                   ),
@@ -803,6 +802,7 @@ class _LayoutPageState extends State<LayoutPage> {
                 child: IconButton(
                   icon: Icon(Icons.restore, color: palette.primary, size: 26,),
                   onPressed: () {
+                    HapticFeedback.heavyImpact();
                     setState(() {
                       _items = allNames.toList();
                       removed = [];
@@ -823,7 +823,7 @@ class _LayoutPageState extends State<LayoutPage> {
                 ReorderableListView(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 50),
+                  padding: const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 50),
                   children: <Widget>[
                     for (int index = 0; index < _items.length; index += 1)
                       Container(
@@ -833,10 +833,37 @@ class _LayoutPageState extends State<LayoutPage> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: palette.surfaceContainer,
-                            borderRadius: BorderRadius.circular(18),
+                            borderRadius: BorderRadius.circular(33),
                           ),
-                          height: 70,
-                          padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 20),
+                          height: 67,
+                          padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 14),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Icon(Icons.drag_indicator, color: palette.outline,),
+                              ),
+                              Expanded(
+                                child: comfortatext(_items[index], 19, settings, color: palette.onSurface),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  print((_items[index], _items));
+                                  HapticFeedback.mediumImpact();
+                                  setState(() {
+                                    removed.add(_items[index]);
+                                    _items.remove(_items[index]);
+                                    updatePage('Layout order', _items.join(","));
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.remove_circle_outline_rounded,
+                                  color: palette.primary, size: 23,
+                                ),
+                              )
+                            ],
+                          ),
+                          /*
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -866,6 +893,8 @@ class _LayoutPageState extends State<LayoutPage> {
                               Icon(Icons.reorder_rounded, color: palette.primary, size: 21,),
                             ],
                           ),
+
+                           */
                         ),
                       ),
                   ],
@@ -883,11 +912,12 @@ class _LayoutPageState extends State<LayoutPage> {
                 Padding(
                   padding: const EdgeInsets.only(top:0, left: 20, right: 20),
                   child: Wrap(
-                    spacing: 4,
-                    runSpacing: 4,
+                    spacing: 6,
+                    runSpacing: 6,
                     children: List.generate(removed.length, (i) {
                       return GestureDetector(
                         onTap: () {
+                          HapticFeedback.mediumImpact();
                           setState(() {
                             _items.add(removed[i]);
                             removed.remove(removed[i]);
@@ -896,14 +926,17 @@ class _LayoutPageState extends State<LayoutPage> {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18),
-                            border: Border.all(width: 1.2, color: palette.outline)
+                            border: Border.all(width: 2, color: palette.outlineVariant)
                           ),
                           padding: const EdgeInsets.all(10),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.add_rounded, color: palette.primaryContainer, size: 21,),
-                              comfortatext(removed[i], 16, settings, color: palette.onSurface),
+                              Icon(Icons.add_rounded, color: palette.primary, size: 22,),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3, right: 3),
+                                child: comfortatext(removed[i], 17, settings, color: palette.onSurface),
+                              ),
                             ],
                           ),
                         ),
