@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
           try {
             position = await Geolocator.getCurrentPosition(
                 locationSettings: AndroidSettings(accuracy: LocationAccuracy.medium,
-                    timeLimit: const Duration(seconds: 2)
+                    timeLimit: const Duration(seconds: 3)
                 )
             );
           } on TimeoutException {
@@ -178,15 +178,13 @@ class _HomePageState extends State<HomePage> {
           try {
 
             List<Placemark> placemarks = await placemarkFromCoordinates(
-                position.latitude, position.longitude);
+                position.latitude, position.longitude).timeout(const Duration(seconds: 3));
             Placemark place = placemarks[0];
 
             backupName = place.locality;
             absoluteProposed = "${position.latitude}, ${position.longitude}";
 
-          } on FormatException {
-            backupName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
-          } on PlatformException {
+          } on Error {
             backupName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
           }
         }

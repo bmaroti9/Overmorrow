@@ -216,12 +216,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
       });
 
 
-    } on FormatException {
-      setState(() {
-        placeName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
-      });
-
-    } on PlatformException {
+    } on Error {
       setState(() {
         placeName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
       });
