@@ -323,5 +323,7 @@
   "certainty": "certitude",
   "@certainty": {},
   "slightlyHazy": "légèrement brumeux",
-  "@slightlyHazy": {}
+  "@slightlyHazy": {},
+  "weatherProvderLowercase": "fournisseur de météo",
+  "@weatherProvderLowercase": {}
 }
