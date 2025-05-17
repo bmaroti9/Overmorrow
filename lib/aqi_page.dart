@@ -485,7 +485,7 @@ class _AllergensPageState extends State<AllergensPage> {
                                           child: Container(
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(30),
-                                                color: extendedAqi.dailyAqi[index] == highestAqi ? palette.onSurface : palette.secondaryContainer,
+                                                color: extendedAqi.dailyAqi[index] == highestAqi ? palette.primary : palette.secondaryContainer,
                                             ),
                                             width: 48,
                                             alignment: Alignment.topCenter,

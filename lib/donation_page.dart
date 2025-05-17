@@ -21,6 +21,7 @@ import 'package:flutter/services.dart';
 import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/ui_helper.dart';
 import '../l10n/app_localizations.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -326,8 +327,6 @@ Future<void> _launchUrl(String url) async {
   }
 }
 
-
-
 class AboutPage extends StatefulWidget {
   final settings;
   final ColorScheme palette;
@@ -343,7 +342,21 @@ class _AboutPageState extends State<AboutPage> {
   final settings;
   final ColorScheme palette;
 
+  String version = "--";
+  String buildNumber = "--";
+
   _AboutPageState({required this.settings, required this.palette});
+
+  @override
+  void initState() {
+    super.initState();
+    PackageInfo.fromPlatform().then((info) {
+      setState(() {
+        version = info.version;
+        buildNumber = info.buildNumber;
+      });
+    });
+  }
 
   void goBack() {
     HapticFeedback.selectionClick();
@@ -388,74 +401,103 @@ class _AboutPageState extends State<AboutPage> {
                       child: Icon(OvermorrowWeatherIcons3.partly_cloudy, size: 100, color: palette.primary,),
                     ),
                   ),
-                  Center(child: comfortatext("OVERMORROW", 30, settings, color: palette.primary, weight: FontWeight.w500)),
+                  Center(child: comfortatext("Overmorrow", 30, settings, color: palette.primary, weight: FontWeight.w500)),
                   const SizedBox(height: 45,),
 
                   Wrap(
                     spacing: 6.0,
                     runSpacing: 6.0,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: palette.primary,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.code, color: palette.onPrimary,),
-                            const SizedBox(width: 6,),
-                            comfortatext("source code", 18, settings, color: palette.onPrimary)
-                          ],
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          //color: palette.primary,
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(color: palette.outlineVariant, width: 2)
-                        ),
-                        padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.email_outlined, color: palette.onSurface,),
-                            const SizedBox(width: 6,),
-                            comfortatext("email", 18, settings, color: palette.onSurface)
-                          ],
+                      GestureDetector(
+                        onTap: () {
+                          HapticFeedback.mediumImpact();
+                          _launchUrl("https://github.com/bmaroti9/Overmorrow");
+                        },
+                        behavior: HitTestBehavior.translucent,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: palette.primary,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.code, color: palette.onPrimary,),
+                              const SizedBox(width: 6,),
+                              comfortatext("source code", 18, settings, color: palette.onPrimary)
+                            ],
+                          ),
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          //color: palette.primary,
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(color: palette.outlineVariant, width: 2)
-                        ),
-                        padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.bug_report_outlined, color: palette.onSurface,),
-                            const SizedBox(width: 6,),
-                            comfortatext("report an issue", 18, settings, color: palette.onSurface)
-                          ],
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          //color: palette.primary,
+                      GestureDetector(
+                        onTap: () {
+                          HapticFeedback.mediumImpact();
+                          final Uri emailLaunchUri = Uri(
+                            scheme: 'mailto',
+                            path: 'maroti.devel@gmail.com',
+                          );
+                          launchUrl(emailLaunchUri);
+                        },
+                        behavior: HitTestBehavior.translucent,
+                        child: Container(
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             border: Border.all(color: palette.outlineVariant, width: 2)
+                          ),
+                          padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.email_outlined, color: palette.onSurface,),
+                              const SizedBox(width: 6,),
+                              comfortatext("email", 18, settings, color: palette.onSurface)
+                            ],
+                          ),
                         ),
-                        padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.volunteer_activism_outlined, color: palette.onSurface,),
-                            const SizedBox(width: 6,),
-                            comfortatext("donate", 18, settings, color: palette.onSurface)
-                          ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          HapticFeedback.mediumImpact();
+                          _launchUrl("https://github.com/bmaroti9/Overmorrow/issues");
+                        },
+                        behavior: HitTestBehavior.translucent,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(color: palette.outlineVariant, width: 2)
+                          ),
+                          padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.bug_report_outlined, color: palette.onSurface,),
+                              const SizedBox(width: 6,),
+                              comfortatext("report an issue", 18, settings, color: palette.onSurface)
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          HapticFeedback.mediumImpact();
+                          _launchUrl("https://paypal.me/miklosmaroti");
+                        },
+                        behavior: HitTestBehavior.translucent,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(color: palette.outlineVariant, width: 2)
+                          ),
+                          padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.volunteer_activism_outlined, color: palette.onSurface,),
+                              const SizedBox(width: 6,),
+                              comfortatext("donate", 18, settings, color: palette.onSurface)
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -465,7 +507,8 @@ class _AboutPageState extends State<AboutPage> {
                   Container(
                     decoration: BoxDecoration(
                       color: palette.surfaceContainer,
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(33), topRight: Radius.circular(33),
+                      bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
                     ),
                     margin: const EdgeInsets.only(top: 30),
                     padding: const EdgeInsets.all(27),
@@ -475,16 +518,20 @@ class _AboutPageState extends State<AboutPage> {
                         const SizedBox(width: 10,),
                         comfortatext("Version", 19, settings, color: palette.onSurface),
                         const Spacer(),
-                        comfortatext("v2.5.0", 19, settings, color: palette.outline),
-                        const SizedBox(width: 10,),
-                        Icon(Icons.update, color: palette.tertiary),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            comfortatext(version, 19, settings, color: palette.primary),
+                            comfortatext("+$buildNumber", 16, settings, color: palette.outline),
+                          ],
+                        ),
                       ],
                     ),
                   ),
                   Container(
                     decoration: BoxDecoration(
                       color: palette.surfaceContainer,
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     margin: const EdgeInsets.only(top: 5),
                     padding: const EdgeInsets.all(27),
@@ -501,7 +548,8 @@ class _AboutPageState extends State<AboutPage> {
                   Container(
                     decoration: BoxDecoration(
                       color: palette.surfaceContainer,
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16),
+                          bottomLeft: Radius.circular(33), bottomRight: Radius.circular(33)),
                     ),
                     margin: const EdgeInsets.only(top: 5),
                     padding: const EdgeInsets.all(27),

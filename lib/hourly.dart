@@ -195,7 +195,7 @@ Widget buildHourlySum(var hour, ColorScheme palette, data) {
       Padding(
         padding: const EdgeInsets.only(left: 2),
         child: comfortatext("${hour.temp}°", 19, data.settings, color: palette.primary,
-            weight: FontWeight.w400),
+            weight: FontWeight.w500),
       ),
 
       Icon(
@@ -229,8 +229,8 @@ Widget buildHourlyPrecip(var hour, ColorScheme palette, data) {
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              comfortatext('${hour.precip}', 17, data.settings, color: palette.primary,
-                  weight: FontWeight.w400),
+              comfortatext('${hour.precip}', 18, data.settings, color: palette.primary,
+                  weight: FontWeight.w500),
               comfortatext('${data.settings["Precipitation"]}', 9, data.settings, color: palette.primary,
                   weight: FontWeight.w500),
             ],
@@ -322,8 +322,8 @@ Widget buildHourlyUv(var hour, ColorScheme palette, data) {
       Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          comfortatext('${hour.uv}', 18, data.settings, color: palette.primary,
-              weight: FontWeight.w400),
+          comfortatext('${hour.uv}', 19, data.settings, color: palette.primary,
+              weight: FontWeight.w500),
           comfortatext('UV', 9, data.settings, color: palette.primary,
               weight: FontWeight.w500),
         ],

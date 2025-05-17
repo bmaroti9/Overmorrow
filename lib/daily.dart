@@ -143,7 +143,7 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette, int index, int day
             width: 40,
             child: Align(
               alignment: Alignment.centerRight,
-              child: comfortatext("${day.minTemp.toString()}°", 18, data.settings, color: palette.primary)
+              child: comfortatext("${day.minTemp.toString()}°", 18, data.settings, color: palette.primary, weight: FontWeight.w500)
             ),
           ),
           Expanded(
@@ -179,7 +179,7 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette, int index, int day
               ),
             )
           ),
-          comfortatext("${day.maxTemp.toString()}°", 18, data.settings, color: palette.primary),
+          comfortatext("${day.maxTemp.toString()}°", 18, data.settings, color: palette.primary, weight: FontWeight.w500),
           Padding(
             padding: const EdgeInsets.only(left: 12),
             child: Icon(Icons.expand_more, size: 22, color: palette.secondary,),

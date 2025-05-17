@@ -225,7 +225,7 @@ class AppearanceSelector extends StatelessWidget {
                 }),
             title: comfortatext(
                 localizations.appearance, 30, settings,
-                color: palette.secondary),
+                color: palette.primary),
             backgroundColor: palette.surface,
             pinned: false,
           ),
