@@ -165,17 +165,23 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settings;
 
-  /// No description provided for @donate.
+  /// No description provided for @today.
   ///
   /// In en, this message translates to:
-  /// **'Donate'**
-  String get donate;
+  /// **'Today'**
+  String get today;
 
-  /// No description provided for @about.
+  /// No description provided for @tomorrow.
   ///
   /// In en, this message translates to:
-  /// **'About'**
-  String get about;
+  /// **'Tomorrow'**
+  String get tomorrow;
+
+  /// No description provided for @overmorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Overmorrow'**
+  String get overmorrow;
 
   /// No description provided for @language.
   ///
@@ -477,11 +483,11 @@ abstract class AppLocalizations {
   /// **'Font size'**
   String get fontSize;
 
-  /// No description provided for @daily.
+  /// No description provided for @dailyLowercase.
   ///
   /// In en, this message translates to:
-  /// **'Daily'**
-  String get daily;
+  /// **'daily'**
+  String get dailyLowercase;
 
   /// No description provided for @searchProvider.
   ///
@@ -507,7 +513,7 @@ abstract class AppLocalizations {
   /// **'Image source'**
   String get imageSource;
 
-  /// short for summary, overview, gist or something similar
+  /// short for summary, overview, gist or something similar, used in the context of hourly list
   ///
   /// In en, this message translates to:
   /// **'sum'**
@@ -573,41 +579,59 @@ abstract class AppLocalizations {
   /// **'Photo, by ,x, on ,Unsplash'**
   String get photoByXOnUnsplash;
 
-  /// No description provided for @developedBy.
+  /// No description provided for @sourceCodeLowercase.
   ///
   /// In en, this message translates to:
-  /// **'Developed by:'**
-  String get developedBy;
+  /// **'source code'**
+  String get sourceCodeLowercase;
 
-  /// No description provided for @sourceCode.
+  /// No description provided for @emailLowercase.
   ///
   /// In en, this message translates to:
-  /// **'Source code'**
-  String get sourceCode;
+  /// **'email'**
+  String get emailLowercase;
 
-  /// No description provided for @reportAnIssue.
+  /// No description provided for @reportAnIssueLowercase.
   ///
   /// In en, this message translates to:
-  /// **'Report an issue'**
-  String get reportAnIssue;
+  /// **'report an issue'**
+  String get reportAnIssueLowercase;
 
-  /// No description provided for @weatherData.
+  /// No description provided for @donateLowercase.
   ///
   /// In en, this message translates to:
-  /// **'Weather data:'**
-  String get weatherData;
+  /// **'donate'**
+  String get donateLowercase;
 
-  /// No description provided for @allImagesUsedAreFrom.
+  /// No description provided for @versionUppercase.
   ///
   /// In en, this message translates to:
-  /// **'All images used are from:'**
-  String get allImagesUsedAreFrom;
+  /// **'Version'**
+  String get versionUppercase;
 
-  /// No description provided for @supportOnPatreon.
+  /// No description provided for @apiAndServices.
   ///
   /// In en, this message translates to:
-  /// **'Support on Patreon'**
-  String get supportOnPatreon;
+  /// **'APIs & Services'**
+  String get apiAndServices;
+
+  /// No description provided for @licenseUppercase.
+  ///
+  /// In en, this message translates to:
+  /// **'License'**
+  String get licenseUppercase;
+
+  /// No description provided for @weatherDataLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'weather data'**
+  String get weatherDataLowercase;
+
+  /// No description provided for @imagesLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'images'**
+  String get imagesLowercase;
 
   /// No description provided for @appearance.
   ///
@@ -626,6 +650,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Units'**
   String get units;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
 
   /// No description provided for @appearanceSettingDesc.
   ///
@@ -650,6 +680,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'the units used in the app'**
   String get unitsSettingdesc;
+
+  /// No description provided for @aboutSettingsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'about this app'**
+  String get aboutSettingsDesc;
 
   /// No description provided for @now.
   ///

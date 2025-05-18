@@ -27,10 +27,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get settings => 'Ustawienia';
 
   @override
-  String get donate => 'Wesprzyj';
+  String get today => 'Dzisiaj';
 
   @override
-  String get about => 'Info';
+  String get tomorrow => 'Jutro';
+
+  @override
+  String get overmorrow => 'Pojutrze';
 
   @override
   String get language => 'Język';
@@ -183,7 +186,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get fontSize => 'Rozmiar czcionki';
 
   @override
-  String get daily => 'Nastepne dni';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => 'Dostawca wyszukiwania';
@@ -231,22 +234,31 @@ class AppLocalizationsPl extends AppLocalizations {
   String get photoByXOnUnsplash => 'Zdjęcie, ,x, na ,Unsplash';
 
   @override
-  String get developedBy => 'Opracowane przez:';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => 'Kod źródłowy';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => 'Zgłoś problem';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => 'Dane pogodowe:';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => 'Wszystkie użyte obrazy pochodzą z:';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => 'Wsparcie na Patreon';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => 'Wygląd';
@@ -256,6 +268,9 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get units => 'Jednostki';
+
+  @override
+  String get about => 'Info';
 
   @override
   String get appearanceSettingDesc => 'motyw kolorystyczny, źródło obrazu';
@@ -268,6 +283,9 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => 'jednostki używane w aplikacji';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => 'teraz';

@@ -27,10 +27,13 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settings => 'Настройки';
 
   @override
-  String get donate => 'Дарение';
+  String get today => 'Днес';
 
   @override
-  String get about => 'Относно';
+  String get tomorrow => 'Утре';
+
+  @override
+  String get overmorrow => 'Вдругиден';
 
   @override
   String get language => 'Език';
@@ -183,7 +186,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get fontSize => 'Размер на шрифта';
 
   @override
-  String get daily => 'Ежедневно';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => 'Доставчик на търсене';
@@ -231,22 +234,31 @@ class AppLocalizationsBg extends AppLocalizations {
   String get photoByXOnUnsplash => 'Снимка, от ,x, на ,Unsplash';
 
   @override
-  String get developedBy => 'Разработено от:';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => 'Изходен код';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => 'Докладвайте за проблем';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => 'Метеорологични данни:';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => 'Всички използвани изображения са от:';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => 'Подкрепете в Patreon';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => 'Външен вид';
@@ -256,6 +268,9 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get units => 'Мерни единици';
+
+  @override
+  String get about => 'Относно';
 
   @override
   String get appearanceSettingDesc => 'цветна тема, източник на изображения';
@@ -268,6 +283,9 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => 'мерните единици използвани в приложението';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => 'сега';

@@ -27,10 +27,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settings => 'Configuración';
 
   @override
-  String get donate => 'Donar';
+  String get today => 'Hoy';
 
   @override
-  String get about => 'Acerca de';
+  String get tomorrow => 'Mañana';
+
+  @override
+  String get overmorrow => 'Pasado Mañana';
 
   @override
   String get language => 'Idioma';
@@ -183,7 +186,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get fontSize => 'Tamaño de fuente';
 
   @override
-  String get daily => 'Diario';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => 'Proveedor de búsqueda';
@@ -231,22 +234,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get photoByXOnUnsplash => 'Foto, de ,x, en ,Unsplash';
 
   @override
-  String get developedBy => 'Desarrollado por:';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => 'Código fuente';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => 'Informar de un problema';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => 'Datos meteorológicos:';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => 'Todas las imágenes utilizadas son de:';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => 'Apoyo en Patreon';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => 'Apariencia';
@@ -256,6 +268,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get units => 'Unidades';
+
+  @override
+  String get about => 'Acerca de';
 
   @override
   String get appearanceSettingDesc => 'tema de color, fuente de imagen';
@@ -268,6 +283,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => 'las unidades utilizadas en la aplicación';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => 'ahora';

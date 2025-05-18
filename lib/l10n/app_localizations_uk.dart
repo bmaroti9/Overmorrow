@@ -27,10 +27,13 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settings => 'Налаштування';
 
   @override
-  String get donate => 'Пожертвувати';
+  String get today => 'Сьогодні';
 
   @override
-  String get about => 'Про застосунок';
+  String get tomorrow => 'Завтра';
+
+  @override
+  String get overmorrow => 'Післязавтра';
 
   @override
   String get language => 'Мова';
@@ -183,7 +186,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get fontSize => 'Розмір шрифту';
 
   @override
-  String get daily => 'Наступні дні';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => 'Постачальник пошуку';
@@ -231,22 +234,31 @@ class AppLocalizationsUk extends AppLocalizations {
   String get photoByXOnUnsplash => 'Фото,, x, на ,Unsplash';
 
   @override
-  String get developedBy => 'Розроблено:';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => 'Вихідний код';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => 'Повідомити про проблему';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => 'Погодні дані:';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => 'Усі використані зображення взяті з:';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => 'Підтримати на Patreon';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => 'Вигляд';
@@ -256,6 +268,9 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get units => 'Одиниці виміру';
+
+  @override
+  String get about => 'Про застосунок';
 
   @override
   String get appearanceSettingDesc => 'колірна тема, джерело зображення';
@@ -268,6 +283,9 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => 'одиниці, що використовуються в застосунку';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => 'Зараз';

@@ -27,10 +27,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settings => 'الإعدادات';
 
   @override
-  String get donate => 'التبرع';
+  String get today => 'اليوم';
 
   @override
-  String get about => 'حول التطبيق';
+  String get tomorrow => 'غدًا';
+
+  @override
+  String get overmorrow => 'بعد غد';
 
   @override
   String get language => 'اللغة';
@@ -183,7 +186,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fontSize => 'حجم الخط';
 
   @override
-  String get daily => 'يومي';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => 'مزود البحث';
@@ -231,22 +234,31 @@ class AppLocalizationsAr extends AppLocalizations {
   String get photoByXOnUnsplash => 'صورة, بواسطة ,x, على ,Unsplash';
 
   @override
-  String get developedBy => 'تطوير:';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => 'الكود المصدري';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => 'الإبلاغ عن مشكلة';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => 'بيانات الطقس:';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => 'جميع الصور المستخدمة من:';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => 'الدعم على باتريون';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => 'المظهر';
@@ -256,6 +268,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get units => 'الوحدات';
+
+  @override
+  String get about => 'حول التطبيق';
 
   @override
   String get appearanceSettingDesc => 'سمة الألوان، مصدر الصور';
@@ -268,6 +283,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => 'الوحدات المستخدمة في التطبيق';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => 'الآن';

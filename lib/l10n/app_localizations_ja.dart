@@ -27,10 +27,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settings => '設定';
 
   @override
-  String get donate => '寄付';
+  String get today => '今日';
 
   @override
-  String get about => '紹介';
+  String get tomorrow => '明日';
+
+  @override
+  String get overmorrow => '明後日';
 
   @override
   String get language => '言語';
@@ -183,7 +186,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get fontSize => 'フォントサイズ';
 
   @override
-  String get daily => 'デイリー';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => '検索プロバイダー';
@@ -231,22 +234,31 @@ class AppLocalizationsJa extends AppLocalizations {
   String get photoByXOnUnsplash => '写真,: ,x, on ,Unsplash';
 
   @override
-  String get developedBy => '開発者：';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => 'ソースコード';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => '問題を報告する';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => '気象データ：';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => '使用されているすべての画像は次の提供です：';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => 'Patreon でサポート';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => '外観';
@@ -256,6 +268,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get units => '単位';
+
+  @override
+  String get about => '紹介';
 
   @override
   String get appearanceSettingDesc => 'カラーテーマ, 画像のソース';
@@ -268,6 +283,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => 'アプリで使用される単位';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => '今';

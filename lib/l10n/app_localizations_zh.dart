@@ -27,10 +27,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings => '设置';
 
   @override
-  String get donate => '捐赠';
+  String get today => '今天';
 
   @override
-  String get about => '关于';
+  String get tomorrow => '明天';
+
+  @override
+  String get overmorrow => '后天';
 
   @override
   String get language => '语言';
@@ -183,7 +186,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get fontSize => '字体大小';
 
   @override
-  String get daily => '每日';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => '搜索提供商';
@@ -231,22 +234,31 @@ class AppLocalizationsZh extends AppLocalizations {
   String get photoByXOnUnsplash => '照片, ,x, 拍摄，发布于 ,Unsplash';
 
   @override
-  String get developedBy => '开发者：';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => '源代码';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => '报告问题';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => '天气数据：';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => '所有使用的图片来自：';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => '在 Patreon 上支持';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => '外观';
@@ -256,6 +268,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get units => '单位';
+
+  @override
+  String get about => '关于';
 
   @override
   String get appearanceSettingDesc => '颜色主题, 图片来源';
@@ -268,6 +283,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => '应用中使用的单位';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => '现在';

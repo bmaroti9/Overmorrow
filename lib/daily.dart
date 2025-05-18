@@ -21,6 +21,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overmorrow/hourly.dart';
+import 'l10n/app_localizations.dart';
 import 'ui_helper.dart';
 
 
@@ -99,7 +100,7 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 1, bottom: 14),
-            child: comfortatext("daily", 17,
+            child: comfortatext(AppLocalizations.of(context)!.dailyLowercase, 17,
                 data.settings,
                 color: data.current.palette.onSurface),
           ),

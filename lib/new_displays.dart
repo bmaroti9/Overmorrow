@@ -346,7 +346,7 @@ Widget AqiWidget(var data, ColorScheme palette, context) {
         child: Align(
           alignment: Alignment.centerLeft,
           child: comfortatext(
-            "air quality", 17,
+            AppLocalizations.of(context)!.airQualityLowercase, 17,
             data.settings,
             color: palette.onSurface
           ),

@@ -27,10 +27,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get settings => 'Beállítások';
 
   @override
-  String get donate => 'Adományozás';
+  String get today => 'Ma';
 
   @override
-  String get about => 'Névjegy';
+  String get tomorrow => 'Holnap';
+
+  @override
+  String get overmorrow => 'Holnapután';
 
   @override
   String get language => 'Nyelv';
@@ -183,7 +186,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get fontSize => 'Betűméret';
 
   @override
-  String get daily => 'Napi';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => 'Keresési szolgáltató';
@@ -231,22 +234,31 @@ class AppLocalizationsHu extends AppLocalizations {
   String get photoByXOnUnsplash => 'Fotó,: ,x, az ,Unsplashen';
 
   @override
-  String get developedBy => 'Fejlesztette:';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => 'Forráskód';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => 'Hiba jelentése';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => 'Időjárási adatok:';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => 'Minden felhasznált kép forrása:';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => 'Támogatás a Patreonon';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => 'Megjelenés';
@@ -256,6 +268,9 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get units => 'Egységek';
+
+  @override
+  String get about => 'Névjegy';
 
   @override
   String get appearanceSettingDesc => 'színtéma, kép forrása';
@@ -268,6 +283,9 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => 'az alkalmazásban használt egységek';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => 'most';

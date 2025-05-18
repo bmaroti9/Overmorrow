@@ -27,10 +27,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settings => 'Ayarlar';
 
   @override
-  String get donate => 'Bağış yap';
+  String get today => 'Bugün';
 
   @override
-  String get about => 'Hakkında';
+  String get tomorrow => 'Yarın';
+
+  @override
+  String get overmorrow => 'Yarından sonra';
 
   @override
   String get language => 'Dil';
@@ -183,7 +186,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get fontSize => 'Yazı tipi boyutu';
 
   @override
-  String get daily => 'Günlük';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => 'Arama sağlayıcı';
@@ -231,22 +234,31 @@ class AppLocalizationsTr extends AppLocalizations {
   String get photoByXOnUnsplash => 'Fotoğraf, x, tarafından , Unsplah , üzerineden';
 
   @override
-  String get developedBy => 'x, tarafından geliştirilmiştir';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => 'Kaynak kodu';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => 'Bir sorun bildirin';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => 'Hava durumu verileri:';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => 'Kullanılan tüm görseller:';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => 'Patreon üzerinden destek';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => 'Görünüm';
@@ -256,6 +268,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get units => 'Birimler';
+
+  @override
+  String get about => 'Hakkında';
 
   @override
   String get appearanceSettingDesc => 'renk teması, görüntü kaynağı';
@@ -268,6 +283,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => 'uygulamada kullanılan birimler';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => 'şimdi';

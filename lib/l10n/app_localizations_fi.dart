@@ -27,10 +27,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settings => 'Asetukset';
 
   @override
-  String get donate => 'Lahjoita';
+  String get today => 'Tänään';
 
   @override
-  String get about => 'Tietoja';
+  String get tomorrow => 'Huomenna';
+
+  @override
+  String get overmorrow => 'Overmorrow';
 
   @override
   String get language => 'Kieli';
@@ -183,7 +186,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get fontSize => 'Fontin koko';
 
   @override
-  String get daily => 'Päivittäin';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => 'Hakupalvelu';
@@ -231,22 +234,31 @@ class AppLocalizationsFi extends AppLocalizations {
   String get photoByXOnUnsplash => 'Kuva, ottanut ,x, palvelussa ,Unsplash';
 
   @override
-  String get developedBy => 'Kehittäjä:';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => 'Lähdekoodi';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => 'Ilmoita ongelmasta';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => 'Säätiedot:';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => 'Kaikki kuvat tarjoaa:';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => 'Tue Patreonissa';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => 'Ulkoasu';
@@ -256,6 +268,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get units => 'Yksiköt';
+
+  @override
+  String get about => 'Tietoja';
 
   @override
   String get appearanceSettingDesc => 'väriteema, kuvalähde';
@@ -268,6 +283,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => 'sovelluksessa käytettävät yksiköt';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => 'nyt';

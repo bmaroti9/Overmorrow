@@ -140,7 +140,7 @@ class _AboutPageState extends State<AboutPage> {
                                 children: [
                                   Icon(Icons.code, color: palette.onPrimary,),
                                   const SizedBox(width: 6,),
-                                  comfortatext("source code", 18, settings, color: palette.onPrimary)
+                                  comfortatext(AppLocalizations.of(context)!.sourceCodeLowercase, 18, settings, color: palette.onPrimary)
                                 ],
                               ),
                             ),
@@ -166,7 +166,7 @@ class _AboutPageState extends State<AboutPage> {
                                 children: [
                                   Icon(Icons.email_outlined, color: palette.onSurface,),
                                   const SizedBox(width: 6,),
-                                  comfortatext("email", 18, settings, color: palette.onSurface)
+                                  comfortatext(AppLocalizations.of(context)!.emailLowercase, 18, settings, color: palette.onSurface)
                                 ],
                               ),
                             ),
@@ -188,7 +188,7 @@ class _AboutPageState extends State<AboutPage> {
                                 children: [
                                   Icon(Icons.bug_report_outlined, color: palette.onSurface,),
                                   const SizedBox(width: 6,),
-                                  comfortatext("report an issue", 18, settings, color: palette.onSurface)
+                                  comfortatext(AppLocalizations.of(context)!.reportAnIssueLowercase, 18, settings, color: palette.onSurface)
                                 ],
                               ),
                             ),
@@ -210,7 +210,7 @@ class _AboutPageState extends State<AboutPage> {
                                 children: [
                                   Icon(Icons.volunteer_activism_outlined, color: palette.onSurface,),
                                   const SizedBox(width: 6,),
-                                  comfortatext("donate", 18, settings, color: palette.onSurface)
+                                  comfortatext(AppLocalizations.of(context)!.donateLowercase, 18, settings, color: palette.onSurface)
                                 ],
                               ),
                             ),
@@ -231,7 +231,7 @@ class _AboutPageState extends State<AboutPage> {
                           children: [
                             Icon(Icons.verified_outlined, color: palette.onSurface),
                             const SizedBox(width: 10,),
-                            comfortatext("Version", 18, settings, color: palette.onSurface),
+                            comfortatext(AppLocalizations.of(context)!.versionUppercase, 18, settings, color: palette.onSurface),
                             const Spacer(),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -263,7 +263,7 @@ class _AboutPageState extends State<AboutPage> {
                             children: [
                               Icon(Icons.handyman_outlined, color: palette.onSurface),
                               const SizedBox(width: 10,),
-                              comfortatext("APIs & Services", 18, settings, color: palette.onSurface),
+                              comfortatext(AppLocalizations.of(context)!.apiAndServices, 18, settings, color: palette.onSurface),
                               const Spacer(),
                               Icon(Icons.keyboard_arrow_right_rounded, color: palette.onSurface),
                             ],
@@ -282,7 +282,7 @@ class _AboutPageState extends State<AboutPage> {
                           children: [
                             Icon(Icons.balance, color: palette.onSurface),
                             const SizedBox(width: 10,),
-                            comfortatext("License", 18, settings, color: palette.onSurface),
+                            comfortatext(AppLocalizations.of(context)!.licenseUppercase, 18, settings, color: palette.onSurface),
                             const Spacer(),
                             comfortatext("GPL-3.0 license", 18, settings, color: palette.outline),
                           ],
@@ -336,7 +336,7 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                   goBack();
                 }),
             title: comfortatext(
-                "APIs & Services", 30, settings,
+                AppLocalizations.of(context)!.apiAndServices, 30, settings,
                 color: palette.primary),
             backgroundColor: palette.surface,
             pinned: false,
@@ -358,7 +358,7 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                    child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
-                       comfortatext("weather data", 22, settings, color: palette.onSurface),
+                       comfortatext(AppLocalizations.of(context)!.weatherDataLowercase, 22, settings, color: palette.onSurface),
                        const SizedBox(height: 20,),
                        GestureDetector(
                          onTap: () {
@@ -400,7 +400,7 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          comfortatext("radar", 22, settings, color: palette.onSurface),
+                          comfortatext(AppLocalizations.of(context)!.radar, 22, settings, color: palette.onSurface),
                           const SizedBox(height: 20,),
                           GestureDetector(
                             onTap: () {
@@ -433,7 +433,7 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        comfortatext("images", 22, settings, color: palette.onSurface),
+                        comfortatext(AppLocalizations.of(context)!.imagesLowercase, 22, settings, color: palette.onSurface),
                         const SizedBox(height: 20,),
                         GestureDetector(
                           onTap: () {

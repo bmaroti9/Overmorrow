@@ -27,10 +27,13 @@ class AppLocalizationsTa extends AppLocalizations {
   String get settings => 'அமைப்புகள்';
 
   @override
-  String get donate => 'நன்கொடை';
+  String get today => 'இன்று';
 
   @override
-  String get about => 'பற்றி';
+  String get tomorrow => 'நாளை';
+
+  @override
+  String get overmorrow => 'ஓவர்மோரோ';
 
   @override
   String get language => 'மொழி';
@@ -183,7 +186,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get fontSize => 'எழுத்துரு அளவு';
 
   @override
-  String get daily => 'நாள்தோறும்';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => 'தேடல் வழங்குநர்';
@@ -231,22 +234,31 @@ class AppLocalizationsTa extends AppLocalizations {
   String get photoByXOnUnsplash => 'புகைப்படம், by, ஃச், on, Unsplash';
 
   @override
-  String get developedBy => 'உருவாக்கியவர்:';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => 'மூலக் குறியீடு';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => 'ஒரு சிக்கலைப் புகாரளிக்கவும்';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => 'வானிலை தரவு:';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => 'பயன்படுத்தப்படும் அனைத்து படங்களும்:';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => 'பேட்ரியன் மீது உதவி';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => 'தோற்றம்';
@@ -256,6 +268,9 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get units => 'அலகுகள்';
+
+  @override
+  String get about => 'பற்றி';
 
   @override
   String get appearanceSettingDesc => 'வண்ண கருப்பொருள், பட மூல';
@@ -268,6 +283,9 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => 'பயன்பாட்டில் பயன்படுத்தப்படும் அலகுகள்';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => 'இப்போது';

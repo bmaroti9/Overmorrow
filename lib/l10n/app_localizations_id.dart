@@ -27,10 +27,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get settings => 'Setelan';
 
   @override
-  String get donate => 'Donasi';
+  String get today => 'Hari ini';
 
   @override
-  String get about => 'Tentang';
+  String get tomorrow => 'Besok';
+
+  @override
+  String get overmorrow => 'Lusa';
 
   @override
   String get language => 'Bahasa';
@@ -183,7 +186,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get fontSize => 'Ukuran font';
 
   @override
-  String get daily => 'Harian';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => 'Penyedia pencarian';
@@ -231,22 +234,31 @@ class AppLocalizationsId extends AppLocalizations {
   String get photoByXOnUnsplash => 'Foto, oleh ,x, di ,Unsplash';
 
   @override
-  String get developedBy => 'Dikembangkan oleh:';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => 'Kode sumber';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => 'Laporkan masalah';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => 'Data cuaca:';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => 'Semua gambar yang digunakan berasal dari:';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => 'Dukung di Patreon';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => 'Tampilan';
@@ -256,6 +268,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get units => 'Unit';
+
+  @override
+  String get about => 'Tentang';
 
   @override
   String get appearanceSettingDesc => 'tema warna, sumber gambar';
@@ -268,6 +283,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => 'unit yang digunakan di aplikasi';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => 'sekarang';

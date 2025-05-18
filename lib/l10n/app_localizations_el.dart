@@ -27,10 +27,13 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settings => 'Ρυθμίσεις';
 
   @override
-  String get donate => 'Κάντε δωρεά';
+  String get today => 'Σήμερα';
 
   @override
-  String get about => 'Σχετικά με';
+  String get tomorrow => 'Αύριο';
+
+  @override
+  String get overmorrow => 'Μεθαύριο';
 
   @override
   String get language => 'Γλώσσα';
@@ -183,7 +186,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get fontSize => 'Μέγεθος γραμματοσειράς';
 
   @override
-  String get daily => 'Καθημερινά';
+  String get dailyLowercase => 'daily';
 
   @override
   String get searchProvider => 'Πάροχος αναζήτησης';
@@ -231,22 +234,31 @@ class AppLocalizationsEl extends AppLocalizations {
   String get photoByXOnUnsplash => 'Φωτογραφία, από τον ,x, στο ,Unsplash';
 
   @override
-  String get developedBy => 'Αναπτύχθηκε από:';
+  String get sourceCodeLowercase => 'source code';
 
   @override
-  String get sourceCode => 'Πηγαίος κώδικας';
+  String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssue => 'Αναφορά προβλήματος';
+  String get reportAnIssueLowercase => 'report an issue';
 
   @override
-  String get weatherData => 'Δεδομένα καιρού:';
+  String get donateLowercase => 'donate';
 
   @override
-  String get allImagesUsedAreFrom => 'Όλες οι εικόνες που χρησιμοποιούνται είναι από:';
+  String get versionUppercase => 'Version';
 
   @override
-  String get supportOnPatreon => 'Υποστήριξη στο Patreon';
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
 
   @override
   String get appearance => 'Εμφάνιση';
@@ -256,6 +268,9 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get units => 'Μονάδες';
+
+  @override
+  String get about => 'Σχετικά με';
 
   @override
   String get appearanceSettingDesc => 'θέμα χρωμάτων, πηγή εικόνας';
@@ -268,6 +283,9 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get unitsSettingdesc => 'οι μονάδες που χρησιμοποιούνται στην εφαρμογή';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get now => 'τώρα';
