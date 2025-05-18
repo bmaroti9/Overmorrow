@@ -531,7 +531,10 @@ Widget rain15MinuteChart(var data, ColorScheme palette, context) {
                    children: List<Widget>.generate( data.minutely_15_precip.precips.length, (int index)  {
                     return Container(
                       width: 4.5,
-                      height: 4.5 + data.minutely_15_precip.precips[index] * 30,
+                      //i'm doing this because otherwise you wouldn't be
+                      // able to tell the 0mm rain apart from the 0.1mm, or just low values in general
+                      height: data.minutely_15_precip.precips[index] == 0 ?
+                        4.5 : 8.0 + data.minutely_15_precip.precips[index] * 30,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: data.minutely_15_precip.precips[index] == 0 ?

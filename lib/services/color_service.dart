@@ -100,7 +100,7 @@ class ImageColorList {
     );
     PaletteGenerator imageColors = await PaletteGenerator.fromImage(
       imageInfo.image,
-      maximumColorCount: 1,
+      maximumColorCount: 4,
       filters: [],
     );
 
@@ -129,6 +129,21 @@ class ColorPalette {
     required this.imageColors,
     required this.regionColors,
   });
+
+  static double scoreColor(Color c) {
+    //trying to get more non-blue palettes, but avoid shades of gray,
+    // because somehow those result in green palettes, while the image doesn't even have green
+
+    final hsv = HSVColor.fromColor(c);
+    final h = hsv.hue;
+    final s = hsv.saturation;
+    if (s < 0.2) return 0.1;
+
+    //distance from blue
+    final dist = ( (h - 240).abs() % 360 ).clamp(0.0, 180.0) / 180;
+    final hueWeight = 0.5 + (dist * 0.5);
+    return hueWeight * (0.5 + 0.5 * s);
+  }
 
 
   //make sure the temperature and description text remain readable
@@ -227,11 +242,11 @@ class ColorPalette {
   static ColorScheme getImagePalette(String theme, List<Color> imageColors) {
 
     Color seedColor = Colors.blue;
-    double bestValue = -100000;
+    double bestValue = -1;
 
     //my second attempt at trying to minimize the number of blue pallets because there are too many otherwise
     for (int i = 0; i < imageColors.length; i++) {
-      double score = (imageColors[i].r + imageColors[i].g) / max(imageColors[i].b, 0.1);
+      double score = scoreColor(imageColors[i]);
       if (score > bestValue) {
         bestValue = score;
         seedColor = imageColors[i];
