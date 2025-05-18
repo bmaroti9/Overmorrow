@@ -209,7 +209,7 @@ Widget buildHourlySum(var hour, ColorScheme palette, data) {
         children: [
           Icon(Icons.umbrella, size: 14, color: palette.primary),
           comfortatext("${hour.precip_prob}%", 14, data.settings, color: palette.primary,
-              weight: FontWeight.w400)
+              weight: FontWeight.w500)
         ],
       ),
 
@@ -257,7 +257,7 @@ Widget buildHourlyPrecip(var hour, ColorScheme palette, data) {
             children: [
               Icon(Icons.umbrella, size: 14, color: palette.primary),
               comfortatext("${hour.precip_prob}%", 14, data.settings, color: palette.primary,
-                  weight: FontWeight.w400)
+                  weight: FontWeight.w500)
             ],
           ),
 
@@ -299,7 +299,7 @@ Widget buildHourlyWind(var hour, ColorScheme palette, data) {
           Padding(
             padding: const EdgeInsets.only(left: 2),
             child: comfortatext("${hour.wind_gusts}", 14, data.settings, color: palette.primary,
-                weight: FontWeight.w400),
+                weight: FontWeight.w500),
           ),
           comfortatext('${data.settings["Wind"]}', 9, data.settings, color: palette.primary,
               weight: FontWeight.w500),
