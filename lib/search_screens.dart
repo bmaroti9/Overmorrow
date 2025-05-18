@@ -37,6 +37,7 @@ import 'package:stretchy_header/stretchy_header.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'api_key.dart';
+import 'l10n/app_localizations.dart';
 import 'main.dart';
 
 //before this the same place from 2 different providers would be registered as different,
@@ -150,7 +151,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   String text = "";
   bool isEditing = false;
 
-  String locationSafe = "unknown";
+  String locationState = "unknown";
+  String locationMessage = "unknown";
   String placeName = "-";
   String country = "-";
   String region = "-";
@@ -192,15 +194,17 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
         position = (await Geolocator.getLastKnownPosition())!;
     } on Error {
       setState(() {
-        locationSafe = "unableToLocate";
+        locationState = "disabled";
+        locationMessage = AppLocalizations.of(context)!.unableToLocateDevice;
       });
-      return "unableToLocate";
+      return "disabled";
     }
     } on LocationServiceDisabledException {
       setState(() {
-        locationSafe = "locationServiceDisabled";
+        locationState = "disabled";
+        locationMessage = AppLocalizations.of(context)!.locationServicesAreDisabled;
       });
-      return "locationServiceDisabled";
+      return "disabled";
     }
 
     try {
@@ -213,8 +217,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
         placeName = place.locality ?? "";
         country = place.isoCountryCode ?? "";
         region = place.administrativeArea ?? "";
+        locationState = "enabled";
       });
-
 
     } on Error {
       setState(() {
@@ -227,28 +231,31 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       setState(() {
-        locationSafe = "disabled";
+        locationState = "disabled";
+        locationMessage = AppLocalizations.of(context)!.locationServicesAreDisabled;
       });
       return "disabled";
     }
     LocationPermission permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.deniedForever) {
       setState(() {
-        locationSafe = "deniedForever";
+        locationState = "deniedForever";
+        locationMessage = AppLocalizations.of(context)!.locationPermissionDeniedForever;
       });
-      return "deniedForever";
+      return "disabled";
     }
-    String x = await checkIfLocationSafe(true);
+    String x = await checkIflocationState(true);
     if (x == "enabled") {
       await findCurrentPosition();
     }
   }
 
-  Future<String> checkIfLocationSafe([bool afterAsk = false]) async {
+  Future<String> checkIflocationState([bool afterAsk = false]) async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       setState(() {
-        locationSafe = "disabled";
+        locationState = "disabled";
+        locationMessage = AppLocalizations.of(context)!.locationServicesAreDisabled;
       });
       return "disabled";
     }
@@ -256,27 +263,30 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
       setState(() {
-        locationSafe = "deniedForever";
+        locationState = "deniedForever";
+        locationMessage = AppLocalizations.of(context)!.locationPermissionDeniedForever;
       });
-      return "deniedForever";
+      return "disabled";
     }
     if (permission == LocationPermission.denied) {
       setState(() {
-        locationSafe = "denied";
+        locationState = "denied";
+        locationMessage = AppLocalizations.of(context)!.locationPermissionIsDenied;
       });
-      return "denied";
+      return "disabled";
     }
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
       setState(() {
-        locationSafe = "enabled";
+        locationState = "enabled";
       });
       return "enabled";
     }
     setState(() {
-      locationSafe = "failed";
+      locationState = "disabled";
+      locationMessage = AppLocalizations.of(context)!.unableToLocateDevice;
     });
-    return "failed";
+    return "disabled";
   }
 
   @override
@@ -290,7 +300,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
       focusNode.requestFocus();
     });
     WidgetsBinding.instance.addPostFrameCallback((_){
-      checkIfLocationSafe().then((x) {
+      checkIflocationState().then((x) {
         if (x == "enabled") {
           WidgetsBinding.instance.addPostFrameCallback((_){
             findCurrentPosition();
@@ -417,7 +427,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                 alignment: Alignment.topCenter,
                 child: SingleChildScrollView(
                   child: buildRecommend(text, palette, settings, favorites, recommend,
-                  updateLocation, onFavChanged, isEditing, locationSafe, askGrantLocationPermission,
+                  updateLocation, onFavChanged, isEditing, locationState, locationMessage, askGrantLocationPermission,
                   placeName, country, region),
                 ),
               ),
@@ -430,7 +440,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
 }
 
 Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenable<List<String>> favoritesListen,
-    ValueListenable<List<String>> recommend, updateLocation, onFavChanged, isEditing, locationSafe,
+    ValueListenable<List<String>> recommend, updateLocation, onFavChanged, isEditing, locationState, locationMessage,
     askGrantLocationPermission, placeName, country, region) {
 
   return ValueListenableBuilder(
@@ -461,10 +471,10 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
                           Icons.gps_fixed, color: palette.outline, size: 17,),
                       ),
                       comfortatext(
-                          "current location", 18, settings, color: palette.outline),
+                          AppLocalizations.of(context)!.currentLocation, 18, settings, color: palette.outline),
                     ],
                   ),
-                  CurrentLocationWidget(settings, locationSafe, palette,
+                  CurrentLocationWidget(settings, locationState, locationMessage, palette,
                       askGrantLocationPermission, placeName, country, region, updateLocation, context),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20),
@@ -475,7 +485,7 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
                           child: Icon(
                             Icons.star_outline, color: palette.outline, size: 18,),
                         ),
-                        comfortatext("favorites", 18, settings, color: palette.outline),
+                        comfortatext(AppLocalizations.of(context)!.favoritesLowercase, 18, settings, color: palette.outline),
                       ],
                     ),
                   ),
@@ -598,9 +608,9 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
   );
 }
 
-Widget CurrentLocationWidget(settings, locationSafe, ColorScheme palette, askGrantLocationPermission,
+Widget CurrentLocationWidget(settings, locationState, locationMessage, ColorScheme palette, askGrantLocationPermission,
     String placeName, String country, String region, updateLocation, context) {
-  if (locationSafe == "denied") {
+  if (locationState == "denied") {
     return GestureDetector(
       onTap: () {
         askGrantLocationPermission();
@@ -622,7 +632,7 @@ Widget CurrentLocationWidget(settings, locationSafe, ColorScheme palette, askGra
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, bottom: 2),
                 child: comfortatext(
-                      "grant location permission", 19, settings,
+                    AppLocalizations.of(context)!.grantLocationPermission, 19, settings,
                       color: palette.onPrimaryFixedVariant),
               ),
             ),
@@ -631,7 +641,7 @@ Widget CurrentLocationWidget(settings, locationSafe, ColorScheme palette, askGra
       ),
     );
   }
-  if (locationSafe == "enabled") {
+  if (locationState == "enabled") {
     return GestureDetector(
       onTap: () {
         HapticFeedback.lightImpact();
@@ -668,7 +678,6 @@ Widget CurrentLocationWidget(settings, locationSafe, ColorScheme palette, askGra
     margin: const EdgeInsets.only(top: 20, bottom: 30),
     padding: const EdgeInsets.only(
         left: 25, right: 25, top: 20, bottom: 20),
-    height: 66,
     decoration: BoxDecoration(
       color: palette.primaryFixedDim,
       borderRadius: BorderRadius.circular(40),
@@ -681,7 +690,7 @@ Widget CurrentLocationWidget(settings, locationSafe, ColorScheme palette, askGra
           child: Padding(
             padding: const EdgeInsets.only(left: 10, bottom: 2),
             child: comfortatext(
-                locationSafe, 19, settings,
+                locationMessage, 19, settings,
                 color: palette.onPrimaryFixedVariant),
           ),
         ),

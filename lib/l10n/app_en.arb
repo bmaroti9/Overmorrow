@@ -30,8 +30,6 @@
   "@precipitaion": {},
   "rain": "Rain",
   "@rain": {},
-  "favorites": "Favorites",
-  "@favorites": {},
   "clearNight": "Clear Night",
   "@clearNight": {},
   "partlyCloudy": "Partly Cloudy",
@@ -72,6 +70,9 @@
   "@locationPermissionIsDenied": {},
   "locationPermissionDeniedForever": "location permission denied forever",
   "@locationPermissionDeniedForever": {},
+  "grantLocationPermission": "grant location permission",
+  "currentLocation": "current location",
+  "favoritesLowercase": "favorites",
   "failedToAccessGps": "failed to access gps",
   "@failedToAccessGps": {},
   "search": "Search...",
@@ -128,8 +129,10 @@
   "@colorSource": {},
   "imageSource": "Image source",
   "@imageSource": {},
-  "temp": "temp",
-  "@temp": {},
+  "sumLowercase": "sum",
+  "@sumLowercase" : {
+    "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+  },
   "precipLowercase": "precip",
   "@precipLowercase": {},
   "windLowercase": "wind",
@@ -238,8 +241,6 @@
   "@poweredByOpenMeteo": {
     "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
   },
-  "buyMeACoffee": "Buy me a coffee!",
-  "donationPageTextNew": "Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nHowever if you enjoy using it, then please consider tipping a small amount. \n\nThank you!",
   "rainInHalfHour": "rain in the next half an hour",
   "@rainInHalfHour": {
     "description": "rain in the next half an hour"

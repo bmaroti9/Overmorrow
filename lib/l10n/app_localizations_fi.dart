@@ -33,15 +33,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get about => 'Tietoja';
 
   @override
-  String get today => 'Tänään';
-
-  @override
-  String get tomorrow => 'Huomenna';
-
-  @override
-  String get overmorrow => 'Overmorrow';
-
-  @override
   String get language => 'Kieli';
 
   @override
@@ -52,9 +43,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get rain => 'Vesisade';
-
-  @override
-  String get favorites => 'Suosikit';
 
   @override
   String get clearNight => 'Selkeä yö';
@@ -115,6 +103,15 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever => 'sijainnin käyttöoikeus estetty ikuisesti';
+
+  @override
+  String get grantLocationPermission => 'grant location permission';
+
+  @override
+  String get currentLocation => 'current location';
+
+  @override
+  String get favoritesLowercase => 'favorites';
 
   @override
   String get failedToAccessGps => 'gps:n käyttö epäonnistui';
@@ -201,7 +198,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get imageSource => 'Kuvalähde';
 
   @override
-  String get temp => 'lämpö';
+  String get sumLowercase => 'sum';
 
   @override
   String get precipLowercase => 'sade';
@@ -358,12 +355,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get poweredByOpenMeteo => 'voimanlähteenä open-meteo';
-
-  @override
-  String get buyMeACoffee => 'Osta kahvi!';
-
-  @override
-  String get donationPageTextNew => 'Overmorrow on tarkoitettu olevan aina ilmainen, ilman mainoksia tai sovelluksen sisäisiä ostoksia . \n \nNauti siis sen käytöstä sellaisenaan. \n \nJos tykkäät sovelluksesta, harkitse pientä lahjoitusta. \n\nKiitos!';
 
   @override
   String get rainInHalfHour => 'sadetta seuraavan puolen tunnin aikana';

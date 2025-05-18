@@ -33,15 +33,6 @@ class AppLocalizationsHu extends AppLocalizations {
   String get about => 'Névjegy';
 
   @override
-  String get today => 'Ma';
-
-  @override
-  String get tomorrow => 'Holnap';
-
-  @override
-  String get overmorrow => 'Holnapután';
-
-  @override
   String get language => 'Nyelv';
 
   @override
@@ -52,9 +43,6 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get rain => 'Eső';
-
-  @override
-  String get favorites => 'Kedvencek';
 
   @override
   String get clearNight => 'Tiszta éjszaka';
@@ -115,6 +103,15 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever => 'A helyengedélyt örökre megtagadták';
+
+  @override
+  String get grantLocationPermission => 'grant location permission';
+
+  @override
+  String get currentLocation => 'current location';
+
+  @override
+  String get favoritesLowercase => 'favorites';
 
   @override
   String get failedToAccessGps => 'Nem sikerült hozzáférni a GPS-hez';
@@ -201,7 +198,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get imageSource => 'Kép forrása';
 
   @override
-  String get temp => 'hőmérs.';
+  String get sumLowercase => 'sum';
 
   @override
   String get precipLowercase => 'csapad.';
@@ -358,12 +355,6 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get poweredByOpenMeteo => 'Meghajtja: open-meteo';
-
-  @override
-  String get buyMeACoffee => 'Buy me a coffee!';
-
-  @override
-  String get donationPageTextNew => 'Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nHowever if you enjoy using it, then please consider tipping a small amount. \n\nThank you!';
 
   @override
   String get rainInHalfHour => 'eső fél óra múlva';

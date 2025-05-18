@@ -33,15 +33,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get about => 'Sobre';
 
   @override
-  String get today => 'Hoje';
-
-  @override
-  String get tomorrow => 'Amanhã';
-
-  @override
-  String get overmorrow => 'Depois de Amanhã';
-
-  @override
   String get language => 'Língua';
 
   @override
@@ -52,9 +43,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get rain => 'Chuva';
-
-  @override
-  String get favorites => 'Favoritos';
 
   @override
   String get clearNight => 'Noite limpa';
@@ -115,6 +103,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever => 'Permissão de localização negada para sempre';
+
+  @override
+  String get grantLocationPermission => 'grant location permission';
+
+  @override
+  String get currentLocation => 'current location';
+
+  @override
+  String get favoritesLowercase => 'favorites';
 
   @override
   String get failedToAccessGps => 'Falha ao acessar o GPS';
@@ -201,7 +198,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get imageSource => 'Fonte de imagem';
 
   @override
-  String get temp => 'temp';
+  String get sumLowercase => 'sum';
 
   @override
   String get precipLowercase => 'precipitação';
@@ -358,12 +355,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get poweredByOpenMeteo => 'Alimentado por Open-Meteo';
-
-  @override
-  String get buyMeACoffee => 'Compre um café para mim!';
-
-  @override
-  String get donationPageTextNew => 'Overmorrow sempre foi feito para ser um app totalmente gratuito, sem anúncios ou compras dentro do app. Então, se você só quiser usá-lo assim, aproveite. No entanto, se gostar de usá-lo, considere deixar uma pequena contribuição. Obrigado!';
 
   @override
   String get rainInHalfHour => 'Chuva na Próxima Meia Hora';

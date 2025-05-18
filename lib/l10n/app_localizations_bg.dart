@@ -33,15 +33,6 @@ class AppLocalizationsBg extends AppLocalizations {
   String get about => 'Относно';
 
   @override
-  String get today => 'Днес';
-
-  @override
-  String get tomorrow => 'Утре';
-
-  @override
-  String get overmorrow => 'Вдругиден';
-
-  @override
   String get language => 'Език';
 
   @override
@@ -52,9 +43,6 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get rain => 'Дъжд';
-
-  @override
-  String get favorites => 'Любими';
 
   @override
   String get clearNight => 'Ясна нощ';
@@ -115,6 +103,15 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever => 'разрешението за местоположение, отказано завинаги';
+
+  @override
+  String get grantLocationPermission => 'grant location permission';
+
+  @override
+  String get currentLocation => 'current location';
+
+  @override
+  String get favoritesLowercase => 'favorites';
 
   @override
   String get failedToAccessGps => 'не успя да получи достъп до gps';
@@ -201,7 +198,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get imageSource => 'Източник на изображение';
 
   @override
-  String get temp => 'темп.';
+  String get sumLowercase => 'sum';
 
   @override
   String get precipLowercase => 'валежи';
@@ -358,12 +355,6 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get poweredByOpenMeteo => 'предоставено от open-meteo';
-
-  @override
-  String get buyMeACoffee => 'Купете ми кафе!';
-
-  @override
-  String get donationPageTextNew => 'Overmorrow винаги е бил предназначен за напълно безплатно приложение, без реклами и покупки в приложението. \n \nТака че, ако просто искате да го използвате по този начин, моля, наслаждавайте се. \n \nВъпреки това, ако обичате да го използвате, тогава, моля, помислете за малка сума. \n\nБлагодаря ви!';
 
   @override
   String get rainInHalfHour => 'дъжд в следващия половин час';

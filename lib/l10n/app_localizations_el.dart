@@ -33,15 +33,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get about => 'Σχετικά με';
 
   @override
-  String get today => 'Σήμερα';
-
-  @override
-  String get tomorrow => 'Αύριο';
-
-  @override
-  String get overmorrow => 'Μεθαύριο';
-
-  @override
   String get language => 'Γλώσσα';
 
   @override
@@ -52,9 +43,6 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get rain => 'Βροχή';
-
-  @override
-  String get favorites => 'Αγαπημένα';
 
   @override
   String get clearNight => 'Καθαρή Βραδιά';
@@ -115,6 +103,15 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever => 'Έχει απαγορευθεί η άδεια τοποθεσίας επ αόριστον';
+
+  @override
+  String get grantLocationPermission => 'grant location permission';
+
+  @override
+  String get currentLocation => 'current location';
+
+  @override
+  String get favoritesLowercase => 'favorites';
 
   @override
   String get failedToAccessGps => 'Αποτυχία σύνδεσης στο GPS';
@@ -201,7 +198,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get imageSource => 'Πηγή εικόνας';
 
   @override
-  String get temp => 'θερμ.';
+  String get sumLowercase => 'sum';
 
   @override
   String get precipLowercase => 'κατ. βροχής';
@@ -358,12 +355,6 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get poweredByOpenMeteo => 'παρέχεται από το open-meteo';
-
-  @override
-  String get buyMeACoffee => 'Buy me a coffee!';
-
-  @override
-  String get donationPageTextNew => 'Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nHowever if you enjoy using it, then please consider tipping a small amount. \n\nThank you!';
 
   @override
   String get rainInHalfHour => 'βροχή στο επόμενο μισάωρο';

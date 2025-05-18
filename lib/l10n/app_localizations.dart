@@ -177,24 +177,6 @@ abstract class AppLocalizations {
   /// **'About'**
   String get about;
 
-  /// No description provided for @today.
-  ///
-  /// In en, this message translates to:
-  /// **'Today'**
-  String get today;
-
-  /// No description provided for @tomorrow.
-  ///
-  /// In en, this message translates to:
-  /// **'Tomorrow'**
-  String get tomorrow;
-
-  /// No description provided for @overmorrow.
-  ///
-  /// In en, this message translates to:
-  /// **'Overmorrow'**
-  String get overmorrow;
-
   /// No description provided for @language.
   ///
   /// In en, this message translates to:
@@ -218,12 +200,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rain'**
   String get rain;
-
-  /// No description provided for @favorites.
-  ///
-  /// In en, this message translates to:
-  /// **'Favorites'**
-  String get favorites;
 
   /// No description provided for @clearNight.
   ///
@@ -344,6 +320,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'location permission denied forever'**
   String get locationPermissionDeniedForever;
+
+  /// No description provided for @grantLocationPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'grant location permission'**
+  String get grantLocationPermission;
+
+  /// No description provided for @currentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'current location'**
+  String get currentLocation;
+
+  /// No description provided for @favoritesLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'favorites'**
+  String get favoritesLowercase;
 
   /// No description provided for @failedToAccessGps.
   ///
@@ -513,11 +507,11 @@ abstract class AppLocalizations {
   /// **'Image source'**
   String get imageSource;
 
-  /// No description provided for @temp.
+  /// short for summary, overview, gist or something similar
   ///
   /// In en, this message translates to:
-  /// **'temp'**
-  String get temp;
+  /// **'sum'**
+  String get sumLowercase;
 
   /// No description provided for @precipLowercase.
   ///
@@ -830,18 +824,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'powered by open-meteo'**
   String get poweredByOpenMeteo;
-
-  /// No description provided for @buyMeACoffee.
-  ///
-  /// In en, this message translates to:
-  /// **'Buy me a coffee!'**
-  String get buyMeACoffee;
-
-  /// No description provided for @donationPageTextNew.
-  ///
-  /// In en, this message translates to:
-  /// **'Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nHowever if you enjoy using it, then please consider tipping a small amount. \n\nThank you!'**
-  String get donationPageTextNew;
 
   /// rain in the next half an hour
   ///

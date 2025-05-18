@@ -22,7 +22,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/daily.dart';
-import 'package:overmorrow/new_forecast.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'hourly.dart';
@@ -357,8 +356,6 @@ Widget TabletLayout(data, updateLocation, context) {
                         ],
                       ),
                     ),
-
-                    buildNewDays(data),
                   ],
                 ),
               ),
@@ -370,7 +367,6 @@ Widget TabletLayout(data, updateLocation, context) {
                       NewSunriseSunset(data: data, key: Key(data.place), size: size,),
                       NewAirQuality(data, context),
                       RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
-                      buildNewGlanceDay(data: data, key: Key("${data.place}, ${data.current.primary}"),),
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 30),
                         child: providerSelector(data.settings, updateLocation, data.current.palette, data.provider,

@@ -33,15 +33,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get about => '关于';
 
   @override
-  String get today => '今天';
-
-  @override
-  String get tomorrow => '明天';
-
-  @override
-  String get overmorrow => '后天';
-
-  @override
   String get language => '语言';
 
   @override
@@ -52,9 +43,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get rain => '雨';
-
-  @override
-  String get favorites => '收藏夹';
 
   @override
   String get clearNight => '晴朗的夜晚';
@@ -115,6 +103,15 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever => '位置权限已永久拒绝';
+
+  @override
+  String get grantLocationPermission => 'grant location permission';
+
+  @override
+  String get currentLocation => 'current location';
+
+  @override
+  String get favoritesLowercase => 'favorites';
 
   @override
   String get failedToAccessGps => '无法访问 GPS';
@@ -201,7 +198,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get imageSource => '图片来源';
 
   @override
-  String get temp => '温度';
+  String get sumLowercase => 'sum';
 
   @override
   String get precipLowercase => '降水';
@@ -358,12 +355,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get poweredByOpenMeteo => '由 open-meteo 驱动';
-
-  @override
-  String get buyMeACoffee => 'Buy me a coffee!';
-
-  @override
-  String get donationPageTextNew => 'Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nHowever if you enjoy using it, then please consider tipping a small amount. \n\nThank you!';
 
   @override
   String get rainInHalfHour => '未来半小时内降雨';

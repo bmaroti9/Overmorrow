@@ -33,15 +33,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get about => 'О программе';
 
   @override
-  String get today => 'Сегодня';
-
-  @override
-  String get tomorrow => 'Завтра';
-
-  @override
-  String get overmorrow => 'Послезавтра';
-
-  @override
   String get language => 'Язык';
 
   @override
@@ -52,9 +43,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get rain => 'Дождь';
-
-  @override
-  String get favorites => 'Избранное';
 
   @override
   String get clearNight => 'Чистая ночь';
@@ -115,6 +103,15 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever => 'Разрешение на местоположение отклонено навсегда';
+
+  @override
+  String get grantLocationPermission => 'grant location permission';
+
+  @override
+  String get currentLocation => 'current location';
+
+  @override
+  String get favoritesLowercase => 'favorites';
 
   @override
   String get failedToAccessGps => 'Не удалось получить доступ к GPS';
@@ -201,7 +198,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get imageSource => 'Источник изображения';
 
   @override
-  String get temp => 'темп';
+  String get sumLowercase => 'sum';
 
   @override
   String get precipLowercase => 'осадки';
@@ -358,12 +355,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get poweredByOpenMeteo => 'powered by open-meteo';
-
-  @override
-  String get buyMeACoffee => 'Buy me a coffee!';
-
-  @override
-  String get donationPageTextNew => 'Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nHowever if you enjoy using it, then please consider tipping a small amount. \n\nThank you!';
 
   @override
   String get rainInHalfHour => 'rain in the next half an hour';

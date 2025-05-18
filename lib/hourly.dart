@@ -21,6 +21,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'l10n/app_localizations.dart';
 import 'ui_helper.dart';
 
 
@@ -84,10 +85,10 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
                         width: 1.6),
                     label: comfortatext(
                         [
-                          "sum",
-                          "precip",
-                          "wind",
-                          "uv",
+                          AppLocalizations.of(context)!.sumLowercase,
+                          AppLocalizations.of(context)!.precipLowercase,
+                          AppLocalizations.of(context)!.windLowercase,
+                          AppLocalizations.of(context)!.uvLowercase,
                         ][index],
                         14, data.settings,
                         color: _value == index ? palette.onSecondaryContainer : palette.onSurface),

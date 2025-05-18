@@ -21,9 +21,38 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overmorrow/hourly.dart';
-import 'package:overmorrow/new_forecast.dart';
 import 'ui_helper.dart';
 
+
+
+Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0, iconSize = 16.0}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Icon(icon,
+          color: data.current.palette.primary, size: iconSize),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: comfortatext(number.toString(), 17, data.settings,
+                color: data.current.palette.onSecondaryContainer),
+          ),
+          comfortatext(addon, 15, data.settings, color: data.current.palette.onSecondaryContainer)
+        ],
+      ),
+      if (addWind) Padding(
+          padding: const EdgeInsets.only(left: 5, right: 3),
+          child: RotationTransition(
+              turns: AlwaysStoppedAnimation(windDir / 360),
+              child: Icon(Icons.arrow_circle_right_outlined,
+                  color: data.current.palette.primary, size: 18)
+          )
+      ),
+    ],
+  );
+}
 
 class buildDays extends StatefulWidget {
   final data;

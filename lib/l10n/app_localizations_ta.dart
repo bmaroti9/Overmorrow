@@ -33,15 +33,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get about => 'பற்றி';
 
   @override
-  String get today => 'இன்று';
-
-  @override
-  String get tomorrow => 'நாளை';
-
-  @override
-  String get overmorrow => 'ஓவர்மோரோ';
-
-  @override
   String get language => 'மொழி';
 
   @override
@@ -52,9 +43,6 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get rain => 'மழை';
-
-  @override
-  String get favorites => 'பிடித்தவை';
 
   @override
   String get clearNight => 'இரவு தெளிவான';
@@ -115,6 +103,15 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever => 'இருப்பிட இசைவு என்றென்றும் மறுக்கப்படுகிறது';
+
+  @override
+  String get grantLocationPermission => 'grant location permission';
+
+  @override
+  String get currentLocation => 'current location';
+
+  @override
+  String get favoritesLowercase => 'favorites';
 
   @override
   String get failedToAccessGps => 'சி.பி.எச் அணுகத் தவறிவிட்டது';
@@ -201,7 +198,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get imageSource => 'பட மூல';
 
   @override
-  String get temp => 'தற்காலிக';
+  String get sumLowercase => 'sum';
 
   @override
   String get precipLowercase => 'செங்குத்து';
@@ -358,12 +355,6 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get poweredByOpenMeteo => 'திறந்த-மெட்டியோ மூலம் இயக்கப்படுகிறது';
-
-  @override
-  String get buyMeACoffee => 'Buy me a coffee!';
-
-  @override
-  String get donationPageTextNew => 'Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nHowever if you enjoy using it, then please consider tipping a small amount. \n\nThank you!';
 
   @override
   String get rainInHalfHour => 'rain in the next half an hour';

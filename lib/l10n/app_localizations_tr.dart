@@ -33,15 +33,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get about => 'Hakkında';
 
   @override
-  String get today => 'Bugün';
-
-  @override
-  String get tomorrow => 'Yarın';
-
-  @override
-  String get overmorrow => 'Yarından sonra';
-
-  @override
   String get language => 'Dil';
 
   @override
@@ -52,9 +43,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get rain => 'Yağmur';
-
-  @override
-  String get favorites => 'Favoriler';
 
   @override
   String get clearNight => 'Berrak Gece';
@@ -115,6 +103,15 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever => 'konum i̇zni̇ sonsuza kadar reddedi̇ldi̇';
+
+  @override
+  String get grantLocationPermission => 'grant location permission';
+
+  @override
+  String get currentLocation => 'current location';
+
+  @override
+  String get favoritesLowercase => 'favorites';
 
   @override
   String get failedToAccessGps => 'GPS\'e erişilemedi';
@@ -201,7 +198,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get imageSource => 'Resim kaynağı';
 
   @override
-  String get temp => 'sıcaklık';
+  String get sumLowercase => 'sum';
 
   @override
   String get precipLowercase => 'yağış';
@@ -358,12 +355,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get poweredByOpenMeteo => 'powered by open-meteo';
-
-  @override
-  String get buyMeACoffee => 'Buy me a coffee!';
-
-  @override
-  String get donationPageTextNew => 'Overmorrow was always meant to be a totally free app, without any ads or in-app-purchases. \n \nSo if you just want to use it like that then please do enjoy. \n \nHowever if you enjoy using it, then please consider tipping a small amount. \n\nThank you!';
 
   @override
   String get rainInHalfHour => 'rain in the next half an hour';
