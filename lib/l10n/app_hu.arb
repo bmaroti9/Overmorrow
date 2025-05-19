@@ -226,7 +226,7 @@
   "@airQualityLowercase": {},
   "extremelyClear": "extrém tiszta",
   "@extremelyClear": {},
-  "veryClear": "Teljesen tiszta",
+  "veryClear": "teljesen tiszta",
   "@veryClear": {},
   "clear": "tiszta",
   "@clear": {},
@@ -238,11 +238,11 @@
   "@slightlyHazy": {},
   "hazy": "ködös",
   "@hazy": {},
-  "poweredByOpenMeteo": "Meghajtja: open-meteo",
+  "poweredByOpenMeteo": "meghajtja: open-meteo",
   "@poweredByOpenMeteo": {
     "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
   },
-  "rainInMinutes": "eső a következő {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "rainInMinutes": "eső a következő {minutes, plural, =1 {percben} other {{minutes} percben}}",
   "@rainInMinutes": {
     "description": "rain in the next X minutes",
     "placeholders": {
@@ -251,7 +251,7 @@
       }
     }
   },
-  "rainInHours": "eső a következő {hours, plural, =1 {hour} other {{hours} hours}}",
+  "rainInHours": "eső a következő {hours, plural, =1 {órában} other {{hours} órában}}",
   "@rainInHours": {
     "description": "rain in the next X hours",
     "placeholders": {
@@ -260,7 +260,7 @@
       }
     }
   },
-  "rainExpectedInMinutes": "eső várható a következő {minutes, plural, =1 {minute} other {{minutes} minutes}}percben",
+  "rainExpectedInMinutes": "eső várható a következő {minutes, plural, =1 {percben} other {{minutes} percben}}",
   "@rainExpectedInMinutes": {
     "description": "rain expected in the next X minutes",
     "placeholders": {
@@ -269,7 +269,7 @@
       }
     }
   },
-  "updatedXMinutesAgo": "Frissítve: {minutes}percel ezelőtt",
+  "updatedXMinutesAgo": "Frissítve: {minutes} percel ezelőtt",
   "@updatedXMinutesAgo": {},
   "rainInOneHour": "eső a következő órában",
   "@rainInOneHour": {
@@ -278,5 +278,80 @@
   "rainExpectedInOneHour": "eső várható a következő órában",
   "@rainExpectedInOneHour": {
     "description": "rain expected in the next hour"
+  },
+  "certainty": "biztosság",
+  "@certainty": {},
+  "rainExpectedInHours": "eső várható {hours, plural, =1 {percben} other {{hours} percben}}",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "frissítve, {days, plural, =1 {1 napja} other {{days} napja}}",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXHoursAgo": "frissítve, {hours, plural, =1 {1 órája} other {{hours} órája}}",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "sourceCodeLowercase": "forrás kód",
+  "@sourceCodeLowercase": {},
+  "emailLowercase": "email",
+  "@emailLowercase": {},
+  "dailyLowercase": "napi",
+  "@dailyLowercase": {},
+  "currentLocation": "tartózkodási hely",
+  "@currentLocation": {},
+  "favoritesLowercase": "kedvencek",
+  "@favoritesLowercase": {},
+  "reportAnIssueLowercase": "hiba jelentése",
+  "@reportAnIssueLowercase": {},
+  "donateLowercase": "adományozás",
+  "@donateLowercase": {},
+  "versionUppercase": "Verzió",
+  "@versionUppercase": {},
+  "apiAndServices": "APIk & Szolgáltatások",
+  "@apiAndServices": {},
+  "licenseUppercase": "Licensz",
+  "@licenseUppercase": {},
+  "weatherDataLowercase": "időjárás adat",
+  "@weatherDataLowercase": {},
+  "imagesLowercase": "képek",
+  "@imagesLowercase": {},
+  "aboutSettingsDesc": "erről az app-ról",
+  "@aboutSettingsDesc": {},
+  "radarHaptics": "radar haptikus visszajelzés",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
+  },
+  "alertsCapital": "Figyelmeztetések",
+  "@alertsCapital": {},
+  "severity": "súlyosság",
+  "@severity": {},
+  "urgency": "sűrgősség",
+  "@urgency": {},
+  "areas": "területek",
+  "@areas": {},
+  "weatherProvderLowercase": "időjárás szolgáltató",
+  "@weatherProvderLowercase": {},
+  "grantLocationPermission": "helymeghatározás engedélyezése",
+  "@grantLocationPermission": {},
+  "sumLowercase": "öszz",
+  "@sumLowercase": {
+    "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
   }
 }
