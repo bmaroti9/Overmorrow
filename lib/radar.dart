@@ -475,7 +475,7 @@ class _RadarBigState extends State<RadarBig> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      comfortatext("light", 16, data.settings, color: palette.onInverseSurface),
+                      comfortatext(AppLocalizations.of(context)!.light, 16, data.settings, color: palette.onInverseSurface),
                       Padding(
                         padding: const EdgeInsets.only(left: 8, right: 8),
                         child: Row(
@@ -496,7 +496,7 @@ class _RadarBigState extends State<RadarBig> {
                             })
                         ),
                       ),
-                      comfortatext("heavy", 16, data.settings, color: palette.onInverseSurface),
+                      comfortatext(AppLocalizations.of(context)!.heavy, 16, data.settings, color: palette.onInverseSurface),
                     ],
                   ),
                 ),

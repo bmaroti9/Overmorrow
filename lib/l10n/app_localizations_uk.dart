@@ -461,6 +461,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get alertsCapital => 'Оповіщення';
 
   @override
+  String get alertsLowercase => 'alerts';
+
+  @override
   String get severity => 'Серйозність';
 
   @override
@@ -471,4 +474,10 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get areas => 'Райони';
+
+  @override
+  String get light => 'light';
+
+  @override
+  String get heavy => 'heavy';
 }

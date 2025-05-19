@@ -108,13 +108,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get locationPermissionDeniedForever => 'تم رفض إذن الموقع نهائيًا';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'منح إذن الموقع';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'الموقع الحالي';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'المفضلة';
 
   @override
   String get failedToAccessGps => 'فشل الوصول إلى نظام تحديد المواقع';
@@ -186,7 +186,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fontSize => 'حجم الخط';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'يومياً';
 
   @override
   String get searchProvider => 'مزود البحث';
@@ -201,7 +201,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get imageSource => 'مصدر الصور';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'ملخص';
 
   @override
   String get precipLowercase => 'هطول';
@@ -234,31 +234,31 @@ class AppLocalizationsAr extends AppLocalizations {
   String get photoByXOnUnsplash => 'صورة, بواسطة ,x, على ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'الكود المصدري';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'البريد الإلكتروني';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'الإبلاغ عن مشكلة';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'تبرع';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'الإصدار';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'واجهات برمجة التطبيقات(APIs) والخدمات';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'الترخيص';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'بيانات الطقس';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'الصور';
 
   @override
   String get appearance => 'المظهر';
@@ -285,7 +285,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get unitsSettingdesc => 'الوحدات المستخدمة في التطبيق';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'حول هذا التطبيق';
 
   @override
   String get now => 'الآن';
@@ -461,6 +461,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get alertsCapital => 'التنبيهات';
 
   @override
+  String get alertsLowercase => 'alerts';
+
+  @override
   String get severity => 'الشدة';
 
   @override
@@ -471,4 +474,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get areas => 'المناطق';
+
+  @override
+  String get light => 'light';
+
+  @override
+  String get heavy => 'heavy';
 }

@@ -461,6 +461,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get alertsCapital => 'Hälytykset';
 
   @override
+  String get alertsLowercase => 'alerts';
+
+  @override
   String get severity => 'vakavuus';
 
   @override
@@ -471,4 +474,10 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get areas => 'alueet';
+
+  @override
+  String get light => 'light';
+
+  @override
+  String get heavy => 'heavy';
 }

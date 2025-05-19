@@ -933,6 +933,12 @@ abstract class AppLocalizations {
   /// **'Alerts'**
   String get alertsCapital;
 
+  /// No description provided for @alertsLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'alerts'**
+  String get alertsLowercase;
+
   /// No description provided for @severity.
   ///
   /// In en, this message translates to:
@@ -956,6 +962,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'areas'**
   String get areas;
+
+  /// light precipitation
+  ///
+  /// In en, this message translates to:
+  /// **'light'**
+  String get light;
+
+  /// heavy precipitation
+  ///
+  /// In en, this message translates to:
+  /// **'heavy'**
+  String get heavy;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -108,13 +108,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get locationPermissionDeniedForever => 'A helyengedélyt örökre megtagadták';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'helymeghatározás engedélyezése';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'tartózkodási hely';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'kedvencek';
 
   @override
   String get failedToAccessGps => 'Nem sikerült hozzáférni a GPS-hez';
@@ -156,7 +156,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get colorMode => 'Színmód';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'időjárás szolgáltató';
 
   @override
   String get timeMode => 'Idő mód';
@@ -186,7 +186,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get fontSize => 'Betűméret';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'napi';
 
   @override
   String get searchProvider => 'Keresési szolgáltató';
@@ -201,7 +201,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get imageSource => 'Kép forrása';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'öszz';
 
   @override
   String get precipLowercase => 'csapad.';
@@ -234,31 +234,31 @@ class AppLocalizationsHu extends AppLocalizations {
   String get photoByXOnUnsplash => 'Fotó,: ,x, az ,Unsplashen';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'forrás kód';
 
   @override
   String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'hiba jelentése';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'adományozás';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'Verzió';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'APIk & Szolgáltatások';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Licensz';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'időjárás adat';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'képek';
 
   @override
   String get appearance => 'Megjelenés';
@@ -285,7 +285,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get unitsSettingdesc => 'az alkalmazásban használt egységek';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'erről az app-ról';
 
   @override
   String get now => 'most';
@@ -354,7 +354,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get extremelyClear => 'extrém tiszta';
 
   @override
-  String get veryClear => 'Teljesen tiszta';
+  String get veryClear => 'teljesen tiszta';
 
   @override
   String get clear => 'tiszta';
@@ -372,7 +372,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get extremelyHazy => 'extrém ködös';
 
   @override
-  String get poweredByOpenMeteo => 'Meghajtja: open-meteo';
+  String get poweredByOpenMeteo => 'meghajtja: open-meteo';
 
   @override
   String get rainInHalfHour => 'eső fél óra múlva';
@@ -382,8 +382,8 @@ class AppLocalizationsHu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes percben',
+      one: 'percben',
     );
     return 'eső a következő $_temp0';
   }
@@ -396,8 +396,8 @@ class AppLocalizationsHu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours órában',
+      one: 'órában',
     );
     return 'eső a következő $_temp0';
   }
@@ -407,10 +407,10 @@ class AppLocalizationsHu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes percben',
+      one: 'percben',
     );
-    return 'eső várható a következő ${_temp0}percben';
+    return 'eső várható a következő $_temp0';
   }
 
   @override
@@ -421,15 +421,15 @@ class AppLocalizationsHu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours percben',
+      one: 'percben',
     );
-    return 'rain expected in $_temp0';
+    return 'eső várható $_temp0';
   }
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return 'Frissítve: ${minutes}percel ezelőtt';
+    return 'Frissítve: $minutes percel ezelőtt';
   }
 
   @override
@@ -437,10 +437,10 @@ class AppLocalizationsHu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
+      other: '$hours órája',
+      one: '1 órája',
     );
-    return 'updated, $_temp0 ago';
+    return 'frissítve, $_temp0';
   }
 
   @override
@@ -448,27 +448,36 @@ class AppLocalizationsHu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: '$days days',
-      one: '1 day',
+      other: '$days napja',
+      one: '1 napja',
     );
-    return 'updated, $_temp0 ago';
+    return 'frissítve, $_temp0';
   }
 
   @override
-  String get radarHaptics => 'Radar haptics';
+  String get radarHaptics => 'radar haptikus visszajelzés';
 
   @override
-  String get alertsCapital => 'Alerts';
+  String get alertsCapital => 'Figyelmeztetések';
 
   @override
-  String get severity => 'severity';
+  String get alertsLowercase => 'alerts';
 
   @override
-  String get certainty => 'certainty';
+  String get severity => 'súlyosság';
 
   @override
-  String get urgency => 'urgency';
+  String get certainty => 'biztosság';
 
   @override
-  String get areas => 'areas';
+  String get urgency => 'sűrgősség';
+
+  @override
+  String get areas => 'területek';
+
+  @override
+  String get light => 'light';
+
+  @override
+  String get heavy => 'heavy';
 }

@@ -212,6 +212,8 @@ class _NewMainState extends State<NewMain> {
 
             NewHourly(data: data, hours: data.hourly72, addDayDivider: false, elevated: false,),
 
+            alertWidget(data, context, data.current.palette),
+
             RadarSmall(data: data),
 
             buildDays(data: data),

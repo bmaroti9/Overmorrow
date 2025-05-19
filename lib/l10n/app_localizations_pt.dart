@@ -461,6 +461,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get alertsCapital => 'Alerta';
 
   @override
+  String get alertsLowercase => 'alerts';
+
+  @override
   String get severity => 'gravidade';
 
   @override
@@ -471,4 +474,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get areas => 'áreas';
+
+  @override
+  String get light => 'light';
+
+  @override
+  String get heavy => 'heavy';
 }

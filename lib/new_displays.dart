@@ -419,59 +419,70 @@ Widget AqiWidget(var data, ColorScheme palette, context) {
   );
 }
 
-Widget AlertWidget(var data, context) {
+Widget alertWidget(var data, context, ColorScheme palette) {
   if (data.alerts.length > 0) {
     return Padding(
         padding: const EdgeInsets.only(
             left: 21, right: 21, bottom: 25, top: 11),
         child: Column(
-          children: List.generate(data.alerts.length, (index) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 4, bottom: 4),
-              child: GestureDetector(
-                onTap: () {
-                  HapticFeedback.lightImpact();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AlertsPage(data: data))
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(left: 25, top: 23, bottom: 23, right: 22),
-                  decoration: BoxDecoration(
-                    color: data.current.containerLow,
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min, //first time i realised this makes it wrap the content size
-                          children: [
-                            Flexible(
-                              child: comfortatext(data.alerts[index].event, 20,
-                                  data.settings, color: data.current.primary,
-                                  weight: FontWeight.w600),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 6),
-                              child: comfortatext("${data.alerts[index].start} - ${data.alerts[index].end}", 14, data.settings,
-                                  color: data.current.outline),
-                            )
-                          ],
-                        ),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 11),
+              child: comfortatext(
+                  AppLocalizations.of(context)!.alertsLowercase, 17,
+                  data.settings,
+                  color: palette.onSurface),
+            ),
+            Column(
+              children: List.generate(data.alerts.length, (index) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 3, bottom: 3),
+                  child: GestureDetector(
+                    onTap: () {
+                      HapticFeedback.lightImpact();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AlertsPage(data: data))
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 25, top: 23, bottom: 23, right: 22),
+                      decoration: BoxDecoration(
+                        color: palette.secondaryContainer,
+                        borderRadius: BorderRadius.circular(18),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 5, left: 20),
-                        child: Icon(Icons.warning_amber_rounded, color: data.current.primaryLight, size: 28,),
-                      )
-                    ],
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min, //first time i realised this makes it wrap the content size
+                              children: [
+                                Flexible(
+                                  child: comfortatext(data.alerts[index].event, 20,
+                                      data.settings, color: palette.secondary,),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 6),
+                                  child: comfortatext("${data.alerts[index].start} - ${data.alerts[index].end}", 14, data.settings,
+                                      color: palette.outline),
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5, left: 20),
+                            child: Icon(Icons.warning_amber_rounded, color: palette.primary, size: 28,),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            );
-          }),
+                );
+              }),
+            ),
+          ],
         )
     );
   }

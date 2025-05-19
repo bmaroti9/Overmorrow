@@ -309,8 +309,17 @@
     "description": "setting for enabling or disabling haptic feedback for the radar"
   },
   "alertsCapital": "Alerts",
+  "alertsLowercase": "alerts",
   "severity": "severity",
   "certainty": "certainty",
   "urgency": "urgency",
-  "areas": "areas"
+  "areas": "areas",
+  "light": "light",
+  "@light": {
+    "description": "light precipitation"
+  },
+  "heavy": "heavy",
+  "@heavy": {
+    "description": "heavy precipitation"
+  }
 }

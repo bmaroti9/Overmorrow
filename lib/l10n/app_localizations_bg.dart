@@ -461,6 +461,9 @@ class AppLocalizationsBg extends AppLocalizations {
   String get alertsCapital => 'Сигнали';
 
   @override
+  String get alertsLowercase => 'alerts';
+
+  @override
   String get severity => 'сериозност';
 
   @override
@@ -471,4 +474,10 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get areas => 'области';
+
+  @override
+  String get light => 'light';
+
+  @override
+  String get heavy => 'heavy';
 }
