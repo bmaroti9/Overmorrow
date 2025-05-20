@@ -324,5 +324,47 @@
   "donationPageTextNew": "Overmorrow винаги е бил предназначен за напълно безплатно приложение, без реклами и покупки в приложението. \n \nТака че, ако просто искате да го използвате по този начин, моля, наслаждавайте се. \n \nВъпреки това, ако обичате да го използвате, тогава, моля, помислете за малка сума. \n\nБлагодаря ви!",
   "@donationPageTextNew": {},
   "weatherProvderLowercase": "доставчик на метеорологични услуги",
-  "@weatherProvderLowercase": {}
+  "@weatherProvderLowercase": {},
+  "grantLocationPermission": "предоставяне на разрешение за местоположение",
+  "@grantLocationPermission": {},
+  "currentLocation": "текущо местоположение",
+  "@currentLocation": {},
+  "favoritesLowercase": "любими",
+  "@favoritesLowercase": {},
+  "sumLowercase": "обобщение",
+  "@sumLowercase": {
+    "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+  },
+  "dailyLowercase": "ежедневно",
+  "@dailyLowercase": {},
+  "sourceCodeLowercase": "изходен код",
+  "@sourceCodeLowercase": {},
+  "emailLowercase": "електронна поща",
+  "@emailLowercase": {},
+  "reportAnIssueLowercase": "докладване на проблем",
+  "@reportAnIssueLowercase": {},
+  "donateLowercase": "дарете",
+  "@donateLowercase": {},
+  "versionUppercase": "Версия",
+  "@versionUppercase": {},
+  "apiAndServices": "API и Услуги",
+  "@apiAndServices": {},
+  "licenseUppercase": "Лиценз",
+  "@licenseUppercase": {},
+  "weatherDataLowercase": "данни за времето",
+  "@weatherDataLowercase": {},
+  "imagesLowercase": "изображения",
+  "@imagesLowercase": {},
+  "aboutSettingsDesc": "относно това приложение",
+  "@aboutSettingsDesc": {},
+  "alertsLowercase": "сигнали",
+  "@alertsLowercase": {},
+  "light": "лек",
+  "@light": {
+    "description": "light precipitation"
+  },
+  "heavy": "силен",
+  "@heavy": {
+    "description": "heavy precipitation"
+  }
 }
