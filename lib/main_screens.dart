@@ -125,26 +125,21 @@ class _NewMainState extends State<NewMain> {
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     final Size size = (view.physicalSize) / view.devicePixelRatio;
 
-
-    /*
     final Map<String, Widget> widgetsMap = {
       'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-      'rain indicator': NewRain15MinuteIndicator(data, context),
-      'alerts' : AlertWidget(data, context),
-      'air quality': NewAirQuality(data, context),
-      'radar': RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
-      'forecast': buildNewDays(data),
-      'daily': buildNewGlanceDay(data: data),
+      'rain indicator': rain15MinuteChart(data, data.current.palette, context),
+      'hourly': NewHourly(data: data, hours: data.hourly72, addDayDivider: false, elevated: false,),
+      'alerts' : alertWidget(data, context, data.current.palette),
+      'radar': RadarSmall(data: data),
+      'daily': buildDays(data: data),
+      'air quality': aqiWidget(data, data.current.palette, context)
     };
 
-    final List<String> order = data.settings["Layout order"] == "" ? [] : data.settings["Layout order"].split(",");
+    final List<String> order = data.settings["Layout"] == "" ? [] : data.settings["Layout"].split(",");
     List<Widget> orderedWidgets = [];
     if (order.isNotEmpty && order[0] != "") {
       orderedWidgets = order.map((name) => widgetsMap[name]!).toList();
     }
-
-     */
-
 
     String colorMode = data.settings["Color mode"];
     if (colorMode == "auto") {
@@ -206,6 +201,7 @@ class _NewMainState extends State<NewMain> {
             ],
           ),
 
+          /*
             NewSunriseSunset(data: data, key: Key(data.place), size: size,),
 
             rain15MinuteChart(data, data.current.palette, context),
@@ -218,9 +214,11 @@ class _NewMainState extends State<NewMain> {
 
             buildDays(data: data),
 
-            AqiWidget(data, data.current.palette, context),
+            aqiWidget(data, data.current.palette, context),
 
             //Container(padding: const EdgeInsets.only(left: 17, right: 17, top: 20), height:230, child: buildTemp(data.days[1].hourly, data, data.current.container)),
+
+           */
 
 
             /*
@@ -252,14 +250,12 @@ class _NewMainState extends State<NewMain> {
              */
 
 
-            /*
+
             Column(
               children: orderedWidgets.map((widget) {
                 return widget;
               }).toList(),
             ),
-
-             */
 
             providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
               "${data.lat}, ${data.lng}", data.real_loc, context),

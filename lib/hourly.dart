@@ -57,7 +57,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
     ColorScheme palette = data.current.palette;
     return Padding(
       padding: elevated ? const EdgeInsets.all(0)
-          : const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 40),
+          : const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

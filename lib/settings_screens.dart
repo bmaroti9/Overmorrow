@@ -758,14 +758,14 @@ class _LayoutPageState extends State<LayoutPage> {
   late List<String> _items;
 
   //also the default order
-  static const allNames = ["sunstatus", "rain indicator", "alerts", "air quality", "radar", "forecast", "daily"];
+  static const allNames = ["sunstatus", "rain indicator", "hourly", "alerts", "radar", "daily", "air quality"];
 
   List<String> removed = [];
 
   @override
   void initState() {
     super.initState();
-    _items = settings["Layout order"] == "" ? [] : settings["Layout order"].split(",");
+    _items = settings["Layout"] == "" ? [] : settings["Layout"].split(",");
 
     for (int i = 0; i < allNames.length; i++) {
       if (!_items.contains(allNames[i])) {
@@ -811,7 +811,7 @@ class _LayoutPageState extends State<LayoutPage> {
                     setState(() {
                       _items = allNames.toList();
                       removed = [];
-                      updatePage('Layout order', _items.join(","));
+                      updatePage('Layout', _items.join(","));
                     });
                   },
                 ),
@@ -858,7 +858,7 @@ class _LayoutPageState extends State<LayoutPage> {
                                   setState(() {
                                     removed.add(_items[index]);
                                     _items.remove(_items[index]);
-                                    updatePage('Layout order', _items.join(","));
+                                    updatePage('Layout', _items.join(","));
                                   });
                                 },
                                 icon: Icon(
@@ -910,7 +910,7 @@ class _LayoutPageState extends State<LayoutPage> {
                       }
                       final String item = _items.removeAt(oldIndex);
                       _items.insert(newIndex, item);
-                      updatePage('Layout order', _items.join(","));
+                      updatePage('Layout', _items.join(","));
                     });
                   },
                 ),

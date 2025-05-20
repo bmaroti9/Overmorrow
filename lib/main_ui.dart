@@ -434,7 +434,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
 
 Widget providerSelector(settings, updateLocation, ColorScheme palette, provider, latlng, real_loc, context) {
   return Padding(
-    padding: const EdgeInsets.only(left: 25, right: 25, bottom: 80, top: 55),
+    padding: const EdgeInsets.only(left: 25, right: 25, bottom: 80, top: 35),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

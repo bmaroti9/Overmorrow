@@ -67,7 +67,7 @@ Map<String, List<String>> settingSwitches = {
   'Search provider' : ['weatherapi', 'open-meteo'],
   'networkImageDialogShown' : ["false", "true"],
 
-  'Layout order' : ["sunstatus,rain indicator,alerts,air quality,radar,forecast,daily"],
+  'Layout' : ["sunstatus,rain indicator,hourly,alerts,radar,daily,air quality"],
   'Radar haptics': ["on", "off"],
 };
 

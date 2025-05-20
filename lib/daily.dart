@@ -94,7 +94,7 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
     super.build(context);
     final int daysToShow = min(data.days.length, 7);
     return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 25),
+      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 25, top: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

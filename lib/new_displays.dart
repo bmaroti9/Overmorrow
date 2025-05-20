@@ -338,7 +338,7 @@ Widget NewAirQuality(var data, context) {
   );
 }
 
-Widget AqiWidget(var data, ColorScheme palette, context) {
+Widget aqiWidget(var data, ColorScheme palette, context) {
   return Column(
     children: [
       Padding(
@@ -423,7 +423,7 @@ Widget alertWidget(var data, context, ColorScheme palette) {
   if (data.alerts.length > 0) {
     return Padding(
         padding: const EdgeInsets.only(
-            left: 21, right: 21, bottom: 25, top: 11),
+            left: 21, right: 21, bottom: 10, top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -541,11 +541,11 @@ Widget rain15MinuteChart(var data, ColorScheme palette, context) {
                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                    children: List<Widget>.generate( data.minutely_15_precip.precips.length, (int index)  {
                     return Container(
-                      width: 4.5,
+                      width: 5,
                       //i'm doing this because otherwise you wouldn't be
                       // able to tell the 0mm rain apart from the 0.1mm, or just low values in general
                       height: data.minutely_15_precip.precips[index] == 0 ?
-                        4.5 : 8.0 + data.minutely_15_precip.precips[index] * 30,
+                        5 : 8.0 + data.minutely_15_precip.precips[index] * 30,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: data.minutely_15_precip.precips[index] == 0 ?
