@@ -356,5 +356,7 @@
   "grantLocationPermission": "منح إذن الموقع",
   "@grantLocationPermission": {},
   "donateLowercase": "تبرع",
-  "@donateLowercase": {}
+  "@donateLowercase": {},
+  "alertsLowercase": "التنبيهات",
+  "@alertsLowercase": {}
 }
