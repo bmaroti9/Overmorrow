@@ -289,7 +289,7 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
     ColorScheme palette = widget.data.current.palette;
 
     return Container(
-      color: widget.data.isonline ? palette.surface : palette.primaryContainer,
+      color: widget.data.isonline ? Colors.transparent : palette.primaryContainer,
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 1000),
         transitionBuilder: (Widget child, Animation<double> animation) {

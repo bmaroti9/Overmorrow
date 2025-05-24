@@ -180,12 +180,15 @@ class _NewMainState extends State<NewMain> {
                 ),
               ),
 
-              MySearchParent(updateLocation: updateLocation,
-                palette: data.current.palette,
-                place: data.place,
-                settings: data.settings,
-                image: data.current.imageService.image
-              ,),
+              Padding(
+                padding: const EdgeInsets.only(left: 28, right: 28),
+                child: MySearchParent(updateLocation: updateLocation,
+                  palette: data.current.palette,
+                  place: data.place,
+                  settings: data.settings,
+                  image: data.current.imageService.image
+                ,),
+              ),
             ],
           )
         ),
@@ -272,22 +275,21 @@ Widget TabletLayout(data, updateLocation, context) {
 
   Size size = view.physicalSize / view.devicePixelRatio;
 
-  double toppad = MediaQuery.of(context).viewPadding.top;
-
   double width = size.width * 0.6;
-  double heigth = min(max(width / 1.5, 450), 510);
+
+  ColorScheme palette = data.current.palette;
 
   return Scaffold(
-    backgroundColor: data.current.surface,
+    backgroundColor: palette.surfaceContainer,
     body: RefreshIndicator(
       onRefresh: () async {
         await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
       },
-      backgroundColor: data.current.primaryLight,
-      color: data.current.surface,
+      backgroundColor: palette.inverseSurface,
+      color: palette.inversePrimary,
       displacement: 100,
       child: Padding(
-        padding: EdgeInsets.only(left: 20, right: 10, bottom: 10, top: toppad + 10),
+        padding: const EdgeInsets.only(left: 20, right: 10, bottom: 10, top: 30),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Row(
@@ -297,59 +299,50 @@ Widget TabletLayout(data, updateLocation, context) {
                 width: width,
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: heigth * 0.9,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, top: 15),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Stack(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 100, left: 6, right: 6),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: ParrallaxBackground(image: data.current.ImageService.image, key: Key(data.place),
-                                    color: darken(data.current.surface, 0.1),),
-                                ),
-                              ),
-                              MySearchParent(updateLocation: updateLocation,
-                                palette: data.current.palette,
-                                place: data.place,
-                                settings: data.settings,
-                                image: data.current.imageService.image
-                              ,)
-                            ],
-                          ),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0, right: 0, bottom: 26),
+                      child: MySearchParent(updateLocation: updateLocation,
+                          palette: data.current.palette,
+                          place: data.place,
+                          settings: data.settings,
+                          image: data.current.imageService.image
                       ),
                     ),
+                    AspectRatio(
+                      aspectRatio: 2.5,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),
+                            color: BLACK),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FadingWidget(data: data,
+                        time: data.updatedTime,
+                        key: Key(data.updatedTime.toString())),
+                    ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 30, right: 10),
+                      padding: const EdgeInsets.only(top: 0),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(bottom: 7),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                comfortatext("${data.current.temp}°", 65, data.settings,
-                                    color: data.current.primaryLight, weight: FontWeight.w200),
-                                comfortatext(data.current.text, 25, data.settings, color: data.current.onSurface,
-                                weight: FontWeight.w300),
+                                comfortatext("${data.current.temp}°", 70, data.settings,
+                                    color: palette.primary, weight: FontWeight.w200),
+                                comfortatext(data.current.text, 28, data.settings, color: palette.onSurface,
+                                weight: FontWeight.w400),
                               ],
                             ),
                           ),
                           const Spacer(),
-                          Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              FadingWidget(data: data,
-                                  time: data.updatedTime,
-                                  key: Key(data.updatedTime.toString())),
-                              Circles(data, 0.3, context, data.current.palette),
-                            ],
+                          SizedBox(
+                            width: 400,
+                            child: Circles(data, 0.3, context, data.current.palette)
                           ),
                         ],
                       ),
@@ -357,23 +350,28 @@ Widget TabletLayout(data, updateLocation, context) {
                   ],
                 ),
               ),
+              /*
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20, top: 0),
                   child: Column(
                     children: [
                       NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-                      NewAirQuality(data, context),
-                      RadarSmall(data: data, key: Key("${data.place}, ${data.current.surface}")),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 30),
-                        child: providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
-                            "${data.lat}, ${data.lng}", data.real_loc, context),
-                      ),
+                      rain15MinuteChart(data, data.current.palette, context),
+                      NewHourly(data: data, hours: data.hourly72, addDayDivider: false, elevated: false,),
+                      alertWidget(data, context, data.current.palette),
+                      RadarSmall(data: data),
+                      buildDays(data: data),
+                      aqiWidget(data, data.current.palette, context),
+
+                      providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
+                          "${data.lat}, ${data.lng}", data.real_loc, context),
                     ],
                   ),
                 ),
               ),
+
+               */
             ],
           ),
         ),

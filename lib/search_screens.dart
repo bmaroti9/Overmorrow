@@ -58,7 +58,7 @@ Widget searchBar2(ColorScheme palette, recommend,
         tag: 'searchBarHero',
         child: Container(
           height: 67,
-          margin: EdgeInsets.only(left: 28, right: 28, top: MediaQuery.of(context).padding.top + 15),
+          margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 15),
           decoration: BoxDecoration(
             color: palette.surface,
             borderRadius: BorderRadius.circular(33)

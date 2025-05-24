@@ -358,14 +358,14 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                    child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
-                       comfortatext(AppLocalizations.of(context)!.weatherDataLowercase, 22, settings, color: palette.onSurface),
+                       comfortatext(AppLocalizations.of(context)!.weatherDataLowercase, 20, settings, color: palette.onSurface),
                        const SizedBox(height: 20,),
                        GestureDetector(
                          onTap: () {
                            HapticFeedback.selectionClick();
                            _launchUrl("https://open-meteo.com");
                          },
-                         child: comfortatext("open-meteo", 18, settings, color: palette.secondary,
+                         child: comfortatext("open-meteo", 17, settings, color: palette.secondary,
                              decoration: TextDecoration.underline),
                        ),
                        const SizedBox(height: 10,),
@@ -374,7 +374,7 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                            HapticFeedback.selectionClick();
                            _launchUrl("https://www.weatherapi.com/");
                          },
-                         child: comfortatext("weatherapi", 18, settings, color: palette.secondary,
+                         child: comfortatext("weatherapi", 17, settings, color: palette.secondary,
                              decoration: TextDecoration.underline),
                        ),
                        const SizedBox(height: 10,),
@@ -383,7 +383,7 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                            HapticFeedback.selectionClick();
                            _launchUrl("https://api.met.no/");
                          },
-                         child: comfortatext("met-norway", 18, settings, color: palette.secondary,
+                         child: comfortatext("met-norway", 17, settings, color: palette.secondary,
                              decoration: TextDecoration.underline),
                         ),
                       ],
@@ -400,14 +400,14 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          comfortatext(AppLocalizations.of(context)!.radar, 22, settings, color: palette.onSurface),
+                          comfortatext(AppLocalizations.of(context)!.radar, 20, settings, color: palette.onSurface),
                           const SizedBox(height: 20,),
                           GestureDetector(
                             onTap: () {
                               HapticFeedback.selectionClick();
                               _launchUrl("https://www.rainviewer.com/api.html");
                             },
-                            child: comfortatext("rainviewer", 18, settings, color: palette.secondary,
+                            child: comfortatext("rainviewer", 17, settings, color: palette.secondary,
                                 decoration: TextDecoration.underline),
                           ),
                           const SizedBox(height: 10,),
@@ -416,7 +416,7 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                               HapticFeedback.selectionClick();
                               _launchUrl("https://carto.com/");
                             },
-                            child: comfortatext("carto", 18, settings, color: palette.secondary,
+                            child: comfortatext("carto", 17, settings, color: palette.secondary,
                                 decoration: TextDecoration.underline),
                         ),
                       ],
@@ -433,14 +433,14 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        comfortatext(AppLocalizations.of(context)!.imagesLowercase, 22, settings, color: palette.onSurface),
+                        comfortatext(AppLocalizations.of(context)!.imagesLowercase, 20, settings, color: palette.onSurface),
                         const SizedBox(height: 20,),
                         GestureDetector(
                           onTap: () {
                             HapticFeedback.selectionClick();
                             _launchUrl("https://unsplash.com/");
                           },
-                          child: comfortatext("unsplash", 18, settings, color: palette.secondary,
+                          child: comfortatext("unsplash", 17, settings, color: palette.secondary,
                               decoration: TextDecoration.underline),
                         ),
                       ],
