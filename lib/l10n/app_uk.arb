@@ -103,7 +103,7 @@
   "@poorAqiDesc": {},
   "veryPoorAqiDesc": "Серйозні наслідки для здоров'я в усіх.",
   "@veryPoorAqiDesc": {},
-  "photoByXOnUnsplash": "Фото,, x, на ,Unsplash",
+  "photoByXOnUnsplash": "Фото, ,x, на ,Unsplash",
   "@photoByXOnUnsplash": {},
   "developedBy": "Розроблено:",
   "@developedBy": {},
@@ -217,7 +217,7 @@
   "@airQualityLowercase": {},
   "precipitaion": "Опади",
   "@precipitaion": {},
-  "helpTranslate": "допомогти з перекладом",
+  "helpTranslate": "Допомогти з перекладом",
   "@helpTranslate": {},
   "hazy": "Туманність",
   "@hazy": {},
@@ -229,7 +229,7 @@
   "@extremelyClear": {},
   "veryClear": "Дуже ясно",
   "@veryClear": {},
-  "poweredByOpenMeteo": "на базі open-meteo",
+  "poweredByOpenMeteo": "На базі open-meteo",
   "@poweredByOpenMeteo": {
     "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
   },
@@ -326,5 +326,47 @@
   "buyMeACoffee": "Пригостіть мене кавою!",
   "@buyMeACoffee": {},
   "weatherProvderLowercase": "Постачальник погоди",
-  "@weatherProvderLowercase": {}
+  "@weatherProvderLowercase": {},
+  "sumLowercase": "Загалом",
+  "@sumLowercase": {
+    "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+  },
+  "grantLocationPermission": "Надати дозвіл на розташування",
+  "@grantLocationPermission": {},
+  "currentLocation": "Поточне розташування",
+  "@currentLocation": {},
+  "dailyLowercase": "Щодня",
+  "@dailyLowercase": {},
+  "sourceCodeLowercase": "Вихідний код",
+  "@sourceCodeLowercase": {},
+  "emailLowercase": "Пошта",
+  "@emailLowercase": {},
+  "reportAnIssueLowercase": "Повідомити про проблему",
+  "@reportAnIssueLowercase": {},
+  "donateLowercase": "Пожертвувати",
+  "@donateLowercase": {},
+  "versionUppercase": "Версія",
+  "@versionUppercase": {},
+  "apiAndServices": "API та служби",
+  "@apiAndServices": {},
+  "weatherDataLowercase": "Дані про погоду",
+  "@weatherDataLowercase": {},
+  "imagesLowercase": "Зображення",
+  "@imagesLowercase": {},
+  "aboutSettingsDesc": "Про застосунок",
+  "@aboutSettingsDesc": {},
+  "alertsLowercase": "Оповіщення",
+  "@alertsLowercase": {},
+  "light": "Невеликі",
+  "@light": {
+    "description": "light precipitation"
+  },
+  "heavy": "Сильні",
+  "@heavy": {
+    "description": "heavy precipitation"
+  },
+  "favoritesLowercase": "Улюблені",
+  "@favoritesLowercase": {},
+  "licenseUppercase": "Ліцензія",
+  "@licenseUppercase": {}
 }
