@@ -1,5 +1,5 @@
 {
-  "feelsLike": "الإحساس بدرجة الحرارة",
+  "feelsLike": "تبدو وكأنها",
   "@feelsLike": {},
   "windCapital": "الرياح",
   "@windCapital": {},
@@ -358,5 +358,13 @@
   "donateLowercase": "تبرع",
   "@donateLowercase": {},
   "alertsLowercase": "التنبيهات",
-  "@alertsLowercase": {}
+  "@alertsLowercase": {},
+  "heavy": "غزيرة",
+  "@heavy": {
+    "description": "heavy precipitation"
+  },
+  "light": "ضعيفة",
+  "@light": {
+    "description": "light precipitation"
+  }
 }
