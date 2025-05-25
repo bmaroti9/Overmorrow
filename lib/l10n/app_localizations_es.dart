@@ -480,4 +480,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get heavy => 'heavy';
+
+  @override
+  String get showMore => 'show more';
+
+  @override
+  String get showLess => 'show less';
 }

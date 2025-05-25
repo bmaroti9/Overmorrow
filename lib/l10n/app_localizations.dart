@@ -974,6 +974,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'heavy'**
   String get heavy;
+
+  /// No description provided for @showMore.
+  ///
+  /// In en, this message translates to:
+  /// **'show more'**
+  String get showMore;
+
+  /// No description provided for @showLess.
+  ///
+  /// In en, this message translates to:
+  /// **'show less'**
+  String get showLess;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

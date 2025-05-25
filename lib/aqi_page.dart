@@ -327,16 +327,18 @@ class _AllergensPageState extends State<AllergensPage> {
                             padding: const EdgeInsets.only(top: 25, bottom: 3),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: palette.inverseSurface,
+                                color: palette.secondaryContainer,
                                 borderRadius: BorderRadius.circular(33),
                               ),
                               height: 67,
                               padding: const EdgeInsets.only(left: 25, right: 25),
                               child: Row(
                                 children: [
-                                  comfortatext(AppLocalizations.of(context)!.mainPollutant, 18, data.settings, color: palette.onInverseSurface),
+                                  comfortatext(AppLocalizations.of(context)!.mainPollutant, 18, data.settings,
+                                      color: palette.onSecondaryContainer),
                                   const Spacer(),
-                                  comfortatext(extendedAqi.mainPollutant, 18, data.settings, color: palette.inversePrimary, weight: FontWeight.w600)
+                                  comfortatext(extendedAqi.mainPollutant, 18, data.settings,
+                                      color: palette.primary, weight: FontWeight.w600)
                                 ],
                               ),
                             ),
@@ -484,8 +486,8 @@ class _AllergensPageState extends State<AllergensPage> {
                                           alignment: Alignment.bottomCenter,
                                           child: Container(
                                             decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(30),
-                                                color: extendedAqi.dailyAqi[index] == highestAqi ? palette.primary : palette.secondaryContainer,
+                                              borderRadius: BorderRadius.circular(30),
+                                              color: extendedAqi.dailyAqi[index] == highestAqi ? palette.secondary : palette.secondaryContainer,
                                             ),
                                             width: 48,
                                             alignment: Alignment.topCenter,

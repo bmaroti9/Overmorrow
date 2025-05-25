@@ -108,13 +108,13 @@ class AppLocalizationsUk extends AppLocalizations {
   String get locationPermissionDeniedForever => 'Назавжди відмовлено у доступі на розташування';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'Надати дозвіл на розташування';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'Поточне розташування';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'Улюблені';
 
   @override
   String get failedToAccessGps => 'Не вдалося отримати доступ до GPS';
@@ -186,7 +186,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get fontSize => 'Розмір шрифту';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'Щодня';
 
   @override
   String get searchProvider => 'Постачальник пошуку';
@@ -201,7 +201,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get imageSource => 'Джерело зображення';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'Загалом';
 
   @override
   String get precipLowercase => 'Опади';
@@ -231,34 +231,34 @@ class AppLocalizationsUk extends AppLocalizations {
   String get unhealthyAqiDesc => 'Надзвичайні ситуації; серйозні наслідки для здоров\'я в усіх.';
 
   @override
-  String get photoByXOnUnsplash => 'Фото,, x, на ,Unsplash';
+  String get photoByXOnUnsplash => 'Фото, ,x, на ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'Вихідний код';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'Пошта';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'Повідомити про проблему';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'Пожертвувати';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'Версія';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'API та служби';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Ліцензія';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'Дані про погоду';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'Зображення';
 
   @override
   String get appearance => 'Вигляд';
@@ -285,7 +285,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get unitsSettingdesc => 'одиниці, що використовуються в застосунку';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'Про застосунок';
 
   @override
   String get now => 'Зараз';
@@ -348,7 +348,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get offline => 'Не в мережі';
 
   @override
-  String get helpTranslate => 'допомогти з перекладом';
+  String get helpTranslate => 'Допомогти з перекладом';
 
   @override
   String get extremelyClear => 'Вкрай ясно';
@@ -372,7 +372,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get extremelyHazy => 'Вкрай туманно';
 
   @override
-  String get poweredByOpenMeteo => 'на базі open-meteo';
+  String get poweredByOpenMeteo => 'На базі open-meteo';
 
   @override
   String get rainInHalfHour => 'Дощ у найближчі півгодини';
@@ -461,7 +461,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get alertsCapital => 'Оповіщення';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'Оповіщення';
 
   @override
   String get severity => 'Серйозність';
@@ -476,8 +476,14 @@ class AppLocalizationsUk extends AppLocalizations {
   String get areas => 'Райони';
 
   @override
-  String get light => 'light';
+  String get light => 'Невеликі';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'Сильні';
+
+  @override
+  String get showMore => 'show more';
+
+  @override
+  String get showLess => 'show less';
 }

@@ -386,7 +386,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
               if (!widget.data.isonline) Padding(
                 padding: const EdgeInsets.only(right: 7),
                 child: comfortatext(AppLocalizations.of(context)!.offline, 13, widget.data.settings,
-                    color: highlight, weight: FontWeight.w600),
+                    color: highlight, weight: FontWeight.w300),
               ),
               TextButton(
                 onPressed: () async {
@@ -462,7 +462,7 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
               borderRadius: BorderRadius.circular(18),
               icon: Padding(
                 padding: const EdgeInsets.only(right: 8),
-                child: Icon(Icons.unfold_more, color: palette.primary, size: 22,),
+                child: Icon(Icons.unfold_more, color: palette.onSurface, size: 22,),
               ),
               value: provider.toString(),
               items: ['weatherapi.com', 'open-meteo', 'met norway'].map((item) {
@@ -470,7 +470,7 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
                   value: item,
                   child: Padding(
                     padding: const EdgeInsets.all(10),
-                    child: comfortatext(item, 18, settings, color: palette.primary),
+                    child: comfortatext(item, 18, settings, color: palette.onSurface),
                   ),
                 );
               }).toList(),

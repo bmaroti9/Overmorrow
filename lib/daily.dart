@@ -67,11 +67,22 @@ class buildDays extends StatefulWidget {
 class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixin {
   final data;
 
+  int daysToShow = 0;
+  bool isDaysListExpanded = false;
+  bool isDaysExpandable = false;
+
   late List<bool> expand = [];
 
   @override
   void initState() {
     super.initState();
+    if (data.days.length > 7) {
+      isDaysExpandable = true;
+      daysToShow = 7;
+    }
+    else {
+      daysToShow = data.days.length;
+    }
     for (int i = 0; i < data.days.length; i++) {
       expand.add(false);
     }
@@ -84,6 +95,18 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
     });
   }
 
+  void toggleMoreDays() {
+    setState(() {
+      isDaysListExpanded = !isDaysListExpanded;
+      if (isDaysListExpanded) {
+        daysToShow = data.days.length;
+      }
+      else {
+        daysToShow = 7;
+      }
+    });
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -92,7 +115,6 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final int daysToShow = min(data.days.length, 7);
     return Padding(
       padding: const EdgeInsets.only(left: 24, right: 24, bottom: 25, top: 25),
       child: Column(
@@ -104,7 +126,13 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
                 data.settings,
                 color: data.current.palette.onSurface),
           ),
-          ListView.builder(
+
+          AnimatedSize(
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeInOut,
+            alignment: Alignment.topCenter,
+            child: ListView.builder(
+              key: ValueKey(daysToShow),
               shrinkWrap: true,
               padding: const EdgeInsets.only(top: 0, bottom: 0),
               physics: const NeverScrollableScrollPhysics(),
@@ -112,17 +140,17 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
               itemBuilder: (context, index) {
                 final day = data.days[index];
                 return Padding(
-                  padding: const EdgeInsets.only(top: 3, bottom: 3),
+                  padding: const EdgeInsets.only(top: 2, bottom: 2),
                   child: Container(
                       decoration: BoxDecoration(
                           borderRadius:
                           index == 0 ? const BorderRadius.vertical(
                               top: Radius.circular(33),
-                              bottom: Radius.circular(12))
+                              bottom: Radius.circular(6))
                               : index == daysToShow - 1 ? const BorderRadius
-                              .vertical(bottom: Radius.circular(33),
-                              top: Radius.circular(12))
-                              : BorderRadius.circular(12),
+                              .vertical(bottom: Radius.circular(6),
+                              top: Radius.circular(6))
+                              : BorderRadius.circular(6),
                           color: data.current.palette.surfaceContainer),
                       child: AnimatedSize(
                           duration: const Duration(milliseconds: 250),
@@ -133,7 +161,34 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
                   ),
                 );
               }
+            ),
           ),
+          if (isDaysExpandable) GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              toggleMoreDays();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: data.current.palette.secondaryContainer,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(6), bottom: Radius.circular(33))
+              ),
+              padding: const EdgeInsets.only(left: 22, right: 22, top: 13, bottom: 13),
+              margin: const EdgeInsets.only(top: 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  comfortatext(
+                      isDaysListExpanded ? AppLocalizations.of(context)!.showLess : AppLocalizations.of(context)!.showMore
+                      , 16, data.settings, color: data.current.palette.onSecondaryContainer),
+                  const SizedBox(width: 4,),
+                  Icon(
+                    isDaysListExpanded ? Icons.arrow_upward : Icons.arrow_downward,
+                    color: data.current.palette.onSecondaryContainer, size: 16,)
+                ]
+              ),
+            ),
+          )
         ],
       ),
     );

@@ -108,13 +108,13 @@ class AppLocalizationsBg extends AppLocalizations {
   String get locationPermissionDeniedForever => 'разрешението за местоположение, отказано завинаги';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'предоставяне на разрешение за местоположение';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'текущо местоположение';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'любими';
 
   @override
   String get failedToAccessGps => 'не успя да получи достъп до gps';
@@ -186,7 +186,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get fontSize => 'Размер на шрифта';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'ежедневно';
 
   @override
   String get searchProvider => 'Доставчик на търсене';
@@ -201,7 +201,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get imageSource => 'Източник на изображение';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'обобщение';
 
   @override
   String get precipLowercase => 'валежи';
@@ -234,31 +234,31 @@ class AppLocalizationsBg extends AppLocalizations {
   String get photoByXOnUnsplash => 'Снимка, от ,x, на ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'изходен код';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'електронна поща';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'докладване на проблем';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'дарете';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'Версия';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'API и Услуги';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Лиценз';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'данни за времето';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'изображения';
 
   @override
   String get appearance => 'Външен вид';
@@ -285,7 +285,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get unitsSettingdesc => 'мерните единици използвани в приложението';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'относно това приложение';
 
   @override
   String get now => 'сега';
@@ -461,7 +461,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get alertsCapital => 'Сигнали';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'сигнали';
 
   @override
   String get severity => 'сериозност';
@@ -476,8 +476,14 @@ class AppLocalizationsBg extends AppLocalizations {
   String get areas => 'области';
 
   @override
-  String get light => 'light';
+  String get light => 'лек';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'силен';
+
+  @override
+  String get showMore => 'show more';
+
+  @override
+  String get showLess => 'show less';
 }

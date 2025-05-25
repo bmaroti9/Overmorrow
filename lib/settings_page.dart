@@ -57,7 +57,7 @@ Map<String, List<String>> settingSwitches = {
 
   'Font size': ['normal', 'small', 'very small', 'big'],
 
-  'Color mode' : ['auto', 'original', 'colorful', 'mono', 'light', 'dark'],
+  'Color mode' : ['auto', 'light', 'dark'],
 
   'Color source' : ['image', 'wallpaper', 'custom'],
   'Image source' : ['network', 'asset'],
@@ -65,7 +65,6 @@ Map<String, List<String>> settingSwitches = {
         '#4db6ac', '#4caf50', '#b2ff59', '#ffeb3b', '#ffab40',],
 
   'Search provider' : ['weatherapi', 'open-meteo'],
-  'networkImageDialogShown' : ["false", "true"],
 
   'Layout' : ["sunstatus,rain indicator,hourly,alerts,radar,daily,air quality"],
   'Radar haptics': ["on", "off"],

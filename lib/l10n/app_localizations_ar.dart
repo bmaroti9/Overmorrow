@@ -9,7 +9,7 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get feelsLike => 'الإحساس بدرجة الحرارة';
+  String get feelsLike => 'تبدو وكأنها';
 
   @override
   String get precipCapital => 'هطول.';
@@ -461,7 +461,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get alertsCapital => 'التنبيهات';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'التنبيهات';
 
   @override
   String get severity => 'الشدة';
@@ -476,8 +476,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get areas => 'المناطق';
 
   @override
-  String get light => 'light';
+  String get light => 'ضعيفة';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'غزيرة';
+
+  @override
+  String get showMore => 'show more';
+
+  @override
+  String get showLess => 'show less';
 }

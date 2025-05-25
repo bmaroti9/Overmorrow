@@ -321,5 +321,7 @@
   "heavy": "heavy",
   "@heavy": {
     "description": "heavy precipitation"
-  }
+  },
+  "showMore": "show more",
+  "showLess": "show less"
 }
