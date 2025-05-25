@@ -249,5 +249,66 @@
   "rainInOneHour": "pioggia nella prossima ora",
   "@rainInOneHour": {
     "description": "rain in the next hour"
-  }
+  },
+  "dailyLowercase": "quotidianamente",
+  "@dailyLowercase": {},
+  "sumLowercase": "somma",
+  "@sumLowercase": {
+    "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+  },
+  "rainInMinutes": "pioggia per {minutes, plural,=1 {il prossimo minuto} other{i prossimi {minutes} minuti}",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInMinutes": "prevista pioggia in {minutes, plural, =1 {un minuto} other {{minutes} minuti}}",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInHours": "pioggia per {hours, plural, =1 {la prossima ora} other {le prossime {hours}}",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "grantLocationPermission": "autorizza l'accesso alla posizione",
+  "@grantLocationPermission": {},
+  "currentLocation": "posizione corrente",
+  "@currentLocation": {},
+  "favoritesLowercase": "preferiti",
+  "@favoritesLowercase": {},
+  "weatherProvderLowercase": "fornitore di servizi meteorologici",
+  "@weatherProvderLowercase": {},
+  "sourceCodeLowercase": "codice sorgente",
+  "@sourceCodeLowercase": {},
+  "emailLowercase": "email",
+  "@emailLowercase": {},
+  "reportAnIssueLowercase": "segnala un problema",
+  "@reportAnIssueLowercase": {},
+  "donateLowercase": "dona",
+  "@donateLowercase": {},
+  "versionUppercase": "Versione",
+  "@versionUppercase": {},
+  "apiAndServices": "API e Servizi",
+  "@apiAndServices": {},
+  "licenseUppercase": "Licenza",
+  "@licenseUppercase": {},
+  "weatherDataLowercase": "dati metereologici",
+  "@weatherDataLowercase": {},
+  "imagesLowercase": "immagini",
+  "@imagesLowercase": {},
+  "aboutSettingsDesc": "informazioni su questa app",
+  "@aboutSettingsDesc": {}
 }
