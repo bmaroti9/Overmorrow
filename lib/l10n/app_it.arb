@@ -256,7 +256,7 @@
   "@sumLowercase": {
     "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
   },
-  "rainInMinutes": "pioggia per {minutes, plural,=1 {il prossimo minuto} other{i prossimi {minutes} minuti}",
+  "rainInMinutes": "pioggia per {minutes, plural,=1 {il prossimo minuto} other{i prossimi {minutes} minuti}}",
   "@rainInMinutes": {
     "description": "rain in the next X minutes",
     "placeholders": {
@@ -274,7 +274,7 @@
       }
     }
   },
-  "rainInHours": "pioggia per {hours, plural, =1 {la prossima ora} other {le prossime {hours}}",
+  "rainInHours": "pioggia per {hours, plural, =1 {la prossima ora} other {le prossime {hours} ore}}",
   "@rainInHours": {
     "description": "rain in the next X hours",
     "placeholders": {
@@ -310,5 +310,66 @@
   "imagesLowercase": "immagini",
   "@imagesLowercase": {},
   "aboutSettingsDesc": "informazioni su questa app",
-  "@aboutSettingsDesc": {}
+  "@aboutSettingsDesc": {},
+  "showMore": "mostra di più",
+  "@showMore": {},
+  "showLess": "mostra meno",
+  "@showLess": {},
+  "areas": "aree",
+  "@areas": {},
+  "rainExpectedInHours": "pioggia prevista {hours, plural, =1 {nella prossima ora} other {nelle prossime {hours} ore }}",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXHoursAgo": "ultimo aggiornamento {hours, plural, =1 {1 ora} other {{hours} ore}} fa",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "ultimo aggiornamento {days, plural, =1 {1 giorno} other {{days} giorni}} fa",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXMinutesAgo": "ultimo aggiornamento {minutes} fa",
+  "@updatedXMinutesAgo": {},
+  "rainExpectedInOneHour": "prevista pioggia entro un'ora",
+  "@rainExpectedInOneHour": {
+    "description": "rain expected in the next hour"
+  },
+  "radarHaptics": "Radar tattile",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
+  },
+  "severity": "gravità",
+  "@severity": {},
+  "certainty": "certezza",
+  "@certainty": {},
+  "urgency": "urgenza",
+  "@urgency": {},
+  "alertsLowercase": "avvisi",
+  "@alertsLowercase": {},
+  "light": "leggera",
+  "@light": {
+    "description": "light precipitation"
+  },
+  "heavy": "intensa",
+  "@heavy": {
+    "description": "heavy precipitation"
+  },
+  "alertsCapital": "Avvisi",
+  "@alertsCapital": {}
 }
