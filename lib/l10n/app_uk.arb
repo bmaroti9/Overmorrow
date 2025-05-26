@@ -368,5 +368,9 @@
   "favoritesLowercase": "Улюблені",
   "@favoritesLowercase": {},
   "licenseUppercase": "Ліцензія",
-  "@licenseUppercase": {}
+  "@licenseUppercase": {},
+  "showMore": "Розгорнути",
+  "@showMore": {},
+  "showLess": "Згорнути",
+  "@showLess": {}
 }
