@@ -366,5 +366,9 @@
   "heavy": "силен",
   "@heavy": {
     "description": "heavy precipitation"
-  }
+  },
+  "showLess": "покажи по-малко",
+  "@showLess": {},
+  "showMore": "покажи повече",
+  "@showMore": {}
 }
