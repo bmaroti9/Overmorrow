@@ -366,5 +366,9 @@
   "light": "ضعيفة",
   "@light": {
     "description": "light precipitation"
-  }
+  },
+  "showMore": "عرض المزيد",
+  "@showMore": {},
+  "showLess": "عرض القليل",
+  "@showLess": {}
 }
