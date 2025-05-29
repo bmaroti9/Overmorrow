@@ -399,14 +399,19 @@ class _UnitsPageState extends State<UnitsPage> {
   _UnitsPageState({required this.image, required this.settings, required this.palette,
     required this.updateMainPage, required this.localizations});
 
+  Map<String, String> copySettings = {};
+
   @override
   void initState() {
     super.initState();
+
+    copySettings = settings;
   }
 
   void updatePage(String name, String to) {
     setState(() {
       updateMainPage(name, to);
+      copySettings[name] = to;
     });
   }
 
@@ -448,9 +453,9 @@ class _UnitsPageState extends State<UnitsPage> {
                       ),
                     ),
                     children: [
-                      settingEntry(Icons.device_thermostat, localizations.temperature, settings, palette, updatePage, 'Temperature', context),
-                      settingEntry(Icons.water_drop_outlined, localizations.precipitaion, settings, palette, updatePage, 'Precipitation', context),
-                      settingEntry(Icons.air, localizations.windCapital, settings, palette, updatePage, 'Wind', context),
+                      settingEntry(Icons.device_thermostat, localizations.temperature, copySettings, palette, updatePage, 'Temperature', context),
+                      settingEntry(Icons.water_drop_outlined, localizations.precipitaion, copySettings, palette, updatePage, 'Precipitation', context),
+                      settingEntry(Icons.air, localizations.windCapital, copySettings, palette, updatePage, 'Wind', context),
                     ],
                   )
                 ),
@@ -492,14 +497,19 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
   _GeneralSettingsPageState({required this.image, required this.settings, required this.palette,
     required this.updateMainPage, required this.localizations});
 
+  Map<String, String> copySettings = {};
+
   @override
   void initState() {
     super.initState();
+
+    copySettings = settings;
   }
 
   void updatePage(String name, String to) {
     setState(() {
       updateMainPage(name, to);
+      copySettings[name] = to;
     });
   }
 
@@ -541,11 +551,11 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                       ),
                     ),
                     children: [
-                      settingEntry(Icons.access_time_outlined, localizations.timeMode, settings, palette, updatePage, 'Time mode', context),
-                      settingEntry(Icons.date_range, localizations.dateFormat, settings, palette, updatePage, 'Date format', context),
-                      settingEntry(Icons.format_size, localizations.fontSize, settings, palette, updatePage, 'Font size', context),
-                      settingEntry(Icons.manage_search_outlined, localizations.searchProvider, settings, palette, updatePage, 'Search provider', context),
-                      settingEntry(Icons.vibration_rounded, localizations.radarHaptics, settings, palette, updatePage, 'Radar haptics', context),
+                      settingEntry(Icons.access_time_outlined, localizations.timeMode, copySettings, palette, updatePage, 'Time mode', context),
+                      settingEntry(Icons.date_range, localizations.dateFormat, copySettings, palette, updatePage, 'Date format', context),
+                      settingEntry(Icons.format_size, localizations.fontSize, copySettings, palette, updatePage, 'Font size', context),
+                      settingEntry(Icons.manage_search_outlined, localizations.searchProvider, copySettings, palette, updatePage, 'Search provider', context),
+                      settingEntry(Icons.vibration_rounded, localizations.radarHaptics, copySettings, palette, updatePage, 'Radar haptics', context),
                     ],
                   )
                 ),

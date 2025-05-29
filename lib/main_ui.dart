@@ -462,7 +462,7 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
               borderRadius: BorderRadius.circular(18),
               icon: Padding(
                 padding: const EdgeInsets.only(right: 8),
-                child: Icon(Icons.unfold_more, color: palette.onSurface, size: 22,),
+                child: Icon(Icons.unfold_more, color: palette.secondary, size: 22,),
               ),
               value: provider.toString(),
               items: ['weatherapi.com', 'open-meteo', 'met norway'].map((item) {
@@ -470,7 +470,7 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
                   value: item,
                   child: Padding(
                     padding: const EdgeInsets.all(10),
-                    child: comfortatext(item, 18, settings, color: palette.onSurface),
+                    child: comfortatext(item, 18, settings, color: palette.secondary),
                   ),
                 );
               }).toList(),

@@ -343,7 +343,7 @@ Widget alertWidget(var data, context, ColorScheme palette) {
             Column(
               children: List.generate(data.alerts.length, (index) {
                 return Padding(
-                  padding: const EdgeInsets.only(top: 3, bottom: 3),
+                  padding: const EdgeInsets.only(top: 2, bottom: 2),
                   child: GestureDetector(
                     onTap: () {
                       HapticFeedback.lightImpact();
@@ -355,8 +355,8 @@ Widget alertWidget(var data, context, ColorScheme palette) {
                     child: Container(
                       padding: const EdgeInsets.only(left: 25, top: 23, bottom: 23, right: 22),
                       decoration: BoxDecoration(
-                        color: palette.secondaryContainer,
-                        borderRadius: BorderRadius.circular(18),
+                        color: palette.inverseSurface,
+                          borderRadius: BorderRadius.circular(18),
                       ),
                       child: Row(
                         children: [
@@ -366,11 +366,11 @@ Widget alertWidget(var data, context, ColorScheme palette) {
                               mainAxisSize: MainAxisSize.min, //first time i realised this makes it wrap the content size
                               children: [
                                 Flexible(
-                                  child: comfortatext(data.alerts[index].event, 20,
-                                      data.settings, color: palette.secondary,),
+                                  child: comfortatext(data.alerts[index].event, 18,
+                                      data.settings, color: palette.onInverseSurface,),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 6),
+                                  padding: const EdgeInsets.only(top: 2),
                                   child: comfortatext("${data.alerts[index].start} - ${data.alerts[index].end}", 14, data.settings,
                                       color: palette.outline),
                                 )
@@ -379,7 +379,7 @@ Widget alertWidget(var data, context, ColorScheme palette) {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(right: 5, left: 20),
-                            child: Icon(Icons.warning_amber_rounded, color: palette.primary, size: 28,),
+                            child: Icon(Icons.warning_amber_rounded, color: palette.inversePrimary, size: 26,),
                           )
                         ],
                       ),

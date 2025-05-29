@@ -143,15 +143,12 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
                   padding: const EdgeInsets.only(top: 2, bottom: 2),
                   child: Container(
                       decoration: BoxDecoration(
-                          borderRadius:
-                          index == 0 ? const BorderRadius.vertical(
-                              top: Radius.circular(33),
-                              bottom: Radius.circular(6))
-                              : index == daysToShow - 1 ? const BorderRadius
-                              .vertical(bottom: Radius.circular(6),
-                              top: Radius.circular(6))
-                              : BorderRadius.circular(6),
-                          color: data.current.palette.surfaceContainer),
+                          borderRadius: BorderRadius.vertical(
+                            top: index == 0 ? const Radius.circular(33) : const Radius.circular(6),
+                            bottom: index == daysToShow - 1  && !isDaysExpandable ? const Radius.circular(33) : const Radius.circular(6),
+                        ),
+                        color: data.current.palette.surfaceContainer
+                      ),
                       child: AnimatedSize(
                           duration: const Duration(milliseconds: 250),
                           curve: Curves.easeInOut,

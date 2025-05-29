@@ -217,8 +217,8 @@ Widget settingEntry(icon, text, settings, ColorScheme palette, updatePage, rawTe
                                 activeColor: palette.primary,
                                 onChanged: (String? value) {
                                   HapticFeedback.lightImpact();
-                                  Navigator.pop(context);
                                   updatePage(rawText, value);
+                                  Navigator.pop(context);
                                 },
                               ),
                               comfortatext(options[index], 18, settings, color: palette.onSurface)
@@ -282,7 +282,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void updatePage(String name, String to) {
     setState(() {
-      //selected_temp_unit = newSelect;
       SetData('setting$name', to);
       if (name == "Language") {
         _locale = to;

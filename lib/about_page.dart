@@ -138,7 +138,7 @@ class _AboutPageState extends State<AboutPage> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.code, color: palette.onPrimary,),
+                                  Icon(Icons.code, color: palette.onPrimary, size: 21),
                                   const SizedBox(width: 6,),
                                   comfortatext(AppLocalizations.of(context)!.sourceCodeLowercase, 18, settings, color: palette.onPrimary)
                                 ],
@@ -164,7 +164,7 @@ class _AboutPageState extends State<AboutPage> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.email_outlined, color: palette.onSurface,),
+                                  Icon(Icons.email_outlined, color: palette.onSurface, size: 20),
                                   const SizedBox(width: 6,),
                                   comfortatext(AppLocalizations.of(context)!.emailLowercase, 18, settings, color: palette.onSurface)
                                 ],
@@ -186,7 +186,7 @@ class _AboutPageState extends State<AboutPage> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.bug_report_outlined, color: palette.onSurface,),
+                                  Icon(Icons.bug_report_outlined, color: palette.onSurface, size: 21,),
                                   const SizedBox(width: 6,),
                                   comfortatext(AppLocalizations.of(context)!.reportAnIssueLowercase, 18, settings, color: palette.onSurface)
                                 ],
@@ -208,7 +208,7 @@ class _AboutPageState extends State<AboutPage> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.volunteer_activism_outlined, color: palette.onSurface,),
+                                  Icon(Icons.volunteer_activism_outlined, color: palette.onSurface, size: 21,),
                                   const SizedBox(width: 6,),
                                   comfortatext(AppLocalizations.of(context)!.donateLowercase, 18, settings, color: palette.onSurface)
                                 ],
@@ -223,10 +223,10 @@ class _AboutPageState extends State<AboutPage> {
                         decoration: BoxDecoration(
                           color: palette.surfaceContainer,
                           borderRadius: const BorderRadius.only(topLeft: Radius.circular(33), topRight: Radius.circular(33),
-                          bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+                          bottomLeft: Radius.circular(6), bottomRight: Radius.circular(6)),
                         ),
                         margin: const EdgeInsets.only(top: 30),
-                        padding: const EdgeInsets.all(26),
+                        padding: const EdgeInsets.all(24),
                         child: Row(
                           children: [
                             Icon(Icons.verified_outlined, color: palette.onSurface),
@@ -255,10 +255,10 @@ class _AboutPageState extends State<AboutPage> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: palette.surfaceContainer,
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(6),
                           ),
-                          margin: const EdgeInsets.only(top: 5),
-                          padding: const EdgeInsets.all(26),
+                          margin: const EdgeInsets.only(top: 4),
+                          padding: const EdgeInsets.all(24),
                           child: Row(
                             children: [
                               Icon(Icons.handyman_outlined, color: palette.onSurface),
@@ -273,11 +273,11 @@ class _AboutPageState extends State<AboutPage> {
                       Container(
                         decoration: BoxDecoration(
                           color: palette.surfaceContainer,
-                          borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16),
+                          borderRadius: const BorderRadius.only(topLeft: Radius.circular(6), topRight: Radius.circular(6),
                               bottomLeft: Radius.circular(33), bottomRight: Radius.circular(33)),
                         ),
-                        margin: const EdgeInsets.only(top: 5),
-                        padding: const EdgeInsets.all(26),
+                        margin: const EdgeInsets.only(top: 4),
+                        padding: const EdgeInsets.all(24),
                         child: Row(
                           children: [
                             Icon(Icons.balance, color: palette.onSurface),
