@@ -16,7 +16,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -128,7 +127,7 @@ class _NewMainState extends State<NewMain> {
     final Map<String, Widget> widgetsMap = {
       'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), size: size,),
       'rain indicator': rain15MinuteChart(data, data.current.palette, context),
-      'hourly': NewHourly(data: data, hours: data.hourly72, addDayDivider: false, elevated: false,),
+      'hourly': NewHourly(data: data, hours: data.hourly72, addDayDivider: true, elevated: false,),
       'alerts' : alertWidget(data, context, data.current.palette),
       'radar': RadarSmall(data: data),
       'daily': buildDays(data: data),
@@ -203,26 +202,6 @@ class _NewMainState extends State<NewMain> {
               Circles(data, 0.5, context, data.current.palette)
             ],
           ),
-
-          /*
-            NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-
-            rain15MinuteChart(data, data.current.palette, context),
-
-            NewHourly(data: data, hours: data.hourly72, addDayDivider: false, elevated: false,),
-
-            alertWidget(data, context, data.current.palette),
-
-            RadarSmall(data: data),
-
-            buildDays(data: data),
-
-            aqiWidget(data, data.current.palette, context),
-
-            //Container(padding: const EdgeInsets.only(left: 17, right: 17, top: 20), height:230, child: buildTemp(data.days[1].hourly, data, data.current.container)),
-
-           */
-
 
             /*
             Padding(

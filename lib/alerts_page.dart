@@ -91,7 +91,7 @@ class _AlertsPageState extends State<AlertsPage> {
                 }),
             title: comfortatext(
                 AppLocalizations.of(context)!.alertsCapital, 30, data.settings,
-                color: palette.primary),
+                color: palette.secondary),
             backgroundColor: palette.surface,
             pinned: false,
           ),
@@ -119,7 +119,7 @@ class _AlertsPageState extends State<AlertsPage> {
                             padding: const EdgeInsets.only(left: 15, bottom: 3, top: 3),
                             decoration: BoxDecoration(
                                 border: Border(left:
-                                BorderSide(width: 2, color: palette.secondary),
+                                BorderSide(width: 2, color: palette.secondaryContainer),
                             )
                             ),
                             child: comfortatext(alert.desc, 16, data.settings, color: palette.outline)
@@ -157,7 +157,7 @@ class _AlertsPageState extends State<AlertsPage> {
                                 0, palette.secondaryContainer,
                                 darken(palette.surfaceContainerHighest, 0.03),
                                 1),
-                            child: Container(
+                            child: const SizedBox(
                               width: double.infinity,
                               height: 8.0,
                             ),

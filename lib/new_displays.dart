@@ -329,7 +329,7 @@ Widget alertWidget(var data, context, ColorScheme palette) {
   if (data.alerts.length > 0) {
     return Padding(
         padding: const EdgeInsets.only(
-            left: 21, right: 21, bottom: 10, top: 20),
+            left: 25, right: 25, bottom: 10, top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -355,7 +355,7 @@ Widget alertWidget(var data, context, ColorScheme palette) {
                     child: Container(
                       padding: const EdgeInsets.only(left: 25, top: 23, bottom: 23, right: 22),
                       decoration: BoxDecoration(
-                        color: palette.inverseSurface,
+                        color: palette.errorContainer,
                           borderRadius: BorderRadius.circular(18),
                       ),
                       child: Row(
@@ -367,7 +367,7 @@ Widget alertWidget(var data, context, ColorScheme palette) {
                               children: [
                                 Flexible(
                                   child: comfortatext(data.alerts[index].event, 18,
-                                      data.settings, color: palette.onInverseSurface,),
+                                      data.settings, color: palette.onErrorContainer,),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 2),
@@ -379,7 +379,7 @@ Widget alertWidget(var data, context, ColorScheme palette) {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(right: 5, left: 20),
-                            child: Icon(Icons.warning_amber_rounded, color: palette.inversePrimary, size: 26,),
+                            child: Icon(Icons.warning_amber_rounded, color: palette.error, size: 26,),
                           )
                         ],
                       ),

@@ -175,7 +175,7 @@ Widget hourBoxes(hours, data, _value, addDayDivider, elevated) {
 }
 
 Widget dividerWidget(hour, ColorScheme palette, data, addDayDivider) {
-  if (addDayDivider && hour.time == "11pm" || hour.time == "11:00") {
+  if (addDayDivider && (hour.time == "11pm" || hour.time == "23:00")) {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
       child: RotatedBox(

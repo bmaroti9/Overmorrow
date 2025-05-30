@@ -482,8 +482,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get heavy => 'غزيرة';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'عرض المزيد';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'عرض القليل';
 }

@@ -108,13 +108,13 @@ class AppLocalizationsIt extends AppLocalizations {
   String get locationPermissionDeniedForever => 'Permesso di posizione negato per sempre';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'autorizza l\'accesso alla posizione';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'posizione corrente';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'preferiti';
 
   @override
   String get failedToAccessGps => 'Impossibile accedere al GPS';
@@ -156,7 +156,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get colorMode => 'Modalità colore';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'fornitore di servizi meteorologici';
 
   @override
   String get timeMode => 'Modalità tempo';
@@ -186,7 +186,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get fontSize => 'Carattere';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'quotidianamente';
 
   @override
   String get searchProvider => 'Provider di ricerca';
@@ -201,7 +201,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get imageSource => 'Fonte dell\'immagine';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'somma';
 
   @override
   String get precipLowercase => 'precip';
@@ -234,31 +234,31 @@ class AppLocalizationsIt extends AppLocalizations {
   String get photoByXOnUnsplash => 'Foto, di ,x, su ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'codice sorgente';
 
   @override
   String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'segnala un problema';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'dona';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'Versione';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'API e Servizi';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Licenza';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'dati metereologici';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'immagini';
 
   @override
   String get appearance => 'Aspetto';
@@ -285,7 +285,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get unitsSettingdesc => 'le unità utilizzate nell\'app';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'informazioni su questa app';
 
   @override
   String get now => 'ora';
@@ -382,10 +382,10 @@ class AppLocalizationsIt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: 'i prossimi $minutes minuti',
+      one: 'il prossimo minuto',
     );
-    return 'rain in the next $_temp0';
+    return 'pioggia per $_temp0';
   }
 
   @override
@@ -396,10 +396,10 @@ class AppLocalizationsIt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: 'le prossime $hours ore',
+      one: 'la prossima ora',
     );
-    return 'rain in the next $_temp0';
+    return 'pioggia per $_temp0';
   }
 
   @override
@@ -407,29 +407,29 @@ class AppLocalizationsIt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes minuti',
+      one: 'un minuto',
     );
-    return 'rain expected in $_temp0';
+    return 'prevista pioggia in $_temp0';
   }
 
   @override
-  String get rainExpectedInOneHour => 'rain expected in an hour';
+  String get rainExpectedInOneHour => 'prevista pioggia entro un\'ora';
 
   @override
   String rainExpectedInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: 'nelle prossime $hours ore ',
+      one: 'nella prossima ora',
     );
-    return 'rain expected in $_temp0';
+    return 'pioggia prevista $_temp0';
   }
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return 'updated, $minutes min ago';
+    return 'ultimo aggiornamento $minutes fa';
   }
 
   @override
@@ -437,10 +437,10 @@ class AppLocalizationsIt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
+      other: '$hours ore',
+      one: '1 ora',
     );
-    return 'updated, $_temp0 ago';
+    return 'ultimo aggiornamento $_temp0 fa';
   }
 
   @override
@@ -448,42 +448,42 @@ class AppLocalizationsIt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: '$days days',
-      one: '1 day',
+      other: '$days giorni',
+      one: '1 giorno',
     );
-    return 'updated, $_temp0 ago';
+    return 'ultimo aggiornamento $_temp0 fa';
   }
 
   @override
-  String get radarHaptics => 'Radar haptics';
+  String get radarHaptics => 'Radar tattile';
 
   @override
-  String get alertsCapital => 'Alerts';
+  String get alertsCapital => 'Avvisi';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'avvisi';
 
   @override
-  String get severity => 'severity';
+  String get severity => 'gravità';
 
   @override
-  String get certainty => 'certainty';
+  String get certainty => 'certezza';
 
   @override
-  String get urgency => 'urgency';
+  String get urgency => 'urgenza';
 
   @override
-  String get areas => 'areas';
+  String get areas => 'aree';
 
   @override
-  String get light => 'light';
+  String get light => 'leggera';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'intensa';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'mostra di più';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'mostra meno';
 }

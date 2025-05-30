@@ -482,8 +482,8 @@ class AppLocalizationsBg extends AppLocalizations {
   String get heavy => 'силен';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'покажи повече';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'покажи по-малко';
 }

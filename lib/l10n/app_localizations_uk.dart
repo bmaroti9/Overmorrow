@@ -482,8 +482,8 @@ class AppLocalizationsUk extends AppLocalizations {
   String get heavy => 'Сильні';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'Розгорнути';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'Згорнути';
 }
