@@ -50,16 +50,24 @@ Widget comfortatext(String text, double size, settings,
       decoration = TextDecoration.none, maxLines = 40}) {
 
   double x = getFontSize(settings["Font size"]);
+  final baseStyle = GoogleFonts.outfit(
+    color: color,
+    fontSize: size * x * 1.1,
+    fontWeight: weight,
+    decoration: decoration,
+    height: 1.05,
+    decorationColor: color,
+  );
+
+  final styleWithFallback = baseStyle.copyWith(
+    fontFamilyFallback: [
+      'NotoSans',
+    ],
+  );
+
   return Text(
     text,
-    style: GoogleFonts.outfit(
-      color: color,
-      fontSize: size * x * 1.1,
-      fontWeight: weight,
-      decoration: decoration,
-      height: 1.05,
-      decorationColor: color,
-    ),
+    style: styleWithFallback,
     overflow: TextOverflow.ellipsis,
     maxLines: maxLines,
     textAlign: align,

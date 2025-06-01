@@ -477,7 +477,7 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
                   CurrentLocationWidget(settings, locationState, locationMessage, palette,
                       askGrantLocationPermission, placeName, country, region, updateLocation, context),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
+                    padding: const EdgeInsets.only(bottom: 14),
                     child: Row(
                       children: [
                         Padding(
@@ -520,7 +520,7 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
             List<String> rec = value;
             return Padding(
               padding: const EdgeInsets.only(
-                  top: 20, bottom: 30, left: 30, right: 30),
+                  top: 0, bottom: 30, left: 30, right: 30),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30),
                 child: AnimatedSwitcher(
@@ -649,7 +649,7 @@ Widget CurrentLocationWidget(settings, locationState, locationMessage, ColorSche
         Navigator.pop(context);
       },
       child: Container(
-        margin: const EdgeInsets.only(top: 20, bottom: 30),
+        margin: const EdgeInsets.only(top: 14, bottom: 30),
         padding: const EdgeInsets.only(
             left: 25, right: 25, top: 20, bottom: 20),
         decoration: BoxDecoration(

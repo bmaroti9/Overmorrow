@@ -126,6 +126,9 @@ flutter:
     - family: OvermorrowWeatherIcons3
       fonts:
         - asset: fonts/OvermorrowWeatherIcons3.ttf
+    - family: NotoSans
+      fonts:
+        - asset: fonts/NotoSans_Condensed-Regular.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
