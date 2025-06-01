@@ -64,7 +64,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
 
           SizedBox(
             height: 196,
-            child: hourBoxes(hours, data, _value, addDayDivider, elevated),
+            child: hourBoxes(hours, data, _value, addDayDivider, elevated, context),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 0, left: 5),
@@ -110,7 +110,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
   }
 }
 
-Widget hourBoxes(hours, data, _value, addDayDivider, elevated) {
+Widget hourBoxes(hours, data, _value, addDayDivider, elevated, context) {
   ColorScheme palette = data.current.palette;
 
   return AnimationLimiter(
@@ -133,7 +133,6 @@ Widget hourBoxes(hours, data, _value, addDayDivider, elevated) {
             horizontalOffset: 100.0,
             child: FadeInAnimation(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(3),
@@ -163,7 +162,7 @@ Widget hourBoxes(hours, data, _value, addDayDivider, elevated) {
                       child: childWidgets[_value],
                     ),
                   ),
-                  dividerWidget(hour, palette, data, addDayDivider)
+                  dividerWidget(hour, palette, data, addDayDivider, index, context)
                 ],
               ),
             ),
@@ -174,13 +173,28 @@ Widget hourBoxes(hours, data, _value, addDayDivider, elevated) {
   );
 }
 
-Widget dividerWidget(hour, ColorScheme palette, data, addDayDivider) {
+Widget dividerWidget(hour, ColorScheme palette, data, addDayDivider, int index, context) {
   if (addDayDivider && (hour.time == "11pm" || hour.time == "23:00")) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+      padding: const EdgeInsets.only(top: 3, bottom: 3, left: 6, right: 6),
       child: RotatedBox(
         quarterTurns: -1,
-        child: comfortatext("tomorrow", 18, data.settings, color: palette.secondary, weight: FontWeight.w500)
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: palette.secondaryContainer,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
+          child: Center(child: comfortatext(
+              index < 24 ? AppLocalizations.of(context)!.tomorrowLowercase
+                  : AppLocalizations.of(context)!.overmorrowLowercase,
+              17,
+              data.settings,
+              color: palette.onSecondaryContainer,
+              weight: FontWeight.w500)
+          )
+        )
       ),
     );
   }
