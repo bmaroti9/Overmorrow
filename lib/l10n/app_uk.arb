@@ -372,5 +372,9 @@
   "showMore": "Розгорнути",
   "@showMore": {},
   "showLess": "Згорнути",
-  "@showLess": {}
+  "@showLess": {},
+  "tomorrowLowercase": "Завтра",
+  "@tomorrowLowercase": {},
+  "overmorrowLowercase": "Післязавтра",
+  "@overmorrowLowercase": {}
 }
