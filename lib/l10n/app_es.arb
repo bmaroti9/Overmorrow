@@ -301,5 +301,19 @@
     "description": "setting for enabling or disabling haptic feedback for the radar"
   },
   "alertsCapital": "Alertas",
-  "@alertsCapital": {}
+  "@alertsCapital": {},
+  "tomorrowLowercase": "mañana",
+  "@tomorrowLowercase": {},
+  "overmorrowLowercase": "Overmorrow",
+  "@overmorrowLowercase": {},
+  "grantLocationPermission": "Permitir acceso a ubicación",
+  "@grantLocationPermission": {},
+  "currentLocation": "Ubicación actual",
+  "@currentLocation": {},
+  "favoritesLowercase": "Favoritos",
+  "@favoritesLowercase": {},
+  "weatherProvderLowercase": "Proveedor del clima",
+  "@weatherProvderLowercase": {},
+  "dailyLowercase": "Diario",
+  "@dailyLowercase": {}
 }
