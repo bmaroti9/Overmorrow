@@ -310,7 +310,8 @@ class _MySearchWidgetState extends State<MySearchWidget> {
     if (isTabletMode) {
       //go straight to the page itself, since the sidebar has that by default
       return HeroSearchPage(palette: palette, place: place, settings: settings, recommend: recommend,
-          updateRec: updateRec, updateLocation: updateLocation, favorites: favorites, updateFav: updateFav);
+          updateRec: updateRec, updateLocation: updateLocation, favorites: favorites,
+        updateFav: updateFav, isTabletMode: true, image: image,);
     }
     return searchBar2(palette, recommend, updateLocation,
         updateFav, favorites, updateRec, place, context, settings, image);
