@@ -30,10 +30,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get today => 'Tänään';
 
   @override
-  String get tomorrow => 'Huomenna';
+  String get tomorrowLowercase => 'tomorrow';
 
   @override
-  String get overmorrow => 'Overmorrow';
+  String get overmorrowLowercase => 'Overmorrow';
 
   @override
   String get language => 'Kieli';

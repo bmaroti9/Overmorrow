@@ -30,10 +30,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get today => '今日';
 
   @override
-  String get tomorrow => '明日';
+  String get tomorrowLowercase => 'tomorrow';
 
   @override
-  String get overmorrow => '明後日';
+  String get overmorrowLowercase => 'Overmorrow';
 
   @override
   String get language => '言語';

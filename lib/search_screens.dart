@@ -18,8 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,16 +25,11 @@ import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:overmorrow/main_ui.dart';
-import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/location_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
-import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
-import 'package:stretchy_header/stretchy_header.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-import 'api_key.dart';
 import 'l10n/app_localizations.dart';
 import 'main.dart';
 
@@ -50,7 +43,6 @@ Widget searchBar2(ColorScheme palette, recommend,
     Function updateLocation, Function updateFav, favorites, Function updateRec, String place,
     var context, Map<String, String> settings, Image image) {
 
-
   return Align(
     alignment: Alignment.topCenter,
     child: GestureDetector(
@@ -58,7 +50,7 @@ Widget searchBar2(ColorScheme palette, recommend,
         tag: 'searchBarHero',
         child: Container(
           height: 67,
-          margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 15),
+          margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 15, left: 28, right: 28),
           decoration: BoxDecoration(
             color: palette.surface,
             borderRadius: BorderRadius.circular(33)
@@ -321,9 +313,9 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: palette.surface,
+      backgroundColor: palette.surfaceContainer,
       appBar: AppBar(
-        backgroundColor: palette.surface,
+        backgroundColor: palette.surfaceContainer,
         foregroundColor: palette.primary,
         surfaceTintColor: palette.outlineVariant,
         elevation: 0,
@@ -360,7 +352,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               height: 67,
               margin: const EdgeInsets.only(left: 27, right: 27, bottom: 20),
               decoration: BoxDecoration(
-                  color: palette.surfaceContainer,
+                  color: palette.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(33)
               ),
               child: Align(
@@ -368,7 +360,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   child: Material(
-                    color: palette.surfaceContainer,
+                    color: palette.surfaceContainerHighest,
                     child: Theme(
                       data: Theme.of(context).copyWith(
                         textSelectionTheme: TextSelectionThemeData(
@@ -711,7 +703,7 @@ Widget favoritesOrReorder(isEditing, favorites, settings, onFavChanged,
         key: const ValueKey<String>("normal"),
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: palette.surfaceContainer,
+            color: palette.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(30),
           ),
           child: Column(
@@ -825,92 +817,4 @@ Widget reorderableItem(List<dynamic> items, index, settings, ColorScheme palette
       ),
     ),
   );
-}
-
-
-class ErrorPage extends StatelessWidget {
-  final errorMessage;
-  final updateLocation;
-  final place;
-  final icon;
-  final settings;
-  final provider;
-  final latlng;
-  final shouldAdd;
-
-  ErrorPage({super.key, required this.errorMessage,
-    required this.updateLocation, required this.icon, required this.place,
-  required this.settings, required this.provider, required this.latlng,  this.shouldAdd});
-
-  final FloatingSearchBarController controller = FloatingSearchBarController();
-
-  @override
-  Widget build(BuildContext context) {
-
-    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-
-    Size size = view.physicalSize / view.devicePixelRatio;
-
-    const replacement = "<api_key>";
-    String newStr = errorMessage.toString().replaceAll(wapi_Key, replacement);
-    newStr = newStr.replaceAll(access_key, replacement);
-    newStr = newStr.replaceAll(timezonedbKey, replacement);
-
-    Image image = Image.asset("assets/backdrops/grayscale_snow2.jpg",
-        fit: BoxFit.cover, width: double.infinity, height: double.infinity);
-
-    ColorScheme palette = ColorPalette.getErrorPagePalette(settings["Color mode"]);
-
-    return Scaffold(
-      backgroundColor: palette.surface,
-      body: StretchyHeader.singleChild(
-        displacement: 150,
-        onRefresh: () async {
-          await updateLocation(latlng, place, time: 400);
-        },
-        headerData: HeaderData(
-            blurContent: false,
-            headerHeight: max(size.height * 0.5, 400), //we don't want it to be smaller than 400
-            header: ParrallaxBackground(image: Image.asset("assets/backdrops/grayscale_snow2.jpg", fit: BoxFit.cover,), key: Key(place),
-                color: palette.surfaceContainerHigh),
-            overlay: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(40),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 50, bottom: 20),
-                          child: Icon(icon, color: Colors.black54, size: 20),
-                        ),
-                        comfortatext(newStr, 17, settings, color: Colors.black54, weight: FontWeight.w500,
-                            align: TextAlign.center),
-                      ],
-                    ),
-                  ),
-                ),
-                MySearchParent(updateLocation: updateLocation,
-                  palette: palette, place: place, settings: settings, image: image,)
-              ],
-            )
-        ),
-        child:
-        Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: comfortatext(shouldAdd ?? "", 16, settings, color: palette.onSurface, weight: FontWeight.w400,),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: providerSelector(settings, updateLocation, palette, provider, latlng, place, context),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

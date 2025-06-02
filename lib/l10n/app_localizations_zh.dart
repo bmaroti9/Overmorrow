@@ -30,10 +30,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get today => '今天';
 
   @override
-  String get tomorrow => '明天';
+  String get tomorrowLowercase => 'tomorrow';
 
   @override
-  String get overmorrow => '后天';
+  String get overmorrowLowercase => 'Overmorrow';
 
   @override
   String get language => '语言';

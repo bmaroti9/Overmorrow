@@ -30,10 +30,10 @@ class AppLocalizationsHu extends AppLocalizations {
   String get today => 'Ma';
 
   @override
-  String get tomorrow => 'Holnap';
+  String get tomorrowLowercase => 'tomorrow';
 
   @override
-  String get overmorrow => 'Holnapután';
+  String get overmorrowLowercase => 'Overmorrow';
 
   @override
   String get language => 'Nyelv';

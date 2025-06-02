@@ -175,13 +175,14 @@ class MySearchParent extends StatefulWidget{
   final place;
   final settings;
   final Image image;
+  final isTabletMode;
 
   const MySearchParent({super.key, required this.updateLocation,
-    required this.palette, required this.place, required this.settings, required this.image});
+    required this.palette, required this.place, required this.settings, required this.image, required this.isTabletMode});
 
   @override
   _MySearchParentState createState() => _MySearchParentState(palette: palette,
-  place: place,settings: settings, image: image);
+  place: place,settings: settings, image: image, isTabletMode: isTabletMode);
 }
 
 class _MySearchParentState extends State<MySearchParent> {
@@ -191,8 +192,10 @@ class _MySearchParentState extends State<MySearchParent> {
   final place;
   final settings;
   final Image image;
+  final isTabletMode;
 
-  _MySearchParentState({required this.palette, required this.place, required this.settings, required this.image});
+  _MySearchParentState({required this.palette, required this.place, required this.settings, required this.image,
+  required this.isTabletMode});
 
   late Future<SharedPreferences> _prefsFuture;
 
@@ -237,7 +240,7 @@ class _MySearchParentState extends State<MySearchParent> {
         //return buildWholeThing(snapshot.data);
         return MySearchWidget(updateLocation: widget.updateLocation,
             palette: palette, favorites: favorites, prefs: snapshot.data,
-        place: place, settings: settings, image: image);
+        place: place, settings: settings, image: image, isTabletMode: isTabletMode);
       },
     );
   }
@@ -251,15 +254,16 @@ class MySearchWidget extends StatefulWidget{
   final prefs;
   final settings;
   final Image image;
+  final isTabletMode;
 
   const MySearchWidget({super.key, required this.palette, required this.updateLocation,
   required this.favorites, required this.prefs, required this.place, required this.settings,
-  required this.image});
+  required this.image, required this.isTabletMode});
 
   @override
   _MySearchWidgetState createState() => _MySearchWidgetState(palette: palette,
   updateLocation: updateLocation, beginFavorites: favorites,
-      prefs: prefs, place: place, settings: settings, image: image);
+      prefs: prefs, place: place, settings: settings, image: image, isTabletMode: isTabletMode);
 }
 
 class _MySearchWidgetState extends State<MySearchWidget> {
@@ -270,12 +274,13 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   final prefs;
   final settings;
   final Image image;
+  final isTabletMode;
 
   final List<String> beginFavorites;
 
   _MySearchWidgetState({required this.palette, required this.updateLocation,
         required this.beginFavorites, required this.prefs, required this.place,
-  required this.settings, required this.image});
+  required this.settings, required this.image, required this.isTabletMode});
 
   final ValueNotifier<List<String>> recommend = ValueNotifier<List<String>>([]);
   ValueNotifier<List<String>> favorites = ValueNotifier<List<String>>([]);
@@ -301,15 +306,12 @@ class _MySearchWidgetState extends State<MySearchWidget> {
 
   @override
   Widget build(BuildContext context){
-    return buildHihiSearch();
-  }
 
-  Widget buildHihiSearch() {
-    return buildFloatingSearchBar();
-  }
-
-  Widget buildFloatingSearchBar() {
-
+    if (isTabletMode) {
+      //go straight to the page itself, since the sidebar has that by default
+      return HeroSearchPage(palette: palette, place: place, settings: settings, recommend: recommend,
+          updateRec: updateRec, updateLocation: updateLocation, favorites: favorites, updateFav: updateFav);
+    }
     return searchBar2(palette, recommend, updateLocation,
         updateFav, favorites, updateRec, place, context, settings, image);
 

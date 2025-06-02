@@ -171,17 +171,17 @@ abstract class AppLocalizations {
   /// **'Today'**
   String get today;
 
-  /// No description provided for @tomorrow.
+  /// No description provided for @tomorrowLowercase.
   ///
   /// In en, this message translates to:
-  /// **'Tomorrow'**
-  String get tomorrow;
+  /// **'tomorrow'**
+  String get tomorrowLowercase;
 
-  /// No description provided for @overmorrow.
+  /// No description provided for @overmorrowLowercase.
   ///
   /// In en, this message translates to:
   /// **'Overmorrow'**
-  String get overmorrow;
+  String get overmorrowLowercase;
 
   /// No description provided for @language.
   ///

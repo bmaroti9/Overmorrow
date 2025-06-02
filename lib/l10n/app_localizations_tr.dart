@@ -30,10 +30,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get today => 'Bugün';
 
   @override
-  String get tomorrow => 'Yarın';
+  String get tomorrowLowercase => 'tomorrow';
 
   @override
-  String get overmorrow => 'Yarından sonra';
+  String get overmorrowLowercase => 'Overmorrow';
 
   @override
   String get language => 'Dil';

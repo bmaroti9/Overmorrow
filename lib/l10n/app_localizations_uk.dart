@@ -30,10 +30,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get today => 'Сьогодні';
 
   @override
-  String get tomorrow => 'Завтра';
+  String get tomorrowLowercase => 'tomorrow';
 
   @override
-  String get overmorrow => 'Післязавтра';
+  String get overmorrowLowercase => 'Overmorrow';
 
   @override
   String get language => 'Мова';

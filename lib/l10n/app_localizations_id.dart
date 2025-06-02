@@ -30,10 +30,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get today => 'Hari ini';
 
   @override
-  String get tomorrow => 'Besok';
+  String get tomorrowLowercase => 'tomorrow';
 
   @override
-  String get overmorrow => 'Lusa';
+  String get overmorrowLowercase => 'Overmorrow';
 
   @override
   String get language => 'Bahasa';

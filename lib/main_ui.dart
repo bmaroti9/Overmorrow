@@ -17,13 +17,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overmorrow/main_screens.dart';
+import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/settings_page.dart';
+import 'package:stretchy_header/stretchy_header.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'api_key.dart';
 import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
 
@@ -53,7 +57,9 @@ class WeatherPage extends StatelessWidget {
     Size size = view.physicalSize / view.devicePixelRatio;
 
     if (size.width > 950) {
-      return TabletLayout(data, updateLocation, context);
+      return TabletLayout(
+        data: data, updateLocation: updateLocation,
+        key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
     }
 
     //return SearchHeroDemo();
@@ -96,7 +102,7 @@ class ParrallaxBackground extends StatelessWidget {
 Widget Circles(var data, double bottom, context, ColorScheme palette) {
   return Padding(
       //top padding is slightly bigger because of the offline colored bar
-      padding: EdgeInsets.only(top: data.isonline ? 25 : 33, left: 19.5, right: 19.5, bottom: 13),
+      padding: const EdgeInsets.only(left: 19.5, right: 19.5, bottom: 13, top: 5),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -411,8 +417,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
                 child: comfortatext(widget.data.current.imageService.username, 13, widget.data.settings, color: text,
                     decoration: TextDecoration.underline, weight: FontWeight.w300),
               ),
-              comfortatext(split[3], 13, widget.data.settings, color: text, weight: FontWeight.w300),
-              TextButton(
+              comfortatext(split[3], 13, widget.data.settings, color: text, weight: FontWeight.w300),              TextButton(
                 onPressed: () async {
                   await _launchUrl("https://unsplash.com/?utm_source=overmorrow&utm_medium=referral");
                 },
@@ -489,4 +494,91 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
       ],
     ),
   );
+}
+
+
+class ErrorPage extends StatelessWidget {
+  final errorMessage;
+  final updateLocation;
+  final place;
+  final icon;
+  final settings;
+  final provider;
+  final latlng;
+  final shouldAdd;
+
+  ErrorPage({super.key, required this.errorMessage,
+    required this.updateLocation, required this.icon, required this.place,
+    required this.settings, required this.provider, required this.latlng,  this.shouldAdd});
+
+  @override
+  Widget build(BuildContext context) {
+
+    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+
+    Size size = view.physicalSize / view.devicePixelRatio;
+
+    const replacement = "<api_key>";
+    String newStr = errorMessage.toString().replaceAll(wapi_Key, replacement);
+    newStr = newStr.replaceAll(access_key, replacement);
+    newStr = newStr.replaceAll(timezonedbKey, replacement);
+
+    Image image = Image.asset("assets/backdrops/grayscale_snow2.jpg",
+        fit: BoxFit.cover, width: double.infinity, height: double.infinity);
+
+    ColorScheme palette = ColorPalette.getErrorPagePalette(settings["Color mode"]);
+
+    return Scaffold(
+      backgroundColor: palette.surface,
+      body: StretchyHeader.singleChild(
+        displacement: 150,
+        onRefresh: () async {
+          await updateLocation(latlng, place, time: 400);
+        },
+        headerData: HeaderData(
+            blurContent: false,
+            headerHeight: max(size.height * 0.5, 400), //we don't want it to be smaller than 400
+            header: ParrallaxBackground(image: Image.asset("assets/backdrops/grayscale_snow2.jpg", fit: BoxFit.cover,), key: Key(place),
+                color: palette.surfaceContainerHigh),
+            overlay: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(40),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 50, bottom: 20),
+                          child: Icon(icon, color: Colors.black54, size: 20),
+                        ),
+                        comfortatext(newStr, 17, settings, color: Colors.black54, weight: FontWeight.w500,
+                            align: TextAlign.center),
+                      ],
+                    ),
+                  ),
+                ),
+                MySearchParent(updateLocation: updateLocation,
+                  palette: palette, place: place, settings: settings, image: image,
+                isTabletMode: false,) //TODO: add logic to determine if it's tablet
+              ],
+            )
+        ),
+        child:
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: comfortatext(shouldAdd ?? "", 16, settings, color: palette.onSurface, weight: FontWeight.w400,),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: providerSelector(settings, updateLocation, palette, provider, latlng, place, context),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

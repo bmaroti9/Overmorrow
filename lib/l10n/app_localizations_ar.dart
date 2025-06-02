@@ -30,10 +30,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get today => 'اليوم';
 
   @override
-  String get tomorrow => 'غدًا';
+  String get tomorrowLowercase => 'tomorrow';
 
   @override
-  String get overmorrow => 'بعد غد';
+  String get overmorrowLowercase => 'Overmorrow';
 
   @override
   String get language => 'اللغة';
