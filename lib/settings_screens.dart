@@ -838,6 +838,10 @@ class _LayoutPageState extends State<LayoutPage> {
                 ReorderableListView(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
+                  proxyDecorator: (child, index, animation) => Material(
+                    borderRadius: BorderRadius.circular(12),
+                    child: child,
+                  ),
                   padding: const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 50),
                   children: <Widget>[
                     for (int index = 0; index < _items.length; index += 1)

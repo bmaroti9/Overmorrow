@@ -122,7 +122,7 @@ class _RadarSmallState extends State<RadarSmall> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 25, top: 20),
+          padding: const EdgeInsets.only(left: 25, top: 15),
           child: Align(
             alignment: Alignment.centerLeft,
             child: comfortatext(
@@ -232,7 +232,7 @@ class _RadarSmallState extends State<RadarSmall> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 34, right: 44, bottom: 15, top: 5),
+          padding: const EdgeInsets.only(left: 34, right: 44, bottom: 25, top: 5),
           child: Row(
             children: [
               AnimatedSwitcher(

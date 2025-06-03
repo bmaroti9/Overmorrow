@@ -269,7 +269,7 @@ Widget aqiWidget(var data, ColorScheme palette, context) {
         },
         child: Container(
           padding: const EdgeInsets.all(20),
-          margin: const EdgeInsets.only(left: 25, right: 25, top: 14),
+          margin: const EdgeInsets.only(left: 25, right: 25, top: 14, bottom: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
             border: Border.all(color: palette.outlineVariant, width: 2)

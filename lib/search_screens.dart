@@ -171,6 +171,26 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     });
   }
 
+  openSettingsPage() {
+    HapticFeedback.selectionClick();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SettingsPage(image: image),
+      ),
+    ).then((value) {
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) {
+              return const MyApp();
+            },
+          ),
+        );
+      }
+    });
+  }
+
   onIsEditingChanged() {
     setState(() {
       isEditing = !isEditing;
@@ -326,6 +346,15 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
         foregroundColor: palette.primary,
         surfaceTintColor: palette.outlineVariant,
         elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: IconButton(
+            icon: Icon(Icons.settings_outlined, color: palette.primary, size: 23,),
+            onPressed: () {
+              openSettingsPage();
+            },
+          ),
+        ),
         actions: [
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 150),
