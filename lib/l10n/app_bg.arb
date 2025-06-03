@@ -146,7 +146,7 @@
   "@poor": {},
   "veryPoor": "много лошо",
   "@veryPoor": {},
-  "radar": "Радар",
+  "radar": "радар",
   "@radar": {},
   "timeMode": "Формат на време",
   "@timeMode": {},
@@ -370,5 +370,9 @@
   "showLess": "покажи по-малко",
   "@showLess": {},
   "showMore": "покажи повече",
-  "@showMore": {}
+  "@showMore": {},
+  "tomorrowLowercase": "утре",
+  "@tomorrowLowercase": {},
+  "overmorrowLowercase": "вдругиден",
+  "@overmorrowLowercase": {}
 }
