@@ -126,7 +126,7 @@ class _NewMainState extends State<NewMain> {
     final Size size = (view.physicalSize) / view.devicePixelRatio;
 
     final Map<String, Widget> widgetsMap = {
-      'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), size: size,),
+      'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), width: size.width,),
       'rain indicator': rain15MinuteChart(data, data.current.palette, context),
       'hourly': NewHourly(data: data, hours: data.hourly72, addDayDivider: true, elevated: false,),
       'alerts' : alertWidget(data, context, data.current.palette),
@@ -274,97 +274,101 @@ class TabletLayout extends StatelessWidget {
             ),
 
             Expanded(
-              child: StretchyHeader.listView(
-                displacement: 130,
-                onRefresh: () async {
-                  await updateLocation("${data.lat}, ${data.lng}", data.real_loc, time: 400);
-                },
-                headerData: HeaderData(
-                    blurContent: false,
-                    headerHeight: (size.height) * 0.43,
-                    header: ParrallaxBackground(image: data.current.imageService.image, color: BLACK),
-                    overlay: Padding(
-                      padding: const EdgeInsets.all(30),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: palette.inverseSurface,
-                            borderRadius: BorderRadius.circular(30),
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return StretchyHeader.listView(
+                    displacement: 130,
+                    onRefresh: () async {
+                      await updateLocation(
+                          "${data.lat}, ${data.lng}", data.real_loc, time: 400);
+                    },
+                    headerData: HeaderData(
+                        blurContent: false,
+                        headerHeight: (size.height) * 0.43,
+                        header: ParrallaxBackground(image: data.current.imageService.image, color: BLACK),
+                        overlay: Padding(
+                          padding: const EdgeInsets.all(30),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: palette.inverseSurface,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              padding: const EdgeInsets.all(18),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.place_outlined, color: palette.onInverseSurface, size: 22,),
+                                  const SizedBox(width: 4,),
+                                  comfortatext(data.place, 22, data.settings, color: palette.onInverseSurface)
+                                ],
+                              ),
+                            ),
                           ),
-                          padding: const EdgeInsets.all(18),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.place_outlined, color: palette.onInverseSurface, size: 22,),
-                              const SizedBox(width: 4,),
-                              comfortatext(data.place, 22, data.settings, color: palette.onInverseSurface)
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                ),
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: FadingWidget(data: data,
-                        time: data.updatedTime,
-                        key: Key(data.updatedTime.toString())),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 7, left: 30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              comfortatext("${data.current.temp}°", 72, data.settings,
-                                  color: palette.primary, weight: FontWeight.w200),
-                              comfortatext(data.current.text, 27, data.settings, color: palette.onSurface,
-                                  weight: FontWeight.w400),
-                            ],
-                          ),
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                            width: 397,
-                            child: Circles(data, 0.3, context, data.current.palette)
-                        ),
-                      ],
+                        )
                     ),
-                  ),
-
-                  NewSunriseSunset(data: data, key: Key(data.place), size: size,),
-                  NewHourly(data: data, hours: data.hourly72, addDayDivider: true, elevated: false,),
-
-
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Column(
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: FadingWidget(data: data, time: data.updatedTime, key: Key(data.updatedTime.toString())),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 15,),
-                            rain15MinuteChart(data, data.current.palette, context),
-                            alertWidget(data, context, data.current.palette),
-                            RadarSmall(data: data),
-                            aqiWidget(data, data.current.palette, context),
-                            providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
-                                "${data.lat}, ${data.lng}", data.real_loc, context),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 7, left: 30),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  comfortatext("${data.current.temp}°", 72, data.settings,
+                                      color: palette.primary, weight: FontWeight.w200),
+                                  comfortatext(data.current.text, 27, data.settings,
+                                      color: palette.onSurface, weight: FontWeight.w400),
+                                ],
+                              ),
+                            ),
+                            const Spacer(),
+                            SizedBox(
+                              width: 397,
+                              child: Circles(data, 0.3, context, data.current.palette)
+                            ),
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: buildDays(data: data),
-                      )
-                    ],
-                  ),
 
-                ],
+                      NewSunriseSunset(data: data, key: Key(data.place), width: constraints.maxWidth,),
+                      NewHourly(data: data, hours: data.hourly72, addDayDivider: true, elevated: false,),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 15,),
+                                rain15MinuteChart(
+                                    data, data.current.palette, context),
+                                alertWidget(
+                                    data, context, data.current.palette),
+                                RadarSmall(data: data),
+                                aqiWidget(data, data.current.palette, context),
+                                providerSelector(data.settings, updateLocation, data.current.palette,
+                                    data.provider, "${data.lat}, ${data.lng}", data.real_loc, context),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: buildDays(data: data),
+                          )
+                        ],
+                      ),
+
+                    ],
+                  );
+                }
               ),
             ),
           ],

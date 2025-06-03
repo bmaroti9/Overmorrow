@@ -461,135 +461,138 @@ class _RadarBigState extends State<RadarBig> {
 
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 15, bottom: 35),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(13),
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                      color: palette.inverseSurface,
-                      borderRadius: BorderRadius.circular(20)
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      comfortatext(AppLocalizations.of(context)!.light, 16, data.settings, color: palette.onInverseSurface),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        child: Row(
-                            children: List<Widget>.generate(radarColors.length, (int index) {
-                              return Container(
-                                width: 10,
-                                height: 15,
-                                decoration: BoxDecoration(
-                                    color: radarColors[index],
-                                    borderRadius: index == 0
-                                        ? const BorderRadius.only(topLeft: Radius.circular(7), bottomLeft: Radius.circular(7))
-                                        : index == (radarColors.length - 1)
-                                        ? const BorderRadius.only(topRight: Radius.circular(7), bottomRight: Radius.circular(7))
-                                        : BorderRadius.circular(0)
-
-                                ),
-                              );
-                            })
-                        ),
-                      ),
-                      comfortatext(AppLocalizations.of(context)!.heavy, 16, data.settings, color: palette.onInverseSurface),
-                    ],
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: palette.surface,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(30),
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(13),
+                    margin: const EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                        color: palette.inverseSurface,
+                        borderRadius: BorderRadius.circular(20)
+                    ),
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 200),
-                          transitionBuilder: (Widget child, Animation<double> animation) {
-                            return ScaleTransition(scale: animation, child: child,);
-                          },
-                          child: Hero(
-                            tag: 'playpause',
-                            key: ValueKey<bool>(isPlaying),
-                            child: SizedBox(
-                              height: 60,
-                              width: 60,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    elevation: 0.0,
-                                    padding: const EdgeInsets.all(10),
-                                    backgroundColor: palette.secondaryContainer,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                      //side: BorderSide(width: 2, color: palette.primaryLighter)
-                                    )
-                                ),
-                                onPressed: () async {
-                                  HapticFeedback.selectionClick();
-                                  togglePlayPause();
-                                },
-                                child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
-                                  color: palette.onSecondaryContainer, size: 18,),
+                        comfortatext(AppLocalizations.of(context)!.light, 16, data.settings, color: palette.onInverseSurface),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8, right: 8),
+                          child: Row(
+                              children: List<Widget>.generate(radarColors.length, (int index) {
+                                return Container(
+                                  width: 10,
+                                  height: 15,
+                                  decoration: BoxDecoration(
+                                      color: radarColors[index],
+                                      borderRadius: index == 0
+                                          ? const BorderRadius.only(topLeft: Radius.circular(7), bottomLeft: Radius.circular(7))
+                                          : index == (radarColors.length - 1)
+                                          ? const BorderRadius.only(topRight: Radius.circular(7), bottomRight: Radius.circular(7))
+                                          : BorderRadius.circular(0)
 
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Hero(
-                            tag: "sliderTag",
-                            child: Material(
-                              color: palette.surface,
-                              child: SliderTheme(
-                                data: SliderTheme.of(context).copyWith(
-                                  trackHeight: 19,
-                                  valueIndicatorColor: palette.inverseSurface,
-                                  thumbColor: palette.secondary,
-                                  activeTrackColor: palette.secondary,
-                                  inactiveTrackColor: palette.secondaryContainer,
-                                  inactiveTickMarkColor: palette.secondary,
-                                  activeTickMarkColor: palette.surface,
-                                  valueIndicatorTextStyle: GoogleFonts.outfit(
-                                    color: palette.onInverseSurface,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
                                   ),
-                                  year2023: false
-                                ),
-                                child: Slider(
-                                  value: currentFrameIndex,
-                                  min: 0,
-                                  max: data.radar.times.length - 1.0,
-                                  divisions: data.radar.times.length,
-                                  label: times[currentFrameIndex.toInt()].toString(),
-
-                                  padding: const EdgeInsets.only(left: 20, right: 5),
-
-                                  onChanged: (double value) {
-                                    if (data.settings["Radar haptics"] == "on") {
-                                      HapticFeedback.lightImpact();
-                                    }
-                                    setState(() {
-                                      hasBeenPlayed = true;
-                                      currentFrameIndex = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
+                                );
+                              })
                           ),
                         ),
+                        comfortatext(AppLocalizations.of(context)!.heavy, 16, data.settings, color: palette.onInverseSurface),
                       ],
                     ),
                   ),
-                ),
-              ],
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: palette.surface,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(30),
+                      child: Row(
+                        children: [
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 200),
+                            transitionBuilder: (Widget child, Animation<double> animation) {
+                              return ScaleTransition(scale: animation, child: child,);
+                            },
+                            child: Hero(
+                              tag: 'playpause',
+                              key: ValueKey<bool>(isPlaying),
+                              child: SizedBox(
+                                height: 60,
+                                width: 60,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0.0,
+                                      padding: const EdgeInsets.all(10),
+                                      backgroundColor: palette.secondaryContainer,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        //side: BorderSide(width: 2, color: palette.primaryLighter)
+                                      )
+                                  ),
+                                  onPressed: () async {
+                                    HapticFeedback.selectionClick();
+                                    togglePlayPause();
+                                  },
+                                  child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
+                                    color: palette.onSecondaryContainer, size: 18,),
+
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Hero(
+                              tag: "sliderTag",
+                              child: Material(
+                                color: palette.surface,
+                                child: SliderTheme(
+                                  data: SliderTheme.of(context).copyWith(
+                                    trackHeight: 19,
+                                    valueIndicatorColor: palette.inverseSurface,
+                                    thumbColor: palette.secondary,
+                                    activeTrackColor: palette.secondary,
+                                    inactiveTrackColor: palette.secondaryContainer,
+                                    inactiveTickMarkColor: palette.secondary,
+                                    activeTickMarkColor: palette.surface,
+                                    valueIndicatorTextStyle: GoogleFonts.outfit(
+                                      color: palette.onInverseSurface,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    year2023: false
+                                  ),
+                                  child: Slider(
+                                    value: currentFrameIndex,
+                                    min: 0,
+                                    max: data.radar.times.length - 1.0,
+                                    divisions: data.radar.times.length,
+                                    label: times[currentFrameIndex.toInt()].toString(),
+
+                                    padding: const EdgeInsets.only(left: 20, right: 5),
+
+                                    onChanged: (double value) {
+                                      if (data.settings["Radar haptics"] == "on") {
+                                        HapticFeedback.lightImpact();
+                                      }
+                                      setState(() {
+                                        hasBeenPlayed = true;
+                                        currentFrameIndex = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Padding(

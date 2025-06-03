@@ -90,10 +90,10 @@ class WavePainter extends CustomPainter {
 
 class NewSunriseSunset extends StatefulWidget {
   final data;
-  final size;
+  final width;
 
   @override
-  const NewSunriseSunset({super.key, required this.data, required this.size});
+  const NewSunriseSunset({super.key, required this.data, required this.width});
 
   @override
   _NewSunriseSunsetState createState() => _NewSunriseSunsetState();
@@ -167,8 +167,8 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
               Padding(
                 padding: EdgeInsets.only(
                     left: min(
-                        max((progress * (widget.size.width - 53)) - textWidth / 2  + 4, 0),
-                        widget.size.width - 53 - textWidth)),
+                        max((progress * (widget.width - 53)) - textWidth / 2  + 4, 0),
+                        widget.width - 53 - textWidth)),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: comfortatext(write, 15, widget.data.settings,
@@ -178,8 +178,8 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
               Padding(
                 padding: EdgeInsets.only(
                     top: 6,
-                    left: min(max((progress * (widget.size.width - 56)), 2),
-                        widget.size.width - 56)),
+                    left: min(max((progress * (widget.width - 56)), 2),
+                        widget.width - 56)),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Container(

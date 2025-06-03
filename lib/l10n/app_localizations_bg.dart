@@ -30,10 +30,10 @@ class AppLocalizationsBg extends AppLocalizations {
   String get today => 'Днес';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'утре';
 
   @override
-  String get overmorrowLowercase => 'Overmorrow';
+  String get overmorrowLowercase => 'вдругиден';
 
   @override
   String get language => 'Език';
@@ -150,7 +150,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get unhealthy => 'нездравословно';
 
   @override
-  String get radar => 'Радар';
+  String get radar => 'радар';
 
   @override
   String get colorMode => 'Режим на цвят';

@@ -30,7 +30,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get today => 'Hoy';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'mañana';
 
   @override
   String get overmorrowLowercase => 'Overmorrow';
@@ -108,13 +108,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get locationPermissionDeniedForever => 'Permiso de ubicación denegado para siempre';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'Permitir acceso a ubicación';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'Ubicación actual';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'Favoritos';
 
   @override
   String get failedToAccessGps => 'No se pudo acceder al GPS';
@@ -156,7 +156,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get colorMode => 'Modo de color';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'Proveedor del clima';
 
   @override
   String get timeMode => 'Modo de tiempo';
@@ -186,7 +186,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get fontSize => 'Tamaño de fuente';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'Diario';
 
   @override
   String get searchProvider => 'Proveedor de búsqueda';
