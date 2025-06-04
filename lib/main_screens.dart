@@ -132,7 +132,7 @@ class _NewMainState extends State<NewMain> {
       'alerts' : alertWidget(data, context, data.current.palette),
       'radar': RadarSmall(data: data),
       'daily': buildDays(data: data),
-      'air quality': aqiWidget(data, data.current.palette, context)
+      'air quality': aqiWidget(data, data.current.palette, context, false)
     };
 
     final List<String> order = data.settings["Layout"] == "" ? [] : data.settings["Layout"].split(",");
@@ -351,17 +351,22 @@ class TabletLayout extends StatelessWidget {
                                 const SizedBox(height: 15,),
                                 rain15MinuteChart(
                                     data, data.current.palette, context),
-                                alertWidget(
-                                    data, context, data.current.palette),
                                 RadarSmall(data: data),
-                                aqiWidget(data, data.current.palette, context),
+                                aqiWidget(data, data.current.palette, context, true),
                                 providerSelector(data.settings, updateLocation, data.current.palette,
                                     data.provider, "${data.lat}, ${data.lng}", data.real_loc, context),
                               ],
                             ),
                           ),
                           Expanded(
-                            child: buildDays(data: data),
+                            child: Column(
+                              children: [
+                                //since it's only available with weatherapi, and in that case there are only 3 days
+                                //this makes the two sides more even
+                                alertWidget(data, context, data.current.palette),
+                                buildDays(data: data),
+                              ],
+                            ),
                           )
                         ],
                       ),

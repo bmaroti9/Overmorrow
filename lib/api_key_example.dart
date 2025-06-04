@@ -24,7 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //but only weatherapi requires an api key. You don't need an api key for open-meteo or met-norway.
 
 const String wapi_key = "YourWeatherApiKey"; //your api key from weatherapi.com
-//the app works without this if you only use the open-meteo provider
+//the app works without this if you only use the open-meteo or met-norway providers
 
 const String access_key = "YourUnsplashApiKey"; //your api key from unsplash.com
 //the app works without this if you set the image source to asset

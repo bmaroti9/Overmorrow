@@ -397,11 +397,11 @@ class WapiDay {
     ),
     name: wapiGetName(index, settings, localizations, item),
 
-    minTemp: unit_coversion(item["day"]["maxtemp_c"], settings["Temperature"]).round(),
-    maxTemp: unit_coversion(item["day"]["mintemp_c"], settings["Temperature"]).round(),
+    minTemp: unit_coversion(item["day"]["mintemp_c"], settings["Temperature"]).round(),
+    maxTemp: unit_coversion(item["day"]["maxtemp_c"], settings["Temperature"]).round(),
 
-    rawMinTemp: item["day"]["maxtemp_c"],
-    rawMaxTemp: item["day"]["mintemp_c"],
+    rawMinTemp: item["day"]["mintemp_c"],
+    rawMaxTemp: item["day"]["maxtemp_c"],
 
     hourly: buildWapiHour(item["hour"], settings, index, approximatelocal, true, localizations),
     hourly_for_precip: buildWapiHour(item["hour"], settings, index, approximatelocal, false, localizations),

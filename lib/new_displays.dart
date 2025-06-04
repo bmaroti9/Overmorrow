@@ -244,7 +244,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
   }
 }
 
-Widget aqiWidget(var data, ColorScheme palette, context) {
+Widget aqiWidget(var data, ColorScheme palette, context, bool isTabletMode) {
   return Column(
     children: [
       Padding(
@@ -264,7 +264,7 @@ Widget aqiWidget(var data, ColorScheme palette, context) {
           HapticFeedback.lightImpact();
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AllergensPage(data: data))
+              MaterialPageRoute(builder: (context) => AllergensPage(data: data, isTabletMode: isTabletMode,))
           );
         },
         child: Container(
@@ -311,7 +311,7 @@ Widget aqiWidget(var data, ColorScheme palette, context) {
                   HapticFeedback.lightImpact();
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AllergensPage(data: data))
+                      MaterialPageRoute(builder: (context) => AllergensPage(data: data, isTabletMode: isTabletMode,))
                   );
                 },
                 icon: Icon(Icons.keyboard_arrow_right_rounded, color: palette.primary,),
