@@ -314,6 +314,11 @@ class ColorPalette {
   //i specifically made this because it's always the same,
   // so there's no point in loading it from the image every time
   static ColorScheme getErrorPagePalette(theme,) {
+    if (theme == "auto") {
+      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+      theme= brightness == Brightness.dark ? "dark" : "light";
+    }
+
     ColorScheme palette = ColorScheme.fromSeed(
         seedColor: Colors.deepPurple,
         brightness: theme == 'light' ? Brightness.light : Brightness.dark

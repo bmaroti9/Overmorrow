@@ -186,8 +186,6 @@ Future<List<dynamic>> MetNMakeRequest(double lat, double lng, String real_loc) a
   };
   final MnUrl = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/complete', MnParams);
 
-  print(MnUrl);
-
   //var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$real_loc, met.no", headers: headers).timeout(const Duration(seconds: 6));
   var MnFile = await XCustomCacheManager.fetchData(MnUrl.toString(), "$real_loc, met.no", headers: headers);
 
@@ -634,7 +632,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
   MnBody["properties"]["timeseries"] = MnBody["properties"]["timeseries"].sublist(start);
 
   List<MetNDay> days = [];
-  List<MetNHour> hourly72 = [];
+  List<dynamic> hourly72 = [];
 
   int begin = 0;
   int index = 0;
@@ -647,6 +645,9 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
       days.add(day);
 
       if (hourly72.length < 72) {
+        if (begin != 0) {
+          hourly72.add(day.name);
+        }
         for (int z = 0; z < day.hourly.length; z++) {
           if (hourly72.length < 72) {
             hourly72.add(day.hourly[z]);

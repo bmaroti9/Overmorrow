@@ -119,6 +119,9 @@ Widget hourBoxes(hours, data, _value, addDayDivider, elevated, context) {
       scrollDirection: Axis.horizontal,
       itemBuilder: (BuildContext context, int index) {
         var hour = hours[index];
+        if (hour is String) {
+          return dividerWidget(palette, hour, data);
+        }
         List<Widget> childWidgets = [
           buildHourlySum(hour, palette, data),
           buildHourlyPrecip(hour, palette, data),
@@ -132,39 +135,7 @@ Widget hourBoxes(hours, data, _value, addDayDivider, elevated, context) {
           child: SlideAnimation(
             horizontalOffset: 100.0,
             child: FadeInAnimation(
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(3),
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 400),
-                      switchInCurve: Curves.decelerate,
-                      transitionBuilder: (Widget child,
-                          Animation<double> animation) {
-                        final  offsetAnimation =
-                        Tween<Offset>(begin: const Offset(0.0, 1.0), end: const Offset(0.0, 0.0)).animate(animation);
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: SlideTransition(
-                            position: offsetAnimation,
-                            child: Container(
-                              padding: const EdgeInsets.only(top: 7, bottom: 5),
-                              width: 67,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(40),
-                                color: elevated ? palette.surfaceContainerHighest : palette.surfaceContainer,
-                              ),
-                              child: child,
-                            ),
-                          ),
-                        );
-                      },
-                      child: childWidgets[_value],
-                    ),
-                  ),
-                  dividerWidget(hour, palette, data, addDayDivider, index, context)
-                ],
-              ),
+              child: hourlyDataBuilder(hour, palette, elevated, childWidgets[_value], data)
             ),
           ),
         );
@@ -173,32 +144,58 @@ Widget hourBoxes(hours, data, _value, addDayDivider, elevated, context) {
   );
 }
 
-Widget dividerWidget(hour, ColorScheme palette, data, addDayDivider, int index, context) {
-  if (addDayDivider && (hour.time == "11pm" || hour.time == "23:00")) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 3, bottom: 3, left: 6, right: 6),
-      child: RotatedBox(
-        quarterTurns: -1,
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: palette.secondaryContainer,
-            borderRadius: BorderRadius.circular(6),
+Widget hourlyDataBuilder(hour, ColorScheme palette, elevated, childWidget, data) {
+  return Padding(
+    padding: const EdgeInsets.all(3),
+    child: AnimatedSwitcher(
+      duration: const Duration(milliseconds: 400),
+      switchInCurve: Curves.decelerate,
+      transitionBuilder: (Widget child,
+          Animation<double> animation) {
+        final  offsetAnimation =
+        Tween<Offset>(begin: const Offset(0.0, 1.0), end: const Offset(0.0, 0.0)).animate(animation);
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: SlideTransition(
+            position: offsetAnimation,
+            child: Container(
+              padding: const EdgeInsets.only(top: 7, bottom: 5),
+              width: 67,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                color: elevated ? palette.surfaceContainerHighest : palette.surfaceContainer,
+              ),
+              child: child,
+            ),
           ),
-          padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
-          child: Center(child: comfortatext(
-              index < 24 ? AppLocalizations.of(context)!.tomorrowLowercase
-                  : AppLocalizations.of(context)!.overmorrowLowercase,
-              17,
-              data.settings,
-              color: palette.onSecondaryContainer,
-              weight: FontWeight.w500)
-          )
+        );
+      },
+      child: childWidget,
+    ),
+  );
+}
+
+Widget dividerWidget(ColorScheme palette, name, data) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 3, bottom: 3, left: 6, right: 6),
+    child: RotatedBox(
+      quarterTurns: -1,
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: palette.secondaryContainer,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
+        child: Center(child: comfortatext(
+            name, 17,
+            data.settings,
+            color: palette.onSecondaryContainer,
+            weight: FontWeight.w500)
         )
-      ),
-    );
-  }
-  return Container();
+      )
+    ),
+  );
 }
 
 Widget buildHourlySum(var hour, ColorScheme palette, data) {

@@ -744,7 +744,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName, 
       DateTime(localtime.year, localtime.month, localtime.day, localtime.hour, localtime.minute));
 
   List<WapiDay> days = [];
-  List<WapiHour> hourly72 = [];
+  List<dynamic> hourly72 = [];
 
   for (int n = 0; n < wapi_body["forecast"]["forecastday"].length; n++) {
     WapiDay day = WapiDay.fromJson(
@@ -752,6 +752,9 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName, 
     days.add(day);
 
     if (hourly72.length < 72) {
+      if (n != 0) {
+        hourly72.add(day.name);
+      }
       for (int z = 0; z < day.hourly.length; z++) {
         if (hourly72.length < 72) {
           hourly72.add(day.hourly[z]);

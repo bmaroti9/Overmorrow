@@ -473,7 +473,7 @@ class OM15MinutePrecip {
         if (end == 1) {
           t_minus = localizations.rainInHalfHour;
         }
-        else if (end <= 3) {
+        else if (end <= 2) {
           int x = [15, 30, 45][end];
           t_minus = localizations.rainInMinutes(x);
         }
@@ -512,6 +512,7 @@ class OMHour {
   final IconData icon;
 
   final String time;
+
   final String text;
   final double precip;
   final int precip_prob;
@@ -935,14 +936,16 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
   OMSunstatus sunstatus = OMSunstatus.fromJson(oMBody, settings);
 
   List<OMDay> days = [];
-  List<OMHour> hourly72 = [];
+  List<dynamic> hourly72 = [];
 
   for (int n = 0; n < 14; n++) {
     OMDay? day = OMDay.build(oMBody, settings, n, sunstatus, approximateLocal, dayDif, localizations);
     if (day != null) {
       days.add(day);
-
       if (hourly72.length < 72) {
+        if (n != 0) {
+          hourly72.add(day.name);
+        }
         for (int z = 0; z < day.hourly.length; z++) {
           if (hourly72.length < 72) {
             hourly72.add(day.hourly[z]);
