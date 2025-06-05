@@ -346,7 +346,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
         foregroundColor: palette.primary,
         surfaceTintColor: palette.outlineVariant,
         elevation: 0,
-        leading: Padding(
+        automaticallyImplyLeading: true,
+        leading: isTabletMode ? Padding(
           padding: const EdgeInsets.only(left: 8),
           child: IconButton(
             icon: Icon(Icons.settings_outlined, color: palette.primary, size: 23,),
@@ -354,7 +355,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               openSettingsPage();
             },
           ),
-        ),
+        ) : null,
         actions: [
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 150),

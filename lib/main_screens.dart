@@ -22,7 +22,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
-import 'package:overmorrow/search_screens.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'hourly.dart';
 import 'main_ui.dart';
@@ -187,16 +186,11 @@ class _NewMainState extends State<NewMain> {
           )
         ),
         children: [
-
-          Stack(
-            children: [
-              FadingWidget(
-                data: data,
-                time: data.updatedTime,
-              ),
-              Circles(data, 0.5, context, data.current.palette)
-            ],
+          FadingWidget(
+            data: data,
+            time: data.updatedTime,
           ),
+          Circles(data, 0.5, context, data.current.palette),
 
             /*
             Padding(
@@ -225,18 +219,13 @@ class _NewMainState extends State<NewMain> {
               ),
             ),
              */
-
-
-
-            Column(
-              children: orderedWidgets.map((widget) {
-                return widget;
-              }).toList(),
-            ),
-
-            providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
-              "${data.lat}, ${data.lng}", data.real_loc, context),
-
+          Column(
+            children: orderedWidgets.map((widget) {
+              return widget;
+            }).toList(),
+          ),
+          providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
+            "${data.lat}, ${data.lng}", data.real_loc, context),
         ],
       ),
     );

@@ -98,11 +98,9 @@ class ParrallaxBackground extends StatelessWidget {
   }
 }
 
-
 Widget Circles(var data, double bottom, context, ColorScheme palette) {
   return Padding(
-      //top padding is slightly bigger because of the offline colored bar
-      padding: const EdgeInsets.only(left: 19.5, right: 19.5, bottom: 13, top: 5),
+      padding: const EdgeInsets.only(left: 19.5, right: 19.5, bottom: 13, top: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
           children: [
