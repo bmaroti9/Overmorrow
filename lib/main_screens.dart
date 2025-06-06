@@ -127,7 +127,7 @@ class _NewMainState extends State<NewMain> {
     final Map<String, Widget> widgetsMap = {
       'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), width: size.width,),
       'rain indicator': rain15MinuteChart(data, data.current.palette, context),
-      'hourly': NewHourly(data: data, hours: data.hourly72, addDayDivider: true, elevated: false,),
+      'hourly': NewHourly(data: data, hours: data.hourly72, elevated: false,),
       'alerts' : alertWidget(data, context, data.current.palette),
       'radar': RadarSmall(data: data),
       'daily': buildDays(data: data),
@@ -330,7 +330,7 @@ class TabletLayout extends StatelessWidget {
                       ),
 
                       NewSunriseSunset(data: data, key: Key(data.place), width: constraints.maxWidth,),
-                      NewHourly(data: data, hours: data.hourly72, addDayDivider: true, elevated: false,),
+                      NewHourly(data: data, hours: data.hourly72, elevated: false,),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

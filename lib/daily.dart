@@ -340,7 +340,7 @@ Widget dailyExpanded(var day, data, ColorScheme palette, onExpandTapped, index) 
 
         Padding(
           padding: const EdgeInsets.only(top: 20),
-          child: NewHourly(data: data, hours: day.hourly, addDayDivider: false, elevated: true,),
+          child: NewHourly(data: data, hours: day.hourly, elevated: true,),
         )
 
       ],

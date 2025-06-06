@@ -28,19 +28,17 @@ import 'ui_helper.dart';
 class NewHourly extends StatefulWidget {
   final data;
   final hours;
-  final addDayDivider;
   final elevated;
 
-  NewHourly({Key? key, required this.data, required this.hours, required this.addDayDivider, required this.elevated}) : super(key: key);
+  NewHourly({Key? key, required this.data, required this.hours, required this.elevated}) : super(key: key);
 
   @override
-  _NewHourlyState createState() => _NewHourlyState(data, hours, addDayDivider, elevated);
+  _NewHourlyState createState() => _NewHourlyState(data, hours, elevated);
 }
 
 class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixin {
   final data;
   final hours;
-  final addDayDivider;
   final elevated;
 
   int _value = 0;
@@ -48,7 +46,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
   @override
   bool get wantKeepAlive => true;
 
-  _NewHourlyState(this.data, this.hours, this.addDayDivider, this.elevated);
+  _NewHourlyState(this.data, this.hours, this.elevated);
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +62,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
 
           SizedBox(
             height: 196,
-            child: hourBoxes(hours, data, _value, addDayDivider, elevated, context),
+            child: hourBoxes(hours, data, _value, elevated, context),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 0, left: 5),
@@ -110,7 +108,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
   }
 }
 
-Widget hourBoxes(hours, data, _value, addDayDivider, elevated, context) {
+Widget hourBoxes(hours, data, _value, elevated, context) {
   ColorScheme palette = data.current.palette;
 
   return AnimationLimiter(
@@ -120,7 +118,16 @@ Widget hourBoxes(hours, data, _value, addDayDivider, elevated, context) {
       itemBuilder: (BuildContext context, int index) {
         var hour = hours[index];
         if (hour is String) {
-          return dividerWidget(palette, hour, data);
+          return AnimationConfiguration.staggeredList(
+            position: index,
+            duration: const Duration(milliseconds: 500),
+            child: SlideAnimation(
+              horizontalOffset: 100.0,
+              child: FadeInAnimation(
+                child: dividerWidget(palette, hour, data)
+              ),
+            ),
+          );
         }
         List<Widget> childWidgets = [
           buildHourlySum(hour, palette, data),

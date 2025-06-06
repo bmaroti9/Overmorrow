@@ -590,7 +590,7 @@ Widget dailyAqi(data, extendedAqi, ColorScheme palette, context, highestAqi) {
                         alignment: Alignment.topCenter,
                         padding: const EdgeInsets.only(top: 16),
                         //tried to do some null safety and not allowing the bars to be too short
-                        height: max(130 / max(highestAqi, 1) * extendedAqi.dailyAqi[index], 42),
+                        height: max(130 / max(highestAqi, 1) * extendedAqi.dailyAqi[index], 48),
                         child: comfortatext(extendedAqi.dailyAqi[index].toString(), 16, data.settings,
                             color: extendedAqi.dailyAqi[index] == highestAqi ? palette.onSecondary : palette.onSecondaryContainer,
                             weight: FontWeight.w600),
@@ -921,7 +921,7 @@ Widget HourlyQqi(data, hourValues, name, extendedAqi, context, ColorScheme palet
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(extendedAqi.dailyAqi.length, (index) {
                 return comfortatext(index == 0 ? AppLocalizations.of(context)!.now
-                    : "${index}${AppLocalizations.of(context)!.d}",
+                    : "$index${AppLocalizations.of(context)!.d}",
                     14, data.settings, color: palette.outline);
                }
               )

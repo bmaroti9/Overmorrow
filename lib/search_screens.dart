@@ -840,7 +840,7 @@ Widget reorderableItem(List<dynamic> items, index, settings, ColorScheme palette
     key: Key("$name, $country, $region"),
     color: isTabletMode ? palette.surfaceContainerHighest : palette.surfaceContainer,
     child: Padding(
-      padding: const EdgeInsets.only(left: 5, right: 5, top: 4, bottom: 4),
+      padding: const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
       child:
       Row(
         children: [
