@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/weather_refact.dart';
 
@@ -111,7 +112,9 @@ class ImageService {
       }
       catch (e) {
         String error = e.toString().replaceAll(access_key, "<key>");
-        print(error);
+        if (kDebugMode) {
+          print(error);
+        }
         return getAssetImage(condition);
       }
     }

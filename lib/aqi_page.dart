@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -243,7 +244,9 @@ class _AllergensPageState extends State<AllergensPage> {
                     ),
                   );
                 } else if (snapshot.hasError) {
-                  print((snapshot.error, snapshot.stackTrace));
+                  if (kDebugMode) {
+                    print((snapshot.error, snapshot.stackTrace));
+                  }
                   //this was the best way i found to detect no wifi
                   if (snapshot.error.toString().contains("Socket")) {
                     return Padding(

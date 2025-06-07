@@ -45,8 +45,6 @@ String metNTextCorrection(String text, bool shouldTranslate, localizations) {
 int metNCalculateHourDif(DateTime timeThere) {
   DateTime now = DateTime.now().toUtc();
 
-  print(("hourdif", now.hour, timeThere.hour));
-
   return now.hour - timeThere.hour;
 }
 

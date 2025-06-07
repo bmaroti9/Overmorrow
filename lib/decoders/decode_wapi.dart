@@ -224,7 +224,6 @@ String getTime(date, bool ampm) {
 }
 
 String wapiGetName(index, settings, localizations, item) {
-  print(item["date"]);
   DateTime time = DateTime.parse(item["date"]);
   List<String> weeks = [
     localizations.mon,

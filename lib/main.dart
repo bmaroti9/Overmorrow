@@ -20,13 +20,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/weather_refact.dart';
@@ -240,7 +240,9 @@ class _HomePageState extends State<HomePage> {
           place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
       }
       catch (e, stacktrace) {
-        debugPrint('Stack trace: $stacktrace');
+        if (kDebugMode) {
+          debugPrint('Stack trace: $stacktrace');
+        }
         return ErrorPage(errorMessage: "general error at place 1: ${e.toString()}", updateLocation: updateLocation,
           icon: Icons.bug_report,
           place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,
@@ -256,8 +258,10 @@ class _HomePageState extends State<HomePage> {
       Map<String, String> settings = await getSettingsUsed();
       String weatherProvider = await getWeatherProvider();
 
-      debugPrint('Error fetching weather data: $e');
-      debugPrint('Stack trace: $stacktrace');
+      if (kDebugMode) {
+        debugPrint('Error fetching weather data: $e');
+        debugPrint('Stack trace: $stacktrace');
+      }
 
       await cacheManager2.emptyCache();
 
@@ -323,7 +327,9 @@ class _HomePageState extends State<HomePage> {
 
     } catch (error,s) {
 
-      print((error, s));
+      if (kDebugMode) {
+        print((error, s));
+      }
 
       setState(() {
         isLoading = false;

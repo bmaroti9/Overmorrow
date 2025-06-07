@@ -782,8 +782,6 @@ class _LayoutPageState extends State<LayoutPage> {
         removed.add(allNames[i]);
       }
     }
-
-    print(removed);
   }
 
   void updatePage(String name, String to) {
@@ -867,7 +865,6 @@ class _LayoutPageState extends State<LayoutPage> {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  print((_items[index], _items));
                                   HapticFeedback.mediumImpact();
                                   setState(() {
                                     removed.add(_items[index]);

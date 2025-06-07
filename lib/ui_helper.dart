@@ -21,6 +21,7 @@ import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/search_screens.dart';
@@ -231,7 +232,9 @@ class _MySearchParentState extends State<MySearchParent> {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          print(snapshot.error);
+          if (kDebugMode) {
+            print(snapshot.error);
+          }
           return Center(
             child: ErrorWidget(snapshot.error as Object),
           );

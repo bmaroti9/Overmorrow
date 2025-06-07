@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -308,7 +309,9 @@ class _SettingsPageState extends State<SettingsPage> {
         if (snapshot.connectionState != ConnectionState.done) {
           return Container();
         } else if (snapshot.hasError) {
-          print((snapshot.error, snapshot.stackTrace));
+          if (kDebugMode) {
+            print((snapshot.error, snapshot.stackTrace));
+          }
           return Center(
             child: ErrorWidget(snapshot.error as Object),
           );
