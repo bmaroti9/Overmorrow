@@ -30,10 +30,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get today => 'Dzisiaj';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'jutro';
 
   @override
-  String get overmorrowLowercase => 'Overmorrow';
+  String get overmorrowLowercase => 'Pojutrze';
 
   @override
   String get language => 'Język';
@@ -108,13 +108,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get locationPermissionDeniedForever => 'Trwała odmowa pozwolenia na lokalizację';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'udzielić pozwolenia na lokalizację';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'obecna lokalizacja';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'ulubione';
 
   @override
   String get failedToAccessGps => 'gps niedostępny';
@@ -156,7 +156,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get colorMode => 'Schemat kolorów';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'dostawca danych pogodowych';
 
   @override
   String get timeMode => 'Format czasu';
@@ -186,7 +186,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get fontSize => 'Rozmiar czcionki';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'codziennie';
 
   @override
   String get searchProvider => 'Dostawca wyszukiwania';
@@ -201,7 +201,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get imageSource => 'Źródło obrazu';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'suma';
 
   @override
   String get precipLowercase => 'opad';
@@ -234,31 +234,31 @@ class AppLocalizationsPl extends AppLocalizations {
   String get photoByXOnUnsplash => 'Zdjęcie, ,x, na ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'kod źródłowy';
 
   @override
   String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'zgłoś problem';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'przekazać darowiznę';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'Wersja';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'Interfejsy API i usługi';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Licencja';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'dane pogodowe';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'obrazy';
 
   @override
   String get appearance => 'Wygląd';
@@ -285,7 +285,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get unitsSettingdesc => 'jednostki używane w aplikacji';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'o tej aplikacji';
 
   @override
   String get now => 'teraz';
@@ -461,29 +461,29 @@ class AppLocalizationsPl extends AppLocalizations {
   String get alertsCapital => 'Alerty';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'ostrzeżenia';
 
   @override
-  String get severity => 'severity';
+  String get severity => 'nasilenie';
 
   @override
-  String get certainty => 'certainty';
+  String get certainty => 'pewność';
 
   @override
-  String get urgency => 'urgency';
+  String get urgency => 'pilność';
 
   @override
   String get areas => 'obszary';
 
   @override
-  String get light => 'light';
+  String get light => 'światło';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'ciężki';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'pokaż więcej';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'pokaż mniej';
 }
