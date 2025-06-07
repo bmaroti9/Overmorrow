@@ -462,7 +462,7 @@ class _RadarBigState extends State<RadarBig> {
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 15, bottom: 35),
             child: Container(
-              constraints: const BoxConstraints(maxWidth: 400),
+              constraints: const BoxConstraints(maxWidth: 450),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,

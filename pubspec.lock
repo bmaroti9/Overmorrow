@@ -233,10 +233,10 @@ packages:
     dependency: transitive
     description:
       name: geocoding_ios
-      sha256: "94ddba60387501bd1c11e18dca7c5a9e8c645d6e3da9c38b9762434941870c24"
+      sha256: "43bde988312feb1a3cb6c3d514e9f4b04b564d1884fa56bd8241030bbb3bde36"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.2"
   geocoding_platform_interface:
     dependency: transitive
     description:

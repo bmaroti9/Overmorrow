@@ -97,6 +97,7 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
 
   void toggleMoreDays() {
     setState(() {
+      HapticFeedback.mediumImpact();
       isDaysListExpanded = !isDaysListExpanded;
       if (isDaysListExpanded) {
         daysToShow = data.days.length;

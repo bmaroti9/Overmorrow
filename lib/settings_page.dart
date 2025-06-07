@@ -183,6 +183,7 @@ Widget settingEntry(icon, text, settings, ColorScheme palette, updatePage, rawTe
   return GestureDetector(
     behavior: HitTestBehavior.translucent,
     onTap: () {
+      HapticFeedback.lightImpact();
       showDialog<void>(
         context: context,
         builder: (BuildContext context) {

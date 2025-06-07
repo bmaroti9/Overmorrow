@@ -30,10 +30,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get today => 'Bugün';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'yarın';
 
   @override
-  String get overmorrowLowercase => 'Overmorrow';
+  String get overmorrowLowercase => 'yarından sonra';
 
   @override
   String get language => 'Dil';
@@ -108,13 +108,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get locationPermissionDeniedForever => 'konum i̇zni̇ sonsuza kadar reddedi̇ldi̇';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'konum izni ver';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'mevcut konum';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'favoriler';
 
   @override
   String get failedToAccessGps => 'GPS\'e erişilemedi';
@@ -156,7 +156,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get colorMode => 'Renk modu';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'hava durumu sağlayıcısı';
 
   @override
   String get timeMode => 'Zaman modu';
@@ -186,7 +186,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get fontSize => 'Yazı tipi boyutu';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'günlük';
 
   @override
   String get searchProvider => 'Arama sağlayıcı';
@@ -201,7 +201,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get imageSource => 'Resim kaynağı';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'toplam';
 
   @override
   String get precipLowercase => 'yağış';
@@ -234,31 +234,31 @@ class AppLocalizationsTr extends AppLocalizations {
   String get photoByXOnUnsplash => 'Fotoğraf, x, tarafından , Unsplah , üzerineden';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'kaynak kodu';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'e-posta';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'bir sorunu bildirin';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'bağış';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'Versiyon';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'API\'ler ve Hizmetler';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Lisans';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'hava durumu verileri';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'görüntüler';
 
   @override
   String get appearance => 'Görünüm';
@@ -285,7 +285,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get unitsSettingdesc => 'uygulamada kullanılan birimler';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'bu uygulama hakkında';
 
   @override
   String get now => 'şimdi';
@@ -348,34 +348,34 @@ class AppLocalizationsTr extends AppLocalizations {
   String get offline => 'çevrimdışı';
 
   @override
-  String get helpTranslate => 'help translate';
+  String get helpTranslate => 'çevirmeye yardım et';
 
   @override
-  String get extremelyClear => 'extremely clear';
+  String get extremelyClear => 'son derece açık';
 
   @override
-  String get veryClear => 'very clear';
+  String get veryClear => 'çok açık';
 
   @override
-  String get clear => 'clear';
+  String get clear => 'açık';
 
   @override
-  String get slightlyHazy => 'slightly hazy';
+  String get slightlyHazy => 'hafif puslu';
 
   @override
-  String get hazy => 'hazy';
+  String get hazy => 'puslu';
 
   @override
-  String get veryHazy => 'very hazy';
+  String get veryHazy => 'çok puslu';
 
   @override
-  String get extremelyHazy => 'extremely hazy';
+  String get extremelyHazy => 'aşırı puslu';
 
   @override
-  String get poweredByOpenMeteo => 'powered by open-meteo';
+  String get poweredByOpenMeteo => 'open-meteo tarafından desteklenmektedir';
 
   @override
-  String get rainInHalfHour => 'rain in the next half an hour';
+  String get rainInHalfHour => 'önümüzdeki yarım saat içinde yağmur';
 
   @override
   String rainInMinutes(int minutes) {
@@ -389,7 +389,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get rainInOneHour => 'rain in the next hour';
+  String get rainInOneHour => 'önümüzdeki bir saat içinde yağmur';
 
   @override
   String rainInHours(int hours) {
@@ -414,7 +414,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get rainExpectedInOneHour => 'rain expected in an hour';
+  String get rainExpectedInOneHour => 'Bir saat içinde yağmur bekleniyor';
 
   @override
   String rainExpectedInHours(int hours) {
@@ -429,7 +429,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return 'updated, $minutes min ago';
+    return 'güncellendi, $minutes dakika önce';
   }
 
   @override
@@ -455,35 +455,35 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get radarHaptics => 'Radar haptics';
+  String get radarHaptics => 'Radar dokunsallığı';
 
   @override
-  String get alertsCapital => 'Alerts';
+  String get alertsCapital => 'Uyarılar';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'uyarılar';
 
   @override
-  String get severity => 'severity';
+  String get severity => 'şiddet';
 
   @override
-  String get certainty => 'certainty';
+  String get certainty => 'kesinlik';
 
   @override
-  String get urgency => 'urgency';
+  String get urgency => 'aciliyet';
 
   @override
-  String get areas => 'areas';
+  String get areas => 'alanlar';
 
   @override
-  String get light => 'light';
+  String get light => 'hafif';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'ağır';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'daha fazla göster';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'daha az göster';
 }
