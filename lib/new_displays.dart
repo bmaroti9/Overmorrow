@@ -212,11 +212,11 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 4, top: 2),
+                      padding: const EdgeInsets.only(right: 4, top: 1),
                       child: Icon(
                         Icons.wb_sunny_outlined,
                         color: palette.secondary,
-                        size: 13,
+                        size: 14,
                       ),
                     ),
                     comfortatext(
@@ -229,9 +229,9 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
                         color: palette.outline,
                         weight: FontWeight.w400),
                     Padding(
-                      padding: const EdgeInsets.only(left: 4, top: 2),
+                      padding: const EdgeInsets.only(left: 4, top: 1),
                       child: Icon(Icons.nightlight_outlined,
-                          color: palette.outline, size: 13),
+                          color: palette.outline, size: 14),
                     ),
                   ],
                 ),
@@ -301,7 +301,7 @@ Widget aqiWidget(var data, ColorScheme palette, context, bool isTabletMode) {
                       padding: const EdgeInsets.only(top: 6, left: 0),
                       child: comfortatext(data.aqi.aqi_desc, 14, data.settings,
                           color: palette.outline,
-                          weight: FontWeight.w500),
+                          weight: FontWeight.w400),
                     ),
                   ],
                 ),

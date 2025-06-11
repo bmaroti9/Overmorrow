@@ -162,7 +162,7 @@ class _NewMainState extends State<NewMain> {
           overlay: Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
+                padding: const EdgeInsets.only(left: 26, right: 26, bottom: 26),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

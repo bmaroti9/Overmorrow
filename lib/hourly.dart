@@ -213,7 +213,7 @@ Widget buildHourlySum(var hour, ColorScheme palette, data) {
     children: [
       Padding(
         padding: const EdgeInsets.only(left: 2),
-        child: comfortatext("${hour.temp}°", 19, data.settings, color: palette.primary,
+        child: comfortatext("${hour.temp}°", 18, data.settings, color: palette.primary,
             weight: FontWeight.w500),
       ),
 

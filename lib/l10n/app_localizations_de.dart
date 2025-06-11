@@ -30,7 +30,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get today => 'Heute';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'morgen';
 
   @override
   String get overmorrowLowercase => 'Overmorrow';

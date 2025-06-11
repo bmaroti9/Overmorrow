@@ -100,7 +100,7 @@ class ParrallaxBackground extends StatelessWidget {
 
 Widget Circles(var data, double bottom, context, ColorScheme palette) {
   return Padding(
-      padding: const EdgeInsets.only(left: 20.5, right: 20.5, bottom: 13, top: 2),
+      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 13, top: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -213,7 +213,7 @@ class DescriptionCircle extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top:6),
-                  child: comfortatext(undercaption, 15, settings, align: TextAlign.center, color: palette.outline,
+                  child: comfortatext(undercaption, 14, settings, align: TextAlign.center, color: palette.outline,
                   weight: FontWeight.w300)
                 )
               )
@@ -294,6 +294,7 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
 
     return Container(
       color: widget.data.isonline ? Colors.transparent : palette.primaryContainer,
+      margin: widget.data.isonline ? const EdgeInsets.only(bottom: 1) : const EdgeInsets.only(bottom: 5),
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 1000),
         transitionBuilder: (Widget child, Animation<double> animation) {
@@ -456,7 +457,7 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
               borderRadius: BorderRadius.circular(18),
               //border: Border.all(color: palette.secondary, width: 2)
             ),
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 7, bottom: 7),
             child: DropdownButton(
               underline: Container(),
               onTap: () {

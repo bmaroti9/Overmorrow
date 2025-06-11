@@ -182,6 +182,9 @@ class _RadarSmallState extends State<RadarSmall> {
                         TileLayer(
                           urlTemplate: data.radar.images[currentFrameIndex
                               .toInt()] + "/256/{z}/{x}/{y}/2/1_1.png",
+                          //whoah i didn't know that the radar stuttering was because of a fading animation
+                          //this makes it so much more fluid, because there is no fade between frames
+                          tileDisplay: const TileDisplay.instantaneous(),
                         ),
                       ],
                     )
@@ -447,6 +450,7 @@ class _RadarBigState extends State<RadarBig> {
               ),
               TileLayer(
                 urlTemplate: data.radar.images[currentFrameIndex.toInt()] + "/256/{z}/{x}/{y}/2/1_1.png",
+                tileDisplay: const TileDisplay.instantaneous(),
               ),
               TileLayer(
                 urlTemplate: mode == "dark"

@@ -201,8 +201,8 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette, int index, int day
     },
     child: Padding(
       padding: EdgeInsets.only(left: 21, right: 20,
-        top: index == 0 ? 22 : 21, //evens out the top and bottom sizes with bigger border radii
-        bottom: index == (daysToShow - 1) ? 22 : 21
+        top: index == 0 ? 21 : 20, //evens out the top size with bigger border radii
+        bottom: 20
       ),
       child: Row(
         children: [
@@ -215,9 +215,11 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette, int index, int day
                 comfortatext(day.name.split(", ")[0], 19,
                     data.settings,
                     color: palette.secondary),
-                comfortatext(day.name.split(", ")[1], 13,
+                comfortatext(day.name.split(", ")[1], 12,
                     data.settings,
-                    color: palette.outline),
+                    color: palette.outline,
+                    weight: FontWeight.w500
+                ),
               ],
             ),
           ),

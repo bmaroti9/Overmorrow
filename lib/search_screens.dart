@@ -656,7 +656,6 @@ Widget CurrentLocationWidget(settings, locationState, locationMessage, ColorSche
         margin: const EdgeInsets.only(top: 20, bottom: 30),
         padding: const EdgeInsets.only(
             left: 25, right: 25, top: 23, bottom: 23),
-        height: 66,
         decoration: BoxDecoration(
           color: palette.primaryFixedDim,
           borderRadius: BorderRadius.circular(40),
