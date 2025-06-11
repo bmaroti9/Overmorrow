@@ -185,7 +185,7 @@ Widget settingEntry(icon, text, settings, ColorScheme palette, updatePage, rawTe
     behavior: HitTestBehavior.translucent,
     onTap: () {
       HapticFeedback.lightImpact();
-      showDialog<void>(
+      showDialog<String>(
         context: context,
         builder: (BuildContext context) {
           List<String> options = settingSwitches[rawText] ?? [""];
@@ -219,10 +219,7 @@ Widget settingEntry(icon, text, settings, ColorScheme palette, updatePage, rawTe
                                 activeColor: palette.primary,
                                 onChanged: (String? value) {
                                   HapticFeedback.lightImpact();
-                                  Navigator.pop(context);
-                                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                                    updatePage(rawText, value);
-                                  });
+                                  Navigator.pop(context, value);
                                 },
                               ),
                               comfortatext(options[index], 18, settings, color: palette.onSurface)
@@ -237,7 +234,11 @@ Widget settingEntry(icon, text, settings, ColorScheme palette, updatePage, rawTe
             ),
           );
         }
-      );
+      ).then((selectedValue) {
+        if (selectedValue != null) {
+          updatePage(rawText, selectedValue);
+        }
+      });
     },
     child: Padding(
       padding: const EdgeInsets.only(top: 14, bottom: 14),

@@ -560,7 +560,7 @@ class ErrorPage extends StatelessWidget {
                 ),
                 MySearchParent(updateLocation: updateLocation,
                   palette: palette, place: place, settings: settings, image: image,
-                isTabletMode: false,) //TODO: add logic to determine if it's tablet
+                isTabletMode: false,)
               ],
             )
         ),
