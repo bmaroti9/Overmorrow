@@ -370,5 +370,9 @@
   "showMore": "عرض المزيد",
   "@showMore": {},
   "showLess": "عرض القليل",
-  "@showLess": {}
+  "@showLess": {},
+  "tomorrowLowercase": "غدا",
+  "@tomorrowLowercase": {},
+  "overmorrowLowercase": "بعد غد",
+  "@overmorrowLowercase": {}
 }
