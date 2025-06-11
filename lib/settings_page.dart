@@ -219,8 +219,10 @@ Widget settingEntry(icon, text, settings, ColorScheme palette, updatePage, rawTe
                                 activeColor: palette.primary,
                                 onChanged: (String? value) {
                                   HapticFeedback.lightImpact();
-                                  updatePage(rawText, value);
                                   Navigator.pop(context);
+                                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                                    updatePage(rawText, value);
+                                  });
                                 },
                               ),
                               comfortatext(options[index], 18, settings, color: palette.onSurface)

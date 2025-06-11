@@ -155,7 +155,6 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   String region = "-";
 
   Timer? _debounce;
-  late FocusNode focusNode;
 
   _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
@@ -200,22 +199,38 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   findCurrentPosition() async {
 
     Position position;
+
+    //start by getting the last position, so there is always some place showing, and then update it later
+    try {
+      position = (await Geolocator.getLastKnownPosition())!;
+
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          position.latitude, position.longitude);
+      Placemark place = placemarks[0];
+
+      setState(() {
+        placeName = place.locality ?? "";
+        country = place.isoCountryCode ?? "";
+        region = place.administrativeArea ?? "";
+        locationState = "enabled";
+      });
+    } on Error {
+      //the first fetch didn't work so we move on to try to find the device's current location
+      //this would happen anyway of course though
+    }
+
     try {
       position = await Geolocator.getCurrentPosition(
           locationSettings: AndroidSettings(accuracy: LocationAccuracy.medium,
               timeLimit: const Duration(seconds: 20)
           )
       );
-    } on TimeoutException {
-      try {
-        position = (await Geolocator.getLastKnownPosition())!;
     } on Error {
       setState(() {
         locationState = "disabled";
         locationMessage = AppLocalizations.of(context)!.unableToLocateDevice;
       });
       return "disabled";
-    }
     } on LocationServiceDisabledException {
       setState(() {
         locationState = "disabled";
@@ -310,14 +325,6 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   void initState() {
     super.initState();
 
-    //this is to fix the wierd hero textField interaction
-    //https://github.com/flutter/flutter/issues/106789
-    focusNode = FocusNode();
-    if (!isTabletMode) {
-      Future.delayed(const Duration(milliseconds: 400), () {
-        focusNode.requestFocus();
-      });
-    }
     WidgetsBinding.instance.addPostFrameCallback((_){
       checkIflocationState().then((x) {
         if (x == "enabled") {
@@ -327,13 +334,6 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
         }
       });
     });
-  }
-
-  @override
-  void dispose() {
-    focusNode.dispose();
-    _debounce?.cancel();
-    super.dispose();
   }
 
   @override
@@ -405,7 +405,6 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                         ),
                       ),
                       child: TextField(
-                        focusNode: focusNode,
                         autofocus: false,
                         onChanged: (String to) async{
                           setState(() {
@@ -656,7 +655,7 @@ Widget CurrentLocationWidget(settings, locationState, locationMessage, ColorSche
       child: Container(
         margin: const EdgeInsets.only(top: 20, bottom: 30),
         padding: const EdgeInsets.only(
-            left: 25, right: 25, top: 20, bottom: 20),
+            left: 25, right: 25, top: 23, bottom: 23),
         height: 66,
         decoration: BoxDecoration(
           color: palette.primaryFixedDim,

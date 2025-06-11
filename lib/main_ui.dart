@@ -100,7 +100,7 @@ class ParrallaxBackground extends StatelessWidget {
 
 Widget Circles(var data, double bottom, context, ColorScheme palette) {
   return Padding(
-      padding: const EdgeInsets.only(left: 19.5, right: 19.5, bottom: 13, top: 2),
+      padding: const EdgeInsets.only(left: 20.5, right: 20.5, bottom: 13, top: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
           children: [
