@@ -256,10 +256,11 @@ packages:
   geolocator_android:
     dependency: "direct overridden"
     description:
-      name: geolocator_android
-      sha256: fcb1760a50d7500deca37c9a666785c047139b5f9ee15aa5469fae7dbbe3170d
-      url: "https://pub.dev"
-    source: hosted
+      path: geolocator_android
+      ref: floss
+      resolved-ref: e3991f9e63514933e96b57a8f839ad6511c4afc2
+      url: "https://github.com/Zverik/flutter-geolocator.git"
+    source: git
     version: "4.6.2"
   geolocator_apple:
     dependency: transitive
