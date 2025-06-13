@@ -1,46 +1,21 @@
-![page48](Screenshots/weather_clean_purple.png)
-
-<h1 align="center">overmorrow</h1>
+![page48](Screenshots/overmorrow_green_github.png)
 
 <div align="center">
-  <img alt="GitHub License" src="https://img.shields.io/github/license/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF8F9&color=%23F0BD48">
- <img alt="GitHub Release" src="https://img.shields.io/github/v/release/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF8F9&color=%235AB8D8">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/bmaroti9/Overmorrow?style=flat-square&labelColor=%23F9FAEF&color=%2398B1B7">
+ <img alt="GitHub Release" src="https://img.shields.io/github/v/release/bmaroti9/Overmorrow?style=flat-square&labelColor=%23F9FAEF&color=%23B2D189">
   <img alt="GitHub Downloads (all assets, all releases)" 
-  src="https://img.shields.io/github/downloads/bmaroti9/Overmorrow/total?style=flat-square&labelColor=%23FFF8F9&color=%23915C7F">
-
+  src="https://img.shields.io/github/downloads/bmaroti9/Overmorrow/total?style=flat-square&labelColor=%23F9FAEF&color=%23946E57">
+  
   <img alt="GitHub Downloads (all assets, all releases)"
-  src="https://img.shields.io/github/stars/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF8F9&color=%23D37D7C">
-  <img alt="GitHub Release" src="https://img.shields.io/github/forks/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF8F9&color=%23726B85">
+  src="https://img.shields.io/github/stars/bmaroti9/Overmorrow?style=flat-square&labelColor=%23F9FAEF&color=%233F4B4B">
+  <img alt="GitHub Release" src="https://img.shields.io/github/forks/bmaroti9/Overmorrow?style=flat-square&labelColor=%23F9FAEF&color=%236C8490">
 </a>
 
-minimalist colorful weather app
+<h4 align="center">modern material design weather app</h4>
 
 </div>
 
-## Features
-  - weather images from unsplash
-  - offline mode
-  - no ads
-  - current weather
-  - sunrise sunset times
-  - local time
-  - 15 minute precip info
-  - air quality
-  - small and fullscreen radar
-  - 3 days of detailed weather
-  - 14 day forecast
-  - 3 weather providers
-  - material you theme
-  - 5 color themes
-
-
-## Weather providers
-- [open-meteo](https://open-meteo.com)
-- [weatherapi.com](https://www.weatherapi.com)
-- [met-norway](https://api.met.no/)
-- [rainvewer](https://www.rainviewer.com/api.html)
-
-## Download
+## ⬇️ Download
 
 <div align="left">
     <a href="https://play.google.com/store/apps/details?id=com.marotidev.Overmorrow">
@@ -51,36 +26,88 @@ minimalist colorful weather app
 </a>
 </div>
 
-## Screenshots
 
-<div align="left">
-<img src="Screenshots/overmorrow_evolved1.png" alt="colorful2" width="150">
-<img src="Screenshots/overmorrow_evolved2.png" alt="colorful1" width="150">
-<img src="Screenshots/overmorrow_evolved3.png" alt="colorful3" width="150">
-<img src="Screenshots/overmorrow_evolved4.png" alt="colorful4" width="150">
-<img src="Screenshots/overmorrow_evolved5.png" alt="colorful5" width="150">
-<img src="Screenshots/overmorrow_evolved6.png" alt="colorful5" width="150">
-</div>
+## 🎉 Features
+-  **🖼️ Beautiful weather images**  
+  *The weather images seamlessly adapt to your current weather condition*
+-  **📡 Full screen precipitation radar**  
+  *Track storms in real-time, with 20 minutes of future forecast*
+-  **🗓️ 14 day forecast**  
+  *Plan your days ahead easily with 14 days of forecast*
+-  **🍃 Dedicated Air quality page**  
+  *Track pollen, air pollutants, dust, and more, with 5 days of aqi forecast*  
+-  **☔ 15 minute rain trend**  
+  *See the overview of the precipitation in the next 6 hours in 15 minute intervals*  
+-  **🗃️ 3 different weather providers**  
+  *Choose the weather source that you find best*
+-  **🛜 Offline mode**  
+  *See previously loaded data, when offline*
+-  **📢 Weather alerts**  
+  *Get notified about upcoming storms, floods, and severe weather alerts*
+-  **⏳ Current conditions**  
+  *Check the current temperature, feels like, wind speed, humidity and more*  
+-  **🕒 72 hour forecast**  
+  *Track the temperature, precipitation chance, wind-speed, uv and more for the next 72 hours*
+-  **🌅 Sunrise/sunset times**  
+  *Know the time when the sun will rise and set*
+-  **⭐ Favorite places**  
+  *Save your favorite cities, to always have them just a tap away*   
+-  **🔳 Tablet mode**  
+  *The app automatically adapts to your device's form factor to always utilize all the screen space*      
+-  **✏️ Customization**  
+  *Customize app colors, image source, and layout to your liking*   
 
-## Tablet mode
+## 📸 Screenshots
 
-<div align="left">
-<img src="Screenshots/overmorrow_evolved_tablet1.png" alt="colorful2" width="380">
-<img src="Screenshots/overmorrow_evolved_tablet2.png" alt="colorful1" width="380">
-</div>
+### Phone
 
-## Why make Overmorrow?
+<p align="center" width="100%">
+  <img src="Screenshots/overmorrow_green_play_1.png" width="30%">
+  <img src="Screenshots/overmorrow_green_play_2.png" width="30%">
+  <img src="Screenshots/overmorrow_green_play_3.png" width="30%">
+  <img src="Screenshots/overmorrow_green_play_4.png" width="30%">
+  <img src="Screenshots/overmorrow_green_play_5.png" width="30%">
+  <img src="Screenshots/overmorrow_green_play_6.png" width="30%">
+</p>
+
+
+### Tablet
+
+<p align="center" width="100%">
+  <img src="Screenshots/overmorrow_green_tablet_1.png" width="90%">
+  <img src="Screenshots/overmorrow_green_tablet_2.png" width="90%">
+</p>
+
+
+<br>
+
+## 🌐 Localization
+Localizations are hosted on [Weblate](https://hosted.weblate.org/engage/overmorrow-weather/). Translations are welcome!
+
+<img src="https://hosted.weblate.org/widget/overmorrow-weather/horizontal-auto.svg" alt="Translation status" />
+
+
+## 🌤️ Weather providers
+- [open-meteo](https://open-meteo.com)
+- [weatherapi.com](https://www.weatherapi.com)
+- [met-norway](https://api.met.no/)
+- [rainvewer](https://www.rainviewer.com/api.html)
+
+
+## ❓ Why make Overmorrow?
 I am 16 and i have been programing since the age of 7. I started small (Scratch and NetsBlox) 
 went to Python... and then to Flutter. This is my first ever project that can actually be downloaded by anyone. So I hope you like it!
 
 I have always wanted to make a weather app. At first the concept was just to make an app that 
 is free and ad free, but after diving into the whole thing i realized that i wouldn't be the first to do that. 
-So instead here is my take on the weather app ui (but i did kep it free and ad free too). I tried to go for a minimalist and organized interface. 
+So instead here is my take on the weather app ui (but i did kep it free and ad free too). I tried to go for a minimalist and organized interface... 
 
-## Localization
-Localizations are hosted on [Weblate](https://hosted.weblate.org/engage/overmorrow-weather/). Translations are welcome!
+That was a year ago. Since then i have discovered material-You and have redesigned the app twice to try to follow the design guidelines, because I think it looks awesome.
 
-<img src="https://hosted.weblate.org/widget/overmorrow-weather/horizontal-auto.svg" alt="Translation status" />
+## 🛠️ Built with
+- 💙 **Flutter** — Cross-platform UI toolkit for building natively compiled apps for mobile, web, and desktop from a single codebase.
+- 🎨 **Material You** — Google's 3rd generation design system, introduced in android 12
+
 
 ## Milestones:
   - ✅ Add place searching
@@ -88,9 +115,10 @@ Localizations are hosted on [Weblate](https://hosted.weblate.org/engage/overmorr
   - ✅ Add air quality
   - ✅ Add sunrise sunset
   - ✅ Add translations
-  - ✅ 14 day forecast 
-  - ✅ Settings/Info/Donate pages
-  - ✅ Tablet mode
-  - ✅ more than one weather provider
-  - ✅ add network images
-  - ✅ material you
+  - ✅ Add settings page
+  - ✅ Add tablet mode
+  - ✅ Add more weather providers
+  - ✅ Add network images
+  - ✅ Implement Material-You 
+  - ✅ Add offline mode
+  - ✅ Add layout customisation
