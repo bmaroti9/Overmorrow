@@ -20,17 +20,18 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'dart:ui';
 
-import '../Icons/overmorrow_weather_icons_icons.dart';
+import 'package:overmorrow/decoders/decode_OM.dart';
+import 'package:overmorrow/services/image_service.dart';
+
+import '../Icons/overmorrow_weather_icons3_icons.dart';
 import '../api_key.dart';
 import '../caching.dart';
-import '../settings_page.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../services/color_service.dart';
+import '../l10n/app_localizations.dart';
 
 import '../weather_refact.dart' as weather_refactor;
 import '../weather_refact.dart';
-import 'decode_OM.dart';
 import 'extra_info.dart';
 
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
     'aqi': 'yes',
     'alerts': 'yes',
   };
-  final url = Uri.http('api.weatherapi.com', 'v1/forecast.json', params);
+  final url = Uri.https('api.weatherapi.com', 'v1/forecast.json', params);
   
   //var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
   //    .timeout(const Duration(seconds: 3));
@@ -166,7 +167,7 @@ Future<DateTime> WapiGetLocalTime(lat, lng) async {
     'format': 'json',
     'by': 'position'
   };
-  final url = Uri.http('api.timezonedb.com', 'v2.1/get-time-zone', params);
+  final url = Uri.https('api.timezonedb.com', 'v2.1/get-time-zone', params);
   var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng timezonedb.com");
   var response = await file[0].readAsString();
   var body = jsonDecode(response);
@@ -177,6 +178,7 @@ Future<DateTime> WapiGetLocalTime(lat, lng) async {
 double unit_coversion(double value, String unit) {
   List<double> p = weather_refactor.conversionTable[unit] ?? [0, 0];
   double a = p[0] + value * p[1];
+  a = double.parse(a.toStringAsFixed(2));
   return a;
 }
 
@@ -192,7 +194,7 @@ double temp_multiply_for_scale(int temp, String unit) {
 IconData iconCorrection(name, isday, localizations) {
   String text = textCorrection(name, isday, false, localizations);
   //String p = weather_refactor.textIconMap[text] ?? 'clear_night.png';
-  return textMaterialIcon[text] ?? OvermorrowWeatherIcons.sun2;
+  return textMaterialIcon[text] ?? OvermorrowWeatherIcons3.clear_sky;
 }
 
 String getTime(date, bool ampm) {
@@ -221,13 +223,21 @@ String getTime(date, bool ampm) {
    }
 }
 
-String getName(index, settings, localizations) {
-  List<String> names = [
-    localizations.today,
-    localizations.tomorrow,
-    localizations.overmorrow,
+String wapiGetName(index, settings, localizations, item) {
+  DateTime time = DateTime.parse(item["date"]);
+  List<String> weeks = [
+    localizations.mon,
+    localizations.tue,
+    localizations.wed,
+    localizations.thu,
+    localizations.fri,
+    localizations.sat,
+    localizations.sun
   ];
-  return names[index];
+  String weekname = weeks[time.weekday - 1];
+  final String date = settings["Date format"] == "mm/dd" ? "${time.month}/${time.day}"
+      :"${time.day}/${time.month}";
+  return "$weekname, $date";
 }
 
 String backdropCorrection(name, isday, localizations) {
@@ -273,31 +283,11 @@ class WapiCurrent {
   final int wind;
   final int wind_dir;
 
-  final Color surface;
-  final Color primary;
-  final Color primaryLight;
-  final Color primaryLighter;
-  final Color onSurface;
-  final Color outline;
-  final Color containerLow;
-  final Color container;
-  final Color containerHigh;
+  final ImageService imageService;
+
+  final ColorScheme palette;
   final Color colorPop;
   final Color descColor;
-  final Color surfaceVariant;
-  final Color onPrimaryLight;
-  final Color primarySecond;
-
-  final Color backup_primary;
-  final Color backup_backcolor;
-
-  final Image image;
-
-  final String photographerName;
-  final String photographerUrl;
-  final String photoUrl;
-
-  final List<Color> imageDebugColors;
 
   const WapiCurrent({
     required this.precip,
@@ -307,120 +297,37 @@ class WapiCurrent {
     required this.text,
     required this.uv,
     required this.wind,
-    required this.backup_backcolor,
-    required this.backup_primary,
     required this.wind_dir,
 
-    required this.surface,
-    required this.primary,
-    required this.primaryLight,
-    required this.primaryLighter,
-    required this.onSurface,
-    required this.outline,
-    required this.containerLow,
-    required this.container,
-    required this.containerHigh,
+    required this.imageService,
+
+    required this.palette,
     required this.colorPop,
     required this.descColor,
-    required this.surfaceVariant,
-    required this.onPrimaryLight,
-    required this.primarySecond,
-
-    required this.image,
-    required this.photographerName,
-    required this.photographerUrl,
-    required this.photoUrl,
-    required this.imageDebugColors,
   });
 
   static Future<WapiCurrent> fromJson(item, settings, real_loc, lat, lng, start, localizations) async {
 
-    Image Uimage;
 
-    String photographerName = "";
-    String photographerUrl = "";
-    String photoLink = "";
-
-    if (settings["Image source"] == "network") {
-      try {
-        final text = textCorrection(
-            item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
-            false, localizations
-        );
-        final ImageData = await getUnsplashImage(text, real_loc, lat, lng);
-        Uimage = ImageData[0];
-        photographerName = ImageData[1];
-        photographerUrl = ImageData[2];
-        photoLink = ImageData[3];
-      }
-      //fallback to asset image when condition changed and there is no image for the new one
-      catch(e) {
-        String imagePath = backdropCorrection(
-            item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"], localizations
-        );
-        Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
-          width: double.infinity, height: double.infinity,);
-
-        List<String> credits = assetImageCredit(textCorrection(
-            item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
-            false, localizations));
-        photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
-      }
-    }
-    else {
-      String imagePath = backdropCorrection(
-          item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"], localizations
-      );
-      Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
-        width: double.infinity, height: double.infinity,);
-
-      List<String> credits = assetImageCredit(textCorrection(
-          item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"], false, localizations));
-      photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
-    }
-
-    Color back = BackColorCorrection(
-      textCorrection(
-        item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"], false, localizations
-      ),
+    final currentCondition = textCorrection(
+        item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
+        false, localizations
     );
 
-    Color primary = PrimaryColorCorrection(
-        textCorrection(
-          item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"], false, localizations
-        )
-    );
-
-    List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
-    List<Color> colors = x[0];
-    List<Color> imageDebugColors = x[1];
+    ImageService imageService = await ImageService.getImageService(currentCondition, real_loc, settings);
+    ColorPalette colorPalette = await ColorPalette.getColorPalette(imageService.image, settings["Color mode"], settings);
 
     return WapiCurrent(
+      imageService: imageService,
 
-      surface: colors[0],
-      primary: colors[1],
-      primaryLight: colors[2],
-      primaryLighter: colors[3],
-      onSurface: colors[4],
-      outline: colors[5],
-      containerLow: colors[6],
-      container: colors[7],
-      containerHigh: colors[8],
-      surfaceVariant: colors[9],
-      onPrimaryLight: colors[10],
-      primarySecond: colors[11],
-
-      colorPop: colors[12],
-      descColor: colors[13],
-
-      backup_backcolor: back,
-      backup_primary: primary,
+      palette: colorPalette.palette,
+      colorPop: colorPalette.colorPop,
+      descColor: colorPalette.descColor,
 
       text: textCorrection(
           item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
           true, localizations,
       ),
-      image: Uimage,
       temp: unit_coversion(item["hour"][start]["temp_c"], settings["Temperature"])
           .round(),
       feels_like: unit_coversion(
@@ -434,11 +341,6 @@ class WapiCurrent {
       wind: unit_coversion(item["hour"][start]["wind_kph"], settings["Wind"])
           .round(),
       wind_dir: item["hour"][start]["wind_degree"],
-
-      photographerName: photographerName,
-      photographerUrl: photographerUrl,
-      photoUrl: photoLink,
-      imageDebugColors: imageDebugColors,
     );
   }
 }
@@ -446,9 +348,13 @@ class WapiCurrent {
 class WapiDay {
   final String text;
   final IconData icon;
-  final double iconSize;
   final String name;
-  final String minmaxtemp;
+
+  final int minTemp;
+  final int maxTemp;
+  final double rawMinTemp; //the unconverted numbers used for charts
+  final double rawMaxTemp;
+
   final List<WapiHour> hourly;
   final List<WapiHour> hourly_for_precip;
 
@@ -463,9 +369,13 @@ class WapiDay {
   const WapiDay({
     required this.text,
     required this.icon,
-    required this.iconSize,
     required this.name,
-    required this.minmaxtemp,
+
+    required this.minTemp,
+    required this.maxTemp,
+    required this.rawMinTemp,
+    required this.rawMaxTemp,
+
     required this.hourly,
     required this.uv,
 
@@ -484,12 +394,13 @@ class WapiDay {
     icon: iconCorrection(
         item["day"]["condition"]["code"], 1, localizations,
     ),
-    iconSize: oMIconSizeCorrection(textCorrection(
-        item["day"]["condition"]["code"], 1, false, localizations,
-    ),),
-    name: getName(index, settings, localizations),
-    minmaxtemp: '${unit_coversion(item["day"]["maxtemp_c"], settings["Temperature"]).round()}°'
-        '/${unit_coversion(item["day"]["mintemp_c"], settings["Temperature"]).round()}°',
+    name: wapiGetName(index, settings, localizations, item),
+
+    minTemp: unit_coversion(item["day"]["mintemp_c"], settings["Temperature"]).round(),
+    maxTemp: unit_coversion(item["day"]["maxtemp_c"], settings["Temperature"]).round(),
+
+    rawMinTemp: item["day"]["mintemp_c"],
+    rawMaxTemp: item["day"]["maxtemp_c"],
 
     hourly: buildWapiHour(item["hour"], settings, index, approximatelocal, true, localizations),
     hourly_for_precip: buildWapiHour(item["hour"], settings, index, approximatelocal, false, localizations),
@@ -519,7 +430,6 @@ class WapiHour {
   final int temp;
 
   final IconData icon;
-  final double iconSize;
 
   final String time;
   final String text;
@@ -527,6 +437,7 @@ class WapiHour {
   final int precip_prob;
   final double wind;
   final int wind_dir;
+  final int wind_gusts;
   final int uv;
 
   final double raw_temp;
@@ -534,21 +445,21 @@ class WapiHour {
   final double raw_wind;
 
   const WapiHour(
-      {
-        required this.temp,
-        required this.time,
-        required this.icon,
-        required this.text,
-        required this.precip,
-        required this.wind,
-        required this.iconSize,
-        required this.raw_precip,
-        required this.raw_temp,
-        required this.raw_wind,
-        required this.wind_dir,
-        required this.uv,
-        required this.precip_prob,
-      });
+    {
+      required this.temp,
+      required this.time,
+      required this.icon,
+      required this.text,
+      required this.precip,
+      required this.wind,
+      required this.raw_precip,
+      required this.raw_temp,
+      required this.raw_wind,
+      required this.wind_dir,
+      required this.wind_gusts,
+      required this.uv,
+      required this.precip_prob,
+    });
 
   static WapiHour fromJson(item, settings, localizations) => WapiHour(
     text: textCorrection(
@@ -557,9 +468,6 @@ class WapiHour {
     icon: iconCorrection(
         item["condition"]["code"], item["is_day"], localizations
     ),
-    iconSize: oMIconSizeCorrection(textCorrection(
-        item["condition"]["code"], item["is_day"], false, localizations,
-    ),),
     temp: unit_coversion(item["temp_c"], settings["Temperature"]).round(),
     time: getTime(item["time"], settings["Time mode"] == '12 hour'),
     precip: double.parse(
@@ -571,6 +479,7 @@ class WapiHour {
     raw_wind: item["wind_kph"],
 
     wind: double.parse(unit_coversion(item["wind_kph"], settings["Wind"]).toStringAsFixed(1)),
+    wind_gusts: unit_coversion(item["gust_kph"], settings["Wind"]).round(),
 
     precip_prob: max(item["chance_of_rain"], item["chance_of_snow"]),
     uv: item["uv"].round(),
@@ -608,18 +517,10 @@ class WapiSunstatus {
 
 class WapiAqi {
   final int aqi_index;
-  final double pm2_5;
-  final double pm10;
-  final double o3;
-  final double no2;
   final String aqi_title;
   final String aqi_desc;
 
   const WapiAqi({
-    required this.no2,
-    required this.o3,
-    required this.pm2_5,
-    required this.pm10,
     required this.aqi_index,
     required this.aqi_desc,
     required this.aqi_title,
@@ -627,10 +528,6 @@ class WapiAqi {
 
   static WapiAqi fromJson(item) => WapiAqi(
     aqi_index: item["current"]["air_quality"]["us-epa-index"],
-    pm10: double.parse(item["current"]["air_quality"]["pm10"].toStringAsFixed(1)),
-    pm2_5: double.parse(item["current"]["air_quality"]["pm2_5"].toStringAsFixed(1)),
-    o3: double.parse(item["current"]["air_quality"]["o3"].toStringAsFixed(1)),
-    no2: double.parse(item["current"]["air_quality"]["no2"].toStringAsFixed(1)),
 
     aqi_title: ['good', 'fair', 'moderate', 'poor', 'very poor', 'unhealthy']
     [item["current"]["air_quality"]["us-epa-index"] - 1],
@@ -670,8 +567,16 @@ class WapiAlert {
   });
 
   static WapiAlert fromJson(item, localizations) {
-    final DateTime start = DateTime.parse(item["effective"]);
-    final DateTime end = DateTime.parse(item["expires"]);
+
+    DateTime start = DateTime.now();
+    DateTime end = DateTime.now();
+
+    try {
+      start = DateTime.parse(item["effective"]);
+      end = DateTime.parse(item["expires"]);
+    } on FormatException {
+      print("no format");
+    }
 
     List<String> weeks = [
       localizations.mon,
@@ -838,10 +743,23 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName, 
       DateTime(localtime.year, localtime.month, localtime.day, localtime.hour, localtime.minute));
 
   List<WapiDay> days = [];
+  List<dynamic> hourly72 = [];
 
   for (int n = 0; n < wapi_body["forecast"]["forecastday"].length; n++) {
-    days.add(WapiDay.fromJson(
-        wapi_body["forecast"]["forecastday"][n], n, settings, approximateLocal, localizations));
+    WapiDay day = WapiDay.fromJson(
+        wapi_body["forecast"]["forecastday"][n], n, settings, approximateLocal, localizations);
+    days.add(day);
+
+    if (hourly72.length < 72) {
+      if (n != 0) {
+        hourly72.add(day.name);
+      }
+      for (int z = 0; z < day.hourly.length; z++) {
+        if (hourly72.length < 72) {
+          hourly72.add(day.hourly[z]);
+        }
+      }
+    }
   }
 
   return WeatherData(
@@ -853,12 +771,16 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName, 
     lat: lat,
     lng: lng,
 
+    hourly72: hourly72,
+
     current: await WapiCurrent.fromJson(wapi_body["forecast"]["forecastday"][0], settings,
         real_loc, lat, lng, start, localizations),
     days: days,
     sunstatus: sunstatus,
     aqi: WapiAqi.fromJson(wapi_body),
     radar: await RainviewerRadar.getData(),
+
+    dailyMinMaxTemp: omGetMaxMinTempForDaily(days),
 
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),

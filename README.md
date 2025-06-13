@@ -70,7 +70,7 @@ minimalist colorful weather app
 </div>
 
 ## Why make Overmorrow?
-I am 15 and i have been programing since the age of 7. I started small (Scratch and NetsBlox) 
+I am 16 and i have been programing since the age of 7. I started small (Scratch and NetsBlox) 
 went to Python... and then to Flutter. This is my first ever project that can actually be downloaded by anyone. So I hope you like it!
 
 I have always wanted to make a weather app. At first the concept was just to make an app that 

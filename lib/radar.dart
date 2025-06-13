@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +25,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 import 'decoders/decode_OM.dart';
 
@@ -112,6 +111,7 @@ class _RadarSmallState extends State<RadarSmall> {
   @override
   Widget build(BuildContext context) {
 
+    ColorScheme palette = data.current.palette;
     String mode = data.settings["Color mode"];
 
     if (mode == "auto") {
@@ -122,31 +122,31 @@ class _RadarSmallState extends State<RadarSmall> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 25),
+          padding: const EdgeInsets.only(left: 25, top: 15),
           child: Align(
             alignment: Alignment.centerLeft,
             child: comfortatext(
-                AppLocalizations.of(context)!.radar, 16,
+                AppLocalizations.of(context)!.radar, 17,
                 data.settings,
-                color: data.current.onSurface),
+                color: palette.onSurface),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(
-              left: 25, right: 25, top: 12, bottom: 10,),
+              left: 23, right: 23, top: 14, bottom: 10,),
           child: AspectRatio(
-            aspectRatio: 1.57,
+            aspectRatio: 1.65,
             child: Container(
               decoration: BoxDecoration(
-                  color: data.current.surface,
-                  borderRadius: BorderRadius.circular(18),
+                  color: palette.surface,
+                  borderRadius: BorderRadius.circular(33),
                   border: Border.all(
-                      width: 2.5, color: data.current.containerHigh)
+                      width: 2, color: palette.outlineVariant)
               ),
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(31),
                     child: (data.isonline) ? FlutterMap(
                       options: MapOptions(
                         onTap: (tapPosition, point) =>
@@ -181,31 +181,34 @@ class _RadarSmallState extends State<RadarSmall> {
                         ),
                         TileLayer(
                           urlTemplate: data.radar.images[currentFrameIndex
-                              .toInt()] + "/256/{z}/{x}/{y}/8/0_1.png",
+                              .toInt()] + "/256/{z}/{x}/{y}/2/1_1.png",
+                          //whoah i didn't know that the radar stuttering was because of a fading animation
+                          //this makes it so much more fluid, because there is no fade between frames
+                          tileDisplay: const TileDisplay.instantaneous(),
                         ),
                       ],
                     )
                     : Center(
-                        child: comfortatext("not available offline", 15, data.settings, color: data.current.outline)
+                        child: comfortatext("not available offline", 15, data.settings, color: palette.outline)
                     )
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 8, top: 8),
+                    padding: const EdgeInsets.only(right: 10, top: 10),
                     child: Align(
                       alignment: Alignment.topRight,
                       child: Hero(
                         tag: 'switch',
                         child: SizedBox(
-                          height: 48,
-                          width: 48,
+                          height: 55,
+                          width: 55,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(10),
                               elevation: 0.0,
-                              backgroundColor: data.current.container,
+                              backgroundColor: palette.secondaryContainer,
                               //side: BorderSide(width: 3, color: main),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)
+                                  borderRadius: BorderRadius.circular(19)
                               ),
                             ),
                             onPressed: () {
@@ -219,8 +222,8 @@ class _RadarSmallState extends State<RadarSmall> {
                                     RadarBig(data: data,)),
                               );
                             },
-                            child: Icon(CupertinoIcons.fullscreen,
-                              color: data.current.primaryLight, size: 20,),
+                            child: Icon(Icons.open_in_full,
+                              color: palette.onSecondaryContainer, size: 20,),
                           ),
                         ),
                       ),
@@ -232,7 +235,7 @@ class _RadarSmallState extends State<RadarSmall> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 38, right: 25, bottom: 50, top: 10),
+          padding: const EdgeInsets.only(left: 34, right: 44, bottom: 25, top: 5),
           child: Row(
             children: [
               AnimatedSwitcher(
@@ -244,16 +247,16 @@ class _RadarSmallState extends State<RadarSmall> {
                   tag: 'playpause',
                   key: ValueKey<bool>(isPlaying),
                   child: SizedBox(
-                    height: 48,
-                    width: 48,
+                    height: 58,
+                    width: 58,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           elevation: 0.0,
                           padding: const EdgeInsets.all(10),
-                          backgroundColor: data.current.container,
+                          backgroundColor: palette.secondaryContainer,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            //side: BorderSide(width: 2, color: data.current.primaryLighter)
+                              borderRadius: BorderRadius.circular(30),
+                            //side: BorderSide(width: 2, color: palette.primaryLighter)
                           )
                       ),
                       onPressed: () async {
@@ -261,7 +264,7 @@ class _RadarSmallState extends State<RadarSmall> {
                         togglePlayPause();
                       },
                       child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
-                        color: data.current.primaryLight, size: 18,),
+                        color: palette.onSecondaryContainer, size: 18,),
 
                     ),
                   ),
@@ -269,81 +272,47 @@ class _RadarSmallState extends State<RadarSmall> {
               ),
 
               Expanded(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      child: SliderTheme(
-                        data: SliderTheme.of(context).copyWith(
-                          trackHeight: 18,
-                          valueIndicatorTextStyle: GoogleFonts.comfortaa(
-                            color: data.current.onPrimaryLight,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-
-                          thumbShape: const RoundSliderThumbShape(
-                              enabledThumbRadius: 10, elevation: 0.0,
-                              pressedElevation: 0),
-
-                          tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 2),
-                          overlayShape: SliderComponentShape.noOverlay
-
+                child: Hero(
+                  tag: "sliderTag",
+                  child: Material(
+                    color: palette.surface,
+                    child: SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        trackHeight: 19,
+                        valueIndicatorColor: palette.inverseSurface,
+                        thumbColor: palette.secondary,
+                        activeTrackColor: palette.secondary,
+                        inactiveTrackColor: palette.secondaryContainer,
+                        inactiveTickMarkColor: palette.secondary,
+                        activeTickMarkColor: palette.surface,
+                        valueIndicatorTextStyle: GoogleFonts.outfit(
+                          color: palette.onInverseSurface,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
                         ),
-                        child: Slider(
-                          value: currentFrameIndex,
-                          min: 0,
-                          max: data.radar.times.length - 1.0,
-                          divisions: data.radar.times.length,
-                          label: times[currentFrameIndex.toInt()]
-                              .toString(),
-
-                          activeColor: data.current.primaryLighter,
-                          inactiveColor: data.current.surface,
-                          //thumbColor: data.current.primary,
-
-                          onChanged: (double value) {
-                            if (data.settings["Radar haptics"] == "on") {
-                              HapticFeedback.lightImpact();
-                            }
-                            setState(() {
-                              hasBeenPlayed = true;
-                              currentFrameIndex = value;
-                            });
-                          },
-                        ),
+                        year2023: false,
+                      ),
+                      child: Slider(
+                        value: currentFrameIndex,
+                        min: 0,
+                        max: data.radar.times.length - 1.0,
+                        divisions: data.radar.times.length,
+                        label: times[currentFrameIndex.toInt()].toString(),
+                    
+                        padding: const EdgeInsets.only(left: 15),
+                    
+                        onChanged: (double value) {
+                          if (data.settings["Radar haptics"] == "on") {
+                            HapticFeedback.lightImpact();
+                          }
+                          setState(() {
+                            hasBeenPlayed = true;
+                            currentFrameIndex = value;
+                          });
+                        },
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, right: 16, top: 9),
-                      child: Row(
-                        children: <Widget>[
-                          comfortatext('-2${AppLocalizations.of(context)!.hr}', 13, data.settings, color: data.current.onSurface),
-                          Expanded(
-                            flex: 6,
-                            child: Align(
-                                alignment: Alignment.centerRight,
-                                child: comfortatext('-1${AppLocalizations.of(context)!.hr}', 13, data.settings, color: data.current.onSurface)
-                            ),
-                          ),
-                          Expanded(
-                            flex: 6,
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: comfortatext(AppLocalizations.of(context)!.now, 13, data.settings, color: data.current.onSurface)
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Align(
-                                alignment: Alignment.centerRight,
-                                child: comfortatext(AppLocalizations.of(context)!.thirtyMinutes, 13, data.settings, color: data.current.onSurface)
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               ),
             ],
@@ -365,6 +334,14 @@ class RadarBig extends StatefulWidget {
 }
 
 class _RadarBigState extends State<RadarBig> {
+
+  final List<Color> radarColors = [
+    const Color(0xFF88ddee), const Color(0xFF0099cc), const Color(0xFF0077aa), const Color(0xFF005588),
+    const Color(0xFFffee00), const Color(0xFFffaa00), const Color(0xFFff7700),
+    const Color(0xFFff4400), const Color(0xFFee0000), const Color(0xFF990000),
+    const Color(0xFFffaaff), const Color(0xFFff77ff), const Color(0xFFff00ff),
+  ];
+
   double currentFrameIndex = 12;
   late Timer timer;
 
@@ -436,6 +413,8 @@ class _RadarBigState extends State<RadarBig> {
 
   @override
   Widget build(BuildContext context) {
+
+    ColorScheme palette = data.current.palette;
     double x = MediaQuery.of(context).padding.top;
 
     String mode = data.settings["Color mode"];
@@ -447,13 +426,13 @@ class _RadarBigState extends State<RadarBig> {
 
 
     return Scaffold(
-      backgroundColor: data.current.containerLow,
+      backgroundColor: palette.surface,
       body: Stack(
         children: [
           (data.isonline) ? FlutterMap(
             options: MapOptions(
               initialCenter: LatLng(data.lat, data.lng),
-              initialZoom: 5,
+              initialZoom: 6,
               minZoom: 2,
               maxZoom: 8,
 
@@ -470,7 +449,8 @@ class _RadarBigState extends State<RadarBig> {
                     : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
               ),
               TileLayer(
-                urlTemplate: data.radar.images[currentFrameIndex.toInt()] + "/256/{z}/{x}/{y}/8/1_1.png",
+                urlTemplate: data.radar.images[currentFrameIndex.toInt()] + "/256/{z}/{x}/{y}/2/1_1.png",
+                tileDisplay: const TileDisplay.instantaneous(),
               ),
               TileLayer(
                 urlTemplate: mode == "dark"
@@ -480,138 +460,142 @@ class _RadarBigState extends State<RadarBig> {
             ],
           )
           : Center(
-            child: comfortatext("not available offline", 15, data.settings, color: data.current.outline)
+            child: comfortatext("not available offline", 15, data.settings, color: palette.outline)
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, bottom: 25),
-              child: Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(18),
-                  color: data.current.surface,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 24, right: 12),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        transitionBuilder: (Widget child, Animation<double> animation) {
-                          return ScaleTransition(scale: animation, child: child,);
-                        },
-                        child: Hero(
-                          tag: 'playpause',
-                          key: ValueKey<bool>(isPlaying),
-                          child: SizedBox(
-                            height: 48,
-                            width: 48,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  elevation: 0.0,
-                                  padding: const EdgeInsets.all(10),
-                                  backgroundColor: data.current.container,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                    //side: BorderSide(width: 2, color: data.current.primaryLighter)
-                                  )
-                              ),
-                              onPressed: () async {
-                                HapticFeedback.selectionClick();
-                                togglePlayPause();
-                              },
-                              child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
-                                color: data.current.primaryLight, size: 18,),
 
-                            ),
+          Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 35),
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 450),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(13),
+                    margin: const EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                        color: palette.inverseSurface,
+                        borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        comfortatext(AppLocalizations.of(context)!.light, 16, data.settings, color: palette.onInverseSurface),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8, right: 8),
+                          child: Row(
+                              children: List<Widget>.generate(radarColors.length, (int index) {
+                                return Container(
+                                  width: 10,
+                                  height: 15,
+                                  decoration: BoxDecoration(
+                                      color: radarColors[index],
+                                      borderRadius: index == 0
+                                          ? const BorderRadius.only(topLeft: Radius.circular(7), bottomLeft: Radius.circular(7))
+                                          : index == (radarColors.length - 1)
+                                          ? const BorderRadius.only(topRight: Radius.circular(7), bottomRight: Radius.circular(7))
+                                          : BorderRadius.circular(0)
+
+                                  ),
+                                );
+                              })
                           ),
                         ),
-                      ),
-
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8, right: 8),
-                              child: SliderTheme(
-                                data: SliderTheme.of(context).copyWith(
-                                    trackHeight: 18,
-                                    valueIndicatorTextStyle: GoogleFonts.comfortaa(
-                                      color: data.current.onPrimaryLight,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-
-                                    thumbShape: const RoundSliderThumbShape(
-                                        enabledThumbRadius: 10, elevation: 0.0,
-                                        pressedElevation: 0),
-
-                                    tickMarkShape: const RoundSliderTickMarkShape(tickMarkRadius: 2),
-                                    overlayShape: SliderComponentShape.noOverlay,
-
-                                ),
-                                child: Slider(
-                                  value: currentFrameIndex,
-                                  min: 0,
-                                  max: data.radar.times.length - 1.0,
-                                  divisions: data.radar.times.length,
-                                  label: times[currentFrameIndex.toInt()]
-                                      .toString(),
-
-                                  activeColor: data.current.primaryLighter,
-                                  inactiveColor: data.current.surface,
-                                  //thumbColor: data.current.primary,
-
-                                  onChanged: (double value) {
-                                    if (data.settings["Radar haptics"] == "on") {
-                                      HapticFeedback.lightImpact();
-                                    }
-                                    setState(() {
-                                      hasBeenPlayed = true;
-                                      currentFrameIndex = value;
-                                    });
+                        comfortatext(AppLocalizations.of(context)!.heavy, 16, data.settings, color: palette.onInverseSurface),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: palette.surface,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(30),
+                      child: Row(
+                        children: [
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 200),
+                            transitionBuilder: (Widget child, Animation<double> animation) {
+                              return ScaleTransition(scale: animation, child: child,);
+                            },
+                            child: Hero(
+                              tag: 'playpause',
+                              key: ValueKey<bool>(isPlaying),
+                              child: SizedBox(
+                                height: 60,
+                                width: 60,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0.0,
+                                      padding: const EdgeInsets.all(10),
+                                      backgroundColor: palette.secondaryContainer,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        //side: BorderSide(width: 2, color: palette.primaryLighter)
+                                      )
+                                  ),
+                                  onPressed: () async {
+                                    HapticFeedback.selectionClick();
+                                    togglePlayPause();
                                   },
+                                  child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
+                                    color: palette.onSecondaryContainer, size: 18,),
+
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16, right: 16, top: 9),
-                              child: Row(
-                                children: <Widget>[
-                                  comfortatext('-2${AppLocalizations.of(context)!.hr}', 13, data.settings, color: data.current.onSurface),
-                                  Expanded(
-                                    flex: 6,
-                                    child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: comfortatext('-1${AppLocalizations.of(context)!.hr}', 13, data.settings, color: data.current.onSurface)
+                          ),
+                          Expanded(
+                            child: Hero(
+                              tag: "sliderTag",
+                              child: Material(
+                                color: palette.surface,
+                                child: SliderTheme(
+                                  data: SliderTheme.of(context).copyWith(
+                                    trackHeight: 19,
+                                    valueIndicatorColor: palette.inverseSurface,
+                                    thumbColor: palette.secondary,
+                                    activeTrackColor: palette.secondary,
+                                    inactiveTrackColor: palette.secondaryContainer,
+                                    inactiveTickMarkColor: palette.secondary,
+                                    activeTickMarkColor: palette.surface,
+                                    valueIndicatorTextStyle: GoogleFonts.outfit(
+                                      color: palette.onInverseSurface,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
                                     ),
+                                    year2023: false
                                   ),
-                                  Expanded(
-                                    flex: 6,
-                                    child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: comfortatext(AppLocalizations.of(context)!.now, 13, data.settings, color: data.current.onSurface)
-                                    ),
+                                  child: Slider(
+                                    value: currentFrameIndex,
+                                    min: 0,
+                                    max: data.radar.times.length - 1.0,
+                                    divisions: data.radar.times.length,
+                                    label: times[currentFrameIndex.toInt()].toString(),
+
+                                    padding: const EdgeInsets.only(left: 20, right: 5),
+
+                                    onChanged: (double value) {
+                                      if (data.settings["Radar haptics"] == "on") {
+                                        HapticFeedback.lightImpact();
+                                      }
+                                      setState(() {
+                                        hasBeenPlayed = true;
+                                        currentFrameIndex = value;
+                                      });
+                                    },
                                   ),
-                                  Expanded(
-                                    flex: 3,
-                                    child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: comfortatext(AppLocalizations.of(context)!.thirtyMinutes, 13, data.settings, color: data.current.onSurface)
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            )
-                          ],
-                        ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
@@ -622,16 +606,16 @@ class _RadarBigState extends State<RadarBig> {
               child: Hero(
                 tag: 'switch',
                 child: SizedBox(
-                  height: 52, //the big space looks ugly with a small button
-                  width: 52,
+                  height: 57,
+                  width: 57,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(10),
                       elevation: 0.0,
-                      backgroundColor: data.current.surface,
+                      backgroundColor: palette.secondaryContainer,
                       //side: BorderSide(width: 3, color: main),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)
+                          borderRadius: BorderRadius.circular(19)
                       ),
                     ),
                     onPressed: () {
@@ -641,8 +625,8 @@ class _RadarBigState extends State<RadarBig> {
                       });
                       Navigator.of(context).pop();
                     },
-                    child: Icon(CupertinoIcons.fullscreen_exit,
-                      color: data.current.primaryLight, size: 21,),
+                    child: Icon(Icons.close_fullscreen,
+                      color: palette.onSecondaryContainer, size: 21,),
                   ),
                 ),
               ),

@@ -20,27 +20,26 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/weather_refact.dart';
+import 'package:overmorrow/services/location_service.dart';
 import 'caching.dart';
 import 'decoders/extra_info.dart';
 import 'main_ui.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 import 'settings_page.dart';
 
 void main() {
-  //runApp(const MyApp());
-
   WidgetsFlutterBinding.ensureInitialized();
 
   final data = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
@@ -122,13 +121,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String _sanitizePlaceName(String input) {
+    final safe = input.replaceAll(RegExp(r'[^\w\s\-,]'), '').trim();
+    if (safe.isEmpty) return ''; // Handle empty input after sanitization
+    return safe.length > 100 ? safe.substring(0, 100) : safe;
+  }
+
   Future<Widget> getDays(bool recall, proposedLoc, backupName, startup) async {
     try {
 
       AppLocalizations localizations = AppLocalizations.of(context)!;
 
       Map<String, String> settings = await getSettingsUsed();
-      String weather_provider = await getWeatherProvider();
+      String weatherProvider = await getWeatherProvider();
+      backupName = _sanitizePlaceName(backupName);
 
       if (startup) {
         List<String> n = await getLastPlace();  //loads the last place you visited
@@ -146,22 +152,25 @@ class _HomePageState extends State<HomePage> {
           Position position;
           try {
             position = await Geolocator.getCurrentPosition(
-                desiredAccuracy: LocationAccuracy.medium, timeLimit: const Duration(seconds: 2));
+                locationSettings: AndroidSettings(accuracy: LocationAccuracy.medium,
+                    timeLimit: const Duration(seconds: 3)
+                )
+            );
           } on TimeoutException {
             try {
               position = (await Geolocator.getLastKnownPosition())!;
             } on Error {
-              return dumbySearch(errorMessage: localizations.unableToLocateDevice,
+              return ErrorPage(errorMessage: localizations.unableToLocateDevice,
                   updateLocation: updateLocation,
                   icon: Icons.gps_off,
                   place: backupName,
-                  settings: settings, provider: weather_provider, latlng: absoluteProposed);
+                  settings: settings, provider: weatherProvider, latlng: absoluteProposed);
             }
           } on LocationServiceDisabledException {
-            return dumbySearch(errorMessage: localizations.locationServicesAreDisabled,
+            return ErrorPage(errorMessage: localizations.locationServicesAreDisabled,
               updateLocation: updateLocation,
               icon: Icons.gps_off,
-              place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+              place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
           }
 
           isItCurrentLocation = true;
@@ -169,37 +178,39 @@ class _HomePageState extends State<HomePage> {
           try {
 
             List<Placemark> placemarks = await placemarkFromCoordinates(
-                position.latitude, position.longitude);
+                position.latitude, position.longitude).timeout(const Duration(seconds: 3));
             Placemark place = placemarks[0];
 
             backupName = place.locality;
             absoluteProposed = "${position.latitude}, ${position.longitude}";
 
-          } on FormatException {
-            backupName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
-          } on PlatformException {
+          } on Error {
             backupName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
           }
         }
         else {
-          return dumbySearch(errorMessage: loc_status, updateLocation: updateLocation, icon: Icons.gps_off,
-            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+          return ErrorPage(errorMessage: loc_status, updateLocation: updateLocation, icon: Icons.gps_off,
+            place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
         }
       }
 
       if (proposedLoc == 'query') {
-        List<dynamic> x = await getRecommend(backupName, settings["Search provider"], settings);
-        if (x.length > 0) {
-          var split = json.decode(x[0]);
+        List<dynamic> suggestedLocations = await LocationService.getRecommendation(backupName, settings["Search provider"], settings);
+        if (suggestedLocations.isNotEmpty) {
+          var split = json.decode(suggestedLocations[0]);
           absoluteProposed = "${split["lat"]},${split["lon"]}";
           backupName = split["name"];
-        }
-        else {
-          return dumbySearch(
+        } else {
+          return ErrorPage(
             errorMessage: '${localizations.placeNotFound}: \n $backupName',
             updateLocation: updateLocation,
-            icon: Icons.location_disabled, key: Key(backupName),
-            place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+            icon: Icons.location_disabled,
+            key: Key(backupName),
+            place: backupName,
+            settings: settings,
+            provider: weatherProvider,
+            latlng: absoluteProposed,
+          );
         }
       }
 
@@ -208,56 +219,64 @@ class _HomePageState extends State<HomePage> {
         backupName = 'CurrentLocation';
       }
 
-      var weatherdata;
+      WeatherData weatherData;
 
-      print(("backupName", backupName));
       try {
-        weatherdata = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weather_provider, localizations);
+        weatherData = await WeatherData.getFullData(settings, RealName, backupName, absoluteProposed, weatherProvider, localizations);
       } on TimeoutException {
-        return dumbySearch(errorMessage: localizations.weakOrNoWifiConnection,
+        return ErrorPage(errorMessage: localizations.weakOrNoWifiConnection,
           updateLocation: updateLocation,
           icon: Icons.wifi_off, key: Key(backupName),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+          place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
       } on HttpExceptionWithStatus catch (hihi){
-        return dumbySearch(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
+        return ErrorPage(errorMessage: "general error at place 1: ${hihi.toString()}", updateLocation: updateLocation,
           icon: Icons.bug_report,
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,
+          place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,
           shouldAdd: "Please try another weather provider!",);
       } on SocketException {
-        return dumbySearch(errorMessage: localizations.notConnectedToTheInternet,
+        return ErrorPage(errorMessage: localizations.notConnectedToTheInternet,
           updateLocation: updateLocation,
           icon: Icons.wifi_off, key: Key(backupName),
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,);
+          place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,);
       }
       catch (e, stacktrace) {
-        print(stacktrace);
-        return dumbySearch(errorMessage: "general error at place 1: ${e.toString()}", updateLocation: updateLocation,
+        if (kDebugMode) {
+          debugPrint('Stack trace: $stacktrace');
+        }
+        return ErrorPage(errorMessage: "general error at place 1: ${e.toString()}", updateLocation: updateLocation,
           icon: Icons.bug_report,
-          place: backupName, settings: settings, provider: weather_provider, latlng: absoluteProposed,
+          place: backupName, settings: settings, provider: weatherProvider, latlng: absoluteProposed,
           shouldAdd: "Please try another weather provider!",);
       }
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
       // then this will be the new startup place
 
-      return WeatherPage(data: weatherdata, updateLocation: updateLocation);
+      return WeatherPage(data: weatherData, updateLocation: updateLocation);
 
     } catch (e, stacktrace) {
       Map<String, String> settings = await getSettingsUsed();
-      String weather_provider = await getWeatherProvider();
+      String weatherProvider = await getWeatherProvider();
 
-      print("ERRRRRRRRROR");
-      print(stacktrace);
+      if (kDebugMode) {
+        debugPrint('Error fetching weather data: $e');
+        debugPrint('Stack trace: $stacktrace');
+      }
 
-      cacheManager2.emptyCache();
+      await cacheManager2.emptyCache();
 
       if (recall) {
-        return dumbySearch(errorMessage: "general error at place X: $e", updateLocation: updateLocation,
+        return ErrorPage(
+          errorMessage: "An error occurred while fetching data",
+          updateLocation: updateLocation,
           icon: Icons.bug_report,
-          place: backupName, settings: settings, provider: weather_provider, latlng: 'query',
-          shouldAdd: "Please try another weather provider!",);
-      }
-      else {
+          place: backupName,
+          settings: settings,
+          provider: weatherProvider,
+          latlng: 'query',
+          shouldAdd: "Please try another weather provider!",
+        );
+      } else {
         //retry after clearing cache
         return getDays(true, proposedLoc, backupName, startup);
       }
@@ -301,10 +320,6 @@ class _HomePageState extends State<HomePage> {
           startup2 = false;
         }
       });
-      if (time > 0) {
-        await Future.delayed(Duration(milliseconds: (800 - time).toInt()));
-      }
-      await Future.delayed(const Duration(milliseconds: 200));
 
       setState(() {
         isLoading = false;
@@ -312,7 +327,9 @@ class _HomePageState extends State<HomePage> {
 
     } catch (error,s) {
 
-      print((error, s));
+      if (kDebugMode) {
+        print((error, s));
+      }
 
       setState(() {
         isLoading = false;

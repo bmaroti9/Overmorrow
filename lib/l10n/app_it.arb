@@ -186,17 +186,17 @@
   "@thirtyMinutes": {},
   "mainPollutant": "inquinante principale",
   "@mainPollutant": {},
-  "alderPollen": "polline di ontano",
+  "alderPollen": "Polline di Ontano",
   "@alderPollen": {},
-  "birchPollen": "polline di betulla",
+  "birchPollen": "Polline di Betulla",
   "@birchPollen": {},
-  "grassPollen": "polline d'erba",
+  "grassPollen": "Polline d'Erba",
   "@grassPollen": {},
-  "mugwortPollen": "polline di artemisia",
+  "mugwortPollen": "Polline di Artemisia",
   "@mugwortPollen": {},
-  "olivePollen": "polline di ulivo",
+  "olivePollen": "Polline di Ulivo",
   "@olivePollen": {},
-  "ragweedPollen": "polline di ambrosia",
+  "ragweedPollen": "Polline di Ambrosia",
   "@ragweedPollen": {},
   "dailyAqi": "AQI giornaliero",
   "@dailyAqi": {},
@@ -213,5 +213,163 @@
   "unitedStatesAqi": "aqi degli stati uniti",
   "@unitedStatesAqi": {},
   "offline": "offline",
-  "@offline": {}
+  "@offline": {},
+  "helpTranslate": "aiuta a tradurre",
+  "@helpTranslate": {},
+  "airQualityLowercase": "qualità dell'aria",
+  "@airQualityLowercase": {},
+  "precipitaion": "Precipitazioni",
+  "@precipitaion": {},
+  "extremelyClear": "estremamente sereno",
+  "@extremelyClear": {},
+  "veryClear": "molto sereno",
+  "@veryClear": {},
+  "clear": "sereno",
+  "@clear": {},
+  "slightlyHazy": "leggermente fosco",
+  "@slightlyHazy": {},
+  "hazy": "foschia",
+  "@hazy": {},
+  "veryHazy": "molto fosco",
+  "@veryHazy": {},
+  "extremelyHazy": "estremamente fosco",
+  "@extremelyHazy": {},
+  "poweredByOpenMeteo": "offerto da open-meteo",
+  "@poweredByOpenMeteo": {
+    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+  },
+  "rainInHalfHour": "pioggia nella prossima mezz'ora",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "buyMeACoffee": "Comprami un caffè!",
+  "@buyMeACoffee": {},
+  "donationPageTextNew": "Overmorrow è sempre stata pensata come un'app completamente gratuita, senza pubblicità né acquisti in-app. \n\nQuindi, se vuoi semplicemente usarla così com'è, goditela pure. \n\nTuttavia, se l'app ti piace, considera di lasciare una piccola mancia. \n\nGrazie!",
+  "@donationPageTextNew": {},
+  "rainInOneHour": "pioggia nella prossima ora",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  },
+  "dailyLowercase": "quotidianamente",
+  "@dailyLowercase": {},
+  "sumLowercase": "somma",
+  "@sumLowercase": {
+    "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+  },
+  "rainInMinutes": "pioggia per {minutes, plural,=1 {il prossimo minuto} other{i prossimi {minutes} minuti}}",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInMinutes": "prevista pioggia in {minutes, plural, =1 {un minuto} other {{minutes} minuti}}",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInHours": "pioggia per {hours, plural, =1 {la prossima ora} other {le prossime {hours} ore}}",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "grantLocationPermission": "autorizza l'accesso alla posizione",
+  "@grantLocationPermission": {},
+  "currentLocation": "posizione corrente",
+  "@currentLocation": {},
+  "favoritesLowercase": "preferiti",
+  "@favoritesLowercase": {},
+  "weatherProvderLowercase": "fornitore di servizi meteorologici",
+  "@weatherProvderLowercase": {},
+  "sourceCodeLowercase": "codice sorgente",
+  "@sourceCodeLowercase": {},
+  "emailLowercase": "email",
+  "@emailLowercase": {},
+  "reportAnIssueLowercase": "segnala un problema",
+  "@reportAnIssueLowercase": {},
+  "donateLowercase": "dona",
+  "@donateLowercase": {},
+  "versionUppercase": "Versione",
+  "@versionUppercase": {},
+  "apiAndServices": "API e Servizi",
+  "@apiAndServices": {},
+  "licenseUppercase": "Licenza",
+  "@licenseUppercase": {},
+  "weatherDataLowercase": "dati metereologici",
+  "@weatherDataLowercase": {},
+  "imagesLowercase": "immagini",
+  "@imagesLowercase": {},
+  "aboutSettingsDesc": "informazioni su questa app",
+  "@aboutSettingsDesc": {},
+  "showMore": "mostra di più",
+  "@showMore": {},
+  "showLess": "mostra meno",
+  "@showLess": {},
+  "areas": "aree",
+  "@areas": {},
+  "rainExpectedInHours": "pioggia prevista {hours, plural, =1 {nella prossima ora} other {nelle prossime {hours} ore }}",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXHoursAgo": "ultimo aggiornamento {hours, plural, =1 {1 ora} other {{hours} ore}} fa",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "ultimo aggiornamento {days, plural, =1 {1 giorno} other {{days} giorni}} fa",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXMinutesAgo": "ultimo aggiornamento {minutes} fa",
+  "@updatedXMinutesAgo": {},
+  "rainExpectedInOneHour": "prevista pioggia entro un'ora",
+  "@rainExpectedInOneHour": {
+    "description": "rain expected in the next hour"
+  },
+  "radarHaptics": "Radar tattile",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
+  },
+  "severity": "gravità",
+  "@severity": {},
+  "certainty": "certezza",
+  "@certainty": {},
+  "urgency": "urgenza",
+  "@urgency": {},
+  "alertsLowercase": "avvisi",
+  "@alertsLowercase": {},
+  "light": "leggera",
+  "@light": {
+    "description": "light precipitation"
+  },
+  "heavy": "intensa",
+  "@heavy": {
+    "description": "heavy precipitation"
+  },
+  "alertsCapital": "Avvisi",
+  "@alertsCapital": {}
 }

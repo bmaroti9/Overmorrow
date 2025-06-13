@@ -237,5 +237,83 @@
   "precipitaion": "Precipitación",
   "@precipitaion": {},
   "helpTranslate": "Ayuda a traducir",
-  "@helpTranslate": {}
+  "@helpTranslate": {},
+  "severity": "gravedad",
+  "@severity": {},
+  "certainty": "certeza",
+  "@certainty": {},
+  "urgency": "urgencia",
+  "@urgency": {},
+  "rainInOneHour": "lluvia en la próxima hora",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  },
+  "updatedXDaysAgo": "actualizado hace {days, plural, =1 {1 day} other {{days} days}} días",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXHoursAgo": "actualizado hace {hours, plural, =1 {1 hour} other {{hours} hours}} horas",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInMinutes": "lluvia en los próximos {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInHalfHour": "lluvia en la próxima media hora",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "rainInHours": "lluvia en las próximas {hours, plural, =1 {hour} other {{hours} hours}}",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "buyMeACoffee": "¡Cómprame un café!",
+  "@buyMeACoffee": {},
+  "updatedXMinutesAgo": "actualizado hace {minutes} min",
+  "@updatedXMinutesAgo": {},
+  "areas": "áreas",
+  "@areas": {},
+  "donationPageTextNew": "Overmorrow se ha concebido desde siempre como una aplicación completamente gratis, sin anuncios ni compras dentro de la aplicación. \n \nAsí que, si solo quieres usarla así, disfrútala mucho. \n \nSin embargo, si te encanta usarla, por favor considera dar una pequeña propina. \n\n¡Gracias!",
+  "@donationPageTextNew": {},
+  "radarHaptics": "háptica del radar",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
+  },
+  "alertsCapital": "Alertas",
+  "@alertsCapital": {},
+  "tomorrowLowercase": "mañana",
+  "@tomorrowLowercase": {},
+  "overmorrowLowercase": "Overmorrow",
+  "@overmorrowLowercase": {},
+  "grantLocationPermission": "Permitir acceso a ubicación",
+  "@grantLocationPermission": {},
+  "currentLocation": "Ubicación actual",
+  "@currentLocation": {},
+  "favoritesLowercase": "Favoritos",
+  "@favoritesLowercase": {},
+  "weatherProvderLowercase": "Proveedor del clima",
+  "@weatherProvderLowercase": {},
+  "dailyLowercase": "Diario",
+  "@dailyLowercase": {}
 }

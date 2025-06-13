@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 2.5.1+48
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -32,23 +32,23 @@ dependencies:
     sdk: flutter
   http: ^1.1.0
   material_floating_search_bar_2: ^0.5.0
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.5.3
   flutter_launcher_icons: ^0.14.3
   url_launcher: ^6.1.14
   latlong2: ^0.9.1
 
-  # geolocator: ^10.1.0
-  #geolocator: ^7.7.1
-  geolocator: ^13.0.1
+  geolocator: ^13.0.4
   geocoding: ^3.0.0
 
-  flutter_cache_manager: ^3.3.1
-  flutter_map: ^6.1.0
+  flutter_cache_manager: ^3.4.1
+  flutter_map: ^8.1.1
   loading_animation_widget: ^1.2.0+4
   stretchy_header: ^2.0.0
-  cached_network_image: ^3.3.1
+  cached_network_image: ^3.4.1
   palette_generator: ^0.3.3+4
   dynamic_color: ^1.7.0
+  flutter_staggered_animations: ^1.1.1
+  package_info_plus: ^8.3.0
 
   #for the .arb files for translation
   flutter_localizations:
@@ -57,8 +57,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  google_fonts: ^5.1.0
+  google_fonts: ^6.2.1
 
 #https://github.com/Zverik/every_door/blob/aaf8d2fdeac483041bcac2c7c79ef760b99dff2b/pubspec.yaml#L55
 
@@ -73,7 +72,7 @@ dependency_overrides:
 flutter_launcher_icons:
   android: true
   image_path: "assets/icons/icon.png"
-  adaptive_icon_background: "#053960"
+  adaptive_icon_background: "#204175"
   adaptive_icon_foreground: "assets/icons/icon_inside.png"
   adaptive_icon_monochrome: "assets/icons/icon_material.png"
 
@@ -134,9 +133,12 @@ flutter:
   #
 
   fonts:
-    - family: OvermorrowWeatherIcons
+    - family: OvermorrowWeatherIcons3
       fonts:
-        - asset: fonts/OvermorrowWeatherIcons.ttf
+        - asset: fonts/OvermorrowWeatherIcons3.ttf
+    - family: NotoSans
+      fonts:
+        - asset: fonts/NotoSans_Condensed-Regular.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

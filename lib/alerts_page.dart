@@ -21,25 +21,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overmorrow/new_displays.dart';
 import 'package:overmorrow/ui_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 
-Widget alertBadge(name, text, data) {
+Widget alertBadge(name, text, data, ColorScheme palette) {
   return Padding(
     padding: const EdgeInsets.only(right: 3.0, top: 3, bottom: 3),
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        comfortatext("$name:", 15, data.settings, color: data.current.onSurface),
+        comfortatext("$name:", 15, data.settings, color: palette.onSurface),
         Padding(
           padding: const EdgeInsets.only(left: 5),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(11),
-              color: data.current.primaryLight,
+              borderRadius: BorderRadius.circular(13),
+              color: palette.secondaryContainer,
             ),
-            padding: const EdgeInsets.only(left: 6, right: 6, top: 5.5, bottom: 4.5),
-            child: comfortatext(text, 13, data.settings, color: data.current.onPrimaryLight),
+            padding: const EdgeInsets.only(left: 7, right: 7, top: 6, bottom: 6),
+            child: comfortatext(text, 13, data.settings, color: palette.onSecondaryContainer),
           ),
         )
       ],
@@ -76,21 +76,23 @@ class _AlertsPageState extends State<AlertsPage> {
 
   @override
   Widget build(BuildContext context) {
+    
+    final ColorScheme palette = data.current.palette;
 
     return Material(
-      color: data.current.surface,
+      color: palette.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: data.current.primary,),
+            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
                 onPressed: () {
                   goBack();
                 }),
             title: comfortatext(
                 AppLocalizations.of(context)!.alertsCapital, 30, data.settings,
-                color: data.current.primary),
-            backgroundColor: data.current.surface,
+                color: palette.secondary),
+            backgroundColor: palette.surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
@@ -105,10 +107,10 @@ class _AlertsPageState extends State<AlertsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        comfortatext(alert.event, 23, data.settings, color: data.current.primary),
+                        comfortatext(alert.event, 23, data.settings, color: palette.primary),
                         Padding(
                           padding: const EdgeInsets.only(top: 25, left: 3),
-                          child: comfortatext(alert.headline, 16, data.settings, color: data.current.onSurface),
+                          child: comfortatext(alert.headline, 16, data.settings, color: palette.onSurface),
                         ),
 
                         Padding(
@@ -117,45 +119,45 @@ class _AlertsPageState extends State<AlertsPage> {
                             padding: const EdgeInsets.only(left: 15, bottom: 3, top: 3),
                             decoration: BoxDecoration(
                                 border: Border(left:
-                                BorderSide(width: 2, color: data.current.primaryLight),
+                                BorderSide(width: 2, color: palette.secondaryContainer),
                             )
                             ),
-                            child: comfortatext(alert.desc, 16, data.settings, color: data.current.outline)
+                            child: comfortatext(alert.desc, 16, data.settings, color: palette.outline)
                           ),
                         ),
 
                         Padding(
                           padding: const EdgeInsets.only(bottom: 20, top: 5),
                           child: comfortatext("${data.alerts[index].start} - ${data.alerts[index].end}", 15, data.settings,
-                              color: data.current.primary),
+                              color: palette.primary),
                         ),
                         
                         Wrap(
                           children: [
-                            alertBadge(AppLocalizations.of(context)!.severity, alert.severity, data),
-                            alertBadge(AppLocalizations.of(context)!.certainty, alert.certainty, data),
-                            alertBadge(AppLocalizations.of(context)!.urgency, alert.urgency, data),
+                            alertBadge(AppLocalizations.of(context)!.severity, alert.severity, data, palette),
+                            alertBadge(AppLocalizations.of(context)!.certainty, alert.certainty, data, palette),
+                            alertBadge(AppLocalizations.of(context)!.urgency, alert.urgency, data, palette),
                           ],
                         ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 2, top: 15),
-                          child: comfortatext("${AppLocalizations.of(context)!.areas}:", 16, data.settings, color: data.current.primary),
+                          child: comfortatext("${AppLocalizations.of(context)!.areas}:", 16, data.settings, color: palette.primary),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 20, top: 5),
                           child: comfortatext(alert.areas, 15, data.settings,
-                              color: data.current.outline),
+                              color: palette.outline),
                         ),
 
                         if (index != data.alerts.length - 1)Padding(
                           padding: const EdgeInsets.only(left: 4, right: 4, top: 30, bottom: 10),
                           child: CustomPaint(
                             painter: WavePainter(
-                                0, widget.data.current.primarySecond,
-                                darken(widget.data.current.surfaceVariant, 0.03),
+                                0, palette.secondaryContainer,
+                                darken(palette.surfaceContainerHighest, 0.03),
                                 1),
-                            child: Container(
+                            child: const SizedBox(
                               width: double.infinity,
                               height: 8.0,
                             ),

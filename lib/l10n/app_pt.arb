@@ -128,7 +128,7 @@
   "@imageSource": {},
   "temp": "temp",
   "@temp": {},
-  "precipLowercase": "precip",
+  "precipLowercase": "precipitação",
   "@precipLowercase": {},
   "windLowercase": "vento",
   "@windLowercase": {},
@@ -240,7 +240,7 @@
   "@rainInOneHour": {
     "description": "rain in the next hour"
   },
-  "rainExpectedInHours": "chuva esperada em 1 hora",
+  "rainExpectedInHours": "chuva esperada em {hours, plural, =1 {hora} other {{hours} horas}}",
   "@rainExpectedInHours": {
     "description": "rain expected in the next X hours",
     "placeholders": {
@@ -249,7 +249,7 @@
       }
     }
   },
-  "rainInHours": "Chuva Nas Próximas Horas",
+  "rainInHours": "chuva nas próximas {hours, plural, =1 {hora} other {{hours} horas}}",
   "@rainInHours": {
     "description": "rain in the next X hours",
     "placeholders": {
@@ -258,7 +258,7 @@
       }
     }
   },
-  "rainExpectedInMinutes": "Chuva Esperada Em Minutos",
+  "rainExpectedInMinutes": "chuva esperada em {minutes, plural, =1 {minuto} other {{minutes} minutos}}",
   "@rainExpectedInMinutes": {
     "description": "rain expected in the next X minutes",
     "placeholders": {
@@ -267,7 +267,7 @@
       }
     }
   },
-  "rainInMinutes": "Chuva Nos Próximos Minutos",
+  "rainInMinutes": "chuva nos próximos {minutes, plural, =1 {minuto} other {{minutes} minutos}}\"",
   "@rainInMinutes": {
     "description": "rain in the next X minutes",
     "placeholders": {
@@ -276,7 +276,7 @@
       }
     }
   },
-  "updatedXHoursAgo": "Atualizado Há Horas Atrás",
+  "updatedXHoursAgo": "atualizado há {hours, plural, =1 {hora} other {{hours} horas}}\"",
   "@updatedXHoursAgo": {
     "description": "updated x hours ago",
     "placeholders": {
@@ -285,7 +285,7 @@
       }
     }
   },
-  "updatedXDaysAgo": "Atualizado Há Dias Atrás",
+  "updatedXDaysAgo": "atualizado há {days, plural, =1 {um dia} other {{days} dias}}",
   "@updatedXDaysAgo": {
     "description": "updated x days ago",
     "placeholders": {
@@ -294,7 +294,7 @@
       }
     }
   },
-  "updatedXMinutesAgo": "atualizado, há minutos atrás",
+  "updatedXMinutesAgo": "atualizado há {minutes} min",
   "@updatedXMinutesAgo": {},
   "rainExpectedInOneHour": "Chuva Esperada Em Uma Hora",
   "@rainExpectedInOneHour": {
@@ -313,5 +313,17 @@
   "helpTranslate": "Ajude a Traduzir",
   "@helpTranslate": {},
   "alertsCapital": "Alerta",
-  "@alertsCapital": {}
+  "@alertsCapital": {},
+  "severity": "gravidade",
+  "@severity": {},
+  "urgency": "urgência",
+  "@urgency": {},
+  "areas": "áreas",
+  "@areas": {},
+  "certainty": "certeza",
+  "@certainty": {},
+  "donationPageTextNew": "Overmorrow sempre foi feito para ser um app totalmente gratuito, sem anúncios ou compras dentro do app. Então, se você só quiser usá-lo assim, aproveite. No entanto, se gostar de usá-lo, considere deixar uma pequena contribuição. Obrigado!",
+  "@donationPageTextNew": {},
+  "buyMeACoffee": "Compre um café para mim!",
+  "@buyMeACoffee": {}
 }

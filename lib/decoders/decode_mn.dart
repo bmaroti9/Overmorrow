@@ -20,13 +20,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
+import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:overmorrow/services/image_service.dart';
 
 import '../api_key.dart';
 import '../caching.dart';
-import '../settings_page.dart';
+import '../l10n/app_localizations.dart';
+import '../services/color_service.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart';
@@ -43,8 +44,6 @@ String metNTextCorrection(String text, bool shouldTranslate, localizations) {
 
 int metNCalculateHourDif(DateTime timeThere) {
   DateTime now = DateTime.now().toUtc();
-
-  print(("hourdif", now.hour, timeThere.hour));
 
   return now.hour - timeThere.hour;
 }
@@ -85,14 +84,6 @@ int metNcalculateFeelsLike(double t, double r, double v) {
 }
 
 String metNGetName(index, settings, item, start, hourDif, localizations) {
-  if (index < 3) {
-    List<String> names = [
-      localizations.today,
-      localizations.tomorrow,
-      localizations.overmorrow,
-    ];
-    return names[index];
-  }
   String x = item["properties"]["timeseries"][start]["time"].split("T")[0];
   String hour = item["properties"]["timeseries"][start]["time"].split("T")[1].split(":")[0];
   List<String> z = x.split("-");
@@ -130,7 +121,7 @@ List<Color> metNContentColorCorrection(String text) {
 }
 
 IconData metNIconCorrection(String text) {
-  return textMaterialIcon[text] ?? OvermorrowWeatherIcons.sun2;
+  return textMaterialIcon[text] ?? OvermorrowWeatherIcons3.clear_sky;
 }
 
 String metNTimeCorrect(String date, int hourDif) {
@@ -172,7 +163,7 @@ Future<DateTime> MetNGetLocalTime(lat, lng) async {
     'format': 'json',
     'by': 'position'
   };
-  final url = Uri.http('api.timezonedb.com', 'v2.1/get-time-zone', params);
+  final url = Uri.https('api.timezonedb.com', 'v2.1/get-time-zone', params);
   var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng timezonedb.com");
   var response = await file[0].readAsString();
   var body = jsonDecode(response);
@@ -217,31 +208,11 @@ class MetNCurrent {
   final int wind;
   final int wind_dir;
 
-  final Color surface;
-  final Color primary;
-  final Color primaryLight;
-  final Color primaryLighter;
-  final Color onSurface;
-  final Color outline;
-  final Color containerLow;
-  final Color container;
-  final Color containerHigh;
+  final ImageService imageService;
+
+  final ColorScheme palette;
   final Color colorPop;
   final Color descColor;
-  final Color surfaceVariant;
-  final Color onPrimaryLight;
-  final Color primarySecond;
-
-  final Color backup_primary;
-  final Color backup_backcolor;
-
-  final Image image;
-
-  final String photographerName;
-  final String photographerUrl;
-  final String photoUrl;
-
-  final List<Color> imageDebugColors;
 
   const MetNCurrent({
     required this.precip,
@@ -251,91 +222,33 @@ class MetNCurrent {
     required this.text,
     required this.uv,
     required this.wind,
-    required this.backup_backcolor,
-    required this.backup_primary,
     required this.wind_dir,
 
-    required this.surface,
-    required this.primary,
-    required this.primaryLight,
-    required this.primaryLighter,
-    required this.onSurface,
-    required this.outline,
-    required this.containerLow,
-    required this.container,
-    required this.containerHigh,
+    required this.imageService,
+
+    required this.palette,
     required this.colorPop,
     required this.descColor,
-    required this.surfaceVariant,
-    required this.onPrimaryLight,
-    required this.primarySecond,
-
-    required this.image,
-    required this.photographerName,
-    required this.photographerUrl,
-    required this.photoUrl,
-    required this.imageDebugColors,
   });
 
   static Future<MetNCurrent> fromJson(item, settings, real_loc, lat, lng, localizations) async {
-
-    Image Uimage;
-
-    String photographerName = "";
-    String photographerUrl = "";
-    String photoLink = "";
 
     String currentCondition = metNTextCorrection(
         item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"],
         false, localizations
     );
 
-    if (settings["Image source"] == "network") {
-      try {
-        final ImageData = await getUnsplashImage(currentCondition, real_loc, lat, lng);
-        Uimage = ImageData[0];
-        photographerName = ImageData[1];
-        photographerUrl = ImageData[2];
-        photoLink = ImageData[3];
-      }
-      //fallback to asset image when condition changed and there is no image for the new one
-      catch (e) {
-        String imagePath = metNBackdropCorrection(
-          currentCondition,
-        );
-        Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
-        List<String> credits = assetImageCredit(currentCondition);
-        photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
-      }
-    }
-    else {
-      String imagePath = metNBackdropCorrection(
-        currentCondition,
-      );
-      Uimage = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover, width: double.infinity, height: double.infinity,);
-      List<String> credits = assetImageCredit(currentCondition);
-      photoLink = credits[0]; photographerName = credits[1]; photographerUrl = credits[2];
-    }
-
-    Color back = metNAccentColorCorrection(
-      currentCondition,
-    );
-
-    Color primary = metNBackColorCorrection(
-      currentCondition,
-    );
-
-    List<dynamic> x = await getMainColor(settings, primary, back, Uimage);
-    List<Color> colors = x[0];
-    List<Color> imageDebugColors = x[1];
-
     var it = item["properties"]["timeseries"][0]["data"];
 
+    ImageService imageService = await ImageService.getImageService(currentCondition, real_loc, settings);
+    ColorPalette colorPalette = await ColorPalette.getColorPalette(imageService.image, settings["Color mode"], settings);
+
     return MetNCurrent(
-      image: Uimage,
-      photographerName: photographerName,
-      photographerUrl: photographerUrl,
-      photoUrl: photoLink,
+      imageService: imageService,
+
+      palette: colorPalette.palette,
+      colorPop: colorPalette.colorPop,
+      descColor: colorPalette.descColor,
 
       text: metNTextCorrection(
           it["next_1_hours"]["summary"]["symbol_code"],
@@ -353,27 +266,9 @@ class MetNCurrent {
       uv: it["instant"]["details"]["ultraviolet_index_clear_sky"].round(),
       feels_like: metNcalculateFeelsLike(it["instant"]["details"]["air_temperature"],
         it["instant"]["details"]["relative_humidity"], it["instant"]["details"]["wind_speed"] * 3.6),
-      imageDebugColors: imageDebugColors,
       wind_dir: it["instant"]["details"]["wind_from_direction"].round(),
 
-      surface: colors[0],
-      primary: colors[1],
-      primaryLight: colors[2],
-      primaryLighter: colors[3],
-      onSurface: colors[4],
-      outline: colors[5],
-      containerLow: colors[6],
-      container: colors[7],
-      containerHigh: colors[8],
-      surfaceVariant: colors[9],
-      onPrimaryLight: colors[10],
-      primarySecond: colors[11],
 
-      colorPop: colors[12],
-      descColor: colors[13],
-
-      backup_backcolor: back,
-      backup_primary: primary,
     );
   }
 }
@@ -382,10 +277,14 @@ class MetNDay {
   final String text;
 
   final IconData icon;
-  final double iconSize;
 
   final String name;
-  final String minmaxtemp;
+
+  final int minTemp;
+  final int maxTemp;
+  final double rawMinTemp; //the unconverted numbers used for charts
+  final double rawMaxTemp;
+
   final List<MetNHour> hourly;
   final List<MetNHour> hourly_for_precip;
 
@@ -402,10 +301,14 @@ class MetNDay {
     required this.text,
 
     required this.icon,
-    required this.iconSize,
 
     required this.name,
-    required this.minmaxtemp,
+
+    required this.minTemp,
+    required this.maxTemp,
+    required this.rawMinTemp,
+    required this.rawMaxTemp,
+
     required this.hourly,
 
     required this.precip_prob,
@@ -420,6 +323,7 @@ class MetNDay {
   static MetNDay fromJson(item, settings, start, end, index, hourDif, localizations) {
     
     List<int> temperatures = [];
+    List<double> rawTemps = [];
     List<double> windspeeds = [];
     List<int> winddirs = [];
     List<double> precip_mm = [];
@@ -438,6 +342,7 @@ class MetNDay {
     for (int n = start; n < end; n++) {
       MetNHour hour = MetNHour.fromJson(item["properties"]["timeseries"][n], settings, hourDif, localizations);
       temperatures.add(hour.temp);
+      rawTemps.add(hour.raw_temp);
       windspeeds.add(hour.wind);
       winddirs.add(hour.wind_dir);
       uvs.add(hour.uv);
@@ -461,7 +366,10 @@ class MetNDay {
     return MetNDay(
       mm_precip: precip_mm.reduce((a, b) => a + b),
       precip_prob: precipProb,
-      minmaxtemp: "${temperatures.reduce(min)}°/${temperatures.reduce(max)}°",
+      minTemp: temperatures.reduce(min),
+      maxTemp: temperatures.reduce(max),
+      rawMinTemp: rawTemps.reduce(min),
+      rawMaxTemp:  rawTemps.reduce(max),
       hourly: hours,
       hourly_for_precip: hours,
       total_precip: double.parse(precip.reduce((a, b) => a + b).toStringAsFixed(1)),
@@ -469,7 +377,6 @@ class MetNDay {
       name: metNGetName(index, settings, item, start, hourDif, localizations),
       text: conditionTranslation(weather_names[BIndex], localizations) ?? "TranslationErr",
       icon: metNIconCorrection(weather_names[BIndex]),
-      iconSize: oMIconSizeCorrection(weather_names[BIndex]),
       wind_dir: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
       uv: uvs.reduce(max)
     );
@@ -480,7 +387,6 @@ class MetNHour {
   final int temp;
 
   final IconData icon;
-  final double iconSize;
 
   final String time;
   final String text;
@@ -488,6 +394,7 @@ class MetNHour {
   final int precip_prob;
   final double wind;
   final int wind_dir;
+  final int wind_gusts;
   final int uv;
 
   final double raw_temp;
@@ -504,11 +411,11 @@ class MetNHour {
         required this.text,
         required this.precip,
         required this.wind,
-        required this.iconSize,
         required this.raw_precip,
         required this.raw_temp,
         required this.raw_wind,
         required this.wind_dir,
+        required this.wind_gusts,
         required this.uv,
         required this.precip_prob,
         required this.rawText,
@@ -518,6 +425,7 @@ class MetNHour {
     var nextHours = item["data"]["next_1_hours"] ?? item["data"]["next_6_hours"];
 
     return MetNHour(
+        wind_gusts: 0,
         rawText: metNTextCorrection(
             nextHours["summary"]["symbol_code"], false, localizations),
         text: metNTextCorrection(
@@ -547,8 +455,7 @@ class MetNHour {
         raw_wind: item["data"]["instant"]["details"]["wind_speed"] * 3.6,
         raw_precip: nextHours["details"]["precipitation_amount"],
         raw_temp: item["data"]["instant"]["details"]["air_temperature"],
-        iconSize: oMIconSizeCorrection(metNTextCorrection(
-            nextHours["summary"]["symbol_code"], false, localizations),)
+
     );
   }
 }
@@ -723,6 +630,8 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
   MnBody["properties"]["timeseries"] = MnBody["properties"]["timeseries"].sublist(start);
 
   List<MetNDay> days = [];
+  List<dynamic> hourly72 = [];
+
   int begin = 0;
   int index = 0;
 
@@ -732,6 +641,18 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
     if (n > 0 && hour - previous_hour < 1) {
       MetNDay day = MetNDay.fromJson(MnBody, settings, begin, n, index, hourDif, localizations);
       days.add(day);
+
+      if (hourly72.length < 72) {
+        if (begin != 0) {
+          hourly72.add(day.name);
+        }
+        for (int z = 0; z < day.hourly.length; z++) {
+          if (hourly72.length < 72) {
+            hourly72.add(day.hourly[z]);
+          }
+        }
+      }
+
       index += 1;
       begin = n;
     }
@@ -747,6 +668,10 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
 
     current: await MetNCurrent.fromJson(MnBody, settings, real_loc, lat, lng, localizations),
     days: days,
+
+    dailyMinMaxTemp: omGetMaxMinTempForDaily(days),
+
+    hourly72: hourly72,
 
     lat: lat,
     lng: lng,

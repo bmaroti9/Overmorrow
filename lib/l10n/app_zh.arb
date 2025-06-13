@@ -218,7 +218,7 @@
   "@rainInOneHour": {
     "description": "rain in the next hour"
   },
-  "updatedXHoursAgo": "{hours}小时前更新",
+  "updatedXHoursAgo": "{hours, plural, =1 {1 hour} other {{hours} hours}} 小时前更新",
   "@updatedXHoursAgo": {
     "description": "updated x hours ago",
     "placeholders": {
@@ -227,7 +227,7 @@
       }
     }
   },
-  "updatedXDaysAgo": "{days}天前更新",
+  "updatedXDaysAgo": "{days, plural, =1 {1 day} other {{days} days}} 天前更新",
   "@updatedXDaysAgo": {
     "description": "updated x days ago",
     "placeholders": {

@@ -16,7 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'package:overmorrow/Icons/overmorrow_weather_icons_icons.dart';
+import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'ui_helper.dart';
@@ -43,20 +43,39 @@ Map<String, Locale> languageNameToLocale = {
 };
 
 Map<String, IconData> textMaterialIcon = {
-  'Clear Night': OvermorrowWeatherIcons.moon2,
-  'Partly Cloudy': OvermorrowWeatherIcons.partly_cloudy2,
-  'Clear Sky': OvermorrowWeatherIcons.sun2,
-  'Overcast': OvermorrowWeatherIcons.cloudy2,
-  'Haze': OvermorrowWeatherIcons.haze2,
-  'Rain': OvermorrowWeatherIcons.rain2,
-  'Sleet': OvermorrowWeatherIcons.sleet2,
-  'Drizzle': OvermorrowWeatherIcons.drizzle2,
-  'Thunderstorm': OvermorrowWeatherIcons.lightning2,
-  'Heavy Snow': OvermorrowWeatherIcons.heavy_snow2,
-  'Fog': OvermorrowWeatherIcons.fog2,
-  'Snow': OvermorrowWeatherIcons.snow2,
-  'Heavy Rain': OvermorrowWeatherIcons.heavy_rain2,
-  'Cloudy Night' : OvermorrowWeatherIcons.cloudy_night2,
+  'Clear Night': OvermorrowWeatherIcons3.clear_night,
+  'Partly Cloudy': OvermorrowWeatherIcons3.partly_cloudy,
+  'Clear Sky': OvermorrowWeatherIcons3.clear_sky,
+  'Overcast': OvermorrowWeatherIcons3.cloudy,
+  'Haze': OvermorrowWeatherIcons3.haze,
+  'Rain': OvermorrowWeatherIcons3.rain,
+  'Sleet': OvermorrowWeatherIcons3.sleet,
+  'Drizzle': OvermorrowWeatherIcons3.drizzle,
+  'Thunderstorm': OvermorrowWeatherIcons3.thunderstorm,
+  'Heavy Snow': OvermorrowWeatherIcons3.heavy_snow,
+  'Fog': OvermorrowWeatherIcons3.fog,
+  'Snow': OvermorrowWeatherIcons3.snow,
+  'Heavy Rain': OvermorrowWeatherIcons3.heavy_rain,
+  'Cloudy Night' : OvermorrowWeatherIcons3.cloudy_night,
+};
+
+//each condition has a separate unsplash collection where i selected the best images i could find
+//this map links the weather conditions to the collection's id
+Map<String, String> conditionToCollection = {
+  'Clear Night': 'QmrZHMXsUjU',
+  'Partly Cloudy': 'HAtvB157RoQ',
+  'Clear Sky': 'XMGA2-GGjyw',
+  'Overcast': 'lH8D73y8two',
+  'Haze': 'p0Z3vz_3QDI',
+  'Rain': 'EHfrmBnBxKE',
+  'Sleet': '6iA4l-qOEjQ',
+  'Drizzle': 'gPoFdup1ER0',
+  'Thunderstorm': 'u5yh41EfPWk',
+  'Heavy Snow': 'Wz6zjLX6zoQ',
+  'Fog': 'lt3McWCS6sk',
+  'Snow': 'IV6PyvU0Vyo',
+  'Heavy Rain': '9w3d8QBzjsw',
+  'Cloudy Night' : 'ymdgzsktNTE'
 };
 
 String? conditionTranslation(String key, localizations) {
@@ -151,23 +170,6 @@ Map<String, List<String>> assetPhotoCredits = {
     'Shot by Cerqueira',
     'https://unsplash.com/@shotbycerqueira'
   ],
-};
-
-Map<String, double> textIconSizeNormalize = {
-  'Clear Night': 0.77,
-  'Partly Cloudy': 0.8,
-  'Clear Sky': 0.8,
-  'Overcast': 0.71,
-  'Haze': 0.8,
-  'Rain': 0.95,
-  'Sleet': 1,
-  'Drizzle': 1,
-  'Thunderstorm': 1,
-  'Heavy Snow': 0.93,
-  'Fog': 0.8,
-  'Snow': 0.95,
-  'Heavy Rain': 0.93,
-  'Cloudy Night' : 0.8,
 };
 
 Map<int, String> weatherTextMap = {
@@ -435,91 +437,6 @@ Map<String, List<double>> conversionTable = {
   'mmHg': [0, 25.4],
   'mb': [0, 33.864],
   'hPa': [0, 33.863886],
-};
-
-//I am trying to convert conditions to text that unsplash better understands
-//for example: blue sky instead of clear sky tends to help a lot
-// the ones with spaces around them is so that only the work itself will count (sun <- yes, sunglasses <- no)
-Map<String, List<String>> textToUnsplashText = {
-  'Clear Night': ['night', 'clear', 'moon'], //somehow just 'night' always gives you clear skies: stars or moon
-  'Partly Cloudy': ['cloud'], //this is also some simplification which improves a lot
-  'Clear Sky': ['sunny clear', 'sunny', ' sun ', 'clear', 'blue sky'], //it doesn't understand clear as much so i use blue instead
-  'Overcast': ['overcast', 'cloud'],
-  'Haze': ['haze', 'fog', 'mist'],
-  'Rain': ['rain', 'drop', 'rainy', 'raining', 'drops'],
-  'Sleet': ['freezing rain', 'sleet', 'ice'],//this works much better
-  'Drizzle': ['light rain', 'rain', 'rainy', 'raining', 'drop', 'drops'], //somehow understands it more though still not perfect
-  'Thunderstorm': ['thunderstorm', 'lightning', 'storm', 'thunder'],
-  'Heavy Snow': ['heavy snow', 'snow', 'snowing', 'snows'],
-  'Fog': ['fog', 'mist', 'haze'],
-  'Snow': ['snow', 'snowing', 'snows'],
-  'Heavy Rain': ['heavy rain', 'rain', 'drop', 'rainy', 'raining', 'drops'],
-  'Cloudy Night' : ['cloud night', 'night', 'moon']
-};
-
-Map<String, bool> shouldUsePlaceName = {
-  'Clear Night': true,
-  'Partly Cloudy': true,
-  'Clear Sky': true,
-  'Overcast': true,
-  'Haze': false,
-  'Rain': false,
-  'Sleet': false,
-  'Drizzle': false,
-  'Thunderstorm': false,
-  'Heavy Snow': false,
-  'Fog': false,
-  'Snow': false,
-  'Heavy Rain': false,
-  'Cloudy Night': true,
-};
-
-//trying to assign values for words (for example sky will be rewarded)
-//-10000 is basically taboo
-Map<String, int> textFilter = {
-  'sky' : 1000,
-  'tree' : 500,
-  'flower': 500,
-  'mountain': 500,
-  'ice': -10000,
-  'icy': -10000,
-  'bubble': -10000,
-  'smoke' : -2000,
-  'instagram': -2000,
-  'ring': -10000,
-  'during': 10000,
-  'fabric': -10000,
-  'texture': -10000,
-  'pattern': -10000,
-  'text': -10000,
-  'eclipse': -10000, //it gets put in during days and it looks like night
-  'wall':-10000,
-  'sign': -10000,
-  'grayscale' : -100000,
-  'black and white' : -100000,
-  'graffiti' : -2000,
-  'meat' : -5000,
-  'toy' : -100000,
-  'man': -10000000, //trying to not have people in images
-  'men': -10000000,
-  'male': -1000000,
-  'couple': -1000000,
-  'female': -1000000,
-  'human': -1000000,
-  'girl': -1000000,
-  'boy': -1000000,
-  'kid': -1000000,
-  'toddler': -1000000,
-  'woman': -10000000,
-  'women': -10000000,
-  'person': -10000000,
-  'child': -10000000,
-  'crowd': -10000,
-  'people': -100000,
-  'hand': -100000,
-  'feet': -100000,
-  'bikini': -1000000,
-  'swimsuit': -1000000,
 };
 
 //if i have to get the average of two weather conditions then the condition
