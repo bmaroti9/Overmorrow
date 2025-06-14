@@ -19,21 +19,26 @@
 
 <div align="left">
     <a href="https://play.google.com/store/apps/details?id=com.marotidev.Overmorrow">
-  <img src="Screenshots/play_badge4.png" alt="colorful1" width="150">
+  <img src="Screenshots/play_badge4.png" alt="play_link" width="150">
 </a>
 <a href="https://apt.izzysoft.de/fdroid/index/apk/com.marotidev.Overmorrow/">
-  <img src="Screenshots/IzzyOnDroid_c.png" alt="colorful2" width="150">
+  <img src="Screenshots/IzzyOnDroid_c.png" alt="izzy_link" width="150">
+</a>
+<a href="https://github.com/bmaroti9/overmorrow/releases">
+  <img src="Screenshots/github_download_buttton.png" alt="github_link" width="150">
 </a>
 </div>
 
 
 ## 🎉 Features
--  **🖼️ Beautiful weather images**  
-  *The weather images seamlessly adapt to your current weather condition*
 -  **📡 Full screen precipitation radar**  
-  *Track storms in real-time, with 20 minutes of future forecast*
+  *Enjoy a real-time radar, that lets you track storms, rain, and snow*
 -  **🗓️ 14 day forecast**  
   *Plan your days ahead easily with 14 days of forecast*
+-  **🖼️ Beautiful weather images**  
+  *The weather images seamlessly adapt to your current weather condition*
+-  **🕒 72 hour forecast**  
+  *Track the temperature, precipitation chance, wind-speed, uv and more for the next 72 hours*
 -  **🍃 Dedicated Air quality page**  
   *Track pollen, air pollutants, dust, and more, with 5 days of aqi forecast*  
 -  **☔ 15 minute rain trend**  
@@ -41,13 +46,11 @@
 -  **🗃️ 3 different weather providers**  
   *Choose the weather source that you find best*
 -  **🛜 Offline mode**  
-  *See previously loaded data, when offline*
+  *See previously loaded data, even when offline*
 -  **📢 Weather alerts**  
   *Get notified about upcoming storms, floods, and severe weather alerts*
 -  **⏳ Current conditions**  
   *Check the current temperature, feels like, wind speed, humidity and more*  
--  **🕒 72 hour forecast**  
-  *Track the temperature, precipitation chance, wind-speed, uv and more for the next 72 hours*
 -  **🌅 Sunrise/sunset times**  
   *Know the time when the sun will rise and set*
 -  **⭐ Favorite places**  
