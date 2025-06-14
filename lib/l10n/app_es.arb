@@ -1,6 +1,6 @@
 {
   "@@locale": "es",
-  "feelsLike": "Sensación",
+  "feelsLike": "Se siente como",
   "@feelsLike": {},
   "precipCapital": "Precip.",
   "@precipCapital": {},
@@ -46,9 +46,9 @@
   "@drizzle": {},
   "thunderstorm": "Tormenta",
   "@thunderstorm": {},
-  "heavySnow": "Nevada intensa",
+  "heavySnow": "Fuerte nevada",
   "@heavySnow": {},
-  "fog": "Nebbia",
+  "fog": "Bruma",
   "@fog": {},
   "snow": "Nieve",
   "@snow": {},
@@ -56,17 +56,17 @@
   "@heavyRain": {},
   "cloudyNight": "Noche nublada",
   "@cloudyNight": {},
-  "weakOrNoWifiConnection": "Conexión wifi débil o inexistente",
+  "weakOrNoWifiConnection": "Conexión WIFI débil o inexistente",
   "@weakOrNoWifiConnection": {},
-  "notConnectedToTheInternet": "No conectado a internet",
+  "notConnectedToTheInternet": "Sin conexión a Internet",
   "@notConnectedToTheInternet": {},
   "placeNotFound": "Lugar no encontrado",
   "@placeNotFound": {},
   "unableToLocateDevice": "No se puede localizar el dispositivo",
   "@unableToLocateDevice": {},
-  "locationServicesAreDisabled": "Los servicios de ubicación están desactivados.",
+  "locationServicesAreDisabled": "Los servicios de ubicación están deshabilitados.",
   "@locationServicesAreDisabled": {},
-  "locationPermissionIsDenied": "Se denegó el permiso de ubicación",
+  "locationPermissionIsDenied": "El permiso de ubicación fue rechazado",
   "@locationPermissionIsDenied": {},
   "locationPermissionDeniedForever": "Permiso de ubicación denegado para siempre",
   "@locationPermissionDeniedForever": {},
@@ -74,7 +74,7 @@
   "@failedToAccessGps": {},
   "search": "Buscar...",
   "@search": {},
-  "sunriseSunset": "amanecer/anochecer",
+  "sunriseSunset": "amanecer/atardecer",
   "@sunriseSunset": {},
   "airQuality": "Calidad del aire",
   "@airQuality": {},
@@ -170,9 +170,9 @@
   "@appearanceSettingDesc": {},
   "generalSettingDesc": "modo de tiempo, tamaño de fuente",
   "@generalSettingDesc": {},
-  "languageSettingDesc": "el idioma utilizado",
+  "languageSettingDesc": "Idioma usado",
   "@languageSettingDesc": {},
-  "unitsSettingdesc": "las unidades utilizadas en la aplicación",
+  "unitsSettingdesc": "unidades aplicadas en la aplicación",
   "@unitsSettingdesc": {},
   "now": "ahora",
   "@now": {},
@@ -180,7 +180,7 @@
   "@hr": {},
   "layout": "Diseño",
   "@layout": {},
-  "layoutSettingDesc": "orden de widgets, personalización",
+  "layoutSettingDesc": "personalización de la app",
   "@layoutSettingDesc": {},
   "thirtyMinutes": "30m",
   "@thirtyMinutes": {},
@@ -198,7 +198,7 @@
   "@olivePollen": {},
   "ragweedPollen": "polen de ambrosía",
   "@ragweedPollen": {},
-  "dailyAqi": "AQI diario",
+  "dailyAqi": "ICA diario",
   "@dailyAqi": {},
   "dateFormat": "Formato de fecha",
   "@dateFormat": {},
@@ -208,13 +208,13 @@
   "@aerosolOpticalDepth": {},
   "dust": "polvo",
   "@dust": {},
-  "europeanAqi": "aqi europeo",
+  "europeanAqi": "ICA europeo",
   "@europeanAqi": {},
-  "unitedStatesAqi": "aqi de ee. uu.",
+  "unitedStatesAqi": "ICA de Estados Unidos",
   "@unitedStatesAqi": {},
   "offline": "sin conexión",
   "@offline": {},
-  "extremelyClear": "Extremadamente despejado",
+  "extremelyClear": "Totalmente despejado",
   "@extremelyClear": {},
   "veryClear": "Muy despejado",
   "@veryClear": {},
@@ -228,7 +228,7 @@
   "@veryHazy": {},
   "extremelyHazy": "extremadamente brumoso",
   "@extremelyHazy": {},
-  "poweredByOpenMeteo": "con tecnología de OpenMeteo",
+  "poweredByOpenMeteo": "Con la teconología de Open-Meteo",
   "@poweredByOpenMeteo": {
     "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
   },
@@ -315,5 +315,65 @@
   "weatherProvderLowercase": "Proveedor del clima",
   "@weatherProvderLowercase": {},
   "dailyLowercase": "Diario",
-  "@dailyLowercase": {}
+  "@dailyLowercase": {},
+  "showMore": "mostrar más",
+  "@showMore": {},
+  "showLess": "mostrar menos",
+  "@showLess": {},
+  "rainExpectedInHours": "Se espera lluvia en {horas, plural, =1 {hora} other {{horas} horas}}",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInMinutes": "Se espera lluvia en {minutos, plural, =1 {minutos} other {{minutos} minutos}}",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInOneHour": "Se espera lluvia en una hora",
+  "@rainExpectedInOneHour": {
+    "description": "rain expected in the next hour"
+  },
+  "sourceCodeLowercase": "código fuente",
+  "@sourceCodeLowercase": {},
+  "emailLowercase": "correo electrónico",
+  "@emailLowercase": {},
+  "reportAnIssueLowercase": "reportar un problema",
+  "@reportAnIssueLowercase": {},
+  "donateLowercase": "donar",
+  "@donateLowercase": {},
+  "versionUppercase": "versión",
+  "@versionUppercase": {},
+  "apiAndServices": "APIs & Servicios",
+  "@apiAndServices": {},
+  "licenseUppercase": "Licencia",
+  "@licenseUppercase": {},
+  "weatherDataLowercase": "Datos meteorológicos",
+  "@weatherDataLowercase": {},
+  "imagesLowercase": "imágenes",
+  "@imagesLowercase": {},
+  "aboutSettingsDesc": "Sobre esta aplicación",
+  "@aboutSettingsDesc": {},
+  "sumLowercase": "res.",
+  "@sumLowercase": {
+    "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+  },
+  "alertsLowercase": "alertas",
+  "@alertsLowercase": {},
+  "light": "ligera",
+  "@light": {
+    "description": "light precipitation"
+  },
+  "heavy": "fuerte",
+  "@heavy": {
+    "description": "heavy precipitation"
+  }
 }
