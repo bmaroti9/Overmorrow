@@ -2,7 +2,7 @@
   "@@locale": "es",
   "feelsLike": "Se siente como",
   "@feelsLike": {},
-  "precipCapital": "Precip.",
+  "precipCapital": "Precipit.",
   "@precipCapital": {},
   "humidity": "Humedad",
   "@humidity": {},
@@ -128,7 +128,7 @@
   "@imageSource": {},
   "temp": "temp",
   "@temp": {},
-  "precipLowercase": "precip",
+  "precipLowercase": "precipit",
   "@precipLowercase": {},
   "windLowercase": "viento",
   "@windLowercase": {},
@@ -290,13 +290,13 @@
   },
   "buyMeACoffee": "¡Cómprame un café!",
   "@buyMeACoffee": {},
-  "updatedXMinutesAgo": "actualizado hace {minutes} min",
+  "updatedXMinutesAgo": "actualizado hace {minutes} minutos",
   "@updatedXMinutesAgo": {},
   "areas": "áreas",
   "@areas": {},
   "donationPageTextNew": "Overmorrow se ha concebido desde siempre como una aplicación completamente gratis, sin anuncios ni compras dentro de la aplicación. \n \nAsí que, si solo quieres usarla así, disfrútala mucho. \n \nSin embargo, si te encanta usarla, por favor considera dar una pequeña propina. \n\n¡Gracias!",
   "@donationPageTextNew": {},
-  "radarHaptics": "háptica del radar",
+  "radarHaptics": "Háptica del radar",
   "@radarHaptics": {
     "description": "setting for enabling or disabling haptic feedback for the radar"
   },
@@ -320,7 +320,7 @@
   "@showMore": {},
   "showLess": "mostrar menos",
   "@showLess": {},
-  "rainExpectedInHours": "Se espera lluvia en {horas, plural, =1 {hora} other {{horas} horas}}",
+  "rainExpectedInHours": "Se estima lluvia en {horas, plural, =1 {hora} other{{hours} hours}}",
   "@rainExpectedInHours": {
     "description": "rain expected in the next X hours",
     "placeholders": {
@@ -329,7 +329,7 @@
       }
     }
   },
-  "rainExpectedInMinutes": "Se espera lluvia en {minutos, plural, =1 {minutos} other {{minutos} minutos}}",
+  "rainExpectedInMinutes": "Se estima lluvia en {minutos, plural, =1 {minuto} other{{minutes} minutes}}",
   "@rainExpectedInMinutes": {
     "description": "rain expected in the next X minutes",
     "placeholders": {
