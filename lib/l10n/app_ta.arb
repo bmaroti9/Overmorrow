@@ -119,7 +119,7 @@
   "@dust": {},
   "helpTranslate": "மொழிபெயர்க்க உதவுங்கள்",
   "@helpTranslate": {},
-  "extremelyClear": "மிகவும் தெளிவாக",
+  "extremelyClear": "தெல்லத் தெளிவாக",
   "@extremelyClear": {},
   "veryClear": "மிகவும் தெளிவாக",
   "@veryClear": {},
@@ -131,7 +131,7 @@
   "@hazy": {},
   "veryHazy": "மிகவும் மங்கலான",
   "@veryHazy": {},
-  "extremelyHazy": "மிகவும் மங்கலான",
+  "extremelyHazy": "கடைநிலை மங்கலான",
   "@extremelyHazy": {},
   "poweredByOpenMeteo": "திறந்த-மெட்டியோ மூலம் இயக்கப்படுகிறது",
   "@poweredByOpenMeteo": {
@@ -238,5 +238,139 @@
   "unitedStatesAqi": "ஒன்றுபட்டது ச்டேட்ச் AQI",
   "@unitedStatesAqi": {},
   "offline": "இணையமில்லாமல்",
-  "@offline": {}
+  "@offline": {},
+  "showMore": "மேலும் காட்டு",
+  "@showMore": {},
+  "rainInHalfHour": "அடுத்த அரை மணி நேரத்தில் மழை",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "rainExpectedInOneHour": "ஒரு மணி நேரத்தில் மழை எதிர்பார்க்கப்படுகிறது",
+  "@rainExpectedInOneHour": {
+    "description": "rain expected in the next hour"
+  },
+  "rainExpectedInMinutes": "அடுத்த {minutes, plural, =1 {நிமையத்தில்} other {{minutes} நிமையங்களில்}}மழை எதிர்பார்க்கப்படும்",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInMinutes": "அடுத்த {minutes, plural, =1 {நிமையத்தில்} other {{minutes} நிமையங்களில்}} மழை",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "sumLowercase": "தொகை",
+  "@sumLowercase": {
+    "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+  },
+  "weatherProvderLowercase": "வானிலை வழங்குநர்",
+  "@weatherProvderLowercase": {},
+  "dailyLowercase": "நாள்தோறும்",
+  "@dailyLowercase": {},
+  "reportAnIssueLowercase": "ஒரு சிக்கலைப் புகாரளிக்கவும்",
+  "@reportAnIssueLowercase": {},
+  "donateLowercase": "நன்கொடை",
+  "@donateLowercase": {},
+  "versionUppercase": "பதிப்பு",
+  "@versionUppercase": {},
+  "apiAndServices": "பநிஇ கள் & சேவைகள்",
+  "@apiAndServices": {},
+  "licenseUppercase": "உரிமம்",
+  "@licenseUppercase": {},
+  "weatherDataLowercase": "வானிலை தரவு",
+  "@weatherDataLowercase": {},
+  "imagesLowercase": "படங்கள்",
+  "@imagesLowercase": {},
+  "aboutSettingsDesc": "இந்த பயன்பாடு பற்றி",
+  "@aboutSettingsDesc": {},
+  "rainInOneHour": "அடுத்த மணி நேரத்தில் மழை",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  },
+  "rainInHours": "அடுத்த {hours, plural, =1 {மணிநேரம்} other {{hours} மணிநேரத்தில்}}மழை",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "showLess": "குறைவாகக் காட்டு",
+  "@showLess": {},
+  "updatedXHoursAgo": "புதுப்பிக்கப்பட்டது, {hours, plural, =1 {1 மணிநேரம்} other {{hours} மணிநேரத்திற்கு}} முன்பு",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "tomorrowLowercase": "நாளை",
+  "@tomorrowLowercase": {},
+  "overmorrowLowercase": "ஓவர்மோரோ",
+  "@overmorrowLowercase": {},
+  "rainExpectedInHours": "அடுத்த {hours, plural, =1 {மணிநேரம்} other {{hours} மணிநேரத்தில்}}மழை எதிர்பார்க்கப்படும்",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "புதுப்பிக்கப்பட்டது, {days, plural, =1 {1 நாள்} other {{days} நாட்கள்}} முன்பு",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXMinutesAgo": "புதுப்பிக்கப்பட்டது, {minutes} மணித்துளி முன்பு",
+  "@updatedXMinutesAgo": {},
+  "areas": "பகுதிகள்",
+  "@areas": {},
+  "currentLocation": "தற்போதைய இடம்",
+  "@currentLocation": {},
+  "favoritesLowercase": "பிடித்தவை",
+  "@favoritesLowercase": {},
+  "grantLocationPermission": "இருப்பிட இசைவு வழங்கவும்",
+  "@grantLocationPermission": {},
+  "sourceCodeLowercase": "மூலக் குறியீடு",
+  "@sourceCodeLowercase": {},
+  "emailLowercase": "மின்னஞ்சல்",
+  "@emailLowercase": {},
+  "radarHaptics": "ரேடார் ஆப்டிக்ச்",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
+  },
+  "alertsLowercase": "விழிப்பூட்டல்கள்",
+  "@alertsLowercase": {},
+  "severity": "தீவிரம்",
+  "@severity": {},
+  "certainty": "உறுதியானது",
+  "@certainty": {},
+  "urgency": "விரைவு",
+  "@urgency": {},
+  "light": "ஒளி",
+  "@light": {
+    "description": "light precipitation"
+  },
+  "heavy": "கனமான",
+  "@heavy": {
+    "description": "heavy precipitation"
+  },
+  "alertsCapital": "விழிப்பூட்டல்கள்",
+  "@alertsCapital": {}
 }
