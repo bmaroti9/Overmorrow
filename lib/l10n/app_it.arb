@@ -371,5 +371,7 @@
     "description": "heavy precipitation"
   },
   "alertsCapital": "Avvisi",
-  "@alertsCapital": {}
+  "@alertsCapital": {},
+  "tomorrowLowercase": "domani",
+  "@tomorrowLowercase": {}
 }
