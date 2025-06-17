@@ -39,6 +39,8 @@ String generateSimplifier(var split) {
   return "${split["name"]}, ${split["lat"].toStringAsFixed(2)}, ${split["lon"].toStringAsFixed(2)}";
 }
 
+
+
 Widget searchBar2(ColorScheme palette, recommend,
     Function updateLocation, Function updateFav, favorites, Function updateRec, String place,
     var context, Map<String, String> settings, Image image) {
@@ -209,9 +211,9 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
       Placemark place = placemarks[0];
 
       setState(() {
-        placeName = place.locality ?? "";
-        country = place.isoCountryCode ?? "";
-        region = place.administrativeArea ?? "";
+        placeName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? "";
+        country = place.isoCountryCode ?? place.country ?? "";
+        region = place.administrativeArea ?? place.subAdministrativeArea ?? "";
         locationState = "enabled";
       });
     } on Error {
@@ -246,9 +248,9 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
       Placemark place = placemarks[0];
 
       setState(() {
-        placeName = place.locality ?? "";
-        country = place.isoCountryCode ?? "";
-        region = place.administrativeArea ?? "";
+        placeName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? "";
+        country = place.isoCountryCode ?? place.country ?? "";
+        region = place.administrativeArea ?? place.subAdministrativeArea ?? "";
         locationState = "enabled";
       });
 

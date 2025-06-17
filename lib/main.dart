@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                 position.latitude, position.longitude).timeout(const Duration(seconds: 3));
             Placemark place = placemarks[0];
 
-            backupName = place.locality;
+            backupName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? "";
             absoluteProposed = "${position.latitude}, ${position.longitude}";
 
           } on Error {
