@@ -9,10 +9,10 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get feelsLike => 'Sensación';
+  String get feelsLike => 'Se siente como';
 
   @override
-  String get precipCapital => 'Precip.';
+  String get precipCapital => 'Precipit.';
 
   @override
   String get humidity => 'Humedad';
@@ -72,10 +72,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get thunderstorm => 'Tormenta';
 
   @override
-  String get heavySnow => 'Nevada intensa';
+  String get heavySnow => 'Fuerte nevada';
 
   @override
-  String get fog => 'Nebbia';
+  String get fog => 'Bruma';
 
   @override
   String get snow => 'Nieve';
@@ -87,10 +87,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cloudyNight => 'Noche nublada';
 
   @override
-  String get weakOrNoWifiConnection => 'Conexión wifi débil o inexistente';
+  String get weakOrNoWifiConnection => 'Conexión WIFI débil o inexistente';
 
   @override
-  String get notConnectedToTheInternet => 'No conectado a internet';
+  String get notConnectedToTheInternet => 'Sin conexión a Internet';
 
   @override
   String get placeNotFound => 'Lugar no encontrado';
@@ -99,10 +99,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get unableToLocateDevice => 'No se puede localizar el dispositivo';
 
   @override
-  String get locationServicesAreDisabled => 'Los servicios de ubicación están desactivados.';
+  String get locationServicesAreDisabled => 'Los servicios de ubicación están deshabilitados.';
 
   @override
-  String get locationPermissionIsDenied => 'Se denegó el permiso de ubicación';
+  String get locationPermissionIsDenied => 'El permiso de ubicación fue rechazado';
 
   @override
   String get locationPermissionDeniedForever => 'Permiso de ubicación denegado para siempre';
@@ -123,7 +123,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get search => 'Buscar...';
 
   @override
-  String get sunriseSunset => 'amanecer/anochecer';
+  String get sunriseSunset => 'amanecer/atardecer';
 
   @override
   String get airQuality => 'Calidad del aire';
@@ -201,10 +201,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get imageSource => 'Fuente de imagen';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'res.';
 
   @override
-  String get precipLowercase => 'precip';
+  String get precipLowercase => 'precipit';
 
   @override
   String get windLowercase => 'viento';
@@ -234,31 +234,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get photoByXOnUnsplash => 'Foto, de ,x, en ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'código fuente';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'correo electrónico';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'reportar un problema';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'donar';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'versión';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'APIs & Servicios';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Licencia';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'Datos meteorológicos';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'imágenes';
 
   @override
   String get appearance => 'Apariencia';
@@ -279,13 +279,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get generalSettingDesc => 'modo de tiempo, tamaño de fuente';
 
   @override
-  String get languageSettingDesc => 'el idioma utilizado';
+  String get languageSettingDesc => 'Idioma usado';
 
   @override
-  String get unitsSettingdesc => 'las unidades utilizadas en la aplicación';
+  String get unitsSettingdesc => 'unidades aplicadas en la aplicación';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'Sobre esta aplicación';
 
   @override
   String get now => 'ahora';
@@ -297,7 +297,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get layout => 'Diseño';
 
   @override
-  String get layoutSettingDesc => 'orden de widgets, personalización';
+  String get layoutSettingDesc => 'personalización de la app';
 
   @override
   String get thirtyMinutes => '30m';
@@ -324,7 +324,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get ragweedPollen => 'polen de ambrosía';
 
   @override
-  String get dailyAqi => 'AQI diario';
+  String get dailyAqi => 'ICA diario';
 
   @override
   String get dateFormat => 'Formato de fecha';
@@ -339,10 +339,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dust => 'polvo';
 
   @override
-  String get europeanAqi => 'aqi europeo';
+  String get europeanAqi => 'ICA europeo';
 
   @override
-  String get unitedStatesAqi => 'aqi de ee. uu.';
+  String get unitedStatesAqi => 'ICA de Estados Unidos';
 
   @override
   String get offline => 'sin conexión';
@@ -351,7 +351,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get helpTranslate => 'Ayuda a traducir';
 
   @override
-  String get extremelyClear => 'Extremadamente despejado';
+  String get extremelyClear => 'Totalmente despejado';
 
   @override
   String get veryClear => 'Muy despejado';
@@ -372,7 +372,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get extremelyHazy => 'extremadamente brumoso';
 
   @override
-  String get poweredByOpenMeteo => 'con tecnología de OpenMeteo';
+  String get poweredByOpenMeteo => 'Con la teconología de Open-Meteo';
 
   @override
   String get rainInHalfHour => 'lluvia en la próxima media hora';
@@ -408,13 +408,13 @@ class AppLocalizationsEs extends AppLocalizations {
       minutes,
       locale: localeName,
       other: '$minutes minutes',
-      one: 'minute',
+      one: 'minuto',
     );
-    return 'rain expected in $_temp0';
+    return 'Se estima lluvia en $_temp0';
   }
 
   @override
-  String get rainExpectedInOneHour => 'rain expected in an hour';
+  String get rainExpectedInOneHour => 'Se espera lluvia en una hora';
 
   @override
   String rainExpectedInHours(int hours) {
@@ -422,14 +422,14 @@ class AppLocalizationsEs extends AppLocalizations {
       hours,
       locale: localeName,
       other: '$hours hours',
-      one: 'hour',
+      one: 'hora',
     );
-    return 'rain expected in $_temp0';
+    return 'Se estima lluvia en $_temp0';
   }
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return 'actualizado hace $minutes min';
+    return 'actualizado hace $minutes minutos';
   }
 
   @override
@@ -455,13 +455,13 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get radarHaptics => 'háptica del radar';
+  String get radarHaptics => 'Háptica del radar';
 
   @override
   String get alertsCapital => 'Alertas';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'alertas';
 
   @override
   String get severity => 'gravedad';
@@ -476,14 +476,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get areas => 'áreas';
 
   @override
-  String get light => 'light';
+  String get light => 'ligera';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'fuerte';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'mostrar más';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'mostrar menos';
 }

@@ -2,6 +2,7 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
 }
 
 def localProperties = new Properties()
@@ -24,7 +25,7 @@ if (flutterVersionName == null) {
 
 android {
 
-    namespace "com.example.overmorrow"
+    namespace "com.marotidev.overmorrow"
     compileSdk 35
     // compileSdkVersion flutter.compileSdkVersion <- this vas the original one but
     // geolocator insisted on it being 33
@@ -62,6 +63,10 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    buildFeatures {
+        compose true
+    }
 }
 
 flutter {
@@ -69,5 +74,8 @@ flutter {
 }
 
 dependencies {
-
+    implementation "androidx.glance:glance-appwidget:1.1.1"
+    implementation "androidx.glance:glance-material3:1.1.1"
+    implementation project(':home_widget')
+    implementation "com.google.code.gson:gson:2.10.1"
 }

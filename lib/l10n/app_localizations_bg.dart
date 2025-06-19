@@ -60,7 +60,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get overcast => 'Облачно';
 
   @override
-  String get haze => 'Мараня';
+  String get haze => 'Мъгливо';
 
   @override
   String get sleet => 'Суграшица';
@@ -333,7 +333,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get d => 'д';
 
   @override
-  String get aerosolOpticalDepth => 'аерозолна оптична дълбочина';
+  String get aerosolOpticalDepth => 'оптична дълбочина на аерозола';
 
   @override
   String get dust => 'прах';

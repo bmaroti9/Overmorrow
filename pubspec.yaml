@@ -40,6 +40,10 @@ dependencies:
   geolocator: ^13.0.4
   geocoding: ^3.0.0
 
+
+  #i also used this version in the build.gradle for some plugins
+  home_widget: ^0.8.0
+
   flutter_cache_manager: ^3.4.1
   flutter_map: ^8.1.1
   loading_animation_widget: ^1.2.0+4

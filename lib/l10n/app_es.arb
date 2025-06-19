@@ -320,7 +320,7 @@
   "@showMore": {},
   "showLess": "mostrar menos",
   "@showLess": {},
-  "rainExpectedInHours": "Se estima lluvia en {horas, plural, =1 {hora} other{{hours} hours}}",
+  "rainExpectedInHours": "Se estima lluvia en {hours, plural, =1 {hora} other{{hours} hours}}",
   "@rainExpectedInHours": {
     "description": "rain expected in the next X hours",
     "placeholders": {
@@ -329,7 +329,7 @@
       }
     }
   },
-  "rainExpectedInMinutes": "Se estima lluvia en {minutos, plural, =1 {minuto} other{{minutes} minutes}}",
+  "rainExpectedInMinutes": "Se estima lluvia en {minutes, plural, =1 {minuto} other{{minutes} minutes}}",
   "@rainExpectedInMinutes": {
     "description": "rain expected in the next X minutes",
     "placeholders": {

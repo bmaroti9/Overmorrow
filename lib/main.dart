@@ -27,6 +27,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/weather_refact.dart';
@@ -38,6 +39,21 @@ import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 
 import 'settings_page.dart';
+
+class WidgetService {
+
+  static Future<void> saveData(String id, value) async {
+    await HomeWidget.saveWidgetData<int>(id, value);
+  }
+
+  static Future<void> reloadWidget() async {
+    await HomeWidget.updateWidget(
+      androidName: 'CurrentWidget',
+      qualifiedAndroidName: 'com.marotidev.overmorrow.CurrentWidgetReceiver',
+    );
+  }
+
+}
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -251,6 +267,9 @@ class _HomePageState extends State<HomePage> {
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
       // then this will be the new startup place
+      
+      WidgetService.saveData('counter', weatherData.current.temp);
+      WidgetService.reloadWidget();
 
       return WeatherPage(data: weatherData, updateLocation: updateLocation);
 

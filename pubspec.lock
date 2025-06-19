@@ -170,10 +170,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_launcher_icons
-      sha256: bfa04787c85d80ecb3f8777bde5fc10c3de809240c48fa061a2c2bf15ea5211c
+      sha256: "10f13781741a2e3972126fae08393d3c4e01fa4cd7473326b94b72cf594195e7"
       url: "https://pub.dev"
     source: hosted
-    version: "0.14.3"
+    version: "0.14.4"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -301,6 +301,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.2.1"
+  home_widget:
+    dependency: "direct main"
+    description:
+      name: home_widget
+      sha256: ad9634ef5894f3bac73f04d59e2e5151a39798f49985399fd928dadc828d974a
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.0"
   http:
     dependency: "direct main"
     description:

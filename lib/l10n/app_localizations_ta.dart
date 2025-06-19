@@ -30,10 +30,10 @@ class AppLocalizationsTa extends AppLocalizations {
   String get today => 'இன்று';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'நாளை';
 
   @override
-  String get overmorrowLowercase => 'Overmorrow';
+  String get overmorrowLowercase => 'ஓவர்மோரோ';
 
   @override
   String get language => 'மொழி';
@@ -108,13 +108,13 @@ class AppLocalizationsTa extends AppLocalizations {
   String get locationPermissionDeniedForever => 'இருப்பிட இசைவு என்றென்றும் மறுக்கப்படுகிறது';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'இருப்பிட இசைவு வழங்கவும்';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'தற்போதைய இடம்';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'பிடித்தவை';
 
   @override
   String get failedToAccessGps => 'சி.பி.எச் அணுகத் தவறிவிட்டது';
@@ -156,7 +156,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get colorMode => 'வண்ண பயன்முறை';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'வானிலை வழங்குநர்';
 
   @override
   String get timeMode => 'நேர முறை';
@@ -186,7 +186,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get fontSize => 'எழுத்துரு அளவு';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'நாள்தோறும்';
 
   @override
   String get searchProvider => 'தேடல் வழங்குநர்';
@@ -201,7 +201,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get imageSource => 'பட மூல';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'தொகை';
 
   @override
   String get precipLowercase => 'செங்குத்து';
@@ -234,31 +234,31 @@ class AppLocalizationsTa extends AppLocalizations {
   String get photoByXOnUnsplash => 'புகைப்படம், by, ஃச், on, Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'மூலக் குறியீடு';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'மின்னஞ்சல்';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'ஒரு சிக்கலைப் புகாரளிக்கவும்';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'நன்கொடை';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'பதிப்பு';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'பநிஇ கள் & சேவைகள்';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'உரிமம்';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'வானிலை தரவு';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'படங்கள்';
 
   @override
   String get appearance => 'தோற்றம்';
@@ -285,7 +285,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get unitsSettingdesc => 'பயன்பாட்டில் பயன்படுத்தப்படும் அலகுகள்';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'இந்த பயன்பாடு பற்றி';
 
   @override
   String get now => 'இப்போது';
@@ -351,7 +351,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get helpTranslate => 'மொழிபெயர்க்க உதவுங்கள்';
 
   @override
-  String get extremelyClear => 'மிகவும் தெளிவாக';
+  String get extremelyClear => 'தெல்லத் தெளிவாக';
 
   @override
   String get veryClear => 'மிகவும் தெளிவாக';
@@ -369,37 +369,37 @@ class AppLocalizationsTa extends AppLocalizations {
   String get veryHazy => 'மிகவும் மங்கலான';
 
   @override
-  String get extremelyHazy => 'மிகவும் மங்கலான';
+  String get extremelyHazy => 'கடைநிலை மங்கலான';
 
   @override
   String get poweredByOpenMeteo => 'திறந்த-மெட்டியோ மூலம் இயக்கப்படுகிறது';
 
   @override
-  String get rainInHalfHour => 'rain in the next half an hour';
+  String get rainInHalfHour => 'அடுத்த அரை மணி நேரத்தில் மழை';
 
   @override
   String rainInMinutes(int minutes) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes நிமையங்களில்',
+      one: 'நிமையத்தில்',
     );
-    return 'rain in the next $_temp0';
+    return 'அடுத்த $_temp0 மழை';
   }
 
   @override
-  String get rainInOneHour => 'rain in the next hour';
+  String get rainInOneHour => 'அடுத்த மணி நேரத்தில் மழை';
 
   @override
   String rainInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours மணிநேரத்தில்',
+      one: 'மணிநேரம்',
     );
-    return 'rain in the next $_temp0';
+    return 'அடுத்த $_temp0மழை';
   }
 
   @override
@@ -407,29 +407,29 @@ class AppLocalizationsTa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes நிமையங்களில்',
+      one: 'நிமையத்தில்',
     );
-    return 'rain expected in $_temp0';
+    return 'அடுத்த $_temp0மழை எதிர்பார்க்கப்படும்';
   }
 
   @override
-  String get rainExpectedInOneHour => 'rain expected in an hour';
+  String get rainExpectedInOneHour => 'ஒரு மணி நேரத்தில் மழை எதிர்பார்க்கப்படுகிறது';
 
   @override
   String rainExpectedInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours மணிநேரத்தில்',
+      one: 'மணிநேரம்',
     );
-    return 'rain expected in $_temp0';
+    return 'அடுத்த $_temp0மழை எதிர்பார்க்கப்படும்';
   }
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return 'updated, $minutes min ago';
+    return 'புதுப்பிக்கப்பட்டது, $minutes மணித்துளி முன்பு';
   }
 
   @override
@@ -437,10 +437,10 @@ class AppLocalizationsTa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
+      other: '$hours மணிநேரத்திற்கு',
+      one: '1 மணிநேரம்',
     );
-    return 'updated, $_temp0 ago';
+    return 'புதுப்பிக்கப்பட்டது, $_temp0 முன்பு';
   }
 
   @override
@@ -448,42 +448,42 @@ class AppLocalizationsTa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: '$days days',
-      one: '1 day',
+      other: '$days நாட்கள்',
+      one: '1 நாள்',
     );
-    return 'updated, $_temp0 ago';
+    return 'புதுப்பிக்கப்பட்டது, $_temp0 முன்பு';
   }
 
   @override
-  String get radarHaptics => 'Radar haptics';
+  String get radarHaptics => 'ரேடார் ஆப்டிக்ச்';
 
   @override
-  String get alertsCapital => 'Alerts';
+  String get alertsCapital => 'விழிப்பூட்டல்கள்';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'விழிப்பூட்டல்கள்';
 
   @override
-  String get severity => 'severity';
+  String get severity => 'தீவிரம்';
 
   @override
-  String get certainty => 'certainty';
+  String get certainty => 'உறுதியானது';
 
   @override
-  String get urgency => 'urgency';
+  String get urgency => 'விரைவு';
 
   @override
-  String get areas => 'areas';
+  String get areas => 'பகுதிகள்';
 
   @override
-  String get light => 'light';
+  String get light => 'ஒளி';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'கனமான';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'மேலும் காட்டு';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'குறைவாகக் காட்டு';
 }
