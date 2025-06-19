@@ -38,7 +38,7 @@
   "@clearSky": {},
   "overcast": "Пасмурно",
   "@overcast": {},
-  "haze": "Туман",
+  "haze": "Дымка",
   "@haze": {},
   "sleet": "Мокрый снег",
   "@sleet": {},
@@ -96,7 +96,7 @@
   "@colorMode": {},
   "weatherProvider": "Поставщик погоды",
   "@weatherProvider": {},
-  "timeMode": "Режим времени",
+  "timeMode": "Формат времени",
   "@timeMode": {},
   "mon": "Пн",
   "@mon": {},
@@ -120,7 +120,7 @@
   "@searchProvider": {},
   "updatedXMinAgo": "обновлено, x мин назад",
   "@updatedXMinAgo": {},
-  "updatedJustNow": "обновлено, прямо сейчас",
+  "updatedJustNow": "обновлено только что",
   "@updatedJustNow": {},
   "colorSource": "Источник цвета",
   "@colorSource": {},
@@ -132,13 +132,13 @@
   "@precipLowercase": {},
   "windLowercase": "ветер",
   "@windLowercase": {},
-  "uvLowercase": "ув",
+  "uvLowercase": "уф",
   "@uvLowercase": {},
   "goodAqiDesc": "Качество воздуха отличное; угрозы для здоровья нет.",
   "@goodAqiDesc": {},
   "fairAqiDesc": "Приемлемое качество воздуха; незначительный риск для чувствительных людей.",
   "@fairAqiDesc": {},
-  "moderateAqiDesc": "Чувствительные люди могут испытывать легкие эффекты.",
+  "moderateAqiDesc": "Чувствительные люди могут испытывать дискомфорт.",
   "@moderateAqiDesc": {},
   "poorAqiDesc": "Возможны последствия для здоровья у всех, серьезные для чувствительных групп.",
   "@poorAqiDesc": {},
@@ -164,7 +164,7 @@
   "@appearance": {},
   "general": "Общие",
   "@general": {},
-  "units": "Единицы",
+  "units": "Единицы измерения",
   "@units": {},
   "appearanceSettingDesc": "цветовая тема, источник изображения",
   "@appearanceSettingDesc": {},
@@ -200,7 +200,7 @@
   "@ragweedPollen": {},
   "dailyAqi": "ежедневный AQI",
   "@dailyAqi": {},
-  "dateFormat": "Формат Даты",
+  "dateFormat": "Формат даты",
   "@dateFormat": {},
   "d": "д",
   "@d": {},
@@ -208,10 +208,126 @@
   "@aerosolOpticalDepth": {},
   "dust": "пыль",
   "@dust": {},
-  "europeanAqi": "евро aqi",
+  "europeanAqi": "Евро aqi",
   "@europeanAqi": {},
-  "unitedStatesAqi": "aqi сша",
+  "unitedStatesAqi": "aqi США",
   "@unitedStatesAqi": {},
   "offline": "офлайн",
-  "@offline": {}
+  "@offline": {},
+  "showMore": "Показать",
+  "@showMore": {},
+  "showLess": "Скрыть",
+  "@showLess": {},
+  "helpTranslate": "Помочь с переводом",
+  "@helpTranslate": {},
+  "rainInHalfHour": "дождь в течение получаса",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "rainInOneHour": "дождь в течение часа",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  },
+  "rainExpectedInOneHour": "ожидается дождь в течение часа",
+  "@rainExpectedInOneHour": {
+    "description": "rain expected in the next hour"
+  },
+  "rainInHours": "дождь в течение {hours, plural, =1 {часа} other {{hours} часов}}",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "precipitaion": "Осадки",
+  "@precipitaion": {},
+  "tomorrowLowercase": "завтра",
+  "@tomorrowLowercase": {},
+  "rainExpectedInMinutes": "ожидается дождь в течение {minutes, plural, =1 {минуты} other {{minutes} минут}}",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXMinutesAgo": "обновлено {minutes} мин. назад",
+  "@updatedXMinutesAgo": {},
+  "sumLowercase": "осн",
+  "@sumLowercase": {
+    "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+  },
+  "airQualityLowercase": "качество воздуха",
+  "@airQualityLowercase": {},
+  "favoritesLowercase": "избранное",
+  "@favoritesLowercase": {},
+  "currentLocation": "текущее местоположение",
+  "@currentLocation": {},
+  "reportAnIssueLowercase": "сообщить об ошибке",
+  "@reportAnIssueLowercase": {},
+  "licenseUppercase": "Лицензия",
+  "@licenseUppercase": {},
+  "imagesLowercase": "изображения",
+  "@imagesLowercase": {},
+  "aboutSettingsDesc": "о приложении",
+  "@aboutSettingsDesc": {},
+  "versionUppercase": "Версия",
+  "@versionUppercase": {},
+  "apiAndServices": "API и сервисы",
+  "@apiAndServices": {},
+  "sourceCodeLowercase": "исходный код",
+  "@sourceCodeLowercase": {},
+  "emailLowercase": "почта",
+  "@emailLowercase": {},
+  "donateLowercase": "пожертвования",
+  "@donateLowercase": {},
+  "updatedXHoursAgo": "обновлено {hours} ч. назад",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "обновлено {days} дн. назад",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dailyLowercase": "по дням",
+  "@dailyLowercase": {},
+  "grantLocationPermission": "Предоставление доступа к местоположению",
+  "@grantLocationPermission": {},
+  "weatherDataLowercase": "данные о погоде",
+  "@weatherDataLowercase": {},
+  "rainInMinutes": "дождь в течение {minutes, plural, =1 {минуты} other {{minutes} минут}}",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInHours": "ожидается дождь в течение {hours, plural, =1 {часа} other {{hours} часов}}",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "alertsLowercase": "оповещения",
+  "@alertsLowercase": {},
+  "alertsCapital": "Оповещения",
+  "@alertsCapital": {}
 }
