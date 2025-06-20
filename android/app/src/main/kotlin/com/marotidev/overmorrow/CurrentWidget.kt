@@ -1,4 +1,4 @@
-package com.marotidev.overmorrow // Your package name
+package com.marotidev.overmorrow
 
 // Standard Glance and Compose imports (as we discussed before)
 import HomeWidgetGlanceState
@@ -38,10 +38,10 @@ class CurrentWidget : GlanceAppWidget() {
         Box(modifier = GlanceModifier.background(Color.White).padding(16.dp).fillMaxSize()) {
             Column() {
                 Text(
-                    text = counter.toString()
+                    text = counter.toString(),
                 )
                 Text(
-                    text = "hehe"
+                    text = "hehe",
                 )
             }
         }

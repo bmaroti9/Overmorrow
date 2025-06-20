@@ -984,5 +984,5 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
     updatedTime: DateTime.now(),
     localtime: real_time.split("T")[1],
     isonline: isonline,
-    );
+  );
 }

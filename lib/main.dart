@@ -37,6 +37,7 @@ import 'decoders/extra_info.dart';
 import 'main_ui.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'settings_page.dart';
 
@@ -52,11 +53,52 @@ class WidgetService {
       qualifiedAndroidName: 'com.marotidev.overmorrow.CurrentWidgetReceiver',
     );
   }
+}
 
+const updateWeatherDataKey = "com.marotidev.overmorrow.updateWeatherData";
+
+@pragma('vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+void callbackDispatcher() {
+
+  Workmanager().executeTask((task, inputData) async {
+    print("Native called background task: $task"); //simpleTask will be emitted here.
+
+    switch (task) {
+      case updateWeatherDataKey :
+        print("HEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE");
+        AppLocalizations localizations = await AppLocalizations.delegate.load(Locale("en"));
+        Map<String, String> settings = await getSettingsUsed();
+        String weatherProvider = await getWeatherProvider();
+
+        WeatherData weatherData = await WeatherData.getFullData(settings,
+            "New York", "New York", "40.7128, -74.0060", weatherProvider, localizations);
+
+        WidgetService.saveData('counter', DateTime.now().minute);
+        WidgetService.reloadWidget();
+    }
+
+    return Future.value(true);
+  });
 }
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  Workmanager().initialize(
+      callbackDispatcher, // The top level function, aka callbackDispatcher
+      isInDebugMode: kDebugMode // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  );
+
+  print("thissssssssssssssssssssssssssssssssss");
+  //Workmanager().registerOneOffTask("test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
+
+  Workmanager().registerPeriodicTask(
+    "updateWeatherWidget",
+    updateWeatherDataKey,
+    frequency: const Duration(minutes: 15),
+    constraints: Constraints(networkType: NetworkType.connected, requiresBatteryNotLow: true),
+
+  );
 
   final data = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
   final ratio = WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
@@ -267,9 +309,9 @@ class _HomePageState extends State<HomePage> {
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
       // then this will be the new startup place
-      
-      WidgetService.saveData('counter', weatherData.current.temp);
-      WidgetService.reloadWidget();
+
+      //WidgetService.saveData('counter', weatherData.current.temp);
+      //WidgetService.reloadWidget();
 
       return WeatherPage(data: weatherData, updateLocation: updateLocation);
 

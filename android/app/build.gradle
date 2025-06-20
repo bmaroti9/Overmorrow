@@ -50,7 +50,7 @@ android {
         applicationId "com.marotidev.Overmorrow"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 23
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -77,5 +77,5 @@ dependencies {
     implementation "androidx.glance:glance-appwidget:1.1.1"
     implementation "androidx.glance:glance-material3:1.1.1"
     implementation project(':home_widget')
-    implementation "com.google.code.gson:gson:2.10.1"
+    implementation 'com.google.code.gson:gson:2.13.1'
 }
