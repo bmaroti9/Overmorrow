@@ -22,6 +22,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as Https;
 import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
 import 'package:overmorrow/services/image_service.dart';
@@ -48,7 +49,6 @@ String OmAqiDesc(index, localizations) {
     localizations.unhealthyAqiDesc,
   ][index - 1];
 }
-
 
 String OmAqiTitle(index, localizations) {
   return [
@@ -205,12 +205,12 @@ String oMTextCorrection(int code) {
   return OMCodes[code] ?? 'Clear Sky';
 }
 
-String oMCurrentTextCorrection(int code, sunstatus, time) {
+String oMCurrentTextCorrection(int code, absoluteSunriseSunset, time) {
   String t = time.contains("T") ? time.split("T")[1] : time.split(" ")[1];
   int minute = int.parse(t.split(":")[1]);
   int hour = int.parse(t.split(":")[0]);
 
-  List<String> x = sunstatus.absoluteSunriseSunset.split("/");
+  List<String> x = absoluteSunriseSunset.split("/");
   int up_h = int.parse(x[0].split(":")[0]);
   int up_m = int.parse(x[0].split(":")[1]);
 
@@ -290,12 +290,12 @@ class OMCurrent {
   static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng, start, dayDif, context, isonline) async {
 
     String currentCondition = oMCurrentTextCorrection(
-        item["current"]["weather_code"], sunstatus, timenow);
+        item["current"]["weather_code"], sunstatus.absoluteSunriseSunset, timenow);
 
     //offline mode
     if (!isonline) {
       currentCondition = oMCurrentTextCorrection(
-          item["hourly"]["weather_code"][start], sunstatus, timenow);
+          item["hourly"]["weather_code"][start], sunstatus.absoluteSunriseSunset, timenow);
     }
 
     ImageService imageService = await ImageService.getImageService(currentCondition, real_loc, settings);
@@ -545,12 +545,12 @@ class OMHour {
     temp: unit_coversion(item["hourly"]["temperature_2m"][index], settings["Temperature"]).round(),
     text: conditionTranslation(
         oMCurrentTextCorrection(
-            item["hourly"]["weather_code"][index], sunstatus, item["hourly"]["time"][index]
+            item["hourly"]["weather_code"][index], sunstatus.absoluteSunriseSunset, item["hourly"]["time"][index]
         ),
         localizations
     ) ?? "TranslationErr",
     icon: oMIconCorrection(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
-        sunstatus, item["hourly"]["time"][index])),
+        sunstatus.absoluteSunriseSunset, item["hourly"]["time"][index])),
     time: settings["Time mode"] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
 
     precip: double.parse(
@@ -984,5 +984,38 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
     updatedTime: DateTime.now(),
     localtime: real_time.split("T")[1],
     isonline: isonline,
+  );
+}
+
+Future<LightCurrentWeatherData> omGetLightCurrentData(settings, placeName, lat, lng) async {
+  final oMParams = {
+    "latitude": lat.toString(),
+    "longitude": lng.toString(),
+    "current": ["temperature_2m", "weather_code"],
+    "daily": ["sunrise", "sunset"],
+    "forecast_days": "1",
+    "timezone": "auto",
+  };
+
+  final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
+  print(oMUrl);
+
+  final response = (await Https.get(oMUrl)).body;
+
+  final item = jsonDecode(response);
+  print(item["temperature_2m"]);
+
+  DateTime localtime = OMGetLocalTime(item);
+  String realTime = "jT${localtime.hour}:${localtime.minute}";
+  DateTime now = DateTime.now();
+
+  final absoluteSunriseSunset =  "${OMConvertTime(item["daily"]["sunrise"][0])}/"
+      "${OMConvertTime(item["daily"]["sunset"][0])}";
+
+  return LightCurrentWeatherData(
+    condition: oMCurrentTextCorrection(item["current"]["weather_code"], absoluteSunriseSunset, realTime),
+    place: placeName,
+    temp: unit_coversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
+    updatedTime: "${now.hour}:${now.minute}",
   );
 }

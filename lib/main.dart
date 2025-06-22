@@ -32,19 +32,28 @@ import 'package:overmorrow/ui_helper.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:overmorrow/services/location_service.dart';
+import 'package:workmanager/workmanager.dart';
 import 'caching.dart';
 import 'decoders/extra_info.dart';
 import 'main_ui.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
-import 'package:workmanager/workmanager.dart';
 
 import 'settings_page.dart';
+
+const updateWeatherDataKey = "com.marotidev.overmorrow.updateWeatherData";
 
 class WidgetService {
 
   static Future<void> saveData(String id, value) async {
-    await HomeWidget.saveWidgetData<int>(id, value);
+    await HomeWidget.saveWidgetData(id, value);
+  }
+
+  static Future<void> syncCurrentDataToWidget(LightCurrentWeatherData weatherData) async {
+    await saveData("current.temp", weatherData.temp);
+    await saveData("current.condition", weatherData.condition);
+    await saveData("current.place", weatherData.place);
+    await saveData("current.updatedTime", weatherData.updatedTime);
   }
 
   static Future<void> reloadWidget() async {
@@ -55,8 +64,6 @@ class WidgetService {
   }
 }
 
-const updateWeatherDataKey = "com.marotidev.overmorrow.updateWeatherData";
-
 @pragma('vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
 void callbackDispatcher() {
 
@@ -65,7 +72,10 @@ void callbackDispatcher() {
 
     switch (task) {
       case updateWeatherDataKey :
+
         print("HEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE");
+
+        /*
         AppLocalizations localizations = await AppLocalizations.delegate.load(Locale("en"));
         Map<String, String> settings = await getSettingsUsed();
         String weatherProvider = await getWeatherProvider();
@@ -73,8 +83,16 @@ void callbackDispatcher() {
         WeatherData weatherData = await WeatherData.getFullData(settings,
             "New York", "New York", "40.7128, -74.0060", weatherProvider, localizations);
 
-        WidgetService.saveData('counter', DateTime.now().minute);
-        WidgetService.reloadWidget();
+         */
+
+        LightCurrentWeatherData weatherData = await LightCurrentWeatherData.
+        getLightCurrentWeatherData("New York", "40.7128", "-74.0060");
+        print((weatherData.condition));
+
+        print("syncing to widget");
+        await WidgetService.syncCurrentDataToWidget(weatherData);
+        await WidgetService.reloadWidget();
+
     }
 
     return Future.value(true);
@@ -90,14 +108,13 @@ void main() {
   );
 
   print("thissssssssssssssssssssssssssssssssss");
-  //Workmanager().registerOneOffTask("test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
+  Workmanager().registerOneOffTask("test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
 
   Workmanager().registerPeriodicTask(
     "updateWeatherWidget",
     updateWeatherDataKey,
     frequency: const Duration(minutes: 15),
     constraints: Constraints(networkType: NetworkType.connected, requiresBatteryNotLow: true),
-
   );
 
   final data = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;

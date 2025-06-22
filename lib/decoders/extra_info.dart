@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/decoders/decode_mn.dart';
 import '../caching.dart';
+import '../settings_page.dart';
 import 'decode_wapi.dart';
 
 
@@ -137,4 +138,28 @@ class RainviewerRadar {
 
   return RainviewerRadar.fromJson(images, times);
   }
+}
+
+
+//A more lightweight version of data fetching for the current widgets to use
+class LightCurrentWeatherData {
+  final String place;
+  final int temp;
+  final String condition;
+  final String updatedTime;
+
+  LightCurrentWeatherData({
+    required this.place,
+    required this.updatedTime,
+    required this.condition,
+    required this.temp,
+  });
+
+  static Future<LightCurrentWeatherData> getLightCurrentWeatherData(placeName, lat, lng,) async {
+    Map<String, String> settings = await getSettingsUsed();
+    String provider = await getWeatherProvider();
+
+    return omGetLightCurrentData(settings, placeName, lat, lng);
+  }
+
 }
