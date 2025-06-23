@@ -16,7 +16,7 @@ fun GlanceText(
     fontSize: TextUnit,
     modifier: GlanceModifier = GlanceModifier,
     color: ColorProvider,
-    letterSpacing: TextUnit = 0.1.sp
+    letterSpacing: TextUnit = 0.1.sp,
 ) {
 
     val context = LocalContext.current

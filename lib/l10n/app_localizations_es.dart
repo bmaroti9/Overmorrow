@@ -9,7 +9,7 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get feelsLike => 'Se siente como';
+  String get feelsLike => 'La sensación térmica es de';
 
   @override
   String get precipCapital => 'Precipit.';

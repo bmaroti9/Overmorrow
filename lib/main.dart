@@ -113,7 +113,7 @@ void main() {
   Workmanager().registerPeriodicTask(
     "updateWeatherWidget",
     updateWeatherDataKey,
-    frequency: const Duration(minutes: 15),
+    frequency: const Duration(hours: 1),
     constraints: Constraints(networkType: NetworkType.connected, requiresBatteryNotLow: true),
   );
 

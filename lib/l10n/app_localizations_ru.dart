@@ -30,7 +30,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get today => 'Сегодня';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'завтра';
 
   @override
   String get overmorrowLowercase => 'Overmorrow';
@@ -42,7 +42,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get temperature => 'Температура';
 
   @override
-  String get precipitaion => 'Precipitation';
+  String get precipitaion => 'Осадки';
 
   @override
   String get rain => 'Дождь';
@@ -60,7 +60,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get overcast => 'Пасмурно';
 
   @override
-  String get haze => 'Туман';
+  String get haze => 'Дымка';
 
   @override
   String get sleet => 'Мокрый снег';
@@ -108,13 +108,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get locationPermissionDeniedForever => 'Разрешение на местоположение отклонено навсегда';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'Предоставление доступа к местоположению';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'текущее местоположение';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'избранное';
 
   @override
   String get failedToAccessGps => 'Не удалось получить доступ к GPS';
@@ -129,7 +129,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get airQuality => 'Качество воздуха';
 
   @override
-  String get airQualityLowercase => 'air quality';
+  String get airQualityLowercase => 'качество воздуха';
 
   @override
   String get good => 'хороший';
@@ -159,7 +159,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get weatherProvderLowercase => 'weather provider';
 
   @override
-  String get timeMode => 'Режим времени';
+  String get timeMode => 'Формат времени';
 
   @override
   String get mon => 'Пн';
@@ -186,13 +186,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get fontSize => 'Размер шрифта';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'по дням';
 
   @override
   String get searchProvider => 'Поставщик поиска';
 
   @override
-  String get updatedJustNow => 'обновлено, прямо сейчас';
+  String get updatedJustNow => 'обновлено только что';
 
   @override
   String get colorSource => 'Источник цвета';
@@ -201,7 +201,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get imageSource => 'Источник изображения';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'осн';
 
   @override
   String get precipLowercase => 'осадки';
@@ -210,7 +210,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get windLowercase => 'ветер';
 
   @override
-  String get uvLowercase => 'ув';
+  String get uvLowercase => 'уф';
 
   @override
   String get goodAqiDesc => 'Качество воздуха отличное; угрозы для здоровья нет.';
@@ -219,7 +219,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get fairAqiDesc => 'Приемлемое качество воздуха; незначительный риск для чувствительных людей.';
 
   @override
-  String get moderateAqiDesc => 'Чувствительные люди могут испытывать легкие эффекты.';
+  String get moderateAqiDesc => 'Чувствительные люди могут испытывать дискомфорт.';
 
   @override
   String get poorAqiDesc => 'Возможны последствия для здоровья у всех, серьезные для чувствительных групп.';
@@ -234,31 +234,31 @@ class AppLocalizationsRu extends AppLocalizations {
   String get photoByXOnUnsplash => 'Фото, ,x, на ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'исходный код';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'почта';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'сообщить об ошибке';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'пожертвования';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'Версия';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'API и сервисы';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Лицензия';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'данные о погоде';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'изображения';
 
   @override
   String get appearance => 'Внешний вид';
@@ -267,7 +267,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get general => 'Общие';
 
   @override
-  String get units => 'Единицы';
+  String get units => 'Единицы измерения';
 
   @override
   String get about => 'О программе';
@@ -285,7 +285,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get unitsSettingdesc => 'единицы, используемые в приложении';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'о приложении';
 
   @override
   String get now => 'сейчас';
@@ -327,7 +327,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dailyAqi => 'ежедневный AQI';
 
   @override
-  String get dateFormat => 'Формат Даты';
+  String get dateFormat => 'Формат даты';
 
   @override
   String get d => 'д';
@@ -339,16 +339,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dust => 'пыль';
 
   @override
-  String get europeanAqi => 'евро aqi';
+  String get europeanAqi => 'Евро aqi';
 
   @override
-  String get unitedStatesAqi => 'aqi сша';
+  String get unitedStatesAqi => 'aqi США';
 
   @override
   String get offline => 'офлайн';
 
   @override
-  String get helpTranslate => 'help translate';
+  String get helpTranslate => 'Помочь с переводом';
 
   @override
   String get extremelyClear => 'extremely clear';
@@ -375,31 +375,31 @@ class AppLocalizationsRu extends AppLocalizations {
   String get poweredByOpenMeteo => 'powered by open-meteo';
 
   @override
-  String get rainInHalfHour => 'rain in the next half an hour';
+  String get rainInHalfHour => 'дождь в течение получаса';
 
   @override
   String rainInMinutes(int minutes) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes минут',
+      one: 'минуты',
     );
-    return 'rain in the next $_temp0';
+    return 'дождь в течение $_temp0';
   }
 
   @override
-  String get rainInOneHour => 'rain in the next hour';
+  String get rainInOneHour => 'дождь в течение часа';
 
   @override
   String rainInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours часов',
+      one: 'часа',
     );
-    return 'rain in the next $_temp0';
+    return 'дождь в течение $_temp0';
   }
 
   @override
@@ -407,61 +407,49 @@ class AppLocalizationsRu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes минут',
+      one: 'минуты',
     );
-    return 'rain expected in $_temp0';
+    return 'ожидается дождь в течение $_temp0';
   }
 
   @override
-  String get rainExpectedInOneHour => 'rain expected in an hour';
+  String get rainExpectedInOneHour => 'ожидается дождь в течение часа';
 
   @override
   String rainExpectedInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours часов',
+      one: 'часа',
     );
-    return 'rain expected in $_temp0';
+    return 'ожидается дождь в течение $_temp0';
   }
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return 'updated, $minutes min ago';
+    return 'обновлено $minutes мин. назад';
   }
 
   @override
   String updatedXHoursAgo(int hours) {
-    String _temp0 = intl.Intl.pluralLogic(
-      hours,
-      locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
-    );
-    return 'updated, $_temp0 ago';
+    return 'обновлено $hours ч. назад';
   }
 
   @override
   String updatedXDaysAgo(int days) {
-    String _temp0 = intl.Intl.pluralLogic(
-      days,
-      locale: localeName,
-      other: '$days days',
-      one: '1 day',
-    );
-    return 'updated, $_temp0 ago';
+    return 'обновлено $days дн. назад';
   }
 
   @override
   String get radarHaptics => 'Radar haptics';
 
   @override
-  String get alertsCapital => 'Alerts';
+  String get alertsCapital => 'Оповещения';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'оповещения';
 
   @override
   String get severity => 'severity';
@@ -482,8 +470,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get heavy => 'heavy';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'Показать';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'Скрыть';
 }

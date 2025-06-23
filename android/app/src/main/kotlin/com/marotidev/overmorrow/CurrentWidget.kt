@@ -5,7 +5,6 @@ import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
 import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
@@ -17,6 +16,7 @@ import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
+import androidx.glance.layout.Row
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.padding
 import androidx.glance.state.GlanceStateDefinition
@@ -24,6 +24,12 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 
 import GlanceText
+import androidx.compose.ui.geometry.Size
+import androidx.glance.ColorFilter
+import androidx.glance.Image
+import androidx.glance.ImageProvider
+import androidx.glance.layout.Alignment
+import androidx.glance.layout.size
 
 class CurrentWidget : GlanceAppWidget() {
     override val stateDefinition: GlanceStateDefinition<*>?
@@ -46,21 +52,44 @@ class CurrentWidget : GlanceAppWidget() {
         GlanceTheme {
             Box(modifier = GlanceModifier.background(GlanceTheme.colors.surface).padding(16.dp).fillMaxSize()) {
                 Column() {
-                    Text(
-                        text = place,
-                        style = TextStyle(
-                            color = GlanceTheme.colors.primary,
-                            fontSize = 20.sp
+                    Row(
+                        verticalAlignment = Alignment.Vertical.CenterVertically
+                    ) {
+                        Image(
+                            // Reference your drawable resource
+                            provider = ImageProvider(R.drawable.outline_location_on_24),
+                            contentDescription = "Location icon",
+                            colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
+                            modifier = GlanceModifier.size(width = 19.dp, height = 19.dp).padding(end = 4.dp)
                         )
+                        Text(
+                            text = place,
+                            style = TextStyle(
+                                color = GlanceTheme.colors.onSurface,
+                                fontSize = 16.sp
+                            )
+                        )
+                    }
+                    GlanceText(
+                        text = "$temp°",
+                        font = R.font.outfit_light,
+                        fontSize = 50.sp,
+                        letterSpacing = 0.00.sp,
+                        color = GlanceTheme.colors.primary
+                    )
+                    GlanceText(
+                        text = condition,
+                        font = R.font.outfit_regular,
+                        fontSize = 20.sp,
+                        letterSpacing = 0.00.sp,
+                        color = GlanceTheme.colors.onSurface
                     )
                     Text(
                         text = lastUpdated,
-                    )
-                    GlanceText(
-                        text = temp.toString(),
-                        font = R.font.outfit_regular,
-                        fontSize = 50.sp,
-                        color = GlanceTheme.colors.primary
+                        style = TextStyle(
+                            color = GlanceTheme.colors.outline,
+                            fontSize = 14.sp
+                        )
                     )
                 }
             }
