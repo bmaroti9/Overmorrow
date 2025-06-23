@@ -24,15 +24,15 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 
 import GlanceText
-import androidx.compose.ui.geometry.Size
 import androidx.glance.ColorFilter
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.size
+import getIconForCondition
 
 class CurrentWidget : GlanceAppWidget() {
-    override val stateDefinition: GlanceStateDefinition<*>?
+    override val stateDefinition: GlanceStateDefinition<*>
         get() = HomeWidgetGlanceStateDefinition() // This now refers to the imported class
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
@@ -44,10 +44,14 @@ class CurrentWidget : GlanceAppWidget() {
     @Composable
     private fun GlanceContent(context: Context, currentState: HomeWidgetGlanceState) {
         val prefs = currentState.preferences
+
+
         val temp = prefs.getInt("current.temp", 0)
         val condition = prefs.getString("current.condition", "N/A") ?: "?"
         val place = prefs.getString("current.place", "--") ?: "?"
         val lastUpdated = prefs.getString("current.updatedTime", "N/A") ?: "?"
+
+        val iconResId = getIconForCondition(condition)
 
         Box(modifier = GlanceModifier.background(GlanceTheme.colors.surface).padding(16.dp).fillMaxSize()) {
             Column() {
@@ -74,15 +78,15 @@ class CurrentWidget : GlanceAppWidget() {
                     GlanceText(
                         text = "$temp°",
                         font = R.font.outfit_light,
-                        fontSize = 50.sp,
+                        fontSize = 47.sp,
                         letterSpacing = 0.00.sp,
                         color = GlanceTheme.colors.primary
                     )
                     Image(
-                        provider = ImageProvider(R.drawable.clear_night),
+                        provider = ImageProvider(iconResId),
                         contentDescription = "Weather icon",
-                        colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
-                        modifier = GlanceModifier.size(width = 65.dp, height = 65.dp).padding(start = 6.dp)
+                        colorFilter = ColorFilter.tint(GlanceTheme.colors.tertiary),
+                        modifier = GlanceModifier.size(width = 50.dp, height = 50.dp).padding(start = 2.dp)
                     )
                 }
 
