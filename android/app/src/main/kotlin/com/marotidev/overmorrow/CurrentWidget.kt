@@ -49,27 +49,28 @@ class CurrentWidget : GlanceAppWidget() {
         val place = prefs.getString("current.place", "--") ?: "?"
         val lastUpdated = prefs.getString("current.updatedTime", "N/A") ?: "?"
 
-        GlanceTheme {
-            Box(modifier = GlanceModifier.background(GlanceTheme.colors.surface).padding(16.dp).fillMaxSize()) {
-                Column() {
-                    Row(
-                        verticalAlignment = Alignment.Vertical.CenterVertically
-                    ) {
-                        Image(
-                            // Reference your drawable resource
-                            provider = ImageProvider(R.drawable.outline_location_on_24),
-                            contentDescription = "Location icon",
-                            colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
-                            modifier = GlanceModifier.size(width = 19.dp, height = 19.dp).padding(end = 4.dp)
+        Box(modifier = GlanceModifier.background(GlanceTheme.colors.surface).padding(16.dp).fillMaxSize()) {
+            Column() {
+                Row(
+                    verticalAlignment = Alignment.Vertical.CenterVertically
+                ) {
+                    Image(
+                        provider = ImageProvider(R.drawable.outline_location_on_24),
+                        contentDescription = "Location icon",
+                        colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
+                        modifier = GlanceModifier.size(width = 19.dp, height = 19.dp).padding(end = 4.dp)
+                    )
+                    Text(
+                        text = place,
+                        style = TextStyle(
+                            color = GlanceTheme.colors.onSurface,
+                            fontSize = 16.sp
                         )
-                        Text(
-                            text = place,
-                            style = TextStyle(
-                                color = GlanceTheme.colors.onSurface,
-                                fontSize = 16.sp
-                            )
-                        )
-                    }
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.Vertical.CenterVertically
+                ) {
                     GlanceText(
                         text = "$temp°",
                         font = R.font.outfit_light,
@@ -77,21 +78,28 @@ class CurrentWidget : GlanceAppWidget() {
                         letterSpacing = 0.00.sp,
                         color = GlanceTheme.colors.primary
                     )
-                    GlanceText(
-                        text = condition,
-                        font = R.font.outfit_regular,
-                        fontSize = 20.sp,
-                        letterSpacing = 0.00.sp,
-                        color = GlanceTheme.colors.onSurface
-                    )
-                    Text(
-                        text = lastUpdated,
-                        style = TextStyle(
-                            color = GlanceTheme.colors.outline,
-                            fontSize = 14.sp
-                        )
+                    Image(
+                        provider = ImageProvider(R.drawable.clear_night),
+                        contentDescription = "Weather icon",
+                        colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
+                        modifier = GlanceModifier.size(width = 65.dp, height = 65.dp).padding(start = 6.dp)
                     )
                 }
+
+                GlanceText(
+                    text = condition,
+                    font = R.font.outfit_regular,
+                    fontSize = 20.sp,
+                    letterSpacing = 0.00.sp,
+                    color = GlanceTheme.colors.onSurface
+                )
+                Text(
+                    text = lastUpdated,
+                    style = TextStyle(
+                        color = GlanceTheme.colors.outline,
+                        fontSize = 14.sp
+                    )
+                )
             }
         }
 
