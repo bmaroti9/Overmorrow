@@ -19,7 +19,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/LaunchTheme"
+            android:theme="@style/Theme.Overmorrow"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
@@ -36,6 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <receiver
             android:name=".CurrentWidgetReceiver"
             android:exported="true">
@@ -46,6 +47,18 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/current_widget" />
         </receiver>
+
+        <activity
+            android:name=".CurrentWidgetConfigurationActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Overmorrow"
+            android:excludeFromRecents="true"> <intent-filter>
+            <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+        </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/current_widget" />
+        </activity>
 
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

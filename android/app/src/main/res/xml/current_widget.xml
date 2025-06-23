@@ -3,5 +3,7 @@
     android:minWidth="40dp"
     android:minHeight="40dp"
     android:resizeMode="horizontal|vertical"
+    android:widgetFeatures="reconfigurable"
+    android:configure="com.marotidev.overmorrow.CurrentWidgetConfigurationActivity"
     android:updatePeriodMillis="3600000">
 </appwidget-provider>
