@@ -116,6 +116,9 @@ Future<String> isLocationSafe(translationProv) async {
   return translationProv.failedToAccessGps;
 }
 
+
+//the last place you viewed in the app,
+// so that's where it will start up next time you open it
 Future<List<String>> getLastPlace() async {
   final prefs = await SharedPreferences.getInstance();
   final place = prefs.getString('LastPlaceN') ?? 'New York';
@@ -127,6 +130,20 @@ setLastPlace(String place, String cord) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('LastPlaceN', place);
   await prefs.setString('LastCord', cord);
+}
+
+//the actual last known current location
+Future<List<String>> getLastKnownLocation() async {
+  final prefs = await SharedPreferences.getInstance();
+  final place = prefs.getString('LastKnownPositionName') ?? 'unknown';
+  final cord = prefs.getString('LastKnownPositionCord') ?? 'unknown';
+  return [place, cord];
+}
+
+setLastKnownLocation(String place, String cord) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('LastKnownPositionName', place);
+  await prefs.setString('LastKnownPositionCord', cord);
 }
 
 Future<String> getWeatherProvider() async {

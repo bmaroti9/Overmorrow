@@ -155,7 +155,12 @@ class LightCurrentWeatherData {
     required this.temp,
   });
 
-  static Future<LightCurrentWeatherData> getLightCurrentWeatherData(placeName, lat, lng,) async {
+  static Future<LightCurrentWeatherData> getLightCurrentWeatherData(placeName, latlong) async {
+
+    List<String> split = latlong.split(",");
+    double lat = double.parse(split[0]);
+    double lng = double.parse(split[1]);
+
     Map<String, String> settings = await getSettingsUsed();
     String provider = await getWeatherProvider();
 

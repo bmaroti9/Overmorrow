@@ -32,6 +32,7 @@ import 'package:overmorrow/ui_helper.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:overmorrow/services/location_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 import 'caching.dart';
 import 'decoders/extra_info.dart';
@@ -50,10 +51,16 @@ class WidgetService {
   }
 
   static Future<void> syncCurrentDataToWidget(LightCurrentWeatherData weatherData) async {
+    await saveData("locationSafe", "enabled");
+
     await saveData("current.temp", weatherData.temp);
     await saveData("current.condition", weatherData.condition);
     await saveData("current.place", weatherData.place);
     await saveData("current.updatedTime", weatherData.updatedTime);
+  }
+
+  static Future<void> syncLocationFailure() async {
+    await saveData("locationSafe", "unknown");
   }
 
   static Future<void> reloadWidget() async {
@@ -75,23 +82,26 @@ void callbackDispatcher() {
 
         print("HEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE");
 
-        /*
-        AppLocalizations localizations = await AppLocalizations.delegate.load(Locale("en"));
-        Map<String, String> settings = await getSettingsUsed();
-        String weatherProvider = await getWeatherProvider();
+        String heheHaha = (await HomeWidget.getWidgetData<String>("location", defaultValue: ":(((")) ?? "sadge";
 
-        WeatherData weatherData = await WeatherData.getFullData(settings,
-            "New York", "New York", "40.7128, -74.0060", weatherProvider, localizations);
+        print(("hehehaha", heheHaha));
 
-         */
+        List<String> lastKnownPosition = await getLastKnownLocation();
+        print(("lastKnownPosition", lastKnownPosition));
 
-        LightCurrentWeatherData weatherData = await LightCurrentWeatherData.
-        getLightCurrentWeatherData("New York", "40.7128", "-74.0060");
-        print((weatherData.condition));
+        if (lastKnownPosition[0] == 'unknown') {
+          await WidgetService.syncLocationFailure();
+          await WidgetService.reloadWidget();
+        }
+        else {
+          LightCurrentWeatherData weatherData = await LightCurrentWeatherData.
+          getLightCurrentWeatherData(lastKnownPosition[0], lastKnownPosition[1]);
+          print((weatherData.condition));
 
-        print("syncing to widget");
-        await WidgetService.syncCurrentDataToWidget(weatherData);
-        await WidgetService.reloadWidget();
+          print("syncing to widget");
+          await WidgetService.syncCurrentDataToWidget(weatherData);
+          await WidgetService.reloadWidget();
+        }
 
     }
 
@@ -258,6 +268,9 @@ class _HomePageState extends State<HomePage> {
 
             backupName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? "";
             absoluteProposed = "${position.latitude}, ${position.longitude}";
+
+            //update the last known position for the home screen widgets
+            setLastKnownLocation(backupName, absoluteProposed);
 
           } on Error {
             backupName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";

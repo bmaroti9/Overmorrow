@@ -2,6 +2,7 @@ package com.marotidev.overmorrow
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -16,10 +17,18 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import es.antonborri.home_widget.HomeWidgetPlugin
+import androidx.core.content.edit
 
 class CurrentWidgetConfigurationActivity : ComponentActivity() {
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
+
+    private fun saveLocationPref(context: Context, appWidgetId: Int, location: String?) {
+        HomeWidgetPlugin.getData(context).edit {
+            putString("location", location)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +61,9 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                     Button(
                         onClick = {
                             //tell the system the widget is configured
+
+                            saveLocationPref(applicationContext, appWidgetId, "Oslo")
+
                             val resultIntent = Intent().apply {
                                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
                             }

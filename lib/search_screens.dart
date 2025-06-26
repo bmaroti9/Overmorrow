@@ -39,8 +39,6 @@ String generateSimplifier(var split) {
   return "${split["name"]}, ${split["lat"].toStringAsFixed(2)}, ${split["lon"].toStringAsFixed(2)}";
 }
 
-
-
 Widget searchBar2(ColorScheme palette, recommend,
     Function updateLocation, Function updateFav, favorites, Function updateRec, String place,
     var context, Map<String, String> settings, Image image) {
@@ -253,6 +251,9 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
         region = place.administrativeArea ?? place.subAdministrativeArea ?? "";
         locationState = "enabled";
       });
+
+      //update the last known position for the home screen widgets
+      setLastKnownLocation(placeName, "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}");
 
     } on Error {
       setState(() {
