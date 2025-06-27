@@ -4,6 +4,7 @@ import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,17 +20,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import es.antonborri.home_widget.HomeWidgetPlugin
 import androidx.core.content.edit
+import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.lifecycle.lifecycleScope
+import es.antonborri.home_widget.HomeWidgetBackgroundIntent
+import kotlinx.coroutines.launch
+
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+import androidx.core.net.toUri
+
 
 class CurrentWidgetConfigurationActivity : ComponentActivity() {
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
     private fun exitWithOk() {
-        val resultIntent = Intent().apply {
-            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+
+        lifecycleScope.launch {
+
+            //Sync changes to android side (the widget itself)
+
+            val glanceAppWidgetManager = GlanceAppWidgetManager(this@CurrentWidgetConfigurationActivity)
+            val glanceId = glanceAppWidgetManager.getGlanceIdBy(appWidgetId)
+
+            CurrentWidget().update(this@CurrentWidgetConfigurationActivity, glanceId)
+
+            //Sync changes to the flutter side
+
+            val backgroundIntent = HomeWidgetBackgroundIntent.getBroadcast(
+                applicationContext,
+                "overmorrow://update".toUri())
+            backgroundIntent.send()
+
+            // Close it
+            val resultIntent = Intent().apply {
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            }
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
         }
-        setResult(Activity.RESULT_OK, resultIntent)
-        finish() // Close it
     }
 
     private fun saveLocationPref(context: Context, appWidgetId: Int, location: String?, latLon: String?) {

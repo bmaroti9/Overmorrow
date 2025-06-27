@@ -54,7 +54,6 @@ class WidgetService {
 
     await saveData("current.temp.$widgetId", weatherData.temp);
     await saveData("current.condition.$widgetId", weatherData.condition);
-    await saveData("current.place.$widgetId", weatherData.place);
     await saveData("current.updatedTime.$widgetId", weatherData.updatedTime);
   }
 
@@ -70,6 +69,14 @@ class WidgetService {
   }
 }
 
+@pragma('vm:entry-point')
+Future<void> interactiveCallback(Uri? uri) async {
+  print("INTERACTIVE CALLBACK, ${uri.toString()}");
+  if (uri?.host == 'update') {
+    await Workmanager().registerOneOffTask("test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
+  }
+}
+
 @pragma('vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
 void callbackDispatcher() {
 
@@ -79,60 +86,44 @@ void callbackDispatcher() {
     switch (task) {
       case updateWeatherDataKey :
 
-        print("HEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE");
+        try {
+          print("HEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE");
 
-        final List<HomeWidgetInfo> installedWidgets = await HomeWidget.getInstalledWidgets();
+          final List<HomeWidgetInfo> installedWidgets = await HomeWidget.getInstalledWidgets();
 
-        if (installedWidgets.isEmpty) {
-          print("no widgets installed, skipping update");
-          return Future.value(true);
-        }
+          if (installedWidgets.isEmpty) {
+            print("no widgets installed, skipping update");
+            return Future.value(true);
+          }
 
-        for (HomeWidgetInfo widgetInfo in installedWidgets) {
-          final int widgetId = widgetInfo.androidWidgetId!;
+          for (HomeWidgetInfo widgetInfo in installedWidgets) {
+            final int widgetId = widgetInfo.androidWidgetId!;
 
-          final String locationKey = "current.location.$widgetId";
-          final String latLonKey = "current.latLon.$widgetId";
+            final String locationKey = "current.location.$widgetId";
+            final String latLonKey = "current.latLon.$widgetId";
 
-          final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
-          final String widgetLatLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
+            final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
+            final String widgetLatLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
 
-          print((widgetId, widgetLocation, widgetLatLon));
+            print((widgetId, widgetLocation, widgetLatLon));
 
-          final LightCurrentWeatherData weatherData = await LightCurrentWeatherData.
+            final LightCurrentWeatherData weatherData = await LightCurrentWeatherData.
             getLightCurrentWeatherData(widgetLocation, widgetLatLon);
 
-          print((weatherData.condition));
+            print((weatherData.condition));
 
-          await WidgetService.syncCurrentDataToWidget(weatherData, widgetId);
+            await WidgetService.syncCurrentDataToWidget(weatherData, widgetId);
+          }
+
+          WidgetService.reloadCurrentWidgets();
+
+
+
+        } catch (e, stacktrace) {
+          print("ERRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRRRRR");
+          print((e, stacktrace));
+          return Future.value(false);
         }
-
-        WidgetService.reloadCurrentWidgets();
-
-        /*
-        String heheHaha = (await HomeWidget.getWidgetData<String>("location", defaultValue: ":(((")) ?? "sadge";
-
-        print(("hehehaha", heheHaha));
-
-        List<String> lastKnownPosition = await getLastKnownLocation();
-        print(("lastKnownPosition", lastKnownPosition));
-
-        if (lastKnownPosition[0] == 'unknown') {
-          await WidgetService.syncLocationFailure();
-          await WidgetService.reloadWidget();
-        }
-        else {
-          LightCurrentWeatherData weatherData = await LightCurrentWeatherData.
-          getLightCurrentWeatherData(lastKnownPosition[0], lastKnownPosition[1]);
-          print((weatherData.condition));
-
-          print("syncing to widget");
-          await WidgetService.syncCurrentDataToWidget(weatherData);
-          await WidgetService.reloadWidget();
-        }
-
-         */
-
     }
 
     return Future.value(true);
@@ -146,6 +137,8 @@ void main() {
       callbackDispatcher, // The top level function, aka callbackDispatcher
       isInDebugMode: kDebugMode // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
   );
+
+  HomeWidget.registerInteractivityCallback(interactiveCallback);
 
   print("thissssssssssssssssssssssssssssssssss");
   Workmanager().registerOneOffTask("test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);

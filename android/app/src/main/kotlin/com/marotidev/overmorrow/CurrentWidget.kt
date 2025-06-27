@@ -24,6 +24,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 
 import GlanceText
+import android.appwidget.AppWidgetManager
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.glance.ColorFilter
 import androidx.glance.Image
@@ -34,8 +35,6 @@ import androidx.glance.layout.size
 import getIconForCondition
 
 class CurrentWidget : GlanceAppWidget() {
-
-
 
     override val stateDefinition: GlanceStateDefinition<*>
         get() = HomeWidgetGlanceStateDefinition() // This now refers to the imported class
@@ -54,7 +53,7 @@ class CurrentWidget : GlanceAppWidget() {
 
         val temp = prefs.getInt("current.temp.$appWidgetId", 0)
         val condition = prefs.getString("current.condition.$appWidgetId", "N/A") ?: "?"
-        val place = prefs.getString("current.place.$appWidgetId", "--") ?: "?"
+        val place = prefs.getString("current.location.$appWidgetId", "--") ?: "?"
         val lastUpdated = prefs.getString("current.updatedTime.$appWidgetId", "N/A") ?: "?"
         val widgetHasFaliure = prefs.getString("widgetFailure.$appWidgetId", "unknown") ?: "?"
 

@@ -1016,6 +1016,6 @@ Future<LightCurrentWeatherData> omGetLightCurrentData(settings, placeName, lat, 
     condition: oMCurrentTextCorrection(item["current"]["weather_code"], absoluteSunriseSunset, realTime),
     place: placeName,
     temp: unit_coversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
-    updatedTime: "${now.hour}:${now.minute}",
+    updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
   );
 }
