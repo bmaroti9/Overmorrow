@@ -24,37 +24,43 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 
 import GlanceText
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.glance.ColorFilter
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.size
 import getIconForCondition
 
 class CurrentWidget : GlanceAppWidget() {
+
+
+
     override val stateDefinition: GlanceStateDefinition<*>
         get() = HomeWidgetGlanceStateDefinition() // This now refers to the imported class
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
+        val appWidgetId = GlanceAppWidgetManager(context).getAppWidgetId(id)
         provideContent {
-            GlanceContent(context, currentState())
+            GlanceContent(context, currentState(), appWidgetId)
         }
     }
 
     @Composable
-    private fun GlanceContent(context: Context, currentState: HomeWidgetGlanceState) {
+    private fun GlanceContent(context: Context, currentState: HomeWidgetGlanceState, appWidgetId: Int) {
+
         val prefs = currentState.preferences
 
-
-        val temp = prefs.getInt("current.temp", 0)
-        val condition = prefs.getString("current.condition", "N/A") ?: "?"
-        val place = prefs.getString("current.place", "--") ?: "?"
-        val lastUpdated = prefs.getString("current.updatedTime", "N/A") ?: "?"
-        val locationSafe = prefs.getString("locationSafe", "disabled") ?: "?"
+        val temp = prefs.getInt("current.temp.$appWidgetId", 0)
+        val condition = prefs.getString("current.condition.$appWidgetId", "N/A") ?: "?"
+        val place = prefs.getString("current.place.$appWidgetId", "--") ?: "?"
+        val lastUpdated = prefs.getString("current.updatedTime.$appWidgetId", "N/A") ?: "?"
+        val widgetHasFaliure = prefs.getString("widgetFailure.$appWidgetId", "unknown") ?: "?"
 
         val iconResId = getIconForCondition(condition)
 
-        if (locationSafe == "enabled") {
+        if (true) {
             Box(modifier = GlanceModifier.background(GlanceTheme.colors.surface).padding(16.dp).fillMaxSize()) {
                 Column() {
                     Row(
@@ -111,7 +117,7 @@ class CurrentWidget : GlanceAppWidget() {
         } else {
             Box(modifier = GlanceModifier.background(GlanceTheme.colors.errorContainer).padding(16.dp).fillMaxSize()) {
                 Text(
-                    text = "you need to load last place in the app first",
+                    text = widgetHasFaliure,
                     style = TextStyle(
                         color = GlanceTheme.colors.onErrorContainer,
                         fontSize = 14.sp

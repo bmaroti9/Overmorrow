@@ -32,7 +32,6 @@ import 'package:overmorrow/ui_helper.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:overmorrow/services/location_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 import 'caching.dart';
 import 'decoders/extra_info.dart';
@@ -50,20 +49,20 @@ class WidgetService {
     await HomeWidget.saveWidgetData(id, value);
   }
 
-  static Future<void> syncCurrentDataToWidget(LightCurrentWeatherData weatherData) async {
-    await saveData("locationSafe", "enabled");
+  static Future<void> syncCurrentDataToWidget(LightCurrentWeatherData weatherData, int widgetId) async {
+    await saveData("widgetFailure.$widgetId", "enabled");
 
-    await saveData("current.temp", weatherData.temp);
-    await saveData("current.condition", weatherData.condition);
-    await saveData("current.place", weatherData.place);
-    await saveData("current.updatedTime", weatherData.updatedTime);
+    await saveData("current.temp.$widgetId", weatherData.temp);
+    await saveData("current.condition.$widgetId", weatherData.condition);
+    await saveData("current.place.$widgetId", weatherData.place);
+    await saveData("current.updatedTime.$widgetId", weatherData.updatedTime);
   }
 
-  static Future<void> syncLocationFailure() async {
-    await saveData("locationSafe", "unknown");
+  static Future<void> syncWidgetFailure(int widgetId, String failure) async {
+    await saveData("widgetFailure.$widgetId", failure);
   }
 
-  static Future<void> reloadWidget() async {
+  static Future<void> reloadCurrentWidgets() async {
     await HomeWidget.updateWidget(
       androidName: 'CurrentWidget',
       qualifiedAndroidName: 'com.marotidev.overmorrow.CurrentWidgetReceiver',
@@ -82,6 +81,35 @@ void callbackDispatcher() {
 
         print("HEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE");
 
+        final List<HomeWidgetInfo> installedWidgets = await HomeWidget.getInstalledWidgets();
+
+        if (installedWidgets.isEmpty) {
+          print("no widgets installed, skipping update");
+          return Future.value(true);
+        }
+
+        for (HomeWidgetInfo widgetInfo in installedWidgets) {
+          final int widgetId = widgetInfo.androidWidgetId!;
+
+          final String locationKey = "current.location.$widgetId";
+          final String latLonKey = "current.latLon.$widgetId";
+
+          final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
+          final String widgetLatLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
+
+          print((widgetId, widgetLocation, widgetLatLon));
+
+          final LightCurrentWeatherData weatherData = await LightCurrentWeatherData.
+            getLightCurrentWeatherData(widgetLocation, widgetLatLon);
+
+          print((weatherData.condition));
+
+          await WidgetService.syncCurrentDataToWidget(weatherData, widgetId);
+        }
+
+        WidgetService.reloadCurrentWidgets();
+
+        /*
         String heheHaha = (await HomeWidget.getWidgetData<String>("location", defaultValue: ":(((")) ?? "sadge";
 
         print(("hehehaha", heheHaha));
@@ -102,6 +130,8 @@ void callbackDispatcher() {
           await WidgetService.syncCurrentDataToWidget(weatherData);
           await WidgetService.reloadWidget();
         }
+
+         */
 
     }
 

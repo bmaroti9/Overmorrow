@@ -24,9 +24,18 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
-    private fun saveLocationPref(context: Context, appWidgetId: Int, location: String?) {
+    private fun exitWithOk() {
+        val resultIntent = Intent().apply {
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+        }
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish() // Close it
+    }
+
+    private fun saveLocationPref(context: Context, appWidgetId: Int, location: String?, latLon: String?) {
         HomeWidgetPlugin.getData(context).edit {
-            putString("location", location)
+            putString("current.location.$appWidgetId", location)
+            putString("current.latLon.$appWidgetId", latLon)
         }
     }
 
@@ -57,20 +66,38 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("Hello World")
+                    Text(
+                        "Hello World",
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+
                     Button(
                         onClick = {
-                            //tell the system the widget is configured
-
-                            saveLocationPref(applicationContext, appWidgetId, "Oslo")
-
-                            val resultIntent = Intent().apply {
-                                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                            }
-                            setResult(Activity.RESULT_OK, resultIntent)
-                            finish() // Close it
+                            saveLocationPref(applicationContext, appWidgetId, "Oslo", "59.91, 10.75")
                         },
-                        modifier = Modifier.padding(top = 16.dp)
+                    ) {
+                        Text("Oslo")
+                    }
+                    Button(
+                        onClick = {
+                            saveLocationPref(applicationContext, appWidgetId, "New York", "40.73, -73.94")
+                        },
+                    ) {
+                        Text("New York")
+                    }
+                    Button(
+                        onClick = {
+                            saveLocationPref(applicationContext, appWidgetId, "Nashville", "36.17, -86.77")
+                        },
+                    ) {
+                        Text("Nashville")
+                    }
+
+
+                    Button(
+                        onClick = {
+                            exitWithOk()
+                        },
                     ) {
                         Text("Place Widget")
                     }
