@@ -69,11 +69,13 @@ class WidgetService {
   }
 }
 
+//this is the best solution i found to trigger an update of the data after the preferences have been changed
 @pragma('vm:entry-point')
 Future<void> interactiveCallback(Uri? uri) async {
   print("INTERACTIVE CALLBACK, ${uri.toString()}");
   if (uri?.host == 'update') {
-    await Workmanager().registerOneOffTask("test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
+    await Workmanager().registerOneOffTask(
+        "test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
   }
 }
 

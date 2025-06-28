@@ -186,6 +186,20 @@ class _RadarSmallState extends State<RadarSmall> {
                           //this makes it so much more fluid, because there is no fade between frames
                           tileDisplay: const TileDisplay.instantaneous(),
                         ),
+                        MarkerLayer(
+                          markers: [
+                            Marker(
+                              point: LatLng(data.lat, data.lng),
+                              width: 54,
+                              height: 54,
+                              child: Padding(
+                                //try to make the bottom of the pointer where the place actually is
+                                padding: const EdgeInsets.only(bottom: 14),
+                                child: Icon(Icons.place_sharp, color: palette.inverseSurface, size: 38,),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     )
                     : Center(
@@ -457,6 +471,20 @@ class _RadarBigState extends State<RadarBig> {
                     ? 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png'
                     : 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
               ),
+              MarkerLayer(
+                markers: [
+                  Marker(
+                    point: LatLng(data.lat, data.lng),
+                    width: 62,
+                    height: 62,
+                    child: Padding(
+                      //try to make the bottom of the pointer where the place actually is
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Icon(Icons.place_sharp, color: palette.inverseSurface, size: 44,),
+                    ),
+                  ),
+                ],
+              )
             ],
           )
           : Center(
