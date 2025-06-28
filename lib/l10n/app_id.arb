@@ -181,7 +181,7 @@
   "@d": {},
   "europeanAqi": "aqi eropa",
   "@europeanAqi": {},
-  "unitedStatesAqi": "aqi us.",
+  "unitedStatesAqi": "aqi amerika",
   "@unitedStatesAqi": {},
   "offline": "offline",
   "@offline": {},
@@ -363,7 +363,7 @@
   "@light": {
     "description": "light precipitation"
   },
-  "heavy": "deras",
+  "heavy": "lebat",
   "@heavy": {
     "description": "heavy precipitation"
   },
