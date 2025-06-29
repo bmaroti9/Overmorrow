@@ -75,6 +75,12 @@
   "@airQualityLowercase": {},
   "good": "اچھا",
   "@good": {},
-  "fair": "گزارا",
-  "@fair": {}
+  "fair": "تسلی بخش",
+  "@fair": {},
+  "moderate": "گزارا",
+  "@moderate": {},
+  "poor": "برا",
+  "@poor": {},
+  "veryPoor": "بھت برا",
+  "@veryPoor": {}
 }
