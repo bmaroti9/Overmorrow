@@ -1,5 +1,5 @@
 {
-  "precipCapital": "بارش",
+  "precipCapital": "بارندگی",
   "@precipCapital": {},
   "humidity": "نمی",
   "@humidity": {},
@@ -17,7 +17,7 @@
   "@language": {},
   "temperature": "درجہ حرارت",
   "@temperature": {},
-  "precipitaion": "بارش",
+  "precipitaion": "بارندگی",
   "@precipitaion": {},
   "rain": "بادش",
   "@rain": {},
@@ -113,7 +113,7 @@
   "@sumLowercase": {
     "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
   },
-  "precipLowercase": "بارش",
+  "precipLowercase": "بارندگی",
   "@precipLowercase": {},
   "windLowercase": "ہوا",
   "@windLowercase": {},
@@ -195,12 +195,42 @@
   "@veryHazy": {},
   "extremelyHazy": "شدید گردوغبار",
   "@extremelyHazy": {},
-  "rainInHalfHour": "اگلے آدھے گھنٹے میں بارش متوقع",
+  "rainInHalfHour": "اگلے آدھے گھنٹے میں بارش",
   "@rainInHalfHour": {
     "description": "rain in the next half an hour"
   },
-  "rainInOneHour": "اگلے گھنٹے میں بارش متوقع",
+  "rainInOneHour": "اگلے ایک گھنٹے میں بارش",
   "@rainInOneHour": {
     "description": "rain in the next hour"
-  }
+  },
+  "rainExpectedInOneHour": "اگلے ایک گھنٹے میں بارش متوقع",
+  "@rainExpectedInOneHour": {
+    "description": "rain expected in the next hour"
+  },
+  "severity": "شدت",
+  "@severity": {},
+  "certainty": "یقین",
+  "@certainty": {},
+  "urgency": "اشد ضرورت",
+  "@urgency": {},
+  "areas": "جگہیں",
+  "@areas": {},
+  "light": "ہلکی",
+  "@light": {
+    "description": "light precipitation"
+  },
+  "heavy": "موسلادھار",
+  "@heavy": {
+    "description": "heavy precipitation"
+  },
+  "feelsLike": "محسوس کردہ",
+  "@feelsLike": {},
+  "settings": "سیٹنگ",
+  "@settings": {},
+  "clearNight": "رات کو مطلع صاف",
+  "@clearNight": {},
+  "cloudyNight": "رات کو مطلع ابر آلود",
+  "@cloudyNight": {},
+  "helpTranslate": "ترجمہ میں مدد کریں",
+  "@helpTranslate": {}
 }
