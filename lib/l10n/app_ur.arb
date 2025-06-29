@@ -187,6 +187,20 @@
   "@veryClear": {},
   "clear": "صاف",
   "@clear": {},
-  "slightlyHazy": "تھوڑا آلودہ",
-  "@slightlyHazy": {}
+  "slightlyHazy": "تھوڑا گردوغبار",
+  "@slightlyHazy": {},
+  "hazy": "گردوغبار",
+  "@hazy": {},
+  "veryHazy": "بہت گردوغبار",
+  "@veryHazy": {},
+  "extremelyHazy": "شدید گردوغبار",
+  "@extremelyHazy": {},
+  "rainInHalfHour": "اگلے آدھے گھنٹے میں بارش متوقع",
+  "@rainInHalfHour": {
+    "description": "rain in the next half an hour"
+  },
+  "rainInOneHour": "اگلے گھنٹے میں بارش متوقع",
+  "@rainInOneHour": {
+    "description": "rain in the next hour"
+  }
 }
