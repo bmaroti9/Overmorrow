@@ -81,6 +81,12 @@
   "@moderate": {},
   "poor": "برا",
   "@poor": {},
-  "veryPoor": "بھت برا",
-  "@veryPoor": {}
+  "veryPoor": "بہت برا",
+  "@veryPoor": {},
+  "unhealthy": "مضر صحت",
+  "@unhealthy": {},
+  "radar": "ریڈار",
+  "@radar": {},
+  "mon": "سوموار",
+  "@mon": {}
 }
