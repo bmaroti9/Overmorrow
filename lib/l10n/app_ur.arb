@@ -181,6 +181,12 @@
   "@unitedStatesAqi": {},
   "offline": "آف لائن",
   "@offline": {},
-  "extremelyClear": "بالکل واضح",
-  "@extremelyClear": {}
+  "extremelyClear": "بالکل صاف",
+  "@extremelyClear": {},
+  "veryClear": "تقریباً صاف",
+  "@veryClear": {},
+  "clear": "صاف",
+  "@clear": {},
+  "slightlyHazy": "تھوڑا آلودہ",
+  "@slightlyHazy": {}
 }
