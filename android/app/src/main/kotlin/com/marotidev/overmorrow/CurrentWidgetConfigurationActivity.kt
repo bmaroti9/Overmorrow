@@ -10,12 +10,24 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -77,7 +89,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         }
     }
 
-    private  fun getFavoritePlaces(context: Context): List<FavoriteItem> {
+    private fun getFavoritePlaces(context: Context): List<FavoriteItem> {
 
         Log.i("Got here", "got here")
 
@@ -98,6 +110,13 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         }
 
         return favorites
+    }
+
+    private fun getCurrentUsedPlace(context: Context, appWidgetId: Int) : String {
+        val data = HomeWidgetPlugin.getData(context)
+        val item = data.getString("current.location.$appWidgetId", "unknown") ?: "unknown"
+        Log.d("Location fetch", item)
+        return item
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,65 +141,72 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
 
         val favorites : List<FavoriteItem> = getFavoritePlaces(applicationContext)
 
+        val selectedPlaceOnStartup : String = getCurrentUsedPlace(applicationContext, appWidgetId)
+
         Log.i("Favorite len", favorites.size.toString())
 
         setContent {
             OvermorrowTheme {
 
+                val selectedFavorite : MutableState<String?> = remember { mutableStateOf(selectedPlaceOnStartup) }
+
                 Column (
                     modifier = Modifier.fillMaxSize().padding(16.dp),
                     verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    Text(
-                        "favorites you add in the app appear here",
-                        style = TextStyle(
-                            fontSize = 13.sp
-                        ),
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-
                     favorites.forEach { favorite ->
-                        Button(
-                            onClick = {
-                                saveLocationPref(applicationContext, appWidgetId, favorite.name, "${favorite.lat}, ${favorite.lon}")
-                            },
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .height(46.dp)
+                                .selectable(
+                                    selected = (favorite.name == selectedFavorite.value),
+                                    onClick = {
+                                        selectedFavorite.value = favorite.name
+                                        saveLocationPref(applicationContext, appWidgetId,  favorite.name, "${favorite.lat}, ${favorite.lon}")
+                                    },
+                                    role = Role.RadioButton
+                                )
+                                .padding(horizontal = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text("${favorite.name}, ${favorite.country}")
+                            RadioButton(
+                                selected = (favorite.name == selectedFavorite.value),
+                                onClick = null // null recommended for accessibility with screen readers
+                            )
+                            Text(
+                                text = favorite.name,
+                                style = TextStyle(
+                                    fontSize = 18.sp
+                                ),
+                                modifier = Modifier.padding(start = 16.dp)
+                            )
                         }
                     }
 
-                    Text(
-                        "Hello World",
-                        modifier = Modifier.padding(bottom = 16.dp, top = 30.dp)
-                    )
-
-                    Button(
-                        onClick = {
-                            saveLocationPref(applicationContext, appWidgetId, "Oslo", "59.91, 10.75")
-                        },
-                    ) {
-                        Text("Oslo")
-                    }
-                    Button(
-                        onClick = {
-                            saveLocationPref(applicationContext, appWidgetId, "New York", "40.73, -73.94")
-                        },
-                    ) {
-                        Text("New York")
-                    }
-                    Button(
-                        onClick = {
-                            saveLocationPref(applicationContext, appWidgetId, "Nashville", "36.17, -86.77")
-                        },
-                    ) {
-                        Text("Nashville")
+                    Row (
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(top = 16.dp, bottom = 24.dp)
+                    ){
+                        Icon(
+                            painter = painterResource(R.drawable.baseline_info_outline_24),
+                            contentDescription = "info icon",
+                            modifier = Modifier.padding(start = 16.dp, end = 8.dp).size(18.dp)
+                        )
+                        Text(
+                            "favorites you add in the app appear here",
+                            style = TextStyle(
+                                fontSize = 13.sp
+                            ),
+                        )
                     }
 
                     Button(
                         onClick = {
                             exitWithOk()
                         },
+                        modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
                     ) {
                         Text("Place Widget")
                     }

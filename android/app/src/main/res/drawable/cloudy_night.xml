@@ -4,19 +4,19 @@
     android:viewportWidth="243.27"
     android:viewportHeight="243.27">
   <path
-      android:pathData="M29.1,138.63a56.33,56.44 0,1 0,112.67 0a56.33,56.44 0,1 0,-112.67 0z"
+      android:pathData="M26.05,141.69a56.33,56.44 0,1 0,112.67 0a56.33,56.44 0,1 0,-112.67 0z"
       android:strokeWidth="13"
       android:fillColor="#00000000"
       android:strokeColor="#000000"
       android:strokeLineCap="round"/>
   <path
-      android:pathData="M109.81,161.45a33.56,33.62 0,1 0,67.11 0a33.56,33.62 0,1 0,-67.11 0z"
+      android:pathData="M106.76,164.51a33.56,33.62 0,1 0,67.11 0a33.56,33.62 0,1 0,-67.11 0z"
       android:strokeWidth="13"
       android:fillColor="#00000000"
       android:strokeColor="#000000"
       android:strokeLineCap="round"/>
   <path
-      android:pathData="m182.2,46.61a33.56,33.62 0,0 0,-33.56 33.62,33.56 33.62,0 0,0 33.56,33.62 33.56,33.62 0,0 0,33.56 -33.62,33.56 33.62,0 0,0 -0.71,-6.84 21.44,21.48 0,0 1,-20.73 16.17,21.44 21.48,0 0,1 -21.44,-21.48 21.44,21.48 0,0 1,16.14 -20.77,33.56 33.62,0 0,0 -6.82,-0.71z"
+      android:pathData="m181.4,45.14a35.81,35.88 0,0 0,-35.81 35.88,35.81 35.88,0 0,0 35.81,35.88 35.81,35.88 0,0 0,35.81 -35.88,35.81 35.88,0 0,0 -0.75,-7.3 22.88,22.92 0,0 1,-22.12 17.26,22.88 22.92,0 0,1 -22.88,-22.92 22.88,22.92 0,0 1,17.22 -22.16,35.81 35.88,0 0,0 -7.28,-0.76z"
       android:strokeLineJoin="round"
       android:strokeWidth="13"
       android:fillColor="#00000000"
