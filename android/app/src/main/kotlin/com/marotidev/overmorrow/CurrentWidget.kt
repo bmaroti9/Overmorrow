@@ -24,13 +24,12 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 
 import GlanceText
-import android.appwidget.AppWidgetManager
-import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.glance.ColorFilter
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.layout.Alignment
+import androidx.glance.layout.ContentScale
 import androidx.glance.layout.size
 import getIconForCondition
 
@@ -60,7 +59,47 @@ class CurrentWidget : GlanceAppWidget() {
         val iconResId = getIconForCondition(condition)
 
         if (true) {
-            Box(modifier = GlanceModifier.background(GlanceTheme.colors.surface).padding(16.dp).fillMaxSize()) {
+            Box (
+                modifier = GlanceModifier.fillMaxSize(),
+                contentAlignment = Alignment.Center // Align content within the box
+            ){
+                Box(
+                    modifier = GlanceModifier
+                        .size(160.dp, 160.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        provider = ImageProvider(R.drawable.custom_pill_shape),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(GlanceTheme.colors.secondaryContainer), // Dynamic surface color
+                        contentScale = ContentScale.Fit,
+                        modifier = GlanceModifier.fillMaxSize()
+                    )
+
+                    Text(
+                        text = "$temp°",
+                        style = TextStyle(
+                            color = GlanceTheme.colors.primary,
+                            fontSize = 50.sp,
+                        ),
+                        modifier = GlanceModifier.padding(start = 49.dp, bottom = 49.dp)
+                    )
+
+                    Image(
+                        provider = ImageProvider(iconResId),
+                        contentDescription = "Weather Icon",
+                        colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
+                        modifier = GlanceModifier
+                            .size(118.dp, 118.dp)
+                            .padding(top = 52.dp, end = 52.dp)
+                    )
+                }
+            }
+        }
+        else if (false) {
+            Box(
+                modifier = GlanceModifier.background(GlanceTheme.colors.surface).padding(16.dp).fillMaxSize()
+            ) {
                 Column() {
                     Row(
                         verticalAlignment = Alignment.Vertical.CenterVertically

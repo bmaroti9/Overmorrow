@@ -47,6 +47,7 @@ class WidgetService {
 
   static Future<void> saveData(String id, value) async {
     await HomeWidget.saveWidgetData(id, value);
+    print(("Saved", id, value));
   }
 
   static Future<void> syncCurrentDataToWidget(LightCurrentWeatherData weatherData, int widgetId) async {

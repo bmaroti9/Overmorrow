@@ -100,4 +100,7 @@ dependencies {
     // Flutter and other non-Compose dependencies
     implementation project(':home_widget')
     implementation 'com.google.code.gson:gson:2.13.1'
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.13.1'
 }
