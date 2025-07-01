@@ -12,7 +12,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get feelsLike => 'Terasa seperti';
 
   @override
-  String get precipCapital => 'Curah hujan.';
+  String get precipCapital => 'Curah hjn.';
 
   @override
   String get humidity => 'Kelembapan';
@@ -30,7 +30,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get today => 'Hari ini';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'esok';
 
   @override
   String get overmorrowLowercase => 'Overmorrow';
@@ -48,19 +48,19 @@ class AppLocalizationsId extends AppLocalizations {
   String get rain => 'Hujan';
 
   @override
-  String get clearNight => 'Malam Cerah';
+  String get clearNight => 'Cerah';
 
   @override
-  String get partlyCloudy => 'Berawan Sebagian';
+  String get partlyCloudy => 'Berawan';
 
   @override
-  String get clearSky => 'Langit Cerah';
+  String get clearSky => 'Cerah';
 
   @override
   String get overcast => 'Mendung';
 
   @override
-  String get haze => 'Kabut Asap';
+  String get haze => 'Kabut';
 
   @override
   String get sleet => 'Hujan Es';
@@ -69,13 +69,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get drizzle => 'Gerimis';
 
   @override
-  String get thunderstorm => 'Badai Petir';
+  String get thunderstorm => 'Petir';
 
   @override
-  String get heavySnow => 'Salju Lebat';
+  String get heavySnow => 'Bersalju';
 
   @override
-  String get fog => 'Berkabut';
+  String get fog => 'Kabut';
 
   @override
   String get snow => 'Salju';
@@ -84,40 +84,40 @@ class AppLocalizationsId extends AppLocalizations {
   String get heavyRain => 'Hujan Lebat';
 
   @override
-  String get cloudyNight => 'Malam Berawan';
+  String get cloudyNight => 'Berawan';
 
   @override
   String get weakOrNoWifiConnection => 'Sinyal Wi-Fi lemah atau hilang';
 
   @override
-  String get notConnectedToTheInternet => 'Tidak terhubung ke internet';
+  String get notConnectedToTheInternet => 'Tidak ada internet';
 
   @override
-  String get placeNotFound => 'Tempat tidak ditemukan';
+  String get placeNotFound => 'Lokasi tidak ditemukan';
 
   @override
   String get unableToLocateDevice => 'Tidak dapat menemukan perangkat';
 
   @override
-  String get locationServicesAreDisabled => 'Layanan lokasi dinonaktifkan.';
+  String get locationServicesAreDisabled => 'GPS dinonaktifkan.';
 
   @override
-  String get locationPermissionIsDenied => 'Izin lokasi ditolak';
+  String get locationPermissionIsDenied => 'izin lokasi ditolak';
 
   @override
-  String get locationPermissionDeniedForever => 'Izin lokasi ditolak selamanya';
+  String get locationPermissionDeniedForever => 'tidak mendapat izin lokasi';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'izin lokasi';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'lokasi saat ini';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'favorite';
 
   @override
-  String get failedToAccessGps => 'Gagal mengakses gps';
+  String get failedToAccessGps => 'gagal mengakses GPS';
 
   @override
   String get search => 'Cari...';
@@ -135,7 +135,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get good => 'baik';
 
   @override
-  String get fair => 'cerah';
+  String get fair => 'cukup';
 
   @override
   String get moderate => 'sedang';
@@ -156,10 +156,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get colorMode => 'Mode warna';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'server cuaca';
 
   @override
-  String get timeMode => 'Mode waktu';
+  String get timeMode => '12/24 jam';
 
   @override
   String get mon => 'Sen';
@@ -186,13 +186,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get fontSize => 'Ukuran font';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'harian';
 
   @override
   String get searchProvider => 'Penyedia pencarian';
 
   @override
-  String get updatedJustNow => 'diperbarui, baru saja';
+  String get updatedJustNow => 'baru saja diperbarui';
 
   @override
   String get colorSource => 'Sumber warna';
@@ -201,7 +201,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get imageSource => 'Sumber gambar';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'jumlah';
 
   @override
   String get precipLowercase => 'curah hujan';
@@ -234,31 +234,31 @@ class AppLocalizationsId extends AppLocalizations {
   String get photoByXOnUnsplash => 'Foto, oleh ,x, di ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'sumber kode';
 
   @override
   String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'laporkan bug';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'donasi';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'Versi';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'Layanan Server';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Lisensi';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'data cuaca';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'gambar';
 
   @override
   String get appearance => 'Tampilan';
@@ -282,13 +282,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get languageSettingDesc => 'bahasa yang digunakan';
 
   @override
-  String get unitsSettingdesc => 'unit yang digunakan di aplikasi';
+  String get unitsSettingdesc => 'unit dalam apl';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'info apl';
 
   @override
-  String get now => 'sekarang';
+  String get now => 'skrg.';
 
   @override
   String get hr => 'jam';
@@ -303,7 +303,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get thirtyMinutes => '30m';
 
   @override
-  String get mainPollutant => 'polutan utama';
+  String get mainPollutant => 'polusi utama';
 
   @override
   String get alderPollen => 'Polen Alder';
@@ -342,13 +342,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get europeanAqi => 'aqi eropa';
 
   @override
-  String get unitedStatesAqi => 'aqi amerika serikat';
+  String get unitedStatesAqi => 'aqi amerika';
 
   @override
   String get offline => 'offline';
 
   @override
-  String get helpTranslate => 'bantu terjemahkan';
+  String get helpTranslate => 'terjemahkan';
 
   @override
   String get extremelyClear => 'sangat cerah';
@@ -366,7 +366,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get hazy => 'berkabut';
 
   @override
-  String get veryHazy => 'berkabut sekali';
+  String get veryHazy => 'sangat berkabut';
 
   @override
   String get extremelyHazy => 'sangat berkabut';
@@ -455,35 +455,35 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get radarHaptics => 'Radar haptics';
+  String get radarHaptics => 'Radar haptik';
 
   @override
-  String get alertsCapital => 'Alerts';
+  String get alertsCapital => 'Peringatan';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'peringatan';
 
   @override
-  String get severity => 'severity';
+  String get severity => 'tingkat bahaya';
 
   @override
-  String get certainty => 'certainty';
+  String get certainty => 'tingkat akurasi';
 
   @override
-  String get urgency => 'urgency';
+  String get urgency => 'tingkat saran';
 
   @override
-  String get areas => 'areas';
+  String get areas => 'wilayah';
 
   @override
-  String get light => 'light';
+  String get light => 'ringan';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'lebat';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'lebih';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'kurangi detail';
 }

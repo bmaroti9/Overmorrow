@@ -4,8 +4,6 @@ import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -15,26 +13,21 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import es.antonborri.home_widget.HomeWidgetPlugin
 import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.lifecycle.lifecycleScope
-import es.antonborri.home_widget.HomeWidgetBackgroundIntent
-import kotlinx.coroutines.launch
-
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.common.MethodChannel
-import androidx.core.net.toUri
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import es.antonborri.home_widget.HomeWidgetBackgroundIntent
+import es.antonborri.home_widget.HomeWidgetPlugin
+import kotlinx.coroutines.launch
 
 data class FavoriteItem(
     val id: Int,
@@ -132,7 +125,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         Log.i("Favorite len", favorites.size.toString())
 
         setContent {
-            MaterialTheme {
+            OvermorrowTheme {
 
                 Column (
                     modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -183,7 +176,6 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                     ) {
                         Text("Nashville")
                     }
-
 
                     Button(
                         onClick = {
