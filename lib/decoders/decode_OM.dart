@@ -22,7 +22,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as Https;
+import 'package:http/http.dart' as http;
 import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
 import 'package:overmorrow/services/image_service.dart';
@@ -1000,7 +1000,7 @@ Future<LightCurrentWeatherData> omGetLightCurrentData(settings, placeName, lat, 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
   print(oMUrl);
 
-  final response = (await Https.get(oMUrl)).body;
+  final response = (await http.get(oMUrl)).body;
 
   final item = jsonDecode(response);
   print(item["temperature_2m"]);

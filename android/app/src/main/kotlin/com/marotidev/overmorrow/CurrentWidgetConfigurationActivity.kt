@@ -4,6 +4,7 @@ import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -89,11 +90,16 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         }
     }
 
-    private fun getFavoritePlaces(context: Context): List<FavoriteItem> {
+    private fun saveProviderPref(context: Context, appWidgetId: Int, provider: String) {
+        HomeWidgetPlugin.getData(context).edit {
+            putString("current.provider.$appWidgetId", provider)
+        }
+    }
+
+    private fun getFavoritePlaces(data: SharedPreferences): List<FavoriteItem> {
 
         Log.i("Got here", "got here")
 
-        val data = HomeWidgetPlugin.getData(context)
         val ifnot = "[\"{\\n        \\\"id\\\": 2651922,\\n        \\\"name\\\": \\\"Nashville\\\",\\n        \\\"region\\\": \\\"Tennessee\\\",\\n        \\\"country\\\": \\\"United States of America\\\",\\n        \\\"lat\\\": 36.17,\\n        \\\"lon\\\": -86.78,\\n        \\\"url\\\": \\\"nashville-tennessee-united-states-of-america\\\"\\n    }\"]"
         val item = data.getString("favorites", ifnot) ?: ifnot
 
@@ -112,10 +118,15 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         return favorites
     }
 
-    private fun getCurrentUsedPlace(context: Context, appWidgetId: Int) : String {
-        val data = HomeWidgetPlugin.getData(context)
+    private fun getCurrentUsedPlace(data: SharedPreferences, appWidgetId: Int) : String {
         val item = data.getString("current.location.$appWidgetId", "unknown") ?: "unknown"
         Log.d("Location fetch", item)
+        return item
+    }
+
+    private fun getCurrentUsedProvider(data: SharedPreferences, appWidgetId: Int) : String {
+        val item = data.getString("current.provider.$appWidgetId", "open-meteo") ?: "open-meteo"
+        Log.d("Provider fetch", item)
         return item
     }
 
@@ -139,9 +150,13 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         setResult(Activity.RESULT_CANCELED, resultValue)
 
-        val favorites : List<FavoriteItem> = getFavoritePlaces(applicationContext)
+        val data = HomeWidgetPlugin.getData(applicationContext)
 
-        val selectedPlaceOnStartup : String = getCurrentUsedPlace(applicationContext, appWidgetId)
+        val favorites : List<FavoriteItem> = getFavoritePlaces(data)
+        val selectedPlaceOnStartup : String = getCurrentUsedPlace(data, appWidgetId)
+        val selectedProviderOnStartup : String = getCurrentUsedProvider(data, appWidgetId)
+
+        val providers : List<String> = listOf("open-meteo", "weatherapi", "met-norway")
 
         Log.i("Favorite len", favorites.size.toString())
 
@@ -149,6 +164,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
             OvermorrowTheme {
 
                 val selectedFavorite : MutableState<String?> = remember { mutableStateOf(selectedPlaceOnStartup) }
+                val selectedProvider : MutableState<String?> = remember { mutableStateOf(selectedProviderOnStartup) }
 
                 Column (
                     modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -187,7 +203,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
 
                     Row (
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(top = 16.dp, bottom = 24.dp)
+                        modifier = Modifier.padding(top = 16.dp, bottom = 40.dp)
                     ){
                         Icon(
                             painter = painterResource(R.drawable.baseline_info_outline_24),
@@ -202,11 +218,42 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                         )
                     }
 
+                    providers.forEach { provider ->
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .height(46.dp)
+                                .selectable(
+                                    selected = (provider == selectedProvider.value),
+                                    onClick = {
+                                        selectedProvider.value = provider
+                                        saveProviderPref(applicationContext, appWidgetId, provider)
+                                    },
+                                    role = Role.RadioButton
+                                )
+                                .padding(horizontal = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = (provider == selectedProvider.value),
+                                onClick = null // null recommended for accessibility with screen readers
+                            )
+                            Text(
+                                text = provider,
+                                style = TextStyle(
+                                    fontSize = 18.sp
+                                ),
+                                modifier = Modifier.padding(start = 16.dp)
+                            )
+                        }
+                    }
+
                     Button(
                         onClick = {
                             exitWithOk()
                         },
                         modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+                            .padding(top = 40.dp)
                     ) {
                         Text("Place Widget")
                     }

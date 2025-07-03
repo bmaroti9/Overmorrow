@@ -76,12 +76,12 @@ class CurrentWidget : GlanceAppWidget() {
                         modifier = GlanceModifier.fillMaxSize()
                     )
 
-                    Text(
+                    GlanceText(
                         text = "$temp°",
-                        style = TextStyle(
-                            color = GlanceTheme.colors.primary,
-                            fontSize = 50.sp,
-                        ),
+                        font = R.font.outfit_regular,
+                        fontSize = 47.sp,
+                        letterSpacing = 0.00.sp,
+                        color = GlanceTheme.colors.primary,
                         modifier = GlanceModifier.padding(start = 49.dp, bottom = 49.dp)
                     )
 

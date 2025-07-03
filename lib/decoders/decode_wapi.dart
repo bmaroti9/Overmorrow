@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:http/http.dart' as http;
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/services/image_service.dart';
 
@@ -790,5 +791,29 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName, 
     alerts: getWapiAlerts(wapi_body, localizations),
 
     isonline: isonline
+  );
+}
+
+
+Future<LightCurrentWeatherData> wapiGetLightCurrentData(settings, placeName, lat, lng) async {
+  final params = {
+    'key': wapi_Key,
+    'q': "$lat, $lng",
+    'aqi': 'no',
+    'alerts': 'no',
+  };
+  final url = Uri.https('api.weatherapi.com', 'v1/current.json', params);
+
+  final response = (await http.get(url)).body;
+
+  final item = jsonDecode(response);
+
+  DateTime now = DateTime.now();
+
+  return LightCurrentWeatherData(
+    condition: textCorrection(item["current"]["condition"]["code"], item["current"]["is_day"], false, null),
+    place: placeName,
+    temp:  unit_coversion(item["current"]["temp_c"], settings["Temperature"]).round(),
+    updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
   );
 }

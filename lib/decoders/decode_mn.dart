@@ -20,6 +20,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/services/image_service.dart';
@@ -685,5 +686,34 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
     updatedTime: DateTime.now(),
     localtime: "${localTime.hour}:${localTime.minute}",
     isonline: isonline,
+  );
+}
+
+
+Future<LightCurrentWeatherData> metNGetLightCurrentData(settings, placeName, lat, lng) async {
+  final params = {
+    "lat" : lat.toString(),
+    "lon" : lng.toString(),
+    "altitude" : "100",
+  };
+
+  final headers = {
+    "User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"
+  };
+  final url = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/compact', params);
+
+  final response = (await http.get(url, headers: headers)).body;
+
+  final item = jsonDecode(response);
+
+  DateTime now = DateTime.now();
+
+  return LightCurrentWeatherData(
+    condition: metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"], false, null),
+    place: placeName,
+    temp: unit_coversion(
+        item["properties"]["timeseries"][0]["data"]["instant"]["details"]["air_temperature"],
+        settings["Temperature"]).round(),
+    updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
   );
 }

@@ -104,14 +104,16 @@ void callbackDispatcher() {
 
             final String locationKey = "current.location.$widgetId";
             final String latLonKey = "current.latLon.$widgetId";
+            final String providerKey = "current.provider.$widgetId";
 
             final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
             final String widgetLatLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
+            final String widgetProvider = (await HomeWidget.getWidgetData<String>(providerKey, defaultValue: "unknown")) ?? "unknown";
 
-            print((widgetId, widgetLocation, widgetLatLon));
+            print((widgetId, widgetLocation, widgetLatLon, widgetProvider));
 
             final LightCurrentWeatherData weatherData = await LightCurrentWeatherData.
-            getLightCurrentWeatherData(widgetLocation, widgetLatLon);
+            getLightCurrentWeatherData(widgetLocation, widgetLatLon, widgetProvider);
 
             print((weatherData.condition));
 
@@ -119,8 +121,6 @@ void callbackDispatcher() {
           }
 
           WidgetService.reloadCurrentWidgets();
-
-
 
         } catch (e, stacktrace) {
           print("ERRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRRRRR");
