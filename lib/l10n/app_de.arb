@@ -232,7 +232,7 @@
   "@rainInHalfHour": {
     "description": "rain in the next half an hour"
   },
-  "rainInMinutes": "Regen in den nächsten {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "rainInMinutes": "Regen in den nächsten {minutes, plural, =1 {Minute} other {{minutes} minutes}}",
   "@rainInMinutes": {
     "description": "rain in the next X minutes",
     "placeholders": {
@@ -254,7 +254,7 @@
       }
     }
   },
-  "rainExpectedInMinutes": "Regen erwartet in {Minuten, plural, =1 {Minute} other {{Minuten} Minuten}}",
+  "rainExpectedInMinutes": "Regen erwartet in {minutes, plural, =1 {Minute} other {{minutes} minutes}}",
   "@rainExpectedInMinutes": {
     "description": "rain expected in the next X minutes",
     "placeholders": {
@@ -354,7 +354,7 @@
   "@donateLowercase": {},
   "versionUppercase": "Version",
   "@versionUppercase": {},
-  "apiAndServices": "APIs & Services",
+  "apiAndServices": "APIs & Dienste",
   "@apiAndServices": {},
   "licenseUppercase": "Lizenz",
   "@licenseUppercase": {},
