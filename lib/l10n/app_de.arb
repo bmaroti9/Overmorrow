@@ -254,7 +254,7 @@
       }
     }
   },
-  "rainExpectedInMinutes": "Regen erwartet in {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "rainExpectedInMinutes": "Regen erwartet in {Minuten, plural, =1 {Minute} other {{Minuten} Minuten}}",
   "@rainExpectedInMinutes": {
     "description": "rain expected in the next X minutes",
     "placeholders": {
