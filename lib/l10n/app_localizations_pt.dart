@@ -12,7 +12,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get feelsLike => 'Sensação';
 
   @override
-  String get precipCapital => 'Capital Da Precipitação';
+  String get precipCapital => 'Precipitação';
 
   @override
   String get humidity => 'Humidade';
@@ -30,10 +30,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get today => 'Hoje';
 
   @override
-  String get tomorrowLowercase => 'amanhã';
+  String get tomorrowLowercase => 'Amanhã';
 
   @override
-  String get overmorrowLowercase => 'Overmorrow';
+  String get overmorrowLowercase => 'Depois de amanhã';
 
   @override
   String get language => 'Língua';

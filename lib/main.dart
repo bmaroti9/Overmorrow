@@ -56,6 +56,9 @@ class WidgetService {
     await saveData("current.temp.$widgetId", weatherData.temp);
     await saveData("current.condition.$widgetId", weatherData.condition);
     await saveData("current.updatedTime.$widgetId", weatherData.updatedTime);
+    await saveData("current.place.$widgetId", weatherData.place);
+
+    //place is the name of the city while location can include currentLocation
   }
 
   static Future<void> syncWidgetFailure(int widgetId, String failure) async {
@@ -107,15 +110,22 @@ void callbackDispatcher() {
             final String providerKey = "current.provider.$widgetId";
 
             final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
-            final String widgetLatLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
             final String widgetProvider = (await HomeWidget.getWidgetData<String>(providerKey, defaultValue: "unknown")) ?? "unknown";
 
-            print((widgetId, widgetLocation, widgetLatLon, widgetProvider));
+            print((widgetId, widgetLocation, widgetProvider));
 
-            final LightCurrentWeatherData weatherData = await LightCurrentWeatherData.
-            getLightCurrentWeatherData(widgetLocation, widgetLatLon, widgetProvider);
+            LightCurrentWeatherData weatherData;
 
-            print((weatherData.condition));
+            if (widgetLocation == "currentLocation") {
+              List<String> lastKnown = await getLastKnownLocation();
+              weatherData = await LightCurrentWeatherData
+                  .getLightCurrentWeatherData(lastKnown[0], lastKnown[1], widgetProvider);
+            }
+            else {
+              final String widgetLatLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
+              weatherData = await LightCurrentWeatherData
+                  .getLightCurrentWeatherData(widgetLocation, widgetLatLon, widgetProvider);
+            }
 
             await WidgetService.syncCurrentDataToWidget(weatherData, widgetId);
           }

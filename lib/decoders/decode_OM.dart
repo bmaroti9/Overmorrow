@@ -998,12 +998,9 @@ Future<LightCurrentWeatherData> omGetLightCurrentData(settings, placeName, lat, 
   };
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
-  print(oMUrl);
-
   final response = (await http.get(oMUrl)).body;
 
   final item = jsonDecode(response);
-  print(item["temperature_2m"]);
 
   DateTime localtime = OMGetLocalTime(item);
   String realTime = "jT${localtime.hour}:${localtime.minute}";

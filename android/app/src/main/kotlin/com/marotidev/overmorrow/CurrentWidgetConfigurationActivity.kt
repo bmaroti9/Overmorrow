@@ -41,6 +41,7 @@ import com.google.gson.reflect.TypeToken
 import es.antonborri.home_widget.HomeWidgetBackgroundIntent
 import es.antonborri.home_widget.HomeWidgetPlugin
 import kotlinx.coroutines.launch
+import androidx.compose.material3.MaterialTheme
 
 data class FavoriteItem(
     val id: Int,
@@ -86,7 +87,9 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
     private fun saveLocationPref(context: Context, appWidgetId: Int, location: String?, latLon: String?) {
         HomeWidgetPlugin.getData(context).edit {
             putString("current.location.$appWidgetId", location)
-            putString("current.latLon.$appWidgetId", latLon)
+            if (!latLon.isNullOrBlank()) {
+                putString("current.latLon.$appWidgetId", latLon)
+            }
         }
     }
 
@@ -171,6 +174,35 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.Start
                 ) {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(46.dp)
+                            .selectable(
+                                selected = ("currentLocation" == selectedFavorite.value),
+                                onClick = {
+                                    selectedFavorite.value = "currentLocation"
+                                    saveLocationPref(applicationContext, appWidgetId,  "currentLocation", null)
+                                },
+                                role = Role.RadioButton
+                            )
+                            .padding(horizontal = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = ("currentLocation" == selectedFavorite.value),
+                            onClick = null // null recommended for accessibility with screen readers
+                        )
+                        Text(
+                            text = "Current Location",
+                            style = TextStyle(
+                                fontSize = 18.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            ),
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+
                     favorites.forEach { favorite ->
                         Row(
                             Modifier
@@ -194,7 +226,8 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                             Text(
                                 text = favorite.name,
                                 style = TextStyle(
-                                    fontSize = 18.sp
+                                    fontSize = 18.sp,
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ),
                                 modifier = Modifier.padding(start = 16.dp)
                             )
@@ -207,13 +240,15 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                     ){
                         Icon(
                             painter = painterResource(R.drawable.baseline_info_outline_24),
+                            tint = MaterialTheme.colorScheme.onSurface,
                             contentDescription = "info icon",
                             modifier = Modifier.padding(start = 16.dp, end = 8.dp).size(18.dp)
                         )
                         Text(
                             "favorites you add in the app appear here",
                             style = TextStyle(
-                                fontSize = 13.sp
+                                fontSize = 13.sp,
+                                color = MaterialTheme.colorScheme.onSurface
                             ),
                         )
                     }
@@ -241,7 +276,8 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                             Text(
                                 text = provider,
                                 style = TextStyle(
-                                    fontSize = 18.sp
+                                    fontSize = 18.sp,
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ),
                                 modifier = Modifier.padding(start = 16.dp)
                             )

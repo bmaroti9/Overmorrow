@@ -52,13 +52,13 @@ class CurrentWidget : GlanceAppWidget() {
 
         val temp = prefs.getInt("current.temp.$appWidgetId", 0)
         val condition = prefs.getString("current.condition.$appWidgetId", "N/A") ?: "?"
-        val place = prefs.getString("current.location.$appWidgetId", "--") ?: "?"
+        val place = prefs.getString("current.place.$appWidgetId", "--") ?: "?"
         val lastUpdated = prefs.getString("current.updatedTime.$appWidgetId", "N/A") ?: "?"
         val widgetHasFaliure = prefs.getString("widgetFailure.$appWidgetId", "unknown") ?: "?"
 
         val iconResId = getIconForCondition(condition)
 
-        if (true) {
+        if (false) {
             Box (
                 modifier = GlanceModifier.fillMaxSize(),
                 contentAlignment = Alignment.Center // Align content within the box
@@ -76,12 +76,12 @@ class CurrentWidget : GlanceAppWidget() {
                         modifier = GlanceModifier.fillMaxSize()
                     )
 
-                    GlanceText(
+                    Text(
                         text = "$temp°",
-                        font = R.font.outfit_regular,
-                        fontSize = 47.sp,
-                        letterSpacing = 0.00.sp,
-                        color = GlanceTheme.colors.primary,
+                        style = TextStyle(
+                            color = GlanceTheme.colors.primary,
+                            fontSize = 50.sp
+                        ),
                         modifier = GlanceModifier.padding(start = 49.dp, bottom = 49.dp)
                     )
 
@@ -96,7 +96,7 @@ class CurrentWidget : GlanceAppWidget() {
                 }
             }
         }
-        else if (false) {
+        else if (true) {
             Box(
                 modifier = GlanceModifier.background(GlanceTheme.colors.surface).padding(16.dp).fillMaxSize()
             ) {
@@ -121,27 +121,27 @@ class CurrentWidget : GlanceAppWidget() {
                     Row(
                         verticalAlignment = Alignment.Vertical.CenterVertically
                     ) {
-                        GlanceText(
+                        Text(
                             text = "$temp°",
-                            font = R.font.outfit_light,
-                            fontSize = 47.sp,
-                            letterSpacing = 0.00.sp,
-                            color = GlanceTheme.colors.primary
+                            style = TextStyle(
+                                color = GlanceTheme.colors.primary,
+                                fontSize = 45.sp
+                            ),
                         )
                         Image(
                             provider = ImageProvider(iconResId),
                             contentDescription = "Weather icon",
                             colorFilter = ColorFilter.tint(GlanceTheme.colors.tertiary),
-                            modifier = GlanceModifier.size(width = 50.dp, height = 50.dp).padding(start = 2.dp)
+                            modifier = GlanceModifier.size(width = 55.dp, height = 55.dp).padding(start = 2.dp)
                         )
                     }
 
-                    GlanceText(
+                    Text(
                         text = condition,
-                        font = R.font.outfit_regular,
-                        fontSize = 20.sp,
-                        letterSpacing = 0.00.sp,
-                        color = GlanceTheme.colors.onSurface
+                        style = TextStyle(
+                            color = GlanceTheme.colors.onSurface,
+                            fontSize = 20.sp
+                        )
                     )
                     Text(
                         text = lastUpdated,

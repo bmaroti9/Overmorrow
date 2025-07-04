@@ -249,7 +249,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get versionUppercase => 'Version';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'APIs & Dienste';
 
   @override
   String get licenseUppercase => 'Lizenz';
@@ -383,7 +383,7 @@ class AppLocalizationsDe extends AppLocalizations {
       minutes,
       locale: localeName,
       other: '$minutes minutes',
-      one: 'minute',
+      one: 'Minute',
     );
     return 'Regen in den nächsten $_temp0';
   }
@@ -408,7 +408,7 @@ class AppLocalizationsDe extends AppLocalizations {
       minutes,
       locale: localeName,
       other: '$minutes minutes',
-      one: 'minute',
+      one: 'Minute',
     );
     return 'Regen erwartet in $_temp0';
   }
