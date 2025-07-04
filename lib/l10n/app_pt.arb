@@ -2,7 +2,7 @@
   "@@locale": "pt",
   "feelsLike": "Sensação",
   "@feelsLike": {},
-  "precipCapital": "Capital Da Precipitação",
+  "precipCapital": "Precipitação",
   "@precipCapital": {},
   "humidity": "Humidade",
   "@humidity": {},
@@ -330,7 +330,7 @@
   "@showMore": {},
   "showLess": "mostrar menos",
   "@showLess": {},
-  "tomorrowLowercase": "amanhã",
+  "tomorrowLowercase": "Amanhã",
   "@tomorrowLowercase": {},
   "sourceCodeLowercase": "código fonte",
   "@sourceCodeLowercase": {},
@@ -375,5 +375,7 @@
   "heavy": "forte",
   "@heavy": {
     "description": "heavy precipitation"
-  }
+  },
+  "overmorrowLowercase": "Depois de amanhã",
+  "@overmorrowLowercase": {}
 }
