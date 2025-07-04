@@ -47,7 +47,10 @@ Map<String, List<String>> settingSwitches = {
     'தமிழ்', //Tamil
     'български', //Bulgarian
     'Indonesia', //Indonesian
-    'عربي' //Arablic
+    'عربي', //Arablic
+    'Suomi', //Finnish
+    'Nederlands', //Dutch
+    'اُردُو', //Urdu
   ],
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],

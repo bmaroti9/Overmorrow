@@ -249,7 +249,7 @@ class _RadarSmallState extends State<RadarSmall> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 34, right: 44, bottom: 25, top: 5),
+          padding: const EdgeInsets.only(left: 36, right: 32, bottom: 25, top: 5),
           child: Row(
             children: [
               AnimatedSwitcher(
@@ -270,7 +270,6 @@ class _RadarSmallState extends State<RadarSmall> {
                           backgroundColor: palette.secondaryContainer,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
-                            //side: BorderSide(width: 2, color: palette.primaryLighter)
                           )
                       ),
                       onPressed: () async {
@@ -313,7 +312,7 @@ class _RadarSmallState extends State<RadarSmall> {
                         divisions: data.radar.times.length,
                         label: times[currentFrameIndex.toInt()].toString(),
                     
-                        padding: const EdgeInsets.only(left: 15),
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
                     
                         onChanged: (double value) {
                           if (data.settings["Radar haptics"] == "on") {

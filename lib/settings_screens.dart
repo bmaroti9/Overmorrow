@@ -51,12 +51,12 @@ Widget mainSettingEntry(String title, String desc, ColorScheme palette,
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(left: 15, top: 13, bottom: 13),
+        padding: const EdgeInsets.only(top: 13, bottom: 13),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 18),
+              padding: const EdgeInsets.only(right: 18, left: 15),
               child: Icon(icon, color: palette.primary, size: 24,),
             ),
             Expanded(
