@@ -36,7 +36,7 @@ import getIconForCondition
 class CurrentWidget : GlanceAppWidget() {
 
     override val stateDefinition: GlanceStateDefinition<*>
-        get() = HomeWidgetGlanceStateDefinition() // This now refers to the imported class
+        get() = HomeWidgetGlanceStateDefinition()
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val appWidgetId = GlanceAppWidgetManager(context).getAppWidgetId(id)

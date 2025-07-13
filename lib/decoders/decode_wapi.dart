@@ -33,7 +33,8 @@ import '../l10n/app_localizations.dart';
 
 import '../weather_refact.dart' as weather_refactor;
 import '../weather_refact.dart';
-import 'extra_info.dart';
+import 'decode_RV.dart';
+import 'weather_data.dart';
 
 import 'package:flutter/material.dart';
 
@@ -183,14 +184,6 @@ double unit_coversion(double value, String unit) {
   return a;
 }
 
-double temp_multiply_for_scale(int temp, String unit) {
-  if (unit == '˚C') {
-    return max(0, min(105, 17 + temp * 2.4));
-  }
-  else{
-    return max(0, min(105, (0 + temp).toDouble()));
-  }
-}
 
 IconData iconCorrection(name, isday, localizations) {
   String text = textCorrection(name, isday, false, localizations);
@@ -239,6 +232,12 @@ String wapiGetName(index, settings, localizations, item) {
   final String date = settings["Date format"] == "mm/dd" ? "${time.month}/${time.day}"
       :"${time.day}/${time.month}";
   return "$weekname, $date";
+}
+
+String getDateStringFromLocalTime(DateTime now) {
+  final List<String> weekNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  final List<String> monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  return "${weekNames[now.weekday - 1]}, ${monthNames[now.month - 1]} ${now.day}";
 }
 
 String backdropCorrection(name, isday, localizations) {
@@ -815,5 +814,6 @@ Future<LightCurrentWeatherData> wapiGetLightCurrentData(settings, placeName, lat
     place: placeName,
     temp:  unit_coversion(item["current"]["temp_c"], settings["Temperature"]).round(),
     updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
+    dateString: getDateStringFromLocalTime(now),
   );
 }

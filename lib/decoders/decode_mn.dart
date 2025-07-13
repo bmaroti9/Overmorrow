@@ -32,8 +32,9 @@ import '../services/color_service.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart';
+import 'decode_RV.dart';
 import 'decode_wapi.dart';
-import 'extra_info.dart';
+import 'weather_data.dart';
 
 String metNTextCorrection(String text, bool shouldTranslate, localizations) {
   String p = metNWeatherToText[text] ?? 'Clear Sky';
@@ -715,5 +716,6 @@ Future<LightCurrentWeatherData> metNGetLightCurrentData(settings, placeName, lat
         item["properties"]["timeseries"][0]["data"]["instant"]["details"]["air_temperature"],
         settings["Temperature"]).round(),
     updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
+    dateString: getDateStringFromLocalTime(now),
   );
 }

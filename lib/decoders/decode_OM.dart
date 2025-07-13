@@ -33,7 +33,8 @@ import '../services/color_service.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart';
-import 'extra_info.dart';
+import 'decode_RV.dart';
+import 'weather_data.dart';
 
 String OMConvertTime(String time) {
   return time.split("T")[1];
@@ -1014,5 +1015,6 @@ Future<LightCurrentWeatherData> omGetLightCurrentData(settings, placeName, lat, 
     place: placeName,
     temp: unit_coversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
     updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
+    dateString: getDateStringFromLocalTime(now),
   );
 }

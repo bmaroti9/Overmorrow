@@ -17,10 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
-import 'dart:convert';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/decoders/decode_mn.dart';
-import '../caching.dart';
 import '../settings_page.dart';
 import 'decode_wapi.dart';
 
@@ -94,52 +92,6 @@ class WeatherData {
   }
 }
 
-class RainviewerRadar {
-  final List<String> images;
-  final List<String> times;
-
-  const RainviewerRadar({
-    required this.images,
-    required this.times
-  });
-
-  static RainviewerRadar fromJson(images, times) => RainviewerRadar(
-      images: images,
-      times: times
-  );
-
-  static Future<RainviewerRadar> getData() async {
-  const String url = 'https://api.rainviewer.com/public/weather-maps.json';
-
-  //var file = await cacheManager2.getSingleFile(url.toString());
-  var file = await XCustomCacheManager.fetchData(url.toString(), url.toString());
-  var response = await file[0].readAsString();
-  final Map<String, dynamic> data = json.decode(response);
-
-  final String host = data["host"];
-
-  List<String> images = [];
-  List<String> times = [];
-
-  final past = data["radar"]["past"];
-  final future = data["radar"]["nowcast"];
-
-  for (var x in past) {
-    DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"] * 1000);
-    images.add(host + x["path"]);
-    times.add("${time.hour}h ${time.minute}m");
-  }
-
-  for (var x in future) {
-    DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"] * 1000);
-    images.add(host + x["path"]);
-    times.add("${time.hour}h ${time.minute}m");
-  }
-
-  return RainviewerRadar.fromJson(images, times);
-  }
-}
-
 
 //A more lightweight version of data fetching for the current widgets to use
 class LightCurrentWeatherData {
@@ -147,12 +99,14 @@ class LightCurrentWeatherData {
   final int temp;
   final String condition;
   final String updatedTime;
+  final String dateString;
 
   LightCurrentWeatherData({
     required this.place,
     required this.updatedTime,
     required this.condition,
     required this.temp,
+    required this.dateString,
   });
 
   static Future<LightCurrentWeatherData> getLightCurrentWeatherData(placeName, latlong, provider) async {

@@ -2,6 +2,7 @@ package com.marotidev.overmorrow
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager
+import android.appwidget.AppWidgetProviderInfo
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -42,6 +43,8 @@ import es.antonborri.home_widget.HomeWidgetBackgroundIntent
 import es.antonborri.home_widget.HomeWidgetPlugin
 import kotlinx.coroutines.launch
 import androidx.compose.material3.MaterialTheme
+import androidx.glance.GlanceId
+import androidx.glance.appwidget.GlanceAppWidget
 
 data class FavoriteItem(
     val id: Int,
@@ -64,11 +67,39 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
             //Sync changes to android side (the widget itself)
 
             val glanceAppWidgetManager = GlanceAppWidgetManager(this@CurrentWidgetConfigurationActivity)
-            val glanceId = glanceAppWidgetManager.getGlanceIdBy(appWidgetId)
+            val appWidgetManager = AppWidgetManager.getInstance(this@CurrentWidgetConfigurationActivity)
 
-            CurrentWidget().update(this@CurrentWidgetConfigurationActivity, glanceId)
+            val appWidgetInfo: AppWidgetProviderInfo? = appWidgetManager.getAppWidgetInfo(appWidgetId)
+
+            if (appWidgetInfo != null) {
+                val providerClassName = appWidgetInfo.provider.className
+
+                val glanceAppWidget: GlanceAppWidget? = when (providerClassName) {
+                    "com.marotidev.overmorrow.CurrentWidgetReceiver" -> CurrentWidget()
+                    "com.marotidev.overmorrow.DateCurrentWidgetReceiver" -> DateCurrentWidget()
+                    else -> {
+                        Log.w("WidgetConfig", "Unknown widget provider: $providerClassName for appWidgetId: $appWidgetId")
+                        null
+                    }
+                }
+
+                if (glanceAppWidget != null) {
+                    val glanceId: GlanceId = glanceAppWidgetManager.getGlanceIdBy(appWidgetId)
+
+                    glanceAppWidget.update(this@CurrentWidgetConfigurationActivity, glanceId)
+                    Log.d("WidgetConfig", "Successfully updated widget type: ${glanceAppWidget.javaClass.simpleName} for ID: $appWidgetId")
+
+                } else {
+                    Log.e("WidgetConfig", "Could not find a matching GlanceAppWidget for provider: $providerClassName")
+                }
+
+            } else {
+                Log.e("WidgetConfig", "Could not retrieve AppWidgetInfo for appWidgetId: $appWidgetId")
+            }
 
             //Sync changes to the flutter side
+
+            Log.i("Got Here", "got here")
 
             val backgroundIntent = HomeWidgetBackgroundIntent.getBroadcast(
                 applicationContext,

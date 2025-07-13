@@ -34,7 +34,7 @@ import 'package:overmorrow/weather_refact.dart';
 import 'package:overmorrow/services/location_service.dart';
 import 'package:workmanager/workmanager.dart';
 import 'caching.dart';
-import 'decoders/extra_info.dart';
+import 'decoders/weather_data.dart';
 import 'main_ui.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
@@ -57,6 +57,7 @@ class WidgetService {
     await saveData("current.condition.$widgetId", weatherData.condition);
     await saveData("current.updatedTime.$widgetId", weatherData.updatedTime);
     await saveData("current.place.$widgetId", weatherData.place);
+    await saveData("current.date.$widgetId", weatherData.dateString);
 
     //place is the name of the city while location can include currentLocation
   }
@@ -66,9 +67,13 @@ class WidgetService {
   }
 
   static Future<void> reloadCurrentWidgets() async {
-    await HomeWidget.updateWidget(
+    HomeWidget.updateWidget(
       androidName: 'CurrentWidget',
       qualifiedAndroidName: 'com.marotidev.overmorrow.CurrentWidgetReceiver',
+    );
+    HomeWidget.updateWidget(
+      androidName: 'DateCurrentWidget',
+      qualifiedAndroidName: 'com.marotidev.overmorrow.DateCurrentWidgetReceiver',
     );
   }
 }
@@ -104,30 +109,38 @@ void callbackDispatcher() {
 
           for (HomeWidgetInfo widgetInfo in installedWidgets) {
             final int widgetId = widgetInfo.androidWidgetId!;
+            final String widgetClassName = widgetInfo.androidClassName!;
+            print(("classname", widgetClassName));
 
-            final String locationKey = "current.location.$widgetId";
-            final String latLonKey = "current.latLon.$widgetId";
-            final String providerKey = "current.provider.$widgetId";
+            //if (widgetClassName == "com.marotidev.overmorrow.CurrentWidgetReceiver") {
+            if (true) {
 
-            final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
-            final String widgetProvider = (await HomeWidget.getWidgetData<String>(providerKey, defaultValue: "unknown")) ?? "unknown";
+              final String locationKey = "current.location.$widgetId";
+              final String latLonKey = "current.latLon.$widgetId";
+              final String providerKey = "current.provider.$widgetId";
 
-            print((widgetId, widgetLocation, widgetProvider));
+              final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
+              final String widgetProvider = (await HomeWidget.getWidgetData<String>(providerKey, defaultValue: "unknown")) ?? "unknown";
 
-            LightCurrentWeatherData weatherData;
+              print((widgetId, widgetLocation, widgetProvider));
 
-            if (widgetLocation == "currentLocation") {
-              List<String> lastKnown = await getLastKnownLocation();
-              weatherData = await LightCurrentWeatherData
-                  .getLightCurrentWeatherData(lastKnown[0], lastKnown[1], widgetProvider);
+              LightCurrentWeatherData weatherData;
+
+              if (widgetLocation == "currentLocation") {
+                List<String> lastKnown = await getLastKnownLocation();
+                weatherData = await LightCurrentWeatherData
+                    .getLightCurrentWeatherData(lastKnown[0], lastKnown[1], widgetProvider);
+              }
+              else {
+                final String widgetLatLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
+                weatherData = await LightCurrentWeatherData
+                    .getLightCurrentWeatherData(widgetLocation, widgetLatLon, widgetProvider);
+              }
+
+              await WidgetService.syncCurrentDataToWidget(weatherData, widgetId);
+
             }
-            else {
-              final String widgetLatLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
-              weatherData = await LightCurrentWeatherData
-                  .getLightCurrentWeatherData(widgetLocation, widgetLatLon, widgetProvider);
-            }
 
-            await WidgetService.syncCurrentDataToWidget(weatherData, widgetId);
           }
 
           WidgetService.reloadCurrentWidgets();

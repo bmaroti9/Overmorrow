@@ -437,7 +437,6 @@ class _RadarBigState extends State<RadarBig> {
       mode = brightness == Brightness.dark ? "dark" : "light";
     }
 
-
     return Scaffold(
       backgroundColor: palette.surface,
       body: Stack(
@@ -447,7 +446,7 @@ class _RadarBigState extends State<RadarBig> {
               initialCenter: LatLng(data.lat, data.lng),
               initialZoom: 6,
               minZoom: 2,
-              maxZoom: 8,
+              maxZoom: 9,
 
               backgroundColor: mode == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
               interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate,),
