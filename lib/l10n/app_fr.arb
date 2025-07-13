@@ -325,5 +325,21 @@
   "slightlyHazy": "légèrement brumeux",
   "@slightlyHazy": {},
   "weatherProvderLowercase": "fournisseur de météo",
-  "@weatherProvderLowercase": {}
+  "@weatherProvderLowercase": {},
+  "tomorrowLowercase": "demain",
+  "@tomorrowLowercase": {},
+  "grantLocationPermission": "accorder l'autorisation de localisation",
+  "@grantLocationPermission": {},
+  "currentLocation": "position actuelle",
+  "@currentLocation": {},
+  "dailyLowercase": "quotidiennement",
+  "@dailyLowercase": {},
+  "sumLowercase": "résumé",
+  "@sumLowercase": {
+    "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+  },
+  "sourceCodeLowercase": "code source",
+  "@sourceCodeLowercase": {},
+  "emailLowercase": "email",
+  "@emailLowercase": {}
 }
