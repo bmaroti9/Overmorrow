@@ -73,7 +73,7 @@ class DateCurrentWidget : GlanceAppWidget() {
             verticalAlignment = Alignment.Vertical.CenterVertically
         ) {
             Box(
-                modifier = GlanceModifier.padding(end = 16.dp).wrapContentSize(),
+                modifier = GlanceModifier.padding(end = 16.dp, start = 2.dp).wrapContentSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
@@ -88,8 +88,7 @@ class DateCurrentWidget : GlanceAppWidget() {
                     provider = ImageProvider(iconResId),
                     contentDescription = "Weather icon",
                     colorFilter = ColorFilter.tint(GlanceTheme.colors.onPrimary),
-                    modifier = GlanceModifier
-                        .size(width = 38.dp, height = 38.dp) // Size of the icon
+                    modifier = GlanceModifier.size(width = 40.dp, height = 40.dp)
                 )
             }
 

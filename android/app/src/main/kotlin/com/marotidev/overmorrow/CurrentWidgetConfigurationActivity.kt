@@ -119,6 +119,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         HomeWidgetPlugin.getData(context).edit {
             putString("current.location.$appWidgetId", location)
             if (!latLon.isNullOrBlank()) {
+                putString("current.place.$appWidgetId", location)
                 putString("current.latLon.$appWidgetId", latLon)
             }
         }

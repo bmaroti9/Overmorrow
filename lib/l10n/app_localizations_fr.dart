@@ -30,7 +30,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get today => 'Aujourd hui';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'demain';
 
   @override
   String get overmorrowLowercase => 'Overmorrow';
@@ -108,10 +108,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get locationPermissionDeniedForever => 'Autorisation de localisation refusée définitivement';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'accorder l\'autorisation de localisation';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'position actuelle';
 
   @override
   String get favoritesLowercase => 'favorites';
@@ -186,7 +186,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get fontSize => 'Taille de police';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'quotidiennement';
 
   @override
   String get searchProvider => 'Fournisseur de recherche';
@@ -201,7 +201,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get imageSource => 'Source d\'image';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'résumé';
 
   @override
   String get precipLowercase => 'précip';
@@ -234,7 +234,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get photoByXOnUnsplash => 'Photo, de ,x, sur ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'code source';
 
   @override
   String get emailLowercase => 'email';
