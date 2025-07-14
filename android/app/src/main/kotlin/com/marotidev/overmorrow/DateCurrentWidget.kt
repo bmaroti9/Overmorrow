@@ -33,6 +33,7 @@ import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxHeight
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.size
+import androidx.glance.layout.width
 import androidx.glance.layout.wrapContentSize
 import androidx.glance.layout.wrapContentWidth
 import androidx.glance.text.TextStyle
@@ -73,7 +74,7 @@ class DateCurrentWidget : GlanceAppWidget() {
             verticalAlignment = Alignment.Vertical.CenterVertically
         ) {
             Box(
-                modifier = GlanceModifier.padding(end = 16.dp, start = 2.dp).wrapContentSize(),
+                modifier = GlanceModifier.padding(start = 2.dp).wrapContentSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
@@ -92,10 +93,13 @@ class DateCurrentWidget : GlanceAppWidget() {
                 )
             }
 
-            Column {
+            Column (
+                modifier = GlanceModifier.defaultWeight().padding(start = 16.dp)
+            ){
                 Text(
                     text = place,
                     style = TextStyle(fontSize = 22.sp, color = GlanceTheme.colors.onSurface),
+                    maxLines = 1
                 )
                 Text(
                     text = dateString,
@@ -103,16 +107,10 @@ class DateCurrentWidget : GlanceAppWidget() {
                 )
             }
 
-            Row(
-                modifier = GlanceModifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "$temp°",
-                    style = TextStyle(fontSize = 40.sp, color = GlanceTheme.colors.secondary),
-                )
-            }
+            Text(
+                text = "$temp°",
+                style = TextStyle(fontSize = 40.sp, color = GlanceTheme.colors.secondary),
+            )
 
         }
 
