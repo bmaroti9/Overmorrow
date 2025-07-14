@@ -69,11 +69,11 @@ class WidgetService {
   static Future<void> reloadCurrentWidgets() async {
     HomeWidget.updateWidget(
       androidName: 'CurrentWidget',
-      qualifiedAndroidName: 'com.marotidev.overmorrow.CurrentWidgetReceiver',
+      qualifiedAndroidName: 'com.marotidev.overmorrow.receivers.CurrentWidgetReceiver',
     );
     HomeWidget.updateWidget(
       androidName: 'DateCurrentWidget',
-      qualifiedAndroidName: 'com.marotidev.overmorrow.DateCurrentWidgetReceiver',
+      qualifiedAndroidName: 'com.marotidev.overmorrow.receivers.DateCurrentWidgetReceiver',
     );
   }
 }

@@ -1,4 +1,4 @@
-package com.marotidev.overmorrow
+package com.marotidev.overmorrow.widgets
 
 // Standard Glance and Compose imports (as we discussed before)
 import HomeWidgetGlanceState
@@ -29,14 +29,12 @@ import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.ContentScale
 import androidx.glance.layout.Row
-import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxHeight
-import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.size
-import androidx.glance.layout.width
 import androidx.glance.layout.wrapContentSize
 import androidx.glance.layout.wrapContentWidth
 import androidx.glance.text.TextStyle
+import com.marotidev.overmorrow.R
 import getIconForCondition
 
 class DateCurrentWidget : GlanceAppWidget() {
@@ -78,7 +76,7 @@ class DateCurrentWidget : GlanceAppWidget() {
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    provider = ImageProvider(R.drawable.four_sided_cookie),
+                    provider = ImageProvider(R.drawable.shapes_four_sided_cookie),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(GlanceTheme.colors.primary),
                     contentScale = ContentScale.Fit,

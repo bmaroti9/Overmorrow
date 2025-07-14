@@ -1,4 +1,4 @@
-package com.marotidev.overmorrow
+package com.marotidev.overmorrow.configurators
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager
@@ -45,6 +45,10 @@ import kotlinx.coroutines.launch
 import androidx.compose.material3.MaterialTheme
 import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidget
+import com.marotidev.overmorrow.OvermorrowTheme
+import com.marotidev.overmorrow.R
+import com.marotidev.overmorrow.widgets.CurrentWidget
+import com.marotidev.overmorrow.widgets.DateCurrentWidget
 
 data class FavoriteItem(
     val id: Int,
@@ -75,8 +79,8 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                 val providerClassName = appWidgetInfo.provider.className
 
                 val glanceAppWidget: GlanceAppWidget? = when (providerClassName) {
-                    "com.marotidev.overmorrow.CurrentWidgetReceiver" -> CurrentWidget()
-                    "com.marotidev.overmorrow.DateCurrentWidgetReceiver" -> DateCurrentWidget()
+                    "com.marotidev.overmorrow.receivers.CurrentWidgetReceiver" -> CurrentWidget()
+                    "com.marotidev.overmorrow.receivers.DateCurrentWidgetReceiver" -> DateCurrentWidget()
                     else -> {
                         Log.w("WidgetConfig", "Unknown widget provider: $providerClassName for appWidgetId: $appWidgetId")
                         null
@@ -271,7 +275,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                         modifier = Modifier.padding(top = 16.dp, bottom = 40.dp)
                     ){
                         Icon(
-                            painter = painterResource(R.drawable.baseline_info_outline_24),
+                            painter = painterResource(R.drawable.icon_info),
                             tint = MaterialTheme.colorScheme.onSurface,
                             contentDescription = "info icon",
                             modifier = Modifier.padding(start = 16.dp, end = 8.dp).size(18.dp)

@@ -51,7 +51,7 @@
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <receiver
-            android:name=".CurrentWidgetReceiver"
+            android:name=".receivers.CurrentWidgetReceiver"
             android:exported="true"
             android:label="@string/current_widget_name">
             <intent-filter>
@@ -63,7 +63,7 @@
         </receiver>
 
         <activity
-            android:name=".CurrentWidgetConfigurationActivity"
+            android:name=".configurators.CurrentWidgetConfigurationActivity"
             android:exported="true" android:theme="@style/Theme.Overmorrow"
             android:excludeFromRecents="true"
             android:configChanges="orientation|keyboardHidden|screenSize">
@@ -73,7 +73,7 @@
         </activity>
 
         <receiver
-            android:name=".DateCurrentWidgetReceiver"
+            android:name=".receivers.DateCurrentWidgetReceiver"
             android:exported="true"
             android:label="@string/date_current_widget_name">
             <intent-filter>

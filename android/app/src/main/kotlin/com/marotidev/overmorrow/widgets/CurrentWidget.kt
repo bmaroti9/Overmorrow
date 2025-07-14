@@ -1,4 +1,4 @@
-package com.marotidev.overmorrow
+package com.marotidev.overmorrow.widgets
 
 // Standard Glance and Compose imports (as we discussed before)
 import HomeWidgetGlanceState
@@ -23,7 +23,6 @@ import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 
-import GlanceText
 import androidx.glance.ColorFilter
 import androidx.glance.Image
 import androidx.glance.ImageProvider
@@ -31,6 +30,7 @@ import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.ContentScale
 import androidx.glance.layout.size
+import com.marotidev.overmorrow.R
 import getIconForCondition
 
 class CurrentWidget : GlanceAppWidget() {
@@ -69,7 +69,7 @@ class CurrentWidget : GlanceAppWidget() {
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        provider = ImageProvider(R.drawable.custom_pill_shape),
+                        provider = ImageProvider(R.drawable.shapes_custom_pill_shape),
                         contentDescription = null,
                         colorFilter = ColorFilter.tint(GlanceTheme.colors.secondaryContainer), // Dynamic surface color
                         contentScale = ContentScale.Fit,
@@ -105,7 +105,7 @@ class CurrentWidget : GlanceAppWidget() {
                         verticalAlignment = Alignment.Vertical.CenterVertically
                     ) {
                         Image(
-                            provider = ImageProvider(R.drawable.outline_location_on_24),
+                            provider = ImageProvider(R.drawable.icon_location),
                             contentDescription = "Location icon",
                             colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
                             modifier = GlanceModifier.size(width = 19.dp, height = 19.dp).padding(end = 4.dp)
