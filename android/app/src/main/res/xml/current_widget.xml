@@ -1,9 +1,12 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialLayout="@layout/glance_default_loading_layout"
-    android:minWidth="40dp"
-    android:minHeight="40dp"
+    android:minWidth="100dp"
+    android:minHeight="100dp"
+    android:previewImage="@drawable/current_pill_shape_preview"
     android:resizeMode="horizontal|vertical"
     android:widgetFeatures="reconfigurable"
     android:configure="com.marotidev.overmorrow.CurrentWidgetConfigurationActivity"
-    android:updatePeriodMillis="3600000">
+    android:updatePeriodMillis="3600000"
+    android:label="@string/current_widget_name"
+    android:description="@string/current_widget_description">
 </appwidget-provider>

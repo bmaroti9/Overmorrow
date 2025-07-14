@@ -58,7 +58,7 @@ class CurrentWidget : GlanceAppWidget() {
 
         val iconResId = getIconForCondition(condition)
 
-        if (false) {
+        if (true) {
             Box (
                 modifier = GlanceModifier.fillMaxSize(),
                 contentAlignment = Alignment.Center // Align content within the box
@@ -96,7 +96,7 @@ class CurrentWidget : GlanceAppWidget() {
                 }
             }
         }
-        else if (true) {
+        else if (false) {
             Box(
                 modifier = GlanceModifier.background(GlanceTheme.colors.surface).padding(16.dp).fillMaxSize()
             ) {
