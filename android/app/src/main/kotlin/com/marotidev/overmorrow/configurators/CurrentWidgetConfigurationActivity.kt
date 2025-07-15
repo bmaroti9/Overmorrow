@@ -49,6 +49,7 @@ import com.marotidev.overmorrow.OvermorrowTheme
 import com.marotidev.overmorrow.R
 import com.marotidev.overmorrow.widgets.CurrentWidget
 import com.marotidev.overmorrow.widgets.DateCurrentWidget
+import com.marotidev.overmorrow.widgets.WindWidget
 
 data class FavoriteItem(
     val id: Int,
@@ -81,6 +82,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                 val glanceAppWidget: GlanceAppWidget? = when (providerClassName) {
                     "com.marotidev.overmorrow.receivers.CurrentWidgetReceiver" -> CurrentWidget()
                     "com.marotidev.overmorrow.receivers.DateCurrentWidgetReceiver" -> DateCurrentWidget()
+                    "com.marotidev.overmorrow.receivers.WindWidgetReceiver" -> WindWidget()
                     else -> {
                         Log.w("WidgetConfig", "Unknown widget provider: $providerClassName for appWidgetId: $appWidgetId")
                         null

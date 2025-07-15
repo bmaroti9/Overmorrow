@@ -50,18 +50,6 @@
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <receiver
-            android:name=".receivers.CurrentWidgetReceiver"
-            android:exported="true"
-            android:label="@string/current_widget_name">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/current_widget" />
-        </receiver>
-
         <activity
             android:name=".configurators.CurrentWidgetConfigurationActivity"
             android:exported="true" android:theme="@style/Theme.Overmorrow"
@@ -82,6 +70,29 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/date_current_widget" />
+        </receiver>
+
+        <receiver
+            android:name=".receivers.CurrentWidgetReceiver"
+            android:exported="true"
+            android:label="@string/current_widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/current_widget" />
+        </receiver>
+
+        <receiver
+            android:name=".receivers.WindWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/wind_widget" />
         </receiver>
 
         <!-- Don't delete the meta-data below.

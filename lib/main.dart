@@ -43,6 +43,10 @@ import 'settings_page.dart';
 
 const updateWeatherDataKey = "com.marotidev.overmorrow.updateWeatherData";
 
+const currentWidgetReceiver = 'com.marotidev.overmorrow.receivers.CurrentWidgetReceiver';
+const dateCurrentWidgetReceiver = 'com.marotidev.overmorrow.receivers.DateCurrentWidgetReceiver';
+const windWidgetReceiver = 'com.marotidev.overmorrow.receivers.WindWidgetReceiver';
+
 class WidgetService {
 
   static Future<void> saveData(String id, value) async {
@@ -50,30 +54,42 @@ class WidgetService {
     print(("Saved", id, value));
   }
 
-  static Future<void> syncCurrentDataToWidget(LightCurrentWeatherData weatherData, int widgetId) async {
+  static Future<void> syncCurrentDataToWidget(LightCurrentWeatherData data, int widgetId) async {
     await saveData("widgetFailure.$widgetId", "enabled");
 
-    await saveData("current.temp.$widgetId", weatherData.temp);
-    await saveData("current.condition.$widgetId", weatherData.condition);
-    await saveData("current.updatedTime.$widgetId", weatherData.updatedTime);
-    await saveData("current.place.$widgetId", weatherData.place);
-    await saveData("current.date.$widgetId", weatherData.dateString);
+    await saveData("current.temp.$widgetId", data.temp);
+    await saveData("current.condition.$widgetId", data.condition);
+    await saveData("current.updatedTime.$widgetId", data.updatedTime);
+    await saveData("current.place.$widgetId", data.place);
+    await saveData("current.date.$widgetId", data.dateString);
 
     //place is the name of the city while location can include currentLocation
+  }
+
+  static Future<void> syncWindDataToWidget(LightWindData data, int widgetId) async {
+    await saveData("widgetFailure.$widgetId", "enabled");
+    await saveData("wind.windSpeed.$widgetId", data.windSpeed);
+    await saveData("wind.windDirName.$widgetId", data.windDirName);
+    await saveData("wind.windDirAngle.$widgetId", data.windDirAngle);
+    await saveData("wind.windUnit.$widgetId", data.windUnit);
   }
 
   static Future<void> syncWidgetFailure(int widgetId, String failure) async {
     await saveData("widgetFailure.$widgetId", failure);
   }
 
-  static Future<void> reloadCurrentWidgets() async {
+  static Future<void> reloadWidgets() async {
     HomeWidget.updateWidget(
       androidName: 'CurrentWidget',
-      qualifiedAndroidName: 'com.marotidev.overmorrow.receivers.CurrentWidgetReceiver',
+      qualifiedAndroidName: currentWidgetReceiver,
     );
     HomeWidget.updateWidget(
       androidName: 'DateCurrentWidget',
-      qualifiedAndroidName: 'com.marotidev.overmorrow.receivers.DateCurrentWidgetReceiver',
+      qualifiedAndroidName: dateCurrentWidgetReceiver,
+    );
+    HomeWidget.updateWidget(
+      androidName: 'WindWidget',
+      qualifiedAndroidName: windWidgetReceiver,
     );
   }
 }
@@ -107,43 +123,53 @@ void callbackDispatcher() {
             return Future.value(true);
           }
 
+          Map<String, String> settings = await getSettingsUsed();
+
           for (HomeWidgetInfo widgetInfo in installedWidgets) {
             final int widgetId = widgetInfo.androidWidgetId!;
             final String widgetClassName = widgetInfo.androidClassName!;
             print(("classname", widgetClassName));
 
-            //if (widgetClassName == "com.marotidev.overmorrow.CurrentWidgetReceiver") {
-            if (true) {
+            final String locationKey = "current.location.$widgetId";
+            final String latLonKey = "current.latLon.$widgetId";
+            final String providerKey = "current.provider.$widgetId";
 
-              final String locationKey = "current.location.$widgetId";
-              final String latLonKey = "current.latLon.$widgetId";
-              final String providerKey = "current.provider.$widgetId";
+            final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
+            final String widgetProvider = (await HomeWidget.getWidgetData<String>(providerKey, defaultValue: "unknown")) ?? "unknown";
 
-              final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
-              final String widgetProvider = (await HomeWidget.getWidgetData<String>(providerKey, defaultValue: "unknown")) ?? "unknown";
+            String placeName;
+            String latLon;
 
-              print((widgetId, widgetLocation, widgetProvider));
+            if (widgetLocation == "currentLocation") {
+              List<String> lastKnown = await getLastKnownLocation();
+              placeName = lastKnown[0];
+              latLon = lastKnown[1];
+            }
+            else {
+              placeName = widgetLocation;
+              latLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
+            }
 
-              LightCurrentWeatherData weatherData;
+            print((placeName, latLon));
 
-              if (widgetLocation == "currentLocation") {
-                List<String> lastKnown = await getLastKnownLocation();
-                weatherData = await LightCurrentWeatherData
-                    .getLightCurrentWeatherData(lastKnown[0], lastKnown[1], widgetProvider);
-              }
-              else {
-                final String widgetLatLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
-                weatherData = await LightCurrentWeatherData
-                    .getLightCurrentWeatherData(widgetLocation, widgetLatLon, widgetProvider);
-              }
+            //these two are so similar that i'm updating them with the same logic
+            if (widgetClassName == currentWidgetReceiver || widgetClassName == dateCurrentWidgetReceiver) {
 
-              await WidgetService.syncCurrentDataToWidget(weatherData, widgetId);
+              LightCurrentWeatherData data = await LightCurrentWeatherData
+                  .getLightCurrentWeatherData(placeName, latLon, widgetProvider, settings);
 
+              await WidgetService.syncCurrentDataToWidget(data, widgetId);
+            }
+            else if (widgetClassName == windWidgetReceiver) {
+
+              LightWindData data = await LightWindData.getLightWindData(placeName, latLon, widgetProvider, settings);
+
+              await WidgetService.syncWindDataToWidget(data, widgetId);
             }
 
           }
 
-          WidgetService.reloadCurrentWidgets();
+          WidgetService.reloadWidgets();
 
         } catch (e, stacktrace) {
           print("ERRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRRRRR");

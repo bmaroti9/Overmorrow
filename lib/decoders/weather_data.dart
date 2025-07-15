@@ -109,13 +109,11 @@ class LightCurrentWeatherData {
     required this.dateString,
   });
 
-  static Future<LightCurrentWeatherData> getLightCurrentWeatherData(placeName, latlong, provider) async {
+  static Future<LightCurrentWeatherData> getLightCurrentWeatherData(placeName, latlong, provider, settings) async {
 
     List<String> split = latlong.split(",");
     double lat = double.parse(split[0]);
     double lng = double.parse(split[1]);
-
-    Map<String, String> settings = await getSettingsUsed();
 
     switch (provider) {
       case "weatherapi":
@@ -126,5 +124,36 @@ class LightCurrentWeatherData {
         return omGetLightCurrentData(settings, placeName, lat, lng);
     }
   }
+}
 
+class LightWindData {
+  final int windSpeed;
+  final int windDirAngle;
+  final String windDirName;
+  final String windUnit;
+
+  LightWindData({
+    required this.windDirAngle,
+    required this.windDirName,
+    required this.windSpeed,
+    required this.windUnit,
+  });
+
+  static Future<LightWindData> getLightWindData(placeName, latlong, provider, settings) async {
+
+    List<String> split = latlong.split(",");
+    double lat = double.parse(split[0]);
+    double lon = double.parse(split[1]);
+
+    return omGetLightWindData(settings, lat, lon);
+
+    switch (provider) {
+      case "weatherapi":
+
+      case "met-norway":
+
+      default:
+        return omGetLightWindData(settings, lat, lon);
+    }
+  }
 }

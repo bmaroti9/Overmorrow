@@ -319,8 +319,7 @@ class OMCurrent {
       precip: double.parse(unit_coversion(
           item["daily"]["precipitation_sum"][dayDif], settings["Precipitation"])
           .toStringAsFixed(1)),
-      wind: unit_coversion(item["hourly"]["wind_speed_10m"][start], settings["Wind"])
-          .round(),
+      wind: unit_coversion(item["hourly"]["wind_speed_10m"][start], settings["Wind"]).round(),
       humidity: item["current"]["relative_humidity_2m"],
       temp: unit_coversion(
         isonline ? item["current"]["temperature_2m"] : item["hourly"]["temperature_2m"][start],
@@ -988,10 +987,10 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
   );
 }
 
-Future<LightCurrentWeatherData> omGetLightCurrentData(settings, placeName, lat, lng) async {
+Future<LightCurrentWeatherData> omGetLightCurrentData(settings, placeName, lat, lon) async {
   final oMParams = {
     "latitude": lat.toString(),
-    "longitude": lng.toString(),
+    "longitude": lon.toString(),
     "current": ["temperature_2m", "weather_code"],
     "daily": ["sunrise", "sunset"],
     "forecast_days": "1",
@@ -1016,5 +1015,25 @@ Future<LightCurrentWeatherData> omGetLightCurrentData(settings, placeName, lat, 
     temp: unit_coversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
     updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
     dateString: getDateStringFromLocalTime(now),
+  );
+}
+
+Future<LightWindData> omGetLightWindData(settings, lat, lon) async {
+  final oMParams = {
+    "latitude": lat.toString(),
+    "longitude": lon.toString(),
+    "current": ["wind_speed_10m", "wind_direction_10m"],
+  };
+
+  final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
+  final response = (await http.get(oMUrl)).body;
+
+  final item = jsonDecode(response);
+
+  return LightWindData(
+      windDirAngle: item["current"]["wind_direction_10m"],
+      windDirName: item["current"]["wind_direction_10m"].toString(),
+      windSpeed:  unit_coversion(item["current"]["wind_speed_10m"], settings["Wind"]).round(),
+      windUnit: settings["Wind"]
   );
 }
