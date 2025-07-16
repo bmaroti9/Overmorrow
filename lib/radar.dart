@@ -40,7 +40,7 @@ class RadarSmall extends StatefulWidget {
 }
 
 class _RadarSmallState extends State<RadarSmall> {
-  double currentFrameIndex = 12;
+  double currentFrameIndex = 0;
   late Timer timer;
 
   bool hasBeenPlayed = false;
@@ -57,8 +57,10 @@ class _RadarSmallState extends State<RadarSmall> {
   void initState() {
     super.initState();
 
+    currentFrameIndex = data.radar.starting_index * 1.0;
+
     int precived_hour = int.parse(data.localtime.split(":")[0]);
-    int real = int.parse(data.radar.times[11].split("h")[0]);
+    int real = data.radar.real_hour;
 
     int offset = precived_hour - real;
 
@@ -355,7 +357,7 @@ class _RadarBigState extends State<RadarBig> {
     const Color(0xFFffaaff), const Color(0xFFff77ff), const Color(0xFFff00ff),
   ];
 
-  double currentFrameIndex = 12;
+  double currentFrameIndex = 0;
   late Timer timer;
 
   List<String> times = [];
@@ -372,8 +374,10 @@ class _RadarBigState extends State<RadarBig> {
   void initState() {
     super.initState();
 
+    currentFrameIndex = data.radar.starting_index * 1.0;
+
     int precived_hour = int.parse(data.localtime.split(":")[0]);
-    int real = int.parse(data.radar.times[11].split("h")[0]);
+    int real = data.radar.real_hour;
 
     int offset = precived_hour - real;
 

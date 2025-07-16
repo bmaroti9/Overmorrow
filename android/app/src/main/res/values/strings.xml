@@ -4,5 +4,8 @@
     <string name="date_current_widget_description">Shows the current weather and date.</string>
     <string name="current_widget_name">Current (Pill Shape)</string>
     <string name="current_widget_description">Shows the current weather</string>
+    <string name="wind_widget_name">Wind speed &amp; Direction</string>
+    <string name="wind_widget_description">Shows the current wind speed and direction</string>
+
 
 </resources>
