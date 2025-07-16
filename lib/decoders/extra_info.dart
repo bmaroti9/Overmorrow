@@ -96,45 +96,46 @@ class WeatherData {
 class RainviewerRadar {
   final List<String> images;
   final List<String> times;
+  final int real_hour;
+  final int starting_index;
 
   const RainviewerRadar({
     required this.images,
-    required this.times
+    required this.times,
+    required this.real_hour,
+    required this.starting_index,
   });
 
-  static RainviewerRadar fromJson(images, times) => RainviewerRadar(
-      images: images,
-      times: times
-  );
-
   static Future<RainviewerRadar> getData() async {
-  const String url = 'https://api.rainviewer.com/public/weather-maps.json';
+    const String url = 'https://api.rainviewer.com/public/weather-maps.json';
 
-  //var file = await cacheManager2.getSingleFile(url.toString());
-  var file = await XCustomCacheManager.fetchData(url.toString(), url.toString());
-  var response = await file[0].readAsString();
-  final Map<String, dynamic> data = json.decode(response);
+    var file = await XCustomCacheManager.fetchData(url.toString(), url.toString());
+    var response = await file[0].readAsString();
+    final Map<String, dynamic> data = json.decode(response);
 
-  final String host = data["host"];
+    final String host = data["host"];
 
-  List<String> images = [];
-  List<String> times = [];
+    List<String> images = [];
+    List<String> times = [];
 
-  final past = data["radar"]["past"];
-  final future = data["radar"]["nowcast"];
+    final past = data["radar"]["past"];
+    final future = data["radar"]["nowcast"];
 
-  for (var x in past) {
-    DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"] * 1000);
-    images.add(host + x["path"]);
-    times.add("${time.hour}h ${time.minute}m");
-  }
+    for (var x in past) {
+      DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"] * 1000);
+      images.add(host + x["path"]);
+      times.add("${time.hour}h ${time.minute}m");
+    }
 
-  for (var x in future) {
-    DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"] * 1000);
-    images.add(host + x["path"]);
-    times.add("${time.hour}h ${time.minute}m");
-  }
+    int real_hour = int.parse(times[times.length - 1].split("h")[0]);
+    int starting_index = times.length - 1;
 
-  return RainviewerRadar.fromJson(images, times);
+    for (var x in future) {
+      DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"] * 1000);
+      images.add(host + x["path"]);
+      times.add("${time.hour}h ${time.minute}m");
+    }
+
+    return RainviewerRadar(images: images, times: times, real_hour: real_hour, starting_index: starting_index);
   }
 }
