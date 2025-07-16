@@ -69,7 +69,6 @@ class WidgetService {
   static Future<void> syncWindDataToWidget(LightWindData data, int widgetId) async {
     await saveData("widgetFailure.$widgetId", "enabled");
     await saveData("wind.windSpeed.$widgetId", data.windSpeed);
-    await saveData("wind.windDirName.$widgetId", data.windDirName);
     await saveData("wind.windDirAngle.$widgetId", data.windDirAngle);
     await saveData("wind.windUnit.$widgetId", data.windUnit);
   }

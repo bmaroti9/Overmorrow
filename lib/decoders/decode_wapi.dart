@@ -177,10 +177,10 @@ Future<DateTime> WapiGetLocalTime(lat, lng) async {
   return DateTime.parse(body["formatted"]);
 }
 
-double unit_coversion(double value, String unit) {
+double unit_coversion(double value, String unit, {decimals = 2}) {
   List<double> p = weather_refactor.conversionTable[unit] ?? [0, 0];
   double a = p[0] + value * p[1];
-  a = double.parse(a.toStringAsFixed(2));
+  a = double.parse(a.toStringAsFixed(decimals));
   return a;
 }
 

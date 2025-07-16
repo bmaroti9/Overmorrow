@@ -5,12 +5,21 @@ package com.marotidev.overmorrow.widgets
 import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import androidx.annotation.DrawableRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.withRotation
+import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
+import androidx.glance.Image
+import androidx.glance.ImageProvider
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.cornerRadius
@@ -18,12 +27,20 @@ import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
+import androidx.glance.layout.Box
+import androidx.glance.layout.ContentScale
 import androidx.glance.layout.Row
+import androidx.glance.layout.fillMaxHeight
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.padding
+import androidx.glance.layout.wrapContentSize
+import androidx.glance.layout.wrapContentWidth
 import androidx.glance.state.GlanceStateDefinition
+import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
+import com.marotidev.overmorrow.R
+
 
 class WindWidget : GlanceAppWidget() {
 
@@ -45,40 +62,92 @@ class WindWidget : GlanceAppWidget() {
         val widgetHasFaliure = prefs.getString("widgetFailure.$appWidgetId", "unknown") ?: "?"
         val windSpeed = prefs.getInt("wind.windSpeed.$appWidgetId", 0)
         val windUnit = prefs.getString("wind.windUnit.$appWidgetId", "N/A") ?: "?"
-        val windDirName = prefs.getString("wind.windDirName.$appWidgetId", "0") ?: "?"
         val windDirAngle = prefs.getInt("wind.windDirAngle.$appWidgetId", 0)
+
+        val rotatedBitmap = createRotatedBitmapFromVector(
+            context = context,
+            drawableResId = R.drawable.icon_arrow_up,
+            size = 80,
+            rotationDegrees = windDirAngle.toFloat()
+        )
+
 
         Row(
             modifier = GlanceModifier
                 .fillMaxSize()
                 .background(GlanceTheme.colors.secondaryContainer)
-                .cornerRadius(100.dp)
-                .padding(16.dp),
+                .cornerRadius(100.dp).padding(start = 16.dp),
             verticalAlignment = Alignment.Vertical.CenterVertically
         ) {
-            Text(
-                text = "$windSpeed",
-                style = TextStyle(
-                    color = GlanceTheme.colors.primary,
-                    fontSize = 30.sp
-                ),
-            )
-            Text(
-                text = windUnit,
-                style = TextStyle(
-                    color = GlanceTheme.colors.outline,
-                    fontSize = 16.sp
-                ),
-            )
-            Text(
-                modifier = GlanceModifier.padding(start = 10.dp),
-                text = "$windDirAngle°",
-                style = TextStyle(
-                    color = GlanceTheme.colors.primary,
-                    fontSize = 25.sp
-                ),
-            )
+
+            //glance doesn't let you set custom line height, and the two texts were ridiculously far from each other
+            //so i kind of hacked them closer together by basically having them overlap in a box
+            //i have no idea how this will look with different font and screen sizes though, which is a bit concerning
+            Box(
+                modifier = GlanceModifier.fillMaxHeight().defaultWeight(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = "$windSpeed",
+                    style = TextStyle(
+                        color = GlanceTheme.colors.onSurface,
+                        fontSize = 42.sp,
+                    ),
+                    modifier = GlanceModifier.padding(bottom = 16.dp),
+                )
+                Text(
+                    text = windUnit,
+                    style = TextStyle(
+                        color = GlanceTheme.colors.outline,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    modifier = GlanceModifier.padding(top = 46.dp)
+                )
+            }
+
+            Box(
+                modifier = GlanceModifier.padding(start = 4.dp, end = 16.dp, top = 16.dp, bottom = 16.dp).wrapContentSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    provider = ImageProvider(R.drawable.shapes_nine_sided_cookie),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(GlanceTheme.colors.primary),
+                    contentScale = ContentScale.Fit,
+                    modifier = GlanceModifier.fillMaxHeight().wrapContentWidth()
+                )
+
+                Image(
+                    provider = ImageProvider(rotatedBitmap),
+                    contentDescription = "Rotated image",
+                    colorFilter = ColorFilter.tint(GlanceTheme.colors.onPrimary),
+                )
+            }
         }
 
+    }
+
+    //Somehow there is no way to rotate an icon without using bitmaps again, yay
+    private fun createRotatedBitmapFromVector(
+        context: Context,
+        @DrawableRes drawableResId: Int,
+        size: Int,
+        rotationDegrees: Float
+    ): Bitmap {
+        val drawable = AppCompatResources.getDrawable(context, drawableResId)
+
+        val bitmap = createBitmap(size, size)
+        val canvas = Canvas(bitmap)
+
+        drawable?.setBounds(0, 0, canvas.width, canvas.height)
+
+        canvas.withRotation(
+            degrees = rotationDegrees, pivotX = canvas.width / 2f, pivotY = canvas.height / 2f
+        ) {
+            drawable?.draw(this)
+        }
+
+        return bitmap
     }
 }

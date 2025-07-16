@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:async';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/decoders/decode_mn.dart';
-import '../settings_page.dart';
 import 'decode_wapi.dart';
 
 
@@ -129,12 +128,10 @@ class LightCurrentWeatherData {
 class LightWindData {
   final int windSpeed;
   final int windDirAngle;
-  final String windDirName;
   final String windUnit;
 
   LightWindData({
     required this.windDirAngle,
-    required this.windDirName,
     required this.windSpeed,
     required this.windUnit,
   });

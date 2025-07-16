@@ -1032,8 +1032,7 @@ Future<LightWindData> omGetLightWindData(settings, lat, lon) async {
 
   return LightWindData(
       windDirAngle: item["current"]["wind_direction_10m"],
-      windDirName: item["current"]["wind_direction_10m"].toString(),
-      windSpeed:  unit_coversion(item["current"]["wind_speed_10m"], settings["Wind"]).round(),
+      windSpeed: unit_coversion(item["current"]["wind_speed_10m"], settings["Wind"]).round(),
       windUnit: settings["Wind"]
   );
 }
