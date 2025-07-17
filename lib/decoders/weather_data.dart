@@ -142,13 +142,11 @@ class LightWindData {
     double lat = double.parse(split[0]);
     double lon = double.parse(split[1]);
 
-    return omGetLightWindData(settings, lat, lon);
-
     switch (provider) {
       case "weatherapi":
-
+        return wapiGetLightWindData(settings, placeName, lat, lon);
       case "met-norway":
-
+        return metNGetLightWindData(settings, placeName, lat, lon);
       default:
         return omGetLightWindData(settings, lat, lon);
     }

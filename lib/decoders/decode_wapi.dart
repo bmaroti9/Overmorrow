@@ -50,9 +50,6 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
     'alerts': 'yes',
   };
   final url = Uri.https('api.weatherapi.com', 'v1/forecast.json', params);
-  
-  //var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
-  //    .timeout(const Duration(seconds: 3));
 
   var file = await XCustomCacheManager.fetchData(url.toString(), "$real_loc, weatherapi.com");
 
@@ -793,11 +790,10 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName, 
   );
 }
 
-
-Future<LightCurrentWeatherData> wapiGetLightCurrentData(settings, placeName, lat, lng) async {
+Future<dynamic> wapiGetCurrentResponse(settings, placeName, lat, lon) async {
   final params = {
     'key': wapi_Key,
-    'q': "$lat, $lng",
+    'q': "$lat, $lon",
     'aqi': 'no',
     'alerts': 'no',
   };
@@ -805,7 +801,11 @@ Future<LightCurrentWeatherData> wapiGetLightCurrentData(settings, placeName, lat
 
   final response = (await http.get(url)).body;
 
-  final item = jsonDecode(response);
+  return jsonDecode(response);
+}
+
+Future<LightCurrentWeatherData> wapiGetLightCurrentData(settings, placeName, lat, lon) async {
+  final item = await wapiGetCurrentResponse(settings, placeName, lat, lon);
 
   DateTime now = DateTime.now();
 
@@ -815,5 +815,15 @@ Future<LightCurrentWeatherData> wapiGetLightCurrentData(settings, placeName, lat
     temp:  unit_coversion(item["current"]["temp_c"], settings["Temperature"]).round(),
     updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
     dateString: getDateStringFromLocalTime(now),
+  );
+}
+
+Future<LightWindData> wapiGetLightWindData(settings, placeName, lat, lon) async {
+  final item = await wapiGetCurrentResponse(settings, placeName, lat, lon);
+
+  return LightWindData(
+      windDirAngle: item["current"]["wind_degree"],
+      windSpeed:  unit_coversion(item["current"]["wind_kph"], settings["Wind"]).round(),
+      windUnit: settings["Wind"],
   );
 }

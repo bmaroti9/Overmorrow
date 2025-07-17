@@ -270,7 +270,6 @@ class MetNCurrent {
         it["instant"]["details"]["relative_humidity"], it["instant"]["details"]["wind_speed"] * 3.6),
       wind_dir: it["instant"]["details"]["wind_from_direction"].round(),
 
-
     );
   }
 }
@@ -691,10 +690,10 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
 }
 
 
-Future<LightCurrentWeatherData> metNGetLightCurrentData(settings, placeName, lat, lng) async {
+Future<dynamic> metNGetCurrentResponse(settings, placeName, lat, lon) async {
   final params = {
     "lat" : lat.toString(),
-    "lon" : lng.toString(),
+    "lon" : lon.toString(),
     "altitude" : "100",
   };
 
@@ -705,7 +704,11 @@ Future<LightCurrentWeatherData> metNGetLightCurrentData(settings, placeName, lat
 
   final response = (await http.get(url, headers: headers)).body;
 
-  final item = jsonDecode(response);
+  return jsonDecode(response);
+}
+
+Future<LightCurrentWeatherData> metNGetLightCurrentData(settings, placeName, lat, lon) async {
+  final item = await metNGetCurrentResponse(settings, placeName, lat, lon);
 
   DateTime now = DateTime.now();
 
@@ -717,5 +720,15 @@ Future<LightCurrentWeatherData> metNGetLightCurrentData(settings, placeName, lat
         settings["Temperature"]).round(),
     updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
     dateString: getDateStringFromLocalTime(now),
+  );
+}
+
+Future<LightWindData> metNGetLightWindData(settings, placeName, lat, lon) async {
+  final item = await metNGetCurrentResponse(settings, placeName, lat, lon);
+
+  return LightWindData(
+    windDirAngle: item["properties"]["timeseries"][0]["data"]["instant"]["details"]["wind_from_direction"].round(),
+    windSpeed: unit_coversion(item["properties"]["timeseries"][0]["data"]["instant"]["details"]["wind_speed"] * 3.6,settings["Wind"]).round(),
+    windUnit: settings["Wind"],
   );
 }
