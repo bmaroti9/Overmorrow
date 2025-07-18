@@ -25,6 +25,7 @@ import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/settings_screens.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'main.dart';
 import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
 
@@ -147,6 +148,7 @@ setLastKnownLocation(String place, String cord) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('LastKnownPositionName', place);
   await prefs.setString('LastKnownPositionCord', cord);
+  WidgetService.saveData("widget.lastKnownPlace", place); //save the name of the place to the widgets
 }
 
 Future<String> getWeatherProvider() async {

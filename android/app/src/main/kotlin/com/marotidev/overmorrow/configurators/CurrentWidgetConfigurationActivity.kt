@@ -43,6 +43,8 @@ import es.antonborri.home_widget.HomeWidgetBackgroundIntent
 import es.antonborri.home_widget.HomeWidgetPlugin
 import kotlinx.coroutines.launch
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.draw.alpha
 import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidget
 import com.marotidev.overmorrow.OvermorrowTheme
@@ -165,10 +167,43 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         return item
     }
 
+    private fun getLastKnownLocation(data: SharedPreferences) : String {
+        val item = data.getString("widget.lastKnownPlace", "unknown") ?: "unknown"
+        Log.d("Last known", item)
+        return item
+    }
+
     private fun getCurrentUsedProvider(data: SharedPreferences, appWidgetId: Int) : String {
         val item = data.getString("current.provider.$appWidgetId", "open-meteo") ?: "open-meteo"
         Log.d("Provider fetch", item)
         return item
+    }
+
+    @Composable
+    fun CurrentLocationUnavailableText(lastKnownLocation : String) {
+        val infoText : String = if (lastKnownLocation == "unknown") {
+            "you have to enable current location from the app first"
+        } else {
+            "this will always update to your current location when opening the app"
+        }
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(top = 8.dp, bottom = 16.dp, start = 2.dp)
+        ){
+            Icon(
+                painter = painterResource(R.drawable.icon_info),
+                tint = MaterialTheme.colorScheme.outline,
+                contentDescription = "info icon",
+                modifier = Modifier.padding(start = 16.dp, end = 8.dp).size(18.dp)
+            )
+            Text(
+                infoText,
+                style = TextStyle(
+                    fontSize = 13.sp,
+                    color = MaterialTheme.colorScheme.outline
+                ),
+            )
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -196,6 +231,9 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         val favorites : List<FavoriteItem> = getFavoritePlaces(data)
         val selectedPlaceOnStartup : String = getCurrentUsedPlace(data, appWidgetId)
         val selectedProviderOnStartup : String = getCurrentUsedProvider(data, appWidgetId)
+        val lastKnownLocation : String = getLastKnownLocation(data)
+
+        Log.i("LastKnownLocation", lastKnownLocation)
 
         val providers : List<String> = listOf("open-meteo", "weatherapi", "met-norway")
 
@@ -222,8 +260,10 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                                     selectedFavorite.value = "currentLocation"
                                     saveLocationPref(applicationContext, appWidgetId,  "currentLocation", null)
                                 },
-                                role = Role.RadioButton
+                                role = Role.RadioButton,
+                                enabled = lastKnownLocation != "unknown"
                             )
+                            .alpha(if (lastKnownLocation != "unknown") 1.0f else 0.5f)
                             .padding(horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -232,7 +272,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                             onClick = null // null recommended for accessibility with screen readers
                         )
                         Text(
-                            text = "Current Location",
+                            text = "Current Location ($lastKnownLocation)",
                             style = TextStyle(
                                 fontSize = 18.sp,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -240,6 +280,8 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                             modifier = Modifier.padding(start = 16.dp)
                         )
                     }
+
+                    CurrentLocationUnavailableText(lastKnownLocation)
 
                     favorites.forEach { favorite ->
                         Row(
@@ -274,11 +316,11 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
 
                     Row (
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(top = 16.dp, bottom = 40.dp)
+                        modifier = Modifier.padding(top = 16.dp, bottom = 40.dp, start = 2.dp)
                     ){
                         Icon(
                             painter = painterResource(R.drawable.icon_info),
-                            tint = MaterialTheme.colorScheme.onSurface,
+                            tint = MaterialTheme.colorScheme.outline,
                             contentDescription = "info icon",
                             modifier = Modifier.padding(start = 16.dp, end = 8.dp).size(18.dp)
                         )
@@ -286,7 +328,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                             "favorites you add in the app appear here",
                             style = TextStyle(
                                 fontSize = 13.sp,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = MaterialTheme.colorScheme.outline
                             ),
                         )
                     }
