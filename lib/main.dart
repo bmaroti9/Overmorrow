@@ -46,6 +46,7 @@ const updateWeatherDataKey = "com.marotidev.overmorrow.updateWeatherData";
 const currentWidgetReceiver = 'com.marotidev.overmorrow.receivers.CurrentWidgetReceiver';
 const dateCurrentWidgetReceiver = 'com.marotidev.overmorrow.receivers.DateCurrentWidgetReceiver';
 const windWidgetReceiver = 'com.marotidev.overmorrow.receivers.WindWidgetReceiver';
+const forecastWidgetReceiver = 'com.marotidev.overmorrow.receivers.ForecastWidgetReceiver';
 
 class WidgetService {
 
@@ -73,6 +74,17 @@ class WidgetService {
     await saveData("wind.windUnit.$widgetId", data.windUnit);
   }
 
+  static Future<void> syncHourlyForecastDataToWidget(LightHourlyForecastData data, int widgetId) async {
+    await saveData("hourlyForecast.currentTemp.$widgetId", data.currentTemp);
+    await saveData("hourlyForecast.currentCondition.$widgetId", data.currentCondition);
+    await saveData("hourlyForecast.updatedTime.$widgetId", data.updatedTime);
+    await saveData("hourlyForecast.place.$widgetId", data.place);
+
+    await saveData("hourlyForecast.hourlyTemps.$widgetId", data.hourlyTemps);
+    await saveData("hourlyForecast.hourlyConditions.$widgetId", data.hourlyConditions);
+    await saveData("hourlyForecast.hourlyNames.$widgetId", data.hourlyNames);
+  }
+
   static Future<void> syncWidgetFailure(int widgetId, String failure) async {
     await saveData("widgetFailure.$widgetId", failure);
   }
@@ -89,6 +101,10 @@ class WidgetService {
     HomeWidget.updateWidget(
       androidName: 'WindWidget',
       qualifiedAndroidName: windWidgetReceiver,
+    );
+    HomeWidget.updateWidget(
+      androidName: 'ForecastWidget',
+      qualifiedAndroidName: forecastWidgetReceiver,
     );
   }
 }
@@ -161,9 +177,17 @@ void callbackDispatcher() {
             }
             else if (widgetClassName == windWidgetReceiver) {
 
-              LightWindData data = await LightWindData.getLightWindData(placeName, latLon, widgetProvider, settings);
+              LightWindData data = await LightWindData
+                  .getLightWindData(placeName, latLon, widgetProvider, settings);
 
               await WidgetService.syncWindDataToWidget(data, widgetId);
+            }
+            else if (widgetClassName == forecastWidgetReceiver) {
+
+              LightHourlyForecastData data = await LightHourlyForecastData
+                  .getLightForecastData(placeName, latLon, widgetProvider, settings);
+              
+              await WidgetService.syncHourlyForecastDataToWidget(data, widgetId);
             }
 
           }

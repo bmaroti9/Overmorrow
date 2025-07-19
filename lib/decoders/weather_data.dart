@@ -152,3 +152,41 @@ class LightWindData {
     }
   }
 }
+
+class LightHourlyForecastData {
+  final int currentTemp;
+  final String currentCondition;
+  final String place;
+  final String updatedTime;
+  final String hourlyConditions;
+  final String hourlyTemps;
+  final String hourlyNames;
+
+  LightHourlyForecastData({
+    required this.place,
+    required this.currentCondition,
+    required this.currentTemp,
+    required this.updatedTime,
+    required this.hourlyConditions,
+    required this.hourlyNames,
+    required this.hourlyTemps
+  });
+
+  static Future<LightHourlyForecastData> getLightForecastData(placeName, latLon, provider, settings) async {
+
+    List<String> split = latLon.split(",");
+    double lat = double.parse(split[0]);
+    double lon = double.parse(split[1]);
+
+    return omGetHourlyForecast(settings, placeName, lat, lon);
+
+    switch (provider) {
+      case "weatherapi":
+
+      case "met-norway":
+
+      default:
+
+    }
+  }
+}

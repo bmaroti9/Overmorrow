@@ -7,9 +7,11 @@ import HomeWidgetGlanceStateDefinition
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.widget.RemoteViews
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.createBitmap
@@ -20,6 +22,7 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.appwidget.AndroidRemoteViews
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.cornerRadius
@@ -64,13 +67,13 @@ class WindWidget : GlanceAppWidget() {
         val windUnit = prefs.getString("wind.windUnit.$appWidgetId", "N/A") ?: "?"
         val windDirAngle = prefs.getInt("wind.windDirAngle.$appWidgetId", 0)
 
-        val rotatedBitmap = createRotatedBitmapFromVector(
-            context = context,
-            drawableResId = R.drawable.icon_arrow_up,
-            size = 80,
-            rotationDegrees = windDirAngle.toFloat()
-        )
-
+        //the bitmaps didn't work either because it was doing too much main thread work
+        //i know this is depreciated but i found no other way to rotate a simple icon
+        val remoteArrowView = RemoteViews(context.packageName, R.layout.rotated_arrow_layout).apply {
+            setImageViewResource(R.id.rotated_arrow, R.drawable.icon_arrow_up)
+            setFloat(R.id.rotated_arrow, "setRotation", windDirAngle.toFloat())
+            setInt(R.id.rotated_arrow, "setColorFilter", GlanceTheme.colors.onPrimary.getColor(context).toArgb())
+        }
 
         Row(
             modifier = GlanceModifier
@@ -118,36 +121,11 @@ class WindWidget : GlanceAppWidget() {
                     modifier = GlanceModifier.fillMaxHeight().wrapContentWidth()
                 )
 
-                Image(
-                    provider = ImageProvider(rotatedBitmap),
-                    contentDescription = "Rotated image",
-                    colorFilter = ColorFilter.tint(GlanceTheme.colors.onPrimary),
-                )
+                AndroidRemoteViews(remoteArrowView)
+
             }
         }
 
     }
 
-    //Somehow there is no way to rotate an icon without using bitmaps again, yay
-    private fun createRotatedBitmapFromVector(
-        context: Context,
-        @DrawableRes drawableResId: Int,
-        size: Int,
-        rotationDegrees: Float
-    ): Bitmap {
-        val drawable = AppCompatResources.getDrawable(context, drawableResId)
-
-        val bitmap = createBitmap(size, size)
-        val canvas = Canvas(bitmap)
-
-        drawable?.setBounds(0, 0, canvas.width, canvas.height)
-
-        canvas.withRotation(
-            degrees = rotationDegrees, pivotX = canvas.width / 2f, pivotY = canvas.height / 2f
-        ) {
-            drawable?.draw(this)
-        }
-
-        return bitmap
-    }
 }

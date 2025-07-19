@@ -1036,3 +1036,53 @@ Future<LightWindData> omGetLightWindData(settings, lat, lon) async {
       windUnit: settings["Wind"]
   );
 }
+
+Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lon) async {
+  final oMParams = {
+    "latitude": lat.toString(),
+    "longitude": lon.toString(),
+    "current": ["temperature_2m", "weather_code"],
+    "hourly" : ["temperature_2m", "weather_code"],
+    "daily": ["sunrise", "sunset"],
+    "forecast_days": "1",
+    "timezone": "auto",
+  };
+
+  final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
+  final response = (await http.get(oMUrl)).body;
+
+  final item = jsonDecode(response);
+
+  DateTime localtime = OMGetLocalTime(item);
+  String realTime = "jT${localtime.hour}:${localtime.minute}";
+  DateTime now = DateTime.now();
+
+  final absoluteSunriseSunset =  "${OMConvertTime(item["daily"]["sunrise"][0])}/"
+      "${OMConvertTime(item["daily"]["sunset"][0])}";
+
+  List<String> hourlyConditions = [];
+  List<int> hourlyTemps = [];
+  List<String> hourlyNames = [];
+
+  for (int i = 0; i < item["hourly"]["temperature_2m"].length; i++) {
+    DateTime d = DateTime.parse(item["hourly"]["time"][i]);
+    if (d.hour % 6 == 0) {
+      hourlyConditions.add(oMCurrentTextCorrection(
+          item["hourly"]["weather_code"][i], absoluteSunriseSunset, item["hourly"]["time"][i]
+      ));
+      hourlyTemps.add(unit_coversion(item["hourly"]["temperature_2m"][i], settings["Temperature"]).round());
+      hourlyNames.add("${d.hour}h");
+    }
+  }
+
+  return LightHourlyForecastData(
+      place: placeName,
+      currentCondition: oMCurrentTextCorrection(item["current"]["weather_code"], absoluteSunriseSunset, realTime),
+      currentTemp: unit_coversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
+      updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
+      //i can't sync lists to widgets so i need to encode and then decode them
+      hourlyConditions: jsonEncode(hourlyConditions),
+      hourlyNames: jsonEncode(hourlyNames),
+      hourlyTemps: jsonEncode(hourlyTemps),
+  );
+}

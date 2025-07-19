@@ -51,6 +51,7 @@ import com.marotidev.overmorrow.OvermorrowTheme
 import com.marotidev.overmorrow.R
 import com.marotidev.overmorrow.widgets.CurrentWidget
 import com.marotidev.overmorrow.widgets.DateCurrentWidget
+import com.marotidev.overmorrow.widgets.ForecastWidget
 import com.marotidev.overmorrow.widgets.WindWidget
 
 data class FavoriteItem(
@@ -85,6 +86,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                     "com.marotidev.overmorrow.receivers.CurrentWidgetReceiver" -> CurrentWidget()
                     "com.marotidev.overmorrow.receivers.DateCurrentWidgetReceiver" -> DateCurrentWidget()
                     "com.marotidev.overmorrow.receivers.WindWidgetReceiver" -> WindWidget()
+                    "com.marotidev.overmorrow.receivers.ForecastWidgetReceiver" -> ForecastWidget()
                     else -> {
                         Log.w("WidgetConfig", "Unknown widget provider: $providerClassName for appWidgetId: $appWidgetId")
                         null
@@ -184,7 +186,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         val infoText : String = if (lastKnownLocation == "unknown") {
             "you have to enable current location from the app first"
         } else {
-            "this will always update to your current location when opening the app"
+            "updates when opening the app"
         }
         Row (
             verticalAlignment = Alignment.CenterVertically,
