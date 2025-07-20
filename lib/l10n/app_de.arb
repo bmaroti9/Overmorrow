@@ -4,7 +4,7 @@
   "@feelsLike": {},
   "precipCapital": "Niedersch.",
   "@precipCapital": {},
-  "humidity": "Luftfeuchtigkeit",
+  "humidity": "Luftfeuchte",
   "@humidity": {},
   "windCapital": "Wind",
   "@windCapital": {},
@@ -132,7 +132,7 @@
   "@precipLowercase": {},
   "windLowercase": "Wind",
   "@windLowercase": {},
-  "uvLowercase": "UV",
+  "uvLowercase": "uv",
   "@uvLowercase": {},
   "goodAqiDesc": "Die Luftqualität ist ausgezeichnet; kein Gesundheitsrisiko.",
   "@goodAqiDesc": {},
@@ -364,7 +364,7 @@
   "@imagesLowercase": {},
   "aboutSettingsDesc": "über diese App",
   "@aboutSettingsDesc": {},
-  "sumLowercase": "Überblick",
+  "sumLowercase": "Gesamt",
   "@sumLowercase": {
     "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
   },
