@@ -120,7 +120,7 @@
   "@searchProvider": {},
   "updatedXMinAgo": "aktualisiert, vor x min",
   "@updatedXMinAgo": {},
-  "updatedJustNow": "aktualisiert, gerade jetzt",
+  "updatedJustNow": "aktualisiert, gerade eben",
   "@updatedJustNow": {},
   "colorSource": "Farbquelle",
   "@colorSource": {},
@@ -132,7 +132,7 @@
   "@precipLowercase": {},
   "windLowercase": "Wind",
   "@windLowercase": {},
-  "uvLowercase": "uv",
+  "uvLowercase": "UV",
   "@uvLowercase": {},
   "goodAqiDesc": "Die Luftqualität ist ausgezeichnet; kein Gesundheitsrisiko.",
   "@goodAqiDesc": {},
@@ -140,7 +140,7 @@
   "@fairAqiDesc": {},
   "moderateAqiDesc": "Empfindliche Personen können leichte Auswirkungen erfahren.",
   "@moderateAqiDesc": {},
-  "poorAqiDesc": "Gesundheitliche Auswirkungen für alle möglich, ernst für empfindliche Gruppen.",
+  "poorAqiDesc": "Gesundheitliche Auswirkungen für alle möglich, ernsthaft für empfindliche Gruppen.",
   "@poorAqiDesc": {},
   "veryPoorAqiDesc": "Schwere gesundheitliche Auswirkungen für alle.",
   "@veryPoorAqiDesc": {},
@@ -232,7 +232,7 @@
   "@rainInHalfHour": {
     "description": "rain in the next half an hour"
   },
-  "rainInMinutes": "Regen in den nächsten {minutes, plural, =1 {Minute} other {{minutes} minutes}}",
+  "rainInMinutes": "Regen in den nächsten {minutes, plural, =1 {minute} other {{minutes} minutes}}",
   "@rainInMinutes": {
     "description": "rain in the next X minutes",
     "placeholders": {
@@ -254,7 +254,7 @@
       }
     }
   },
-  "rainExpectedInMinutes": "Regen erwartet in {minutes, plural, =1 {Minute} other {{minutes} minutes}}",
+  "rainExpectedInMinutes": "Regen erwartet in {minutes, plural, =1 {minute} other {{minutes} minutes}}",
   "@rainExpectedInMinutes": {
     "description": "rain expected in the next X minutes",
     "placeholders": {
@@ -340,13 +340,13 @@
   "@weatherProvderLowercase": {},
   "showLess": "weniger zeigen",
   "@showLess": {},
-  "grantLocationPermission": "genehmigung für den standort",
+  "grantLocationPermission": "Genehmigung für den Standort",
   "@grantLocationPermission": {},
   "dailyLowercase": "täglich",
   "@dailyLowercase": {},
   "sourceCodeLowercase": "Quellcode",
   "@sourceCodeLowercase": {},
-  "emailLowercase": "email",
+  "emailLowercase": "E-Mail",
   "@emailLowercase": {},
   "reportAnIssueLowercase": "Ein Problem melden",
   "@reportAnIssueLowercase": {},
@@ -362,9 +362,9 @@
   "@weatherDataLowercase": {},
   "imagesLowercase": "Bilder",
   "@imagesLowercase": {},
-  "aboutSettingsDesc": "über diese app",
+  "aboutSettingsDesc": "über diese App",
   "@aboutSettingsDesc": {},
-  "sumLowercase": "summe",
+  "sumLowercase": "Überblick",
   "@sumLowercase": {
     "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
   },
@@ -372,10 +372,10 @@
   "@heavy": {
     "description": "heavy precipitation"
   },
-  "light": "licht",
+  "light": "leicht",
   "@light": {
     "description": "light precipitation"
   },
-  "alertsLowercase": "warnungen",
+  "alertsLowercase": "Warnungen",
   "@alertsLowercase": {}
 }
