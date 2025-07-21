@@ -232,5 +232,11 @@
   "cloudyNight": "رات کو مطلع ابر آلود",
   "@cloudyNight": {},
   "helpTranslate": "ترجمہ میں مدد کریں",
-  "@helpTranslate": {}
+  "@helpTranslate": {},
+  "photoByXOnUnsplash": "تصویر، منجانب، x، ماخذ، Unsplash",
+  "@photoByXOnUnsplash": {},
+  "sourceCodeLowercase": "ماخذ کوڈ",
+  "@sourceCodeLowercase": {},
+  "emailLowercase": "ای میل",
+  "@emailLowercase": {}
 }
