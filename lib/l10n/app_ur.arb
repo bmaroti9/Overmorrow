@@ -1,5 +1,5 @@
 {
-  "precipCapital": "بارندگی",
+  "precipCapital": "رطوبتی نزول۔",
   "@precipCapital": {},
   "humidity": "نمی",
   "@humidity": {},
@@ -17,7 +17,7 @@
   "@language": {},
   "temperature": "درجہ حرارت",
   "@temperature": {},
-  "precipitaion": "بارندگی",
+  "precipitaion": "رطوبتی نزول",
   "@precipitaion": {},
   "rain": "بادش",
   "@rain": {},
@@ -43,31 +43,31 @@
   "@snow": {},
   "heavyRain": "تیز بارش",
   "@heavyRain": {},
-  "weakOrNoWifiConnection": "انٹرنیٹ سگنل کمزور ہے",
+  "weakOrNoWifiConnection": "انٹرنیٹ کمزور ہے یا میسر نہیں",
   "@weakOrNoWifiConnection": {},
-  "notConnectedToTheInternet": "انٹرنیٹ میسر نہیں ہے",
+  "notConnectedToTheInternet": "انٹرنیٹ بحال نہیں",
   "@notConnectedToTheInternet": {},
   "placeNotFound": "جگہ تلاش نہیں ہو سکی",
   "@placeNotFound": {},
   "unableToLocateDevice": "فون کی تلاش نہیں ہو سکی",
   "@unableToLocateDevice": {},
-  "locationServicesAreDisabled": "فون لوکیشن کو بند ہے۔",
+  "locationServicesAreDisabled": "فون لوکیشن بند ہے۔",
   "@locationServicesAreDisabled": {},
-  "locationPermissionIsDenied": "فون کی لوکیشن منسوخ کر دی گیٔ ھے",
+  "locationPermissionIsDenied": "لوکیشن پرمیشن منسوخ کر دی گیٔ ھے",
   "@locationPermissionIsDenied": {},
-  "locationPermissionDeniedForever": "فون کی لوکیشن ھمیشہ کے لیے منسوخ کر دی گیٔ ھے",
+  "locationPermissionDeniedForever": "لوکیشن پرمیشن ھمیشہ کے لیے منسوخ کر دی گیٔ ھے",
   "@locationPermissionDeniedForever": {},
-  "grantLocationPermission": "فون کی لوکیشن فراہم کریں",
+  "grantLocationPermission": "لوکیشن پرمیشن فراہم کریں",
   "@grantLocationPermission": {},
   "currentLocation": "موجودہ لوکیشن",
   "@currentLocation": {},
-  "favoritesLowercase": "پسندیدہ جگہیں",
+  "favoritesLowercase": "پسندیدہ جات",
   "@favoritesLowercase": {},
-  "failedToAccessGps": "جی پی ایس تک رسایٔ ممکن نہیں",
+  "failedToAccessGps": "GPS تک رسایٔ ممکن نہیں",
   "@failedToAccessGps": {},
   "search": "تلاش کریں۔۔۔",
   "@search": {},
-  "sunriseSunset": "طلوع اور غروب",
+  "sunriseSunset": "طلوع / غروب",
   "@sunriseSunset": {},
   "airQuality": "ہوا کا معیار",
   "@airQuality": {},
@@ -75,13 +75,13 @@
   "@airQualityLowercase": {},
   "good": "اچھا",
   "@good": {},
-  "fair": "تسلی بخش",
+  "fair": "قابلِ قبول",
   "@fair": {},
-  "moderate": "گزارا",
+  "moderate": "معتدل",
   "@moderate": {},
-  "poor": "برا",
+  "poor": "خراب",
   "@poor": {},
-  "veryPoor": "بہت برا",
+  "veryPoor": "بہت خراب",
   "@veryPoor": {},
   "unhealthy": "مضر صحت",
   "@unhealthy": {},
@@ -113,7 +113,7 @@
   "@sumLowercase": {
     "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
   },
-  "precipLowercase": "بارندگی",
+  "precipLowercase": "رطوبتی نزول",
   "@precipLowercase": {},
   "windLowercase": "ہوا",
   "@windLowercase": {},
@@ -131,11 +131,11 @@
   "@uvLowercase": {},
   "goodAqiDesc": "ہوا کا معیار بہترین۔ صحت کو کوئی خطرہ نہیں۔",
   "@goodAqiDesc": {},
-  "fairAqiDesc": "ہوا کا معیار قابل قبول۔ حساس لوگ محطاط رہیں۔",
+  "fairAqiDesc": "قابلِ قبول فضائی معیار؛ حساس افراد کے لیے معمولی خطرہ۔",
   "@fairAqiDesc": {},
-  "moderateAqiDesc": "حساس لوگوں کے لۓ معمولی دشواری کا خدشہ۔",
+  "moderateAqiDesc": "حساس افراد کے لے ہلکے اثرات متوقع۔",
   "@moderateAqiDesc": {},
-  "poorAqiDesc": "سب کے لۓ مضر صحت خدشات کا امکان۔ حساس لوگوں کے لۓ خطرہ۔",
+  "poorAqiDesc": "سب کے لۓ مضر صحت اثرات کا خدشہ۔ حساس لوگوں کے لۓ خطرہ۔",
   "@poorAqiDesc": {},
   "veryPoorAqiDesc": "سب کے لۓ مضر صحت اثرات۔",
   "@veryPoorAqiDesc": {},
@@ -227,10 +227,122 @@
   "@feelsLike": {},
   "settings": "سیٹنگ",
   "@settings": {},
-  "clearNight": "رات کو مطلع صاف",
+  "clearNight": "صاف رات",
   "@clearNight": {},
-  "cloudyNight": "رات کو مطلع ابر آلود",
+  "cloudyNight": "ابر آلود رات",
   "@cloudyNight": {},
   "helpTranslate": "ترجمہ میں مدد کریں",
-  "@helpTranslate": {}
+  "@helpTranslate": {},
+  "photoByXOnUnsplash": "تصویر، منجانب ،x، ماخذ ،Unsplash",
+  "@photoByXOnUnsplash": {},
+  "sourceCodeLowercase": "ماخذ کوڈ",
+  "@sourceCodeLowercase": {},
+  "emailLowercase": "ای میل",
+  "@emailLowercase": {},
+  "reportAnIssueLowercase": "مسئلے کی اطلاع دیں",
+  "@reportAnIssueLowercase": {},
+  "donateLowercase": "عطیہ کریں",
+  "@donateLowercase": {},
+  "versionUppercase": "ورژن",
+  "@versionUppercase": {},
+  "apiAndServices": "APIs اور خدمات",
+  "@apiAndServices": {},
+  "licenseUppercase": "لائسنس",
+  "@licenseUppercase": {},
+  "about": "متعلقات",
+  "@about": {},
+  "appearanceSettingDesc": "رنگت، تصویری ماخذ",
+  "@appearanceSettingDesc": {},
+  "layoutSettingDesc": "ویجیٹ کی ترتیب ، تخصیص",
+  "@layoutSettingDesc": {},
+  "generalSettingDesc": "وقت کی قِسم کا تعین ، لکھایٔ کا سائز",
+  "@generalSettingDesc": {},
+  "alderPollen": "ایلڈر پولن",
+  "@alderPollen": {},
+  "birchPollen": "برچ پولن",
+  "@birchPollen": {},
+  "grassPollen": "گھاس کا جرگ",
+  "@grassPollen": {},
+  "mugwortPollen": "مگورٹ پولن",
+  "@mugwortPollen": {},
+  "olivePollen": "زیتون کا پولن",
+  "@olivePollen": {},
+  "ragweedPollen": "رگویڈ پولن",
+  "@ragweedPollen": {},
+  "dailyAqi": "روزانہ کا AQI",
+  "@dailyAqi": {},
+  "aerosolOpticalDepth": "ایروسول آپٹیکل ڈیپت",
+  "@aerosolOpticalDepth": {},
+  "poweredByOpenMeteo": "Open-Meteo سے حاصل کردہ",
+  "@poweredByOpenMeteo": {
+    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+  },
+  "rainInMinutes": "بارش اگلے {minutes, plural, =1 {{minutes} منٹ} other {{minutes} منٹوں}} میں",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInHours": "بارش اگلے {hours, plural, =1 {ایک گھنٹہ} other {{hours} گھنٹے}} میں",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInMinutes": "بارش متوقع ہے {minutes, plural, =1 {ایک منٹ میں} other {{minutes} منٹوں میں}}",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInHours": "بارش متوقع ہے {hours, plural, =1 {ایک گھنٹے میں} other {{hours} گھنٹوں میں}}",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXMinutesAgo": "تازہ کاری، {minutes} منٹ پہلے",
+  "@updatedXMinutesAgo": {},
+  "updatedXHoursAgo": "تازہ کاری، {hours, plural, =1 {1 گھنٹہ} other {{hours} گھنٹے}} پہلے",
+  "@updatedXHoursAgo": {
+    "description": "updated x hours ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXDaysAgo": "تازہ کاری، {days, plural, =1 {1 دن} other {{days} دن}} پہلے",
+  "@updatedXDaysAgo": {
+    "description": "updated x days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "radarHaptics": "ریڈار ہپٹکس",
+  "@radarHaptics": {
+    "description": "setting for enabling or disabling haptic feedback for the radar"
+  },
+  "alertsCapital": "انتباہات",
+  "@alertsCapital": {},
+  "alertsLowercase": "انتباہات",
+  "@alertsLowercase": {},
+  "showMore": "مزید دکھائیں",
+  "@showMore": {},
+  "showLess": "کم دکھائیں",
+  "@showLess": {}
 }
