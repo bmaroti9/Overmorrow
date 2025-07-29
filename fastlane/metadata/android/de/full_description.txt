@@ -1,0 +1,18 @@
+<i>Overmorrow</i> ist eine kostenlose Open-Source-Wetter-App mit minimalistischem Design.
+
+<b>Features:</b>
+
+* genaue Wettervorhersage
+* Open Source
+* keine Werbung
+* keine Daten erhoben
+* Minimalistisches Design
+* Detaillierte Prognose
+* Sonnenaufgang-Sonnenuntergangszeiten
+* Einblicke in die Luftqualität
+* Vollbildradar
+* Stündliches Wetter für jeden Tag
+* Dynamisches Anpassen des Farbschemas
+* Sprachunterstützung
+
+… und viele mehr.
