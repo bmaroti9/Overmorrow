@@ -30,11 +30,11 @@
   "@rain": {},
   "favorites": "收藏夹",
   "@favorites": {},
-  "clearNight": "晴朗的夜晚",
+  "clearNight": "晴",
   "@clearNight": {},
   "partlyCloudy": "局部多云",
   "@partlyCloudy": {},
-  "clearSky": "晴朗的天空",
+  "clearSky": "晴",
   "@clearSky": {},
   "overcast": "阴天",
   "@overcast": {},
@@ -54,7 +54,7 @@
   "@snow": {},
   "heavyRain": "大雨",
   "@heavyRain": {},
-  "cloudyNight": "多云的夜晚",
+  "cloudyNight": "多云",
   "@cloudyNight": {},
   "weakOrNoWifiConnection": "无线网络信号弱或无连接",
   "@weakOrNoWifiConnection": {},
@@ -96,7 +96,7 @@
   "@colorMode": {},
   "weatherProvider": "天气服务提供商",
   "@weatherProvider": {},
-  "timeMode": "时间模式",
+  "timeMode": "时间格式",
   "@timeMode": {},
   "mon": "一",
   "@mon": {},
@@ -168,7 +168,7 @@
   "@units": {},
   "appearanceSettingDesc": "颜色主题, 图片来源",
   "@appearanceSettingDesc": {},
-  "generalSettingDesc": "时间模式, 字体大小",
+  "generalSettingDesc": "时间格式, 字体大小",
   "@generalSettingDesc": {},
   "languageSettingDesc": "使用的语言",
   "@languageSettingDesc": {},
@@ -204,7 +204,7 @@
   "@dateFormat": {},
   "d": "天",
   "@d": {},
-  "aerosolOpticalDepth": "气溶胶光学深度",
+  "aerosolOpticalDepth": "大气浑浊度指数",
   "@aerosolOpticalDepth": {},
   "dust": "灰尘",
   "@dust": {},
@@ -214,7 +214,7 @@
   "@unitedStatesAqi": {},
   "offline": "离线",
   "@offline": {},
-  "rainInOneHour": "未来一小时内降雨",
+  "rainInOneHour": "一小时后有雨",
   "@rainInOneHour": {
     "description": "rain in the next hour"
   },
@@ -227,7 +227,7 @@
       }
     }
   },
-  "updatedXDaysAgo": "{days, plural, =1 {1 day} other {{days} days}} 天前更新",
+  "updatedXDaysAgo": "{days, plural, =1 {#天前更新} other {#天前更新}}",
   "@updatedXDaysAgo": {
     "description": "updated x days ago",
     "placeholders": {
@@ -236,7 +236,7 @@
       }
     }
   },
-  "rainInHalfHour": "未来半小时内降雨",
+  "rainInHalfHour": "半小时后有雨",
   "@rainInHalfHour": {
     "description": "rain in the next half an hour"
   },
@@ -256,7 +256,7 @@
   "@grantLocationPermission": {},
   "currentLocation": "目前位置",
   "@currentLocation": {},
-  "favoritesLowercase": "最爱",
+  "favoritesLowercase": "收藏",
   "@favoritesLowercase": {},
   "weatherProvderLowercase": "天气数据源",
   "@weatherProvderLowercase": {},
@@ -290,21 +290,21 @@
   "@extremelyClear": {},
   "veryClear": "非常清晰",
   "@veryClear": {},
-  "clear": "清晰",
+  "clear": "晴",
   "@clear": {},
-  "slightlyHazy": "略带朦胧",
+  "slightlyHazy": "略有薄雾",
   "@slightlyHazy": {},
-  "hazy": "朦胧",
+  "hazy": "雾",
   "@hazy": {},
-  "veryHazy": "非常朦胧",
+  "veryHazy": "浓雾",
   "@veryHazy": {},
-  "extremelyHazy": "极其朦胧",
+  "extremelyHazy": "浊雾",
   "@extremelyHazy": {},
-  "rainExpectedInOneHour": "预计未来一小时内会下雨",
+  "rainExpectedInOneHour": "预计一小时后有雨",
   "@rainExpectedInOneHour": {
     "description": "rain expected in the next hour"
   },
-  "radarHaptics": "雷达震动反馈",
+  "radarHaptics": "雷达触感反馈",
   "@radarHaptics": {
     "description": "setting for enabling or disabling haptic feedback for the radar"
   },
@@ -331,5 +331,45 @@
   "showMore": "显示更多",
   "@showMore": {},
   "showLess": "隐藏更多",
-  "@showLess": {}
+  "@showLess": {},
+  "overmorrowLowercase": "Overmorrow",
+  "@overmorrowLowercase": {},
+  "rainInMinutes": "{minutes, plural, =1 {#分钟后有雨} other {#分钟后有雨}}",
+  "@rainInMinutes": {
+    "description": "rain in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainInHours": "{hours, plural, =1 {#小时后有雨} other {#小时后有雨}}",
+  "@rainInHours": {
+    "description": "rain in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInMinutes": "预计{minutes, plural, =1 {#分钟后有雨} other {#分钟后有雨}}",
+  "@rainExpectedInMinutes": {
+    "description": "rain expected in the next X minutes",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "rainExpectedInHours": "预计{hours, plural, =1 {#小时后有雨} other {#小时后有雨}}",
+  "@rainExpectedInHours": {
+    "description": "rain expected in the next X hours",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "updatedXMinutesAgo": "{minutes}分钟前更新",
+  "@updatedXMinutesAgo": {}
 }
