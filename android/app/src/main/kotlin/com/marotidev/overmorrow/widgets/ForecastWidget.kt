@@ -7,27 +7,39 @@ import HomeWidgetGlanceStateDefinition
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
+import androidx.glance.Image
+import androidx.glance.ImageProvider
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
-import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
+import androidx.glance.layout.fillMaxHeight
 import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
+import androidx.glance.layout.size
+import androidx.glance.layout.width
+import androidx.glance.layout.wrapContentHeight
+import androidx.glance.layout.wrapContentWidth
 import androidx.glance.state.GlanceStateDefinition
+import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.marotidev.overmorrow.R
+import getIconForCondition
 import java.lang.reflect.Type
 
 val gson = Gson()
@@ -84,21 +96,53 @@ class ForecastWidget : GlanceAppWidget() {
             emptyList()
         }
 
+        val weatherIconList = mutableListOf<Int>()
+        for (item in conditionList) {
+            weatherIconList.add(getIconForCondition(item))
+        }
+
         Column (
             modifier = GlanceModifier
                 .fillMaxSize()
                 .background(GlanceTheme.colors.secondaryContainer)
-                .padding(start = 16.dp),
-            verticalAlignment = Alignment.Vertical.CenterVertically
+                .padding(8.dp),
+            verticalAlignment = Alignment.Vertical.Top
         ) {
+            Row(
+                modifier = GlanceModifier
+                    .wrapContentHeight()
+                    .padding(start = 8.dp, end = 8.dp, top = 8.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.Vertical.Top
+            ) {
+                Text(
+                    text = "$currentTemp°",
+                    style = TextStyle(
+                        color = GlanceTheme.colors.primary,
+                        fontSize = 32.sp,
+                    ),
+                    modifier = GlanceModifier.defaultWeight()
+                )
 
-            Text(
-                text = placeName,
-                style = TextStyle(
-                    color = GlanceTheme.colors.onSurface,
-                    fontSize = 20.sp,
-                ),
-            )
+                Row(
+                    verticalAlignment = Alignment.Vertical.CenterVertically,
+                    modifier = GlanceModifier.padding(top = 2.dp, end = 2.dp)
+                ) {
+                    Image(
+                        provider = ImageProvider(R.drawable.icon_location),
+                        contentDescription = "Location icon",
+                        colorFilter = ColorFilter.tint(GlanceTheme.colors.outline),
+                        modifier = GlanceModifier.size(18.dp).padding(end = 4.dp)
+                    )
+                    Text(
+                        text = placeName,
+                        style = TextStyle(
+                            color = GlanceTheme.colors.outline,
+                            fontSize = 16.sp
+                        )
+                    )
+                }
+            }
 
             Text(
                 text = currentCondition,
@@ -106,37 +150,46 @@ class ForecastWidget : GlanceAppWidget() {
                     color = GlanceTheme.colors.onSurface,
                     fontSize = 20.sp,
                 ),
-            )
-
-            Text(
-                text = "$currentTemp°",
-                style = TextStyle(
-                    color = GlanceTheme.colors.onSurface,
-                    fontSize = 20.sp,
-                ),
+                modifier = GlanceModifier.padding(bottom = 8.dp, start = 8.dp)
             )
 
             Row (
-
-            ) {
-                tempList.forEachIndexed { index, item ->
-                    Text(text = "$item°", modifier = GlanceModifier.padding(horizontal = 10.dp))
-                }
-            }
-
-            Row (
-
-            ) {
-                conditionList.forEachIndexed { index, item ->
-                    Text(text = item, modifier = GlanceModifier.padding(horizontal = 10.dp))
-                }
-            }
-
-            Row (
-
+                verticalAlignment = Alignment.Vertical.CenterVertically,
+                horizontalAlignment = Alignment.Horizontal.CenterHorizontally,
+                modifier = GlanceModifier.fillMaxWidth().fillMaxHeight()
             ) {
                 timeList.forEachIndexed { index, item ->
-                    Text(text = item, modifier = GlanceModifier.padding(horizontal = 10.dp))
+                    Column (
+                        modifier = GlanceModifier
+                            .wrapContentWidth()
+                            .padding(horizontal = 4.dp, vertical = 10.dp),
+                        horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "${tempList[index]}°",
+                            style = TextStyle(
+                                color = GlanceTheme.colors.primary,
+                                fontSize = 16.sp,
+                            ),
+                            modifier = GlanceModifier.padding(bottom = 2.dp)
+                        )
+                        Image(
+                            provider = ImageProvider(weatherIconList[index]),
+                            contentDescription = "Weather Icon",
+                            colorFilter = ColorFilter.tint(GlanceTheme.colors.secondary),
+                            modifier = GlanceModifier
+                                .size(28.dp, 28.dp)
+                        )
+                        Text(
+                            text = item,
+                            style = TextStyle(
+                                color = GlanceTheme.colors.outline,
+                                fontSize = 14.sp,
+                            ),
+                            modifier = GlanceModifier.padding(top = 2.dp)
+                        )
+                    }
+
                 }
             }
 
