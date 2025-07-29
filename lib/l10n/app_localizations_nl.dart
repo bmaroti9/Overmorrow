@@ -99,13 +99,15 @@ class AppLocalizationsNl extends AppLocalizations {
   String get unableToLocateDevice => 'Apparaat kan niet worden gevonden';
 
   @override
-  String get locationServicesAreDisabled => 'Locatiediensten zijn uitgeschakeld.';
+  String get locationServicesAreDisabled =>
+      'Locatiediensten zijn uitgeschakeld.';
 
   @override
   String get locationPermissionIsDenied => 'Locatietoestemming geweigerd';
 
   @override
-  String get locationPermissionDeniedForever => 'Locatietoestemming voor altijd geweigerd';
+  String get locationPermissionDeniedForever =>
+      'Locatietoestemming voor altijd geweigerd';
 
   @override
   String get grantLocationPermission => 'Locatietoestemming geven';
@@ -213,22 +215,27 @@ class AppLocalizationsNl extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get goodAqiDesc => 'De luchtkwaliteit is prima; geen gezondheidsrisico.';
+  String get goodAqiDesc =>
+      'De luchtkwaliteit is prima; geen gezondheidsrisico.';
 
   @override
-  String get fairAqiDesc => 'Acceptabele luchtkwaliteit; gering gezondheidsrisico voor gevoelige personen.';
+  String get fairAqiDesc =>
+      'Acceptabele luchtkwaliteit; gering gezondheidsrisico voor gevoelige personen.';
 
   @override
-  String get moderateAqiDesc => 'Gevoelige personen kunnen milde effecten ervaren.';
+  String get moderateAqiDesc =>
+      'Gevoelige personen kunnen milde effecten ervaren.';
 
   @override
-  String get poorAqiDesc => 'Gezondheidsrisico mogelijk voor iedereen, hoog voor gevoelige groepen.';
+  String get poorAqiDesc =>
+      'Gezondheidsrisico mogelijk voor iedereen, hoog voor gevoelige groepen.';
 
   @override
   String get veryPoorAqiDesc => 'Ernstige gezondheidseffecten voor iedereen.';
 
   @override
-  String get unhealthyAqiDesc => 'Noodtoestand; ernstige gezondheidseffecten voor iedereen.';
+  String get unhealthyAqiDesc =>
+      'Noodtoestand; ernstige gezondheidseffecten voor iedereen.';
 
   @override
   String get photoByXOnUnsplash => 'Foto, door ,x, op ,Unsplash';

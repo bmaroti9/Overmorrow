@@ -99,13 +99,15 @@ class AppLocalizationsIt extends AppLocalizations {
   String get unableToLocateDevice => 'Impossibile localizzare il dispositivo';
 
   @override
-  String get locationServicesAreDisabled => 'I servizi di localizzazione sono disattivati.';
+  String get locationServicesAreDisabled =>
+      'I servizi di localizzazione sono disattivati.';
 
   @override
   String get locationPermissionIsDenied => 'Permesso di posizione negato';
 
   @override
-  String get locationPermissionDeniedForever => 'Permesso di posizione negato per sempre';
+  String get locationPermissionDeniedForever =>
+      'Permesso di posizione negato per sempre';
 
   @override
   String get grantLocationPermission => 'autorizza l\'accesso alla posizione';
@@ -213,22 +215,27 @@ class AppLocalizationsIt extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get goodAqiDesc => 'La qualità dell\'aria è eccellente; nessun rischio per la salute.';
+  String get goodAqiDesc =>
+      'La qualità dell\'aria è eccellente; nessun rischio per la salute.';
 
   @override
-  String get fairAqiDesc => 'Qualità dell\'aria accettabile; rischio minore per le persone sensibili.';
+  String get fairAqiDesc =>
+      'Qualità dell\'aria accettabile; rischio minore per le persone sensibili.';
 
   @override
-  String get moderateAqiDesc => 'Gli individui sensibili possono sperimentare effetti lievi.';
+  String get moderateAqiDesc =>
+      'Gli individui sensibili possono sperimentare effetti lievi.';
 
   @override
-  String get poorAqiDesc => 'Effetti sulla salute possibili per tutti, seri per i gruppi sensibili.';
+  String get poorAqiDesc =>
+      'Effetti sulla salute possibili per tutti, seri per i gruppi sensibili.';
 
   @override
   String get veryPoorAqiDesc => 'Effetti gravi sulla salute per tutti.';
 
   @override
-  String get unhealthyAqiDesc => 'Condizioni di emergenza; gravi effetti sulla salute per tutti.';
+  String get unhealthyAqiDesc =>
+      'Condizioni di emergenza; gravi effetti sulla salute per tutti.';
 
   @override
   String get photoByXOnUnsplash => 'Foto, di ,x, su ,Unsplash';

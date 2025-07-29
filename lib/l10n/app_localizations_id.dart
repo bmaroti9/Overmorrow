@@ -213,22 +213,27 @@ class AppLocalizationsId extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get goodAqiDesc => 'Kualitas udara sangat baik; tidak ada risiko kesehatan.';
+  String get goodAqiDesc =>
+      'Kualitas udara sangat baik; tidak ada risiko kesehatan.';
 
   @override
-  String get fairAqiDesc => 'Kualitas udara dapat diterima; sedikit risiko bagi orang yang sensitif.';
+  String get fairAqiDesc =>
+      'Kualitas udara dapat diterima; sedikit risiko bagi orang yang sensitif.';
 
   @override
-  String get moderateAqiDesc => 'Individu yang sensitif mungkin mengalami efek ringan.';
+  String get moderateAqiDesc =>
+      'Individu yang sensitif mungkin mengalami efek ringan.';
 
   @override
-  String get poorAqiDesc => 'Efek kesehatan mungkin terjadi untuk semua orang, serius bagi kelompok sensitif.';
+  String get poorAqiDesc =>
+      'Efek kesehatan mungkin terjadi untuk semua orang, serius bagi kelompok sensitif.';
 
   @override
   String get veryPoorAqiDesc => 'Dampak kesehatan serius untuk semua orang.';
 
   @override
-  String get unhealthyAqiDesc => 'Kondisi darurat; dampak kesehatan parah untuk semua orang.';
+  String get unhealthyAqiDesc =>
+      'Kondisi darurat; dampak kesehatan parah untuk semua orang.';
 
   @override
   String get photoByXOnUnsplash => 'Foto, oleh ,x, di ,Unsplash';
@@ -414,7 +419,8 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get rainExpectedInOneHour => 'hujan diperkirakan dalam satu jam ke depan';
+  String get rainExpectedInOneHour =>
+      'hujan diperkirakan dalam satu jam ke depan';
 
   @override
   String rainExpectedInHours(int hours) {

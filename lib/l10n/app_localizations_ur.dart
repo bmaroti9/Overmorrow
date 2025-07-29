@@ -12,7 +12,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get feelsLike => 'محسوس کردہ';
 
   @override
-  String get precipCapital => 'بارندگی';
+  String get precipCapital => 'رطوبتی نزول۔';
 
   @override
   String get humidity => 'نمی';
@@ -42,13 +42,13 @@ class AppLocalizationsUr extends AppLocalizations {
   String get temperature => 'درجہ حرارت';
 
   @override
-  String get precipitaion => 'بارندگی';
+  String get precipitaion => 'رطوبتی نزول';
 
   @override
   String get rain => 'بادش';
 
   @override
-  String get clearNight => 'رات کو مطلع صاف';
+  String get clearNight => 'صاف رات';
 
   @override
   String get partlyCloudy => 'چند بادل';
@@ -84,13 +84,13 @@ class AppLocalizationsUr extends AppLocalizations {
   String get heavyRain => 'تیز بارش';
 
   @override
-  String get cloudyNight => 'رات کو مطلع ابر آلود';
+  String get cloudyNight => 'ابر آلود رات';
 
   @override
-  String get weakOrNoWifiConnection => 'انٹرنیٹ سگنل کمزور ہے';
+  String get weakOrNoWifiConnection => 'انٹرنیٹ کمزور ہے یا میسر نہیں';
 
   @override
-  String get notConnectedToTheInternet => 'انٹرنیٹ میسر نہیں ہے';
+  String get notConnectedToTheInternet => 'انٹرنیٹ بحال نہیں';
 
   @override
   String get placeNotFound => 'جگہ تلاش نہیں ہو سکی';
@@ -99,31 +99,32 @@ class AppLocalizationsUr extends AppLocalizations {
   String get unableToLocateDevice => 'فون کی تلاش نہیں ہو سکی';
 
   @override
-  String get locationServicesAreDisabled => 'فون لوکیشن کو بند ہے۔';
+  String get locationServicesAreDisabled => 'فون لوکیشن بند ہے۔';
 
   @override
-  String get locationPermissionIsDenied => 'فون کی لوکیشن منسوخ کر دی گیٔ ھے';
+  String get locationPermissionIsDenied => 'لوکیشن پرمیشن منسوخ کر دی گیٔ ھے';
 
   @override
-  String get locationPermissionDeniedForever => 'فون کی لوکیشن ھمیشہ کے لیے منسوخ کر دی گیٔ ھے';
+  String get locationPermissionDeniedForever =>
+      'لوکیشن پرمیشن ھمیشہ کے لیے منسوخ کر دی گیٔ ھے';
 
   @override
-  String get grantLocationPermission => 'فون کی لوکیشن فراہم کریں';
+  String get grantLocationPermission => 'لوکیشن پرمیشن فراہم کریں';
 
   @override
   String get currentLocation => 'موجودہ لوکیشن';
 
   @override
-  String get favoritesLowercase => 'پسندیدہ جگہیں';
+  String get favoritesLowercase => 'پسندیدہ جات';
 
   @override
-  String get failedToAccessGps => 'جی پی ایس تک رسایٔ ممکن نہیں';
+  String get failedToAccessGps => 'GPS تک رسایٔ ممکن نہیں';
 
   @override
   String get search => 'تلاش کریں۔۔۔';
 
   @override
-  String get sunriseSunset => 'طلوع اور غروب';
+  String get sunriseSunset => 'طلوع / غروب';
 
   @override
   String get airQuality => 'ہوا کا معیار';
@@ -135,16 +136,16 @@ class AppLocalizationsUr extends AppLocalizations {
   String get good => 'اچھا';
 
   @override
-  String get fair => 'تسلی بخش';
+  String get fair => 'قابلِ قبول';
 
   @override
-  String get moderate => 'گزارا';
+  String get moderate => 'معتدل';
 
   @override
-  String get poor => 'برا';
+  String get poor => 'خراب';
 
   @override
-  String get veryPoor => 'بہت برا';
+  String get veryPoor => 'بہت خراب';
 
   @override
   String get unhealthy => 'مضر صحت';
@@ -204,7 +205,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get sumLowercase => 'خلاصہ';
 
   @override
-  String get precipLowercase => 'بارندگی';
+  String get precipLowercase => 'رطوبتی نزول';
 
   @override
   String get windLowercase => 'ہوا';
@@ -216,43 +217,46 @@ class AppLocalizationsUr extends AppLocalizations {
   String get goodAqiDesc => 'ہوا کا معیار بہترین۔ صحت کو کوئی خطرہ نہیں۔';
 
   @override
-  String get fairAqiDesc => 'ہوا کا معیار قابل قبول۔ حساس لوگ محطاط رہیں۔';
+  String get fairAqiDesc =>
+      'قابلِ قبول فضائی معیار؛ حساس افراد کے لیے معمولی خطرہ۔';
 
   @override
-  String get moderateAqiDesc => 'حساس لوگوں کے لۓ معمولی دشواری کا خدشہ۔';
+  String get moderateAqiDesc => 'حساس افراد کے لے ہلکے اثرات متوقع۔';
 
   @override
-  String get poorAqiDesc => 'سب کے لۓ مضر صحت خدشات کا امکان۔ حساس لوگوں کے لۓ خطرہ۔';
+  String get poorAqiDesc =>
+      'سب کے لۓ مضر صحت اثرات کا خدشہ۔ حساس لوگوں کے لۓ خطرہ۔';
 
   @override
   String get veryPoorAqiDesc => 'سب کے لۓ مضر صحت اثرات۔';
 
   @override
-  String get unhealthyAqiDesc => 'ایمرجینسی کی صورتحال۔ سب کے لۓ شدید مضر صحت اثرات۔';
+  String get unhealthyAqiDesc =>
+      'ایمرجینسی کی صورتحال۔ سب کے لۓ شدید مضر صحت اثرات۔';
 
   @override
-  String get photoByXOnUnsplash => 'Photo, by ,x, on ,Unsplash';
+  String get photoByXOnUnsplash => 'تصویر، منجانب ،x، ماخذ ،Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'ماخذ کوڈ';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'ای میل';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'مسئلے کی اطلاع دیں';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'عطیہ کریں';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'ورژن';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'APIs اور خدمات';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'لائسنس';
 
   @override
   String get weatherDataLowercase => 'موسم کے اعداد و شمار';
@@ -270,13 +274,13 @@ class AppLocalizationsUr extends AppLocalizations {
   String get units => 'یونٹ';
 
   @override
-  String get about => 'About';
+  String get about => 'متعلقات';
 
   @override
-  String get appearanceSettingDesc => 'color theme, image source';
+  String get appearanceSettingDesc => 'رنگت، تصویری ماخذ';
 
   @override
-  String get generalSettingDesc => 'time mode, font size';
+  String get generalSettingDesc => 'وقت کی قِسم کا تعین ، لکھایٔ کا سائز';
 
   @override
   String get languageSettingDesc => 'زبانِ استعمال';
@@ -297,7 +301,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get layout => 'ترتیب';
 
   @override
-  String get layoutSettingDesc => 'widget order, customization';
+  String get layoutSettingDesc => 'ویجیٹ کی ترتیب ، تخصیص';
 
   @override
   String get thirtyMinutes => '30 منٹ';
@@ -306,25 +310,25 @@ class AppLocalizationsUr extends AppLocalizations {
   String get mainPollutant => 'مرکزی آلودگی';
 
   @override
-  String get alderPollen => 'Alder Pollen';
+  String get alderPollen => 'ایلڈر پولن';
 
   @override
-  String get birchPollen => 'Birch Pollen';
+  String get birchPollen => 'برچ پولن';
 
   @override
-  String get grassPollen => 'Grass Pollen';
+  String get grassPollen => 'گھاس کا جرگ';
 
   @override
-  String get mugwortPollen => 'Mugwort Pollen';
+  String get mugwortPollen => 'مگورٹ پولن';
 
   @override
-  String get olivePollen => 'Olive Pollen';
+  String get olivePollen => 'زیتون کا پولن';
 
   @override
-  String get ragweedPollen => 'Ragweed Pollen';
+  String get ragweedPollen => 'رگویڈ پولن';
 
   @override
-  String get dailyAqi => 'daily AQI';
+  String get dailyAqi => 'روزانہ کا AQI';
 
   @override
   String get dateFormat => 'تاریخ لکھنے کا طریقہ';
@@ -333,7 +337,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get d => 'دن';
 
   @override
-  String get aerosolOpticalDepth => 'aerosol optical depth';
+  String get aerosolOpticalDepth => 'ایروسول آپٹیکل ڈیپت';
 
   @override
   String get dust => 'گرد';
@@ -372,7 +376,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get extremelyHazy => 'شدید غبارآلود';
 
   @override
-  String get poweredByOpenMeteo => 'powered by open-meteo';
+  String get poweredByOpenMeteo => 'Open-Meteo سے حاصل کردہ';
 
   @override
   String get rainInHalfHour => 'اگلے آدھے گھنٹے میں بارش';
@@ -382,10 +386,10 @@ class AppLocalizationsUr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes منٹوں',
+      one: '$minutes منٹ',
     );
-    return 'rain in the next $_temp0';
+    return 'بارش اگلے $_temp0 میں';
   }
 
   @override
@@ -396,10 +400,10 @@ class AppLocalizationsUr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours گھنٹے',
+      one: 'ایک گھنٹہ',
     );
-    return 'rain in the next $_temp0';
+    return 'بارش اگلے $_temp0 میں';
   }
 
   @override
@@ -407,10 +411,10 @@ class AppLocalizationsUr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes منٹوں میں',
+      one: 'ایک منٹ میں',
     );
-    return 'rain expected in $_temp0';
+    return 'بارش متوقع ہے $_temp0';
   }
 
   @override
@@ -421,15 +425,15 @@ class AppLocalizationsUr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours گھنٹوں میں',
+      one: 'ایک گھنٹے میں',
     );
-    return 'rain expected in $_temp0';
+    return 'بارش متوقع ہے $_temp0';
   }
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return 'updated, $minutes min ago';
+    return 'تازہ کاری، $minutes منٹ پہلے';
   }
 
   @override
@@ -437,10 +441,10 @@ class AppLocalizationsUr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
+      other: '$hours گھنٹے',
+      one: '1 گھنٹہ',
     );
-    return 'updated, $_temp0 ago';
+    return 'تازہ کاری، $_temp0 پہلے';
   }
 
   @override
@@ -448,20 +452,20 @@ class AppLocalizationsUr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: '$days days',
-      one: '1 day',
+      other: '$days دن',
+      one: '1 دن',
     );
-    return 'updated, $_temp0 ago';
+    return 'تازہ کاری، $_temp0 پہلے';
   }
 
   @override
-  String get radarHaptics => 'Radar haptics';
+  String get radarHaptics => 'ریڈار ہپٹکس';
 
   @override
-  String get alertsCapital => 'Alerts';
+  String get alertsCapital => 'انتباہات';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'انتباہات';
 
   @override
   String get severity => 'شدت';
@@ -482,8 +486,8 @@ class AppLocalizationsUr extends AppLocalizations {
   String get heavy => 'موسلادھار';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'مزید دکھائیں';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'کم دکھائیں';
 }

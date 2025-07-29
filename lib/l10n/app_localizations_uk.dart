@@ -99,13 +99,16 @@ class AppLocalizationsUk extends AppLocalizations {
   String get unableToLocateDevice => 'Не вдалося знайти пристрій';
 
   @override
-  String get locationServicesAreDisabled => 'Служби визначення місцеположення вимкнено.';
+  String get locationServicesAreDisabled =>
+      'Служби визначення місцеположення вимкнено.';
 
   @override
-  String get locationPermissionIsDenied => 'Відмовлено в дозволі на розташування';
+  String get locationPermissionIsDenied =>
+      'Відмовлено в дозволі на розташування';
 
   @override
-  String get locationPermissionDeniedForever => 'Назавжди відмовлено у доступі на розташування';
+  String get locationPermissionDeniedForever =>
+      'Назавжди відмовлено у доступі на розташування';
 
   @override
   String get grantLocationPermission => 'Надати дозвіл на розташування';
@@ -213,22 +216,26 @@ class AppLocalizationsUk extends AppLocalizations {
   String get uvLowercase => 'УФ';
 
   @override
-  String get goodAqiDesc => 'Якість повітря відмінна; немає ризику для здоров\'я.';
+  String get goodAqiDesc =>
+      'Якість повітря відмінна; немає ризику для здоров\'я.';
 
   @override
-  String get fairAqiDesc => 'Прийнятна якість повітря; незначний ризик для чутливих людей.';
+  String get fairAqiDesc =>
+      'Прийнятна якість повітря; незначний ризик для чутливих людей.';
 
   @override
   String get moderateAqiDesc => 'Чутливі люди можуть відчувати легкі наслідки.';
 
   @override
-  String get poorAqiDesc => 'Можливий вплив на здоров\'я для всіх, серйозний для чутливого населення.';
+  String get poorAqiDesc =>
+      'Можливий вплив на здоров\'я для всіх, серйозний для чутливого населення.';
 
   @override
   String get veryPoorAqiDesc => 'Серйозні наслідки для здоров\'я в усіх.';
 
   @override
-  String get unhealthyAqiDesc => 'Надзвичайні ситуації; серйозні наслідки для здоров\'я в усіх.';
+  String get unhealthyAqiDesc =>
+      'Надзвичайні ситуації; серйозні наслідки для здоров\'я в усіх.';
 
   @override
   String get photoByXOnUnsplash => 'Фото, ,x, на ,Unsplash';
@@ -303,7 +310,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get thirtyMinutes => '30хв';
 
   @override
-  String get mainPollutant => 'головний забруднювач';
+  String get mainPollutant => 'Головний забруднювач';
 
   @override
   String get alderPollen => 'Пилок вільхи';
@@ -330,7 +337,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get dateFormat => 'Формат дати';
 
   @override
-  String get d => 'д';
+  String get d => 'дн';
 
   @override
   String get aerosolOpticalDepth => 'Оптична глибина аерозолю';
@@ -382,10 +389,10 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes хвилин',
+      one: 'хвилину',
     );
-    return 'Дощ в наступні $_temp0';
+    return 'Дощ у наступні $_temp0';
   }
 
   @override
@@ -407,8 +414,8 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes хвилин',
+      one: 'хвилину',
     );
     return 'Дощ очікується через $_temp0';
   }
@@ -421,8 +428,8 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours годин',
+      one: 'годину',
     );
     return 'Дощ очікується через $_temp0';
   }
@@ -437,8 +444,8 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
+      other: '$hours годин',
+      one: '1 годину',
     );
     return 'Оновлено, $_temp0 тому';
   }
@@ -448,8 +455,8 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: '$days days',
-      one: '1 day',
+      other: '$days днів',
+      one: '1 день',
     );
     return 'Оновлено, $_temp0 тому';
   }

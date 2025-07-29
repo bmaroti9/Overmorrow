@@ -222,7 +222,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get moderateAqiDesc => 'قد يعاني الأشخاص الحساسون من آثار خفيفة.';
 
   @override
-  String get poorAqiDesc => 'آثار صحية محتملة للجميع، خطيرة بالنسبة للفئات الحساسة.';
+  String get poorAqiDesc =>
+      'آثار صحية محتملة للجميع، خطيرة بالنسبة للفئات الحساسة.';
 
   @override
   String get veryPoorAqiDesc => 'آثار صحية خطيرة للجميع.';

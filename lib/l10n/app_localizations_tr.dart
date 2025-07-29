@@ -99,13 +99,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get unableToLocateDevice => 'Cihazın yeri tespit edilemiyor';
 
   @override
-  String get locationServicesAreDisabled => 'konum hizmetleri devre dışı bırakıldı.';
+  String get locationServicesAreDisabled =>
+      'konum hizmetleri devre dışı bırakıldı.';
 
   @override
   String get locationPermissionIsDenied => 'konum izni reddedildi';
 
   @override
-  String get locationPermissionDeniedForever => 'konum i̇zni̇ sonsuza kadar reddedi̇ldi̇';
+  String get locationPermissionDeniedForever =>
+      'konum i̇zni̇ sonsuza kadar reddedi̇ldi̇';
 
   @override
   String get grantLocationPermission => 'konum izni ver';
@@ -216,22 +218,26 @@ class AppLocalizationsTr extends AppLocalizations {
   String get goodAqiDesc => 'Hava kalitesi mükemmel; sağlık riski yok.';
 
   @override
-  String get fairAqiDesc => 'Kabul edilebilir hava kalitesi; hassas kişiler için küçük risk.';
+  String get fairAqiDesc =>
+      'Kabul edilebilir hava kalitesi; hassas kişiler için küçük risk.';
 
   @override
   String get moderateAqiDesc => 'Hassas bireyler hafif etkiler yaşayabilir.';
 
   @override
-  String get poorAqiDesc => 'Herkes için olası sağlık etkileri, hassas gruplar için ciddi.';
+  String get poorAqiDesc =>
+      'Herkes için olası sağlık etkileri, hassas gruplar için ciddi.';
 
   @override
   String get veryPoorAqiDesc => 'Herkes için ciddi sağlık etkileri.';
 
   @override
-  String get unhealthyAqiDesc => 'Acil durum koşulları; herkes için ciddi sağlık etkileri.';
+  String get unhealthyAqiDesc =>
+      'Acil durum koşulları; herkes için ciddi sağlık etkileri.';
 
   @override
-  String get photoByXOnUnsplash => 'Fotoğraf, x, tarafından , Unsplah , üzerineden';
+  String get photoByXOnUnsplash =>
+      'Fotoğraf, x, tarafından , Unsplah , üzerineden';
 
   @override
   String get sourceCodeLowercase => 'kaynak kodu';

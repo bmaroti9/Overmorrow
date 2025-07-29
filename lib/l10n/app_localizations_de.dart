@@ -12,10 +12,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get feelsLike => 'Gefühlt';
 
   @override
-  String get precipCapital => 'Niedersch.';
+  String get precipCapital => 'Niederschlag';
 
   @override
-  String get humidity => 'Luftfeuchtigkeit';
+  String get humidity => 'Luftfeuchte';
 
   @override
   String get windCapital => 'Wind';
@@ -105,10 +105,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get locationPermissionIsDenied => 'Standortberechtigung verweigert';
 
   @override
-  String get locationPermissionDeniedForever => 'Standortberechtigung für immer verweigert';
+  String get locationPermissionDeniedForever =>
+      'Standortberechtigung für immer verweigert';
 
   @override
-  String get grantLocationPermission => 'genehmigung für den standort';
+  String get grantLocationPermission => 'Genehmigung für den Standort';
 
   @override
   String get currentLocation => 'aktueller Standort';
@@ -192,7 +193,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get searchProvider => 'Suchanbieter';
 
   @override
-  String get updatedJustNow => 'aktualisiert, gerade jetzt';
+  String get updatedJustNow => 'aktualisiert, gerade eben';
 
   @override
   String get colorSource => 'Farbquelle';
@@ -201,7 +202,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get imageSource => 'Bildquelle';
 
   @override
-  String get sumLowercase => 'summe';
+  String get sumLowercase => 'Gesamt';
 
   @override
   String get precipLowercase => 'Niederschlag';
@@ -213,22 +214,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get goodAqiDesc => 'Die Luftqualität ist ausgezeichnet; kein Gesundheitsrisiko.';
+  String get goodAqiDesc =>
+      'Die Luftqualität ist ausgezeichnet; kein Gesundheitsrisiko.';
 
   @override
-  String get fairAqiDesc => 'Akzeptable Luftqualität; geringes Risiko für empfindliche Personen.';
+  String get fairAqiDesc =>
+      'Akzeptable Luftqualität; geringes Risiko für empfindliche Personen.';
 
   @override
-  String get moderateAqiDesc => 'Empfindliche Personen können leichte Auswirkungen erfahren.';
+  String get moderateAqiDesc =>
+      'Empfindliche Personen können leichte Auswirkungen erfahren.';
 
   @override
-  String get poorAqiDesc => 'Gesundheitliche Auswirkungen für alle möglich, ernst für empfindliche Gruppen.';
+  String get poorAqiDesc =>
+      'Gesundheitliche Auswirkungen für alle möglich, ernsthaft für empfindliche Gruppen.';
 
   @override
-  String get veryPoorAqiDesc => 'Schwere gesundheitliche Auswirkungen für alle.';
+  String get veryPoorAqiDesc =>
+      'Schwere gesundheitliche Auswirkungen für alle.';
 
   @override
-  String get unhealthyAqiDesc => 'Notfallbedingungen; schwere gesundheitliche Auswirkungen für alle.';
+  String get unhealthyAqiDesc =>
+      'Notfallbedingungen; schwere gesundheitliche Auswirkungen für alle.';
 
   @override
   String get photoByXOnUnsplash => 'Foto, von ,x, auf ,Unsplash';
@@ -237,7 +244,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sourceCodeLowercase => 'Quellcode';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'E-Mail';
 
   @override
   String get reportAnIssueLowercase => 'Ein Problem melden';
@@ -285,7 +292,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get unitsSettingdesc => 'die in der App verwendeten Einheiten';
 
   @override
-  String get aboutSettingsDesc => 'über diese app';
+  String get aboutSettingsDesc => 'über diese App';
 
   @override
   String get now => 'jetzt';
@@ -383,7 +390,7 @@ class AppLocalizationsDe extends AppLocalizations {
       minutes,
       locale: localeName,
       other: '$minutes minutes',
-      one: 'Minute',
+      one: 'minute',
     );
     return 'Regen in den nächsten $_temp0';
   }
@@ -408,7 +415,7 @@ class AppLocalizationsDe extends AppLocalizations {
       minutes,
       locale: localeName,
       other: '$minutes minutes',
-      one: 'Minute',
+      one: 'minute',
     );
     return 'Regen erwartet in $_temp0';
   }
@@ -461,7 +468,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get alertsCapital => 'Warnungen';
 
   @override
-  String get alertsLowercase => 'warnungen';
+  String get alertsLowercase => 'Warnungen';
 
   @override
   String get severity => 'Schweregrad';
@@ -476,7 +483,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get areas => 'Gebiete';
 
   @override
-  String get light => 'licht';
+  String get light => 'leicht';
 
   @override
   String get heavy => 'schwer';

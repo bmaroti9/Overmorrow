@@ -12,7 +12,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get feelsLike => 'La sensación térmica es de';
 
   @override
-  String get precipCapital => 'Precipit.';
+  String get precipCapital => 'Precipitaciones';
 
   @override
   String get humidity => 'Humedad';
@@ -75,7 +75,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get heavySnow => 'Fuerte nevada';
 
   @override
-  String get fog => 'Bruma';
+  String get fog => 'Niebla';
 
   @override
   String get snow => 'Nieve';
@@ -99,13 +99,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get unableToLocateDevice => 'No se puede localizar el dispositivo';
 
   @override
-  String get locationServicesAreDisabled => 'Los servicios de ubicación están deshabilitados.';
+  String get locationServicesAreDisabled =>
+      'Los servicios de ubicación están deshabilitados.';
 
   @override
-  String get locationPermissionIsDenied => 'El permiso de ubicación fue rechazado';
+  String get locationPermissionIsDenied =>
+      'El permiso de ubicación fue rechazado';
 
   @override
-  String get locationPermissionDeniedForever => 'Permiso de ubicación denegado para siempre';
+  String get locationPermissionDeniedForever =>
+      'Permiso de ubicación denegado para siempre';
 
   @override
   String get grantLocationPermission => 'Permitir acceso a ubicación';
@@ -183,7 +186,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get sun => 'Dom';
 
   @override
-  String get fontSize => 'Tamaño de fuente';
+  String get fontSize => 'Tamaño de la fuente';
 
   @override
   String get dailyLowercase => 'Diario';
@@ -213,22 +216,27 @@ class AppLocalizationsEs extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get goodAqiDesc => 'La calidad del aire es excelente; no hay riesgo para la salud.';
+  String get goodAqiDesc =>
+      'La calidad del aire es excelente; no hay riesgo para la salud.';
 
   @override
-  String get fairAqiDesc => 'Calidad del aire aceptable; riesgo menor para personas sensibles.';
+  String get fairAqiDesc =>
+      'Calidad del aire aceptable; riesgo menor para personas sensibles.';
 
   @override
-  String get moderateAqiDesc => 'Las personas sensibles pueden experimentar efectos leves.';
+  String get moderateAqiDesc =>
+      'Las personas sensibles pueden experimentar efectos leves.';
 
   @override
-  String get poorAqiDesc => 'Posibles efectos en la salud para todos, graves para grupos sensibles.';
+  String get poorAqiDesc =>
+      'Posibles efectos en la salud para todos, graves para grupos sensibles.';
 
   @override
   String get veryPoorAqiDesc => 'Graves efectos en la salud para todos.';
 
   @override
-  String get unhealthyAqiDesc => 'Condiciones de emergencia; graves efectos en la salud para todos.';
+  String get unhealthyAqiDesc =>
+      'Condiciones de emergencia; graves efectos en la salud para todos.';
 
   @override
   String get photoByXOnUnsplash => 'Foto, de ,x, en ,Unsplash';

@@ -96,7 +96,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get placeNotFound => 'Nie znaleziono lokalizacji';
 
   @override
-  String get unableToLocateDevice => 'Brak możliwości zlokalizowania urządzenia';
+  String get unableToLocateDevice =>
+      'Brak możliwości zlokalizowania urządzenia';
 
   @override
   String get locationServicesAreDisabled => 'Lokalizacja wyłączona.';
@@ -105,7 +106,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get locationPermissionIsDenied => 'Odmowa pozwolenia na lokalizację';
 
   @override
-  String get locationPermissionDeniedForever => 'Trwała odmowa pozwolenia na lokalizację';
+  String get locationPermissionDeniedForever =>
+      'Trwała odmowa pozwolenia na lokalizację';
 
   @override
   String get grantLocationPermission => 'udzielić pozwolenia na lokalizację';
@@ -213,22 +215,26 @@ class AppLocalizationsPl extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get goodAqiDesc => 'Jakość powietrza jest doskonała; brak ryzyka dla zdrowia.';
+  String get goodAqiDesc =>
+      'Jakość powietrza jest doskonała; brak ryzyka dla zdrowia.';
 
   @override
-  String get fairAqiDesc => 'Akceptowalna jakość powietrza; niewielkie ryzyko dla osób wrażliwych.';
+  String get fairAqiDesc =>
+      'Akceptowalna jakość powietrza; niewielkie ryzyko dla osób wrażliwych.';
 
   @override
   String get moderateAqiDesc => 'Osoby wrażliwe mogą odczuwać łagodne skutki.';
 
   @override
-  String get poorAqiDesc => 'Możliwe skutki zdrowotne dla wszystkich, poważne dla grup wrażliwych.';
+  String get poorAqiDesc =>
+      'Możliwe skutki zdrowotne dla wszystkich, poważne dla grup wrażliwych.';
 
   @override
   String get veryPoorAqiDesc => 'Poważne skutki zdrowotne dla wszystkich.';
 
   @override
-  String get unhealthyAqiDesc => 'Warunki awaryjne; poważne skutki zdrowotne dla wszystkich.';
+  String get unhealthyAqiDesc =>
+      'Warunki awaryjne; poważne skutki zdrowotne dla wszystkich.';
 
   @override
   String get photoByXOnUnsplash => 'Zdjęcie, ,x, na ,Unsplash';

@@ -99,13 +99,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String get unableToLocateDevice => 'Não é possível localizar o dispositivo';
 
   @override
-  String get locationServicesAreDisabled => 'Os serviços de localização estão desativados.';
+  String get locationServicesAreDisabled =>
+      'Os serviços de localização estão desativados.';
 
   @override
   String get locationPermissionIsDenied => 'Permissão de localização negada';
 
   @override
-  String get locationPermissionDeniedForever => 'Permissão de localização negada para sempre';
+  String get locationPermissionDeniedForever =>
+      'Permissão de localização negada para sempre';
 
   @override
   String get grantLocationPermission => 'conceda acesso à localização';
@@ -216,19 +218,23 @@ class AppLocalizationsPt extends AppLocalizations {
   String get goodAqiDesc => 'A qualidade do ar é excelente; sem risco à saúde.';
 
   @override
-  String get fairAqiDesc => 'Qualidade do ar aceitável; risco menor para pessoas sensíveis.';
+  String get fairAqiDesc =>
+      'Qualidade do ar aceitável; risco menor para pessoas sensíveis.';
 
   @override
-  String get moderateAqiDesc => 'Indivíduos sensíveis podem sentir efeitos leves.';
+  String get moderateAqiDesc =>
+      'Indivíduos sensíveis podem sentir efeitos leves.';
 
   @override
-  String get poorAqiDesc => 'Efeitos na saúde possíveis para todos, sérios para grupos sensíveis.';
+  String get poorAqiDesc =>
+      'Efeitos na saúde possíveis para todos, sérios para grupos sensíveis.';
 
   @override
   String get veryPoorAqiDesc => 'Graves efeitos na saúde para todos.';
 
   @override
-  String get unhealthyAqiDesc => 'Condições de emergência; graves efeitos na saúde para todos.';
+  String get unhealthyAqiDesc =>
+      'Condições de emergência; graves efeitos na saúde para todos.';
 
   @override
   String get photoByXOnUnsplash => 'Foto, de ,x, no ,Unsplash';

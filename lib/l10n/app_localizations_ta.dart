@@ -99,13 +99,15 @@ class AppLocalizationsTa extends AppLocalizations {
   String get unableToLocateDevice => 'சாதனத்தைக் கண்டுபிடிக்க முடியவில்லை';
 
   @override
-  String get locationServicesAreDisabled => 'இருப்பிட சேவைகள் முடக்கப்பட்டுள்ளன.';
+  String get locationServicesAreDisabled =>
+      'இருப்பிட சேவைகள் முடக்கப்பட்டுள்ளன.';
 
   @override
   String get locationPermissionIsDenied => 'இருப்பிட இசைவு மறுக்கப்படுகிறது';
 
   @override
-  String get locationPermissionDeniedForever => 'இருப்பிட இசைவு என்றென்றும் மறுக்கப்படுகிறது';
+  String get locationPermissionDeniedForever =>
+      'இருப்பிட இசைவு என்றென்றும் மறுக்கப்படுகிறது';
 
   @override
   String get grantLocationPermission => 'இருப்பிட இசைவு வழங்கவும்';
@@ -216,19 +218,23 @@ class AppLocalizationsTa extends AppLocalizations {
   String get goodAqiDesc => 'காற்றின் தகுதி சிறந்தது; சுகாதார இடர் இல்லை.';
 
   @override
-  String get fairAqiDesc => 'ஏற்றுக்கொள்ளக்கூடிய காற்றின் தரம்; உணர்திறன் வாய்ந்த நபர்களுக்கு சிறிய இடர்.';
+  String get fairAqiDesc =>
+      'ஏற்றுக்கொள்ளக்கூடிய காற்றின் தரம்; உணர்திறன் வாய்ந்த நபர்களுக்கு சிறிய இடர்.';
 
   @override
-  String get moderateAqiDesc => 'உணர்திறன் வாய்ந்த நபர்கள் லேசான விளைவுகளை அனுபவிக்கலாம்.';
+  String get moderateAqiDesc =>
+      'உணர்திறன் வாய்ந்த நபர்கள் லேசான விளைவுகளை அனுபவிக்கலாம்.';
 
   @override
-  String get poorAqiDesc => 'அனைவருக்கும் சுகாதார விளைவுகள் சாத்தியமாகும், உணர்திறன் குழுக்களுக்கு தீவிரமானது.';
+  String get poorAqiDesc =>
+      'அனைவருக்கும் சுகாதார விளைவுகள் சாத்தியமாகும், உணர்திறன் குழுக்களுக்கு தீவிரமானது.';
 
   @override
   String get veryPoorAqiDesc => 'அனைவருக்கும் கடுமையான சுகாதார விளைவுகள்.';
 
   @override
-  String get unhealthyAqiDesc => 'அவசரகால நிலைமைகள்; அனைவருக்கும் கடுமையான சுகாதார விளைவுகள்.';
+  String get unhealthyAqiDesc =>
+      'அவசரகால நிலைமைகள்; அனைவருக்கும் கடுமையான சுகாதார விளைவுகள்.';
 
   @override
   String get photoByXOnUnsplash => 'புகைப்படம், by, ஃச், on, Unsplash';
@@ -414,7 +420,8 @@ class AppLocalizationsTa extends AppLocalizations {
   }
 
   @override
-  String get rainExpectedInOneHour => 'ஒரு மணி நேரத்தில் மழை எதிர்பார்க்கப்படுகிறது';
+  String get rainExpectedInOneHour =>
+      'ஒரு மணி நேரத்தில் மழை எதிர்பார்க்கப்படுகிறது';
 
   @override
   String rainExpectedInHours(int hours) {

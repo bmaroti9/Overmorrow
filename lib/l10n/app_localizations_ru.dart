@@ -87,7 +87,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cloudyNight => 'Облачная ночь';
 
   @override
-  String get weakOrNoWifiConnection => 'Слабое или отсутствующее подключение Wi-Fi';
+  String get weakOrNoWifiConnection =>
+      'Слабое или отсутствующее подключение Wi-Fi';
 
   @override
   String get notConnectedToTheInternet => 'Нет подключения к Интернету';
@@ -99,16 +100,20 @@ class AppLocalizationsRu extends AppLocalizations {
   String get unableToLocateDevice => 'Не удается найти устройство';
 
   @override
-  String get locationServicesAreDisabled => 'Сервисы определения местоположения отключены.';
+  String get locationServicesAreDisabled =>
+      'Сервисы определения местоположения отключены.';
 
   @override
-  String get locationPermissionIsDenied => 'Отказано в разрешении на местоположение';
+  String get locationPermissionIsDenied =>
+      'Отказано в разрешении на местоположение';
 
   @override
-  String get locationPermissionDeniedForever => 'Разрешение на местоположение отклонено навсегда';
+  String get locationPermissionDeniedForever =>
+      'Разрешение на местоположение отклонено навсегда';
 
   @override
-  String get grantLocationPermission => 'Предоставление доступа к местоположению';
+  String get grantLocationPermission =>
+      'Предоставление доступа к местоположению';
 
   @override
   String get currentLocation => 'текущее местоположение';
@@ -213,22 +218,27 @@ class AppLocalizationsRu extends AppLocalizations {
   String get uvLowercase => 'уф';
 
   @override
-  String get goodAqiDesc => 'Качество воздуха отличное; угрозы для здоровья нет.';
+  String get goodAqiDesc =>
+      'Качество воздуха отличное; угрозы для здоровья нет.';
 
   @override
-  String get fairAqiDesc => 'Приемлемое качество воздуха; незначительный риск для чувствительных людей.';
+  String get fairAqiDesc =>
+      'Приемлемое качество воздуха; незначительный риск для чувствительных людей.';
 
   @override
-  String get moderateAqiDesc => 'Чувствительные люди могут испытывать дискомфорт.';
+  String get moderateAqiDesc =>
+      'Чувствительные люди могут испытывать дискомфорт.';
 
   @override
-  String get poorAqiDesc => 'Возможны последствия для здоровья у всех, серьезные для чувствительных групп.';
+  String get poorAqiDesc =>
+      'Возможны последствия для здоровья у всех, серьезные для чувствительных групп.';
 
   @override
   String get veryPoorAqiDesc => 'Серьезные последствия для здоровья у всех.';
 
   @override
-  String get unhealthyAqiDesc => 'Чрезвычайные условия; серьезные последствия для здоровья у всех.';
+  String get unhealthyAqiDesc =>
+      'Чрезвычайные условия; серьезные последствия для здоровья у всех.';
 
   @override
   String get photoByXOnUnsplash => 'Фото, ,x, на ,Unsplash';
