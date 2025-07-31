@@ -40,7 +40,6 @@ dependencies:
   geolocator: ^13.0.4
   geocoding: ^3.0.0
 
-
   #i also used this version in the build.gradle for some plugins
   home_widget: ^0.8.0
 
@@ -59,8 +58,6 @@ dependencies:
     sdk: flutter
   intl: ^0.20.2
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   google_fonts: ^6.2.1
   workmanager: ^0.6.0
 

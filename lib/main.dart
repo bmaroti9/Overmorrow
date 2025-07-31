@@ -85,10 +85,6 @@ class WidgetService {
     await saveData("hourlyForecast.hourlyNames.$widgetId", data.hourlyNames);
   }
 
-  static Future<void> syncWidgetFailure(int widgetId, String failure) async {
-    await saveData("widgetFailure.$widgetId", failure);
-  }
-
   static Future<void> reloadWidgets() async {
     HomeWidget.updateWidget(
       androidName: 'CurrentWidget',

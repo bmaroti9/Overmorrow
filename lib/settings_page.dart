@@ -41,7 +41,8 @@ Map<String, List<String>> settingSwitches = {
     'Magyar', //Hungarian
     'Polski', //Polish
     'Ελληνικά', //Greek
-    '简体中文', //Chinese
+    '简体中文', //Chinese (Simplified Han)
+    '繁體字', //Chinese (Traditional Han)
     '日本語', //Japanese
     'українська', //Ukrainian
     'türkçe', //Turkish
@@ -52,6 +53,7 @@ Map<String, List<String>> settingSwitches = {
     'Suomi', //Finnish
     'Nederlands', //Dutch
     'اُردُو', //Urdu
+    'Hrvat', //Croatian
   ],
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
