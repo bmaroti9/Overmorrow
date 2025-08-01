@@ -1,3 +1,35 @@
+
+<div align="right">
+  <details>
+    <summary >🌐 Language</summary>
+    <div>
+      <div align="center">
+        <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=en">English</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=zh-CN">简体中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=zh-TW">繁體中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=ja">日本語</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=ko">한국어</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=hi">हिन्दी</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=th">ไทย</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=fr">Français</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=de">Deutsch</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=es">Español</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=it">Italiano</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=ru">Русский</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=pt">Português</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=nl">Nederlands</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=pl">Polski</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=ar">العربية</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=fa">فارسی</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=tr">Türkçe</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=vi">Tiếng Việt</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=id">Bahasa Indonesia</a>
+        | <a href="https://openaitx.github.io/view.html?user=bmaroti9&project=Overmorrow&lang=as">অসমীয়া</
+      </div>
+    </div>
+  </details>
+</div>
+
 ![page48](Screenshots/overmorrow_green_github.png)
 
 <div align="center">
