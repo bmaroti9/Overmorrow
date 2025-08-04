@@ -743,7 +743,7 @@ Future<LightHourlyForecastData> metNGetLightHourlyData(settings, placeName, lat,
 
   DateTime now = DateTime.now();
 
-  for (int i = 0; i < min(item["properties"]["timeseries"].length, 29); i++) {
+  for (int i = 0; i < min(item["properties"]["timeseries"].length, 23); i++) {
     final hour = item["properties"]["timeseries"][i];
 
     DateTime d = DateTime.parse(hour["time"]);

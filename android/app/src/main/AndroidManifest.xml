@@ -98,7 +98,8 @@
 
         <receiver
             android:name=".receivers.ForecastWidgetReceiver"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/hourly_forecast_widget_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
