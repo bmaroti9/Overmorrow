@@ -690,7 +690,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
 }
 
 
-Future<dynamic> metNGetCurrentResponse(settings, placeName, lat, lon) async {
+Future<dynamic> metNGetLightResponse(settings, placeName, lat, lon) async {
   final params = {
     "lat" : lat.toString(),
     "lon" : lon.toString(),
@@ -708,7 +708,7 @@ Future<dynamic> metNGetCurrentResponse(settings, placeName, lat, lon) async {
 }
 
 Future<LightCurrentWeatherData> metNGetLightCurrentData(settings, placeName, lat, lon) async {
-  final item = await metNGetCurrentResponse(settings, placeName, lat, lon);
+  final item = await metNGetLightResponse(settings, placeName, lat, lon);
 
   DateTime now = DateTime.now();
 
@@ -724,11 +724,49 @@ Future<LightCurrentWeatherData> metNGetLightCurrentData(settings, placeName, lat
 }
 
 Future<LightWindData> metNGetLightWindData(settings, placeName, lat, lon) async {
-  final item = await metNGetCurrentResponse(settings, placeName, lat, lon);
+  final item = await metNGetLightResponse(settings, placeName, lat, lon);
 
   return LightWindData(
     windDirAngle: item["properties"]["timeseries"][0]["data"]["instant"]["details"]["wind_from_direction"].round(),
     windSpeed: unit_coversion(item["properties"]["timeseries"][0]["data"]["instant"]["details"]["wind_speed"] * 3.6,settings["Wind"]).round(),
     windUnit: settings["Wind"],
+  );
+}
+
+
+Future<LightHourlyForecastData> metNGetLightHourlyData(settings, placeName, lat, lon) async {
+  final item = await metNGetLightResponse(settings, placeName, lat, lon);
+
+  List<String> hourlyConditions = [];
+  List<int> hourlyTemps = [];
+  List<String> hourlyNames = [];
+
+  DateTime now = DateTime.now();
+
+  for (int i = 0; i < min(item["properties"]["timeseries"].length, 29); i++) {
+    final hour = item["properties"]["timeseries"][i];
+
+    DateTime d = DateTime.parse(hour["time"]);
+
+    if (d.hour % 6 == 0) {
+      hourlyConditions.add(metNTextCorrection(
+          hour["data"]["next_1_hours"]["summary"]["symbol_code"], false, null));
+      hourlyTemps.add(unit_coversion(
+          hour["data"]["instant"]["details"]["air_temperature"], settings["Temperature"]).round(),);
+      hourlyNames.add("${d.hour}h");
+    }
+  }
+
+  return LightHourlyForecastData(
+    place: placeName,
+    currentCondition: metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"], false, null),
+    currentTemp: unit_coversion(
+        item["properties"]["timeseries"][0]["data"]["instant"]["details"]["air_temperature"],
+        settings["Temperature"]).round(),
+    updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
+    //i can't sync lists to widgets so i need to encode and then decode them
+    hourlyConditions: jsonEncode(hourlyConditions),
+    hourlyNames: jsonEncode(hourlyNames),
+    hourlyTemps: jsonEncode(hourlyTemps),
   );
 }

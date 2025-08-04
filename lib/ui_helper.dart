@@ -33,7 +33,7 @@ const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);
 
 double getFontSize(String set) {
-  double x = Platform.isLinux ? 0.75 : 0.92;
+  double x = Platform.isLinux ? 0.85 : 0.92;
 
   if (set == "small")  {
     x = 0.85 * x;

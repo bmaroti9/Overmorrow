@@ -827,3 +827,48 @@ Future<LightWindData> wapiGetLightWindData(settings, placeName, lat, lon) async 
       windUnit: settings["Wind"],
   );
 }
+
+Future<LightHourlyForecastData> wapiGetLightHourlyData(settings, placeName, lat, lon) async {
+  final params = {
+    'key': wapi_Key,
+    'q': "$lat, $lon",
+    'aqi': 'no',
+    'days': '1',
+    'alerts': 'no',
+  };
+  final url = Uri.https('api.weatherapi.com', 'v1/forecast.json', params);
+
+  final response = (await http.get(url)).body;
+
+  final item = jsonDecode(response);
+
+  List<String> hourlyConditions = [];
+  List<int> hourlyTemps = [];
+  List<String> hourlyNames = [];
+
+  DateTime now = DateTime.now();
+
+  for (int i = 0; i < item["forecast"]["forecastday"][0]["hour"].length; i++) {
+    final hour = item["forecast"]["forecastday"][0]["hour"][i];
+
+    DateTime d = DateTime.parse(hour["time"]);
+
+    if (d.hour % 6 == 0) {
+      hourlyConditions.add(textCorrection(hour["condition"]["code"], hour["is_day"],
+          false, null));
+      hourlyTemps.add(unit_coversion(hour["temp_c"], settings["Temperature"]).round());
+      hourlyNames.add("${d.hour}h");
+    }
+  }
+
+  return LightHourlyForecastData(
+    place: placeName,
+    currentCondition: textCorrection(item["current"]["condition"]["code"], item["current"]["is_day"], false, null),
+    currentTemp: unit_coversion(item["current"]["temp_c"], settings["Temperature"]).round(),
+    updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
+    //i can't sync lists to widgets so i need to encode and then decode them
+    hourlyConditions: jsonEncode(hourlyConditions),
+    hourlyNames: jsonEncode(hourlyNames),
+    hourlyTemps: jsonEncode(hourlyTemps),
+  );
+}

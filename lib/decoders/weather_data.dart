@@ -178,15 +178,13 @@ class LightHourlyForecastData {
     double lat = double.parse(split[0]);
     double lon = double.parse(split[1]);
 
-    return omGetHourlyForecast(settings, placeName, lat, lon);
-
     switch (provider) {
       case "weatherapi":
-
+        return wapiGetLightHourlyData(settings, placeName, lat, lon);
       case "met-norway":
-
+        return metNGetLightHourlyData(settings, placeName, lat, lon);
       default:
-
+        return omGetHourlyForecast(settings, placeName, lat, lon);
     }
   }
 }
