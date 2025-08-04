@@ -57,9 +57,7 @@ class DateCurrentWidget : GlanceAppWidget() {
         val temp = prefs.getInt("current.temp.$appWidgetId", 0)
         val condition = prefs.getString("current.condition.$appWidgetId", "N/A") ?: "?"
         val place = prefs.getString("current.place.$appWidgetId", "--") ?: "?"
-        val lastUpdated = prefs.getString("current.updatedTime.$appWidgetId", "N/A") ?: "?"
         val dateString = prefs.getString("current.date.$appWidgetId", "N/A") ?: "?"
-        val widgetHasFaliure = prefs.getString("widgetFailure.$appWidgetId", "unknown") ?: "?"
 
         val iconResId = getIconForCondition(condition)
 

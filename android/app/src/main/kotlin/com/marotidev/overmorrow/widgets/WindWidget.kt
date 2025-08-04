@@ -56,7 +56,6 @@ class WindWidget : GlanceAppWidget() {
 
         val prefs = currentState.preferences
 
-        val widgetHasFaliure = prefs.getString("widgetFailure.$appWidgetId", "unknown") ?: "?"
         val windSpeed = prefs.getInt("wind.windSpeed.$appWidgetId", 0)
         val windUnit = prefs.getString("wind.windUnit.$appWidgetId", "N/A") ?: "?"
         val windDirAngle = prefs.getInt("wind.windDirAngle.$appWidgetId", 0)
@@ -65,7 +64,7 @@ class WindWidget : GlanceAppWidget() {
         //i know this is depreciated but i found no other way to rotate a simple icon
         val remoteArrowView = RemoteViews(context.packageName, R.layout.rotated_arrow_layout).apply {
             setImageViewResource(R.id.rotated_arrow, R.drawable.icon_arrow_up)
-            setFloat(R.id.rotated_arrow, "setRotation", windDirAngle.toFloat())
+            setFloat(R.id.rotated_arrow, "setRotation", windDirAngle.toFloat() + 180f)
             setInt(R.id.rotated_arrow, "setColorFilter", GlanceTheme.colors.onPrimary.getColor(context).toArgb())
         }
 

@@ -56,8 +56,6 @@ class WidgetService {
   }
 
   static Future<void> syncCurrentDataToWidget(LightCurrentWeatherData data, int widgetId) async {
-    await saveData("widgetFailure.$widgetId", "enabled");
-
     await saveData("current.temp.$widgetId", data.temp);
     await saveData("current.condition.$widgetId", data.condition);
     await saveData("current.updatedTime.$widgetId", data.updatedTime);
@@ -68,7 +66,6 @@ class WidgetService {
   }
 
   static Future<void> syncWindDataToWidget(LightWindData data, int widgetId) async {
-    await saveData("widgetFailure.$widgetId", "enabled");
     await saveData("wind.windSpeed.$widgetId", data.windSpeed);
     await saveData("wind.windDirAngle.$widgetId", data.windDirAngle);
     await saveData("wind.windUnit.$widgetId", data.windUnit);
@@ -147,6 +144,8 @@ void callbackDispatcher() {
 
             final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
             final String widgetProvider = (await HomeWidget.getWidgetData<String>(providerKey, defaultValue: "unknown")) ?? "unknown";
+
+            if (widgetLocation == "unknown") continue;
 
             String placeName;
             String latLon;

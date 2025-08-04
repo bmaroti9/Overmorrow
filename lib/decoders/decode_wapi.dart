@@ -861,6 +861,8 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(settings, placeName, lat,
     }
   }
 
+  print(("wapi hourlytemp", hourlyTemps));
+
   return LightHourlyForecastData(
     place: placeName,
     currentCondition: textCorrection(item["current"]["condition"]["code"], item["current"]["is_day"], false, null),

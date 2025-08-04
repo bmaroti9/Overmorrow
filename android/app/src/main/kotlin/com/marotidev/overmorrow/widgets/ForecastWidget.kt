@@ -63,14 +63,12 @@ class ForecastWidget : GlanceAppWidget() {
     private fun GlanceContent(context: Context, currentState: HomeWidgetGlanceState, appWidgetId: Int) {
 
         val prefs = currentState.preferences
-
-        val widgetHasFaliure = prefs.getString("widgetFailure.$appWidgetId", "unknown") ?: "?"
         val currentTemp = prefs.getInt("hourlyForecast.currentTemp.$appWidgetId", 0)
         val currentCondition = prefs.getString("hourlyForecast.currentCondition.$appWidgetId", "N/A") ?: "?"
         val placeName = prefs.getString("hourlyForecast.place.$appWidgetId", "N/A") ?: "?"
-        val hourlyTempList = prefs.getString("hourlyForecast.hourlyTemps.$appWidgetId", "{}") ?: "{}"
-        val hourlyConditionList = prefs.getString("hourlyForecast.hourlyConditions.$appWidgetId", "{}") ?: "{}"
-        val hourlyTimeList = prefs.getString("hourlyForecast.hourlyNames.$appWidgetId", "{}") ?: "{}"
+        val hourlyTempList = prefs.getString("hourlyForecast.hourlyTemps.$appWidgetId", "[]") ?: "[]"
+        val hourlyConditionList = prefs.getString("hourlyForecast.hourlyConditions.$appWidgetId", "[]") ?: "[]"
+        val hourlyTimeList = prefs.getString("hourlyForecast.hourlyNames.$appWidgetId", "[]") ?: "[]"
 
         val tempList: List<Int> = try {
             hourlyTempList.let { gson.fromJson(it, hourlyTempType) } ?: emptyList()
