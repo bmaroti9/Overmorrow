@@ -22,6 +22,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
 import 'package:overmorrow/services/image_service.dart';
@@ -32,7 +33,8 @@ import '../services/color_service.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart';
-import 'extra_info.dart';
+import 'decode_RV.dart';
+import 'weather_data.dart';
 
 String OMConvertTime(String time) {
   return time.split("T")[1];
@@ -48,7 +50,6 @@ String OmAqiDesc(index, localizations) {
     localizations.unhealthyAqiDesc,
   ][index - 1];
 }
-
 
 String OmAqiTitle(index, localizations) {
   return [
@@ -147,7 +148,7 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
   };
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
-  //print(oMUrl);
+
 
   //var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
   var oMFile = await XCustomCacheManager.fetchData(oMUrl.toString(), "$real_loc, open-meteo");
@@ -205,12 +206,12 @@ String oMTextCorrection(int code) {
   return OMCodes[code] ?? 'Clear Sky';
 }
 
-String oMCurrentTextCorrection(int code, sunstatus, time) {
+String oMCurrentTextCorrection(int code, absoluteSunriseSunset, time) {
   String t = time.contains("T") ? time.split("T")[1] : time.split(" ")[1];
   int minute = int.parse(t.split(":")[1]);
   int hour = int.parse(t.split(":")[0]);
 
-  List<String> x = sunstatus.absoluteSunriseSunset.split("/");
+  List<String> x = absoluteSunriseSunset.split("/");
   int up_h = int.parse(x[0].split(":")[0]);
   int up_m = int.parse(x[0].split(":")[1]);
 
@@ -290,12 +291,12 @@ class OMCurrent {
   static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng, start, dayDif, context, isonline) async {
 
     String currentCondition = oMCurrentTextCorrection(
-        item["current"]["weather_code"], sunstatus, timenow);
+        item["current"]["weather_code"], sunstatus.absoluteSunriseSunset, timenow);
 
     //offline mode
     if (!isonline) {
       currentCondition = oMCurrentTextCorrection(
-          item["hourly"]["weather_code"][start], sunstatus, timenow);
+          item["hourly"]["weather_code"][start], sunstatus.absoluteSunriseSunset, timenow);
     }
 
     ImageService imageService = await ImageService.getImageService(currentCondition, real_loc, settings);
@@ -318,8 +319,7 @@ class OMCurrent {
       precip: double.parse(unit_coversion(
           item["daily"]["precipitation_sum"][dayDif], settings["Precipitation"])
           .toStringAsFixed(1)),
-      wind: unit_coversion(item["hourly"]["wind_speed_10m"][start], settings["Wind"])
-          .round(),
+      wind: unit_coversion(item["hourly"]["wind_speed_10m"][start], settings["Wind"]).round(),
       humidity: item["current"]["relative_humidity_2m"],
       temp: unit_coversion(
         isonline ? item["current"]["temperature_2m"] : item["hourly"]["temperature_2m"][start],
@@ -443,8 +443,6 @@ class OM15MinutePrecip {
 
     int offset15 = minuteOffset ~/ 15;
 
-    print(("offset 15", offset15, minuteOffset));
-
     for (int i = offset15; i < item["minutely_15"]["precipitation"].length; i++) {
       double x = item["minutely_15"]["precipitation"][i];
       if (x > 0.0) {
@@ -545,12 +543,12 @@ class OMHour {
     temp: unit_coversion(item["hourly"]["temperature_2m"][index], settings["Temperature"]).round(),
     text: conditionTranslation(
         oMCurrentTextCorrection(
-            item["hourly"]["weather_code"][index], sunstatus, item["hourly"]["time"][index]
+            item["hourly"]["weather_code"][index], sunstatus.absoluteSunriseSunset, item["hourly"]["time"][index]
         ),
         localizations
     ) ?? "TranslationErr",
     icon: oMIconCorrection(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
-        sunstatus, item["hourly"]["time"][index])),
+        sunstatus.absoluteSunriseSunset, item["hourly"]["time"][index])),
     time: settings["Time mode"] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
 
     precip: double.parse(
@@ -984,5 +982,105 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
     updatedTime: DateTime.now(),
     localtime: real_time.split("T")[1],
     isonline: isonline,
-    );
+  );
+}
+
+Future<LightCurrentWeatherData> omGetLightCurrentData(settings, placeName, lat, lon) async {
+  final oMParams = {
+    "latitude": lat.toString(),
+    "longitude": lon.toString(),
+    "current": ["temperature_2m", "weather_code"],
+    "daily": ["sunrise", "sunset"],
+    "forecast_days": "1",
+    "timezone": "auto",
+  };
+
+  final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
+  final response = (await http.get(oMUrl)).body;
+
+  final item = jsonDecode(response);
+
+  DateTime localtime = OMGetLocalTime(item);
+  String realTime = "jT${localtime.hour}:${localtime.minute}";
+  DateTime now = DateTime.now();
+
+  final absoluteSunriseSunset =  "${OMConvertTime(item["daily"]["sunrise"][0])}/"
+      "${OMConvertTime(item["daily"]["sunset"][0])}";
+
+  return LightCurrentWeatherData(
+    condition: oMCurrentTextCorrection(item["current"]["weather_code"], absoluteSunriseSunset, realTime),
+    place: placeName,
+    temp: unit_coversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
+    updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
+    dateString: getDateStringFromLocalTime(now),
+  );
+}
+
+Future<LightWindData> omGetLightWindData(settings, lat, lon) async {
+  final oMParams = {
+    "latitude": lat.toString(),
+    "longitude": lon.toString(),
+    "current": ["wind_speed_10m", "wind_direction_10m"],
+  };
+
+  final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
+  final response = (await http.get(oMUrl)).body;
+
+  final item = jsonDecode(response);
+
+  return LightWindData(
+      windDirAngle: item["current"]["wind_direction_10m"],
+      windSpeed: unit_coversion(item["current"]["wind_speed_10m"], settings["Wind"]).round(),
+      windUnit: settings["Wind"]
+  );
+}
+
+Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lon) async {
+  final oMParams = {
+    "latitude": lat.toString(),
+    "longitude": lon.toString(),
+    "current": ["temperature_2m", "weather_code"],
+    "hourly" : ["temperature_2m", "weather_code"],
+    "daily": ["sunrise", "sunset"],
+    "forecast_days": "1",
+    "timezone": "auto",
+  };
+
+  final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
+  final response = (await http.get(oMUrl)).body;
+
+  final item = jsonDecode(response);
+
+  DateTime localtime = OMGetLocalTime(item);
+  String realTime = "jT${localtime.hour}:${localtime.minute}";
+  DateTime now = DateTime.now();
+
+  final absoluteSunriseSunset =  "${OMConvertTime(item["daily"]["sunrise"][0])}/"
+      "${OMConvertTime(item["daily"]["sunset"][0])}";
+
+  List<String> hourlyConditions = [];
+  List<int> hourlyTemps = [];
+  List<String> hourlyNames = [];
+
+  for (int i = 0; i < item["hourly"]["temperature_2m"].length; i++) {
+    DateTime d = DateTime.parse(item["hourly"]["time"][i]);
+    if (d.hour % 6 == 0) {
+      hourlyConditions.add(oMCurrentTextCorrection(
+          item["hourly"]["weather_code"][i], absoluteSunriseSunset, item["hourly"]["time"][i]
+      ));
+      hourlyTemps.add(unit_coversion(item["hourly"]["temperature_2m"][i], settings["Temperature"]).round());
+      hourlyNames.add("${d.hour}h");
+    }
+  }
+
+  return LightHourlyForecastData(
+      place: placeName,
+      currentCondition: oMCurrentTextCorrection(item["current"]["weather_code"], absoluteSunriseSunset, realTime),
+      currentTemp: unit_coversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
+      updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
+      //i can't sync lists to widgets so i need to encode and then decode them
+      hourlyConditions: jsonEncode(hourlyConditions),
+      hourlyNames: jsonEncode(hourlyNames),
+      hourlyTemps: jsonEncode(hourlyTemps),
+  );
 }

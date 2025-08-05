@@ -55,35 +55,33 @@ Widget searchBar2(ColorScheme palette, recommend,
             color: palette.surface,
             borderRadius: BorderRadius.circular(33)
           ),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 20, right: 13),
+                padding: const EdgeInsets.only(left: 10, right: 13),
                 child: Icon(Icons.place_outlined, color: palette.primary,),
               ),
               Expanded(child: comfortatext(place, 23, settings, color: palette.onSurface, maxLines: 1)),
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: IconButton(
-                  icon: Icon(Icons.settings_outlined, color: palette.primary, size: 25,),
-                  onPressed: () {
-                    HapticFeedback.selectionClick();
-                    Navigator.push(
-                      context,
+              IconButton(
+                icon: Icon(Icons.settings_outlined, color: palette.primary, size: 25,),
+                onPressed: () {
+                  HapticFeedback.selectionClick();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingsPage(image: image),
+                    ),
+                  ).then((value) {
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => SettingsPage(image: image),
+                        builder: (context) {
+                          return const MyApp();
+                        },
                       ),
-                    ).then((value) {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const MyApp();
-                          },
-                        ),
-                      );
-                    });
-                  },
-                ),
+                    );
+                  });
+                },
               ),
             ],
           ),
@@ -209,9 +207,9 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
       Placemark place = placemarks[0];
 
       setState(() {
-        placeName = place.locality ?? "";
-        country = place.isoCountryCode ?? "";
-        region = place.administrativeArea ?? "";
+        placeName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? "";
+        country = place.isoCountryCode ?? place.country ?? "";
+        region = place.administrativeArea ?? place.subAdministrativeArea ?? "";
         locationState = "enabled";
       });
     } on Error {
@@ -246,11 +244,14 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
       Placemark place = placemarks[0];
 
       setState(() {
-        placeName = place.locality ?? "";
-        country = place.isoCountryCode ?? "";
-        region = place.administrativeArea ?? "";
+        placeName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? "";
+        country = place.isoCountryCode ?? place.country ?? "";
+        region = place.administrativeArea ?? place.subAdministrativeArea ?? "";
         locationState = "enabled";
       });
+
+      //update the last known position for the home screen widgets
+      setLastKnownLocation(placeName, "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}");
 
     } on Error {
       setState(() {

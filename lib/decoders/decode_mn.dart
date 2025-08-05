@@ -20,6 +20,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/services/image_service.dart';
@@ -31,8 +32,9 @@ import '../services/color_service.dart';
 import '../ui_helper.dart';
 
 import '../weather_refact.dart';
+import 'decode_RV.dart';
 import 'decode_wapi.dart';
-import 'extra_info.dart';
+import 'weather_data.dart';
 
 String metNTextCorrection(String text, bool shouldTranslate, localizations) {
   String p = metNWeatherToText[text] ?? 'Clear Sky';
@@ -267,7 +269,6 @@ class MetNCurrent {
       feels_like: metNcalculateFeelsLike(it["instant"]["details"]["air_temperature"],
         it["instant"]["details"]["relative_humidity"], it["instant"]["details"]["wind_speed"] * 3.6),
       wind_dir: it["instant"]["details"]["wind_from_direction"].round(),
-
 
     );
   }
@@ -685,5 +686,87 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, real_loc, settings, placeName, 
     updatedTime: DateTime.now(),
     localtime: "${localTime.hour}:${localTime.minute}",
     isonline: isonline,
+  );
+}
+
+
+Future<dynamic> metNGetLightResponse(settings, placeName, lat, lon) async {
+  final params = {
+    "lat" : lat.toString(),
+    "lon" : lon.toString(),
+    "altitude" : "100",
+  };
+
+  final headers = {
+    "User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"
+  };
+  final url = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/compact', params);
+
+  final response = (await http.get(url, headers: headers)).body;
+
+  return jsonDecode(response);
+}
+
+Future<LightCurrentWeatherData> metNGetLightCurrentData(settings, placeName, lat, lon) async {
+  final item = await metNGetLightResponse(settings, placeName, lat, lon);
+
+  DateTime now = DateTime.now();
+
+  return LightCurrentWeatherData(
+    condition: metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"], false, null),
+    place: placeName,
+    temp: unit_coversion(
+        item["properties"]["timeseries"][0]["data"]["instant"]["details"]["air_temperature"],
+        settings["Temperature"]).round(),
+    updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
+    dateString: getDateStringFromLocalTime(now),
+  );
+}
+
+Future<LightWindData> metNGetLightWindData(settings, placeName, lat, lon) async {
+  final item = await metNGetLightResponse(settings, placeName, lat, lon);
+
+  return LightWindData(
+    windDirAngle: item["properties"]["timeseries"][0]["data"]["instant"]["details"]["wind_from_direction"].round(),
+    windSpeed: unit_coversion(item["properties"]["timeseries"][0]["data"]["instant"]["details"]["wind_speed"] * 3.6,settings["Wind"]).round(),
+    windUnit: settings["Wind"],
+  );
+}
+
+
+Future<LightHourlyForecastData> metNGetLightHourlyData(settings, placeName, lat, lon) async {
+  final item = await metNGetLightResponse(settings, placeName, lat, lon);
+
+  List<String> hourlyConditions = [];
+  List<int> hourlyTemps = [];
+  List<String> hourlyNames = [];
+
+  DateTime now = DateTime.now();
+
+  for (int i = 0; i < min(item["properties"]["timeseries"].length, 23); i++) {
+    final hour = item["properties"]["timeseries"][i];
+
+    DateTime d = DateTime.parse(hour["time"]);
+
+    if (d.hour % 6 == 0) {
+      hourlyConditions.add(metNTextCorrection(
+          hour["data"]["next_1_hours"]["summary"]["symbol_code"], false, null));
+      hourlyTemps.add(unit_coversion(
+          hour["data"]["instant"]["details"]["air_temperature"], settings["Temperature"]).round(),);
+      hourlyNames.add("${d.hour}h");
+    }
+  }
+
+  return LightHourlyForecastData(
+    place: placeName,
+    currentCondition: metNTextCorrection(item["properties"]["timeseries"][0]["data"]["next_1_hours"]["summary"]["symbol_code"], false, null),
+    currentTemp: unit_coversion(
+        item["properties"]["timeseries"][0]["data"]["instant"]["details"]["air_temperature"],
+        settings["Temperature"]).round(),
+    updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
+    //i can't sync lists to widgets so i need to encode and then decode them
+    hourlyConditions: jsonEncode(hourlyConditions),
+    hourlyNames: jsonEncode(hourlyNames),
+    hourlyTemps: jsonEncode(hourlyTemps),
   );
 }

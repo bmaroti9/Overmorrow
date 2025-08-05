@@ -30,7 +30,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get today => 'Aujourd hui';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'demain';
 
   @override
   String get overmorrowLowercase => 'Overmorrow';
@@ -99,19 +99,23 @@ class AppLocalizationsFr extends AppLocalizations {
   String get unableToLocateDevice => 'Impossible de localiser l appareil';
 
   @override
-  String get locationServicesAreDisabled => 'Les services de localisation sont désactivés.';
+  String get locationServicesAreDisabled =>
+      'Les services de localisation sont désactivés.';
 
   @override
-  String get locationPermissionIsDenied => 'L\'autorisation de localisation est refusée';
+  String get locationPermissionIsDenied =>
+      'L\'autorisation de localisation est refusée';
 
   @override
-  String get locationPermissionDeniedForever => 'Autorisation de localisation refusée définitivement';
+  String get locationPermissionDeniedForever =>
+      'Autorisation de localisation refusée définitivement';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission =>
+      'accorder l\'autorisation de localisation';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'position actuelle';
 
   @override
   String get favoritesLowercase => 'favorites';
@@ -186,7 +190,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get fontSize => 'Taille de police';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'quotidiennement';
 
   @override
   String get searchProvider => 'Fournisseur de recherche';
@@ -201,7 +205,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get imageSource => 'Source d\'image';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'résumé';
 
   @override
   String get precipLowercase => 'précip';
@@ -213,28 +217,34 @@ class AppLocalizationsFr extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get goodAqiDesc => 'La qualité de l\'air est excellente ; il n\'y a pas de risque pour la santé.';
+  String get goodAqiDesc =>
+      'La qualité de l\'air est excellente ; il n\'y a pas de risque pour la santé.';
 
   @override
-  String get fairAqiDesc => 'Qualité de l\'air acceptable ; risque mineur pour les personnes sensibles.';
+  String get fairAqiDesc =>
+      'Qualité de l\'air acceptable ; risque mineur pour les personnes sensibles.';
 
   @override
-  String get moderateAqiDesc => 'Les personnes sensibles peuvent ressentir des effets légers.';
+  String get moderateAqiDesc =>
+      'Les personnes sensibles peuvent ressentir des effets légers.';
 
   @override
-  String get poorAqiDesc => 'Effets sur la santé possibles pour tout le monde, graves pour les groupes sensibles.';
+  String get poorAqiDesc =>
+      'Effets sur la santé possibles pour tout le monde, graves pour les groupes sensibles.';
 
   @override
-  String get veryPoorAqiDesc => 'Effets graves sur la santé pour tout le monde.';
+  String get veryPoorAqiDesc =>
+      'Effets graves sur la santé pour tout le monde.';
 
   @override
-  String get unhealthyAqiDesc => 'Conditions d\'urgence ; effets graves sur la santé pour tout le monde.';
+  String get unhealthyAqiDesc =>
+      'Conditions d\'urgence ; effets graves sur la santé pour tout le monde.';
 
   @override
   String get photoByXOnUnsplash => 'Photo, de ,x, sur ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'code source';
 
   @override
   String get emailLowercase => 'email';

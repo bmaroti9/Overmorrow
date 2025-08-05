@@ -12,10 +12,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get feelsLike => 'Gefühlt';
 
   @override
-  String get precipCapital => 'Niedersch.';
+  String get precipCapital => 'Niederschlag';
 
   @override
-  String get humidity => 'Luftfeuchtigkeit';
+  String get humidity => 'Luftfeuchte';
 
   @override
   String get windCapital => 'Wind';
@@ -105,16 +105,17 @@ class AppLocalizationsDe extends AppLocalizations {
   String get locationPermissionIsDenied => 'Standortberechtigung verweigert';
 
   @override
-  String get locationPermissionDeniedForever => 'Standortberechtigung für immer verweigert';
+  String get locationPermissionDeniedForever =>
+      'Standortberechtigung für immer verweigert';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'Genehmigung für den Standort';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'aktueller Standort';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'Favoriten';
 
   @override
   String get failedToAccessGps => 'GPS-Zugriff fehlgeschlagen';
@@ -156,7 +157,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get colorMode => 'Farbmodus';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'Wetteranbieter';
 
   @override
   String get timeMode => 'Zeitmodus';
@@ -186,13 +187,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get fontSize => 'Schriftgröße';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'täglich';
 
   @override
   String get searchProvider => 'Suchanbieter';
 
   @override
-  String get updatedJustNow => 'aktualisiert, gerade jetzt';
+  String get updatedJustNow => 'aktualisiert, gerade eben';
 
   @override
   String get colorSource => 'Farbquelle';
@@ -201,7 +202,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get imageSource => 'Bildquelle';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'Gesamt';
 
   @override
   String get precipLowercase => 'Niederschlag';
@@ -210,55 +211,61 @@ class AppLocalizationsDe extends AppLocalizations {
   String get windLowercase => 'Wind';
 
   @override
-  String get uvLowercase => 'UV';
+  String get uvLowercase => 'uv';
 
   @override
-  String get goodAqiDesc => 'Die Luftqualität ist ausgezeichnet; kein Gesundheitsrisiko.';
+  String get goodAqiDesc =>
+      'Die Luftqualität ist ausgezeichnet; kein Gesundheitsrisiko.';
 
   @override
-  String get fairAqiDesc => 'Akzeptable Luftqualität; geringes Risiko für empfindliche Personen.';
+  String get fairAqiDesc =>
+      'Akzeptable Luftqualität; geringes Risiko für empfindliche Personen.';
 
   @override
-  String get moderateAqiDesc => 'Empfindliche Personen können leichte Auswirkungen erfahren.';
+  String get moderateAqiDesc =>
+      'Empfindliche Personen können leichte Auswirkungen erfahren.';
 
   @override
-  String get poorAqiDesc => 'Gesundheitliche Auswirkungen für alle möglich, ernst für empfindliche Gruppen.';
+  String get poorAqiDesc =>
+      'Gesundheitliche Auswirkungen für alle möglich, ernsthaft für empfindliche Gruppen.';
 
   @override
-  String get veryPoorAqiDesc => 'Schwere gesundheitliche Auswirkungen für alle.';
+  String get veryPoorAqiDesc =>
+      'Schwere gesundheitliche Auswirkungen für alle.';
 
   @override
-  String get unhealthyAqiDesc => 'Notfallbedingungen; schwere gesundheitliche Auswirkungen für alle.';
+  String get unhealthyAqiDesc =>
+      'Notfallbedingungen; schwere gesundheitliche Auswirkungen für alle.';
 
   @override
   String get photoByXOnUnsplash => 'Foto, von ,x, auf ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'Quellcode';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'E-Mail';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'Ein Problem melden';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'Spenden';
 
   @override
   String get versionUppercase => 'Version';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'APIs & Dienste';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Lizenz';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'Wetterdaten';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'Bilder';
 
   @override
   String get appearance => 'Aussehen';
@@ -285,7 +292,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get unitsSettingdesc => 'die in der App verwendeten Einheiten';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'über diese App';
 
   @override
   String get now => 'jetzt';
@@ -461,7 +468,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get alertsCapital => 'Warnungen';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'Warnungen';
 
   @override
   String get severity => 'Schweregrad';
@@ -476,14 +483,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get areas => 'Gebiete';
 
   @override
-  String get light => 'light';
+  String get light => 'leicht';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'schwer';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'mehr zeigen';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'weniger zeigen';
 }

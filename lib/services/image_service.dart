@@ -64,7 +64,7 @@ class ImageService {
     var response2 = await file[0].readAsString();
     var unsplashBody = jsonDecode(response2);
 
-    final String image_path = unsplashBody[0]["urls"]["regular"];
+    final String image_path = unsplashBody[0]["urls"]["raw"] + "&w=1500";
     Image image = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,
       width: double.infinity, height: double.infinity);
 

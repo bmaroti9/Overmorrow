@@ -16,82 +16,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'dart:async';
 import 'dart:convert';
-import 'package:overmorrow/decoders/decode_OM.dart';
-import 'package:overmorrow/decoders/decode_mn.dart';
+
 import '../caching.dart';
-import 'decode_wapi.dart';
-
-
-class WeatherData {
-  final Map<String, String> settings;
-
-  final String place;
-  final String real_loc;
-  final double lat;
-  final double lng;
-
-  final String provider;
-
-  final updatedTime;
-  final fetch_datetime;
-  final bool isonline;
-
-  final localtime;
-
-  final days;
-  final hourly72;
-  final current;
-  final aqi;
-  final sunstatus;
-  final radar;
-  final minutely_15_precip;
-  final alerts;
-
-  final List<double> dailyMinMaxTemp;
-
-  WeatherData({
-    required this.place,
-    required this.settings,
-    required this.provider,
-    required this.real_loc,
-    required this.lat,
-    required this.lng,
-    required this.sunstatus,
-    required this.aqi,
-    required this.radar,
-    required this.days,
-    required this.hourly72,
-    required this.current,
-    required this.fetch_datetime,
-    required this.isonline,
-    required this.updatedTime,
-    required this.localtime,
-
-    required this.minutely_15_precip,
-    required this.alerts,
-
-    required this.dailyMinMaxTemp
-  });
-
-  static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider, localizations) async {
-
-    List<String> split = latlong.split(",");
-    double lat = double.parse(split[0]);
-    double lng = double.parse(split[1]);
-
-    if (provider == 'weatherapi.com') {
-      return WapiGetWeatherData(lat, lng, real_loc, settings, placeName, localizations);
-    }
-    else if (provider == "met norway"){
-      return MetNGetWeatherData(lat, lng, real_loc, settings, placeName, localizations);
-    }
-    else {
-      return OMGetWeatherData(lat, lng, real_loc, settings, placeName, localizations);
-    }
-  }
-}
 
 class RainviewerRadar {
   final List<String> images;
@@ -139,3 +66,4 @@ class RainviewerRadar {
     return RainviewerRadar(images: images, times: times, real_hour: real_hour, starting_index: starting_index);
   }
 }
+

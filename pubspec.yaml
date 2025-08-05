@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.5.2+49
+version: 2.6.0+49
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -40,6 +40,9 @@ dependencies:
   geolocator: ^13.0.4
   geocoding: ^3.0.0
 
+  #i also used this version in the build.gradle for some plugins
+  home_widget: ^0.8.0
+
   flutter_cache_manager: ^3.4.1
   flutter_map: ^8.1.1
   loading_animation_widget: ^1.2.0+4
@@ -53,11 +56,10 @@ dependencies:
   #for the .arb files for translation
   flutter_localizations:
     sdk: flutter
-  intl: ^0.19.0
+  intl: ^0.20.2
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   google_fonts: ^6.2.1
+  workmanager: ^0.6.0
 
 #https://github.com/Zverik/every_door/blob/aaf8d2fdeac483041bcac2c7c79ef760b99dff2b/pubspec.yaml#L55
 
@@ -67,7 +69,6 @@ dependency_overrides:
       url: https://github.com/Zverik/flutter-geolocator.git
       ref: floss
       path: geolocator_android
-
 
 flutter_launcher_icons:
   android: true
@@ -107,6 +108,7 @@ flutter:
 
   assets:
     - assets/backdrops/
+    - assets/icons/icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

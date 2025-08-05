@@ -105,7 +105,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationPermissionIsDenied => 'location permission is denied';
 
   @override
-  String get locationPermissionDeniedForever => 'location permission denied forever';
+  String get locationPermissionDeniedForever =>
+      'location permission denied forever';
 
   @override
   String get grantLocationPermission => 'grant location permission';
@@ -216,19 +217,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goodAqiDesc => 'Air quality is excellent; no health risk.';
 
   @override
-  String get fairAqiDesc => 'Acceptable air quality; minor risk for sensitive people.';
+  String get fairAqiDesc =>
+      'Acceptable air quality; minor risk for sensitive people.';
 
   @override
-  String get moderateAqiDesc => 'Sensitive individuals may experience mild effects.';
+  String get moderateAqiDesc =>
+      'Sensitive individuals may experience mild effects.';
 
   @override
-  String get poorAqiDesc => 'Health effects possible for everyone, serious for sensitive groups.';
+  String get poorAqiDesc =>
+      'Health effects possible for everyone, serious for sensitive groups.';
 
   @override
   String get veryPoorAqiDesc => 'Serious health effects for everyone.';
 
   @override
-  String get unhealthyAqiDesc => 'Emergency conditions; severe health effects for all.';
+  String get unhealthyAqiDesc =>
+      'Emergency conditions; severe health effects for all.';
 
   @override
   String get photoByXOnUnsplash => 'Photo, by ,x, on ,Unsplash';

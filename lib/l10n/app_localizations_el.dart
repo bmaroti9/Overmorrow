@@ -99,13 +99,16 @@ class AppLocalizationsEl extends AppLocalizations {
   String get unableToLocateDevice => 'Η συσκευή δεν εντοπίστηκε';
 
   @override
-  String get locationServicesAreDisabled => 'Οι υπηρεσίες τοποθεσίας είναι απενεργοποιημένες.';
+  String get locationServicesAreDisabled =>
+      'Οι υπηρεσίες τοποθεσίας είναι απενεργοποιημένες.';
 
   @override
-  String get locationPermissionIsDenied => 'Έχει απαγορευθεί η άδεια τοποθεσίας';
+  String get locationPermissionIsDenied =>
+      'Έχει απαγορευθεί η άδεια τοποθεσίας';
 
   @override
-  String get locationPermissionDeniedForever => 'Έχει απαγορευθεί η άδεια τοποθεσίας επ αόριστον';
+  String get locationPermissionDeniedForever =>
+      'Έχει απαγορευθεί η άδεια τοποθεσίας επ αόριστον';
 
   @override
   String get grantLocationPermission => 'grant location permission';
@@ -213,22 +216,27 @@ class AppLocalizationsEl extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get goodAqiDesc => 'Η ποιότητα του αέρα είναι εξαιρετική. Δεν υπάρχει κίνδυνος για την υγεία.';
+  String get goodAqiDesc =>
+      'Η ποιότητα του αέρα είναι εξαιρετική. Δεν υπάρχει κίνδυνος για την υγεία.';
 
   @override
-  String get fairAqiDesc => 'Αποδεκτή ποιότητα αέρα· ελάχιστος κίνδυνος για ευαίσθητα άτομα.';
+  String get fairAqiDesc =>
+      'Αποδεκτή ποιότητα αέρα· ελάχιστος κίνδυνος για ευαίσθητα άτομα.';
 
   @override
-  String get moderateAqiDesc => 'Τα ευαίσθητα άτομα ενδέχεται να παρουσιάσουν ήπια αποτελέσματα.';
+  String get moderateAqiDesc =>
+      'Τα ευαίσθητα άτομα ενδέχεται να παρουσιάσουν ήπια αποτελέσματα.';
 
   @override
-  String get poorAqiDesc => 'Πιθανές επιπτώσεις στην υγεία για όλους, σοβαρές για τις ευαίσθητες ομάδες.';
+  String get poorAqiDesc =>
+      'Πιθανές επιπτώσεις στην υγεία για όλους, σοβαρές για τις ευαίσθητες ομάδες.';
 
   @override
   String get veryPoorAqiDesc => 'Σοβαρές επιπτώσεις στην υγεία για όλους.';
 
   @override
-  String get unhealthyAqiDesc => 'Συνθήκες έκτακτης ανάγκης· σοβαρές επιπτώσεις στην υγεία για όλους.';
+  String get unhealthyAqiDesc =>
+      'Συνθήκες έκτακτης ανάγκης· σοβαρές επιπτώσεις στην υγεία για όλους.';
 
   @override
   String get photoByXOnUnsplash => 'Φωτογραφία, από τον ,x, στο ,Unsplash';
@@ -282,7 +290,8 @@ class AppLocalizationsEl extends AppLocalizations {
   String get languageSettingDesc => 'η χρησιμοποιούμενη γλώσσα';
 
   @override
-  String get unitsSettingdesc => 'οι μονάδες που χρησιμοποιούνται στην εφαρμογή';
+  String get unitsSettingdesc =>
+      'οι μονάδες που χρησιμοποιούνται στην εφαρμογή';
 
   @override
   String get aboutSettingsDesc => 'about this app';

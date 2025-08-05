@@ -99,13 +99,15 @@ class AppLocalizationsFi extends AppLocalizations {
   String get unableToLocateDevice => 'Laitetta ei voi paikantaa';
 
   @override
-  String get locationServicesAreDisabled => 'sijaintipalvelut on poistettu käytöstä.';
+  String get locationServicesAreDisabled =>
+      'sijaintipalvelut on poistettu käytöstä.';
 
   @override
   String get locationPermissionIsDenied => 'sijainnin käyttöoikeus on estetty';
 
   @override
-  String get locationPermissionDeniedForever => 'sijainnin käyttöoikeus estetty ikuisesti';
+  String get locationPermissionDeniedForever =>
+      'sijainnin käyttöoikeus estetty ikuisesti';
 
   @override
   String get grantLocationPermission => 'grant location permission';
@@ -216,19 +218,23 @@ class AppLocalizationsFi extends AppLocalizations {
   String get goodAqiDesc => 'Ilmanlaatu on erinomainen; ei terveysriskiä.';
 
   @override
-  String get fairAqiDesc => 'Kelvollinen ilmanlaatu; pienehkö riski herkille ihmisille.';
+  String get fairAqiDesc =>
+      'Kelvollinen ilmanlaatu; pienehkö riski herkille ihmisille.';
 
   @override
-  String get moderateAqiDesc => 'Herkät yksilöt voivat kokea vähäisiä tuntemuksia.';
+  String get moderateAqiDesc =>
+      'Herkät yksilöt voivat kokea vähäisiä tuntemuksia.';
 
   @override
-  String get poorAqiDesc => 'Terveysvaikutukset mahdollisia kaikille, vaikeita herkille.';
+  String get poorAqiDesc =>
+      'Terveysvaikutukset mahdollisia kaikille, vaikeita herkille.';
 
   @override
   String get veryPoorAqiDesc => 'Vakavia terveysvaikutuksia kaikille.';
 
   @override
-  String get unhealthyAqiDesc => 'Hätätila; erittäin vakavia terveysvaikutuksia kaikille.';
+  String get unhealthyAqiDesc =>
+      'Hätätila; erittäin vakavia terveysvaikutuksia kaikille.';
 
   @override
   String get photoByXOnUnsplash => 'Kuva, ottanut ,x, palvelussa ,Unsplash';

@@ -1,0 +1,5 @@
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rotated_arrow"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+/>

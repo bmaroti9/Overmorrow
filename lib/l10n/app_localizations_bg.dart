@@ -99,16 +99,20 @@ class AppLocalizationsBg extends AppLocalizations {
   String get unableToLocateDevice => 'Не може да се намери устройство';
 
   @override
-  String get locationServicesAreDisabled => 'услугите за местоположение са деактивирани.';
+  String get locationServicesAreDisabled =>
+      'услугите за местоположение са деактивирани.';
 
   @override
-  String get locationPermissionIsDenied => 'разрешението за местоположение е отказано';
+  String get locationPermissionIsDenied =>
+      'разрешението за местоположение е отказано';
 
   @override
-  String get locationPermissionDeniedForever => 'разрешението за местоположение, отказано завинаги';
+  String get locationPermissionDeniedForever =>
+      'разрешението за местоположение, отказано завинаги';
 
   @override
-  String get grantLocationPermission => 'предоставяне на разрешение за местоположение';
+  String get grantLocationPermission =>
+      'предоставяне на разрешение за местоположение';
 
   @override
   String get currentLocation => 'текущо местоположение';
@@ -213,22 +217,27 @@ class AppLocalizationsBg extends AppLocalizations {
   String get uvLowercase => 'uv индекс';
 
   @override
-  String get goodAqiDesc => 'Качеството на въздуха е отлично; няма риск за здравето.';
+  String get goodAqiDesc =>
+      'Качеството на въздуха е отлично; няма риск за здравето.';
 
   @override
-  String get fairAqiDesc => 'Приемливо качество на въздуха; малък риск за чувствителни хора.';
+  String get fairAqiDesc =>
+      'Приемливо качество на въздуха; малък риск за чувствителни хора.';
 
   @override
-  String get moderateAqiDesc => 'Чувствителните хора могат да изпитат леки въздействия.';
+  String get moderateAqiDesc =>
+      'Чувствителните хора могат да изпитат леки въздействия.';
 
   @override
-  String get poorAqiDesc => 'Възможни са последици за здравето на всички, но сериозни за чувствителните групи.';
+  String get poorAqiDesc =>
+      'Възможни са последици за здравето на всички, но сериозни за чувствителните групи.';
 
   @override
   String get veryPoorAqiDesc => 'Сериозни последици за здравето на всички.';
 
   @override
-  String get unhealthyAqiDesc => 'Извънредни условия; тежки последици за здравето на всички.';
+  String get unhealthyAqiDesc =>
+      'Извънредни условия; тежки последици за здравето на всички.';
 
   @override
   String get photoByXOnUnsplash => 'Снимка, от ,x, на ,Unsplash';
@@ -243,7 +252,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get reportAnIssueLowercase => 'докладване на проблем';
 
   @override
-  String get donateLowercase => 'дарете';
+  String get donateLowercase => 'дарение';
 
   @override
   String get versionUppercase => 'Версия';
@@ -333,7 +342,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get d => 'д';
 
   @override
-  String get aerosolOpticalDepth => 'аерозолна оптична дълбочина';
+  String get aerosolOpticalDepth => 'оптична дълбочина на аерозола';
 
   @override
   String get dust => 'прах';

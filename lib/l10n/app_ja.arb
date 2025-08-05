@@ -213,5 +213,9 @@
   "unitedStatesAqi": "アメリカaqi",
   "@unitedStatesAqi": {},
   "offline": "オフライン",
-  "@offline": {}
+  "@offline": {},
+  "precipitaion": "降水量",
+  "@precipitaion": {},
+  "helpTranslate": "翻訳を手伝う",
+  "@helpTranslate": {}
 }

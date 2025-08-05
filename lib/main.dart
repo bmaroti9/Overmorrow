@@ -27,20 +27,200 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:overmorrow/services/location_service.dart';
+import 'package:workmanager/workmanager.dart';
 import 'caching.dart';
-import 'decoders/extra_info.dart';
+import 'decoders/weather_data.dart';
 import 'main_ui.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 
 import 'settings_page.dart';
 
+const updateWeatherDataKey = "com.marotidev.overmorrow.updateWeatherData";
+
+const currentWidgetReceiver = 'com.marotidev.overmorrow.receivers.CurrentWidgetReceiver';
+const dateCurrentWidgetReceiver = 'com.marotidev.overmorrow.receivers.DateCurrentWidgetReceiver';
+const windWidgetReceiver = 'com.marotidev.overmorrow.receivers.WindWidgetReceiver';
+const forecastWidgetReceiver = 'com.marotidev.overmorrow.receivers.ForecastWidgetReceiver';
+
+class WidgetService {
+
+  static Future<void> saveData(String id, value) async {
+    await HomeWidget.saveWidgetData(id, value);
+    print(("Saved", id, value));
+  }
+
+  static Future<void> syncCurrentDataToWidget(LightCurrentWeatherData data, int widgetId) async {
+    await saveData("current.temp.$widgetId", data.temp);
+    await saveData("current.condition.$widgetId", data.condition);
+    await saveData("current.updatedTime.$widgetId", data.updatedTime);
+    await saveData("current.place.$widgetId", data.place);
+    await saveData("current.date.$widgetId", data.dateString);
+
+    //place is the name of the city while location can include currentLocation
+  }
+
+  static Future<void> syncWindDataToWidget(LightWindData data, int widgetId) async {
+    await saveData("wind.windSpeed.$widgetId", data.windSpeed);
+    await saveData("wind.windDirAngle.$widgetId", data.windDirAngle);
+    await saveData("wind.windUnit.$widgetId", data.windUnit);
+  }
+
+  static Future<void> syncHourlyForecastDataToWidget(LightHourlyForecastData data, int widgetId) async {
+    await saveData("hourlyForecast.currentTemp.$widgetId", data.currentTemp);
+    await saveData("hourlyForecast.currentCondition.$widgetId", data.currentCondition);
+    await saveData("hourlyForecast.updatedTime.$widgetId", data.updatedTime);
+    await saveData("hourlyForecast.place.$widgetId", data.place);
+
+    await saveData("hourlyForecast.hourlyTemps.$widgetId", data.hourlyTemps);
+    await saveData("hourlyForecast.hourlyConditions.$widgetId", data.hourlyConditions);
+    await saveData("hourlyForecast.hourlyNames.$widgetId", data.hourlyNames);
+  }
+
+  static Future<void> reloadWidgets() async {
+    HomeWidget.updateWidget(
+      androidName: 'CurrentWidget',
+      qualifiedAndroidName: currentWidgetReceiver,
+    );
+    HomeWidget.updateWidget(
+      androidName: 'DateCurrentWidget',
+      qualifiedAndroidName: dateCurrentWidgetReceiver,
+    );
+    HomeWidget.updateWidget(
+      androidName: 'WindWidget',
+      qualifiedAndroidName: windWidgetReceiver,
+    );
+    HomeWidget.updateWidget(
+      androidName: 'ForecastWidget',
+      qualifiedAndroidName: forecastWidgetReceiver,
+    );
+  }
+}
+
+//this is the best solution i found to trigger an update of the data after the preferences have been changed
+@pragma('vm:entry-point')
+Future<void> interactiveCallback(Uri? uri) async {
+  print("INTERACTIVE CALLBACK, ${uri.toString()}");
+  if (uri?.host == 'update') {
+    await Workmanager().registerOneOffTask(
+        "test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
+  }
+}
+
+@pragma('vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+void callbackDispatcher() {
+
+  Workmanager().executeTask((task, inputData) async {
+    print("Native called background task: $task"); //simpleTask will be emitted here.
+
+    switch (task) {
+      case updateWeatherDataKey :
+
+        try {
+          print("HEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE");
+
+          final List<HomeWidgetInfo> installedWidgets = await HomeWidget.getInstalledWidgets();
+
+          if (installedWidgets.isEmpty) {
+            print("no widgets installed, skipping update");
+            return Future.value(true);
+          }
+
+          Map<String, String> settings = await getSettingsUsed();
+
+          for (HomeWidgetInfo widgetInfo in installedWidgets) {
+            final int widgetId = widgetInfo.androidWidgetId!;
+            final String widgetClassName = widgetInfo.androidClassName!;
+            print(("classname", widgetClassName));
+
+            final String locationKey = "current.location.$widgetId";
+            final String latLonKey = "current.latLon.$widgetId";
+            final String providerKey = "current.provider.$widgetId";
+
+            final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
+            final String widgetProvider = (await HomeWidget.getWidgetData<String>(providerKey, defaultValue: "unknown")) ?? "unknown";
+
+            if (widgetLocation == "unknown") continue;
+
+            String placeName;
+            String latLon;
+
+            if (widgetLocation == "currentLocation") {
+              List<String> lastKnown = await getLastKnownLocation();
+              placeName = lastKnown[0];
+              latLon = lastKnown[1];
+            }
+            else {
+              placeName = widgetLocation;
+              latLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
+            }
+
+            //these two are so similar that i'm updating them with the same logic
+            if (widgetClassName == currentWidgetReceiver || widgetClassName == dateCurrentWidgetReceiver) {
+
+              LightCurrentWeatherData data = await LightCurrentWeatherData
+                  .getLightCurrentWeatherData(placeName, latLon, widgetProvider, settings);
+
+              await WidgetService.syncCurrentDataToWidget(data, widgetId);
+            }
+            else if (widgetClassName == windWidgetReceiver) {
+
+              LightWindData data = await LightWindData
+                  .getLightWindData(placeName, latLon, widgetProvider, settings);
+
+              await WidgetService.syncWindDataToWidget(data, widgetId);
+            }
+            else if (widgetClassName == forecastWidgetReceiver) {
+
+              LightHourlyForecastData data = await LightHourlyForecastData
+                  .getLightForecastData(placeName, latLon, widgetProvider, settings);
+              
+              await WidgetService.syncHourlyForecastDataToWidget(data, widgetId);
+            }
+
+          }
+
+          WidgetService.reloadWidgets();
+
+        } catch (e, stacktrace) {
+          if (kDebugMode) {
+            print("ERRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRRRRR");
+            print((e, stacktrace));
+          }
+          return Future.value(false);
+        }
+    }
+
+    return Future.value(true);
+  });
+}
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  Workmanager().initialize(
+      callbackDispatcher, // The top level function, aka callbackDispatcher
+      isInDebugMode: kDebugMode // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  );
+
+  HomeWidget.registerInteractivityCallback(interactiveCallback);
+
+  if (kDebugMode) {
+    print("thissssssssssssssssssssssssssssssssss");
+    Workmanager().registerOneOffTask("test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
+  }
+
+  Workmanager().registerPeriodicTask(
+    "updateWeatherWidget",
+    updateWeatherDataKey,
+    frequency: const Duration(hours: 1),
+    constraints: Constraints(networkType: NetworkType.connected, requiresBatteryNotLow: true),
+  );
 
   final data = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
   final ratio = WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
@@ -181,8 +361,11 @@ class _HomePageState extends State<HomePage> {
                 position.latitude, position.longitude).timeout(const Duration(seconds: 3));
             Placemark place = placemarks[0];
 
-            backupName = place.locality;
+            backupName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? "";
             absoluteProposed = "${position.latitude}, ${position.longitude}";
+
+            //update the last known position for the home screen widgets
+            setLastKnownLocation(backupName, absoluteProposed);
 
           } on Error {
             backupName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
@@ -251,6 +434,9 @@ class _HomePageState extends State<HomePage> {
 
       await setLastPlace(backupName, absoluteProposed);  // if the code didn't fail
       // then this will be the new startup place
+
+      //WidgetService.saveData('counter', weatherData.current.temp);
+      //WidgetService.reloadWidget();
 
       return WeatherPage(data: weatherData, updateLocation: updateLocation);
 

@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:http/http.dart' as http;
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/services/image_service.dart';
 
@@ -32,7 +33,8 @@ import '../l10n/app_localizations.dart';
 
 import '../weather_refact.dart' as weather_refactor;
 import '../weather_refact.dart';
-import 'extra_info.dart';
+import 'decode_RV.dart';
+import 'weather_data.dart';
 
 import 'package:flutter/material.dart';
 
@@ -48,9 +50,6 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
     'alerts': 'yes',
   };
   final url = Uri.https('api.weatherapi.com', 'v1/forecast.json', params);
-  
-  //var file = await cacheManager2.getSingleFile(url.toString(), key: "$real_loc, weatherapi.com ")
-  //    .timeout(const Duration(seconds: 3));
 
   var file = await XCustomCacheManager.fetchData(url.toString(), "$real_loc, weatherapi.com");
 
@@ -175,21 +174,13 @@ Future<DateTime> WapiGetLocalTime(lat, lng) async {
   return DateTime.parse(body["formatted"]);
 }
 
-double unit_coversion(double value, String unit) {
+double unit_coversion(double value, String unit, {decimals = 2}) {
   List<double> p = weather_refactor.conversionTable[unit] ?? [0, 0];
   double a = p[0] + value * p[1];
-  a = double.parse(a.toStringAsFixed(2));
+  a = double.parse(a.toStringAsFixed(decimals));
   return a;
 }
 
-double temp_multiply_for_scale(int temp, String unit) {
-  if (unit == '˚C') {
-    return max(0, min(105, 17 + temp * 2.4));
-  }
-  else{
-    return max(0, min(105, (0 + temp).toDouble()));
-  }
-}
 
 IconData iconCorrection(name, isday, localizations) {
   String text = textCorrection(name, isday, false, localizations);
@@ -238,6 +229,12 @@ String wapiGetName(index, settings, localizations, item) {
   final String date = settings["Date format"] == "mm/dd" ? "${time.month}/${time.day}"
       :"${time.day}/${time.month}";
   return "$weekname, $date";
+}
+
+String getDateStringFromLocalTime(DateTime now) {
+  final List<String> weekNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  final List<String> monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  return "${weekNames[now.weekday - 1]}, ${monthNames[now.month - 1]} ${now.day}";
 }
 
 String backdropCorrection(name, isday, localizations) {
@@ -790,5 +787,90 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, real_loc, settings, placeName, 
     alerts: getWapiAlerts(wapi_body, localizations),
 
     isonline: isonline
+  );
+}
+
+Future<dynamic> wapiGetCurrentResponse(settings, placeName, lat, lon) async {
+  final params = {
+    'key': wapi_Key,
+    'q': "$lat, $lon",
+    'aqi': 'no',
+    'alerts': 'no',
+  };
+  final url = Uri.https('api.weatherapi.com', 'v1/current.json', params);
+
+  final response = (await http.get(url)).body;
+
+  return jsonDecode(response);
+}
+
+Future<LightCurrentWeatherData> wapiGetLightCurrentData(settings, placeName, lat, lon) async {
+  final item = await wapiGetCurrentResponse(settings, placeName, lat, lon);
+
+  DateTime now = DateTime.now();
+
+  return LightCurrentWeatherData(
+    condition: textCorrection(item["current"]["condition"]["code"], item["current"]["is_day"], false, null),
+    place: placeName,
+    temp:  unit_coversion(item["current"]["temp_c"], settings["Temperature"]).round(),
+    updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
+    dateString: getDateStringFromLocalTime(now),
+  );
+}
+
+Future<LightWindData> wapiGetLightWindData(settings, placeName, lat, lon) async {
+  final item = await wapiGetCurrentResponse(settings, placeName, lat, lon);
+
+  return LightWindData(
+      windDirAngle: item["current"]["wind_degree"],
+      windSpeed:  unit_coversion(item["current"]["wind_kph"], settings["Wind"]).round(),
+      windUnit: settings["Wind"],
+  );
+}
+
+Future<LightHourlyForecastData> wapiGetLightHourlyData(settings, placeName, lat, lon) async {
+  final params = {
+    'key': wapi_Key,
+    'q': "$lat, $lon",
+    'aqi': 'no',
+    'days': '1',
+    'alerts': 'no',
+  };
+  final url = Uri.https('api.weatherapi.com', 'v1/forecast.json', params);
+
+  final response = (await http.get(url)).body;
+
+  final item = jsonDecode(response);
+
+  List<String> hourlyConditions = [];
+  List<int> hourlyTemps = [];
+  List<String> hourlyNames = [];
+
+  DateTime now = DateTime.now();
+
+  for (int i = 0; i < item["forecast"]["forecastday"][0]["hour"].length; i++) {
+    final hour = item["forecast"]["forecastday"][0]["hour"][i];
+
+    DateTime d = DateTime.parse(hour["time"]);
+
+    if (d.hour % 6 == 0) {
+      hourlyConditions.add(textCorrection(hour["condition"]["code"], hour["is_day"],
+          false, null));
+      hourlyTemps.add(unit_coversion(hour["temp_c"], settings["Temperature"]).round());
+      hourlyNames.add("${d.hour}h");
+    }
+  }
+
+  print(("wapi hourlytemp", hourlyTemps));
+
+  return LightHourlyForecastData(
+    place: placeName,
+    currentCondition: textCorrection(item["current"]["condition"]["code"], item["current"]["is_day"], false, null),
+    currentTemp: unit_coversion(item["current"]["temp_c"], settings["Temperature"]).round(),
+    updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
+    //i can't sync lists to widgets so i need to encode and then decode them
+    hourlyConditions: jsonEncode(hourlyConditions),
+    hourlyNames: jsonEncode(hourlyNames),
+    hourlyTemps: jsonEncode(hourlyTemps),
   );
 }

@@ -1,0 +1,15 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialLayout="@layout/glance_default_loading_layout"
+    android:minWidth="100dp"
+    android:minHeight="20dp"
+    android:targetCellHeight="1"
+    android:targetCellWidth="4"
+    android:maxResizeHeight="50dp"
+    android:previewImage="@drawable/preview_date_current_widget"
+    android:resizeMode="horizontal|vertical"
+    android:widgetFeatures="reconfigurable"
+    android:configure="com.marotidev.overmorrow.configurators.CurrentWidgetConfigurationActivity"
+    android:description="@string/date_current_widget_description"
+    android:label="@string/date_current_widget_name"
+    android:updatePeriodMillis="3600000">
+</appwidget-provider>

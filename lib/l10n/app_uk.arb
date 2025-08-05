@@ -9,7 +9,7 @@
   "@moderateAqiDesc": {},
   "precipCapital": "Опади",
   "@precipCapital": {},
-  "d": "д",
+  "d": "дн",
   "@d": {},
   "windCapital": "Вітер",
   "@windCapital": {},
@@ -135,7 +135,7 @@
   "@layoutSettingDesc": {},
   "thirtyMinutes": "30хв",
   "@thirtyMinutes": {},
-  "mainPollutant": "головний забруднювач",
+  "mainPollutant": "Головний забруднювач",
   "@mainPollutant": {},
   "alderPollen": "Пилок вільхи",
   "@alderPollen": {},
@@ -253,7 +253,7 @@
   },
   "updatedXMinutesAgo": "Оновлено, {minutes} хв тому",
   "@updatedXMinutesAgo": {},
-  "rainInMinutes": "Дощ в наступні {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "rainInMinutes": "Дощ у наступні {minutes, plural, =1 {хвилину} other {{minutes} хвилин}}",
   "@rainInMinutes": {
     "description": "rain in the next X minutes",
     "placeholders": {
@@ -271,7 +271,7 @@
       }
     }
   },
-  "rainExpectedInHours": "Дощ очікується через {hours, plural, =1 {hour} other {{hours} hours}}",
+  "rainExpectedInHours": "Дощ очікується через {hours, plural, =1 {годину} other {{hours} годин}}",
   "@rainExpectedInHours": {
     "description": "rain expected in the next X hours",
     "placeholders": {
@@ -280,7 +280,7 @@
       }
     }
   },
-  "rainExpectedInMinutes": "Дощ очікується через {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+  "rainExpectedInMinutes": "Дощ очікується через {minutes, plural, =1 {хвилину} other {{minutes} хвилин}}",
   "@rainExpectedInMinutes": {
     "description": "rain expected in the next X minutes",
     "placeholders": {
@@ -289,7 +289,7 @@
       }
     }
   },
-  "updatedXHoursAgo": "Оновлено, {hours, plural, =1 {1 hour} other {{hours} hours}} тому",
+  "updatedXHoursAgo": "Оновлено, {hours, plural, =1 {1 годину} other {{hours} годин}} тому",
   "@updatedXHoursAgo": {
     "description": "updated x hours ago",
     "placeholders": {
@@ -298,7 +298,7 @@
       }
     }
   },
-  "updatedXDaysAgo": "Оновлено, {days, plural, =1 {1 day} other {{days} days}} тому",
+  "updatedXDaysAgo": "Оновлено, {days, plural, =1 {1 день} other {{days} днів}} тому",
   "@updatedXDaysAgo": {
     "description": "updated x days ago",
     "placeholders": {

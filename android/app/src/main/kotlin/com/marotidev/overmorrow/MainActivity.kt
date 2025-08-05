@@ -1,4 +1,4 @@
-package com.example.overmorrow
+package com.marotidev.overmorrow
 
 import io.flutter.embedding.android.FlutterActivity
 

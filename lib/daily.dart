@@ -265,10 +265,8 @@ Widget dailyCollapsed(var data, var day, ColorScheme palette, int index, int day
             )
           ),
           comfortatext("${day.maxTemp.toString()}°", 18, data.settings, color: palette.primary, weight: FontWeight.w500),
-          Padding(
-            padding: const EdgeInsets.only(left: 12),
-            child: Icon(Icons.expand_more, size: 22, color: palette.secondary,),
-          )
+          const SizedBox(width: 12,),
+          Icon(Icons.expand_more, size: 22, color: palette.secondary,)
         ],
       ),
     ),

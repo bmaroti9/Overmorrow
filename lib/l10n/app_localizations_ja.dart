@@ -42,7 +42,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get temperature => '気温';
 
   @override
-  String get precipitaion => 'Precipitation';
+  String get precipitaion => '降水量';
 
   @override
   String get rain => '雨';
@@ -348,7 +348,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get offline => 'オフライン';
 
   @override
-  String get helpTranslate => 'help translate';
+  String get helpTranslate => '翻訳を手伝う';
 
   @override
   String get extremelyClear => 'extremely clear';

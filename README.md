@@ -112,7 +112,7 @@ That was a year ago. Since then i have discovered material-You and have redesign
 - 🎨 **Material You** — Google's 3rd generation design system, introduced in android 12
 
 
-## Milestones:
+## 🎯 Milestones:
   - ✅ Add place searching
   - ✅ Add radar
   - ✅ Add air quality

@@ -348,7 +348,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
       return SizedBox(
         height: 21,
         child: Padding(
-          padding: const EdgeInsets.only(right: 28),
+          padding: const EdgeInsets.symmetric(horizontal: 28),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -380,7 +380,7 @@ class _SinceLastUpdateState extends State<SinceLastUpdate>{
       return SizedBox(
         height: 21,
         child: Padding(
-          padding: const EdgeInsets.only(right: 28),
+          padding: const EdgeInsets.symmetric(horizontal: 28),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

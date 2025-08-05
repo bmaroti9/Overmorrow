@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_current_widget_name">Current &amp; Date</string>
+    <string name="date_current_widget_description">Shows the current weather and date.</string>
+    <string name="current_widget_name">Current (Pill Shape)</string>
+    <string name="current_widget_description">Shows the current weather</string>
+    <string name="wind_widget_name">Wind speed &amp; Direction</string>
+    <string name="wind_widget_description">Shows the current wind speed and direction</string>
+    <string name="hourly_forecast_widget_name">Hourly Forecast</string>
+    <string name="hourly_forecast_widget_description">Current condition and temp with hourly forecast</string>
+</resources>

@@ -1,0 +1,13 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialLayout="@layout/glance_default_loading_layout"
+    android:minWidth="100dp"
+    android:minHeight="20dp"
+    android:maxResizeHeight="50dp"
+    android:resizeMode="horizontal|vertical"
+    android:previewImage="@drawable/preview_wind_widget"
+    android:widgetFeatures="reconfigurable"
+    android:configure="com.marotidev.overmorrow.configurators.CurrentWidgetConfigurationActivity"
+    android:description="@string/wind_widget_description"
+    android:label="@string/wind_widget_name"
+    android:updatePeriodMillis="3600000">
+</appwidget-provider>

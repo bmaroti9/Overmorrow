@@ -12,7 +12,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get feelsLike => 'تبدو وكأنها';
 
   @override
-  String get precipCapital => 'هطول.';
+  String get precipCapital => 'هطول الأمطار.';
 
   @override
   String get humidity => 'الرطوبة';
@@ -222,13 +222,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get moderateAqiDesc => 'قد يعاني الأشخاص الحساسون من آثار خفيفة.';
 
   @override
-  String get poorAqiDesc => 'ممكن حدوث آثار صحية للجميع، خطيرة للمجموعات الحساسة.';
+  String get poorAqiDesc =>
+      'آثار صحية محتملة للجميع، خطيرة بالنسبة للفئات الحساسة.';
 
   @override
   String get veryPoorAqiDesc => 'آثار صحية خطيرة للجميع.';
 
   @override
-  String get unhealthyAqiDesc => 'ظروف طارئة، آثار صحية شديدة للجميع.';
+  String get unhealthyAqiDesc => 'حالات الطوارئ؛ آثار صحية خطيرة على الجميع.';
 
   @override
   String get photoByXOnUnsplash => 'صورة, بواسطة ,x, على ,Unsplash';

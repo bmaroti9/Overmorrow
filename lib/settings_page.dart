@@ -25,6 +25,7 @@ import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/settings_screens.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'main.dart';
 import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
 
@@ -40,14 +41,19 @@ Map<String, List<String>> settingSwitches = {
     'Magyar', //Hungarian
     'Polski', //Polish
     'Ελληνικά', //Greek
-    '简体中文', //Chinese
+    '简体中文', //Chinese (Simplified Han)
+    '繁體字', //Chinese (Traditional Han)
     '日本語', //Japanese
     'українська', //Ukrainian
     'türkçe', //Turkish
     'தமிழ்', //Tamil
     'български', //Bulgarian
     'Indonesia', //Indonesian
-    'عربي' //Arablic
+    'عربي', //Arablic
+    'Suomi', //Finnish
+    'Nederlands', //Dutch
+    'اُردُو', //Urdu
+    'Hrvat', //Croatian
   ],
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
@@ -116,6 +122,9 @@ Future<String> isLocationSafe(translationProv) async {
   return translationProv.failedToAccessGps;
 }
 
+
+//the last place you viewed in the app,
+// so that's where it will start up next time you open it
 Future<List<String>> getLastPlace() async {
   final prefs = await SharedPreferences.getInstance();
   final place = prefs.getString('LastPlaceN') ?? 'New York';
@@ -127,6 +136,21 @@ setLastPlace(String place, String cord) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('LastPlaceN', place);
   await prefs.setString('LastCord', cord);
+}
+
+//the actual last known current location
+Future<List<String>> getLastKnownLocation() async {
+  final prefs = await SharedPreferences.getInstance();
+  final place = prefs.getString('LastKnownPositionName') ?? 'unknown';
+  final cord = prefs.getString('LastKnownPositionCord') ?? 'unknown';
+  return [place, cord];
+}
+
+setLastKnownLocation(String place, String cord) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('LastKnownPositionName', place);
+  await prefs.setString('LastKnownPositionCord', cord);
+  WidgetService.saveData("widget.lastKnownPlace", place); //save the name of the place to the widgets
 }
 
 Future<String> getWeatherProvider() async {

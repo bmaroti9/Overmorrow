@@ -99,13 +99,15 @@ class AppLocalizationsHu extends AppLocalizations {
   String get unableToLocateDevice => 'Nem sikerült megtalálni az eszközt';
 
   @override
-  String get locationServicesAreDisabled => 'A helymeghatározás szolgáltatások kikapcsolva vannak.';
+  String get locationServicesAreDisabled =>
+      'A helymeghatározás szolgáltatások kikapcsolva vannak.';
 
   @override
   String get locationPermissionIsDenied => 'A helyengedélyt megtagadták';
 
   @override
-  String get locationPermissionDeniedForever => 'A helyengedélyt örökre megtagadták';
+  String get locationPermissionDeniedForever =>
+      'A helyengedélyt örökre megtagadták';
 
   @override
   String get grantLocationPermission => 'helymeghatározás engedélyezése';
@@ -213,22 +215,27 @@ class AppLocalizationsHu extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get goodAqiDesc => 'A levegő minősége kiváló; nincs egészségügyi kockázat.';
+  String get goodAqiDesc =>
+      'A levegő minősége kiváló; nincs egészségügyi kockázat.';
 
   @override
-  String get fairAqiDesc => 'Elfogadható a levegő minősége; kisebb kockázat az érzékeny emberek számára.';
+  String get fairAqiDesc =>
+      'Elfogadható a levegő minősége; kisebb kockázat az érzékeny emberek számára.';
 
   @override
-  String get moderateAqiDesc => 'Az érzékeny egyének enyhe hatásokat tapasztalhatnak.';
+  String get moderateAqiDesc =>
+      'Az érzékeny egyének enyhe hatásokat tapasztalhatnak.';
 
   @override
-  String get poorAqiDesc => 'Egészségügyi hatások mindenkire, súlyos hatások az érzékeny csoportokra.';
+  String get poorAqiDesc =>
+      'Egészségügyi hatások mindenkire, súlyos hatások az érzékeny csoportokra.';
 
   @override
   String get veryPoorAqiDesc => 'Súlyos egészségügyi hatások mindenkire.';
 
   @override
-  String get unhealthyAqiDesc => 'Vészhelyzet; súlyos egészségügyi hatások mindenkire.';
+  String get unhealthyAqiDesc =>
+      'Vészhelyzet; súlyos egészségügyi hatások mindenkire.';
 
   @override
   String get photoByXOnUnsplash => 'Fotó,: ,x, az ,Unsplashen';

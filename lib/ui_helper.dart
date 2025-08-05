@@ -24,6 +24,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:overmorrow/main.dart';
 import 'package:overmorrow/search_screens.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,7 +33,7 @@ const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);
 
 double getFontSize(String set) {
-  double x = Platform.isLinux ? 0.75 : 0.92;
+  double x = Platform.isLinux ? 0.85 : 0.92;
 
   if (set == "small")  {
     x = 0.85 * x;
@@ -294,8 +295,13 @@ class _MySearchWidgetState extends State<MySearchWidget> {
     favorites = ValueNotifier<List<String>>(beginFavorites);
   }
 
-  void updateFav(List<String> fav){
+  void updateFav(List<String> fav) {
     prefs.setStringList('favorites', fav);
+
+    //Save the favorites so the widgets can access them when selecting location
+    String jsonString = jsonEncode(fav);
+    WidgetService.saveData('favorites', jsonString);
+
     setState(() {
       favorites.value = fav;
     });
