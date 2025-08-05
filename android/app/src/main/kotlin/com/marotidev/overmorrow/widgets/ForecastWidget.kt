@@ -75,7 +75,7 @@ class ForecastWidget : GlanceAppWidget() {
         } catch (e: Exception) {
             e.printStackTrace()
             Log.e("ERRRRRROR", "Failed to decode JSON list for temp $hourlyTempList", e)
-            emptyList()
+            listOf<Int>(0, 0, 0, 0)
         }
 
         val conditionList: List<String> = try {
@@ -83,7 +83,7 @@ class ForecastWidget : GlanceAppWidget() {
         } catch (e: Exception) {
             e.printStackTrace()
             Log.e("ERRRRRROR", "Failed to decode JSON list for condition $hourlyConditionList", e)
-            emptyList()
+            listOf<String>("?", "?", "?", "?")
         }
 
         val timeList: List<String> = try {
@@ -91,7 +91,7 @@ class ForecastWidget : GlanceAppWidget() {
         } catch (e: Exception) {
             e.printStackTrace()
             Log.e("ERRRRRROR", "Failed to decode JSON list for time $hourlyTimeList", e)
-            emptyList()
+            listOf<String>("?", "?", "?", "?")
         }
 
         val weatherIconList = mutableListOf<Int>()
@@ -119,12 +119,12 @@ class ForecastWidget : GlanceAppWidget() {
                         color = GlanceTheme.colors.primary,
                         fontSize = 32.sp,
                     ),
-                    modifier = GlanceModifier.defaultWeight()
                 )
 
                 Row(
                     verticalAlignment = Alignment.Vertical.CenterVertically,
-                    modifier = GlanceModifier.padding(top = 2.dp, end = 2.dp)
+                    horizontalAlignment = Alignment.End,
+                    modifier = GlanceModifier.padding(top = 2.dp, end = 2.dp, start = 2.dp).fillMaxWidth()
                 ) {
                     Image(
                         provider = ImageProvider(R.drawable.icon_location),
@@ -174,7 +174,7 @@ class ForecastWidget : GlanceAppWidget() {
                         Image(
                             provider = ImageProvider(weatherIconList[index]),
                             contentDescription = "Weather Icon",
-                            colorFilter = ColorFilter.tint(GlanceTheme.colors.secondary),
+                            colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
                             modifier = GlanceModifier
                                 .size(28.dp, 28.dp)
                         )

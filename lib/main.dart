@@ -160,8 +160,6 @@ void callbackDispatcher() {
               latLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
             }
 
-            print((placeName, latLon));
-
             //these two are so similar that i'm updating them with the same logic
             if (widgetClassName == currentWidgetReceiver || widgetClassName == dateCurrentWidgetReceiver) {
 
@@ -190,8 +188,10 @@ void callbackDispatcher() {
           WidgetService.reloadWidgets();
 
         } catch (e, stacktrace) {
-          print("ERRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRRRRR");
-          print((e, stacktrace));
+          if (kDebugMode) {
+            print("ERRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRRRRR");
+            print((e, stacktrace));
+          }
           return Future.value(false);
         }
     }
@@ -210,8 +210,10 @@ void main() {
 
   HomeWidget.registerInteractivityCallback(interactiveCallback);
 
-  print("thissssssssssssssssssssssssssssssssss");
-  Workmanager().registerOneOffTask("test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
+  if (kDebugMode) {
+    print("thissssssssssssssssssssssssssssssssss");
+    Workmanager().registerOneOffTask("test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
+  }
 
   Workmanager().registerPeriodicTask(
     "updateWeatherWidget",
