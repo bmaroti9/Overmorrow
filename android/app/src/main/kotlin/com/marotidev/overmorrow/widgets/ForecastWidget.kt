@@ -1,13 +1,10 @@
 package com.marotidev.overmorrow.widgets
 
-// Standard Glance and Compose imports (as we discussed before)
-
 import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.ColorFilter
@@ -18,6 +15,7 @@ import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.currentState
@@ -29,11 +27,9 @@ import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
-import androidx.glance.layout.width
 import androidx.glance.layout.wrapContentHeight
 import androidx.glance.layout.wrapContentWidth
 import androidx.glance.state.GlanceStateDefinition
-import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.google.gson.Gson
@@ -69,6 +65,7 @@ class ForecastWidget : GlanceAppWidget() {
         val hourlyTempList = prefs.getString("hourlyForecast.hourlyTemps.$appWidgetId", "[]") ?: "[]"
         val hourlyConditionList = prefs.getString("hourlyForecast.hourlyConditions.$appWidgetId", "[]") ?: "[]"
         val hourlyTimeList = prefs.getString("hourlyForecast.hourlyNames.$appWidgetId", "[]") ?: "[]"
+        val updatedTime = prefs.getString("hourlyForecast.updatedTime.$appWidgetId", "--") ?: "?"
 
         val tempList: List<Int> = try {
             hourlyTempList.let { gson.fromJson(it, hourlyTempType) } ?: emptyList()
@@ -103,7 +100,7 @@ class ForecastWidget : GlanceAppWidget() {
             modifier = GlanceModifier
                 .fillMaxSize()
                 .background(GlanceTheme.colors.secondaryContainer)
-                .padding(8.dp),
+                .padding(8.dp).cornerRadius(24.dp),
             verticalAlignment = Alignment.Vertical.Top
         ) {
             Row(
@@ -148,7 +145,16 @@ class ForecastWidget : GlanceAppWidget() {
                     color = GlanceTheme.colors.onSurface,
                     fontSize = 20.sp,
                 ),
-                modifier = GlanceModifier.padding(bottom = 8.dp, start = 8.dp)
+                modifier = GlanceModifier.padding(start = 8.dp)
+            )
+
+            Text(
+                text = updatedTime,
+                style = TextStyle(
+                    color = GlanceTheme.colors.outline,
+                    fontSize = 12.sp,
+                ),
+                modifier = GlanceModifier.padding(start = 8.dp, bottom = 8.dp,)
             )
 
             Row (

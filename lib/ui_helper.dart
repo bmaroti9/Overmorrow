@@ -300,7 +300,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
 
     //Save the favorites so the widgets can access them when selecting location
     String jsonString = jsonEncode(fav);
-    WidgetService.saveData('favorites', jsonString);
+    WidgetService.saveData('widget.favorites', jsonString);
 
     setState(() {
       favorites.value = fav;

@@ -179,7 +179,7 @@ void callbackDispatcher() {
 
               LightHourlyForecastData data = await LightHourlyForecastData
                   .getLightForecastData(placeName, latLon, widgetProvider, settings);
-              
+
               await WidgetService.syncHourlyForecastDataToWidget(data, widgetId);
             }
 

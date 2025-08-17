@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.Keep
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -54,6 +55,9 @@ import com.marotidev.overmorrow.widgets.DateCurrentWidget
 import com.marotidev.overmorrow.widgets.ForecastWidget
 import com.marotidev.overmorrow.widgets.WindWidget
 
+//this is to stop proguard from messing up the structure
+//https://stackoverflow.com/questions/42282261/gson-not-mapping-data-in-production-mode-apk-android
+@Keep
 data class FavoriteItem(
     val id: Int,
     val name: String,
@@ -142,22 +146,25 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
     }
 
     private fun getFavoritePlaces(data: SharedPreferences): List<FavoriteItem> {
-
-        Log.i("Got here", "got here")
-
         val ifnot = "[\"{\\n        \\\"id\\\": 2651922,\\n        \\\"name\\\": \\\"Nashville\\\",\\n        \\\"region\\\": \\\"Tennessee\\\",\\n        \\\"country\\\": \\\"United States of America\\\",\\n        \\\"lat\\\": 36.17,\\n        \\\"lon\\\": -86.78,\\n        \\\"url\\\": \\\"nashville-tennessee-united-states-of-america\\\"\\n    }\"]"
-        val item = data.getString("favorites", ifnot) ?: ifnot
-
+        val item = data.getString("widget.favorites", ifnot) ?: ifnot
         val gson = Gson()
-        val favorites : MutableList<FavoriteItem> = mutableListOf()
+        val favorites: MutableList<FavoriteItem> = mutableListOf()
 
-        val type = object : TypeToken<List<String>>() {}.type
-        val stringList: List<String> = gson.fromJson(item, type)
+        try {
+            val type = object : TypeToken<List<String>>() {}.type
+            val stringList: List<String> = gson.fromJson(item, type)
 
-        for (str in stringList) {
-            val x = Gson().fromJson(str, FavoriteItem::class.java)
-            favorites.add(x)
-            Log.d("Favorite added", "${x.name}, ${x.country}")
+            for (str in stringList) {
+                try {
+                    val x = Gson().fromJson(str, FavoriteItem::class.java)
+                    favorites.add(x)
+                } catch (e: Exception) {
+                    Log.e("WidgetConfig", "Failed to parse single FavoriteItem from string: $str", e)
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("WidgetConfig", "Failed to parse 'favorites' as a list of strings.", e)
         }
 
         return favorites

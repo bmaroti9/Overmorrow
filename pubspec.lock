@@ -125,10 +125,10 @@ packages:
     dependency: "direct main"
     description:
       name: dynamic_color
-      sha256: eae98052fa6e2826bdac3dd2e921c6ce2903be15c6b7f8b6d8a5d49b5086298d
+      sha256: "43a5a6679649a7731ab860334a5812f2067c2d9ce6452cf069c5e0c25336c17c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.7.0"
+    version: "1.8.1"
   fake_async:
     dependency: transitive
     description:
@@ -305,10 +305,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_fonts
-      sha256: b1ac0fe2832c9cc95e5e88b57d627c5e68c223b9657f4b96e1487aa9098c7b82
+      sha256: df9763500dadba0155373e9cb44e202ce21bd9ed5de6bdbd05c5854e86839cb8
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.1"
+    version: "6.3.0"
   home_widget:
     dependency: "direct main"
     description:

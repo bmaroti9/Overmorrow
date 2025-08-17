@@ -1,6 +1,5 @@
 package com.marotidev.overmorrow.widgets
 
-// Standard Glance and Compose imports (as we discussed before)
 import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
 import android.content.Context
