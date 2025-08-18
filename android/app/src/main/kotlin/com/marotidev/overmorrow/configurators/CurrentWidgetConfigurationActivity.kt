@@ -131,17 +131,17 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
 
     private fun saveLocationPref(context: Context, appWidgetId: Int, location: String?, latLon: String?) {
         HomeWidgetPlugin.getData(context).edit {
-            putString("current.location.$appWidgetId", location)
+            putString("widget.location.$appWidgetId", location)
             if (!latLon.isNullOrBlank()) {
-                putString("current.place.$appWidgetId", location)
-                putString("current.latLon.$appWidgetId", latLon)
+                putString("widget.place.$appWidgetId", location)
+                putString("widget.latLon.$appWidgetId", latLon)
             }
         }
     }
 
     private fun saveProviderPref(context: Context, appWidgetId: Int, provider: String) {
         HomeWidgetPlugin.getData(context).edit {
-            putString("current.provider.$appWidgetId", provider)
+            putString("widget.provider.$appWidgetId", provider)
         }
     }
 
@@ -171,7 +171,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
     }
 
     private fun getCurrentUsedPlace(data: SharedPreferences, appWidgetId: Int) : String {
-        val item = data.getString("current.location.$appWidgetId", "unknown") ?: "unknown"
+        val item = data.getString("widget.location.$appWidgetId", "unknown") ?: "unknown"
         Log.d("Location fetch", item)
         return item
     }
@@ -183,7 +183,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
     }
 
     private fun getCurrentUsedProvider(data: SharedPreferences, appWidgetId: Int) : String {
-        val item = data.getString("current.provider.$appWidgetId", "open-meteo") ?: "open-meteo"
+        val item = data.getString("widget.provider.$appWidgetId", "open-meteo") ?: "open-meteo"
         Log.d("Provider fetch", item)
         return item
     }
@@ -264,10 +264,10 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                             .fillMaxWidth()
                             .height(46.dp)
                             .selectable(
-                                selected = ("currentLocation" == selectedFavorite.value),
+                                selected = ("CurrentLocation" == selectedFavorite.value),
                                 onClick = {
-                                    selectedFavorite.value = "currentLocation"
-                                    saveLocationPref(applicationContext, appWidgetId,  "currentLocation", null)
+                                    selectedFavorite.value = "CurrentLocation"
+                                    saveLocationPref(applicationContext, appWidgetId,  "CurrentLocation", null)
                                 },
                                 role = Role.RadioButton,
                                 enabled = lastKnownLocation != "unknown"
@@ -277,7 +277,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
-                            selected = ("currentLocation" == selectedFavorite.value),
+                            selected = ("CurrentLocation" == selectedFavorite.value),
                             onClick = null // null recommended for accessibility with screen readers
                         )
                         Text(

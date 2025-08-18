@@ -59,9 +59,9 @@ class WidgetService {
     await saveData("current.temp.$widgetId", data.temp);
     await saveData("current.condition.$widgetId", data.condition);
     await saveData("current.updatedTime.$widgetId", data.updatedTime);
-    await saveData("current.place.$widgetId", data.place);
     await saveData("current.date.$widgetId", data.dateString);
 
+    await saveData("widget.place.$widgetId", data.place);
     //place is the name of the city while location can include currentLocation
   }
 
@@ -75,11 +75,12 @@ class WidgetService {
     await saveData("hourlyForecast.currentTemp.$widgetId", data.currentTemp);
     await saveData("hourlyForecast.currentCondition.$widgetId", data.currentCondition);
     await saveData("hourlyForecast.updatedTime.$widgetId", data.updatedTime);
-    await saveData("hourlyForecast.place.$widgetId", data.place);
 
     await saveData("hourlyForecast.hourlyTemps.$widgetId", data.hourlyTemps);
     await saveData("hourlyForecast.hourlyConditions.$widgetId", data.hourlyConditions);
     await saveData("hourlyForecast.hourlyNames.$widgetId", data.hourlyNames);
+
+    await saveData("widget.place.$widgetId", data.place);
   }
 
   static Future<void> reloadWidgets() async {
@@ -138,9 +139,9 @@ void callbackDispatcher() {
             final String widgetClassName = widgetInfo.androidClassName!;
             print(("classname", widgetClassName));
 
-            final String locationKey = "current.location.$widgetId";
-            final String latLonKey = "current.latLon.$widgetId";
-            final String providerKey = "current.provider.$widgetId";
+            final String locationKey = "widget.location.$widgetId";
+            final String latLonKey = "widget.latLon.$widgetId";
+            final String providerKey = "widget.provider.$widgetId";
 
             final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
             final String widgetProvider = (await HomeWidget.getWidgetData<String>(providerKey, defaultValue: "unknown")) ?? "unknown";
@@ -150,7 +151,7 @@ void callbackDispatcher() {
             String placeName;
             String latLon;
 
-            if (widgetLocation == "currentLocation") {
+            if (widgetLocation == "CurrentLocation") {
               List<String> lastKnown = await getLastKnownLocation();
               placeName = lastKnown[0];
               latLon = lastKnown[1];
@@ -317,10 +318,31 @@ class _HomePageState extends State<HomePage> {
       backupName = _sanitizePlaceName(backupName);
 
       if (startup) {
-        List<String> n = await getLastPlace();  //loads the last place you visited
-        proposedLoc = n[1];
-        backupName = n[0];
-        startup = false;
+
+        //if the app was launched from a widget, then the place will be set to the widget's place
+        Uri? appLaunchUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
+        print(("appLaunchUri", appLaunchUri));
+        if (appLaunchUri != null) {
+          if (appLaunchUri.host == "opened" && appLaunchUri.queryParameters.containsKey("location")
+              && appLaunchUri.queryParameters.containsKey("latlon")) {
+            String? placeName = appLaunchUri.queryParameters["location"];
+            String? latLon = appLaunchUri.queryParameters["latlon"];
+
+            if (placeName != null && latLon != null) {
+              proposedLoc = latLon;
+              backupName = placeName;
+              startup = false;
+            }
+
+          }
+        }
+
+        if (startup) {
+          List<String> n = await getLastPlace();  //loads the last place you visited
+          proposedLoc = n[1];
+          backupName = n[0];
+          startup = false;
+        }
       }
 
       String absoluteProposed = proposedLoc;

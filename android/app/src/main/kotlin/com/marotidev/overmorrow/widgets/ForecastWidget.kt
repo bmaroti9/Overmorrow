@@ -7,12 +7,14 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.cornerRadius
@@ -34,7 +36,9 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
+import es.antonborri.home_widget.actionStartActivity
 import getIconForCondition
 import java.lang.reflect.Type
 
@@ -61,11 +65,15 @@ class ForecastWidget : GlanceAppWidget() {
         val prefs = currentState.preferences
         val currentTemp = prefs.getInt("hourlyForecast.currentTemp.$appWidgetId", 0)
         val currentCondition = prefs.getString("hourlyForecast.currentCondition.$appWidgetId", "N/A") ?: "?"
-        val placeName = prefs.getString("hourlyForecast.place.$appWidgetId", "N/A") ?: "?"
         val hourlyTempList = prefs.getString("hourlyForecast.hourlyTemps.$appWidgetId", "[]") ?: "[]"
         val hourlyConditionList = prefs.getString("hourlyForecast.hourlyConditions.$appWidgetId", "[]") ?: "[]"
         val hourlyTimeList = prefs.getString("hourlyForecast.hourlyNames.$appWidgetId", "[]") ?: "[]"
         val updatedTime = prefs.getString("hourlyForecast.updatedTime.$appWidgetId", "--") ?: "?"
+
+        val placeName = prefs.getString("widget.place.$appWidgetId", "N/A") ?: "?"
+
+        val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
+        val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
 
         val tempList: List<Int> = try {
             hourlyTempList.let { gson.fromJson(it, hourlyTempType) } ?: emptyList()
@@ -100,7 +108,13 @@ class ForecastWidget : GlanceAppWidget() {
             modifier = GlanceModifier
                 .fillMaxSize()
                 .background(GlanceTheme.colors.secondaryContainer)
-                .padding(8.dp).cornerRadius(24.dp),
+                .padding(8.dp).cornerRadius(24.dp)
+                .clickable(
+                    onClick = actionStartActivity<MainActivity>(
+                        context,
+                        "overmorrrow://opened?location=$location&latlon=$latLon".toUri()
+                    )
+                ),
             verticalAlignment = Alignment.Vertical.Top
         ) {
             Row(

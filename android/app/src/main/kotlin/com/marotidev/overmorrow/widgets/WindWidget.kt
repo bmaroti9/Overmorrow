@@ -8,12 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.AndroidRemoteViews
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
@@ -34,7 +36,9 @@ import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
+import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
+import es.antonborri.home_widget.actionStartActivity
 
 
 class WindWidget : GlanceAppWidget() {
@@ -58,6 +62,9 @@ class WindWidget : GlanceAppWidget() {
         val windUnit = prefs.getString("wind.windUnit.$appWidgetId", "N/A") ?: "?"
         val windDirAngle = prefs.getInt("wind.windDirAngle.$appWidgetId", 0)
 
+        val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
+        val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
+
         //the bitmaps didn't work either because it was doing too much main thread work
         //i know this is depreciated but i found no other way to rotate a simple icon
         val remoteArrowView = RemoteViews(context.packageName, R.layout.rotated_arrow_layout).apply {
@@ -70,7 +77,13 @@ class WindWidget : GlanceAppWidget() {
             modifier = GlanceModifier
                 .fillMaxSize()
                 .background(GlanceTheme.colors.secondaryContainer)
-                .cornerRadius(100.dp).padding(start = 16.dp),
+                .cornerRadius(100.dp).padding(start = 16.dp)
+                .clickable(
+                    onClick = actionStartActivity<MainActivity>(
+                        context,
+                        "overmorrrow://opened?location=$location&latlon=$latLon".toUri()
+                    )
+                ),
             verticalAlignment = Alignment.Vertical.CenterVertically
         ) {
 

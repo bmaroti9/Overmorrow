@@ -3,7 +3,7 @@ plugins {
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.2.0"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.2.10"
 }
 
 android {
@@ -46,7 +46,7 @@ flutter {
 
 dependencies {
     // Compose BOM
-    implementation(platform("androidx.compose:compose-bom:2025.07.00"))
+    implementation(platform("androidx.compose:compose-bom:2025.08.00"))
 
     // Compose UI
     implementation("androidx.compose.ui:ui")

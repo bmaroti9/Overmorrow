@@ -3,6 +3,7 @@ package com.marotidev.overmorrow.widgets
 import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
 import android.content.Context
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -12,6 +13,7 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.provideContent
@@ -25,8 +27,11 @@ import androidx.glance.layout.size
 import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
+import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
+import es.antonborri.home_widget.actionStartActivity
 import getIconForCondition
+import androidx.core.net.toUri
 
 class CurrentWidget : GlanceAppWidget() {
 
@@ -48,10 +53,19 @@ class CurrentWidget : GlanceAppWidget() {
         val temp = prefs.getInt("current.temp.$appWidgetId", 0)
         val condition = prefs.getString("current.condition.$appWidgetId", "N/A") ?: "?"
 
+        val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
+        val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
+
         val iconResId = getIconForCondition(condition)
 
         Box (
-            modifier = GlanceModifier.fillMaxSize(),
+            modifier = GlanceModifier.fillMaxSize()
+                .clickable(
+                    onClick = actionStartActivity<MainActivity>(
+                        context,
+                        "overmorrrow://opened?location=$location&latlon=$latLon".toUri()
+                    )
+                ),
             contentAlignment = Alignment.Center // Align content within the box
         ){
             Box(
