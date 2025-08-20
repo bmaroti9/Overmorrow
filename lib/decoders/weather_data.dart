@@ -21,7 +21,6 @@ import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/decoders/decode_mn.dart';
 import 'decode_wapi.dart';
 
-
 class WeatherData {
   final Map<String, String> settings;
 
@@ -92,7 +91,7 @@ class WeatherData {
 }
 
 
-//A more lightweight version of data fetching for the current widgets to use
+//A more lightweight version of data fetching for the current weather widgets to use
 class LightCurrentWeatherData {
   final String place;
   final int temp;

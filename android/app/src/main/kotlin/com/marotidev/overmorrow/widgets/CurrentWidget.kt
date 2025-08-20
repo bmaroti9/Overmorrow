@@ -32,6 +32,8 @@ import com.marotidev.overmorrow.R
 import es.antonborri.home_widget.actionStartActivity
 import getIconForCondition
 import androidx.core.net.toUri
+import androidx.glance.unit.ColorProvider
+import getBackColor
 
 class CurrentWidget : GlanceAppWidget() {
 
@@ -55,6 +57,9 @@ class CurrentWidget : GlanceAppWidget() {
 
         val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
         val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
+        val backColorString = prefs.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
+
+        val backColor = getBackColor(backColorString)
 
         val iconResId = getIconForCondition(condition)
 
@@ -76,7 +81,7 @@ class CurrentWidget : GlanceAppWidget() {
                 Image(
                     provider = ImageProvider(R.drawable.shapes_custom_pill_shape),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(GlanceTheme.colors.secondaryContainer), // Dynamic surface color
+                    colorFilter = ColorFilter.tint(backColor),
                     contentScale = ContentScale.Fit,
                     modifier = GlanceModifier.fillMaxSize()
                 )

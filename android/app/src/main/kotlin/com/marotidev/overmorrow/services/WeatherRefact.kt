@@ -1,4 +1,7 @@
 import androidx.annotation.DrawableRes
+import androidx.compose.runtime.Composable
+import androidx.glance.GlanceTheme
+import androidx.glance.unit.ColorProvider
 import com.marotidev.overmorrow.R
 
 val weatherConditionIcons: Map<String, Int> = mapOf(
@@ -21,4 +24,14 @@ val weatherConditionIcons: Map<String, Int> = mapOf(
 @DrawableRes // Annotation on the return type of the function
 fun getIconForCondition(condition: String): Int {
     return weatherConditionIcons[condition] ?: R.drawable.weather_clear_sky
+}
+
+@Composable
+fun getBackColor(colorName: String): ColorProvider {
+    return when (colorName) {
+        "secondary container" -> GlanceTheme.colors.secondaryContainer
+        "primary container" -> GlanceTheme.colors.primaryContainer
+        "surface" -> GlanceTheme.colors.surface
+        else -> GlanceTheme.colors.errorContainer
+    }
 }

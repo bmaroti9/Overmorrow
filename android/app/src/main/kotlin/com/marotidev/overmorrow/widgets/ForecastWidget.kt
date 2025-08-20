@@ -39,6 +39,7 @@ import com.google.gson.reflect.TypeToken
 import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
 import es.antonborri.home_widget.actionStartActivity
+import getBackColor
 import getIconForCondition
 import java.lang.reflect.Type
 
@@ -75,6 +76,10 @@ class ForecastWidget : GlanceAppWidget() {
         val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
         val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
 
+        val backColorString = prefs.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
+
+        val backColor = getBackColor(backColorString)
+
         val tempList: List<Int> = try {
             hourlyTempList.let { gson.fromJson(it, hourlyTempType) } ?: emptyList()
         } catch (e: Exception) {
@@ -107,7 +112,7 @@ class ForecastWidget : GlanceAppWidget() {
         Column (
             modifier = GlanceModifier
                 .fillMaxSize()
-                .background(GlanceTheme.colors.secondaryContainer)
+                .background(backColor)
                 .padding(8.dp).cornerRadius(24.dp)
                 .clickable(
                     onClick = actionStartActivity<MainActivity>(

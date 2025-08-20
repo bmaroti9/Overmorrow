@@ -39,6 +39,7 @@ import androidx.glance.text.TextStyle
 import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
 import es.antonborri.home_widget.actionStartActivity
+import getBackColor
 
 
 class WindWidget : GlanceAppWidget() {
@@ -65,6 +66,10 @@ class WindWidget : GlanceAppWidget() {
         val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
         val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
 
+        val backColorString = prefs.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
+
+        val backColor = getBackColor(backColorString)
+
         //the bitmaps didn't work either because it was doing too much main thread work
         //i know this is depreciated but i found no other way to rotate a simple icon
         val remoteArrowView = RemoteViews(context.packageName, R.layout.rotated_arrow_layout).apply {
@@ -76,7 +81,7 @@ class WindWidget : GlanceAppWidget() {
         Row(
             modifier = GlanceModifier
                 .fillMaxSize()
-                .background(GlanceTheme.colors.secondaryContainer)
+                .background(backColor)
                 .cornerRadius(100.dp).padding(start = 16.dp)
                 .clickable(
                     onClick = actionStartActivity<MainActivity>(

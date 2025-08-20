@@ -38,6 +38,7 @@ import androidx.glance.text.TextStyle
 import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
 import es.antonborri.home_widget.actionStartActivity
+import getBackColor
 import getIconForCondition
 
 class DateCurrentWidget : GlanceAppWidget() {
@@ -65,12 +66,16 @@ class DateCurrentWidget : GlanceAppWidget() {
         val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
         val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
 
+        val backColorString = prefs.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
+
+        val backColor = getBackColor(backColorString)
+
         val iconResId = getIconForCondition(condition)
 
         Row(
             modifier = GlanceModifier
                 .fillMaxSize()
-                .background(GlanceTheme.colors.secondaryContainer)
+                .background(backColor)
                 .cornerRadius(100.dp)
                 .padding(16.dp)
                 .clickable(

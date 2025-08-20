@@ -12,6 +12,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.Keep
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -145,6 +146,12 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         }
     }
 
+    private fun saveBackColorPref(context: Context, appWidgetId: Int, backColor: String) {
+        HomeWidgetPlugin.getData(context).edit {
+            putString("widget.backColor.$appWidgetId", backColor)
+        }
+    }
+
     private fun getFavoritePlaces(data: SharedPreferences): List<FavoriteItem> {
         val ifnot = "[\"{\\n        \\\"id\\\": 2651922,\\n        \\\"name\\\": \\\"Nashville\\\",\\n        \\\"region\\\": \\\"Tennessee\\\",\\n        \\\"country\\\": \\\"United States of America\\\",\\n        \\\"lat\\\": 36.17,\\n        \\\"lon\\\": -86.78,\\n        \\\"url\\\": \\\"nashville-tennessee-united-states-of-america\\\"\\n    }\"]"
         val item = data.getString("widget.favorites", ifnot) ?: ifnot
@@ -185,6 +192,12 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
     private fun getCurrentUsedProvider(data: SharedPreferences, appWidgetId: Int) : String {
         val item = data.getString("widget.provider.$appWidgetId", "open-meteo") ?: "open-meteo"
         Log.d("Provider fetch", item)
+        return item
+    }
+
+    private fun getBackgroundColor(data: SharedPreferences, appWidgetId: Int) : String {
+        val item = data.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
+        Log.d("BackgroundColor fetch", item)
         return item
     }
 
@@ -238,13 +251,18 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         val data = HomeWidgetPlugin.getData(applicationContext)
 
         val favorites : List<FavoriteItem> = getFavoritePlaces(data)
+
         val selectedPlaceOnStartup : String = getCurrentUsedPlace(data, appWidgetId)
         val selectedProviderOnStartup : String = getCurrentUsedProvider(data, appWidgetId)
+        val selectedBackgroundOnStartup : String = getBackgroundColor(data, appWidgetId)
+
         val lastKnownLocation : String = getLastKnownLocation(data)
 
         Log.i("LastKnownLocation", lastKnownLocation)
+        Log.i("selectedBackground", selectedBackgroundOnStartup)
 
         val providers : List<String> = listOf("open-meteo", "weatherapi", "met-norway")
+        val backColors : List<String> = listOf("secondary container", "primary container", "surface")
 
         Log.i("Favorite len", favorites.size.toString())
 
@@ -253,6 +271,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
 
                 val selectedFavorite : MutableState<String?> = remember { mutableStateOf(selectedPlaceOnStartup) }
                 val selectedProvider : MutableState<String?> = remember { mutableStateOf(selectedProviderOnStartup) }
+                val selectedBackground : MutableState<String?> = remember { mutableStateOf(selectedBackgroundOnStartup) }
 
                 Column (
                     modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -364,6 +383,42 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                             )
                             Text(
                                 text = provider,
+                                style = TextStyle(
+                                    fontSize = 18.sp,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                ),
+                                modifier = Modifier.padding(start = 16.dp)
+                            )
+                        }
+                    }
+
+                    Box(
+                        modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+                            .padding(top = 20.dp)
+                    )
+
+                    backColors.forEach { backColor ->
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .height(46.dp)
+                                .selectable(
+                                    selected = (backColor == selectedBackground.value),
+                                    onClick = {
+                                        selectedBackground.value = backColor
+                                        saveBackColorPref(applicationContext, appWidgetId, backColor)
+                                    },
+                                    role = Role.RadioButton
+                                )
+                                .padding(horizontal = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = (backColor == selectedBackground.value),
+                                onClick = null // null recommended for accessibility with screen readers
+                            )
+                            Text(
+                                text = backColor,
                                 style = TextStyle(
                                     fontSize = 18.sp,
                                     color = MaterialTheme.colorScheme.onSurface
