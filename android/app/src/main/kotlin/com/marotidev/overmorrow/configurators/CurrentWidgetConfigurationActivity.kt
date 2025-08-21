@@ -20,7 +20,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
@@ -48,6 +50,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.draw.alpha
 import androidx.glance.GlanceId
+import androidx.glance.GlanceModifier
 import androidx.glance.appwidget.GlanceAppWidget
 import com.marotidev.overmorrow.OvermorrowTheme
 import com.marotidev.overmorrow.R
@@ -152,6 +155,12 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         }
     }
 
+    private fun saveFrontColorPref(context: Context, appWidgetId: Int, frontColor: String) {
+        HomeWidgetPlugin.getData(context).edit {
+            putString("widget.frontColor.$appWidgetId", frontColor)
+        }
+    }
+
     private fun getFavoritePlaces(data: SharedPreferences): List<FavoriteItem> {
         val ifnot = "[\"{\\n        \\\"id\\\": 2651922,\\n        \\\"name\\\": \\\"Nashville\\\",\\n        \\\"region\\\": \\\"Tennessee\\\",\\n        \\\"country\\\": \\\"United States of America\\\",\\n        \\\"lat\\\": 36.17,\\n        \\\"lon\\\": -86.78,\\n        \\\"url\\\": \\\"nashville-tennessee-united-states-of-america\\\"\\n    }\"]"
         val item = data.getString("widget.favorites", ifnot) ?: ifnot
@@ -198,6 +207,12 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
     private fun getBackgroundColor(data: SharedPreferences, appWidgetId: Int) : String {
         val item = data.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
         Log.d("BackgroundColor fetch", item)
+        return item
+    }
+
+    private fun getForegroundColor(data: SharedPreferences, appWidgetId: Int) : String {
+        val item = data.getString("widget.frontColor.$appWidgetId", "primary") ?: "primary"
+        Log.d("ForegroundColor fetch", item)
         return item
     }
 
@@ -255,6 +270,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         val selectedPlaceOnStartup : String = getCurrentUsedPlace(data, appWidgetId)
         val selectedProviderOnStartup : String = getCurrentUsedProvider(data, appWidgetId)
         val selectedBackgroundOnStartup : String = getBackgroundColor(data, appWidgetId)
+        val selectedForegroundOnStartup : String = getForegroundColor(data, appWidgetId)
 
         val lastKnownLocation : String = getLastKnownLocation(data)
 
@@ -262,7 +278,8 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         Log.i("selectedBackground", selectedBackgroundOnStartup)
 
         val providers : List<String> = listOf("open-meteo", "weatherapi", "met-norway")
-        val backColors : List<String> = listOf("secondary container", "primary container", "surface")
+        val backColors : List<String> = listOf("secondary container", "primary container", "tertiary container", "surface")
+        val frontColors : List<String> = listOf("primary", "secondary", "tertiary")
 
         Log.i("Favorite len", favorites.size.toString())
 
@@ -272,12 +289,17 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                 val selectedFavorite : MutableState<String?> = remember { mutableStateOf(selectedPlaceOnStartup) }
                 val selectedProvider : MutableState<String?> = remember { mutableStateOf(selectedProviderOnStartup) }
                 val selectedBackground : MutableState<String?> = remember { mutableStateOf(selectedBackgroundOnStartup) }
+                val selectedForeground : MutableState<String?> = remember { mutableStateOf(selectedForegroundOnStartup) }
 
                 Column (
-                    modifier = Modifier.fillMaxSize().padding(16.dp),
+                    modifier = Modifier.fillMaxSize().padding(16.dp).
+                        verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.Start
                 ) {
+
+                    Box(modifier = Modifier.padding(top = 50.dp))
+
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -292,7 +314,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                                 enabled = lastKnownLocation != "unknown"
                             )
                             .alpha(if (lastKnownLocation != "unknown") 1.0f else 0.5f)
-                            .padding(horizontal = 16.dp),
+                            .padding(start = 16.dp, end = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
@@ -392,10 +414,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                         }
                     }
 
-                    Box(
-                        modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-                            .padding(top = 20.dp)
-                    )
+                    Box(modifier = Modifier.padding(top = 20.dp))
 
                     backColors.forEach { backColor ->
                         Row(
@@ -428,12 +447,45 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                         }
                     }
 
+                    Box(modifier = Modifier.padding(top = 20.dp))
+
+                    frontColors.forEach { frontColor ->
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .height(46.dp)
+                                .selectable(
+                                    selected = (frontColor == selectedForeground.value),
+                                    onClick = {
+                                        selectedForeground.value = frontColor
+                                        saveFrontColorPref(applicationContext, appWidgetId, frontColor)
+                                    },
+                                    role = Role.RadioButton
+                                )
+                                .padding(horizontal = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = (frontColor == selectedForeground.value),
+                                onClick = null // null recommended for accessibility with screen readers
+                            )
+                            Text(
+                                text = frontColor,
+                                style = TextStyle(
+                                    fontSize = 18.sp,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                ),
+                                modifier = Modifier.padding(start = 16.dp)
+                            )
+                        }
+                    }
+
                     Button(
                         onClick = {
                             exitWithOk()
                         },
                         modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-                            .padding(top = 40.dp)
+                            .padding(top = 40.dp, bottom = 50.dp)
                     ) {
                         Text("Place Widget")
                     }

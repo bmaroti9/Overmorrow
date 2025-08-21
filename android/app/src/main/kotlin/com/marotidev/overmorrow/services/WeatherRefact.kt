@@ -31,7 +31,30 @@ fun getBackColor(colorName: String): ColorProvider {
     return when (colorName) {
         "secondary container" -> GlanceTheme.colors.secondaryContainer
         "primary container" -> GlanceTheme.colors.primaryContainer
+        "tertiary container" -> GlanceTheme.colors.tertiaryContainer
         "surface" -> GlanceTheme.colors.surface
         else -> GlanceTheme.colors.errorContainer
+    }
+}
+
+
+@Composable
+fun getFrontColor(colorName: String): ColorProvider {
+    return when (colorName) {
+        "primary" -> GlanceTheme.colors.primary
+        "secondary" -> GlanceTheme.colors.secondary
+        "tertiary" -> GlanceTheme.colors.tertiary
+        else -> GlanceTheme.colors.error
+    }
+}
+
+
+@Composable
+fun getOnFrontColor(colorName: String): ColorProvider {
+    return when (colorName) {
+        "primary" -> GlanceTheme.colors.onPrimary
+        "secondary" -> GlanceTheme.colors.onSecondary
+        "tertiary" -> GlanceTheme.colors.onTertiary
+        else -> GlanceTheme.colors.onError
     }
 }

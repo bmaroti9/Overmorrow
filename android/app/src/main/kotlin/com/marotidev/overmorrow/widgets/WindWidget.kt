@@ -40,6 +40,8 @@ import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
 import es.antonborri.home_widget.actionStartActivity
 import getBackColor
+import getFrontColor
+import getOnFrontColor
 
 
 class WindWidget : GlanceAppWidget() {
@@ -67,15 +69,18 @@ class WindWidget : GlanceAppWidget() {
         val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
 
         val backColorString = prefs.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
+        val frontColorString = prefs.getString("widget.frontColor.$appWidgetId", "primary") ?: "primary"
 
         val backColor = getBackColor(backColorString)
+        val frontColor = getFrontColor(frontColorString)
+        val onFrontColor = getOnFrontColor(frontColorString)
 
         //the bitmaps didn't work either because it was doing too much main thread work
         //i know this is depreciated but i found no other way to rotate a simple icon
         val remoteArrowView = RemoteViews(context.packageName, R.layout.rotated_arrow_layout).apply {
             setImageViewResource(R.id.rotated_arrow, R.drawable.icon_arrow_up)
             setFloat(R.id.rotated_arrow, "setRotation", windDirAngle.toFloat() + 180f)
-            setInt(R.id.rotated_arrow, "setColorFilter", GlanceTheme.colors.onPrimary.getColor(context).toArgb())
+            setInt(R.id.rotated_arrow, "setColorFilter", onFrontColor.getColor(context).toArgb())
         }
 
         Row(
@@ -125,7 +130,7 @@ class WindWidget : GlanceAppWidget() {
                 Image(
                     provider = ImageProvider(R.drawable.shapes_nine_sided_cookie),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(GlanceTheme.colors.primary),
+                    colorFilter = ColorFilter.tint(frontColor),
                     contentScale = ContentScale.Fit,
                     modifier = GlanceModifier.fillMaxHeight().wrapContentWidth()
                 )

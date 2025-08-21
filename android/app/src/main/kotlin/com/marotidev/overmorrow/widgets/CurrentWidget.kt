@@ -34,6 +34,8 @@ import getIconForCondition
 import androidx.core.net.toUri
 import androidx.glance.unit.ColorProvider
 import getBackColor
+import getFrontColor
+import getOnFrontColor
 
 class CurrentWidget : GlanceAppWidget() {
 
@@ -58,8 +60,10 @@ class CurrentWidget : GlanceAppWidget() {
         val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
         val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
         val backColorString = prefs.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
+        val frontColorString = prefs.getString("widget.frontColor.$appWidgetId", "primary") ?: "primary"
 
         val backColor = getBackColor(backColorString)
+        val frontColor = getFrontColor(frontColorString)
 
         val iconResId = getIconForCondition(condition)
 
@@ -89,7 +93,7 @@ class CurrentWidget : GlanceAppWidget() {
                 Text(
                     text = "$temp°",
                     style = TextStyle(
-                        color = GlanceTheme.colors.primary,
+                        color = frontColor,
                         fontSize = 50.sp
                     ),
                     modifier = GlanceModifier.padding(start = 49.dp, bottom = 49.dp)

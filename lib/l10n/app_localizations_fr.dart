@@ -27,7 +27,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settings => 'Paramètres';
 
   @override
-  String get today => 'Aujourd hui';
+  String get today => 'Aujourd\'hui';
 
   @override
   String get tomorrowLowercase => 'demain';
@@ -118,7 +118,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get currentLocation => 'position actuelle';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'favoris';
 
   @override
   String get failedToAccessGps => 'Impossible d\'accéder au GPS';
@@ -250,25 +250,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'signaler un problème';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'faire un don';
 
   @override
   String get versionUppercase => 'Version';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'APIs et Services';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Licence';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'données météo';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'Images';
 
   @override
   String get appearance => 'Apparence';
@@ -295,7 +295,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get unitsSettingdesc => 'les unités utilisées dans l\'application';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'À propos de cette application';
 
   @override
   String get now => 'maintenant';
@@ -471,7 +471,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get alertsCapital => 'Alertes';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'Alertes';
 
   @override
   String get severity => 'sévérité';
@@ -486,14 +486,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get areas => 'zones';
 
   @override
-  String get light => 'light';
+  String get light => 'légères';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'fortes';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'voir plus';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'voir moins';
 }

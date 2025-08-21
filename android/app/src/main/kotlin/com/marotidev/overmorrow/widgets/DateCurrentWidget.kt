@@ -39,7 +39,9 @@ import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
 import es.antonborri.home_widget.actionStartActivity
 import getBackColor
+import getFrontColor
 import getIconForCondition
+import getOnFrontColor
 
 class DateCurrentWidget : GlanceAppWidget() {
 
@@ -67,8 +69,11 @@ class DateCurrentWidget : GlanceAppWidget() {
         val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
 
         val backColorString = prefs.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
+        val frontColorString = prefs.getString("widget.frontColor.$appWidgetId", "primary") ?: "primary"
 
         val backColor = getBackColor(backColorString)
+        val frontColor = getFrontColor(frontColorString)
+        val onFrontColor = getOnFrontColor(frontColorString)
 
         val iconResId = getIconForCondition(condition)
 
@@ -93,7 +98,7 @@ class DateCurrentWidget : GlanceAppWidget() {
                 Image(
                     provider = ImageProvider(R.drawable.shapes_four_sided_cookie),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(GlanceTheme.colors.primary),
+                    colorFilter = ColorFilter.tint(frontColor),
                     contentScale = ContentScale.Fit,
                     modifier = GlanceModifier.fillMaxHeight().wrapContentWidth()
                 )
@@ -101,7 +106,7 @@ class DateCurrentWidget : GlanceAppWidget() {
                 Image(
                     provider = ImageProvider(iconResId),
                     contentDescription = "Weather icon",
-                    colorFilter = ColorFilter.tint(GlanceTheme.colors.onPrimary),
+                    colorFilter = ColorFilter.tint(onFrontColor),
                     modifier = GlanceModifier.size(width = 40.dp, height = 40.dp)
                 )
             }
@@ -122,7 +127,7 @@ class DateCurrentWidget : GlanceAppWidget() {
 
             Text(
                 text = "$temp°",
-                style = TextStyle(fontSize = 40.sp, color = GlanceTheme.colors.secondary),
+                style = TextStyle(fontSize = 40.sp, color = frontColor),
             )
 
         }

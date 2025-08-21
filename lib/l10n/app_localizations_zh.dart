@@ -517,6 +517,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get tomorrowLowercase => '明天';
 
   @override
+  String get overmorrowLowercase => '後天';
+
+  @override
   String get language => '語言';
 
   @override

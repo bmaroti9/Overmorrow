@@ -40,7 +40,9 @@ import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
 import es.antonborri.home_widget.actionStartActivity
 import getBackColor
+import getFrontColor
 import getIconForCondition
+import getOnFrontColor
 import java.lang.reflect.Type
 
 val gson = Gson()
@@ -77,8 +79,10 @@ class ForecastWidget : GlanceAppWidget() {
         val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
 
         val backColorString = prefs.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
+        val frontColorString = prefs.getString("widget.frontColor.$appWidgetId", "primary") ?: "primary"
 
         val backColor = getBackColor(backColorString)
+        val frontColor = getFrontColor(frontColorString)
 
         val tempList: List<Int> = try {
             hourlyTempList.let { gson.fromJson(it, hourlyTempType) } ?: emptyList()
@@ -132,7 +136,7 @@ class ForecastWidget : GlanceAppWidget() {
                 Text(
                     text = "$currentTemp°",
                     style = TextStyle(
-                        color = GlanceTheme.colors.primary,
+                        color = frontColor,
                         fontSize = 32.sp,
                     ),
                 )
@@ -191,7 +195,7 @@ class ForecastWidget : GlanceAppWidget() {
                         Text(
                             text = "${tempList[index]}°",
                             style = TextStyle(
-                                color = GlanceTheme.colors.primary,
+                                color = frontColor,
                                 fontSize = 16.sp,
                             ),
                             modifier = GlanceModifier.padding(bottom = 2.dp)
