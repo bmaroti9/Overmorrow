@@ -37,6 +37,7 @@ Map<String, List<String>> settingSwitches = {
     'Deutsch', //German
     'Italiano', //Italian
     'Português', //Portuguese
+    'Português brasileiro', //Portugeese (Brazilian)
     'Русский', //Russian
     'Magyar', //Hungarian
     'Polski', //Polish

@@ -28,6 +28,7 @@ Map<String, Locale> languageNameToLocale = {
   'Deutsch': const Locale('de'),
   'Italiano': const Locale('it'),
   'Português': const Locale('pt'),
+  'Português brasileiro' : const Locale('pt', 'BR'),
   'Русский': const Locale('ru'),
   'Magyar': const Locale('hu'),
   'Polski': const Locale('pl'),
