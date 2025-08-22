@@ -83,6 +83,10 @@ class WidgetService {
     await saveData("widget.place.$widgetId", data.place);
   }
 
+  static Future<void> saveBackgroundTaskState(String state) async {
+    await saveData("widget.backgroundUpdateState", state);
+  }
+
   static Future<void> reloadWidgets() async {
     HomeWidget.updateWidget(
       androidName: 'CurrentWidget',
@@ -188,15 +192,18 @@ void callbackDispatcher() {
 
           WidgetService.reloadWidgets();
 
-        } catch (e, stacktrace) {
+        } catch (err, stacktrace) {
           if (kDebugMode) {
             print("ERRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRRRRR");
-            print((e, stacktrace));
+            print((err, stacktrace));
           }
+          String e = sanitizeErrorMessage(err.toString());
+          WidgetService.saveBackgroundTaskState(e.toString());
           return Future.value(false);
         }
     }
 
+    WidgetService.saveBackgroundTaskState("WORKER RESULT SUCCESS AT ${DateTime.now()}");
     return Future.value(true);
   });
 }

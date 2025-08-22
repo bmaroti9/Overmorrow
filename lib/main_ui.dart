@@ -32,6 +32,13 @@ import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
 
 
+String sanitizeErrorMessage(String e) {
+  String newStr = e.toString().replaceAll(wapi_Key, "WAPIKEY");
+  newStr = newStr.replaceAll(access_key, "UNSPLASHKEY");
+  newStr = newStr.replaceAll(timezonedbKey, "TIMEZONEDBKEY");
+  return newStr;
+}
+
 Future<void> _launchUrl(String url) async {
   final Uri _url = Uri.parse(url);
   if (!await launchUrl(_url)) {
@@ -518,9 +525,7 @@ class ErrorPage extends StatelessWidget {
     Size size = view.physicalSize / view.devicePixelRatio;
 
     const replacement = "<api_key>";
-    String newStr = errorMessage.toString().replaceAll(wapi_Key, replacement);
-    newStr = newStr.replaceAll(access_key, replacement);
-    newStr = newStr.replaceAll(timezonedbKey, replacement);
+    String newStr = sanitizeErrorMessage(errorMessage);
 
     Image image = Image.asset("assets/backdrops/grayscale_snow2.jpg",
         fit: BoxFit.cover, width: double.infinity, height: double.infinity);

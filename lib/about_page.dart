@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/ui_helper.dart';
 import '../l10n/app_localizations.dart';
@@ -47,11 +48,17 @@ class AboutPage extends StatefulWidget {
 class _AboutPageState extends State<AboutPage> {
   final settings;
   final ColorScheme palette;
+  String widgetBackgroundState = "--";
 
   String version = "--";
   String buildNumber = "--";
 
   _AboutPageState({required this.settings, required this.palette});
+
+  //this is all for debugging the background worker
+  Future<void> getWidgetBackgroundState() async {
+    widgetBackgroundState = (await HomeWidget.getWidgetData<String>("widget.backgroundUpdateState", defaultValue: "unknown")) ?? "unknown";
+  }
 
   @override
   void initState() {
@@ -61,6 +68,9 @@ class _AboutPageState extends State<AboutPage> {
         version = info.version;
         buildNumber = info.buildNumber;
       });
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      getWidgetBackgroundState();
     });
   }
 
@@ -286,6 +296,46 @@ class _AboutPageState extends State<AboutPage> {
                             const Spacer(),
                             comfortatext("GPL-3.0 license", 18, settings, color: palette.outline),
                           ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+                          showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) {
+
+                                return AlertDialog(
+                                  backgroundColor: palette.surface,
+                                  content: StatefulBuilder(
+                                    builder: (BuildContext context, StateSetter setState) {
+                                      return Column(
+                                        children: [
+                                          Icon(Icons.bug_report_outlined, color: palette.tertiary),
+                                          const SizedBox(height: 40,),
+                                          comfortatext(widgetBackgroundState, 15, settings, color: palette.onSurface),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                );
+                              }
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: palette.tertiaryContainer,
+                            borderRadius: BorderRadius.circular(50)
+                          ),
+                          margin: const EdgeInsets.only(top: 40, bottom: 100),
+                          padding: const EdgeInsets.all(14),
+                          child: Row(
+                            children: [
+                              comfortatext("worker logs", 18, settings, color: palette.onSurface),
+                              const Spacer(),
+                              Icon(Icons.open_in_new, color: palette.onSurface, size: 18,),
+                            ],
+                          ),
                         ),
                       ),
                     ],
