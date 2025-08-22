@@ -414,7 +414,14 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                         }
                     }
 
-                    Box(modifier = Modifier.padding(top = 20.dp))
+                    Text(
+                        text = "Background color",
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colorScheme.secondary
+                        ),
+                        modifier = Modifier.padding(start = 16.dp, top = 24.dp, bottom = 4.dp)
+                    )
 
                     backColors.forEach { backColor ->
                         Row(
@@ -447,7 +454,14 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                         }
                     }
 
-                    Box(modifier = Modifier.padding(top = 20.dp))
+                    Text(
+                        text = "Foreground color",
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colorScheme.secondary
+                        ),
+                        modifier = Modifier.padding(start = 16.dp, top = 24.dp, bottom = 4.dp)
+                    )
 
                     frontColors.forEach { frontColor ->
                         Row(
