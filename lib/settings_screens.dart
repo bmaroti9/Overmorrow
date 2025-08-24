@@ -21,6 +21,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:overmorrow/about_page.dart';
 import 'package:overmorrow/services/color_service.dart';
+import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';

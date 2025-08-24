@@ -25,6 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:overmorrow/main_screens.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/services/color_service.dart';
+import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -72,37 +73,9 @@ class WeatherPage extends StatelessWidget {
 
     //return SearchHeroDemo();
 
-    return NewMain(data: data, updateLocation: updateLocation, context: context,
-        key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
-  }
-}
-
-class ParrallaxBackground extends StatelessWidget {
-  final Image image;
-  final Color color;
-
-  const ParrallaxBackground({Key? key, required this.image, required this.color}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-
-    return TweenAnimationBuilder<double>(
-      duration: const Duration(milliseconds: 1500),
-      tween: Tween<double>(begin: 0, end: 1.0),
-      curve: Curves.decelerate,
-      builder: (context, value, child) {
-        return Container(
-          color: color,
-          child: Opacity(
-            opacity: value,
-            child: Transform.scale(
-              scale: 1.0 + (0.1 * value),
-              child: image,
-            ),
-          ),
-        );
-      },
-    );
+    return Container();
+    //return NewMain(data: data, updateLocation: updateLocation, context: context,
+    //    key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
   }
 }
 

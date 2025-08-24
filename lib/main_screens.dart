@@ -23,6 +23,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/search_screens.dart';
+import 'package:overmorrow/services/image_service.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'hourly.dart';
 import 'main_ui.dart';
@@ -33,19 +34,24 @@ class NewMain extends StatefulWidget {
   final data;
   final updateLocation;
   final context;
+  final imageKey;
+  final updateColorPalette;
 
-  NewMain({Key? key, required this.data, required this.updateLocation, required this.context}) : super(key: key);
+  NewMain({Key? key, required this.data, required this.updateLocation, required this.imageKey,
+    required this.context, required this.updateColorPalette}) : super(key: key);
 
   @override
-  _NewMainState createState() => _NewMainState(data, updateLocation, context);
+  _NewMainState createState() => _NewMainState(data, updateLocation, imageKey, context, updateColorPalette);
 }
 
 class _NewMainState extends State<NewMain> {
   final data;
   final updateLocation;
   final context;
+  final imageKey;
+  final updateColorPalette;
 
-  _NewMainState(this.data, this.updateLocation, this.context);
+  _NewMainState(this.data, this.updateLocation, this.imageKey, this.context, this.updateColorPalette);
 
   /*
   @override
@@ -162,8 +168,11 @@ class _NewMainState extends State<NewMain> {
           //backgroundColor: WHITE,
           blurContent: false,
           headerHeight: (size.height ) * 0.495,
+          header:  FadingImageWidget(
+            key: imageKey,
+            updateColorPalette: updateColorPalette,
+          ),
           //header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),color: BLACK),
-          header: Container(color: Theme.of(context).colorScheme.secondaryContainer,),
           overlay: Stack(
             children: [
               Padding(
@@ -193,6 +202,9 @@ class _NewMainState extends State<NewMain> {
           )
         ),
         children: [
+
+          const SizedBox(height: 50),
+
           /*
           FadingWidget(
             data: data,

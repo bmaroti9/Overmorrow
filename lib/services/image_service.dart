@@ -21,6 +21,8 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:overmorrow/decoders/weather_data.dart';
+import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/weather_refact.dart';
 
 import '../api_key.dart';
@@ -123,4 +125,78 @@ class ImageService {
     }
   }
 
+}
+
+class ParrallaxBackground extends StatelessWidget {
+  final Image image;
+  final Color color;
+
+  const ParrallaxBackground({Key? key, required this.image, required this.color}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+    return TweenAnimationBuilder<double>(
+      duration: const Duration(milliseconds: 1500),
+      tween: Tween<double>(begin: 0, end: 1.0),
+      curve: Curves.decelerate,
+      builder: (context, value, child) {
+        return Container(
+          color: color,
+          child: Opacity(
+            opacity: value,
+            child: Transform.scale(
+              scale: 1.0 + (0.1 * value),
+              child: image,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class FadingImageWidget extends StatefulWidget {
+  final updateColorPalette;
+
+  const FadingImageWidget({
+    super.key,
+    required this.updateColorPalette
+  });
+
+  @override
+  State<FadingImageWidget> createState() => FadingImageWidgetState();
+}
+
+class FadingImageWidgetState extends State<FadingImageWidget> {
+  Image? _currentImage;
+
+  Future<void> updateImage(String condition) async {
+
+    ImageService imageService = ImageService.getAssetImage(condition);
+    ImageColorList imageColorList = await ImageColorList.getImageColorList(imageService.image);
+
+    setState(() {
+      _currentImage = imageService.image;
+      widget.updateColorPalette(imageColorList.imageColors[0]);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 800),
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeOut,
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return FadeTransition(opacity: animation, child: child);
+      },
+      child: Container(
+        key: ValueKey(_currentImage.hashCode),
+        child: (_currentImage == null)
+            ? Container(color: Theme.of(context).colorScheme.secondaryContainer,)
+            : _currentImage,
+      ),
+    );
+  }
 }

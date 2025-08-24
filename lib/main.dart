@@ -30,6 +30,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/main_screens.dart';
+import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
 import 'package:overmorrow/ui_helper.dart';
@@ -154,6 +155,7 @@ class MyHomePageState extends State<MyHomePage> {
 
   bool isLoading = false;
   WeatherData? data;
+  final GlobalKey<FadingImageWidgetState> imageKey = GlobalKey<FadingImageWidgetState>();
 
   @override
   void initState() {
@@ -164,6 +166,10 @@ class MyHomePageState extends State<MyHomePage> {
 
   void updateLocation(String latLon, String location) {
     fetchData(location, latLon);
+  }
+
+  void updateColorPalette(Color to) {
+    context.read<ThemeProvider>().changeThemeSeedColor(to);
   }
 
   void fetchData(String location, String latLon) async {
@@ -179,6 +185,13 @@ class MyHomePageState extends State<MyHomePage> {
       isLoading = false;
     });
 
+    final FadingImageWidgetState? imageState = imageKey.currentState;
+
+    // Check for null and call the update method directly
+    if (imageState != null) {
+      imageState.updateImage(data!.current.text);
+    }
+
     print(("SUCCESS", location, latLon));
   }
 
@@ -187,7 +200,8 @@ class MyHomePageState extends State<MyHomePage> {
     return Stack(
       children: [
         Container(color: Theme.of(context).colorScheme.surface,),
-        if (data != null) NewMain(data: data, updateLocation: updateLocation, context: context, key: ValueKey(data?.place ?? ""),),
+        if (data != null) NewMain(data: data, updateLocation: updateLocation, imageKey: imageKey, updateColorPalette: updateColorPalette,
+          context: context, key: ValueKey(data?.place ?? ""),),
         if (isLoading) const LoadingIndicator()
       ],
     );
