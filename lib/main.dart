@@ -20,6 +20,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:expressive_loading_indicator/expressive_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -28,10 +29,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:overmorrow/main_screens.dart';
+import 'package:overmorrow/services/preferences_service.dart';
+import 'package:overmorrow/services/widget_service.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:overmorrow/services/location_service.dart';
+import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 import 'caching.dart';
 import 'decoders/weather_data.dart';
@@ -39,180 +44,15 @@ import 'main_ui.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 
+import 'package:material_new_shapes/material_new_shapes.dart';
+
 import 'settings_page.dart';
-
-const updateWeatherDataKey = "com.marotidev.overmorrow.updateWeatherData";
-
-const currentWidgetReceiver = 'com.marotidev.overmorrow.receivers.CurrentWidgetReceiver';
-const dateCurrentWidgetReceiver = 'com.marotidev.overmorrow.receivers.DateCurrentWidgetReceiver';
-const windWidgetReceiver = 'com.marotidev.overmorrow.receivers.WindWidgetReceiver';
-const forecastWidgetReceiver = 'com.marotidev.overmorrow.receivers.ForecastWidgetReceiver';
-
-class WidgetService {
-
-  static Future<void> saveData(String id, value) async {
-    await HomeWidget.saveWidgetData(id, value);
-    print(("Saved", id, value));
-  }
-
-  static Future<void> syncCurrentDataToWidget(LightCurrentWeatherData data, int widgetId) async {
-    await saveData("current.temp.$widgetId", data.temp);
-    await saveData("current.condition.$widgetId", data.condition);
-    await saveData("current.updatedTime.$widgetId", data.updatedTime);
-    await saveData("current.date.$widgetId", data.dateString);
-
-    await saveData("widget.place.$widgetId", data.place);
-    //place is the name of the city while location can include currentLocation
-  }
-
-  static Future<void> syncWindDataToWidget(LightWindData data, int widgetId) async {
-    await saveData("wind.windSpeed.$widgetId", data.windSpeed);
-    await saveData("wind.windDirAngle.$widgetId", data.windDirAngle);
-    await saveData("wind.windUnit.$widgetId", data.windUnit);
-  }
-
-  static Future<void> syncHourlyForecastDataToWidget(LightHourlyForecastData data, int widgetId) async {
-    await saveData("hourlyForecast.currentTemp.$widgetId", data.currentTemp);
-    await saveData("hourlyForecast.currentCondition.$widgetId", data.currentCondition);
-    await saveData("hourlyForecast.updatedTime.$widgetId", data.updatedTime);
-
-    await saveData("hourlyForecast.hourlyTemps.$widgetId", data.hourlyTemps);
-    await saveData("hourlyForecast.hourlyConditions.$widgetId", data.hourlyConditions);
-    await saveData("hourlyForecast.hourlyNames.$widgetId", data.hourlyNames);
-
-    await saveData("widget.place.$widgetId", data.place);
-  }
-
-  static Future<void> saveBackgroundTaskState(String state) async {
-    await saveData("widget.backgroundUpdateState", state);
-  }
-
-  static Future<void> reloadWidgets() async {
-    HomeWidget.updateWidget(
-      androidName: 'CurrentWidget',
-      qualifiedAndroidName: currentWidgetReceiver,
-    );
-    HomeWidget.updateWidget(
-      androidName: 'DateCurrentWidget',
-      qualifiedAndroidName: dateCurrentWidgetReceiver,
-    );
-    HomeWidget.updateWidget(
-      androidName: 'WindWidget',
-      qualifiedAndroidName: windWidgetReceiver,
-    );
-    HomeWidget.updateWidget(
-      androidName: 'ForecastWidget',
-      qualifiedAndroidName: forecastWidgetReceiver,
-    );
-  }
-}
-
-//this is the best solution i found to trigger an update of the data after the preferences have been changed
-@pragma('vm:entry-point')
-Future<void> interactiveCallback(Uri? uri) async {
-  print("INTERACTIVE CALLBACK, ${uri.toString()}");
-  if (uri?.host == 'update') {
-    await Workmanager().registerOneOffTask(
-        "test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
-  }
-}
-
-@pragma('vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
-void callbackDispatcher() {
-
-  Workmanager().executeTask((task, inputData) async {
-    print("Native called background task: $task"); //simpleTask will be emitted here.
-
-    switch (task) {
-      case updateWeatherDataKey :
-
-        try {
-          print("HEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE");
-
-          final List<HomeWidgetInfo> installedWidgets = await HomeWidget.getInstalledWidgets();
-
-          if (installedWidgets.isEmpty) {
-            print("no widgets installed, skipping update");
-            return Future.value(true);
-          }
-
-          Map<String, String> settings = await getSettingsUsed();
-
-          for (HomeWidgetInfo widgetInfo in installedWidgets) {
-            final int widgetId = widgetInfo.androidWidgetId!;
-            final String widgetClassName = widgetInfo.androidClassName!;
-            print(("classname", widgetClassName));
-
-            final String locationKey = "widget.location.$widgetId";
-            final String latLonKey = "widget.latLon.$widgetId";
-            final String providerKey = "widget.provider.$widgetId";
-
-            final String widgetLocation = (await HomeWidget.getWidgetData<String>(locationKey, defaultValue: "unknown")) ?? "unknown";
-            final String widgetProvider = (await HomeWidget.getWidgetData<String>(providerKey, defaultValue: "unknown")) ?? "unknown";
-
-            if (widgetLocation == "unknown") continue;
-
-            String placeName;
-            String latLon;
-
-            if (widgetLocation == "CurrentLocation") {
-              List<String> lastKnown = await getLastKnownLocation();
-              placeName = lastKnown[0];
-              latLon = lastKnown[1];
-            }
-            else {
-              placeName = widgetLocation;
-              latLon = (await HomeWidget.getWidgetData<String>(latLonKey, defaultValue: "unknown")) ?? "unknown";
-            }
-
-            //these two are so similar that i'm updating them with the same logic
-            if (widgetClassName == currentWidgetReceiver || widgetClassName == dateCurrentWidgetReceiver) {
-
-              LightCurrentWeatherData data = await LightCurrentWeatherData
-                  .getLightCurrentWeatherData(placeName, latLon, widgetProvider, settings);
-
-              await WidgetService.syncCurrentDataToWidget(data, widgetId);
-            }
-            else if (widgetClassName == windWidgetReceiver) {
-
-              LightWindData data = await LightWindData
-                  .getLightWindData(placeName, latLon, widgetProvider, settings);
-
-              await WidgetService.syncWindDataToWidget(data, widgetId);
-            }
-            else if (widgetClassName == forecastWidgetReceiver) {
-
-              LightHourlyForecastData data = await LightHourlyForecastData
-                  .getLightForecastData(placeName, latLon, widgetProvider, settings);
-
-              await WidgetService.syncHourlyForecastDataToWidget(data, widgetId);
-            }
-
-          }
-
-          WidgetService.reloadWidgets();
-
-        } catch (err, stacktrace) {
-          if (kDebugMode) {
-            print("ERRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRRRRR");
-            print((err, stacktrace));
-          }
-          String e = sanitizeErrorMessage(err.toString());
-          WidgetService.saveBackgroundTaskState(e.toString());
-          return Future.value(false);
-        }
-    }
-
-    WidgetService.saveBackgroundTaskState("WORKER RESULT SUCCESS AT ${DateTime.now()}");
-    return Future.value(true);
-  });
-}
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   Workmanager().initialize(
-      callbackDispatcher, // The top level function, aka callbackDispatcher
+      myCallbackDispatcher, // The top level function, aka callbackDispatcher
       isInDebugMode: kDebugMode // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
   );
 
@@ -230,17 +70,185 @@ void main() {
     constraints: Constraints(networkType: NetworkType.connected, requiresBatteryNotLow: true),
   );
 
+
+  PreferenceUtils.init();
+
   final data = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
   final ratio = WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
 
   if (data.shortestSide / ratio < 600) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-        .then((value) => runApp(const MyApp()));
+        .then((value) => runApp(
+          MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => ThemeProvider()),
+            ],
+            child: const MyApp(),
+          ),
+        )
+    );
   } else {
-    runApp(const MyApp());
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ],
+        child: const MyApp(),
+      ),
+    );
   }
 }
 
+class MyApp extends StatefulWidget {
+  const MyApp({key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  Widget build(BuildContext context) {
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      themeMode: context.watch<ThemeProvider>().getThemeMode,
+
+      locale: const Locale("en"),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: context.watch<ThemeProvider>().getThemeSeedColor,
+          brightness: Brightness.light,
+        ),
+        useMaterial3: true,
+      ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: context.watch<ThemeProvider>().getThemeSeedColor,
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage()
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({key}) : super(key: key);
+
+  @override
+  State<MyHomePage> createState() => MyHomePageState();
+}
+
+class MyHomePageState extends State<MyHomePage> {
+
+  bool isLoading = false;
+  WeatherData? data;
+
+  @override
+  void initState() {
+    super.initState();
+
+    updateLocation("40.7128, -74.0060", "New York");
+  }
+
+  void updateLocation(String latLon, String location) {
+    fetchData(location, latLon);
+  }
+
+  void fetchData(String location, String latLon) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    //WeatherData _data = await WeatherData.getFullData("New York", "40.7128, -74.0060");
+    WeatherData _data = await WeatherData.getFullData(location, latLon);
+
+    setState(() {
+      data = _data;
+      isLoading = false;
+    });
+
+    print(("SUCCESS", location, latLon));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(color: Theme.of(context).colorScheme.surface,),
+        if (data != null) NewMain(data: data, updateLocation: updateLocation, context: context, key: ValueKey(data?.place ?? ""),),
+        if (isLoading) const LoadingIndicator()
+      ],
+    );
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Dark Theme Test'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+      ),
+      body: Center(
+        child: Stack(
+          children: [
+            if (isLoading) const LoadingIndicator(),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+
+                if (data != null) Text(data!.current.temp.toString()),
+        
+                ElevatedButton(
+                    onPressed: () {
+                      context.read<ThemeProvider>().changeThemeSeedColor(Colors.purple);
+                    },
+                    child: const Text('Styled Button')
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //toggleLoad();
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class LoadingIndicator extends StatelessWidget {
+  const LoadingIndicator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            color: Theme.of(context).colorScheme.primaryContainer
+        ),
+        width: 80,
+        height: 80,
+        child: const ExpressiveLoadingIndicator(),
+      ),
+    );
+  }
+}
+
+/*
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -301,12 +309,6 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
 
 class _HomePageState extends State<HomePage> {
   String _sanitizePlaceName(String input) {
@@ -587,3 +589,5 @@ List<Color> getStartBackColor() {
   Color front = isDarkMode ? const Color.fromRGBO(250, 250, 250, 0.7) : const Color.fromRGBO(0, 0, 0, 0.3);
   return [back, front];
 }
+
+ */

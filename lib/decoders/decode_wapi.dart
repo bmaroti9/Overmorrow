@@ -40,6 +40,7 @@ import 'package:flutter/material.dart';
 
 //decodes the whole response from the weatherapi.com api_call
 
+/*
 Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   //gets the json response for weatherapi.com
   final params = {
@@ -874,3 +875,5 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(settings, placeName, lat,
     hourlyTemps: jsonEncode(hourlyTemps),
   );
 }
+
+ */

@@ -230,7 +230,7 @@ class _AllergensPageState extends State<AllergensPage> {
           ),
           SliverToBoxAdapter(
             child: FutureBuilder<OMExtendedAqi>(
-              future: OMExtendedAqi.fromJson(data.lat, data.lng, data.settings, AppLocalizations.of(context)!),
+              future: OMExtendedAqi.fromJson(data.lat, data.lng),
               builder: (BuildContext context,
                   AsyncSnapshot<OMExtendedAqi> snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {

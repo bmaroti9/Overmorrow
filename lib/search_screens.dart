@@ -26,6 +26,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/services/location_service.dart';
+import 'package:overmorrow/services/preferences_service.dart';
+import 'package:overmorrow/services/widget_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -33,115 +35,199 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'l10n/app_localizations.dart';
 import 'main.dart';
 
+
 //before this the same place from 2 different providers would be registered as different,
 //I am trying to fix this with this
 String generateSimplifier(var split) {
   return "${split["name"]}, ${split["lat"].toStringAsFixed(2)}, ${split["lon"].toStringAsFixed(2)}";
 }
 
-Widget searchBar2(ColorScheme palette, recommend,
-    Function updateLocation, Function updateFav, favorites, Function updateRec, String place,
-    var context, Map<String, String> settings, Image image) {
+class MySearchWidget extends StatefulWidget{
+  final place;
+  final updateLocation;
+  final isTabletMode;
 
-  return Align(
-    alignment: Alignment.topCenter,
-    child: GestureDetector(
-      child: Hero(
-        tag: 'searchBarHero',
-        child: Container(
-          height: 67,
-          margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 15, left: 28, right: 28),
-          decoration: BoxDecoration(
-            color: palette.surface,
-            borderRadius: BorderRadius.circular(33)
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 13),
-                child: Icon(Icons.place_outlined, color: palette.primary,),
+  const MySearchWidget({super.key, required this.place, required this.updateLocation, required this.isTabletMode});
+
+  @override
+  _MySearchWidgetState createState() => _MySearchWidgetState(
+      updateLocation: updateLocation, place: place, isTabletMode: isTabletMode);
+}
+
+class _MySearchWidgetState extends State<MySearchWidget> {
+  final place;
+  final updateLocation;
+  final isTabletMode;
+
+  _MySearchWidgetState({required this.updateLocation, required this.place, required this.isTabletMode});
+
+  final ValueNotifier<List<String>> recommend = ValueNotifier<List<String>>([]);
+  late ValueNotifier<List<String>> favorites;
+
+  @override
+  void initState() {
+    super.initState();
+    favorites = ValueNotifier<List<String>>(getFavorites());
+  }
+
+  List<String> getFavorites() {
+    final ifnot = ["{\n        \"id\": 2651922,\n        \"name\": \"Nashville\",\n        \"region\": \"Tennessee\",\n        \"country\": \"United States of America\",\n        \"lat\": 36.17,\n        \"lon\": -86.78,\n        \"url\": \"nashville-tennessee-united-states-of-america\"\n    }"];
+    final used = PreferenceUtils.getStringList('favorites', ifnot);
+    return used;
+  }
+
+  void updateFav(List<String> fav) {
+    PreferenceUtils.setStringList('favorites', fav);
+
+    //Save the favorites so the widgets can access them when selecting location
+    String jsonString = jsonEncode(fav);
+    WidgetService.saveData('widget.favorites', jsonString);
+
+    setState(() {
+      favorites.value = fav;
+    });
+  }
+
+  void updateRec(List<String> rec) {
+    setState(() {
+      recommend.value = rec;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context){
+
+    if (isTabletMode) {
+      //go straight to the page itself, since the sidebar has that by default
+      /*
+      return HeroSearchPage(place: place, recommend: recommend,
+        updateRec: updateRec, updateLocation: updateLocation, favorites: favorites,
+        updateFav: updateFav);
+
+       */
+    }
+    return SearchBar(recommend: recommend, updateLocation: updateLocation,
+        updateFav: updateFav, favorites: favorites, updateRec: updateRec, place: place);
+
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  final ValueNotifier<List<String>> recommend;
+  final Function updateLocation;
+  final Function updateFav;
+  final ValueNotifier<List<String>> favorites;
+  final Function updateRec;
+  final String place;
+
+  SearchBar({super.key, required this.recommend, required this.updateLocation,
+    required this.updateFav, required this.favorites, required this.updateRec,
+    required this.place});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: GestureDetector(
+        child: Hero(
+          tag: 'searchBarHero',
+          child: Container(
+            height: 67,
+            margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 15, left: 28, right: 28),
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(33)
+            ),
+            padding: const EdgeInsets.only(left: 12, right: 12, top: 5, bottom: 5),
+            child: Material(
+              borderRadius: BorderRadius.circular(20),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 13),
+                    child: Icon(Icons.place_outlined, color: Theme.of(context).colorScheme.primary),
+                  ),
+                  Expanded(child: Text(place, style: const TextStyle(fontSize: 23), maxLines: 1,)),
+                  IconButton(
+                    icon: Icon(Icons.settings_outlined, color: Theme.of(context).colorScheme.primary, size: 25,),
+                    onPressed: () {
+                      HapticFeedback.selectionClick();
+                      /*
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SettingsPage(image: image),
+                        ),
+                      ).then((value) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const MyApp();
+                            },
+                          ),
+                        );
+                      });
+            
+                       */
+                    },
+                  ),
+                ],
               ),
-              Expanded(child: comfortatext(place, 23, settings, color: palette.onSurface, maxLines: 1)),
-              IconButton(
-                icon: Icon(Icons.settings_outlined, color: palette.primary, size: 25,),
-                onPressed: () {
-                  HapticFeedback.selectionClick();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SettingsPage(image: image),
-                    ),
-                  ).then((value) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const MyApp();
-                        },
-                      ),
-                    );
-                  });
-                },
-              ),
-            ],
+            ),
           ),
         ),
+
+        onTap: () {
+          HapticFeedback.lightImpact();
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => HeroSearchPage(place: place, recommend: recommend,
+                  updateRec: updateRec, updateLocation: updateLocation, favorites: favorites, updateFav: updateFav,
+                  isTabletMode: false),
+                fullscreenDialog: true
+            ),
+          );
+        },
       ),
-      onTap: () {
-        HapticFeedback.lightImpact();
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => HeroSearchPage(palette: palette, place: place, settings: settings, recommend: recommend,
-            updateRec: updateRec, updateLocation: updateLocation, favorites: favorites, updateFav: updateFav,
-              isTabletMode: false, image: image,),
-            fullscreenDialog: true
-          ),
-        );
-      },
-    ),
-  );
+    );
+  }
 }
+
 
 class HeroSearchPage extends StatefulWidget {
 
-  final ColorScheme palette;
   final String place;
-  final settings;
   final recommend;
   final updateRec;
   final updateLocation;
   final favorites;
   final updateFav;
   final isTabletMode;
-  final Image image;
 
-  const HeroSearchPage({super.key, required this.palette, required this.place, required this.settings,
+  const HeroSearchPage({super.key, required this.place,
     required this.recommend, required this.updateRec, required this.updateLocation, required this.favorites,
-  required this.updateFav, required this.isTabletMode, required this.image});
+  required this.updateFav, required this.isTabletMode});
 
   @override
-  State<HeroSearchPage> createState() => _HeroSearchPageState(palette: palette, place: place, settings: settings,
+  State<HeroSearchPage> createState() => _HeroSearchPageState(place: place,
   recommend: recommend, updateRec: updateRec, updateLocation: updateLocation, favorites: favorites,
-  updateFav: updateFav, isTabletMode: isTabletMode, image: image);
+  updateFav: updateFav, isTabletMode: isTabletMode);
 }
 
 
 class _HeroSearchPageState extends State<HeroSearchPage> {
 
-  final ColorScheme palette;
   final String place;
-  final settings;
   final recommend;
   final updateRec;
   final updateLocation;
   final favorites;
   final updateFav;
   final isTabletMode;
-  final image;
 
-  _HeroSearchPageState({required this.palette, required this.place, required this.settings,
+  _HeroSearchPageState({required this.place,
     required this.recommend, required this.updateRec, required this.updateLocation, required this.favorites,
-  required this.updateFav, required this.isTabletMode, required this.image});
+  required this.updateFav, required this.isTabletMode});
 
   String text = "";
   bool isEditing = false;
@@ -157,7 +243,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 400), () async {
-      var result = await LocationService.getRecommendation(query, settings["Search provider"], settings);
+      var result = await LocationService.getRecommendation(query);
       updateRec(result);
     });
   }
@@ -170,6 +256,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
 
   openSettingsPage() {
     HapticFeedback.selectionClick();
+    /*
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -186,6 +273,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
         );
       }
     });
+
+     */
   }
 
   onIsEditingChanged() {
@@ -254,6 +343,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
       setLastKnownLocation(placeName, "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}");
 
     } on Error {
+
+      if (!mounted) return;
       setState(() {
         placeName = "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
       });
@@ -341,17 +432,18 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: isTabletMode ? palette.surfaceContainer : palette.surface,
+      backgroundColor: isTabletMode ? Theme.of(context).colorScheme.surfaceContainer
+          : Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: isTabletMode ? palette.surfaceContainer : palette.surface,
-        foregroundColor: palette.primary,
-        surfaceTintColor: palette.outlineVariant,
+        backgroundColor: isTabletMode ? Theme.of(context).colorScheme.surfaceContainer : Theme.of(context).colorScheme.surface,
+        foregroundColor: Theme.of(context).colorScheme.primary,
+        surfaceTintColor: Theme.of(context).colorScheme.outlineVariant,
         elevation: 0,
         automaticallyImplyLeading: true,
         leading: isTabletMode ? Padding(
           padding: const EdgeInsets.only(left: 8),
           child: IconButton(
-            icon: Icon(Icons.settings_outlined, color: palette.primary, size: 23,),
+            icon: Icon(Icons.settings_outlined, color: Theme.of(context).colorScheme.primary, size: 23,),
             onPressed: () {
               openSettingsPage();
             },
@@ -370,7 +462,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                 child: IconButton(
                   icon: Icon(
                     isEditing ? Icons.check : Icons.edit_outlined,
-                    color: palette.primary, size: 25,
+                    color: Theme.of(context).colorScheme.primary, size: 25,
                   ),
                   onPressed: () {
                     HapticFeedback.lightImpact();
@@ -390,7 +482,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               height: 67,
               margin: const EdgeInsets.only(left: 27, right: 27, bottom: 20),
               decoration: BoxDecoration(
-                  color: isTabletMode ? palette.surfaceContainerHighest : palette.surfaceContainer,
+                  color: isTabletMode ? Theme.of(context).colorScheme.surfaceContainerHighest : Theme.of(context).colorScheme.surfaceContainer,
                   borderRadius: BorderRadius.circular(33)
               ),
               child: Align(
@@ -398,44 +490,26 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 30, right: 30),
                   child: Material(
-                    color: isTabletMode ? palette.surfaceContainerHighest : palette.surfaceContainer,
-                    child: Theme(
-                      data: Theme.of(context).copyWith(
-                        textSelectionTheme: TextSelectionThemeData(
-                          selectionHandleColor: palette.primary,
-                        ),
-                      ),
-                      child: TextField(
-                        autofocus: false,
-                        onChanged: (String to) async{
-                          setState(() {
-                            text = to;
-                          });
-                          _onSearchChanged(to);
-                        },
-                        onSubmitted: (String submission) {
-                          HapticFeedback.lightImpact();
-                          updateLocation('query', submission);
-                          if (!isTabletMode) {
-                            Navigator.pop(context);
-                          }
-                        },
-                        cursorColor: palette.primary,
-                        cursorWidth: 2,
-                        style: GoogleFonts.outfit(
-                          color: palette.onSurface,
-                          fontSize: 23 * getFontSize(settings["Font size"]!),
-                          fontWeight: FontWeight.w400,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: 'Search...',
-                          hintStyle:  GoogleFonts.outfit(
-                            color: palette.outline,
-                            fontSize: 20 * getFontSize(settings["Font size"]!),
-                            fontWeight: FontWeight.w400,
-                          ),
-                          border: InputBorder.none,
-                        ),
+                    color: isTabletMode ? Theme.of(context).colorScheme.surfaceContainerHighest : Theme.of(context).colorScheme.surfaceContainer,
+                    child: TextField(
+                      autofocus: false,
+                      onChanged: (String to) async{
+                        setState(() {
+                          text = to;
+                        });
+                        _onSearchChanged(to);
+                      },
+                      onSubmitted: (String submission) {
+                        HapticFeedback.lightImpact();
+                        updateLocation('query', submission);
+                        if (!isTabletMode) {
+                          Navigator.pop(context);
+                        }
+                      },
+                      cursorWidth: 2,
+                      decoration: const InputDecoration(
+                        hintText: 'Search...',
+                        border: InputBorder.none,
                       ),
                     ),
                   ),
@@ -457,7 +531,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                 key: ValueKey<bool>(text == ""),
                 alignment: Alignment.topCenter,
                 child: SingleChildScrollView(
-                  child: buildRecommend(text, palette, settings, favorites, recommend,
+                  child: buildRecommend(text, favorites, recommend,
                   updateLocation, onFavChanged, isEditing, locationState, locationMessage, askGrantLocationPermission,
                   placeName, country, region, isTabletMode),
                 ),
@@ -470,7 +544,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   }
 }
 
-Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenable<List<String>> favoritesListen,
+Widget buildRecommend(String text, ValueListenable<List<String>> favoritesListen,
     ValueListenable<List<String>> recommend, updateLocation, onFavChanged, isEditing, locationState, locationMessage,
     askGrantLocationPermission, placeName, country, region, isTabletMode) {
 
@@ -499,14 +573,14 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
                       Padding(
                         padding: const EdgeInsets.only(right: 10, top: 2),
                         child: Icon(
-                          Icons.gps_fixed, color: palette.outline, size: 17,),
+                          Icons.gps_fixed, color: Theme.of(context).colorScheme.outline, size: 17,),
                       ),
-                      comfortatext(
-                          AppLocalizations.of(context)!.currentLocation, 18, settings, color: palette.outline),
+                      Text(AppLocalizations.of(context)!.currentLocation,
+                        style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 18),)
                     ],
                   ),
-                  CurrentLocationWidget(settings, locationState, locationMessage, palette,
-                      askGrantLocationPermission, placeName, country, region, updateLocation, context, isTabletMode),
+                  CurrentLocationWidget(locationState, locationMessage, askGrantLocationPermission,
+                      placeName, country, region, updateLocation, context, isTabletMode),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 14),
                     child: Row(
@@ -514,9 +588,10 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
                         Padding(
                           padding: const EdgeInsets.only(right: 10, top: 0),
                           child: Icon(
-                            Icons.star_outline, color: palette.outline, size: 18,),
+                            Icons.star_outline, color: Theme.of(context).colorScheme.outline, size: 18,),
                         ),
-                        comfortatext(AppLocalizations.of(context)!.favoritesLowercase, 18, settings, color: palette.outline),
+                        Text(AppLocalizations.of(context)!.favoritesLowercase,
+                          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 18),)
                       ],
                     ),
                   ),
@@ -530,7 +605,7 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
                         return SizeTransition(
                             sizeFactor: animation, child: child);
                       },
-                      child: favoritesOrReorder(isEditing, favorites, settings, onFavChanged, palette, updateLocation, context, isTabletMode),
+                      child: favoritesOrReorder(isEditing, favorites, onFavChanged, updateLocation, context, isTabletMode),
                     ),
                   )
                 ],
@@ -540,14 +615,14 @@ Widget buildRecommend(String text, ColorScheme palette, settings, ValueListenabl
         );
       }
       else {
-        return buildSearchResults(favorites, recommend, palette, updateLocation, onFavChanged, settings, isTabletMode);
+        return buildSearchResults(favorites, recommend, updateLocation, onFavChanged, isTabletMode);
       }
     }
   );
 }
 
-Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> recommend, ColorScheme palette, updateLocation,
-    onFavChanged, settings, isTabletMode) {
+Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> recommend, updateLocation,
+    onFavChanged, isTabletMode) {
   List<String> favoriteNarrow = [];
   for (int i = 0; i < favorites.length; i++) {
     var d = jsonDecode(favorites[i]);
@@ -572,7 +647,8 @@ Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> 
                 child: Container(
                     key: ValueKey<String>(rec.toString()),
                     decoration: BoxDecoration(
-                      color: isTabletMode ? palette.surfaceContainerHighest : palette.surfaceContainer,
+                      color: isTabletMode ? Theme.of(context).colorScheme.surfaceContainerHighest
+                          : Theme.of(context).colorScheme.surfaceContainer,
                       borderRadius: BorderRadius.circular(30),
                     ),
                     padding: rec.isEmpty
@@ -607,8 +683,10 @@ Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> 
                                       child: Column(
                                         crossAxisAlignment : CrossAxisAlignment.start,
                                         children: [
-                                          comfortatext(name, 19, settings, color: palette.onSurface),
-                                          comfortatext("$region, $country", 15, settings, color: palette.outline)
+                                          Text(name, style: TextStyle(
+                                              color: Theme.of(context).colorScheme.onSurface, fontSize: 19),),
+                                          Text("$region, $country", style: TextStyle(
+                                              color: Theme.of(context).colorScheme.outline, fontSize: 15))
                                         ],
                                       )
                                   ),
@@ -628,7 +706,7 @@ Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> 
                                     },
                                     icon: Icon(
                                       contained? Icons.star : Icons.star_outline,
-                                      color: palette.primary, size: 24,
+                                      color: Theme.of(context).colorScheme.primary, size: 24,
                                     ),
                                   )
                                 ],
@@ -646,7 +724,7 @@ Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> 
   );
 }
 
-Widget CurrentLocationWidget(settings, locationState, locationMessage, ColorScheme palette, askGrantLocationPermission,
+Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPermission,
     String placeName, String country, String region, updateLocation, context, isTabletMode) {
   if (locationState == "denied") {
     return GestureDetector(
@@ -658,19 +736,18 @@ Widget CurrentLocationWidget(settings, locationState, locationMessage, ColorSche
         padding: const EdgeInsets.only(
             left: 25, right: 25, top: 23, bottom: 23),
         decoration: BoxDecoration(
-          color: palette.primaryFixedDim,
+          color: Theme.of(context).colorScheme.primaryFixedDim,
           borderRadius: BorderRadius.circular(40),
         ),
         child: Row(
           children: [
             Icon(Icons.gps_fixed,
-              color: palette.onPrimaryFixedVariant, size: 19,),
+              color: Theme.of(context).colorScheme.onPrimaryFixedVariant, size: 19,),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, bottom: 2),
-                child: comfortatext(
-                    AppLocalizations.of(context)!.grantLocationPermission, 19, settings,
-                      color: palette.onPrimaryFixedVariant),
+                child: Text(AppLocalizations.of(context)!.grantLocationPermission,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryFixedVariant, fontSize: 19),)
               ),
             ),
           ],
@@ -692,7 +769,7 @@ Widget CurrentLocationWidget(settings, locationState, locationMessage, ColorSche
         padding: const EdgeInsets.only(
             left: 25, right: 25, top: 20, bottom: 20),
         decoration: BoxDecoration(
-          color: palette.primaryFixedDim,
+          color: Theme.of(context).colorScheme.primaryFixedDim,
           borderRadius: BorderRadius.circular(40),
         ),
         child: Row(
@@ -701,13 +778,13 @@ Widget CurrentLocationWidget(settings, locationState, locationMessage, ColorSche
                 child: Column(
                   crossAxisAlignment : CrossAxisAlignment.start,
                   children: [
-                    comfortatext(placeName, 20, settings, color: palette.onPrimaryFixed),
-                    comfortatext("$region, $country", 15, settings, color: palette.onPrimaryFixed)
+                    Text(placeName, style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryFixed, fontSize: 19),),
+                    Text("$region, $country", style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryFixed, fontSize: 15),)
                   ],
                 )
             ),
             Icon(Icons.keyboard_arrow_right_rounded,
-              color: palette.onPrimaryFixed,)
+              color: Theme.of(context).colorScheme.onPrimaryFixed,)
           ],
         ),
       ),
@@ -718,19 +795,18 @@ Widget CurrentLocationWidget(settings, locationState, locationMessage, ColorSche
     padding: const EdgeInsets.only(
         left: 25, right: 25, top: 20, bottom: 20),
     decoration: BoxDecoration(
-      color: palette.primaryFixedDim,
+      color: Theme.of(context).colorScheme.primaryFixedDim,
       borderRadius: BorderRadius.circular(40),
     ),
     child: Row(
       children: [
         Icon(Icons.gps_off,
-          color: palette.onPrimaryFixedVariant, size: 19,),
+          color: Theme.of(context).colorScheme.onPrimaryFixedVariant, size: 19,),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(left: 10, bottom: 2),
-            child: comfortatext(
-                locationMessage, 19, settings,
-                color: palette.onPrimaryFixedVariant),
+            child: Text(locationMessage, style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimaryFixedVariant, fontSize: 19),)
           ),
         ),
 
@@ -739,23 +815,23 @@ Widget CurrentLocationWidget(settings, locationState, locationMessage, ColorSche
   );
 }
 
-Widget favoritesOrReorder(isEditing, favorites, settings, onFavChanged,
-    ColorScheme palette, updateLocation, context, isTabletMode) {
+Widget favoritesOrReorder(isEditing, favorites, onFavChanged, updateLocation, context, isTabletMode) {
   if (isEditing) {
-    return reorderFavorites(favorites, settings, onFavChanged, palette, isTabletMode);
+    return reorderFavorites(favorites, onFavChanged, isTabletMode, context);
   }
   else {
-    return buildFavorites(palette, favorites, updateLocation, settings, context, isTabletMode);
+    return buildFavorites(favorites, updateLocation, context, isTabletMode);
   }
 }
 
-Widget buildFavorites(ColorScheme palette, List<String> favorites, updateLocation, settings, context, isTabletMode) {
+Widget buildFavorites(List<String> favorites, updateLocation, context, isTabletMode) {
   return SingleChildScrollView(
     child: Container(
         key: const ValueKey<String>("normal"),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: isTabletMode ? palette.surfaceContainerHighest : palette.surfaceContainer,
+          color: isTabletMode ? Theme.of(context).colorScheme.surfaceContainerHighest
+              : Theme.of(context).colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(30),
         ),
         child: Column(
@@ -783,12 +859,14 @@ Widget buildFavorites(ColorScheme palette, List<String> favorites, updateLocatio
                           child: Column(
                             crossAxisAlignment : CrossAxisAlignment.start,
                             children: [
-                              comfortatext(name, 19, settings, color: palette.onSurface),
-                              comfortatext("$region, $country", 15, settings, color: palette.outline)
+                              Text(name, style: TextStyle(
+                                  color: Theme.of(context).colorScheme.onSurface, fontSize: 19),),
+                              Text("$region, $country", style: TextStyle(
+                                  color: Theme.of(context).colorScheme.outline, fontSize: 15))
                             ],
                           )
                       ),
-                      Icon(Icons.keyboard_arrow_right_rounded, color: palette.primary,)
+                      Icon(Icons.keyboard_arrow_right_rounded, color: Theme.of(context).colorScheme.primary,)
                     ],
                   ),
                 ),
@@ -799,11 +877,11 @@ Widget buildFavorites(ColorScheme palette, List<String> favorites, updateLocatio
   );
 }
 
-Widget reorderFavorites(_items, settings, onFavChanged, ColorScheme palette, isTabletMode) {
+Widget reorderFavorites(_items, onFavChanged, bool isTabletMode, context) {
   return Container(
     key: const ValueKey<String>("editing"),
     decoration: BoxDecoration(
-      color: isTabletMode ? palette.surfaceContainerHighest : palette.surfaceContainer,
+      color: isTabletMode ? Theme.of(context).colorScheme.surfaceContainerHighest : Theme.of(context).colorScheme.surfaceContainer,
       borderRadius: BorderRadius.circular(30),
     ),
     child: ReorderableListView(
@@ -816,7 +894,7 @@ Widget reorderFavorites(_items, settings, onFavChanged, ColorScheme palette, isT
       padding: const EdgeInsets.all(12),
       children: <Widget>[
         for (int index = 0; index < _items.length; index += 1)
-          reorderableItem(_items, index, settings, palette, onFavChanged, isTabletMode)
+          reorderableItem(_items, index, onFavChanged, isTabletMode, context)
       ],
       onReorder: (int oldIndex, int newIndex) {
         if (oldIndex < newIndex) {
@@ -830,14 +908,15 @@ Widget reorderFavorites(_items, settings, onFavChanged, ColorScheme palette, isT
   );
 }
 
-Widget reorderableItem(List<dynamic> items, index, settings, ColorScheme palette, onFavChanged, isTabletMode) {
+Widget reorderableItem(List<dynamic> items, index, onFavChanged, isTabletMode, context) {
   var split = json.decode(items[index]);
   String name = split["name"];
   String country = generateAbbreviation(split["country"]);
   String region = split["region"];
   return Container(
     key: Key("$name, $country, $region"),
-    color: isTabletMode ? palette.surfaceContainerHighest : palette.surfaceContainer,
+    color: isTabletMode ? Theme.of(context).colorScheme.surfaceContainerHighest
+        : Theme.of(context).colorScheme.surfaceContainer,
     child: Padding(
       padding: const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
       child:
@@ -845,14 +924,16 @@ Widget reorderableItem(List<dynamic> items, index, settings, ColorScheme palette
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: Icon(Icons.drag_indicator, color: palette.outline,),
+            child: Icon(Icons.drag_indicator, color: Theme.of(context).colorScheme.outline,),
           ),
           Expanded(
               child: Column(
                 crossAxisAlignment : CrossAxisAlignment.start,
                 children: [
-                  comfortatext(name, 19, settings, color: palette.onSurface),
-                  comfortatext("$region, $country", 15, settings, color: palette.outline)
+                  Text(name, style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface, fontSize: 19),),
+                  Text("$region, $country", style: TextStyle(
+                      color: Theme.of(context).colorScheme.outline, fontSize: 15))
                 ],
               )
           ),
@@ -863,7 +944,7 @@ Widget reorderableItem(List<dynamic> items, index, settings, ColorScheme palette
             },
             icon: Icon(
               Icons.delete_outline,
-              color: palette.primary, size: 23,
+              color: Theme.of(context).colorScheme.primary, size: 23,
             ),
           )
         ],

@@ -25,77 +25,30 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
-import 'package:overmorrow/services/image_service.dart';
-import '../l10n/app_localizations.dart';
 
 import '../caching.dart';
-import '../services/color_service.dart';
-import '../ui_helper.dart';
 
+import '../services/weather_service.dart';
 import '../weather_refact.dart';
 import 'decode_RV.dart';
 import 'weather_data.dart';
 
-String OMConvertTime(String time) {
-  return time.split("T")[1];
-}
 
-String OmAqiDesc(index, localizations) {
-  return [
-    localizations.goodAqiDesc,
-    localizations.fairAqiDesc,
-    localizations.moderateAqiDesc,
-    localizations.poorAqiDesc,
-    localizations.veryPoorAqiDesc,
-    localizations.unhealthyAqiDesc,
-  ][index - 1];
-}
-
-String OmAqiTitle(index, localizations) {
-  return [
-    localizations.good,
-    localizations.fair,
-    localizations.moderate,
-    localizations.poor,
-    localizations.veryPoor,
-    localizations.unhealthy,
-  ][index - 1];
-}
-
-List<double> omGetMaxMinTempForDaily(days) {
+List<double> OMGetMaxMinTempForDaily(days) {
   double minTemp = 100;
   double maxTemp = -100;
   for (int i = 0; i < days.length; i++) {
-    if (days[i].rawMinTemp < minTemp) {
-      minTemp = days[i].rawMinTemp;
+    if (days[i].minTemp < minTemp) {
+      minTemp = days[i].minTemp;
     }
-    if (days[i].rawMaxTemp > maxTemp) {
-      maxTemp = days[i].rawMaxTemp;
+    if (days[i].maxTemp > maxTemp) {
+      maxTemp = days[i].maxTemp;
     }
   }
   return [minTemp, maxTemp];
 }
 
-String OMamPmTime(String time) {
-  String a = time.split("T")[1];
-  List<String> num = a.split(":");
-  int hour = int.parse(num[0]);
-  int minute = int.parse(num[1]);
-
-  if (hour == 0) {
-    return "0:${minute.toString().padLeft(2, "0")}am";
-  }
-  if (hour == 12) {
-    return "12:${minute.toString().padLeft(2, "0")}pm";
-  }
-
-  if (hour > 12) {
-    return "${hour - 12}:${minute.toString().padLeft(2, "0")}pm";
-  }
-  return "$hour:${minute.toString().padLeft(2, "0")}am";
-}
-
-int AqiIndexCorrection(int aqi) {
+int aqiIndexCorrection(int aqi) {
   if (aqi <= 20) {
     return 1;
   }
@@ -134,7 +87,7 @@ double OMGetSunStatus(item) {
   return min(1, max(passed / total, 0));
 }
 
-Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) async {
+Future<List<dynamic>> OMRequestData(double lat, double lng, String place) async {
   final oMParams = {
     "latitude": lat.toString(),
     "longitude": lng.toString(),
@@ -151,7 +104,7 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
 
 
   //var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
-  var oMFile = await XCustomCacheManager.fetchData(oMUrl.toString(), "$real_loc, open-meteo");
+  var oMFile = await XCustomCacheManager.fetchData(oMUrl.toString(), "$place, open-meteo");
 
   var oMResponse = await oMFile[0].readAsString();
   final OMData = jsonDecode(oMResponse);
@@ -162,69 +115,13 @@ Future<List<dynamic>> OMRequestData(double lat, double lng, String real_loc) asy
   return [OMData, fetch_datetime, isonline];
 }
 
-String oMGetName(index, settings, item, dayDif, localizations) {
-  String x = item["daily"]["time"][index].split("T")[0];
-  List<String> z = x.split("-");
-  DateTime time = DateTime(int.parse(z[0]), int.parse(z[1]), int.parse(z[2]));
-  List<String> weeks = [
-    localizations.mon,
-    localizations.tue,
-    localizations.wed,
-    localizations.thu,
-    localizations.fri,
-    localizations.sat,
-    localizations.sun
-  ];
-  String weekname = weeks[time.weekday - 1];
-  final String date = settings["Date format"] == "mm/dd" ? "${time.month}/${time.day}"
-      :"${time.day}/${time.month}";
-  return "$weekname, $date";
-}
 
-String oMamPmTime(String time) {
-  List<String> splited = time.split("T");
-  List<String> num = splited[1].split(":");
-  int hour = int.parse(num[0]);
-  if (hour == 0) {
-    return "12am";
-  }
-  if (hour < 12) {
-    return "${hour}am";
-  }
-  if (hour == 12) {
-    return "12pm";
-  }
-  return "${hour - 12}pm";
-}
-
-String oM24hour(String time) {
-  List<String> splited = time.split("T");
-  return splited[1];
-}
-
-String oMTextCorrection(int code) {
+String OMTextCorrection(int code) {
   return OMCodes[code] ?? 'Clear Sky';
 }
 
-String oMCurrentTextCorrection(int code, absoluteSunriseSunset, time) {
-  String t = time.contains("T") ? time.split("T")[1] : time.split(" ")[1];
-  int minute = int.parse(t.split(":")[1]);
-  int hour = int.parse(t.split(":")[0]);
-
-  List<String> x = absoluteSunriseSunset.split("/");
-  int up_h = int.parse(x[0].split(":")[0]);
-  int up_m = int.parse(x[0].split(":")[1]);
-
-  int down_h = int.parse(x[1].split(":")[0]);
-  int donw_m = int.parse(x[1].split(":")[1]);
-
-  double a_current = hour + minute / 60;
-  double a_up = up_h + up_m / 60;
-  double a_down = down_h + donw_m / 60;
-
-  //return textBackground.keys.toList()[0]; // used for testing color combinations
-
-  if (a_up <= a_current && a_current <= a_down) {
+String OMCurrentTextCorrection(int code, OMSunstatus sunStatus, DateTime time) {
+  if (sunStatus.sunrise.difference(time).isNegative || time.difference(sunStatus.sunset).isNegative) {
     return OMCodes[code] ?? 'Clear Sky';
   }
   else {
@@ -238,37 +135,20 @@ String oMCurrentTextCorrection(int code, absoluteSunriseSunset, time) {
   }
 }
 
-String oMBackdropCorrection(String text) {
-  return textBackground[text] ?? 'clear_sky3.jpg';
-}
-
-List<Color> oMtextcolorCorrection(String text) {
-  return textFontColor[text] ?? [WHITE, WHITE];
-}
-
 IconData oMIconCorrection(String text) {
-  //return textIconMap[text] ?? 'sun.png';
   return textMaterialIcon[text] ?? OvermorrowWeatherIcons3.clear_sky;
 }
 
-
 class OMCurrent {
   final String text;
-  final int temp;
+  final double temp;
   final int humidity;
-  final int feels_like;
+  final double feels_like;
   final int uv;
   final double precip;
 
-  final int wind;
+  final double wind;
   final int wind_dir;
-
-  final ImageService imageService;
-
-  final ColorScheme palette;
-  final Color colorPop;
-  final Color descColor;
-  final List<Color> debugColors;
 
   const OMCurrent({
     required this.precip,
@@ -279,51 +159,25 @@ class OMCurrent {
     required this.uv,
     required this.wind,
     required this.wind_dir,
-
-    required this.imageService,
-
-    required this.palette,
-    required this.colorPop,
-    required this.descColor,
-    required this.debugColors,
   });
 
-  static Future<OMCurrent> fromJson(item, settings, sunstatus, timenow, real_loc, lat, lng, start, dayDif, context, isonline) async {
+  static Future<OMCurrent> fromJson(item, OMSunstatus sunstatus, DateTime timenow, real_loc, lat, lng, start, dayDif, isonline) async {
 
-    String currentCondition = oMCurrentTextCorrection(
-        item["current"]["weather_code"], sunstatus.absoluteSunriseSunset, timenow);
+    String currentCondition = OMCurrentTextCorrection(item["current"]["weather_code"], sunstatus, timenow);
 
     //offline mode
     if (!isonline) {
-      currentCondition = oMCurrentTextCorrection(
-          item["hourly"]["weather_code"][start], sunstatus.absoluteSunriseSunset, timenow);
+      currentCondition = OMCurrentTextCorrection(item["hourly"]["weather_code"][start], sunstatus, timenow);
     }
 
-    ImageService imageService = await ImageService.getImageService(currentCondition, real_loc, settings);
-    ColorPalette colorPalette = await ColorPalette.getColorPalette(imageService.image, settings["Color mode"], settings);
-
     return OMCurrent(
-      imageService: imageService,
-
-      palette: colorPalette.palette,
-      colorPop: colorPalette.colorPop,
-      descColor: colorPalette.descColor,
-      debugColors: colorPalette.imageColors,
-
-      text: conditionTranslation(currentCondition, context) ?? "TranslationErr",
+      text: currentCondition,
       uv: item["daily"]["uv_index_max"][dayDif].round(),
-      feels_like: unit_coversion(
-          item["current"]["apparent_temperature"], settings["Temperature"])
-          .round(),
-
-      precip: double.parse(unit_coversion(
-          item["daily"]["precipitation_sum"][dayDif], settings["Precipitation"])
-          .toStringAsFixed(1)),
-      wind: unit_coversion(item["hourly"]["wind_speed_10m"][start], settings["Wind"]).round(),
+      feels_like: item["current"]["apparent_temperature"],
+      precip: item["daily"]["precipitation_sum"][dayDif],
+      wind: item["hourly"]["wind_speed_10m"][start],
       humidity: item["current"]["relative_humidity_2m"],
-      temp: unit_coversion(
-        isonline ? item["current"]["temperature_2m"] : item["hourly"]["temperature_2m"][start],
-        settings["Temperature"]).round(),
+      temp: isonline ? item["current"]["temperature_2m"] : item["hourly"]["temperature_2m"][start],
       wind_dir: item["hourly"]["wind_direction_10m"][start],
     );
   }
@@ -335,12 +189,10 @@ class OMDay {
 
   final IconData icon;
 
-  final String name;
+  final DateTime date;
 
-  final int minTemp;
-  final int maxTemp;
-  final double rawMinTemp; //the unconverted numbers used for charts
-  final double rawMaxTemp;
+  final double minTemp;
+  final double maxTemp;
 
   final List<OMHour> hourly;
   final List<OMHour> hourly_for_precip;
@@ -348,7 +200,7 @@ class OMDay {
   final int precip_prob;
   final double total_precip;
 
-  final int windspeed;
+  final double windspeed;
   final int wind_dir;
 
   final double mm_precip;
@@ -359,12 +211,10 @@ class OMDay {
 
     required this.icon,
 
-    required this.name,
+    required this.date,
 
     required this.minTemp,
     required this.maxTemp,
-    required this.rawMinTemp,
-    required this.rawMaxTemp,
 
     required this.hourly,
 
@@ -377,36 +227,38 @@ class OMDay {
     required this.wind_dir,
   });
 
-  static OMDay? build(item, settings, index, sunstatus, approximatelocal, dayDif, localizations) {
+  static OMDay? build(item, index, OMSunstatus sunstatus, approximatelocal, dayDif) {
 
-    List<OMHour> hours = buildHours(index, true, item, settings, sunstatus, approximatelocal, localizations);
+    List<OMHour> hours = buildHours(index, true, item, sunstatus, approximatelocal);
 
     if (hours.isNotEmpty) {
       return OMDay(
-        uv: item["daily"]["uv_index_max"][index].round(),
-        icon: oMIconCorrection(oMTextCorrection(item["daily"]["weather_code"][index])),
-        text: conditionTranslation(oMTextCorrection(item["daily"]["weather_code"][index]), localizations) ?? "TranslationErr",
-        name: oMGetName(index, settings, item, dayDif, localizations),
-        windspeed: unit_coversion(item["daily"]["wind_speed_10m_max"][index], settings["Wind"]).round(),
-        total_precip: double.parse(unit_coversion(item["daily"]["precipitation_sum"][index], settings["Precipitation"]).toStringAsFixed(1)),
+        date: DateTime.parse(item["daily"]["time"][index]),
 
-        minTemp: unit_coversion(item["daily"]["temperature_2m_min"][index], settings["Temperature"]).round(),
-        maxTemp: unit_coversion(item["daily"]["temperature_2m_max"][index], settings["Temperature"]).round(),
-        rawMinTemp: item["daily"]["temperature_2m_min"][index],
-        rawMaxTemp: item["daily"]["temperature_2m_max"][index],
+        icon: oMIconCorrection(OMTextCorrection(item["daily"]["weather_code"][index])),
+        text: OMTextCorrection(item["daily"]["weather_code"][index]),
 
+        minTemp: item["daily"]["temperature_2m_min"][index],
+        maxTemp: item["daily"]["temperature_2m_max"][index],
+
+        total_precip: item["daily"]["precipitation_sum"][index],
         precip_prob: item["daily"]["precipitation_probability_max"][index] ?? 0,
         mm_precip: item["daily"]["precipitation_sum"][index],
-        hourly_for_precip: buildHours(index, false, item, settings, sunstatus, approximatelocal, localizations),
-        hourly: hours,
+        hourly_for_precip: buildHours(index, false, item, sunstatus, approximatelocal),
+
+        uv: item["daily"]["uv_index_max"][index].round(),
+
+        windspeed: item["daily"]["wind_speed_10m_max"][index],
         wind_dir: item["daily"]["wind_direction_10m_dominant"][index] ?? 0,
+
+        hourly: hours,
       );
     }
     return null;
 
   }
 
-  static List<OMHour> buildHours(index, get_rid_first, item, settings, sunstatus, approximatelocal, localizations) {
+  static List<OMHour> buildHours(index, get_rid_first, item, OMSunstatus sunstatus, approximatelocal) {
     List<OMHour> hourly = [];
 
     int l = item["hourly"]["weather_code"].length;
@@ -415,7 +267,7 @@ class OMDay {
       int j = index * 24 + i;
       DateTime hour = DateTime.parse(item["hourly"]["time"][j]);
       if ((approximatelocal.difference(hour).inMinutes <= 0 || !get_rid_first) && l > j) {
-        hourly.add(OMHour.fromJson(item, j, settings, sunstatus, localizations));
+        hourly.add(OMHour.fromJson(item, j, sunstatus));
       }
     }
     return hourly;
@@ -423,17 +275,19 @@ class OMDay {
 }
 
 class OM15MinutePrecip {
-  final String t_minus;
+  final String text;
+  final int timeTo;
   final double precip_sum;
   final List<double> precips;
 
   const OM15MinutePrecip({
-    required this.t_minus,
+    required this.text,
+    required this.timeTo,
     required this.precip_sum,
     required this.precips,
   });
 
-  static OM15MinutePrecip fromJson(item, settings, minuteOffset, AppLocalizations localizations) {
+  static OM15MinutePrecip fromJson(item, minuteOffset) {
 
     int closest = 100;
     int end = -1;
@@ -465,58 +319,59 @@ class OM15MinutePrecip {
 
     sum = max(sum, 0.1); //if there is rain then it shouldn't write 0
 
-    String t_minus = "";
+    String text = "";
+    int time = 0;
     if (closest != 100) {
       if (closest <= 1) {
         if (end == 1) {
-          t_minus = localizations.rainInHalfHour;
+          text = "rainInHalfHour";
         }
         else if (end <= 2) {
-          int x = [15, 30, 45][end];
-          t_minus = localizations.rainInMinutes(x);
+          time = [15, 30, 45][end];
+          text = "rainInMinutes";
         }
         else if (end ~/ 4 == 1) {
-          t_minus = localizations.rainInOneHour;
+          text = "rainInOneHour";
         }
         else {
-          int x = (end + 2) ~/ 4;
-          t_minus = localizations.rainInHours(x);
+          time = (end + 2) ~/ 4;
+          text = "rainInHours";
         }
       }
       else if (closest < 4) {
-        int x = [15, 30, 45][closest - 1];
-        t_minus = localizations.rainExpectedInMinutes(x);
+        time = [15, 30, 45][closest - 1];
+        text = "rainExpectedInMinutes";
       }
       else if ((closest + 2) ~/ 4 == 1) {
-        t_minus = localizations.rainExpectedInOneHour;
+        text = "rainExpectedInOneHour";
       }
       else {
-        int x = (closest + 2) ~/ 4;
-        t_minus = localizations.rainExpectedInHours(x);
+        time = (closest + 2) ~/ 4;
+        text = "rainExpectedInHours";
       }
     }
 
     return OM15MinutePrecip(
-      t_minus: t_minus,
-      precip_sum: unit_coversion(sum, settings["Precipitation"]),
+      text: text,
+      timeTo: time,
+      precip_sum: sum,
       precips: precips,
     );
   }
 }
 
 class OMHour {
-  final int temp;
+  final double temp;
 
   final IconData icon;
-
-  final String time;
+  final DateTime time;
 
   final String text;
   final double precip;
   final int precip_prob;
   final double wind;
   final int wind_dir;
-  final int wind_gusts;
+  final double wind_gusts;
   final int uv;
 
   final double raw_temp;
@@ -539,73 +394,57 @@ class OMHour {
     required this.precip_prob,
   });
 
-  static OMHour fromJson(item, index, settings, sunstatus, localizations) => OMHour(
-    temp: unit_coversion(item["hourly"]["temperature_2m"][index], settings["Temperature"]).round(),
-    text: conditionTranslation(
-        oMCurrentTextCorrection(
-            item["hourly"]["weather_code"][index], sunstatus.absoluteSunriseSunset, item["hourly"]["time"][index]
-        ),
-        localizations
-    ) ?? "TranslationErr",
-    icon: oMIconCorrection(oMCurrentTextCorrection(item["hourly"]["weather_code"][index],
-        sunstatus.absoluteSunriseSunset, item["hourly"]["time"][index])),
-    time: settings["Time mode"] == '12 hour'? oMamPmTime(item["hourly"]["time"][index]) : oM24hour(item["hourly"]["time"][index]),
+  static OMHour fromJson(item, index, OMSunstatus sunstatus) {
+    DateTime time = DateTime.parse(item["hourly"]["time"][index]);
+    String condition = OMCurrentTextCorrection(item["hourly"]["weather_code"][index], sunstatus, time);
 
-    precip: double.parse(
-        unit_coversion(item["hourly"]["precipitation"][index], settings["Precipitation"]).toStringAsFixed(1)),
+    return OMHour(
+      time: time,
 
-    precip_prob: item["hourly"]["precipitation_probability"][index] ?? 0,
-    wind: double.parse(
-        unit_coversion(item["hourly"]["wind_speed_10m"][index], settings["Wind"]).toStringAsFixed(1)),
-    wind_gusts: unit_coversion(item["hourly"]["wind_gusts_10m"][index], settings["Wind"]).toInt(),
-    wind_dir: item["hourly"]["wind_direction_10m"][index],
-    uv: item["hourly"]["uv_index"][index].round(),
+      icon: oMIconCorrection(condition),
 
-    raw_precip: item["hourly"]["precipitation"][index],
-    raw_temp: item["hourly"]["temperature_2m"][index],
-    raw_wind: item["hourly"]["wind_speed_10m"][index],
-  );
+      temp: item["hourly"]["temperature_2m"][index],
+      text: condition,
+      precip: item["hourly"]["precipitation"][index],
+      precip_prob: item["hourly"]["precipitation_probability"][index] ?? 0,
+      wind: item["hourly"]["wind_speed_10m"][index],
+      wind_gusts: item["hourly"]["wind_gusts_10m"][index],
+      wind_dir: item["hourly"]["wind_direction_10m"][index],
+      uv: item["hourly"]["uv_index"][index].round(),
+      raw_precip: item["hourly"]["precipitation"][index],
+      raw_temp: item["hourly"]["temperature_2m"][index],
+      raw_wind: item["hourly"]["wind_speed_10m"][index],
+    );
+  }
 }
 
 class OMSunstatus {
-  final String sunrise;
-  final String sunset;
+  final DateTime sunrise;
+  final DateTime sunset;
   final double sunstatus;
-  final String absoluteSunriseSunset;
 
   const OMSunstatus({
     required this.sunrise,
     required this.sunstatus,
     required this.sunset,
-    required this.absoluteSunriseSunset,
   });
 
-  static OMSunstatus fromJson(item, settings) => OMSunstatus(
-    sunrise: settings["Time mode"] == "24 hour"
-        ? OMConvertTime(item["daily"]["sunrise"][0])
-        : OMamPmTime(item["daily"]["sunrise"][0]),
-    sunset: settings["Time mode"] == "24 hour"
-        ? OMConvertTime(item["daily"]["sunset"][0])
-        : OMamPmTime(item["daily"]["sunset"][0]),
-    absoluteSunriseSunset: "${OMConvertTime(item["daily"]["sunrise"][0])}/"
-        "${OMConvertTime(item["daily"]["sunset"][0])}",
+  static OMSunstatus fromJson(item) => OMSunstatus(
+    sunrise: DateTime.parse(item["daily"]["sunrise"][0]),
+    sunset: DateTime.parse(item["daily"]["sunset"][0]),
     sunstatus: OMGetSunStatus(item)
   );
 }
 
+//this used to be bigger but i've moved stuff out and only the index remains
 class OMAqi{
   final int aqi_index;
 
-  final String aqi_desc;
-  final String aqi_title;
-
   const OMAqi({
-    required this.aqi_desc,
-    required this.aqi_title,
     required this.aqi_index,
   });
 
-  static Future<OMAqi> fromJson(lat, lng, settings, localizations) async {
+  static Future<OMAqi> fromJson(lat, lng) async {
     final params = {
       "latitude": lat.toString(),
       "longitude": lng.toString(),
@@ -613,28 +452,23 @@ class OMAqi{
     };
     final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
 
-
-    //var file = await cacheManager2.getSingleFile(url.toString(), key: "$lat, $lng, aqi open-meteo").timeout(const Duration(seconds: 6));
     var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi open-meteo");
 
     var response = await file[0].readAsString();
     final item = jsonDecode(response)["current"];
 
-    int index = AqiIndexCorrection(item["european_aqi"]);
+    int index = aqiIndexCorrection(item["european_aqi"]);
 
     return OMAqi(
       aqi_index: index,
-
-      aqi_title: OmAqiTitle(index, localizations),
-
-      aqi_desc: OmAqiDesc(index, localizations),
     );
   }
 }
 
 
-class OMExtendedAqi{ //this data will only be called if you open the Air quality page
-                      //this is done to reduce the amount of unused calls to the open-meteo servers
+class OMExtendedAqi{ 
+  //this data will only be called if you open the Air quality page
+  //this is done to reduce the amount of unused calls to the open-meteo servers
 
   final double pm2_5;
   final double pm10;
@@ -672,11 +506,11 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
 
   final int european_aqi;
   final int us_aqi;
-  final String european_desc;
-  final String us_desc;
+  final int europeanDescIndex;
+  final int usDescIndex;
 
   final double aod;
-  final String aod_desc;
+  final int aod_index;
 
   final double dust;
 
@@ -696,14 +530,14 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     required this.ragweed,
 
     required this.aod,
-    required this.aod_desc,
+    required this.aod_index,
 
     required this.dust,
 
     required this.european_aqi,
     required this.us_aqi,
-    required this.european_desc,
-    required this.us_desc,
+    required this.europeanDescIndex,
+    required this.usDescIndex,
 
     required this.no2_h,
     required this.o3_h,
@@ -724,7 +558,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
     required this.mainPollutant,
   });
 
-  static Future<OMExtendedAqi> fromJson(lat, lng, settings, AppLocalizations localizations) async {
+  static Future<OMExtendedAqi> fromJson(lat, lng) async {
 
     final params = {
       "latitude": lat.toString(),
@@ -818,16 +652,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
 
       dailyAqi.add(biggest);
     }
-
-    final aod_names = [
-      localizations.extremelyHazy,
-      localizations.veryClear,
-      localizations.clear,
-      localizations.slightlyHazy,
-      localizations.haze,
-      localizations.veryHazy,
-      localizations.extremelyHazy
-    ];
+    
     const aod_breakpoints = [0, 0.05, 0.1, 0.2, 0.4, 0.7, 1.0];
 
     final aod_value = item["current"]["aerosol_optical_depth"];
@@ -839,8 +664,6 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       }
     }
 
-    final String aod_desc = aod_names[aod_index];
-
     int usIndex = 0;
     int europeanIndex = 0;
     for (int i = 0; i < aqiCategories.length; i++) {
@@ -851,9 +674,6 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
         europeanIndex = i;
       }
     }
-
-    String usDesc = OmAqiTitle(usIndex + 1, localizations); //because the function expects values between 1 and something
-    String europeanDesc = OmAqiTitle(europeanIndex + 1, localizations);
 
     return OMExtendedAqi(
       pm10: item["current"]["pm10"],
@@ -871,7 +691,7 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
       ragweed: item["current"]["ragweed_pollen"] ?? -1,
 
       aod: aod_value,
-      aod_desc: aod_desc,
+      aod_index: aod_index,
 
       dust: item["current"]["dust"],
 
@@ -888,8 +708,8 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
 
       european_aqi: item["current"]["european_aqi"],
       us_aqi: item["current"]["us_aqi"],
-      us_desc: usDesc,
-      european_desc: europeanDesc,
+      usDescIndex: usIndex,
+      europeanDescIndex: europeanIndex,
 
       //i am looking at the one before last because the last is basically only for calculating the high
       //and not actually expected to be reached
@@ -903,9 +723,9 @@ class OMExtendedAqi{ //this data will only be called if you open the Air quality
   }
 }
 
-Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, localizations) async {
+Future<WeatherData> OMGetWeatherData(lat, lng, place) async {
 
-  var OM = await OMRequestData(lat, lng, real_loc);
+  var OM = await OMRequestData(lat, lng, place);
   var oMBody = OM[0];
 
   DateTime fetch_datetime = OM[1];
@@ -931,18 +751,18 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
     throw const SocketException("Cached data expired");
   }
 
-  OMSunstatus sunstatus = OMSunstatus.fromJson(oMBody, settings);
+  OMSunstatus sunstatus = OMSunstatus.fromJson(oMBody);
 
   List<OMDay> days = [];
   List<dynamic> hourly72 = [];
 
   for (int n = 0; n < 14; n++) {
-    OMDay? day = OMDay.build(oMBody, settings, n, sunstatus, approximateLocal, dayDif, localizations);
+    OMDay? day = OMDay.build(oMBody, n, sunstatus, approximateLocal, dayDif);
     if (day != null) {
       days.add(day);
       if (hourly72.length < 72) {
         if (n != 0) {
-          hourly72.add(day.name);
+          hourly72.add(day.date);
         }
         for (int z = 0; z < day.hourly.length; z++) {
           if (hourly72.length < 72) {
@@ -955,28 +775,25 @@ Future<WeatherData> OMGetWeatherData(lat, lng, real_loc, settings, placeName, lo
 
   return WeatherData(
     radar: await RainviewerRadar.getData(),
-    aqi: await OMAqi.fromJson(lat, lng, settings, localizations),
+    aqi: await OMAqi.fromJson(lat, lng),
     sunstatus: sunstatus,
-    minutely_15_precip: OM15MinutePrecip.fromJson(oMBody, settings,
+    minutely_15_precip: OM15MinutePrecip.fromJson(oMBody,
         DateTime(localtime.year, localtime.month, localtime.day, localtime.hour, localtime.minute).
-        difference(lastKnowTime).inMinutes, localizations),
+        difference(lastKnowTime).inMinutes),
     alerts: [],
 
-    dailyMinMaxTemp: omGetMaxMinTempForDaily(days),
+    dailyMinMaxTemp: OMGetMaxMinTempForDaily(days),
 
     hourly72: hourly72,
 
-    current: await OMCurrent.fromJson(oMBody, settings, sunstatus, real_time, real_loc, lat, lng,
-        start, dayDif, localizations, isonline),
+    current: await OMCurrent.fromJson(oMBody, sunstatus, localtime, place, lat, lng, start, dayDif, isonline),
     days: days,
 
     lat: lat,
     lng: lng,
 
-    place: placeName,
-    settings: settings,
+    place: place,
     provider: "open-meteo",
-    real_loc: real_loc,
 
     fetch_datetime: fetch_datetime,
     updatedTime: DateTime.now(),
@@ -1001,16 +818,14 @@ Future<LightCurrentWeatherData> omGetLightCurrentData(settings, placeName, lat, 
   final item = jsonDecode(response);
 
   DateTime localtime = OMGetLocalTime(item);
-  String realTime = "jT${localtime.hour}:${localtime.minute}";
   DateTime now = DateTime.now();
 
-  final absoluteSunriseSunset =  "${OMConvertTime(item["daily"]["sunrise"][0])}/"
-      "${OMConvertTime(item["daily"]["sunset"][0])}";
+  OMSunstatus sunStatus = OMSunstatus.fromJson(item);
 
   return LightCurrentWeatherData(
-    condition: oMCurrentTextCorrection(item["current"]["weather_code"], absoluteSunriseSunset, realTime),
+    condition: OMCurrentTextCorrection(item["current"]["weather_code"], sunStatus, localtime),
     place: placeName,
-    temp: unit_coversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
+    temp: unitConversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
     updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
     dateString: getDateStringFromLocalTime(now),
   );
@@ -1030,7 +845,7 @@ Future<LightWindData> omGetLightWindData(settings, lat, lon) async {
 
   return LightWindData(
       windDirAngle: item["current"]["wind_direction_10m"],
-      windSpeed: unit_coversion(item["current"]["wind_speed_10m"], settings["Wind"]).round(),
+      windSpeed: unitConversion(item["current"]["wind_speed_10m"], settings["Wind"]).round(),
       windUnit: settings["Wind"]
   );
 }
@@ -1052,11 +867,9 @@ Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lo
   final item = jsonDecode(response);
 
   DateTime localtime = OMGetLocalTime(item);
-  String realTime = "jT${localtime.hour}:${localtime.minute}";
   DateTime now = DateTime.now();
 
-  final absoluteSunriseSunset =  "${OMConvertTime(item["daily"]["sunrise"][0])}/"
-      "${OMConvertTime(item["daily"]["sunset"][0])}";
+  OMSunstatus sunStatus = OMSunstatus.fromJson(item);
 
   List<String> hourlyConditions = [];
   List<int> hourlyTemps = [];
@@ -1065,18 +878,16 @@ Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lo
   for (int i = 0; i < item["hourly"]["temperature_2m"].length; i++) {
     DateTime d = DateTime.parse(item["hourly"]["time"][i]);
     if (d.hour % 6 == 0) {
-      hourlyConditions.add(oMCurrentTextCorrection(
-          item["hourly"]["weather_code"][i], absoluteSunriseSunset, item["hourly"]["time"][i]
-      ));
-      hourlyTemps.add(unit_coversion(item["hourly"]["temperature_2m"][i], settings["Temperature"]).round());
+      hourlyConditions.add(OMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, d));
+      hourlyTemps.add(unitConversion(item["hourly"]["temperature_2m"][i], settings["Temperature"]).round());
       hourlyNames.add("${d.hour}h");
     }
   }
 
   return LightHourlyForecastData(
       place: placeName,
-      currentCondition: oMCurrentTextCorrection(item["current"]["weather_code"], absoluteSunriseSunset, realTime),
-      currentTemp: unit_coversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
+      currentCondition: OMCurrentTextCorrection(item["current"]["weather_code"], sunStatus, localtime),
+      currentTemp: unitConversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
       updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
       //i can't sync lists to widgets so i need to encode and then decode them
       hourlyConditions: jsonEncode(hourlyConditions),

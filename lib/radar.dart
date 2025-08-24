@@ -69,7 +69,7 @@ class _RadarSmallState extends State<RadarSmall> {
       String minute = split[1].replaceAll(RegExp(r"\D"), "");
       int hour = (int.parse(split[0]) + offset) % 24;
       if (data.settings["Time mode"] == "12 hour") {
-        times.add(OMamPmTime("jT$hour:${minute == "0" ? "00" : minute}"));
+        //times.add(amPmTime("jT$hour:${minute == "0" ? "00" : minute}"));
       }
       else {
         times.add("${hour.toString().padLeft(2, "0")}:${minute == "0" ? "00" : minute}");
@@ -386,7 +386,7 @@ class _RadarBigState extends State<RadarBig> {
       String minute = split[1].replaceAll(RegExp(r"\D"), "");
       int hour = (int.parse(split[0]) + offset) % 24;
       if (data.settings["Time mode"] == "12 hour") {
-        times.add(OMamPmTime("jT$hour:${minute == "0" ? "00" : minute}"));
+        //times.add(OMamPmTime("jT$hour:${minute == "0" ? "00" : minute}"));
       }
       else {
         times.add("${hour.toString().padLeft(2, "0")}:${minute == "0" ? "00" : minute}");

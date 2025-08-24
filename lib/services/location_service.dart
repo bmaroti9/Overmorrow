@@ -18,12 +18,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:io';
 import 'dart:convert';
+import 'package:overmorrow/services/preferences_service.dart';
+
 import '../api_key.dart';
 import '../caching.dart';
 
 class LocationService {
 
-  static Future<List<String>> getRecommendation(String query, String? searchProvider, settings) async {
+  static Future<List<String>> getRecommendation(String query) async {
+    String searchProvider = PreferenceUtils.getString("Search provider", "weatherapi");
+
     query = _sanitizeQuery(query);
     if (query == '') {
       return [];
@@ -32,7 +36,7 @@ class LocationService {
     if (searchProvider == "weatherapi") {
       return _getWapiRecommendation(query);
     } else {
-      return _getOMRecommendation(query, settings);
+      return _getOMRecommendation(query);
     }
   }
 
@@ -61,7 +65,7 @@ class LocationService {
     return recommendations;
   }
 
-  static Future<List<String>> _getOMRecommendation(String query, settings) async {
+  static Future<List<String>> _getOMRecommendation(String query) async {
     var params = {
       'name': query,
       'count': '6',

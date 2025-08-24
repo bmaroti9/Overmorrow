@@ -36,6 +36,7 @@ import 'decode_RV.dart';
 import 'decode_wapi.dart';
 import 'weather_data.dart';
 
+/*
 String metNTextCorrection(String text, bool shouldTranslate, localizations) {
   String p = metNWeatherToText[text] ?? 'Clear Sky';
   if (shouldTranslate) {
@@ -242,7 +243,7 @@ class MetNCurrent {
 
     var it = item["properties"]["timeseries"][0]["data"];
 
-    ImageService imageService = await ImageService.getImageService(currentCondition, real_loc, settings);
+    ImageService imageService = await ImageService.getImageService(currentCondition, real_loc);
     ColorPalette colorPalette = await ColorPalette.getColorPalette(imageService.image, settings["Color mode"], settings);
 
     return MetNCurrent(
@@ -770,3 +771,5 @@ Future<LightHourlyForecastData> metNGetLightHourlyData(settings, placeName, lat,
     hourlyTemps: jsonEncode(hourlyTemps),
   );
 }
+
+ */

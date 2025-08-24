@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
+import 'package:overmorrow/search_screens.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'hourly.dart';
 import 'main_ui.dart';
@@ -46,20 +47,21 @@ class _NewMainState extends State<NewMain> {
 
   _NewMainState(this.data, this.updateLocation, this.context);
 
+  /*
   @override
   void initState() {
     super.initState();
-    /*
+
     i'm keeping this in case i need another pop-up sometime
     if (data.settings['networkImageDialogShown'] == "false") {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showFeatureDialog(context, data.settings);
       });
     }
-     */
+
   }
 
-  /*
+
   void _showFeatureDialog(BuildContext context, settings) {
     showDialog(
       context: context,
@@ -123,6 +125,7 @@ class _NewMainState extends State<NewMain> {
 
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     final Size size = (view.physicalSize) / view.devicePixelRatio;
+    /*
 
     final Map<String, Widget> widgetsMap = {
       'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), width: size.width,),
@@ -146,19 +149,21 @@ class _NewMainState extends State<NewMain> {
       colorMode = brightness == Brightness.dark ? "dark" : "light";
     }
 
+     */
+
     return Scaffold(
-      backgroundColor: data.current.palette.surface,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: StretchyHeader.listView(
         displacement: 130,
         onRefresh: () async {
-          await updateLocation("${data.lat}, ${data.lng}", data.real_loc, time: 400);
+          await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
         },
         headerData: HeaderData(
           //backgroundColor: WHITE,
           blurContent: false,
           headerHeight: (size.height ) * 0.495,
-          header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),
-              color: BLACK),
+          //header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),color: BLACK),
+          header: Container(color: Theme.of(context).colorScheme.secondaryContainer,),
           overlay: Stack(
             children: [
               Padding(
@@ -167,6 +172,8 @@ class _NewMainState extends State<NewMain> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Spacer(),
+                    Text("${data.current.temp}°")
+                    /*
                     comfortatext(
                         "${data.current.temp}°", 75, data.settings,
                         color: data.current.colorPop, weight: FontWeight.w200,
@@ -175,57 +182,36 @@ class _NewMainState extends State<NewMain> {
                         data.current.text, 33, data.settings,
                         weight: FontWeight.w400,
                         color: data.current.descColor)
+
+                     */
                   ],
                 ),
               ),
 
-              MySearchParent(updateLocation: updateLocation, palette: data.current.palette, place: data.place,
-                settings: data.settings, image: data.current.imageService.image, isTabletMode: false,
-              ),
+              MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false)
             ],
           )
         ),
         children: [
+          /*
           FadingWidget(
             data: data,
             time: data.updatedTime,
           ),
           Circles(data, 0.5, context, data.current.palette),
 
-            /*
-            Padding(
-              padding: const EdgeInsets.only(left: 30),
-              child: SizedBox(
-                height: 35,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: data.current.debugColors.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                        padding: EdgeInsets.all(5),
-                        child: Container(
-                          width: 25,
-                          height: 25,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: data.current.debugColors[index]
-                          ),
-                        ),
-                    );
-                  }
-                ),
-              ),
-            ),
-             */
           Column(
             children: orderedWidgets.map((widget) {
               return widget;
             }).toList(),
           ),
+
+           */
+          /*
           providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
             "${data.lat}, ${data.lng}", data.real_loc, context),
+
+           */
         ],
       ),
     );
@@ -257,9 +243,7 @@ class TabletLayout extends StatelessWidget {
           children: [
             SizedBox(
               width: panelWidth,
-              child: MySearchParent(updateLocation: updateLocation, palette: data.current.palette, place: data.place,
-                settings: data.settings, image: data.current.imageService.image, isTabletMode: true,
-              ),
+              child: MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: true)
             ),
 
             Expanded(

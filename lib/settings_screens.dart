@@ -21,6 +21,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:overmorrow/about_page.dart';
 import 'package:overmorrow/services/color_service.dart';
+import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:overmorrow/weather_refact.dart';
@@ -260,7 +261,7 @@ class AppearanceSelector extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      comfortatext("${unit_coversion(16, settings["Temperature"]!).toInt()}°", 67,
+                                      comfortatext("${unitConversion(16, settings["Temperature"]!).toInt()}°", 67,
                                           settings, color: colorPalette.colorPop, weight: FontWeight.w200),
                                       comfortatext(localizations.clearSky, 26,
                                           settings, color: colorPalette.descColor, weight: FontWeight.w400)

@@ -129,6 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.1"
+  expressive_loading_indicator:
+    dependency: "direct main"
+    description:
+      name: expressive_loading_indicator
+      sha256: df84bb56f6f1e977df01e2455ccf033e89f92bc1ecf4dc78e71d44fcbc947331
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -445,6 +453,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.0"
+  material_new_shapes:
+    dependency: transitive
+    description:
+      name: material_new_shapes
+      sha256: e4bc375205e187e8fb232573387112dd8c0dd45b03af8aa2b3c79eb4b9e3e0dc
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   meta:
     dependency: transitive
     description:
@@ -461,6 +477,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   octo_image:
     dependency: transitive
     description:
@@ -589,6 +613,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      sha256: "4e82183fa20e5ca25703ead7e05de9e4cceed1fbd1eadc1ac3cb6f565a09f272"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.5+1"
   rxdart:
     dependency: transitive
     description:
@@ -931,5 +963,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.8.0 <4.0.0"
+  dart: ">=3.8.1 <4.0.0"
   flutter: ">=3.27.0"

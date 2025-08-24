@@ -102,7 +102,7 @@ class ImageService {
 
   }
 
-  static Future<ImageService> getImageService(String condition, String loc, settings) async {
+  static Future<ImageService> getImageService(settings, String condition, String loc) async {
 
     if (settings["Image source"] == "network") {
       try {

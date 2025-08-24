@@ -23,6 +23,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overmorrow/main_screens.dart';
+import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:stretchy_header/stretchy_header.dart';
@@ -524,7 +525,6 @@ class ErrorPage extends StatelessWidget {
 
     Size size = view.physicalSize / view.devicePixelRatio;
 
-    const replacement = "<api_key>";
     String newStr = sanitizeErrorMessage(errorMessage);
 
     Image image = Image.asset("assets/backdrops/grayscale_snow2.jpg",
@@ -563,9 +563,7 @@ class ErrorPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                MySearchParent(updateLocation: updateLocation,
-                  palette: palette, place: place, settings: settings, image: image,
-                isTabletMode: false,)
+                MySearchWidget(place: place, updateLocation: updateLocation, isTabletMode: false)
               ],
             )
         ),

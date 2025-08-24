@@ -43,6 +43,7 @@ dependencies:
   #i also used this version in the build.gradle for some plugins
   home_widget: ^0.8.0
 
+  expressive_loading_indicator: ^0.0.1
   flutter_cache_manager: ^3.4.1
   flutter_map: ^8.1.1
   loading_animation_widget: ^1.2.0+4
@@ -52,6 +53,7 @@ dependencies:
   dynamic_color: ^1.7.0
   flutter_staggered_animations: ^1.1.1
   package_info_plus: ^8.3.0
+  provider: ^6.1.5+1
 
   #for the .arb files for translation
   flutter_localizations:

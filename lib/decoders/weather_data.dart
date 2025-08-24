@@ -22,10 +22,8 @@ import 'package:overmorrow/decoders/decode_mn.dart';
 import 'decode_wapi.dart';
 
 class WeatherData {
-  final Map<String, String> settings;
 
   final String place;
-  final String real_loc;
   final double lat;
   final double lng;
 
@@ -50,9 +48,7 @@ class WeatherData {
 
   WeatherData({
     required this.place,
-    required this.settings,
     required this.provider,
-    required this.real_loc,
     required this.lat,
     required this.lng,
     required this.sunstatus,
@@ -72,11 +68,15 @@ class WeatherData {
     required this.dailyMinMaxTemp
   });
 
-  static Future<WeatherData> getFullData(settings, placeName, real_loc, latlong, provider, localizations) async {
+  static Future<WeatherData> getFullData(String placeName, latLon) async {
 
-    List<String> split = latlong.split(",");
+    List<String> split = latLon.split(",");
     double lat = double.parse(split[0]);
     double lng = double.parse(split[1]);
+
+    return OMGetWeatherData(lat, lng, placeName);
+
+    /*
 
     if (provider == 'weatherapi.com') {
       return WapiGetWeatherData(lat, lng, real_loc, settings, placeName, localizations);
@@ -87,6 +87,7 @@ class WeatherData {
     else {
       return OMGetWeatherData(lat, lng, real_loc, settings, placeName, localizations);
     }
+     */
   }
 }
 
@@ -113,6 +114,9 @@ class LightCurrentWeatherData {
     double lat = double.parse(split[0]);
     double lng = double.parse(split[1]);
 
+    return omGetLightCurrentData(settings, placeName, lat, lng);
+
+    /*
     switch (provider) {
       case "weatherapi":
         return wapiGetLightCurrentData(settings, placeName, lat, lng);
@@ -121,6 +125,8 @@ class LightCurrentWeatherData {
       default:
         return omGetLightCurrentData(settings, placeName, lat, lng);
     }
+
+     */
   }
 }
 
@@ -141,6 +147,9 @@ class LightWindData {
     double lat = double.parse(split[0]);
     double lon = double.parse(split[1]);
 
+    return omGetLightWindData(settings, lat, lon);
+
+    /*
     switch (provider) {
       case "weatherapi":
         return wapiGetLightWindData(settings, placeName, lat, lon);
@@ -149,6 +158,8 @@ class LightWindData {
       default:
         return omGetLightWindData(settings, lat, lon);
     }
+
+     */
   }
 }
 
@@ -177,6 +188,8 @@ class LightHourlyForecastData {
     double lat = double.parse(split[0]);
     double lon = double.parse(split[1]);
 
+    return omGetHourlyForecast(settings, placeName, lat, lon);
+    /*
     switch (provider) {
       case "weatherapi":
         return wapiGetLightHourlyData(settings, placeName, lat, lon);
@@ -185,5 +198,7 @@ class LightHourlyForecastData {
       default:
         return omGetHourlyForecast(settings, placeName, lat, lon);
     }
+
+     */
   }
 }
