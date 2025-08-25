@@ -78,13 +78,16 @@ void main() {
   final data = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
   final ratio = WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
 
+  final commonProviders = [
+    ChangeNotifierProvider(create: (_) => ThemeProvider()),
+    ChangeNotifierProvider(create: (_) => SettingsProvider()),
+  ];
+
   if (data.shortestSide / ratio < 600) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((value) => runApp(
           MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (_) => ThemeProvider()),
-            ],
+            providers: commonProviders,
             child: const MyApp(),
           ),
         )
@@ -92,9 +95,7 @@ void main() {
   } else {
     runApp(
       MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ],
+        providers: commonProviders,
         child: const MyApp(),
       ),
     );
@@ -113,8 +114,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-    final String? outfitFontFamily = GoogleFonts.outfit().fontFamily;
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: context.watch<ThemeProvider>().getThemeMode,
@@ -129,19 +128,13 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: AppLocalizations.supportedLocales,
 
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: context.watch<ThemeProvider>().getThemeSeedColor,
-          brightness: Brightness.light,
-        ),
+        colorScheme: context.watch<ThemeProvider>().getColorSchemeLight,
         useMaterial3: true,
         fontFamily: GoogleFonts.outfit().fontFamily,
 
       ),
       darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: context.watch<ThemeProvider>().getThemeSeedColor,
-          brightness: Brightness.dark,
-        ),
+        colorScheme: context.watch<ThemeProvider>().getColorSchemeDark,
         useMaterial3: true,
         fontFamily: GoogleFonts.outfit().fontFamily
       ),
@@ -178,8 +171,8 @@ class MyHomePageState extends State<MyHomePage> {
     fetchData(location, latLon);
   }
 
-  void updateColorPalette(Color to) {
-    context.read<ThemeProvider>().changeThemeSeedColor(to);
+  void updateColorPalette(ColorScheme colorSchemeLight, ColorScheme colorSchemeDark) {
+    context.read<ThemeProvider>().changeColorSchemeToImageScheme(colorSchemeLight, colorSchemeDark);
   }
 
   void fetchData(String location, String latLon) async {
@@ -243,7 +236,7 @@ class MyHomePageState extends State<MyHomePage> {
                 const SizedBox(height: 20),
 
                 if (data != null) Text(data!.current.temp.toString()),
-        
+
                 ElevatedButton(
                     onPressed: () {
                       context.read<ThemeProvider>().changeThemeSeedColor(Colors.purple);
@@ -274,10 +267,11 @@ class LoadingIndicator extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            color: Theme.of(context).colorScheme.primaryContainer
+            color: Theme.of(context).colorScheme.secondaryContainer
         ),
-        width: 80,
-        height: 80,
+        margin: EdgeInsets.only(bottom: 400),
+        width: 60,
+        height: 60,
         child: const ExpressiveLoadingIndicator(),
       ),
     );

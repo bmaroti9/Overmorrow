@@ -46,9 +46,13 @@ class PreferenceUtils {
 class ThemeProvider with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   Color _themeSeedColor = Colors.blue;
+  ColorScheme _colorSchemeLight = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.light);
+  ColorScheme _colorSchemeDark = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark);
 
   ThemeMode get getThemeMode => _themeMode;
   Color get getThemeSeedColor => _themeSeedColor;
+  ColorScheme get getColorSchemeLight => _colorSchemeLight;
+  ColorScheme get getColorSchemeDark => _colorSchemeDark;
 
   ThemeProvider() {
     _load();
@@ -83,34 +87,32 @@ class ThemeProvider with ChangeNotifier {
     _themeSeedColor = color;
     notifyListeners();
   }
+
+  Future<void> changeColorSchemeToImageScheme(ColorScheme lightColorScheme, ColorScheme darkColorScheme) async {
+    _colorSchemeLight = lightColorScheme;
+    _colorSchemeDark = darkColorScheme;
+    notifyListeners();
+  }
 }
 
-
-
 class SettingsProvider with ChangeNotifier {
-  List<String> _favorites = [];
+  String _tempUnit = "˚C";
+  String _windUnit = "m/s";
+  String _precipUnit = "mm";
 
-  List<String> get getFavorites => _favorites;
+  String get getTempUnit => _tempUnit;
+  String get getWindUnit => _windUnit;
+  String get getPrecipUnit => _precipUnit;
 
   SettingsProvider() {
     _load();
+
+    notifyListeners();
   }
 
   void _load() {
-    loadFavorites();
-
-    notifyListeners();
+    _tempUnit = PreferenceUtils.getString("Temperature", "˚C");
+    _windUnit = PreferenceUtils.getString("Wind", "m/s");
+    _precipUnit = PreferenceUtils.getString("Precipitation", "mm");
   }
-
-  void loadFavorites() {
-    final ifnot = ["{\n        \"id\": 2651922,\n        \"name\": \"Nashville\",\n        \"region\": \"Tennessee\",\n        \"country\": \"United States of America\",\n        \"lat\": 36.17,\n        \"lon\": -86.78,\n        \"url\": \"nashville-tennessee-united-states-of-america\"\n    }"];
-    _favorites = PreferenceUtils.getStringList('favorites', ifnot);
-  }
-
-  void changeFavorites(List<String> value) {
-    PreferenceUtils.setStringList('favorites', value);
-    _favorites = value;
-    notifyListeners();
-  }
-
 }

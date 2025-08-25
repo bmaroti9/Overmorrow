@@ -24,6 +24,7 @@ import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/services/image_service.dart';
+import 'package:overmorrow/services/weather_service.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'hourly.dart';
 import 'main_ui.dart';
@@ -181,7 +182,14 @@ class _NewMainState extends State<NewMain> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Spacer(),
-                    Text("${data.current.temp}°")
+                    Text(
+                      "${unitConversion(data.current.temp, "˚C", decimals: 0)}°",
+                      style: TextStyle(color: Theme.of(context).colorScheme.tertiaryContainer, fontSize: 75, height: 1.05),
+                    ),
+                    Text(
+                      data.current.text,
+                      style: TextStyle(color: Theme.of(context).colorScheme.surface, fontSize: 33, height: 1.05),
+                    )
                     /*
                     comfortatext(
                         "${data.current.temp}°", 75, data.settings,
@@ -203,17 +211,15 @@ class _NewMainState extends State<NewMain> {
         ),
         children: [
 
-          Container(
-            color: Theme.of(context).colorScheme.tertiaryContainer,
-            child: Text("hehe"),
-          )
+          const SizedBox(height: 20,),
+          Circles(data: data),
 
           /*
           FadingWidget(
             data: data,
             time: data.updatedTime,
           ),
-          Circles(data, 0.5, context, data.current.palette),
+
 
           Column(
             children: orderedWidgets.map((widget) {
@@ -322,7 +328,7 @@ class TabletLayout extends StatelessWidget {
                             const Spacer(),
                             SizedBox(
                               width: 397,
-                              child: Circles(data, 0.3, context, data.current.palette)
+                              child: Circles(data : data)
                             ),
                           ],
                         ),

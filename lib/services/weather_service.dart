@@ -26,11 +26,13 @@ String getDateStringFromLocalTime(DateTime now) {
   return "${weekNames[now.weekday - 1]}, ${monthNames[now.month - 1]} ${now.day}";
 }
 
-double unitConversion(double value, String unit, {decimals = 2}) {
+num unitConversion(double value, String unit, {decimals = 2}) {
   List<double> p = weather_refactor.conversionTable[unit] ?? [0, 0];
   double a = p[0] + value * p[1];
-  a = double.parse(a.toStringAsFixed(decimals));
-  return a;
+  if (decimals == 0) {
+    return a.round();
+  }
+  return double.parse(a.toStringAsFixed(decimals));
 }
 
 String getDayName(settings, DateTime time, localizations) {

@@ -41,12 +41,14 @@ class ImageService {
   final String username;
   final String userlink;
   final String photolink;
+  final Color color;
 
   const ImageService({
     required this.image,
     required this.username,
     required this.userlink,
-    required this.photolink
+    required this.photolink,
+    required this.color
   });
 
   static Future<ImageService> getUnsplashCollectionImage(String condition, String loc) async {
@@ -75,12 +77,14 @@ class ImageService {
     final String _userName = unsplashBody[0]["user"]["name"] ?? "";
 
     final String _photoLink = unsplashBody[0]["links"]["html"] ?? "";
+    final Color color =  Color(getColorFromHex(unsplashBody[0]["color"]));
 
     return ImageService(
         image: image,
         username: _userName,
         userlink: _userLink,
-        photolink: _photoLink
+        photolink: _photoLink,
+        color: color
     );
   }
 
@@ -94,12 +98,14 @@ class ImageService {
     final String _photoLink = credits[0];
     final String _userName = credits[1];
     final String _userLink = credits[2];
+    final Color color = Colors.amber;
 
     return ImageService(
       image: image,
       username: _userName,
       userlink: _userLink,
-      photolink: _photoLink
+      photolink: _photoLink,
+      color: color
     );
 
   }
@@ -174,12 +180,23 @@ class FadingImageWidgetState extends State<FadingImageWidget> {
   Future<void> updateImage(String condition, String loc) async {
 
     ImageService imageService = await ImageService.getUnsplashCollectionImage(condition, loc);
-    ImageColorList imageColorList = await ImageColorList.getImageColorList(imageService.image);
+
+    ImageProvider imageProvider = imageService.image.image;
+
+    ColorScheme colorSchemeLight = await ColorScheme.fromImageProvider(
+      provider: imageProvider,
+      brightness: Brightness.light,
+    );
+    ColorScheme colorSchemeDark = await ColorScheme.fromImageProvider(
+      provider: imageProvider,
+      brightness: Brightness.dark,
+    );
 
     setState(() {
       _currentImage = imageService.image;
-      widget.updateColorPalette(imageColorList.imageColors[0]);
     });
+
+    await widget.updateColorPalette(colorSchemeLight, colorSchemeDark);
   }
 
   @override

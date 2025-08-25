@@ -508,9 +508,10 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                       },
                       cursorWidth: 2,
                       decoration: const InputDecoration(
-                        hintText: 'Search...',
+                        hintText: 'search...',
                         border: InputBorder.none,
                       ),
+                      style: const TextStyle(fontSize: 19),
                     ),
                   ),
                 ),

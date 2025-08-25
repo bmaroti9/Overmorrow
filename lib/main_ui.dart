@@ -22,11 +22,15 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:overmorrow/decoders/weather_data.dart';
 import 'package:overmorrow/main_screens.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/image_service.dart';
+import 'package:overmorrow/services/preferences_service.dart';
+import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/settings_page.dart';
+import 'package:provider/provider.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'api_key.dart';
@@ -79,47 +83,51 @@ class WeatherPage extends StatelessWidget {
   }
 }
 
-Widget Circles(var data, double bottom, context, ColorScheme palette) {
-  return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 13, top: 2),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DescriptionCircle(
-              text: '${data.current.feels_like}°',
-              undercaption: AppLocalizations.of(context)!.feelsLike,
-              extra: '',
-              settings: data.settings,
-              dir: -1,
-              palette: palette
-            ),
-            DescriptionCircle(
-              text: '${data.current.humidity}',
-              undercaption: AppLocalizations.of(context)!.humidity,
-              extra: '%',
-              settings: data.settings,
-              dir: -1,
-              palette: palette
-            ),
-            DescriptionCircle(
-              text: '${data.current.precip}',
-              undercaption: AppLocalizations.of(context)!.precipCapital,
-              extra: data.settings["Precipitation"],
-              settings: data.settings,
-              dir: -1,
-              palette: palette
-            ),
-            DescriptionCircle(
-              text: '${data.current.wind}',
-              undercaption: AppLocalizations.of(context)!.windCapital,
-              extra: data.settings["Wind"],
-              settings: data.settings,
-              dir: data.current.wind_dir + 180,
-              palette: palette
-            ),
-          ]
-      )
-  );
+
+class Circles extends StatelessWidget {
+
+  final WeatherData data;
+
+  const Circles({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 19, right: 19, bottom: 13, top: 2),
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DescriptionCircle(
+                text: '${unitConversion(data.current.feels_like,
+                    context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°',
+                undercaption: AppLocalizations.of(context)!.feelsLike,
+                extra: '',
+                dir: -1,
+              ),
+              DescriptionCircle(
+                text: '${data.current.humidity}',
+                undercaption: AppLocalizations.of(context)!.humidity,
+                extra: '%',
+                dir: -1,
+              ),
+              DescriptionCircle(
+                text: '${data.current.precip}',
+                undercaption: AppLocalizations.of(context)!.precipCapital,
+                extra: context.select((SettingsProvider p) => p.getPrecipUnit),
+                dir: -1,
+              ),
+              DescriptionCircle(
+                text: '${unitConversion(data.current.wind,
+                    context.select((SettingsProvider p) => p.getWindUnit), decimals: 0)}',
+                undercaption: AppLocalizations.of(context)!.windCapital,
+                extra: context.select((SettingsProvider p) => p.getWindUnit),
+                dir: data.current.wind_dir + 180,
+              ),
+            ]
+        )
+    );
+  }
+
 }
 
 
@@ -128,15 +136,10 @@ class DescriptionCircle extends StatelessWidget {
   final String text;
   final String undercaption;
   final String extra;
-  final settings;
   final dir;
 
-  final ColorScheme palette;
-
   const DescriptionCircle({super.key, required this.text,
-    required this.undercaption,  required this.extra,
-    required this.settings, required this.dir,
-    required this.palette});
+    required this.undercaption,  required this.extra, required this.dir});
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +156,7 @@ class DescriptionCircle extends StatelessWidget {
                     child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(width: 2, color: palette.primary),
+                          border: Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
                         ),
                         child: Center(
                           child: Row(
@@ -161,9 +164,9 @@ class DescriptionCircle extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.baseline,
                             textBaseline: TextBaseline.alphabetic,
                             children: [
-                              comfortatext(text, 20, settings, color: palette.primary, weight: FontWeight.w400),
+                              Text(text, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 20),),
                               Flexible(
-                                  child: comfortatext(extra, 16, settings, color: palette.primary, weight: FontWeight.w400)
+                                child: Text(extra, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16),)
                               ),
                             ],
                           ),
@@ -181,7 +184,7 @@ class DescriptionCircle extends StatelessWidget {
                                     turns: AlwaysStoppedAnimation(dir / 360),
                                     child: Padding(
                                         padding: EdgeInsets.only(bottom: constraints.maxWidth * 0.70),
-                                        child: Icon(Icons.keyboard_arrow_up_outlined, color: palette.onSurface, size: 17,)
+                                        child: Icon(Icons.keyboard_arrow_up_outlined, color: Theme.of(context).colorScheme.onSurface, size: 17,)
                                     )
                                 ),
                               )
@@ -194,8 +197,7 @@ class DescriptionCircle extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top:6),
-                  child: comfortatext(undercaption, 14, settings, align: TextAlign.center, color: palette.outline,
-                  weight: FontWeight.w300)
+                  child: Text(undercaption, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 16),)
                 )
               )
             ]
