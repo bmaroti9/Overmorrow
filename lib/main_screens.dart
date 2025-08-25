@@ -32,28 +32,14 @@ import 'main_ui.dart';
 import 'new_displays.dart';
 import 'ui_helper.dart';
 
-class NewMain extends StatefulWidget {
+class NewMain extends StatelessWidget {
   final data;
   final updateLocation;
   final context;
   final imageKey;
   final updateColorPalette;
 
-  NewMain({Key? key, required this.data, required this.updateLocation, required this.imageKey,
-    required this.context, required this.updateColorPalette}) : super(key: key);
-
-  @override
-  _NewMainState createState() => _NewMainState(data, updateLocation, imageKey, context, updateColorPalette);
-}
-
-class _NewMainState extends State<NewMain> {
-  final data;
-  final updateLocation;
-  final context;
-  final imageKey;
-  final updateColorPalette;
-
-  _NewMainState(this.data, this.updateLocation, this.imageKey, this.context, this.updateColorPalette);
+  NewMain({required this.data, required this.updateLocation, required this.imageKey, required this.context, required this.updateColorPalette});
 
   /*
   @override
@@ -211,7 +197,7 @@ class _NewMainState extends State<NewMain> {
                 ),
               ),
 
-              MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false)
+              MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,)
             ],
           )
         ),
@@ -220,8 +206,9 @@ class _NewMainState extends State<NewMain> {
           const SizedBox(height: 20,),
           Circles(data: data),
 
-          //NewSunriseSunset(data: data, key: Key(data.place), width: size.width,)
+          NewSunriseSunset(data: data, width: size.width,),
 
+          //SmoothTransitionDemo(targetScale: data.sunstatus.sunstatus, key: const ValueKey('MyFixedAnimationKey'), ),
 
           /*
           FadingWidget(
@@ -248,6 +235,46 @@ class _NewMainState extends State<NewMain> {
   }
 }
 
+class SmoothTransitionDemo extends StatefulWidget {
+  final double targetScale;
+  const SmoothTransitionDemo({super.key, required this.targetScale});
+
+  @override
+  State<SmoothTransitionDemo> createState() => _SmoothTransitionDemoState();
+}
+
+class _SmoothTransitionDemoState extends State<SmoothTransitionDemo> {
+
+  @override
+  Widget build(BuildContext context) {
+    final double latestTargetScale = widget.targetScale;
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(
+        begin: 1.0,
+        end: latestTargetScale,
+      ),
+
+      duration: const Duration(milliseconds: 3000),
+
+      builder: (context, currentScale, child) {
+        return Transform.scale(
+          scale: currentScale,
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.blue,
+            alignment: Alignment.center,
+            child: Text(
+              latestTargetScale.toStringAsFixed(2),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
 
 class TabletLayout extends StatelessWidget {
   final data;

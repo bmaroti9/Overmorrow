@@ -226,8 +226,8 @@ class MyHomePageState extends State<MyHomePage> {
       children: [
         Container(color: Theme.of(context).colorScheme.surface,),
         if (data != null) NewMain(data: data, updateLocation: updateLocation, imageKey: imageKey, updateColorPalette: updateColorPalette,
-          context: context, key: ValueKey(data?.place ?? ""),),
-        if (isLoading) const LoadingIndicator()
+          context: context),
+        LoadingIndicator(isLoading: isLoading,)
       ],
     );
     return Scaffold(
@@ -239,7 +239,7 @@ class MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Stack(
           children: [
-            if (isLoading) const LoadingIndicator(),
+            if (isLoading) LoadingIndicator(isLoading: isLoading,),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -269,23 +269,29 @@ class MyHomePageState extends State<MyHomePage> {
 }
 
 class LoadingIndicator extends StatelessWidget {
-  const LoadingIndicator({super.key});
+  final bool isLoading;
+  const LoadingIndicator({super.key, required this.isLoading});
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            color: Theme.of(context).colorScheme.secondaryContainer
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 200),
+      opacity: isLoading ? 1.0 : 0.0,
+      curve: Curves.easeInOut,
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: Theme.of(context).colorScheme.secondaryContainer
+          ),
+          margin: const EdgeInsets.only(top: 230),
+          padding: const EdgeInsets.all(3),
+          width: 64,
+          height: 64,
+          child: const ExpressiveLoadingIndicator(),
         ),
-        margin: const EdgeInsets.only(top: 230),
-        padding: const EdgeInsets.all(3),
-        width: 64,
-        height: 64,
-        child: const ExpressiveLoadingIndicator(),
-      ),
+      )
     );
   }
 }

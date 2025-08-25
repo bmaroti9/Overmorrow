@@ -50,16 +50,10 @@ class MySearchWidget extends StatefulWidget{
   const MySearchWidget({super.key, required this.place, required this.updateLocation, required this.isTabletMode});
 
   @override
-  _MySearchWidgetState createState() => _MySearchWidgetState(
-      updateLocation: updateLocation, place: place, isTabletMode: isTabletMode);
+  _MySearchWidgetState createState() => _MySearchWidgetState();
 }
 
 class _MySearchWidgetState extends State<MySearchWidget> {
-  final place;
-  final updateLocation;
-  final isTabletMode;
-
-  _MySearchWidgetState({required this.updateLocation, required this.place, required this.isTabletMode});
 
   final ValueNotifier<List<String>> recommend = ValueNotifier<List<String>>([]);
   late ValueNotifier<List<String>> favorites;
@@ -97,7 +91,7 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   @override
   Widget build(BuildContext context){
 
-    if (isTabletMode) {
+    if (widget.isTabletMode) {
       //go straight to the page itself, since the sidebar has that by default
       /*
       return HeroSearchPage(place: place, recommend: recommend,
@@ -106,8 +100,8 @@ class _MySearchWidgetState extends State<MySearchWidget> {
 
        */
     }
-    return SearchBar(recommend: recommend, updateLocation: updateLocation,
-        updateFav: updateFav, favorites: favorites, updateRec: updateRec, place: place);
+    return SearchBar(recommend: recommend, updateLocation: widget.updateLocation,
+        updateFav: updateFav, favorites: favorites, updateRec: updateRec, place: widget.place);
 
   }
 }

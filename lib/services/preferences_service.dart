@@ -100,9 +100,12 @@ class SettingsProvider with ChangeNotifier {
   String _windUnit = "m/s";
   String _precipUnit = "mm";
 
+  String _timeMode = "12 hour";
+
   String get getTempUnit => _tempUnit;
   String get getWindUnit => _windUnit;
   String get getPrecipUnit => _precipUnit;
+  String get getTimeMode => _timeMode;
 
   SettingsProvider() {
     _load();
@@ -114,5 +117,7 @@ class SettingsProvider with ChangeNotifier {
     _tempUnit = PreferenceUtils.getString("Temperature", "˚C");
     _windUnit = PreferenceUtils.getString("Wind", "m/s");
     _precipUnit = PreferenceUtils.getString("Precipitation", "mm");
+
+    _timeMode = PreferenceUtils.getString("Time mode", "12 hour");
   }
 }

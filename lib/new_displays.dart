@@ -21,6 +21,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/ui_helper.dart';
 
 import 'alerts_page.dart';
@@ -40,20 +41,20 @@ class WavePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final firstPaint = Paint()
       ..color = firstColor
-      ..strokeWidth = 2.5
+      ..strokeWidth = 3.2
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
     final secondPaint = Paint()
       ..color = secondColor
-      ..strokeWidth = 2.5
+      ..strokeWidth = 3.2
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
     final path1 = Path();
 
-    const amplitude = 2.45;
-    const frequency = 24.0;
+    const amplitude = 2.15;
+    const frequency = 21.0;
     final splitPoint = hihi * size.width;
 
     for (double x = 0; x <= splitPoint; x++) {
@@ -66,11 +67,13 @@ class WavePainter extends CustomPainter {
       }
     }
 
+    path1.moveTo(splitPoint, size.height / 2 + 8);
+    path1.lineTo(splitPoint, size.height / 2 - 8);
+
     final path2 = Path();
 
     for (double x = splitPoint; x <= size.width; x++) {
-      final y = size.height / 2 +
-          amplitude * sin((x / frequency * 2 * pi) + (waveValue * 2 * pi));
+      final y = size.height / 2;
       if (x == splitPoint) {
         path2.moveTo(x, y);
       } else {
@@ -88,25 +91,18 @@ class WavePainter extends CustomPainter {
   }
 }
 
-class NewSunriseSunset extends StatefulWidget {
+class NewSunriseSunset extends StatelessWidget {
   final data;
   final width;
 
   @override
-  const NewSunriseSunset({super.key, required this.data, required this.width});
+  NewSunriseSunset({super.key, required this.data, required this.width});
+
 
   @override
-  _NewSunriseSunsetState createState() => _NewSunriseSunsetState();
-}
+  Widget build(BuildContext context) {
 
-class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerProviderStateMixin {
-  late int hourdif;
-
-  late AnimationController _controller;
-
-  @override
-  void initState() {
-    final List<String> absoluteLocalTime = widget.data.localtime.split(':');
+    final List<String> absoluteLocalTime = data.localtime.split(':');
 
     final currentTime = DateTime.now();
 
@@ -114,8 +110,107 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
         hour: int.parse(absoluteLocalTime[0]),
         minute: int.parse(absoluteLocalTime[1]));
 
-    hourdif = localtimeOld.hour - currentTime.hour;
+    int hourdif = localtimeOld.hour - currentTime.hour;
 
+    final double targetProgress = data.sunstatus.sunstatus;
+
+    DateTime now = DateTime.now();
+    DateTime localTime = now.add(Duration(hours: hourdif));
+
+    String write = convertTime(localTime, context);
+
+    final textPainter = TextPainter(
+        text: TextSpan(text: write, style: const TextStyle(fontSize: 15)),
+        textDirection: TextDirection.ltr);
+    textPainter.layout();
+    final textWidth = textPainter.width * 1.1;
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0.5, end: targetProgress),
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeInOut,
+
+      builder: (context, animatedProgress, child) {
+
+        return Padding(
+          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 23, top: 20),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    left: min(
+                        max((animatedProgress * (width - 53)) - textWidth / 2 + 5, 0),
+                        width - 53 - textWidth)),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(write, style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.onSurface)),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 13),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 8.0,
+                  child: WaveTicker(
+                    currentWaveProgress: animatedProgress,
+                    child: Container(),
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4, top: 1),
+                      child: Icon(
+                        Icons.wb_sunny_outlined,
+                        color: Theme.of(context).colorScheme.tertiary,
+                        size: 14,
+                      ),
+                    ),
+                    Text(convertTime(data.sunstatus.sunrise, context),
+                      style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.tertiary),),
+                    const Spacer(),
+                    Text(convertTime(data.sunstatus.sunset, context),
+                      style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.secondary),),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4, top: 1),
+                      child: Icon(Icons.nightlight_outlined,
+                          color: Theme.of(context).colorScheme.secondary, size: 14),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class WaveTicker extends StatefulWidget {
+  final Widget child;
+  final double currentWaveProgress;
+
+  const WaveTicker({
+    super.key,
+    required this.child,
+    required this.currentWaveProgress,
+  });
+
+  @override
+  State<WaveTicker> createState() => _WaveTickerState();
+}
+
+class _WaveTickerState extends State<WaveTicker> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
@@ -131,119 +226,20 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme palette = widget.data.current.palette;
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        DateTime now = DateTime.now();
-        DateTime localTime = now.add(Duration(hours: hourdif));
-
-        final double progress = widget.data.sunstatus.sunstatus;
-
-        /*
-        String write = widget.data.settings["Time mode"] == "24 hour"
-            ? OMConvertTime(
-                "j T${localTime.hour.toString().padLeft(2, "0")}:${localTime.minute.toString().padLeft(2, "0")}") //the j is just added so when splitting
-            : OMamPmTime(
-                "j T${localTime.hour}:${localTime.minute}"); //it can grab the second item
-
-         */
-        String write = "hehe";
-
-        //this is all so that the text will be right above the progress
-        final textPainter = TextPainter(
-            text: TextSpan(
-              text: write,
-              style: GoogleFonts.outfit(
-                  fontSize:
-                      15.0 * 1.1 * getFontSize(widget.data.settings["Font size"]),
-                  fontWeight: FontWeight.w300),
-            ),
-            textDirection: TextDirection.ltr);
-        textPainter.layout();
-
-        final textWidth = textPainter.width * 1.1;
-
-        return Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 23, top: 13),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    left: min(
-                        max((progress * (widget.width - 53)) - textWidth / 2  + 4, 0),
-                        widget.width - 53 - textWidth)),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: comfortatext(write, 15, widget.data.settings,
-                      color: palette.onSurface),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    top: 6,
-                    left: min(max((progress * (widget.width - 56)), 2),
-                        widget.width - 56)),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    height: 4,
-                    width: 4,
-                    decoration: BoxDecoration(
-                      color: palette.secondary,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 7),
-                child: CustomPaint(
-                  painter: WavePainter(
-                      _controller.value,
-                      palette.secondary,
-                      palette.surfaceContainerHighest,
-                      progress),
-                  child: const SizedBox(
-                    width: double.infinity,
-                    height: 8.0,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4, top: 1),
-                      child: Icon(
-                        Icons.wb_sunny_outlined,
-                        color: palette.secondary,
-                        size: 14,
-                      ),
-                    ),
-                    comfortatext(
-                        widget.data.sunstatus.sunrise, 15, widget.data.settings,
-                        color: palette.secondary,
-                        weight: FontWeight.w400),
-                    const Spacer(),
-                    comfortatext(
-                        widget.data.sunstatus.sunset, 15, widget.data.settings,
-                        color: palette.outline,
-                        weight: FontWeight.w400),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4, top: 1),
-                      child: Icon(Icons.nightlight_outlined,
-                          color: palette.outline, size: 14),
-                    ),
-                  ],
-                ),
-              )
-            ],
+        return CustomPaint(
+          painter: WavePainter(
+              _controller.value,
+              Theme.of(context).colorScheme.tertiary,
+              Theme.of(context).colorScheme.tertiaryContainer,
+              widget.currentWaveProgress
           ),
+          child: widget.child,
         );
       },
+      child: widget.child,
     );
   }
 }

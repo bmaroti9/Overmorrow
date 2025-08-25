@@ -72,7 +72,6 @@ class ImageService {
     Image image = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,
       width: double.infinity, height: double.infinity);
 
-
     final String _userLink = (unsplashBody[0]["user"]["links"]["html"]) ?? "";
     final String _userName = unsplashBody[0]["user"]["name"] ?? "";
 
@@ -181,6 +180,8 @@ class FadingImageWidgetState extends State<FadingImageWidget> {
 
     ImageService imageService = await ImageService.getUnsplashCollectionImage(condition, loc);
 
+    print("image fetched");
+
     ImageProvider imageProvider = imageService.image.image;
 
     ColorScheme colorSchemeLight = await ColorScheme.fromImageProvider(
@@ -211,7 +212,7 @@ class FadingImageWidgetState extends State<FadingImageWidget> {
       child: Container(
         key: ValueKey(_currentImage.hashCode),
         child: (_currentImage == null)
-            ? Container(color: Theme.of(context).colorScheme.secondaryContainer,)
+            ? Container(color: Theme.of(context).colorScheme.surfaceContainer,)
             : _currentImage,
       ),
     );

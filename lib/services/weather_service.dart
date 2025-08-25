@@ -17,8 +17,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 
+import 'package:intl/intl.dart';
+import 'package:overmorrow/services/preferences_service.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../weather_refact.dart' as weather_refactor;
 
+String convertTime(DateTime time, BuildContext context) {
+  if (context.select((SettingsProvider p) => p.getTimeMode) == "12 hour") {
+    return DateFormat('hh:mm a').format(time).toLowerCase();
+  }
+  return DateFormat('hh:mm').format(time);
+}
 
 String getDateStringFromLocalTime(DateTime now) {
   final List<String> weekNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
