@@ -20,6 +20,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/search_screens.dart';
@@ -184,7 +185,12 @@ class _NewMainState extends State<NewMain> {
                     const Spacer(),
                     Text(
                       "${unitConversion(data.current.temp, "˚C", decimals: 0)}°",
-                      style: TextStyle(color: Theme.of(context).colorScheme.tertiaryContainer, fontSize: 75, height: 1.05),
+                      style: GoogleFonts.outfit(
+                        color: Theme.of(context).colorScheme.tertiaryFixedDim,
+                        fontSize: 75,
+                        height: 1.05,
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
                     Text(
                       data.current.text,
@@ -213,6 +219,9 @@ class _NewMainState extends State<NewMain> {
 
           const SizedBox(height: 20,),
           Circles(data: data),
+
+          //NewSunriseSunset(data: data, key: Key(data.place), width: size.width,)
+
 
           /*
           FadingWidget(

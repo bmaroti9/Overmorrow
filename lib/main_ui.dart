@@ -184,7 +184,7 @@ class DescriptionCircle extends StatelessWidget {
                                     turns: AlwaysStoppedAnimation(dir / 360),
                                     child: Padding(
                                         padding: EdgeInsets.only(bottom: constraints.maxWidth * 0.70),
-                                        child: Icon(Icons.keyboard_arrow_up_outlined, color: Theme.of(context).colorScheme.onSurface, size: 17,)
+                                        child: Icon(Icons.keyboard_arrow_up_outlined, color: Theme.of(context).colorScheme.onSurface, size: 18,)
                                     )
                                 ),
                               )

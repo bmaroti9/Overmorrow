@@ -187,7 +187,6 @@ Future<List<dynamic>> MetNMakeRequest(double lat, double lng, String real_loc) a
   };
   final MnUrl = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/complete', MnParams);
 
-  //var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$real_loc, met.no", headers: headers).timeout(const Duration(seconds: 6));
   var MnFile = await XCustomCacheManager.fetchData(MnUrl.toString(), "$real_loc, met.no", headers: headers);
 
   var MnResponse = await MnFile[0].readAsString();
@@ -487,7 +486,6 @@ class MetNSunstatus {
     };
     final MnUrl = Uri.https("api.met.no", 'weatherapi/sunrise/3.0/sun', MnParams);
 
-    //var MnFile = await cacheManager2.getSingleFile(MnUrl.toString(), key: "$lat, $lng, sunstatus met.no", headers: headers).timeout(const Duration(seconds: 6));
     var MnFile = await XCustomCacheManager.fetchData(MnUrl.toString(), "$lat, $lng met.no aqi", headers: headers);
     var MnResponse = await MnFile[0].readAsString();
     final item = jsonDecode(MnResponse);

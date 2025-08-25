@@ -197,17 +197,27 @@ class MyHomePageState extends State<MyHomePage> {
 
     setState(() {
       data = _data;
-      isLoading = false;
     });
+
+    //I don't know why this works but it allows the imageState to load even in initState
+    final completer = Completer<void>();
+    WidgetsBinding.instance.addPostFrameCallback((_) => completer.complete());
+    await completer.future;
 
     final FadingImageWidgetState? imageState = imageKey.currentState;
 
     if (imageState != null) {
-      print("CALLED");
-      imageState.updateImage(data!.current.text, data!.place);
+      await imageState.updateImage(data!.current.text, data!.place);
     }
 
     print(("SUCCESS", location, latLon, imageState));
+
+    //keep it there while the image is animating
+    await Future.delayed(const Duration(milliseconds: 800));
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -263,15 +273,17 @@ class LoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Align(
+      alignment: Alignment.topCenter,
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
             color: Theme.of(context).colorScheme.secondaryContainer
         ),
-        margin: EdgeInsets.only(bottom: 400),
-        width: 60,
-        height: 60,
+        margin: const EdgeInsets.only(top: 230),
+        padding: const EdgeInsets.all(3),
+        width: 64,
+        height: 64,
         child: const ExpressiveLoadingIndicator(),
       ),
     );

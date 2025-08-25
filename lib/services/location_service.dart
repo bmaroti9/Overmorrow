@@ -79,7 +79,7 @@ class LocationService {
       var file = await cacheManager.getSingleFile(url.toString(), 
         key: "$query, open-meteo search",
         headers: {'cache-control': 'private, max-age=120'})
-        .timeout(const Duration(seconds: 3));
+        .timeout(const Duration(seconds: 4));
       var response = await file.readAsString();
       jsonbody = jsonDecode(response)["results"];
     } catch(e) {

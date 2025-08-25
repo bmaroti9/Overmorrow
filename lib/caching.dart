@@ -117,7 +117,7 @@ class CustomCacheManager {
       //print(("got here", fileInfo?.validTill, fileInfo?.validTill.difference(DateTime.now())));
 
       if (fileInfo == null || fileInfo.validTill.difference(DateTime.now()).isNegative) {
-        final file = await _cacheManager.downloadFile(url, key: cacheKey, authHeaders: headers).timeout(const Duration(seconds: 5));
+        final file = await _cacheManager.downloadFile(url, key: cacheKey, authHeaders: headers).timeout(const Duration(seconds: 7));
         return [file.file, true];
       } else {
         return [fileInfo.file, true];
