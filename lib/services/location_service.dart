@@ -68,7 +68,7 @@ class LocationService {
   static Future<List<String>> _getOMRecommendation(String query) async {
     var params = {
       'name': query,
-      'count': '6',
+      'count': '10',
       'language': 'en',
     };
 

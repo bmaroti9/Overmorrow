@@ -28,6 +28,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/main_screens.dart';
 import 'package:overmorrow/services/image_service.dart';
@@ -112,6 +113,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
+    final String? outfitFontFamily = GoogleFonts.outfit().fontFamily;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: context.watch<ThemeProvider>().getThemeMode,
@@ -131,6 +134,8 @@ class _MyAppState extends State<MyApp> {
           brightness: Brightness.light,
         ),
         useMaterial3: true,
+        fontFamily: GoogleFonts.outfit().fontFamily,
+
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -138,6 +143,7 @@ class _MyAppState extends State<MyApp> {
           brightness: Brightness.dark,
         ),
         useMaterial3: true,
+        fontFamily: GoogleFonts.outfit().fontFamily
       ),
       home: const MyHomePage()
     );
@@ -161,7 +167,11 @@ class MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    updateLocation("40.7128, -74.0060", "New York");
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        updateLocation("40.7128, -74.0060", "New York");
+      }
+    });
   }
 
   void updateLocation(String latLon, String location) {
@@ -178,7 +188,19 @@ class MyHomePageState extends State<MyHomePage> {
     });
 
     //WeatherData _data = await WeatherData.getFullData("New York", "40.7128, -74.0060");
-    WeatherData _data = await WeatherData.getFullData(location, latLon);
+
+    //I don't want to complete faster than this so everything has time to animate and it doesn't feel to abrupt
+    const minDuration = Duration(milliseconds: 500);
+    final minimumDelayFuture = Future.delayed(minDuration);
+
+    final dataFetchFuture = WeatherData.getFullData(location, latLon);
+
+    final results = await Future.wait([
+      dataFetchFuture,
+      minimumDelayFuture,
+    ]);
+
+    WeatherData _data = results[0] as WeatherData;
 
     setState(() {
       data = _data;
@@ -187,12 +209,12 @@ class MyHomePageState extends State<MyHomePage> {
 
     final FadingImageWidgetState? imageState = imageKey.currentState;
 
-    // Check for null and call the update method directly
     if (imageState != null) {
-      imageState.updateImage(data!.current.text);
+      print("CALLED");
+      imageState.updateImage(data!.current.text, data!.place);
     }
 
-    print(("SUCCESS", location, latLon));
+    print(("SUCCESS", location, latLon, imageState));
   }
 
   @override

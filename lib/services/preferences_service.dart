@@ -42,6 +42,7 @@ class PreferenceUtils {
   }
 }
 
+
 class ThemeProvider with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   Color _themeSeedColor = Colors.blue;
@@ -83,6 +84,7 @@ class ThemeProvider with ChangeNotifier {
     notifyListeners();
   }
 }
+
 
 
 class SettingsProvider with ChangeNotifier {

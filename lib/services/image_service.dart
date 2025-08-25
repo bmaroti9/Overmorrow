@@ -171,9 +171,9 @@ class FadingImageWidget extends StatefulWidget {
 class FadingImageWidgetState extends State<FadingImageWidget> {
   Image? _currentImage;
 
-  Future<void> updateImage(String condition) async {
+  Future<void> updateImage(String condition, String loc) async {
 
-    ImageService imageService = ImageService.getAssetImage(condition);
+    ImageService imageService = await ImageService.getUnsplashCollectionImage(condition, loc);
     ImageColorList imageColorList = await ImageColorList.getImageColorList(imageService.image);
 
     setState(() {

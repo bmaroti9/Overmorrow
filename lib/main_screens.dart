@@ -203,7 +203,10 @@ class _NewMainState extends State<NewMain> {
         ),
         children: [
 
-          const SizedBox(height: 50),
+          Container(
+            color: Theme.of(context).colorScheme.tertiaryContainer,
+            child: Text("hehe"),
+          )
 
           /*
           FadingWidget(

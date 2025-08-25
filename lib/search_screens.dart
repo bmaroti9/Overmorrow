@@ -576,7 +576,7 @@ Widget buildRecommend(String text, ValueListenable<List<String>> favoritesListen
                           Icons.gps_fixed, color: Theme.of(context).colorScheme.outline, size: 17,),
                       ),
                       Text(AppLocalizations.of(context)!.currentLocation,
-                        style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 18),)
+                        style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 18, height: 1.2),)
                     ],
                   ),
                   CurrentLocationWidget(locationState, locationMessage, askGrantLocationPermission,
@@ -591,7 +591,7 @@ Widget buildRecommend(String text, ValueListenable<List<String>> favoritesListen
                             Icons.star_outline, color: Theme.of(context).colorScheme.outline, size: 18,),
                         ),
                         Text(AppLocalizations.of(context)!.favoritesLowercase,
-                          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 18),)
+                          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 18, height: 1.2),)
                       ],
                     ),
                   ),
@@ -684,9 +684,9 @@ Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> 
                                         crossAxisAlignment : CrossAxisAlignment.start,
                                         children: [
                                           Text(name, style: TextStyle(
-                                              color: Theme.of(context).colorScheme.onSurface, fontSize: 19),),
+                                              color: Theme.of(context).colorScheme.onSurface, fontSize: 19, height: 1.25),),
                                           Text("$region, $country", style: TextStyle(
-                                              color: Theme.of(context).colorScheme.outline, fontSize: 15))
+                                              color: Theme.of(context).colorScheme.outline, fontSize: 14, height: 1.25))
                                         ],
                                       )
                                   ),
@@ -742,7 +742,7 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
         child: Row(
           children: [
             Icon(Icons.gps_fixed,
-              color: Theme.of(context).colorScheme.onPrimaryFixedVariant, size: 19,),
+              color: Theme.of(context).colorScheme.onPrimaryFixedVariant, size: 19),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, bottom: 2),
@@ -769,7 +769,7 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
         padding: const EdgeInsets.only(
             left: 25, right: 25, top: 20, bottom: 20),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryFixedDim,
+          color: Theme.of(context).colorScheme.tertiaryFixedDim,
           borderRadius: BorderRadius.circular(40),
         ),
         child: Row(
@@ -778,8 +778,8 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
                 child: Column(
                   crossAxisAlignment : CrossAxisAlignment.start,
                   children: [
-                    Text(placeName, style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryFixed, fontSize: 19),),
-                    Text("$region, $country", style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryFixed, fontSize: 15),)
+                    Text(placeName, style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryFixed, fontSize: 19, height: 1.25),),
+                    Text("$region, $country", style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryFixed, fontSize: 14, height: 1.25),)
                   ],
                 )
             ),
@@ -860,9 +860,9 @@ Widget buildFavorites(List<String> favorites, updateLocation, context, isTabletM
                             crossAxisAlignment : CrossAxisAlignment.start,
                             children: [
                               Text(name, style: TextStyle(
-                                  color: Theme.of(context).colorScheme.onSurface, fontSize: 19),),
+                                  color: Theme.of(context).colorScheme.onSurface, fontSize: 19, height: 1.25),),
                               Text("$region, $country", style: TextStyle(
-                                  color: Theme.of(context).colorScheme.outline, fontSize: 15))
+                                  color: Theme.of(context).colorScheme.outline, fontSize: 14, height: 1.25))
                             ],
                           )
                       ),
@@ -918,7 +918,7 @@ Widget reorderableItem(List<dynamic> items, index, onFavChanged, isTabletMode, c
     color: isTabletMode ? Theme.of(context).colorScheme.surfaceContainerHighest
         : Theme.of(context).colorScheme.surfaceContainer,
     child: Padding(
-      padding: const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
+      padding: const EdgeInsets.only(left: 5, right: 5, top: 7, bottom: 7),
       child:
       Row(
         children: [
@@ -931,9 +931,9 @@ Widget reorderableItem(List<dynamic> items, index, onFavChanged, isTabletMode, c
                 crossAxisAlignment : CrossAxisAlignment.start,
                 children: [
                   Text(name, style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface, fontSize: 19),),
+                      color: Theme.of(context).colorScheme.onSurface, fontSize: 19, height: 1.25),),
                   Text("$region, $country", style: TextStyle(
-                      color: Theme.of(context).colorScheme.outline, fontSize: 15))
+                      color: Theme.of(context).colorScheme.outline, fontSize: 14, height: 1.25))
                 ],
               )
           ),

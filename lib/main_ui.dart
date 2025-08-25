@@ -476,7 +476,7 @@ Widget providerSelector(settings, updateLocation, ColorScheme palette, provider,
   );
 }
 
-
+/*
 class ErrorPage extends StatelessWidget {
   final errorMessage;
   final updateLocation;
@@ -557,3 +557,5 @@ class ErrorPage extends StatelessWidget {
     );
   }
 }
+
+ */

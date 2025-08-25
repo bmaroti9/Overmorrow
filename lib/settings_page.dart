@@ -79,6 +79,7 @@ Map<String, List<String>> settingSwitches = {
   'Radar haptics': ["on", "off"],
 };
 
+
 Future<List<dynamic>> getSettingsAndColors(image) async {
   Map<String, String> settings = await getSettingsUsed();
   ColorPalette colorPalette = await ColorPalette.getColorPalette(image, settings["Color mode"]!, settings);

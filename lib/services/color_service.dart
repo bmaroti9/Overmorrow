@@ -96,7 +96,7 @@ class ImageColorList {
     PaletteGenerator regionColors = await PaletteGenerator.fromImage(
       imageInfo.image,
       region: region,
-      maximumColorCount: 4,
+      maximumColorCount: 3,
       filters: [],
     );
     PaletteGenerator imageColors = await PaletteGenerator.fromImage(
@@ -113,6 +113,7 @@ class ImageColorList {
     );
   }
 }
+
 
 class ColorPalette {
   final ColorScheme palette;

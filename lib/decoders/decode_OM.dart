@@ -121,16 +121,16 @@ String OMTextCorrection(int code) {
 }
 
 String OMCurrentTextCorrection(int code, OMSunstatus sunStatus, DateTime time) {
-  if (sunStatus.sunrise.difference(time).isNegative || time.difference(sunStatus.sunset).isNegative) {
-    return OMCodes[code] ?? 'Clear Sky';
-  }
-  else {
+  if (time.difference(sunStatus.sunrise).isNegative || sunStatus.sunset.difference(time).isNegative) {
     if (code == 0 || code == 1) {
       return 'Clear Night';
     }
     else if (code == 2 || code == 3) {
       return 'Cloudy Night';
     }
+    return OMCodes[code] ?? 'Clear Sky';
+  }
+  else {
     return OMCodes[code] ?? 'Clear Sky';
   }
 }
