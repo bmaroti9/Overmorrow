@@ -195,7 +195,7 @@ class NewSunriseSunset extends StatelessWidget {
     final double targetProgress = data.sunstatus.sunstatus;
 
     return TweenAnimationBuilder<double>(
-      tween: Tween<double>(begin: 0.5, end: targetProgress),
+      tween: Tween<double>(begin: 0.0, end: targetProgress),
       duration: const Duration(milliseconds: 600),
       curve: Curves.easeInOut,
 

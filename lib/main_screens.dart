@@ -169,15 +169,7 @@ class NewMain extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Spacer(),
-                    Text(
-                      "${unitConversion(data.current.temp, "˚C", decimals: 0)}°",
-                      style: GoogleFonts.outfit(
-                        color: Theme.of(context).colorScheme.tertiaryFixedDim,
-                        fontSize: 75,
-                        height: 1.05,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
+                    SmoothTempTransition(target: unitConversion(data.current.temp, "˚C", decimals: 1) * 1.0),
                     Text(
                       data.current.text,
                       style: TextStyle(color: Theme.of(context).colorScheme.surface, fontSize: 33, height: 1.05),
@@ -208,7 +200,7 @@ class NewMain extends StatelessWidget {
 
           NewSunriseSunset(data: data, width: size.width,),
 
-          //SmoothTransitionDemo(targetScale: data.sunstatus.sunstatus, key: const ValueKey('MyFixedAnimationKey'), ),
+          //SmoothTransitionDemo(targetScale: data.sunstatus.sunstatus),
 
           /*
           FadingWidget(
@@ -235,24 +227,18 @@ class NewMain extends StatelessWidget {
   }
 }
 
-class SmoothTransitionDemo extends StatefulWidget {
+class SmoothTransitionDemo extends StatelessWidget {
   final double targetScale;
+
   const SmoothTransitionDemo({super.key, required this.targetScale});
 
   @override
-  State<SmoothTransitionDemo> createState() => _SmoothTransitionDemoState();
-}
-
-class _SmoothTransitionDemoState extends State<SmoothTransitionDemo> {
-
-  @override
   Widget build(BuildContext context) {
-    final double latestTargetScale = widget.targetScale;
 
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(
         begin: 1.0,
-        end: latestTargetScale,
+        end: targetScale,
       ),
 
       duration: const Duration(milliseconds: 3000),
@@ -266,11 +252,44 @@ class _SmoothTransitionDemoState extends State<SmoothTransitionDemo> {
             color: Colors.blue,
             alignment: Alignment.center,
             child: Text(
-              latestTargetScale.toStringAsFixed(2),
+              targetScale.toStringAsFixed(2),
               style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
         );
+      },
+    );
+  }
+}
+
+
+class SmoothTempTransition extends StatelessWidget {
+  final double target;
+
+  const SmoothTempTransition({super.key, required this.target});
+
+  @override
+  Widget build(BuildContext context) {
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(
+        begin: 0.0,
+        end: target,
+      ),
+
+      curve: Curves.easeOut,
+
+      duration: const Duration(milliseconds: 1000),
+
+      builder: (context, current, child) {
+        return Text(
+          "${current.round()}°",
+          style: GoogleFonts.outfit(
+          color: Theme.of(context).colorScheme.tertiaryFixedDim,
+          fontSize: 75,
+          height: 1.05,
+          fontWeight: FontWeight.w300,
+        ),);
       },
     );
   }

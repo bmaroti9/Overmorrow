@@ -132,9 +132,9 @@ class SearchBar extends StatelessWidget {
                 color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(33)
             ),
-            padding: const EdgeInsets.only(left: 12, right: 12, top: 5, bottom: 5),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
             child: Material(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(30),
               child: Row(
                 children: [
                   Padding(
