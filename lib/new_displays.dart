@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -91,6 +92,85 @@ class WavePainter extends CustomPainter {
   }
 }
 
+class ClockUpdater extends StatefulWidget {
+  final int hourDiff;
+  final double progress;
+  final double width;
+
+  const ClockUpdater({
+    super.key,
+    required this.hourDiff,
+    required this.progress,
+    required this.width,
+  });
+
+  @override
+  State<ClockUpdater> createState() => _ClockUpdaterState();
+}
+
+class _ClockUpdaterState extends State<ClockUpdater> {
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startAlignedTimer();
+  }
+
+  void _startAlignedTimer() {
+    final now = DateTime.now();
+
+    //make a timer that will update every minute to show the local time
+
+    final delay = Duration(
+      seconds: 60 - now.second,
+      milliseconds: -now.millisecond,
+    );
+
+    _timer = Timer(delay, () {
+      if (mounted) {
+        setState(() {});
+      }
+
+      _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    DateTime localTime = now.add(Duration(hours: widget.hourDiff));
+    String write = convertTime(localTime, context);
+
+    final textPainter = TextPainter(
+        text: TextSpan(text: write, style: const TextStyle(fontSize: 15)),
+        textDirection: TextDirection.ltr);
+    textPainter.layout();
+    final textWidth = textPainter.width * 1.1;
+
+    return Padding(
+      padding: EdgeInsets.only(
+          left: min(
+              max((widget.progress * (widget.width - 53)) - textWidth / 2 + 5, 0),
+              widget.width - 53 - textWidth)),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(write, style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.onSurface)),
+      ),
+    );
+  }
+}
+
 class NewSunriseSunset extends StatelessWidget {
   final data;
   final width;
@@ -110,20 +190,9 @@ class NewSunriseSunset extends StatelessWidget {
         hour: int.parse(absoluteLocalTime[0]),
         minute: int.parse(absoluteLocalTime[1]));
 
-    int hourdif = localtimeOld.hour - currentTime.hour;
+    int hourDiff = localtimeOld.hour - currentTime.hour;
 
     final double targetProgress = data.sunstatus.sunstatus;
-
-    DateTime now = DateTime.now();
-    DateTime localTime = now.add(Duration(hours: hourdif));
-
-    String write = convertTime(localTime, context);
-
-    final textPainter = TextPainter(
-        text: TextSpan(text: write, style: const TextStyle(fontSize: 15)),
-        textDirection: TextDirection.ltr);
-    textPainter.layout();
-    final textWidth = textPainter.width * 1.1;
 
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0.5, end: targetProgress),
@@ -136,16 +205,8 @@ class NewSunriseSunset extends StatelessWidget {
           padding: const EdgeInsets.only(left: 24, right: 24, bottom: 23, top: 20),
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    left: min(
-                        max((animatedProgress * (width - 53)) - textWidth / 2 + 5, 0),
-                        width - 53 - textWidth)),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(write, style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.onSurface)),
-                ),
-              ),
+
+              ClockUpdater(hourDiff: hourDiff, progress: targetProgress, width: width),
 
               Padding(
                 padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 13),
