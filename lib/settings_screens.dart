@@ -43,8 +43,9 @@ class MainSettingEntry extends StatelessWidget {
   final String title;
   final String desc;
   final IconData icon;
+  final Widget? pushTo;
 
-  const MainSettingEntry({super.key, required this.title, required this.desc, required this.icon});
+  const MainSettingEntry({super.key, required this.title, required this.desc, required this.icon, this.pushTo});
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +55,12 @@ class MainSettingEntry extends StatelessWidget {
         behavior: HitTestBehavior.translucent,
         onTap: () {
           HapticFeedback.selectionClick();
+          if (pushTo != null) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => pushTo!)
+            );
+          }
           /*
           Navigator.push(
               context,
@@ -142,7 +149,7 @@ class NewSettings extends StatelessWidget {
                 MainSettingEntry(
                     title: AppLocalizations.of(context)!.about,
                     desc: AppLocalizations.of(context)!.aboutSettingsDesc,
-                    icon: Icons.info_outline
+                    icon: Icons.info_outline, pushTo: AboutPage(),
                 ),
               ],
             ),

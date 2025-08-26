@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/ui_helper.dart';
 import '../l10n/app_localizations.dart';
@@ -34,25 +35,19 @@ Future<void> _launchUrl(String url) async {
 }
 
 class AboutPage extends StatefulWidget {
-  final settings;
-  final ColorScheme palette;
 
-  const AboutPage({Key? key, required this.settings, required this.palette}) : super(key: key);
+  const AboutPage({Key? key}) : super(key: key);
 
   @override
   _AboutPageState createState() =>
-      _AboutPageState(settings: settings, palette: palette);
+      _AboutPageState();
 }
 
 class _AboutPageState extends State<AboutPage> {
-  final settings;
-  final ColorScheme palette;
   String widgetBackgroundState = "--";
 
   String version = "--";
   String buildNumber = "--";
-
-  _AboutPageState({required this.settings, required this.palette});
 
   //this is all for debugging the background worker
   Future<void> getWidgetBackgroundState() async {
@@ -82,19 +77,18 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
 
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
                   goBack();
                 }),
-            title: comfortatext(
-                AppLocalizations.of(context)!.about, 30, settings,
-                color: palette.primary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.about,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
@@ -116,16 +110,23 @@ class _AboutPageState extends State<AboutPage> {
                         child: Container(
                           width: 160,
                           height: 160,
-                          margin: const EdgeInsets.only(top: 30, bottom: 20),
+                          margin: const EdgeInsets.only(top: 30, bottom: 10),
                           padding: const EdgeInsets.only(top: 3, right: 3),
                           decoration: BoxDecoration(
-                            color: palette.secondaryContainer,
+                            color: Theme.of(context).colorScheme.secondaryContainer,
                             borderRadius: BorderRadius.circular(100),
                           ),
-                          //child: Icon(OvermorrowWeatherIcons3.partly_cloudy, size: 100, color: palette.primary,),
+                          child: Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: SvgPicture.asset(
+                              "assets/weather_icons/partly_cloudy.svg",
+                              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+                            ),
+                          ),
                         ),
                       ),
-                      Center(child: comfortatext("Overmorrow", 30, settings, color: palette.primary, weight: FontWeight.w500)),
+                      Center(child: Text("Overmorrow", style: TextStyle(color: Theme.of(context).colorScheme.primary,
+                          fontSize: 28, fontWeight: FontWeight.w600))),
                       const SizedBox(height: 45,),
 
                       Wrap(
@@ -140,16 +141,17 @@ class _AboutPageState extends State<AboutPage> {
                             behavior: HitTestBehavior.translucent,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: palette.primary,
+                                color: Theme.of(context).colorScheme.tertiary,
                                 borderRadius: BorderRadius.circular(30),
                               ),
                               padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.code, color: palette.onPrimary, size: 21),
+                                  Icon(Icons.code, color: Theme.of(context).colorScheme.onTertiary, size: 21),
                                   const SizedBox(width: 6,),
-                                  comfortatext(AppLocalizations.of(context)!.sourceCodeLowercase, 18, settings, color: palette.onPrimary)
+                                  Text(AppLocalizations.of(context)!.sourceCodeLowercase,
+                                      style: TextStyle(color: Theme.of(context).colorScheme.onTertiary, fontSize: 18))
                                 ],
                               ),
                             ),
@@ -167,15 +169,16 @@ class _AboutPageState extends State<AboutPage> {
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
-                                border: Border.all(color: palette.outlineVariant, width: 2)
+                                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant, width: 2)
                               ),
                               padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.email_outlined, color: palette.onSurface, size: 20),
+                                  Icon(Icons.email_outlined, color: Theme.of(context).colorScheme.onSurface, size: 20),
                                   const SizedBox(width: 6,),
-                                  comfortatext(AppLocalizations.of(context)!.emailLowercase, 18, settings, color: palette.onSurface)
+                                  Text(AppLocalizations.of(context)!.emailLowercase,
+                                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18))
                                 ],
                               ),
                             ),
@@ -189,16 +192,17 @@ class _AboutPageState extends State<AboutPage> {
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
-                                border: Border.all(color: palette.outlineVariant, width: 2)
+                                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant, width: 2)
                               ),
                               padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.bug_report_outlined, color: palette.onSurface, size: 21,),
+                                  Icon(Icons.bug_report_outlined, color: Theme.of(context).colorScheme.onSurface, size: 21,),
                                   const SizedBox(width: 6,),
-                                  comfortatext(AppLocalizations.of(context)!.reportAnIssueLowercase, 18, settings, color: palette.onSurface)
-                                ],
+                                  Text(AppLocalizations.of(context)!.reportAnIssueLowercase,
+                                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18))
+                                  ]
                               ),
                             ),
                           ),
@@ -211,15 +215,16 @@ class _AboutPageState extends State<AboutPage> {
                             child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
-                                  border: Border.all(color: palette.outlineVariant, width: 2)
+                                  border: Border.all(color: Theme.of(context).colorScheme.outlineVariant, width: 2)
                               ),
                               padding: const EdgeInsets.only(left: 13, right: 13, top: 11, bottom: 11),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.volunteer_activism_outlined, color: palette.onSurface, size: 21,),
+                                  Icon(Icons.volunteer_activism_outlined, color: Theme.of(context).colorScheme.onSurface, size: 21,),
                                   const SizedBox(width: 6,),
-                                  comfortatext(AppLocalizations.of(context)!.donateLowercase, 18, settings, color: palette.onSurface)
+                                  Text(AppLocalizations.of(context)!.donateLowercase,
+                                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18))
                                 ],
                               ),
                             ),
@@ -230,7 +235,7 @@ class _AboutPageState extends State<AboutPage> {
 
                       Container(
                         decoration: BoxDecoration(
-                          color: palette.surfaceContainer,
+                          color: Theme.of(context).colorScheme.surfaceContainer,
                           borderRadius: const BorderRadius.only(topLeft: Radius.circular(33), topRight: Radius.circular(33),
                           bottomLeft: Radius.circular(6), bottomRight: Radius.circular(6)),
                         ),
@@ -238,15 +243,18 @@ class _AboutPageState extends State<AboutPage> {
                         padding: const EdgeInsets.all(24),
                         child: Row(
                           children: [
-                            Icon(Icons.verified_outlined, color: palette.onSurface),
+                            Icon(Icons.verified_outlined, color: Theme.of(context).colorScheme.onSurface),
                             const SizedBox(width: 10,),
-                            comfortatext(AppLocalizations.of(context)!.versionUppercase, 18, settings, color: palette.onSurface),
+                            Text(AppLocalizations.of(context)!.versionUppercase,
+                                style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18)),
                             const Spacer(),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                comfortatext(version, 18, settings, color: palette.primary),
-                                comfortatext("+$buildNumber", 15, settings, color: palette.outline),
+                                Text(version,
+                                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 18)),
+                                Text("+$buildNumber",
+                                    style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 15)),
                               ],
                             ),
                           ],
@@ -256,32 +264,32 @@ class _AboutPageState extends State<AboutPage> {
                         onTap: () {
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) =>
-                                  ApiAndServicesPage(settings: settings, palette: palette))
+                              MaterialPageRoute(builder: (context) => ServicesPage())
                           );
                         },
                         behavior: HitTestBehavior.translucent,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: palette.surfaceContainer,
+                            color: Theme.of(context).colorScheme.surfaceContainer,
                             borderRadius: BorderRadius.circular(6),
                           ),
                           margin: const EdgeInsets.only(top: 4),
                           padding: const EdgeInsets.all(24),
                           child: Row(
                             children: [
-                              Icon(Icons.handyman_outlined, color: palette.onSurface),
+                              Icon(Icons.handyman_outlined, color: Theme.of(context).colorScheme.onSurface),
                               const SizedBox(width: 10,),
-                              comfortatext(AppLocalizations.of(context)!.apiAndServices, 18, settings, color: palette.onSurface),
+                              Text(AppLocalizations.of(context)!.apiAndServices,
+                                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18)),
                               const Spacer(),
-                              Icon(Icons.keyboard_arrow_right_rounded, color: palette.onSurface),
+                              Icon(Icons.keyboard_arrow_right_rounded, color: Theme.of(context).colorScheme.onSurface),
                             ],
                           ),
                         ),
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: palette.surfaceContainer,
+                          color: Theme.of(context).colorScheme.surfaceContainer,
                           borderRadius: const BorderRadius.only(topLeft: Radius.circular(6), topRight: Radius.circular(6),
                               bottomLeft: Radius.circular(33), bottomRight: Radius.circular(33)),
                         ),
@@ -289,11 +297,13 @@ class _AboutPageState extends State<AboutPage> {
                         padding: const EdgeInsets.all(24),
                         child: Row(
                           children: [
-                            Icon(Icons.balance, color: palette.onSurface),
+                            Icon(Icons.balance, color: Theme.of(context).colorScheme.onSurface),
                             const SizedBox(width: 10,),
-                            comfortatext(AppLocalizations.of(context)!.licenseUppercase, 18, settings, color: palette.onSurface),
+                            Text(AppLocalizations.of(context)!.licenseUppercase,
+                                style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18)),
                             const Spacer(),
-                            comfortatext("GPL-3.0 license", 18, settings, color: palette.outline),
+                            Text("GPL-3.0 license",
+                                style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 18)),
                           ],
                         ),
                       ),
@@ -305,14 +315,15 @@ class _AboutPageState extends State<AboutPage> {
                               builder: (BuildContext context) {
 
                                 return AlertDialog(
-                                  backgroundColor: palette.surface,
+                                  backgroundColor: Theme.of(context).colorScheme.surface,
                                   content: StatefulBuilder(
                                     builder: (BuildContext context, StateSetter setState) {
                                       return Column(
                                         children: [
-                                          Icon(Icons.bug_report_outlined, color: palette.tertiary),
+                                          Icon(Icons.bug_report_outlined, color: Theme.of(context).colorScheme.tertiary),
                                           const SizedBox(height: 40,),
-                                          comfortatext(widgetBackgroundState, 15, settings, color: palette.onSurface),
+                                          Text(widgetBackgroundState,
+                                              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18)),
                                         ],
                                       );
                                     },
@@ -323,16 +334,17 @@ class _AboutPageState extends State<AboutPage> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            color: palette.tertiaryContainer,
+                            color: Theme.of(context).colorScheme.tertiaryContainer,
                             borderRadius: BorderRadius.circular(50)
                           ),
                           margin: const EdgeInsets.only(top: 40, bottom: 100),
                           padding: const EdgeInsets.all(14),
                           child: Row(
                             children: [
-                              comfortatext("worker logs", 18, settings, color: palette.onSurface),
+                              Text("worker logs",
+                                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18)),
                               const Spacer(),
-                              Icon(Icons.open_in_new, color: palette.onSurface, size: 18,),
+                              Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface, size: 18,),
                             ],
                           ),
                         ),
@@ -350,44 +362,26 @@ class _AboutPageState extends State<AboutPage> {
 }
 
 
-class ApiAndServicesPage extends StatefulWidget {
-  final settings;
-  final ColorScheme palette;
-
-  const ApiAndServicesPage({Key? key, required this.settings, required this.palette}) : super(key: key);
-
-  @override
-  _ApiAndServicesPageState createState() =>
-      _ApiAndServicesPageState(settings: settings, palette: palette);
-}
-
-class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
-  final settings;
-  final ColorScheme palette;
-  _ApiAndServicesPageState({required this.settings, required this.palette});
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
+class ServicesPage extends StatelessWidget {
+  const ServicesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
 
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
-                  goBack();
+                  HapticFeedback.selectionClick();
+                  Navigator.pop(context);
                 }),
-            title: comfortatext(
-                AppLocalizations.of(context)!.apiAndServices, 30, settings,
-                color: palette.primary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.apiAndServices,
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
@@ -399,7 +393,7 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                  Container(
                    decoration: BoxDecoration(
                      borderRadius: BorderRadius.circular(33),
-                     color: palette.surfaceContainer
+                     color: Theme.of(context).colorScheme.surfaceContainer
                    ),
                    padding: const EdgeInsets.all(30),
                    margin: const EdgeInsets.only(top: 20),
@@ -407,15 +401,17 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                    child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
-                       comfortatext(AppLocalizations.of(context)!.weatherDataLowercase, 20, settings, color: palette.onSurface),
+                       Text(AppLocalizations.of(context)!.weatherDataLowercase,
+                         style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 20),),
                        const SizedBox(height: 20,),
                        GestureDetector(
                          onTap: () {
                            HapticFeedback.selectionClick();
                            _launchUrl("https://open-meteo.com");
                          },
-                         child: comfortatext("open-meteo", 17, settings, color: palette.secondary,
-                             decoration: TextDecoration.underline),
+                         child: Text("open-meteo",
+                           style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 17,
+                             decoration: TextDecoration.underline,),),
                        ),
                        const SizedBox(height: 10,),
                        GestureDetector(
@@ -423,8 +419,9 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                            HapticFeedback.selectionClick();
                            _launchUrl("https://www.weatherapi.com/");
                          },
-                         child: comfortatext("weatherapi", 17, settings, color: palette.secondary,
-                             decoration: TextDecoration.underline),
+                         child: Text("weatherapi",
+                           style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 17,
+                             decoration: TextDecoration.underline,),),
                        ),
                        const SizedBox(height: 10,),
                        GestureDetector(
@@ -432,8 +429,9 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                            HapticFeedback.selectionClick();
                            _launchUrl("https://api.met.no/");
                          },
-                         child: comfortatext("met-norway", 17, settings, color: palette.secondary,
-                             decoration: TextDecoration.underline),
+                         child: Text("met-norway",
+                           style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 17,
+                             decoration: TextDecoration.underline,),),
                         ),
                       ],
                      ),
@@ -441,7 +439,7 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                     Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(33),
-                          color: palette.surfaceContainer
+                          color: Theme.of(context).colorScheme.surfaceContainer
                       ),
                       padding: const EdgeInsets.all(30),
                       margin: const EdgeInsets.only(top: 6),
@@ -449,15 +447,17 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          comfortatext(AppLocalizations.of(context)!.radar, 20, settings, color: palette.onSurface),
+                          Text(AppLocalizations.of(context)!.radar,
+                            style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 20,),),
                           const SizedBox(height: 20,),
                           GestureDetector(
                             onTap: () {
                               HapticFeedback.selectionClick();
                               _launchUrl("https://www.rainviewer.com/api.html");
                             },
-                            child: comfortatext("rainviewer", 17, settings, color: palette.secondary,
-                                decoration: TextDecoration.underline),
+                            child: Text("rainviewer",
+                              style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 17,
+                                decoration: TextDecoration.underline,),),
                           ),
                           const SizedBox(height: 10,),
                           GestureDetector(
@@ -465,8 +465,9 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                               HapticFeedback.selectionClick();
                               _launchUrl("https://carto.com/");
                             },
-                            child: comfortatext("carto", 17, settings, color: palette.secondary,
-                                decoration: TextDecoration.underline),
+                            child: Text("carto",
+                              style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 17,
+                                decoration: TextDecoration.underline,),),
                         ),
                       ],
                     ),
@@ -474,7 +475,7 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(33),
-                        color: palette.surfaceContainer
+                        color: Theme.of(context).colorScheme.surfaceContainer
                     ),
                     padding: const EdgeInsets.all(30),
                     margin: const EdgeInsets.only(top: 6),
@@ -482,15 +483,17 @@ class _ApiAndServicesPageState extends State<ApiAndServicesPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        comfortatext(AppLocalizations.of(context)!.imagesLowercase, 20, settings, color: palette.onSurface),
+                        Text(AppLocalizations.of(context)!.imagesLowercase,
+                          style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 20),),
                         const SizedBox(height: 20,),
                         GestureDetector(
                           onTap: () {
                             HapticFeedback.selectionClick();
                             _launchUrl("https://unsplash.com/");
                           },
-                          child: comfortatext("unsplash", 17, settings, color: palette.secondary,
-                              decoration: TextDecoration.underline),
+                          child: Text("unsplash",
+                            style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 17,
+                              decoration: TextDecoration.underline,),),
                         ),
                       ],
                     ),
