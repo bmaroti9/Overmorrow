@@ -25,7 +25,9 @@ import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/services/image_service.dart';
+import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
+import 'package:provider/provider.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'decoders/weather_data.dart';
 import 'hourly.dart';
@@ -173,7 +175,10 @@ class NewMain extends StatelessWidget {
                     SmoothTempTransition(target: unitConversion(data.current.temp, "˚C", decimals: 1) * 1.0),
                     Text(
                       data.current.text,
-                      style: TextStyle(color: Theme.of(context).colorScheme.surface, fontSize: 33, height: 1.05),
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.surface,
+                          fontSize: 33, height: 1.05
+                      ),
                     )
                     /*
                     comfortatext(

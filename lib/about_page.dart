@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:home_widget/home_widget.dart';
-import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/ui_helper.dart';
 import '../l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -123,7 +122,7 @@ class _AboutPageState extends State<AboutPage> {
                             color: palette.secondaryContainer,
                             borderRadius: BorderRadius.circular(100),
                           ),
-                          child: Icon(OvermorrowWeatherIcons3.partly_cloudy, size: 100, color: palette.primary,),
+                          //child: Icon(OvermorrowWeatherIcons3.partly_cloudy, size: 100, color: palette.primary,),
                         ),
                       ),
                       Center(child: comfortatext("Overmorrow", 30, settings, color: palette.primary, weight: FontWeight.w500)),

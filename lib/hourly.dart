@@ -21,9 +21,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:overmorrow/decoders/weather_data.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
+import 'package:overmorrow/weather_refact.dart';
 import 'l10n/app_localizations.dart';
 import 'ui_helper.dart';
 import 'package:provider/provider.dart';
@@ -223,10 +225,11 @@ class HourlySum extends StatelessWidget {
             )
         ),
 
-        Icon(
-          hour.icon,
-          color: Theme.of(context).colorScheme.onSurface,
-          size: 37.0,
+        SvgPicture.asset(
+          weatherIconPathMap[hour.text] ?? "assets/weather_icons/clear_sky.svg",
+          colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
+          width: 38,
+          height: 38,
         ),
 
         Row(
@@ -242,7 +245,7 @@ class HourlySum extends StatelessWidget {
         ),
 
         Text(convertToShortTime(hour.time, context),
-          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14),),
+          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14, fontWeight: FontWeight.w600),),
       ],
     );
   }
@@ -267,9 +270,10 @@ class HourlyPrecip extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text('${unitConversion(hour.precip, precipUnit)}',
-              style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 18),),
+              style: TextStyle(color: Theme.of(context).colorScheme.primary,
+                  fontSize: 18, fontWeight: FontWeight.w600, height: 1.1),),
             Text(precipUnit,
-              style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 9),),
+              style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 10, fontWeight: FontWeight.w600),),
           ],
         ),
 
@@ -302,7 +306,7 @@ class HourlyPrecip extends StatelessWidget {
         ),
 
         Text(convertToShortTime(hour.time, context),
-          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14),),
+          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14, fontWeight: FontWeight.w600),),
       ],
     );
   }
@@ -339,24 +343,27 @@ class HourlyWind extends StatelessWidget {
 
         Transform.rotate(
             angle: (hour.wind_dir + 180) * pi / 180,
-            child: Icon(Icons.navigation_outlined, color: Theme.of(context).colorScheme.onSurface, size: 18,)
+            child: Icon(Icons.navigation_outlined, color: Theme.of(context).colorScheme.onSurface, size: 19,)
         ),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Icon(Icons.trending_up, size: 13, color: Theme.of(context).colorScheme.primary),
+            Icon(Icons.trending_up, size: 13, color: Theme.of(context).colorScheme.tertiary),
             Padding(
                 padding: const EdgeInsets.only(left: 2),
-                child: Text("${unitConversion(hour.wind_gusts, windUnit)}", style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 14),)
+                child: Text("${unitConversion(hour.wind_gusts, windUnit, decimals: 0)}",
+                  style: TextStyle(color: Theme.of(context).colorScheme.tertiary,
+                      fontSize: 14, fontWeight: FontWeight.w600, height: 1.2),)
             ),
-            Text(windUnit, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 9),)
+            Text(windUnit, style: TextStyle(color: Theme.of(context).colorScheme.tertiary,
+                fontSize: 9, fontWeight: FontWeight.w600),)
           ],
         ),
 
         Text(convertToShortTime(hour.time, context),
-          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14),),
+          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14, fontWeight: FontWeight.w600),),
       ],
     );
   }
@@ -380,8 +387,10 @@ class HourlyUv extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('${hour.uv}', style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 19),),
-            Text('UV', style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 9),)
+            Text('${hour.uv}', style: TextStyle(color: Theme.of(context).colorScheme.primary,
+                fontSize: 19, fontWeight: FontWeight.w600, height: 1.2)),
+            Text('UV', style: TextStyle(color: Theme.of(context).colorScheme.primary,
+                fontSize: 10, fontWeight: FontWeight.w600),)
           ],
         ),
 
@@ -396,7 +405,7 @@ class HourlyUv extends StatelessWidget {
                 if (index < min(max(10 - hour.uv, 0), 10)) {
                   return Center(
                     child: Container(
-                      width: 13,
+                      width: 15,
                       height: 4,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -408,11 +417,11 @@ class HourlyUv extends StatelessWidget {
                 else {
                   return Center(
                     child: Container(
-                      width: 13,
+                      width: 15,
                       height: 4,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ),
                   );
@@ -422,7 +431,7 @@ class HourlyUv extends StatelessWidget {
         ),
 
         Text(convertToShortTime(hour.time, context),
-          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14),),
+          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14, fontWeight: FontWeight.w600),),
       ],
     );
   }

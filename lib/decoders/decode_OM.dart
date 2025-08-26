@@ -23,7 +23,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:overmorrow/decoders/decode_wapi.dart';
 
 import '../caching.dart';
@@ -135,10 +134,6 @@ String OMCurrentTextCorrection(int code, OMSunstatus sunStatus, DateTime time) {
   }
 }
 
-IconData oMIconCorrection(String text) {
-  return textMaterialIcon[text] ?? OvermorrowWeatherIcons3.clear_sky;
-}
-
 class OMCurrent {
   final String text;
   final double temp;
@@ -187,8 +182,6 @@ class OMCurrent {
 class OMDay {
   final String text;
 
-  final IconData icon;
-
   final DateTime date;
 
   final double minTemp;
@@ -208,8 +201,6 @@ class OMDay {
 
   const OMDay({
     required this.text,
-
-    required this.icon,
 
     required this.date,
 
@@ -235,7 +226,6 @@ class OMDay {
       return OMDay(
         date: DateTime.parse(item["daily"]["time"][index]),
 
-        icon: oMIconCorrection(OMTextCorrection(item["daily"]["weather_code"][index])),
         text: OMTextCorrection(item["daily"]["weather_code"][index]),
 
         minTemp: item["daily"]["temperature_2m_min"][index],
@@ -363,7 +353,6 @@ class OM15MinutePrecip {
 class OMHour {
   final double temp;
 
-  final IconData icon;
   final DateTime time;
 
   final String text;
@@ -381,7 +370,6 @@ class OMHour {
   const OMHour({
     required this.temp,
     required this.time,
-    required this.icon,
     required this.text,
     required this.precip,
     required this.wind,
@@ -400,8 +388,6 @@ class OMHour {
 
     return OMHour(
       time: time,
-
-      icon: oMIconCorrection(condition),
 
       temp: item["hourly"]["temperature_2m"][index],
       text: condition,

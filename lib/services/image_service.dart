@@ -202,19 +202,25 @@ class FadingImageWidgetState extends State<FadingImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 800),
-      switchInCurve: Curves.easeIn,
-      switchOutCurve: Curves.easeOut,
-      transitionBuilder: (Widget child, Animation<double> animation) {
-        return FadeTransition(opacity: animation, child: child);
-      },
-      child: Container(
-        key: ValueKey(_currentImage.hashCode),
-        child: (_currentImage == null)
-            ? Container(color: Theme.of(context).colorScheme.inverseSurface,)
-            : _currentImage,
-      ),
+    return Stack(
+      children: [
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 800),
+          switchInCurve: Curves.easeIn,
+          switchOutCurve: Curves.easeOut,
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          child: Container(
+            key: ValueKey(_currentImage.hashCode),
+            child: (_currentImage == null)
+                ? Container(color: Theme.of(context).colorScheme.inverseSurface,)
+                : _currentImage,
+          ),
+        ),
+        //Add a slight tint to make the text more legible
+        Container(color: const Color.fromARGB(30, 0, 0, 0),)
+      ]
     );
   }
 }

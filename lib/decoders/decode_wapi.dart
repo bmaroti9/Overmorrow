@@ -25,7 +25,6 @@ import 'package:http/http.dart' as http;
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/services/image_service.dart';
 
-import '../Icons/overmorrow_weather_icons3_icons.dart';
 import '../api_key.dart';
 import '../caching.dart';
 import '../services/color_service.dart';

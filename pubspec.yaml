@@ -54,6 +54,7 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   package_info_plus: ^8.3.0
   provider: ^6.1.5+1
+  flutter_svg: ^2.2.0
 
   #for the .arb files for translation
   flutter_localizations:
@@ -95,6 +96,7 @@ flutter:
   assets:
     - assets/backdrops/
     - assets/icons/icon.png
+    - assets/weather_icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -121,9 +123,6 @@ flutter:
   #
 
   fonts:
-    - family: OvermorrowWeatherIcons3
-      fonts:
-        - asset: fonts/OvermorrowWeatherIcons3.ttf
     - family: NotoSans
       fonts:
         - asset: fonts/NotoSans_Condensed-Regular.ttf

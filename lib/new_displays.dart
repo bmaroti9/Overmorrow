@@ -215,7 +215,7 @@ class NewSunriseSunset extends StatelessWidget {
       builder: (context, animatedProgress, child) {
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 23, top: 18),
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 22, top: 15),
           child: Column(
             children: [
 

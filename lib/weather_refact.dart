@@ -16,7 +16,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'ui_helper.dart';
@@ -48,22 +47,23 @@ Map<String, Locale> languageNameToLocale = {
   'Hrvat' : const Locale('hr'),
 };
 
-Map<String, IconData> textMaterialIcon = {
-  'Clear Night': OvermorrowWeatherIcons3.clear_night,
-  'Partly Cloudy': OvermorrowWeatherIcons3.partly_cloudy,
-  'Clear Sky': OvermorrowWeatherIcons3.clear_sky,
-  'Overcast': OvermorrowWeatherIcons3.cloudy,
-  'Haze': OvermorrowWeatherIcons3.haze,
-  'Rain': OvermorrowWeatherIcons3.rain,
-  'Sleet': OvermorrowWeatherIcons3.sleet,
-  'Drizzle': OvermorrowWeatherIcons3.drizzle,
-  'Thunderstorm': OvermorrowWeatherIcons3.thunderstorm,
-  'Heavy Snow': OvermorrowWeatherIcons3.heavy_snow,
-  'Fog': OvermorrowWeatherIcons3.fog,
-  'Snow': OvermorrowWeatherIcons3.snow,
-  'Heavy Rain': OvermorrowWeatherIcons3.heavy_rain,
-  'Cloudy Night' : OvermorrowWeatherIcons3.cloudy_night,
+Map<String, String> weatherIconPathMap = {
+  'Clear Night': "assets/weather_icons/clear_night.svg",
+  'Partly Cloudy': "assets/weather_icons/partly_cloudy.svg",
+  'Clear Sky': "assets/weather_icons/clear_sky.svg",
+  'Overcast': "assets/weather_icons/cloudy.svg",
+  'Haze': "assets/weather_icons/haze.svg",
+  'Rain': "assets/weather_icons/rain.svg",
+  'Sleet': "assets/weather_icons/sleet.svg",
+  'Drizzle': "assets/weather_icons/drizzle.svg",
+  'Thunderstorm': "assets/weather_icons/thunderstorm.svg",
+  'Heavy Snow': "assets/weather_icons/heavy_snow.svg",
+  'Fog': "assets/weather_icons/fog.svg",
+  'Snow': "assets/weather_icons/snow.svg",
+  'Heavy Rain': "assets/weather_icons/heavy_rain.svg",
+  'Cloudy Night' : "assets/weather_icons/cloudy_night.svg",
 };
+
 
 //each condition has a separate unsplash collection where i selected the best images i could find
 //this map links the weather conditions to the collection's id
