@@ -19,6 +19,56 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
+
+Map<String, List<String>> settingSwitches = {
+  'Language' : [
+    'English', //English
+    'Español', //Spanish
+    'Français', //French
+    'Deutsch', //German
+    'Italiano', //Italian
+    'Português', //Portuguese
+    'Português brasileiro', //Portugeese (Brazilian)
+    'Русский', //Russian
+    'Magyar', //Hungarian
+    'Polski', //Polish
+    'Ελληνικά', //Greek
+    '简体中文', //Chinese (Simplified Han)
+    '繁體字', //Chinese (Traditional Han)
+    '日本語', //Japanese
+    'українська', //Ukrainian
+    'türkçe', //Turkish
+    'தமிழ்', //Tamil
+    'български', //Bulgarian
+    'Indonesia', //Indonesian
+    'عربي', //Arablic
+    'Suomi', //Finnish
+    'Nederlands', //Dutch
+    'اُردُو', //Urdu
+    'Hrvat', //Croatian
+  ],
+  'Temperature': ['˚C', '˚F'],
+  'Precipitation': ['mm', 'in'],
+  'Wind': ['m/s', 'kph', 'mph', 'kn'],
+
+  'Time mode': ['12 hour', '24 hour'],
+  'Date format': ['mm/dd', 'dd/mm'],
+
+  'Font size': ['normal', 'small', 'very small', 'big'],
+
+  'Color mode' : ['auto', 'light', 'dark'],
+
+  'Color source' : ['image', 'wallpaper', 'custom'],
+  'Image source' : ['network', 'asset'],
+  'Custom color': ['#c62828', '#ff80ab', '#7b1fa2', '#9575cd', '#3949ab', '#40c4ff',
+    '#4db6ac', '#4caf50', '#b2ff59', '#ffeb3b', '#ffab40',],
+
+  'Search provider' : ['weatherapi', 'open-meteo'],
+
+  'Layout' : ["sunstatus,rain indicator,hourly,alerts,radar,daily,air quality"],
+  'Radar haptics': ["on", "off"],
+};
+
 class PreferenceUtils {
   static late final SharedPreferences instance;
 
@@ -138,6 +188,24 @@ class SettingsProvider with ChangeNotifier {
     _location = location;
     _latLon = latLon;
 
+    notifyListeners();
+  }
+
+  void setTempUnit(String to) {
+    PreferenceUtils.setString("Temperature", to);
+    _tempUnit = to;
+    notifyListeners();
+  }
+
+  void setPrecipUnit(String to) {
+    PreferenceUtils.setString("Precipitation", to);
+    _precipUnit = to;
+    notifyListeners();
+  }
+
+  void setWindUnit(String to) {
+    PreferenceUtils.setString("Wind", to);
+    _windUnit = to;
     notifyListeners();
   }
 }

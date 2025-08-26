@@ -22,62 +22,15 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/services/color_service.dart';
+import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
 import 'package:overmorrow/settings_screens.dart';
 import 'package:overmorrow/weather_refact.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main.dart';
 import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
-
-Map<String, List<String>> settingSwitches = {
-  'Language' : [
-    'English', //English
-    'Español', //Spanish
-    'Français', //French
-    'Deutsch', //German
-    'Italiano', //Italian
-    'Português', //Portuguese
-    'Português brasileiro', //Portugeese (Brazilian)
-    'Русский', //Russian
-    'Magyar', //Hungarian
-    'Polski', //Polish
-    'Ελληνικά', //Greek
-    '简体中文', //Chinese (Simplified Han)
-    '繁體字', //Chinese (Traditional Han)
-    '日本語', //Japanese
-    'українська', //Ukrainian
-    'türkçe', //Turkish
-    'தமிழ்', //Tamil
-    'български', //Bulgarian
-    'Indonesia', //Indonesian
-    'عربي', //Arablic
-    'Suomi', //Finnish
-    'Nederlands', //Dutch
-    'اُردُو', //Urdu
-    'Hrvat', //Croatian
-  ],
-  'Temperature': ['˚C', '˚F'],
-  'Precipitation': ['mm', 'in'],
-  'Wind': ['m/s', 'kph', 'mph', 'kn'],
-
-  'Time mode': ['12 hour', '24 hour'],
-  'Date format': ['mm/dd', 'dd/mm'],
-
-  'Font size': ['normal', 'small', 'very small', 'big'],
-
-  'Color mode' : ['auto', 'light', 'dark'],
-
-  'Color source' : ['image', 'wallpaper', 'custom'],
-  'Image source' : ['network', 'asset'],
-  'Custom color': ['#c62828', '#ff80ab', '#7b1fa2', '#9575cd', '#3949ab', '#40c4ff',
-        '#4db6ac', '#4caf50', '#b2ff59', '#ffeb3b', '#ffab40',],
-
-  'Search provider' : ['weatherapi', 'open-meteo'],
-
-  'Layout' : ["sunstatus,rain indicator,hourly,alerts,radar,daily,air quality"],
-  'Radar haptics': ["on", "off"],
-};
 
 
 Future<List<dynamic>> getSettingsAndColors(image) async {
@@ -207,87 +160,94 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
   );
 }
 
-Widget settingEntry(icon, text, settings, ColorScheme palette, updatePage, rawText, context) {
-  return GestureDetector(
-    behavior: HitTestBehavior.translucent,
-    onTap: () {
-      HapticFeedback.lightImpact();
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) {
-          List<String> options = settingSwitches[rawText] ?? [""];
-          return AlertDialog(
-            backgroundColor: palette.surface,
-            content: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20, top: 10, left: 0),
-                      child: comfortatext(text, 22, settings, color: palette.onSurface),
-                    ),
-                    Column(
+class SettingsEntry extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final String rawText;
+  final String selected;
+  final Function update;
+
+  const SettingsEntry({super.key, required this.icon, required this.text, required this.rawText,
+  required this.selected, required this.update});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        HapticFeedback.lightImpact();
+        showDialog<String>(
+            context: context,
+            builder: (BuildContext context) {
+              List<String> options = settingSwitches[rawText] ?? [""];
+              return AlertDialog(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                content: StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: List<Widget>.generate(options.length, (int index) {
-                        return GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            HapticFeedback.lightImpact();
-                            Navigator.pop(context);
-                            updatePage(rawText, options[index]);
-                          },
-                          child: Row(
-                            children: [
-                              Radio<String>(
-                                value: options[index],
-                                groupValue: settings[rawText],
-                                activeColor: palette.primary,
-                                onChanged: (String? value) {
-                                  HapticFeedback.lightImpact();
-                                  Navigator.pop(context, value);
-                                },
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20, top: 10, left: 0),
+                          child: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 22),),
+                        ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: List<Widget>.generate(options.length, (int index) {
+                            return GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                HapticFeedback.lightImpact();
+                                Navigator.pop(context);
+                                update(options[index]);
+                              },
+                              child: Row(
+                                children: [
+                                  Radio<String>(
+                                    value: options[index],
+                                    groupValue: selected,
+                                    onChanged: (String? value) {
+                                      HapticFeedback.lightImpact();
+                                      Navigator.pop(context, value);
+                                    },
+                                  ),
+                                  Text(options[index], style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18),)
+                                ],
                               ),
-                              comfortatext(options[index], 18, settings, color: palette.onSurface)
-                            ],
-                          ),
-                        );
-                      }),
-                    ),
-                  ],
-                );
-              },
+                            );
+                          }),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              );
+            }
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 14, bottom: 14),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 17),
+              child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 22,),
             ),
-          );
-        }
-      ).then((selectedValue) {
-        if (selectedValue != null) {
-          updatePage(rawText, selectedValue);
-        }
-      });
-    },
-    child: Padding(
-      padding: const EdgeInsets.only(top: 14, bottom: 14),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 17),
-            child: Icon(icon, color: palette.primary, size: 22,),
-          ),
-          Expanded(
-            child: Column(
-             crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                comfortatext(text, 19, settings, color: palette.onSurface),
-                comfortatext(settings[rawText]!, 15, settings, color: palette.outline,),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 19),),
+                  Text(selected, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 15),),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class SettingsPage extends StatefulWidget {

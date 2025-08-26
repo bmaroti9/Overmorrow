@@ -22,10 +22,12 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:overmorrow/about_page.dart';
 import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/image_service.dart';
+import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:overmorrow/weather_refact.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'decoders/decode_wapi.dart';
@@ -108,53 +110,52 @@ class NewSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.only(top: 20, bottom: 20),
-        child: AnimationLimiter(
-          child: Column(
-            children: AnimationConfiguration.toStaggeredList(
-              duration: const Duration(milliseconds: 375),
-              childAnimationBuilder: (widget) => SlideAnimation(
-                horizontalOffset: 50.0,
-                child: FadeInAnimation(
-                  child: widget,
-                ),
-              ),
-              children: [
-                MainSettingEntry(
-                  title: AppLocalizations.of(context)!.appearance,
-                  desc: AppLocalizations.of(context)!.appearanceSettingDesc,
-                  icon: Icons.palette_outlined
-                ),
-                MainSettingEntry(
-                    title: AppLocalizations.of(context)!.general,
-                    desc: AppLocalizations.of(context)!.generalSettingDesc,
-                    icon: Icons.tune
-                ),
-                MainSettingEntry(
-                    title: AppLocalizations.of(context)!.language,
-                    desc: AppLocalizations.of(context)!.languageSettingDesc,
-                    icon: Icons.language
-                ),
-                MainSettingEntry(
-                    title: AppLocalizations.of(context)!.units,
-                    desc: AppLocalizations.of(context)!.unitsSettingdesc,
-                    icon: Icons.straighten
-                ),
-                MainSettingEntry(
-                    title: AppLocalizations.of(context)!.layout,
-                    desc: AppLocalizations.of(context)!.layoutSettingDesc,
-                    icon: Icons.widgets_outlined
-                ),
-                MainSettingEntry(
-                    title: AppLocalizations.of(context)!.about,
-                    desc: AppLocalizations.of(context)!.aboutSettingsDesc,
-                    icon: Icons.info_outline, pushTo: AboutPage(),
-                ),
-              ],
+    return AnimationLimiter(
+      child: Column(
+        children: AnimationConfiguration.toStaggeredList(
+          duration: const Duration(milliseconds: 375),
+          childAnimationBuilder: (widget) => SlideAnimation(
+            horizontalOffset: 50.0,
+            child: FadeInAnimation(
+              child: widget,
             ),
           ),
-        )
+          children: [
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.appearance,
+              desc: AppLocalizations.of(context)!.appearanceSettingDesc,
+              icon: Icons.palette_outlined
+            ),
+            MainSettingEntry(
+                title: AppLocalizations.of(context)!.general,
+                desc: AppLocalizations.of(context)!.generalSettingDesc,
+                icon: Icons.tune
+            ),
+            MainSettingEntry(
+                title: AppLocalizations.of(context)!.language,
+                desc: AppLocalizations.of(context)!.languageSettingDesc,
+                icon: Icons.language
+            ),
+            MainSettingEntry(
+                title: AppLocalizations.of(context)!.units,
+                desc: AppLocalizations.of(context)!.unitsSettingdesc,
+                icon: Icons.straighten,
+                pushTo: const UnitsPage(),
+            ),
+            MainSettingEntry(
+                title: AppLocalizations.of(context)!.layout,
+                desc: AppLocalizations.of(context)!.layoutSettingDesc,
+                icon: Icons.widgets_outlined
+            ),
+            MainSettingEntry(
+                title: AppLocalizations.of(context)!.about,
+                desc: AppLocalizations.of(context)!.aboutSettingsDesc,
+                icon: Icons.info_outline,
+                pushTo: const AboutPage(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -348,7 +349,7 @@ class AppearanceSelector extends StatelessWidget {
 
                       const SizedBox(height: 20,),
 
-                      settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source', context),
+                      //settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source', context),
 
                       if (settings["Color source"] == "custom") SizedBox(
                         height: 80,
@@ -385,7 +386,10 @@ class AppearanceSelector extends StatelessWidget {
                           },
                         ),
                       ),
+                      /*
                       settingEntry(Icons.image_outlined, localizations.imageSource, settings, palette, updatePage, 'Image source', context),
+
+                       */
                       const SizedBox(height: 70,),
                     ],
                   )
@@ -401,74 +405,29 @@ class AppearanceSelector extends StatelessWidget {
 
 }
 
-class UnitsPage extends StatefulWidget {
-  final settings;
-  final image;
-  final palette;
-  final updateMainPage;
-  final localizations;
-
-  const UnitsPage({Key? key, required this.palette, required this.settings,
-    required this.image, required this.updateMainPage, required this.localizations})
-      : super(key: key);
-
-  @override
-  _UnitsPageState createState() =>
-      _UnitsPageState(image: image, settings: settings, palette: palette,
-          updateMainPage: updateMainPage, localizations: localizations);
-}
-
-class _UnitsPageState extends State<UnitsPage> {
-
-  final image;
-  final settings;
-  final ColorScheme palette;
-  final updateMainPage;
-  final localizations;
-
-  _UnitsPageState({required this.image, required this.settings, required this.palette,
-    required this.updateMainPage, required this.localizations});
-
-  Map<String, String> copySettings = {};
-
-  @override
-  void initState() {
-    super.initState();
-
-    copySettings = settings;
-  }
-
-  void updatePage(String name, String to) {
-    setState(() {
-      updateMainPage(name, to);
-      copySettings[name] = to;
-    });
-  }
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
+class UnitsPage extends StatelessWidget {
+  const UnitsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
 
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
-                  goBack();
+                  HapticFeedback.selectionClick();
+                  Navigator.pop(context);
                 }),
-            title: comfortatext(
-                localizations.units, 30, settings,
-                color: palette.primary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.units,
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
+
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 60, left: 30),
@@ -483,9 +442,35 @@ class _UnitsPageState extends State<UnitsPage> {
                       ),
                     ),
                     children: [
+
+                      SettingsEntry(
+                          icon: Icons.thermostat,
+                          text: AppLocalizations.of(context)!.temperature,
+                          rawText: 'Temperature',
+                          selected: context.select((SettingsProvider p) => p.getTempUnit),
+                          update: context.read<SettingsProvider>().setTempUnit,
+                      ),
+                      SettingsEntry(
+                        icon: Icons.water_drop_outlined,
+                        text: AppLocalizations.of(context)!.precipitaion,
+                        rawText: 'Precipitation',
+                        selected: context.select((SettingsProvider p) => p.getPrecipUnit),
+                        update: context.read<SettingsProvider>().setPrecipUnit,
+                      ),
+                      SettingsEntry(
+                        icon: Icons.air,
+                        text: AppLocalizations.of(context)!.windCapital,
+                        rawText: 'Wind',
+                        selected: context.select((SettingsProvider p) => p.getWindUnit),
+                        update: context.read<SettingsProvider>().setWindUnit,
+                      ),
+
+                      /*
                       settingEntry(Icons.device_thermostat, localizations.temperature, copySettings, palette, updatePage, 'Temperature', context),
                       settingEntry(Icons.water_drop_outlined, localizations.precipitaion, copySettings, palette, updatePage, 'Precipitation', context),
                       settingEntry(Icons.air, localizations.windCapital, copySettings, palette, updatePage, 'Wind', context),
+
+                       */
                     ],
                   )
                 ),
@@ -581,11 +566,14 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                       ),
                     ),
                     children: [
+                      /*
                       settingEntry(Icons.access_time_outlined, localizations.timeMode, copySettings, palette, updatePage, 'Time mode', context),
                       settingEntry(Icons.date_range, localizations.dateFormat, copySettings, palette, updatePage, 'Date format', context),
                       settingEntry(Icons.format_size, localizations.fontSize, copySettings, palette, updatePage, 'Font size', context),
                       settingEntry(Icons.manage_search_outlined, localizations.searchProvider, copySettings, palette, updatePage, 'Search provider', context),
                       settingEntry(Icons.vibration_rounded, localizations.radarHaptics, copySettings, palette, updatePage, 'Radar haptics', context),
+
+                       */
                     ],
                   )
                 ),

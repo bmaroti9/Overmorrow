@@ -199,9 +199,9 @@ class DescriptionCircle extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.baseline,
                             textBaseline: TextBaseline.alphabetic,
                             children: [
-                              Text(text, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 20),),
+                              Text(text, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 20, height: 1.1),),
                               Flexible(
-                                child: Text(extra, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16),)
+                                child: Text(extra, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16, height: 1.3),)
                               ),
                             ],
                           ),

@@ -172,7 +172,8 @@ class NewMain extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Spacer(),
-                    SmoothTempTransition(target: unitConversion(data.current.temp, "˚C", decimals: 1) * 1.0),
+                    SmoothTempTransition(target: unitConversion(data.current.temp,
+                        context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0),
                     Text(
                       data.current.text,
                       style: TextStyle(
