@@ -226,7 +226,7 @@ class MyHomePageState extends State<MyHomePage> {
     return Stack(
       children: [
         Container(color: Theme.of(context).colorScheme.surface,),
-        if (data != null) NewMain(data: data, updateLocation: updateLocation, imageKey: imageKey, updateColorPalette: updateColorPalette,
+        if (data != null) NewMain(data: data!, updateLocation: updateLocation, imageKey: imageKey, updateColorPalette: updateColorPalette,
           context: context),
         LoadingIndicator(isLoading: isLoading,)
       ],

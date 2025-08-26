@@ -27,13 +27,14 @@ import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:stretchy_header/stretchy_header.dart';
+import 'decoders/weather_data.dart';
 import 'hourly.dart';
 import 'main_ui.dart';
 import 'new_displays.dart';
 import 'ui_helper.dart';
 
 class NewMain extends StatelessWidget {
-  final data;
+  final WeatherData data;
   final updateLocation;
   final context;
   final imageKey;
@@ -148,9 +149,9 @@ class NewMain extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: StretchyHeader.listView(
-        displacement: 130,
+        displacement: 110,
         onRefresh: () async {
-          await updateLocation("${data.lat}, ${data.lng}", data.real_loc);
+          await updateLocation("${data.lat}, ${data.lng}", data.place);
         },
         headerData: HeaderData(
           //backgroundColor: WHITE,

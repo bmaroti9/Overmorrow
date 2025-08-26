@@ -233,7 +233,7 @@ class HourlySum extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 1.5),
+              padding: const EdgeInsets.only(bottom: 1),
               child: Icon(Icons.umbrella, size: 14, color: Theme.of(context).colorScheme.tertiary),
             ),
             Text("${hour.precip_prob}%",
@@ -292,8 +292,12 @@ class HourlyPrecip extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.umbrella, size: 14, color: Theme.of(context).colorScheme.primary),
-            Text("${hour.precip_prob}%", style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 14),)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 1),
+              child: Icon(Icons.umbrella, size: 14, color: Theme.of(context).colorScheme.tertiary),
+            ),
+            Text("${hour.precip_prob}%",
+              style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 13, fontWeight: FontWeight.w600),)
           ],
         ),
 
@@ -314,7 +318,7 @@ class HourlyWind extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    String windUnit = context.select((SettingsProvider p) => p.getPrecipUnit);
+    String windUnit = context.select((SettingsProvider p) => p.getWindUnit);
 
     return Column(
       key: const ValueKey("wind"),
@@ -325,8 +329,11 @@ class HourlyWind extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('${unitConversion(hour.wind, windUnit)}', style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 18),),
-            Text(windUnit, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 9),)
+            Text('${unitConversion(hour.wind, windUnit, decimals: 1)}',
+              style: TextStyle(color: Theme.of(context).colorScheme.primary,
+                  fontSize: 18, fontWeight: FontWeight.w600, height: 1.1),),
+            Text(windUnit, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 10,
+            fontWeight: FontWeight.w600),)
           ],
         ),
 
