@@ -131,7 +131,6 @@ class _MyAppState extends State<MyApp> {
         colorScheme: context.watch<ThemeProvider>().getColorSchemeLight,
         useMaterial3: true,
         fontFamily: GoogleFonts.outfit().fontFamily,
-
       ),
       darkTheme: ThemeData(
         colorScheme: context.watch<ThemeProvider>().getColorSchemeDark,
@@ -269,30 +268,38 @@ class MyHomePageState extends State<MyHomePage> {
   }
 }
 
+
 class LoadingIndicator extends StatelessWidget {
   final bool isLoading;
   const LoadingIndicator({super.key, required this.isLoading});
 
   @override
   Widget build(BuildContext context) {
+    final Offset offset = isLoading ? Offset.zero : const Offset(0, -0.3);
+
     return AnimatedOpacity(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 300),
       opacity: isLoading ? 1.0 : 0.0,
       curve: Curves.easeInOut,
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              color: Theme.of(context).colorScheme.secondaryContainer
+      child: AnimatedSlide(
+        duration: const Duration(milliseconds: 300),
+        offset: offset,
+        curve: Curves.easeInOut,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Theme.of(context).colorScheme.primaryContainer
+            ),
+            margin: const EdgeInsets.only(top: 210),
+            padding: const EdgeInsets.all(3),
+            width: 64,
+            height: 64,
+            child: const ExpressiveLoadingIndicator(),
           ),
-          margin: const EdgeInsets.only(top: 230),
-          padding: const EdgeInsets.all(3),
-          width: 64,
-          height: 64,
-          child: const ExpressiveLoadingIndicator(),
         ),
-      )
+      ),
     );
   }
 }

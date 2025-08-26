@@ -146,13 +146,13 @@ class SearchBar extends StatelessWidget {
                     icon: Icon(Icons.settings_outlined, color: Theme.of(context).colorScheme.primary, size: 25,),
                     onPressed: () {
                       HapticFeedback.selectionClick();
-                      /*
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SettingsPage(image: image),
+                          builder: (context) => SettingsPage(),
                         ),
-                      ).then((value) {
+                      );/*.then((value) {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) {
@@ -161,8 +161,7 @@ class SearchBar extends StatelessWidget {
                           ),
                         );
                       });
-            
-                       */
+                      */
                     },
                   ),
                 ],

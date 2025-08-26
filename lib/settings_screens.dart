@@ -39,98 +39,119 @@ Future<void> _launchUrl(String url) async {
   }
 }
 
-Widget mainSettingEntry(String title, String desc, ColorScheme palette,
-    IconData icon, settings, Widget pushTo, context, updatePage) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 25, right: 25, top: 5, bottom: 5),
-    child: GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        HapticFeedback.selectionClick();
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => pushTo)
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(top: 13, bottom: 13),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 18, left: 15),
-              child: Icon(icon, color: palette.primary, size: 24,),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 3),
-                    child: comfortatext(title, 21, settings, color: palette.onSurface),
-                  ),
-                  comfortatext(desc, 15, settings, color: palette.outline),
-                ],
+class MainSettingEntry extends StatelessWidget {
+  final String title;
+  final String desc;
+  final IconData icon;
+
+  const MainSettingEntry({super.key, required this.title, required this.desc, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 25, top: 5, bottom: 5),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          HapticFeedback.selectionClick();
+          /*
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => pushTo)
+          );
+
+           */
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(top: 13, bottom: 13),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                width: 50,
+                height: 50,
+                child: Center(child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 24,)),
               ),
-            )
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-Widget NewSettings(Map<String, String> settings, Function updatePage, Image image, ColorScheme palette, context, colornotify) {
-
-  AppLocalizations localizations = AppLocalizations.of(context)!;
-
-  return Padding(
-    padding: const EdgeInsets.only(top: 20, bottom: 20),
-    child: AnimationLimiter(
-      child: Column(
-        children: AnimationConfiguration.toStaggeredList(
-          duration: const Duration(milliseconds: 375),
-          childAnimationBuilder: (widget) => SlideAnimation(
-            horizontalOffset: 50.0,
-            child: FadeInAnimation(
-            child: widget,
+              const SizedBox(width: 20,),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: TextStyle(color: Theme.of(context).colorScheme.onSurface,
+                          fontSize: 21, height: 1.2),),
+                    Text(desc, style: TextStyle(color: Theme.of(context).colorScheme.outline,
+                        fontSize: 15, height: 1.2),)
+                  ],
+                ),
+              )
+            ],
           ),
         ),
-        children: [
-          mainSettingEntry(localizations.appearance, localizations.appearanceSettingDesc,
-              palette, Icons.palette_outlined, settings,
-              AppearancePage(settings: settings, image: image, colornotify: colornotify, updateMainPage: updatePage,
-                  localizations: localizations),
-              context, updatePage
-          ),
-          mainSettingEntry(localizations.general, localizations.generalSettingDesc,
-              palette, Icons.tune, settings,
-              GeneralSettingsPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
-                localizations: localizations,),
-              context, updatePage),
-          mainSettingEntry(localizations.language, localizations.languageSettingDesc,
-              palette, Icons.language, settings,
-              LangaugePage(palette: palette, settings: settings, image: image, updateMainPage: updatePage),
-              context, updatePage),
-          mainSettingEntry(localizations.units, localizations.unitsSettingdesc,
-              palette, Icons.straighten, settings,
-              UnitsPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
-              localizations: localizations,),
-              context, updatePage),
-          mainSettingEntry(localizations.layout, localizations.layoutSettingDesc,
-              palette, Icons.widgets_outlined, settings,
-              LayoutPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
-                localizations: localizations,), context, updatePage),
-          mainSettingEntry(localizations.about, "about this app",
-              palette, Icons.info_outline, settings,
-              AboutPage(settings: settings, palette: palette), context, updatePage),
-          ],
-        ),
       ),
-    )
-  );
+    );
+  }
 }
+
+class NewSettings extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(top: 20, bottom: 20),
+        child: AnimationLimiter(
+          child: Column(
+            children: AnimationConfiguration.toStaggeredList(
+              duration: const Duration(milliseconds: 375),
+              childAnimationBuilder: (widget) => SlideAnimation(
+                horizontalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: widget,
+                ),
+              ),
+              children: [
+                MainSettingEntry(
+                  title: AppLocalizations.of(context)!.appearance,
+                  desc: AppLocalizations.of(context)!.appearanceSettingDesc,
+                  icon: Icons.palette_outlined
+                ),
+                MainSettingEntry(
+                    title: AppLocalizations.of(context)!.general,
+                    desc: AppLocalizations.of(context)!.generalSettingDesc,
+                    icon: Icons.tune
+                ),
+                MainSettingEntry(
+                    title: AppLocalizations.of(context)!.language,
+                    desc: AppLocalizations.of(context)!.languageSettingDesc,
+                    icon: Icons.language
+                ),
+                MainSettingEntry(
+                    title: AppLocalizations.of(context)!.units,
+                    desc: AppLocalizations.of(context)!.unitsSettingdesc,
+                    icon: Icons.straighten
+                ),
+                MainSettingEntry(
+                    title: AppLocalizations.of(context)!.layout,
+                    desc: AppLocalizations.of(context)!.layoutSettingDesc,
+                    icon: Icons.widgets_outlined
+                ),
+                MainSettingEntry(
+                    title: AppLocalizations.of(context)!.about,
+                    desc: AppLocalizations.of(context)!.aboutSettingsDesc,
+                    icon: Icons.info_outline
+                ),
+              ],
+            ),
+          ),
+        )
+    );
+  }
+}
+
 
 class AppearancePage extends StatefulWidget {
   final settings;

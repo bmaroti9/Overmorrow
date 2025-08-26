@@ -292,108 +292,39 @@ Widget settingEntry(icon, text, settings, ColorScheme palette, updatePage, rawTe
 
 class SettingsPage extends StatefulWidget {
 
-  final image;
-
-  const SettingsPage({Key? key, required this.image}) : super(key: key);
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  _SettingsPageState createState() => _SettingsPageState(image: image);
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
 
-  final image;
-
-  String _locale = 'English';
-  //this is so that appearance page setting changes take effect in place rather that having to exit the page
-  ValueNotifier<ColorPalette> colornotify = ValueNotifier<ColorPalette>(
-      const ColorPalette(palette: ColorScheme.light(), imageColors: [], regionColors: [],
-          descColor: WHITE, colorPop: WHITE));
-
-  _SettingsPageState({required this.image});
-
-  void updatePage(String name, String to) {
-    setState(() {
-      SetData('setting$name', to);
-      if (name == "Language") {
-        _locale = to;
-      }
-    });
-  }
   void goBack() {
     Navigator.of(context).pop();
   }
 
   @override
-  void dispose() {
-    colornotify.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: getSettingsAndColors(image),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<dynamic>> snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Container();
-        } else if (snapshot.hasError) {
-          if (kDebugMode) {
-            print((snapshot.error, snapshot.stackTrace));
-          }
-          return Center(
-            child: ErrorWidget(snapshot.error as Object),
-          );
-        }
-        _locale = snapshot.data?[0]["Language"];
-        //this is needed so flutter wont complain about setstate during build
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          colornotify.value = snapshot.data?[1];
-        });
-        return Localizations.override(
-          context: context,
-          locale: languageNameToLocale[_locale] ?? const Locale('en'),
-          child: SettingsMain(settings: snapshot.data?[0], updatePage: updatePage, goBack: goBack, image: image,
-              palette: snapshot.data?[1].palette, colornotify: colornotify,),
-        );
-      },
-    );
-  }
-}
-
-
-class SettingsMain extends StatelessWidget {
-  final ColorScheme palette;
-  final goBack;
-  final settings;
-  final updatePage;
-  final image;
-  final colornotify;
-
-  const SettingsMain({super.key, this.settings, this.updatePage, this.goBack, this.image, required this.palette, this.colornotify});
-
-  @override
   Widget build(BuildContext context) {
     return  Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
                   HapticFeedback.selectionClick();
                   goBack();
                 }),
-            title: comfortatext(AppLocalizations.of(context)!.settings, 30, settings, color: palette.primary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.settings, style: const TextStyle(fontSize: 30),),
             pinned: false,
           ),
-          // Just some content big enough to have something to scroll.
+
           SliverToBoxAdapter(
-            child: NewSettings(settings!, updatePage, image, palette, context, colornotify),
+            child: NewSettings(),
           ),
+
         ],
       ),
     );

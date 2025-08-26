@@ -151,7 +151,7 @@ class NewMain extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: StretchyHeader.listView(
-        displacement: 110,
+        displacement: 120,
         onRefresh: () async {
           await updateLocation("${data.lat}, ${data.lng}", data.place);
         },
@@ -269,39 +269,6 @@ class SmoothTransitionDemo extends StatelessWidget {
             ),
           ),
         );
-      },
-    );
-  }
-}
-
-
-class SmoothTempTransition extends StatelessWidget {
-  final double target;
-
-  const SmoothTempTransition({super.key, required this.target});
-
-  @override
-  Widget build(BuildContext context) {
-
-    return TweenAnimationBuilder<double>(
-      tween: Tween<double>(
-        begin: 0.0,
-        end: target,
-      ),
-
-      curve: Curves.easeOut,
-
-      duration: const Duration(milliseconds: 1000),
-
-      builder: (context, current, child) {
-        return Text(
-          "${current.round()}°",
-          style: GoogleFonts.outfit(
-          color: Theme.of(context).colorScheme.tertiaryFixedDim,
-          fontSize: 75,
-          height: 1.05,
-          fontWeight: FontWeight.w300,
-        ),);
       },
     );
   }

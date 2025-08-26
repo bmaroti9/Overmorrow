@@ -22,6 +22,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/decoders/weather_data.dart';
 import 'package:overmorrow/main_screens.dart';
 import 'package:overmorrow/search_screens.dart';
@@ -80,6 +81,39 @@ class WeatherPage extends StatelessWidget {
     return Container();
     //return NewMain(data: data, updateLocation: updateLocation, context: context,
     //    key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
+  }
+}
+
+
+class SmoothTempTransition extends StatelessWidget {
+  final double target;
+
+  const SmoothTempTransition({super.key, required this.target});
+
+  @override
+  Widget build(BuildContext context) {
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(
+        begin: 0.0,
+        end: target,
+      ),
+
+      curve: Curves.easeOut,
+
+      duration: const Duration(milliseconds: 1000),
+
+      builder: (context, current, child) {
+        return Text(
+          "${current.round()}°",
+          style: GoogleFonts.outfit(
+            color: Theme.of(context).colorScheme.tertiaryFixedDim,
+            fontSize: 75,
+            height: 1.05,
+            fontWeight: FontWeight.w300,
+          ),);
+      },
+    );
   }
 }
 
