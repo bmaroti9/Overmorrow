@@ -160,6 +160,18 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
   );
 }
 
+Widget circleBorderIcon(IconData icon, context) {
+  return Container(
+    decoration: BoxDecoration(
+      color: Theme.of(context).colorScheme.secondaryContainer,
+      borderRadius: BorderRadius.circular(30),
+    ),
+    width: 50,
+    height: 50,
+    child: Center(child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 24,)),
+  );
+}
+
 class SettingsEntry extends StatelessWidget {
   final IconData icon;
   final String text;
@@ -188,10 +200,12 @@ class SettingsEntry extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 20, top: 10, left: 0),
+                          padding: const EdgeInsets.only(bottom: 10, top: 10, left: 0),
                           child: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 22),),
                         ),
+
                         Column(
                           mainAxisSize: MainAxisSize.min,
                           children: List<Widget>.generate(options.length, (int index) {
@@ -230,19 +244,20 @@ class SettingsEntry extends StatelessWidget {
         padding: const EdgeInsets.only(top: 14, bottom: 14),
         child: Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 17),
-              child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 22,),
-            ),
+            circleBorderIcon(icon, context),
+            const SizedBox(width: 20,),
             Expanded(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 19),),
-                  Text(selected, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 15),),
+                  Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 21, height: 1.2),),
+                  Text(selected, style: TextStyle(color: Theme.of(context).colorScheme.outline,
+                      fontSize: 15, height: 1.2),)
                 ],
               ),
-            ),
+            )
           ],
         ),
       ),

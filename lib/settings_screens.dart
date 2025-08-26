@@ -76,15 +76,7 @@ class MainSettingEntry extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                width: 50,
-                height: 50,
-                child: Center(child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 24,)),
-              ),
+              circleBorderIcon(icon, context),
               const SizedBox(width: 20,),
               Expanded(
                 child: Column(
@@ -430,7 +422,7 @@ class UnitsPage extends StatelessWidget {
 
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 30, bottom: 60, left: 30),
+              padding: const EdgeInsets.only(top: 0, left: 30),
               child: AnimationLimiter(
                 child: Column(
                   children: AnimationConfiguration.toStaggeredList(
@@ -444,7 +436,7 @@ class UnitsPage extends StatelessWidget {
                     children: [
 
                       SettingsEntry(
-                          icon: Icons.thermostat,
+                          icon: Icons.ac_unit,
                           text: AppLocalizations.of(context)!.temperature,
                           rawText: 'Temperature',
                           selected: context.select((SettingsProvider p) => p.getTempUnit),

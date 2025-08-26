@@ -172,13 +172,33 @@ class SearchBar extends StatelessWidget {
 
         onTap: () {
           HapticFeedback.lightImpact();
+
+          // i had to use my own transition because the default sliding doesn't look good here
           Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (context) => HeroSearchPage(place: place, recommend: recommend,
-                  updateRec: updateRec, updateLocation: updateLocation, favorites: favorites, updateFav: updateFav,
-                  isTabletMode: false),
-                fullscreenDialog: true
-            ),
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>  HeroSearchPage(place: place, recommend: recommend,
+                updateRec: updateRec, updateLocation: updateLocation, favorites: favorites, updateFav: updateFav,
+                isTabletMode: false),
+
+              transitionDuration: const Duration(milliseconds: 350),
+              reverseTransitionDuration: const Duration(milliseconds: 350),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                const begin = Offset(0.0, 0.05);
+                const end = Offset.zero;
+                const curve = Curves.easeOutCubic;
+
+                final tween = Tween(begin: begin, end: end);
+                final curvedAnimation = CurvedAnimation(parent: animation, curve: curve);
+
+                return FadeTransition(
+                  opacity: animation,
+                  child: SlideTransition(
+                    position: tween.animate(curvedAnimation),
+                    child: child,
+                  ),
+                );
+              }
+            )
           );
         },
       ),
@@ -466,7 +486,16 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
               openSettingsPage();
             },
           ),
-        ) : null,
+        ) : IconButton(
+          icon: Icon(
+            Icons.close,
+            color: Theme.of(context).colorScheme.primary, size: 25,
+          ),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 150),

@@ -131,11 +131,21 @@ class _MyAppState extends State<MyApp> {
         colorScheme: context.watch<ThemeProvider>().getColorSchemeLight,
         useMaterial3: true,
         fontFamily: GoogleFonts.outfit().fontFamily,
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
+          }
+        )
       ),
       darkTheme: ThemeData(
         colorScheme: context.watch<ThemeProvider>().getColorSchemeDark,
         useMaterial3: true,
-        fontFamily: GoogleFonts.outfit().fontFamily
+        fontFamily: GoogleFonts.outfit().fontFamily,
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
+          }
+        )
       ),
       home: const MyHomePage()
     );
