@@ -26,9 +26,16 @@ import '../weather_refact.dart' as weather_refactor;
 
 String convertTime(DateTime time, BuildContext context) {
   if (context.select((SettingsProvider p) => p.getTimeMode) == "12 hour") {
-    return DateFormat('hh:mm a').format(time).toLowerCase();
+    return DateFormat('h:mm a').format(time).toLowerCase();
   }
   return DateFormat('hh:mm').format(time);
+}
+
+String convertToShortTime(DateTime time, BuildContext context) {
+  if (context.select((SettingsProvider p) => p.getTimeMode) == "12 hour") {
+    return DateFormat('h a').format(time).toLowerCase();
+  }
+  return DateFormat('hh').format(time);
 }
 
 String getDateStringFromLocalTime(DateTime now) {

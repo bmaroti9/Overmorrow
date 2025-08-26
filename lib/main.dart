@@ -162,13 +162,14 @@ class MyHomePageState extends State<MyHomePage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        updateLocation("40.7128, -74.0060", "New York");
+        updateLocation(context.read<SettingsProvider>().getLatLon, context.read<SettingsProvider>().getLocation);
       }
     });
   }
 
   void updateLocation(String latLon, String location) {
     fetchData(location, latLon);
+    context.read<SettingsProvider>().setLocationAndLatLon(location, latLon);
   }
 
   void updateColorPalette(ColorScheme colorSchemeLight, ColorScheme colorSchemeDark) {

@@ -197,7 +197,7 @@ class DescriptionCircle extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top:6),
-                  child: Text(undercaption, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 16),)
+                  child: Text(undercaption, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 15),)
                 )
               )
             ]

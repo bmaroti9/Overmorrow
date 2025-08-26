@@ -212,7 +212,7 @@ class FadingImageWidgetState extends State<FadingImageWidget> {
       child: Container(
         key: ValueKey(_currentImage.hashCode),
         child: (_currentImage == null)
-            ? Container(color: Theme.of(context).colorScheme.surfaceContainer,)
+            ? Container(color: Theme.of(context).colorScheme.inverseSurface,)
             : _currentImage,
       ),
     );

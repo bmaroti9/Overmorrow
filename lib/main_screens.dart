@@ -200,6 +200,10 @@ class NewMain extends StatelessWidget {
 
           NewSunriseSunset(data: data, width: size.width,),
 
+          NewHourly(data: data, hours: data.hourly72, elevated: false,),
+
+          const SizedBox(height: 200,),
+
           //SmoothTransitionDemo(targetScale: data.sunstatus.sunstatus),
 
           /*
@@ -227,6 +231,8 @@ class NewMain extends StatelessWidget {
   }
 }
 
+
+//I'm using this as a reference for everything i want animated between places
 class SmoothTransitionDemo extends StatelessWidget {
   final double targetScale;
 

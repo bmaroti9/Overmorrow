@@ -158,15 +158,28 @@ class _ClockUpdaterState extends State<ClockUpdater> {
     textPainter.layout();
     final textWidth = textPainter.width * 1.1;
 
-    return Padding(
-      padding: EdgeInsets.only(
-          left: min(
-              max((widget.progress * (widget.width - 53)) - textWidth / 2 + 5, 0),
-              widget.width - 53 - textWidth)),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(write, style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.onSurface)),
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(
+        begin: 0.0,
+        end: widget.progress,
       ),
+
+      curve: Curves.easeInOut,
+
+      duration: const Duration(milliseconds: 600),
+
+      builder: (context, currentScale, child) {
+        return Padding(
+          padding: EdgeInsets.only(
+              left: min(
+                  max((currentScale * (widget.width - 53)) - textWidth / 2 + 5, 0),
+                  widget.width - 53 - textWidth)),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(write, style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.onSurface)),
+          ),
+        );
+      },
     );
   }
 }
@@ -202,7 +215,7 @@ class NewSunriseSunset extends StatelessWidget {
       builder: (context, animatedProgress, child) {
 
         return Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 23, top: 20),
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 23, top: 18),
           child: Column(
             children: [
 

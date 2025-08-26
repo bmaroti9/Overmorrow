@@ -242,6 +242,31 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     });
   }
 
+  onSubmitted(String submitted) async {
+    if (!isTabletMode) {
+      Navigator.pop(context);
+    }
+    var rec = await LocationService.getRecommendation(submitted);
+    if (rec.isNotEmpty) {
+      var split = json.decode(rec[0]);
+      updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);
+    }
+    else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Unable to find place: $submitted"),
+            ),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
+          ),
+        );
+      }
+    }
+  }
+
   onFavChanged(List<String> fav) {
     setState(() {
       updateFav(fav);
@@ -495,10 +520,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                       },
                       onSubmitted: (String submission) {
                         HapticFeedback.lightImpact();
-                        updateLocation('query', submission);
-                        if (!isTabletMode) {
-                          Navigator.pop(context);
-                        }
+                        onSubmitted(submission);
                       },
                       cursorWidth: 2,
                       decoration: const InputDecoration(
@@ -731,7 +753,7 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
         padding: const EdgeInsets.only(
             left: 25, right: 25, top: 23, bottom: 23),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryFixedDim,
+          color: Theme.of(context).colorScheme.tertiaryFixedDim,
           borderRadius: BorderRadius.circular(40),
         ),
         child: Row(
@@ -742,7 +764,7 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, bottom: 2),
                 child: Text(AppLocalizations.of(context)!.grantLocationPermission,
-                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryFixedVariant, fontSize: 19),)
+                  style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryFixedVariant, fontSize: 19),)
               ),
             ),
           ],
@@ -790,18 +812,18 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
     padding: const EdgeInsets.only(
         left: 25, right: 25, top: 20, bottom: 20),
     decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.primaryFixedDim,
+      color: Theme.of(context).colorScheme.tertiaryFixedDim,
       borderRadius: BorderRadius.circular(40),
     ),
     child: Row(
       children: [
         Icon(Icons.gps_off,
-          color: Theme.of(context).colorScheme.onPrimaryFixedVariant, size: 19,),
+          color: Theme.of(context).colorScheme.onTertiaryFixedVariant, size: 19,),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(left: 10, bottom: 2),
             child: Text(locationMessage, style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimaryFixedVariant, fontSize: 19),)
+                color: Theme.of(context).colorScheme.onTertiaryFixedVariant, fontSize: 19),)
           ),
         ),
 

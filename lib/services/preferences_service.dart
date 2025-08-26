@@ -102,10 +102,17 @@ class SettingsProvider with ChangeNotifier {
 
   String _timeMode = "12 hour";
 
+  String _location = "New York";
+  String _latLon = "40.7128, -74.0060";
+
   String get getTempUnit => _tempUnit;
   String get getWindUnit => _windUnit;
   String get getPrecipUnit => _precipUnit;
+
   String get getTimeMode => _timeMode;
+
+  String get getLocation => _location;
+  String get getLatLon => _latLon;
 
   SettingsProvider() {
     _load();
@@ -119,5 +126,18 @@ class SettingsProvider with ChangeNotifier {
     _precipUnit = PreferenceUtils.getString("Precipitation", "mm");
 
     _timeMode = PreferenceUtils.getString("Time mode", "12 hour");
+
+    _location = PreferenceUtils.getString("LastPlaceN", "New York");
+    _latLon = PreferenceUtils.getString("LastCord", "40.7128, -74.0060");
+  }
+
+  void setLocationAndLatLon(String location, String latLon) {
+    PreferenceUtils.setString("LastPlaceN", location);
+    PreferenceUtils.setString("LastCord", latLon);
+
+    _location = location;
+    _latLon = latLon;
+
+    notifyListeners();
   }
 }
