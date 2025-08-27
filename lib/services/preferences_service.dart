@@ -83,12 +83,20 @@ class PreferenceUtils {
     return instance.getStringList(key) ?? defValue;
   }
 
+  static getBool(String key, bool defValue) {
+    return instance.getBool(key) ?? defValue;
+  }
+
   static setString(String key, String value) {
     instance.setString(key, value);
   }
 
   static setStringList(String key, List<String> value) {
     instance.setStringList(key, value);
+  }
+
+  static setBool(String key, bool value) {
+    instance.setBool(key, value);
   }
 }
 
@@ -151,6 +159,7 @@ class SettingsProvider with ChangeNotifier {
   String _precipUnit = "mm";
 
   String _timeMode = "12 hour";
+  bool _radarHapticsOn = true;
 
   String _location = "New York";
   String _latLon = "40.7128, -74.0060";
@@ -160,6 +169,7 @@ class SettingsProvider with ChangeNotifier {
   String get getPrecipUnit => _precipUnit;
 
   String get getTimeMode => _timeMode;
+  bool get getRadarHapticsOn => _radarHapticsOn;
 
   String get getLocation => _location;
   String get getLatLon => _latLon;
@@ -176,6 +186,7 @@ class SettingsProvider with ChangeNotifier {
     _precipUnit = PreferenceUtils.getString("Precipitation", "mm");
 
     _timeMode = PreferenceUtils.getString("Time mode", "12 hour");
+    _radarHapticsOn = PreferenceUtils.getBool("RadarHapticOn", true);
 
     _location = PreferenceUtils.getString("LastPlaceN", "New York");
     _latLon = PreferenceUtils.getString("LastCord", "40.7128, -74.0060");

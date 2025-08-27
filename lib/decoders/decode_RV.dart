@@ -22,15 +22,13 @@ import '../caching.dart';
 
 class RainviewerRadar {
   final List<String> images;
-  final List<String> times;
-  final int real_hour;
-  final int starting_index;
+  final List<DateTime> times;
+  final int startingIndex;
 
   const RainviewerRadar({
     required this.images,
     required this.times,
-    required this.real_hour,
-    required this.starting_index,
+    required this.startingIndex,
   });
 
   static Future<RainviewerRadar> getData() async {
@@ -43,7 +41,7 @@ class RainviewerRadar {
     final String host = data["host"];
 
     List<String> images = [];
-    List<String> times = [];
+    List<DateTime> times = [];
 
     final past = data["radar"]["past"];
     final future = data["radar"]["nowcast"];
@@ -51,19 +49,19 @@ class RainviewerRadar {
     for (var x in past) {
       DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"] * 1000);
       images.add(host + x["path"]);
-      times.add("${time.hour}h ${time.minute}m");
+      times.add(time);
     }
 
-    int real_hour = int.parse(times[times.length - 1].split("h")[0]);
-    int starting_index = times.length - 1;
+    //int realHour = times[times.length - 1].hour;
+    int startingIndex = times.length - 1;
 
     for (var x in future) {
       DateTime time = DateTime.fromMillisecondsSinceEpoch(x["time"] * 1000);
       images.add(host + x["path"]);
-      times.add("${time.hour}h ${time.minute}m");
+      times.add(time);
     }
 
-    return RainviewerRadar(images: images, times: times, real_hour: real_hour, starting_index: starting_index);
+    return RainviewerRadar(images: images, times: times, startingIndex: startingIndex);
   }
 }
 

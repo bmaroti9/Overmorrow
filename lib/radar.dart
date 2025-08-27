@@ -23,20 +23,25 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:overmorrow/services/preferences_service.dart';
+import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 
 import 'decoders/decode_OM.dart';
+import 'decoders/weather_data.dart';
 
 class RadarSmall extends StatefulWidget {
 
-  final data;
+  final WeatherData data;
+  final bool radarHapticsOn;
 
-  const RadarSmall({Key? key, required this.data}) : super(key: key);
+  const RadarSmall({Key? key, required this.data, required this.radarHapticsOn}) : super(key: key);
 
   @override
-  _RadarSmallState createState() => _RadarSmallState(data);
+  _RadarSmallState createState() => _RadarSmallState();
 }
 
 class _RadarSmallState extends State<RadarSmall> {
@@ -45,45 +50,22 @@ class _RadarSmallState extends State<RadarSmall> {
 
   bool hasBeenPlayed = false;
 
-  final data;
-
-  List<String> times = [];
-
-  _RadarSmallState(this.data);
-
   bool isPlaying = false;
 
   @override
   void initState() {
     super.initState();
 
-    currentFrameIndex = data.radar.starting_index * 1.0;
-
-    int precived_hour = int.parse(data.localtime.split(":")[0]);
-    int real = data.radar.real_hour;
-
-    int offset = precived_hour - real;
-
-    for (int i = 0; i < data.radar.times.length; i++) {
-      List<String> split = data.radar.times[i].split("h");
-      String minute = split[1].replaceAll(RegExp(r"\D"), "");
-      int hour = (int.parse(split[0]) + offset) % 24;
-      if (data.settings["Time mode"] == "12 hour") {
-        //times.add(amPmTime("jT$hour:${minute == "0" ? "00" : minute}"));
-      }
-      else {
-        times.add("${hour.toString().padLeft(2, "0")}:${minute == "0" ? "00" : minute}");
-      }
-    }
+    currentFrameIndex = widget.data.radar.startingIndex * 1.0;
 
     timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer t) {
       if (isPlaying) {
-        if (data.settings["Radar haptics"] == "on") {
+        if (widget.radarHapticsOn) {
           HapticFeedback.lightImpact();
         }
         setState(() {
           currentFrameIndex =
-          ((currentFrameIndex + 1) % (data.radar.images.length - 1));
+          ((currentFrameIndex + 1) % (widget.data.radar.images.length - 1));
         });
       }
     });
@@ -113,12 +95,11 @@ class _RadarSmallState extends State<RadarSmall> {
   @override
   Widget build(BuildContext context) {
 
-    ColorScheme palette = data.current.palette;
-    String mode = data.settings["Color mode"];
+    ThemeMode mode = context.watch<ThemeProvider>().getThemeMode;
 
-    if (mode == "auto") {
+    if (mode == ThemeMode.system) {
       var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      mode = brightness == Brightness.dark ? "dark" : "light";
+      mode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
     }
 
     return Column(
@@ -127,41 +108,39 @@ class _RadarSmallState extends State<RadarSmall> {
           padding: const EdgeInsets.only(left: 25, top: 15),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: comfortatext(
-                AppLocalizations.of(context)!.radar, 17,
-                data.settings,
-                color: palette.onSurface),
+            child: Text(AppLocalizations.of(context)!.radar,
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 17),)
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(
               left: 23, right: 23, top: 14, bottom: 10,),
           child: AspectRatio(
-            aspectRatio: 1.65,
+            aspectRatio: 1.72,
             child: Container(
               decoration: BoxDecoration(
-                  color: palette.surface,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(33),
                   border: Border.all(
-                      width: 2, color: palette.outlineVariant)
+                      width: 2, color: Theme.of(context).colorScheme.outlineVariant)
               ),
               child: Stack(
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(31),
-                    child: (data.isonline) ? FlutterMap(
+                    child: (widget.data.isOnline) ? FlutterMap(
                       options: MapOptions(
                         onTap: (tapPosition, point) =>
                         {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => RadarBig(data: data,)),
+                                builder: (context) => RadarBig(data: widget.data,)),
                           )
                         },
-                        initialCenter: LatLng(data.lat, data.lng),
+                        initialCenter: LatLng(widget.data.lat, widget.data.lng),
                         initialZoom: 6,
-                        backgroundColor: mode == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
+                        backgroundColor: mode == ThemeMode.light ? const Color(0xff262626) : const Color(0xffD4DADC),
                         keepAlive: true,
                         maxZoom: 6,
                         minZoom: 6,
@@ -170,20 +149,20 @@ class _RadarSmallState extends State<RadarSmall> {
                                 .flingAnimation),
                         cameraConstraint: CameraConstraint.containCenter(
                           bounds: LatLngBounds(
-                            LatLng(data.lat - 3, data.lng - 3),
-                            LatLng(data.lat + 3, data.lng + 3),
+                            LatLng(widget.data.lat - 3, widget.data.lng - 3),
+                            LatLng(widget.data.lat + 3, widget.data.lng + 3),
                           ),
                         ),
                       ),
                       children: [
                         TileLayer(
-                          urlTemplate: mode == "dark"
+                          urlTemplate: mode == ThemeMode.dark
                               ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                               : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
                         ),
                         TileLayer(
-                          urlTemplate: data.radar.images[currentFrameIndex
-                              .toInt()] + "/256/{z}/{x}/{y}/2/1_1.png",
+                          urlTemplate: "${widget.data.radar.images[currentFrameIndex
+                              .toInt()]}/256/{z}/{x}/{y}/2/1_1.png",
                           //whoah i didn't know that the radar stuttering was because of a fading animation
                           //this makes it so much more fluid, because there is no fade between frames
                           tileDisplay: const TileDisplay.instantaneous(),
@@ -191,13 +170,13 @@ class _RadarSmallState extends State<RadarSmall> {
                         MarkerLayer(
                           markers: [
                             Marker(
-                              point: LatLng(data.lat, data.lng),
+                              point: LatLng(widget.data.lat, widget.data.lng),
                               width: 54,
                               height: 54,
                               child: Padding(
                                 //try to make the bottom of the pointer where the place actually is
                                 padding: const EdgeInsets.only(bottom: 14),
-                                child: Icon(Icons.place_sharp, color: palette.inverseSurface, size: 38,),
+                                child: Icon(Icons.place_sharp, color: Theme.of(context).colorScheme.inverseSurface, size: 38,),
                               ),
                             ),
                           ],
@@ -205,7 +184,7 @@ class _RadarSmallState extends State<RadarSmall> {
                       ],
                     )
                     : Center(
-                        child: comfortatext("not available offline", 15, data.settings, color: palette.outline)
+                      child: Text("not available offline", style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 15),)
                     )
                   ),
                   Padding(
@@ -215,13 +194,13 @@ class _RadarSmallState extends State<RadarSmall> {
                       child: Hero(
                         tag: 'switch',
                         child: SizedBox(
-                          height: 55,
-                          width: 55,
+                          height: 56,
+                          width: 56,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(10),
                               elevation: 0.0,
-                              backgroundColor: palette.secondaryContainer,
+                              backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
                               //side: BorderSide(width: 3, color: main),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(19)
@@ -235,11 +214,11 @@ class _RadarSmallState extends State<RadarSmall> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) =>
-                                    RadarBig(data: data,)),
+                                    RadarBig(data: widget.data,)),
                               );
                             },
                             child: Icon(Icons.open_in_full,
-                              color: palette.onSecondaryContainer, size: 20,),
+                              color: Theme.of(context).colorScheme.onTertiaryContainer, size: 20,),
                           ),
                         ),
                       ),
@@ -263,13 +242,13 @@ class _RadarSmallState extends State<RadarSmall> {
                   tag: 'playpause',
                   key: ValueKey<bool>(isPlaying),
                   child: SizedBox(
-                    height: 58,
-                    width: 58,
+                    height: 59,
+                    width: 59,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           elevation: 0.0,
                           padding: const EdgeInsets.all(10),
-                          backgroundColor: palette.secondaryContainer,
+                          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                           )
@@ -279,7 +258,7 @@ class _RadarSmallState extends State<RadarSmall> {
                         togglePlayPause();
                       },
                       child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
-                        color: palette.onSecondaryContainer, size: 18,),
+                        color: Theme.of(context).colorScheme.onSecondaryContainer, size: 18,),
 
                     ),
                   ),
@@ -290,34 +269,26 @@ class _RadarSmallState extends State<RadarSmall> {
                 child: Hero(
                   tag: "sliderTag",
                   child: Material(
-                    color: palette.surface,
+                    color: Theme.of(context).colorScheme.surface,
                     child: SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                         trackHeight: 19,
-                        valueIndicatorColor: palette.inverseSurface,
-                        thumbColor: palette.secondary,
-                        activeTrackColor: palette.secondary,
-                        inactiveTrackColor: palette.secondaryContainer,
-                        inactiveTickMarkColor: palette.secondary,
-                        activeTickMarkColor: palette.surface,
-                        valueIndicatorTextStyle: GoogleFonts.outfit(
-                          color: palette.onInverseSurface,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        thumbColor: Theme.of(context).colorScheme.secondary,
+                        activeTrackColor: Theme.of(context).colorScheme.secondary,
+
                         year2023: false,
                       ),
                       child: Slider(
                         value: currentFrameIndex,
                         min: 0,
-                        max: data.radar.times.length - 1.0,
-                        divisions: data.radar.times.length,
-                        label: times[currentFrameIndex.toInt()].toString(),
+                        max: widget.data.radar.times.length - 1.0,
+                        divisions: widget.data.radar.times.length,
+                        label: convertTime(widget.data.radar.times[currentFrameIndex.toInt()], context),
                     
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                     
                         onChanged: (double value) {
-                          if (data.settings["Radar haptics"] == "on") {
+                          if (widget.radarHapticsOn) {
                             HapticFeedback.lightImpact();
                           }
                           setState(() {
