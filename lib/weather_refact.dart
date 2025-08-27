@@ -314,7 +314,7 @@ Map<String, String> metNWeatherToText = {
   'snowshowersandthunder_polartwilight' : 'Thunderstorm'
  };
 
-Map<int, String> OMCodes = {
+Map<int, String> oMCodes = {
   0: 'Clear Sky',
   1: 'Clear Sky',
   2: 'Partly Cloudy',

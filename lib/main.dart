@@ -114,6 +114,16 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
+    final EdgeInsets systemGestureInsets = MediaQuery.of(context).systemGestureInsets;
+    if (systemGestureInsets.left > 0) {
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.transparent,
+        ),
+      );
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: context.watch<ThemeProvider>().getThemeMode,
@@ -217,7 +227,7 @@ class MyHomePageState extends State<MyHomePage> {
     final FadingImageWidgetState? imageState = imageKey.currentState;
 
     if (imageState != null) {
-      await imageState.updateImage(data!.current.text, data!.place);
+      await imageState.updateImage(data!.current.condition, data!.place);
     }
 
     print(("SUCCESS", location, latLon, imageState));
@@ -255,7 +265,7 @@ class MyHomePageState extends State<MyHomePage> {
               children: [
                 const SizedBox(height: 20),
 
-                if (data != null) Text(data!.current.temp.toString()),
+                if (data != null) Text(data!.current.tempC.toString()),
 
                 ElevatedButton(
                     onPressed: () {

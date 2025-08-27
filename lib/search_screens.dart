@@ -180,10 +180,10 @@ class SearchBar extends StatelessWidget {
                 updateRec: updateRec, updateLocation: updateLocation, favorites: favorites, updateFav: updateFav,
                 isTabletMode: false),
 
-              transitionDuration: const Duration(milliseconds: 350),
-              reverseTransitionDuration: const Duration(milliseconds: 350),
+              transitionDuration: const Duration(milliseconds: 250),
+              reverseTransitionDuration: const Duration(milliseconds: 250),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                const begin = Offset(0.0, 0.05);
+                const begin = Offset(0.0, 0.1);
                 const end = Offset.zero;
                 const curve = Curves.easeOutCubic;
 

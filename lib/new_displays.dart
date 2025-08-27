@@ -29,6 +29,7 @@ import 'alerts_page.dart';
 import 'aqi_page.dart';
 import 'decoders/decode_OM.dart';
 import '../l10n/app_localizations.dart';
+import 'decoders/weather_data.dart';
 
 class WavePainter extends CustomPainter {
   final double waveValue;
@@ -185,7 +186,7 @@ class _ClockUpdaterState extends State<ClockUpdater> {
 }
 
 class NewSunriseSunset extends StatelessWidget {
-  final data;
+  final WeatherData data;
   final width;
 
   @override
@@ -195,17 +196,13 @@ class NewSunriseSunset extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final List<String> absoluteLocalTime = data.localtime.split(':');
-
     final currentTime = DateTime.now();
 
-    final localtimeOld = currentTime.copyWith(
-        hour: int.parse(absoluteLocalTime[0]),
-        minute: int.parse(absoluteLocalTime[1]));
+    final localtimeOld = data.localTime;
 
     int hourDiff = localtimeOld.hour - currentTime.hour;
 
-    final double targetProgress = data.sunstatus.sunstatus;
+    final double targetProgress = data.sunStatus.sunstatus;
 
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0.0, end: targetProgress),
@@ -245,10 +242,10 @@ class NewSunriseSunset extends StatelessWidget {
                         size: 14,
                       ),
                     ),
-                    Text(convertTime(data.sunstatus.sunrise, context),
+                    Text(convertTime(data.sunStatus.sunrise, context),
                       style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.tertiary),),
                     const Spacer(),
-                    Text(convertTime(data.sunstatus.sunset, context),
+                    Text(convertTime(data.sunStatus.sunset, context),
                       style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.secondary),),
                     Padding(
                       padding: const EdgeInsets.only(left: 4, top: 1),

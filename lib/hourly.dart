@@ -31,7 +31,7 @@ import 'ui_helper.dart';
 import 'package:provider/provider.dart';
 
 class NewHourly extends StatefulWidget {
-  final data;
+  final WeatherData data;
   final hours;
   final elevated;
 
@@ -100,7 +100,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
   }
 }
 
-Widget hourBoxes(hours, data, _value, elevated, context) {
+Widget hourBoxes(hours, WeatherData data, _value, elevated, context) {
 
   return AnimationLimiter(
     child: ListView.builder(
@@ -201,7 +201,7 @@ Widget dividerWidget(String name, data, context) {
 }
 
 class HourlySum extends StatelessWidget {
-  final hour;
+  final WeatherHour hour;
   final WeatherData data;
 
   const HourlySum({super.key, required this.hour, required this.data});
@@ -216,7 +216,7 @@ class HourlySum extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.only(left: 2),
             child: Text(
-              "${unitConversion(hour.temp, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
+              "${unitConversion(hour.tempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 18,
@@ -226,7 +226,7 @@ class HourlySum extends StatelessWidget {
         ),
 
         SvgPicture.asset(
-          weatherIconPathMap[hour.text] ?? "assets/weather_icons/clear_sky.svg",
+          weatherIconPathMap[hour.condition] ?? "assets/weather_icons/clear_sky.svg",
           colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
           width: 38,
           height: 38,
@@ -239,7 +239,7 @@ class HourlySum extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 1),
               child: Icon(Icons.umbrella, size: 14, color: Theme.of(context).colorScheme.tertiary),
             ),
-            Text("${hour.precip_prob}%",
+            Text("${hour.precipProb}%",
               style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 13, fontWeight: FontWeight.w600),)
           ],
         ),
@@ -253,7 +253,7 @@ class HourlySum extends StatelessWidget {
 
 
 class HourlyPrecip extends StatelessWidget {
-  final hour;
+  final WeatherHour hour;
   final WeatherData data;
 
   const HourlyPrecip({super.key, required this.hour, required this.data});
@@ -269,7 +269,7 @@ class HourlyPrecip extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('${unitConversion(hour.precip, precipUnit)}',
+            Text('${unitConversion(hour.precipMm, precipUnit)}',
               style: TextStyle(color: Theme.of(context).colorScheme.primary,
                   fontSize: 18, fontWeight: FontWeight.w600, height: 1.1),),
             Text(precipUnit,
@@ -285,7 +285,7 @@ class HourlyPrecip extends StatelessWidget {
               //this seems to be falsely depreciated, wrapping it in the CircularProgressIndicatorTheme
               //as instructed also trows the same exception
               year2023: false,
-              value: hour.precip_prob / 100,
+              value: hour.precipProb / 100,
               strokeWidth: 3.5,
               backgroundColor: Theme.of(context).colorScheme.outlineVariant,
               color: Theme.of(context).colorScheme.secondary,
@@ -300,7 +300,7 @@ class HourlyPrecip extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 1),
               child: Icon(Icons.umbrella, size: 14, color: Theme.of(context).colorScheme.tertiary),
             ),
-            Text("${hour.precip_prob}%",
+            Text("${hour.precipProb}%",
               style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 13, fontWeight: FontWeight.w600),)
           ],
         ),
@@ -314,7 +314,7 @@ class HourlyPrecip extends StatelessWidget {
 
 
 class HourlyWind extends StatelessWidget {
-  final hour;
+  final WeatherHour hour;
   final WeatherData data;
 
   const HourlyWind({super.key, required this.hour, required this.data});
@@ -333,7 +333,7 @@ class HourlyWind extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('${unitConversion(hour.wind, windUnit, decimals: 1)}',
+            Text('${unitConversion(hour.windKph, windUnit, decimals: 1)}',
               style: TextStyle(color: Theme.of(context).colorScheme.primary,
                   fontSize: 18, fontWeight: FontWeight.w600, height: 1.1),),
             Text(windUnit, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 10,
@@ -342,7 +342,7 @@ class HourlyWind extends StatelessWidget {
         ),
 
         Transform.rotate(
-            angle: (hour.wind_dir + 180) * pi / 180,
+            angle: (hour.windDirA + 180) * pi / 180,
             child: Icon(Icons.navigation_outlined, color: Theme.of(context).colorScheme.onSurface, size: 19,)
         ),
 
@@ -353,7 +353,7 @@ class HourlyWind extends StatelessWidget {
             Icon(Icons.trending_up, size: 13, color: Theme.of(context).colorScheme.tertiary),
             Padding(
                 padding: const EdgeInsets.only(left: 2),
-                child: Text("${unitConversion(hour.wind_gusts, windUnit, decimals: 0)}",
+                child: Text("${unitConversion(hour.windGustKph, windUnit, decimals: 0)}",
                   style: TextStyle(color: Theme.of(context).colorScheme.tertiary,
                       fontSize: 14, fontWeight: FontWeight.w600, height: 1.2),)
             ),

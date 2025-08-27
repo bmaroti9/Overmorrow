@@ -172,10 +172,10 @@ class NewMain extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Spacer(),
-                    SmoothTempTransition(target: unitConversion(data.current.temp,
+                    SmoothTempTransition(target: unitConversion(data.current.tempC,
                         context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0),
                     Text(
-                      data.current.text,
+                      data.current.condition,
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.surface,
                           fontSize: 33, height: 1.05

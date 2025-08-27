@@ -18,8 +18,152 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'package:overmorrow/decoders/decode_OM.dart';
+import 'package:overmorrow/decoders/decode_RV.dart';
 import 'package:overmorrow/decoders/decode_mn.dart';
 import 'decode_wapi.dart';
+
+class WeatherCurrent {
+  final String condition;
+  final double tempC;
+  final int humidity;
+  final double feelsLikeC;
+  final int uv;
+  final double precipMm;
+
+  final double windKph;
+  final int windDirA;
+
+  WeatherCurrent({
+    required this.condition,
+    required this.tempC,
+    required this.humidity,
+    required this.feelsLikeC,
+    required this.uv,
+    required this.precipMm,
+    required this.windKph,
+    required this.windDirA,
+  });
+
+}
+
+class WeatherDay {
+  final String condition;
+
+  final DateTime date;
+
+  final double minTempC;
+  final double maxTempC;
+
+  final List<WeatherHour> hourly;
+
+  final int precipProb;
+  final double totalPrecipMm;
+
+  final double windKph;
+  final int windDirA;
+
+  final int uv;
+
+  WeatherDay ({
+    required this.condition,
+    required this.date,
+    required this.minTempC,
+    required this.maxTempC,
+    required this.hourly,
+    required this.precipProb,
+    required this.totalPrecipMm,
+    required this.windKph,
+    required this.windDirA,
+    required this.uv,
+  });
+}
+
+class WeatherHour {
+  final double tempC;
+
+  final DateTime time;
+
+  final String condition;
+  final double precipMm;
+  final int precipProb;
+  final double windKph;
+  final int windDirA;
+  final double windGustKph;
+  final int uv;
+
+  WeatherHour({
+    required this.tempC,
+    required this.time,
+    required this.condition,
+    required this.precipMm,
+    required this.precipProb,
+    required this.windKph,
+    required this.windDirA,
+    required this.windGustKph,
+    required this.uv,
+  });
+}
+
+class WeatherSunStatus {
+  final DateTime sunrise;
+  final DateTime sunset;
+  final double sunstatus;
+
+  WeatherSunStatus({
+    required this.sunrise,
+    required this.sunset,
+    required this.sunstatus,
+  });
+}
+
+class WeatherAlert {
+  final String headline;
+  final String start;
+  final String end;
+  final String desc;
+  final String event;
+  final String urgency;
+  final String severity;
+  final String certainty;
+  final String areas;
+
+  const WeatherAlert({
+    required this.headline,
+    required this.start,
+    required this.end,
+    required this.desc,
+    required this.event,
+    required this.urgency,
+    required this.severity,
+    required this.certainty,
+    required this.areas,
+  });
+}
+
+class WeatherRain15Minutes {
+  final String text;
+  final int timeTo;
+  final double precipSumMm;
+  final List<double> precipListMm;
+
+  WeatherRain15Minutes({
+    required this.text,
+    required this.timeTo,
+    required this.precipSumMm,
+    required this.precipListMm,
+  });
+}
+
+class WeatherAqi {
+  //this used to be bigger but i've moved stuff out and only the index remains
+  //still gonna keep it a class in case i want to add more stuff in the future
+
+  final int aqiIndex;
+
+  WeatherAqi({
+    required this.aqiIndex
+  });
+}
 
 class WeatherData {
 
@@ -29,40 +173,43 @@ class WeatherData {
 
   final String provider;
 
-  final updatedTime;
-  final fetch_datetime;
-  final bool isonline;
+  final DateTime updatedTime;
+  final DateTime fetchDatetime;
+  final DateTime localTime;
 
-  final localtime;
+  final bool isOnline;
 
-  final days;
-  final hourly72;
-  final current;
-  final aqi;
-  final sunstatus;
-  final radar;
-  final minutely_15_precip;
-  final alerts;
+  final List<WeatherDay> days;
+  final List<dynamic> hourly72;
+  final WeatherCurrent current;
+  final WeatherAqi aqi;
+  final WeatherSunStatus sunStatus;
+  final WeatherRain15Minutes minutely15Precip;
+  final List<WeatherAlert> alerts;
+
+  final RainviewerRadar radar;
 
   final List<double> dailyMinMaxTemp;
 
   WeatherData({
     required this.place,
-    required this.provider,
     required this.lat,
     required this.lng,
-    required this.sunstatus,
+
+    required this.provider,
+
+    required this.sunStatus,
     required this.aqi,
     required this.radar,
     required this.days,
     required this.hourly72,
     required this.current,
-    required this.fetch_datetime,
-    required this.isonline,
+    required this.fetchDatetime,
+    required this.isOnline,
     required this.updatedTime,
-    required this.localtime,
+    required this.localTime,
 
-    required this.minutely_15_precip,
+    required this.minutely15Precip,
     required this.alerts,
 
     required this.dailyMinMaxTemp
@@ -74,7 +221,7 @@ class WeatherData {
     double lat = double.parse(split[0]);
     double lng = double.parse(split[1]);
 
-    return OMGetWeatherData(lat, lng, placeName);
+    return oMGetWeatherData(lat, lng, placeName);
 
     /*
 

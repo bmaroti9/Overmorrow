@@ -132,7 +132,7 @@ class Circles extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DescriptionCircle(
-                text: '${unitConversion(data.current.feels_like,
+                text: '${unitConversion(data.current.feelsLikeC,
                     context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°',
                 undercaption: AppLocalizations.of(context)!.feelsLike,
                 extra: '',
@@ -145,17 +145,17 @@ class Circles extends StatelessWidget {
                 dir: -1,
               ),
               DescriptionCircle(
-                text: '${data.current.precip}',
+                text: '${data.current.precipMm}',
                 undercaption: AppLocalizations.of(context)!.precipCapital,
                 extra: context.select((SettingsProvider p) => p.getPrecipUnit),
                 dir: -1,
               ),
               DescriptionCircle(
-                text: '${unitConversion(data.current.wind,
+                text: '${unitConversion(data.current.windKph,
                     context.select((SettingsProvider p) => p.getWindUnit), decimals: 0)}',
                 undercaption: AppLocalizations.of(context)!.windCapital,
                 extra: context.select((SettingsProvider p) => p.getWindUnit),
-                dir: data.current.wind_dir + 180,
+                dir: data.current.windDirA + 180,
               ),
             ]
         )
