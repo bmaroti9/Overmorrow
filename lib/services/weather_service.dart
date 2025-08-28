@@ -22,7 +22,7 @@ import 'package:overmorrow/services/preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../weather_refact.dart' as weather_refactor;
+import '../weather_refact.dart';
 
 String convertTime(DateTime time, BuildContext context) {
   if (context.select((SettingsProvider p) => p.getTimeMode) == "12 hour") {
@@ -38,6 +38,10 @@ String convertToShortTime(DateTime time, BuildContext context) {
   return DateFormat('h:mm').format(time);
 }
 
+String translateCondition(String condition, localizations) {
+  return conditionTranslation(condition, localizations) ?? "translateErr";
+}
+
 String getDateStringFromLocalTime(DateTime now) {
   final List<String> weekNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   final List<String> monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -45,7 +49,7 @@ String getDateStringFromLocalTime(DateTime now) {
 }
 
 num unitConversion(double value, String unit, {decimals = 2}) {
-  List<double> p = weather_refactor.conversionTable[unit] ?? [0, 0];
+  List<double> p = conversionTable[unit] ?? [0, 0];
   double a = p[0] + value * p[1];
   if (decimals == 0) {
     return a.round();

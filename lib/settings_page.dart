@@ -203,7 +203,7 @@ class SettingsEntry extends StatelessWidget {
 
                         Padding(
                           padding: const EdgeInsets.only(bottom: 10, top: 10, left: 0),
-                          child: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 22),),
+                          child: Text(text, style: const TextStyle(fontSize: 22),),
                         ),
 
                         Column(
@@ -227,7 +227,7 @@ class SettingsEntry extends StatelessWidget {
                                       Navigator.pop(context, value);
                                     },
                                   ),
-                                  Text(options[index], style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18),)
+                                  Text(options[index], style: const TextStyle(fontSize: 18),)
                                 ],
                               ),
                             );
@@ -252,8 +252,7 @@ class SettingsEntry extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onSurface,
-                      fontSize: 21, height: 1.2),),
+                  Text(text, style: const TextStyle(fontSize: 21, height: 1.2),),
                   Text(selected, style: TextStyle(color: Theme.of(context).colorScheme.outline,
                       fontSize: 15, height: 1.2),)
                 ],
@@ -297,7 +296,7 @@ class _SettingsPageState extends State<SettingsPage> {
             pinned: false,
           ),
 
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: NewSettings(),
           ),
 

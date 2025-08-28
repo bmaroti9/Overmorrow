@@ -150,7 +150,7 @@ class SearchBar extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SettingsPage(),
+                          builder: (context) => const SettingsPage(),
                         ),
                       );/*.then((value) {
                         Navigator.of(context).pushReplacement(
@@ -728,8 +728,8 @@ Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> 
                                       child: Column(
                                         crossAxisAlignment : CrossAxisAlignment.start,
                                         children: [
-                                          Text(name, style: TextStyle(
-                                              color: Theme.of(context).colorScheme.onSurface, fontSize: 19, height: 1.25),),
+                                          Text(name, style: const TextStyle(
+                                              fontSize: 19, height: 1.25),),
                                           Text("$region, $country", style: TextStyle(
                                               color: Theme.of(context).colorScheme.outline, fontSize: 14, height: 1.25))
                                         ],
@@ -904,8 +904,8 @@ Widget buildFavorites(List<String> favorites, updateLocation, context, isTabletM
                           child: Column(
                             crossAxisAlignment : CrossAxisAlignment.start,
                             children: [
-                              Text(name, style: TextStyle(
-                                  color: Theme.of(context).colorScheme.onSurface, fontSize: 19, height: 1.25),),
+                              Text(name, style: const TextStyle(
+                                  fontSize: 19, height: 1.25),),
                               Text("$region, $country", style: TextStyle(
                                   color: Theme.of(context).colorScheme.outline, fontSize: 14, height: 1.25))
                             ],
@@ -975,8 +975,8 @@ Widget reorderableItem(List<dynamic> items, index, onFavChanged, isTabletMode, c
               child: Column(
                 crossAxisAlignment : CrossAxisAlignment.start,
                 children: [
-                  Text(name, style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface, fontSize: 19, height: 1.25),),
+                  Text(name, style: const TextStyle(
+                      fontSize: 19, height: 1.25),),
                   Text("$region, $country", style: TextStyle(
                       color: Theme.of(context).colorScheme.outline, fontSize: 14, height: 1.25))
                 ],

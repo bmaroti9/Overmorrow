@@ -83,8 +83,7 @@ class MainSettingEntry extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: TextStyle(color: Theme.of(context).colorScheme.onSurface,
-                          fontSize: 21, height: 1.2),),
+                    Text(title, style: const TextStyle(fontSize: 21, height: 1.2),),
                     Text(desc, style: TextStyle(color: Theme.of(context).colorScheme.outline,
                         fontSize: 15, height: 1.2),)
                   ],
@@ -129,7 +128,8 @@ class NewSettings extends StatelessWidget {
             MainSettingEntry(
               title: AppLocalizations.of(context)!.language,
               desc: AppLocalizations.of(context)!.languageSettingDesc,
-              icon: Icons.language
+              icon: Icons.language,
+              pushTo: const LanguagePage(),
             ),
             MainSettingEntry(
               title: AppLocalizations.of(context)!.units,
@@ -174,7 +174,7 @@ class AppearancePage extends StatelessWidget {
                   Navigator.pop(context);
                 }),
             title: Text(AppLocalizations.of(context)!.appearance,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 30),),
+              style: const TextStyle(fontSize: 30),),
             backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
@@ -226,10 +226,9 @@ class AppearancePage extends StatelessWidget {
 
                        */
 
-                      Padding(
-                        padding: const EdgeInsets.only(left: 1, bottom: 14, top: 30),
-                        child: Text("app theme", style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface, fontSize: 17),)
+                      const Padding(
+                        padding: EdgeInsets.only(left: 1, bottom: 14, top: 30),
+                        child: Text("app theme", style: TextStyle(fontSize: 17),)
                       ),
 
                       SegmentedButton(
@@ -238,21 +237,21 @@ class AppearancePage extends StatelessWidget {
                           HapticFeedback.mediumImpact();
                           context.read<ThemeProvider>().setBrightness(newSelection.first);
                         },
-                        segments: [
+                        segments: const [
                           ButtonSegment(
-                            icon: const Icon(Icons.light_mode_outlined),
+                            icon: Icon(Icons.light_mode_outlined),
                             value: "light",
-                            label: Text("light", style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18),),
+                            label: Text("light", style: TextStyle(fontSize: 18),),
                           ),
                           ButtonSegment(
-                            icon: const Icon(Icons.dark_mode_outlined),
+                            icon: Icon(Icons.dark_mode_outlined),
                             value: "dark",
-                            label: Text("dark", style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18),),
+                            label: Text("dark", style: TextStyle(fontSize: 18),),
                           ),
                           ButtonSegment(
-                            icon: const Icon(Icons.brightness_6_outlined),
+                            icon: Icon(Icons.brightness_6_outlined),
                             value: "auto",
-                            label: Text("auto", style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18),),
+                            label: Text("auto", style: TextStyle(fontSize: 18),),
                           ),
                         ],
                       ),
@@ -336,14 +335,14 @@ class UnitsPage extends StatelessWidget {
                   Navigator.pop(context);
                 }),
             title: Text(AppLocalizations.of(context)!.units,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 30),),
+              style: const TextStyle(fontSize: 30),),
             backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
 
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 0, left: 30),
+              padding: const EdgeInsets.only(left: 30),
               child: AnimationLimiter(
                 child: Column(
                   children: AnimationConfiguration.toStaggeredList(
@@ -410,19 +409,19 @@ class GeneralSettingsPage extends StatelessWidget {
           SliverAppBar.large(
             leading:
             IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
-                onPressed: () {
-                  HapticFeedback.selectionClick();
-                  Navigator.pop(context);
-                }),
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                Navigator.pop(context);
+              }),
             title: Text(AppLocalizations.of(context)!.general,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 30),),
+              style: const TextStyle(fontSize: 30),),
             backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
 
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 30, bottom: 60, left: 30),
+              padding: const EdgeInsets.only(left: 30),
               child: AnimationLimiter(
                 child: Column(
                   children: AnimationConfiguration.toStaggeredList(
@@ -463,104 +462,34 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 }
 
-class LangaugePage extends StatefulWidget {
-  final settings;
-  final image;
-  final palette;
-  final updateMainPage;
-
-  const LangaugePage({Key? key, required this.palette, required this.settings,
-    required this.image, required this.updateMainPage})
-      : super(key: key);
-
-  @override
-  _LangaugePageState createState() =>
-      _LangaugePageState(image: image, settings: settings, palette: palette,
-          updateMainPage: updateMainPage);
-}
-
-class _LangaugePageState extends State<LangaugePage> {
-
-  final image;
-  final settings;
-  final ColorScheme palette;
-  final updateMainPage;
-
-  _LangaugePageState({required this.image, required this.settings, required this.palette,
-    required this.updateMainPage});
-
-  String _locale = 'English';
-
-  @override
-  void initState() {
-    super.initState();
-    _locale = settings["Language"];
-  }
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
+class LanguagePage extends StatelessWidget {
+  const LanguagePage({super.key});
 
   @override
   Widget build(BuildContext context) {
 
-    String selected = settings["Language"] ?? "English";
+    String selectedLocale = context.select((SettingsProvider p) => p.getLocaleName);
+
     List<String> options = settingSwitches["Language"]!;
-
-    void onTap(value) {
-      setState(() {
-        HapticFeedback.mediumImpact();
-        if (value != null) {
-          settings["Language"] = value;
-          updateMainPage("Language", value);
-          _locale = value;
-        }
-      });
-    }
-
-    return Localizations.override(
-      context: context,
-      locale: languageNameToLocale[_locale] ?? const Locale('en'),
-      child: TranslationSelection(settings: settings, goBack: goBack, onTap: onTap, options: options, selected: selected,
-        palette: palette,)
-    );
-  }
-}
-
-class TranslationSelection extends StatelessWidget {
-  final goBack;
-  final onTap;
-  final settings;
-  final options;
-  final selected;
-  final ColorScheme palette;
-
-
-  const TranslationSelection({super.key, this.settings, this.goBack,
-    this.onTap, this.options, this.selected, required this.palette});
-
-  @override
-  Widget build(BuildContext context) {
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
-                  goBack();
+                  HapticFeedback.selectionClick();
+                  Navigator.pop(context);
                 }),
-            title: comfortatext(
-                AppLocalizations.of(context)!.language, 30, settings,
-                color: palette.primary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.language, style: const TextStyle(fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
+
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 30, left: 25, right: 25, bottom: 10),
+              padding: const EdgeInsets.only(left: 25, right: 25, top: 30),
               child: GestureDetector(
                 onTap: () {
                   HapticFeedback.selectionClick();
@@ -569,15 +498,16 @@ class TranslationSelection extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(70),
-                    color: palette.primaryFixedDim,
+                    color: Theme.of(context).colorScheme.primaryFixedDim,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(30.0),
                     child: Row(
                       children: [
-                        comfortatext(AppLocalizations.of(context)!.helpTranslate, 21, settings, color: palette.onPrimaryFixedVariant),
+                        Text(AppLocalizations.of(context)!.helpTranslate,
+                          style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryFixedVariant, fontSize: 21)),
                         const Spacer(),
-                        Icon(Icons.arrow_forward, color: palette.onPrimaryFixedVariant, size: 22,)
+                        Icon(Icons.arrow_forward, color: Theme.of(context).colorScheme.onPrimaryFixedVariant, size: 22,)
                       ],
                     ),
                   ),
@@ -601,19 +531,21 @@ class TranslationSelection extends StatelessWidget {
                       child: FadeInAnimation(
                         child: ListTile(
                           onTap: () {
-                            onTap(options[index]);
+                            HapticFeedback.mediumImpact();
+                            context.read<SettingsProvider>().setLocale(options[index]);
                           },
                           title: Padding(
-                            padding: const EdgeInsets.only(top: 15, bottom: 15, left: 13),
-                            child: comfortatext(options[index], 20, settings, color: palette.onSurface),
+                            padding: const EdgeInsets.only(top: 12, bottom: 12, left: 13),
+                            child: Text(options[index], style: const TextStyle(fontSize: 20),)
                           ),
                           contentPadding: EdgeInsets.zero,
                           trailing: Radio<String>(
-                            fillColor: WidgetStateProperty.all(palette.primary),
+                            fillColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
                             value: options[index],
-                            groupValue: selected,
+                            groupValue: selectedLocale,
                             onChanged: (String? value) {
-                              onTap(value);
+                              HapticFeedback.mediumImpact();
+                              context.read<SettingsProvider>().setLocale(options[index]);
                             },
                           ),
                         ),

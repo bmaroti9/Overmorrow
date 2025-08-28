@@ -343,7 +343,7 @@ class HourlyWind extends StatelessWidget {
 
         Transform.rotate(
             angle: (hour.windDirA + 180) * pi / 180,
-            child: Icon(Icons.navigation_outlined, color: Theme.of(context).colorScheme.onSurface, size: 19,)
+            child: Icon(Icons.navigation_outlined, size: 19,)
         ),
 
         Row(

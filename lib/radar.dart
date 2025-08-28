@@ -109,7 +109,7 @@ class _RadarSmallState extends State<RadarSmall> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(AppLocalizations.of(context)!.radar,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 17),)
+              style: const TextStyle(fontSize: 17),)
           ),
         ),
         Padding(
@@ -138,7 +138,8 @@ class _RadarSmallState extends State<RadarSmall> {
                                 builder: (context) => RadarBig(data: widget.data, radarHapticsOn: widget.radarHapticsOn,)),
                           )
                         },
-                        initialCenter: LatLng(widget.data.lat, widget.data.lng),
+                        //i added the .13 to make the marker be more in the center
+                        initialCenter: LatLng(widget.data.lat + 0.13, widget.data.lng),
                         initialZoom: 6,
                         backgroundColor: mode == "dark" ? const Color(0xff262626) : const Color(0xffD4DADC),
                         keepAlive: true,
@@ -171,13 +172,10 @@ class _RadarSmallState extends State<RadarSmall> {
                           markers: [
                             Marker(
                               point: LatLng(widget.data.lat, widget.data.lng),
-                              width: 54,
-                              height: 54,
-                              child: Padding(
-                                //try to make the bottom of the pointer where the place actually is
-                                padding: const EdgeInsets.only(bottom: 14),
-                                child: Icon(Icons.place_sharp, color: Theme.of(context).colorScheme.inverseSurface, size: 38,),
-                              ),
+                              width: 36,
+                              height: 36,
+                              alignment: Alignment.topCenter,
+                              child: Icon(Icons.place_sharp, color: Theme.of(context).colorScheme.inverseSurface, size: 36,),
                             ),
                           ],
                         )
@@ -423,13 +421,10 @@ class _RadarBigState extends State<RadarBig> {
                 markers: [
                   Marker(
                     point: LatLng(widget.data.lat, widget.data.lng),
-                    width: 62,
-                    height: 62,
-                    child: Padding(
-                      //try to make the bottom of the pointer where the place actually is
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: Icon(Icons.place_sharp, color: Theme.of(context).colorScheme.inverseSurface, size: 44,),
-                    ),
+                    alignment: Alignment.topCenter,
+                    width: 44,
+                    height: 44,
+                    child: Icon(Icons.place_sharp, color: Theme.of(context).colorScheme.inverseSurface, size: 44,),
                   ),
                 ],
               )
@@ -448,11 +443,11 @@ class _RadarBigState extends State<RadarBig> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(13),
+                    padding: const EdgeInsets.only(top: 12, bottom: 12, left: 15, right: 15),
                     margin: const EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.inverseSurface,
-                        borderRadius: BorderRadius.circular(20)
+                        borderRadius: BorderRadius.circular(30)
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,

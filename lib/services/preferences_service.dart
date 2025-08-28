@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
@@ -164,6 +165,9 @@ class SettingsProvider with ChangeNotifier {
   String _timeMode = "12 hour";
   bool _radarHapticsOn = true;
 
+  Locale _locale = const Locale("en");
+  String _localeName = "English";
+
   String _location = "New York";
   String _latLon = "40.7128, -74.0060";
 
@@ -174,11 +178,15 @@ class SettingsProvider with ChangeNotifier {
   String get getTimeMode => _timeMode;
   bool get getRadarHapticsOn => _radarHapticsOn;
 
+  Locale get getLocale => _locale;
+  String get getLocaleName => _localeName;
+
   String get getLocation => _location;
   String get getLatLon => _latLon;
 
   SettingsProvider() {
     _load();
+    _loadLocale();
 
     notifyListeners();
   }
@@ -193,6 +201,11 @@ class SettingsProvider with ChangeNotifier {
 
     _location = PreferenceUtils.getString("LastPlaceN", "New York");
     _latLon = PreferenceUtils.getString("LastCord", "40.7128, -74.0060");
+  }
+
+  void _loadLocale() {
+    _localeName = PreferenceUtils.getString("Language", "English");
+    _locale = languageNameToLocale[_localeName] ?? const Locale("en");
   }
 
   void setLocationAndLatLon(String location, String latLon) {
@@ -220,6 +233,13 @@ class SettingsProvider with ChangeNotifier {
   void setWindUnit(String to) {
     PreferenceUtils.setString("Wind", to);
     _windUnit = to;
+    notifyListeners();
+  }
+
+  void setLocale(String to) {
+    PreferenceUtils.setString("Language", to);
+    _localeName = to;
+    _locale = languageNameToLocale[to] ?? const Locale("en");
     notifyListeners();
   }
 

@@ -177,7 +177,7 @@ class _ClockUpdaterState extends State<ClockUpdater> {
                   widget.width - 53 - textWidth)),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(write, style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.onSurface)),
+            child: Text(write, style: TextStyle(fontSize: 15, )),
           ),
         );
       },

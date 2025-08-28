@@ -31,6 +31,7 @@ import 'package:provider/provider.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'decoders/weather_data.dart';
 import 'hourly.dart';
+import 'l10n/app_localizations.dart';
 import 'main_ui.dart';
 import 'new_displays.dart';
 import 'ui_helper.dart';
@@ -175,7 +176,7 @@ class NewMain extends StatelessWidget {
                     SmoothTempTransition(target: unitConversion(data.current.tempC,
                         context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0),
                     Text(
-                      data.current.condition,
+                      translateCondition(data.current.condition, AppLocalizations.of(context)!),
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.surface,
                           fontSize: 33, height: 1.05

@@ -128,7 +128,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       themeMode: context.watch<ThemeProvider>().getThemeMode,
 
-      locale: const Locale("en"),
+      locale: context.select((SettingsProvider p) => p.getLocale),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

@@ -87,7 +87,7 @@ class _AboutPageState extends State<AboutPage> {
                   goBack();
                 }),
             title: Text(AppLocalizations.of(context)!.about,
-                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 30),),
+                  style: const TextStyle(fontSize: 30),),
             backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
@@ -175,10 +175,10 @@ class _AboutPageState extends State<AboutPage> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.email_outlined, color: Theme.of(context).colorScheme.onSurface, size: 20),
+                                  const Icon(Icons.email_outlined, size: 20),
                                   const SizedBox(width: 6,),
                                   Text(AppLocalizations.of(context)!.emailLowercase,
-                                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18))
+                                      style: const TextStyle(fontSize: 18))
                                 ],
                               ),
                             ),
@@ -198,10 +198,10 @@ class _AboutPageState extends State<AboutPage> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.bug_report_outlined, color: Theme.of(context).colorScheme.onSurface, size: 21,),
+                                  const Icon(Icons.bug_report_outlined, size: 21,),
                                   const SizedBox(width: 6,),
                                   Text(AppLocalizations.of(context)!.reportAnIssueLowercase,
-                                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18))
+                                      style: const TextStyle(fontSize: 18))
                                   ]
                               ),
                             ),
@@ -221,10 +221,10 @@ class _AboutPageState extends State<AboutPage> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.volunteer_activism_outlined, color: Theme.of(context).colorScheme.onSurface, size: 21,),
+                                  const Icon(Icons.volunteer_activism_outlined, size: 21,),
                                   const SizedBox(width: 6,),
                                   Text(AppLocalizations.of(context)!.donateLowercase,
-                                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18))
+                                      style: const TextStyle(fontSize: 18))
                                 ],
                               ),
                             ),
@@ -243,10 +243,10 @@ class _AboutPageState extends State<AboutPage> {
                         padding: const EdgeInsets.all(24),
                         child: Row(
                           children: [
-                            Icon(Icons.verified_outlined, color: Theme.of(context).colorScheme.onSurface),
+                            const Icon(Icons.verified_outlined, ),
                             const SizedBox(width: 10,),
                             Text(AppLocalizations.of(context)!.versionUppercase,
-                                style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18)),
+                                style: const TextStyle(fontSize: 18)),
                             const Spacer(),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -264,7 +264,7 @@ class _AboutPageState extends State<AboutPage> {
                         onTap: () {
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ServicesPage())
+                              MaterialPageRoute(builder: (context) => const ServicesPage())
                           );
                         },
                         behavior: HitTestBehavior.translucent,
@@ -277,12 +277,12 @@ class _AboutPageState extends State<AboutPage> {
                           padding: const EdgeInsets.all(24),
                           child: Row(
                             children: [
-                              Icon(Icons.handyman_outlined, color: Theme.of(context).colorScheme.onSurface),
+                              const Icon(Icons.handyman_outlined, ),
                               const SizedBox(width: 10,),
                               Text(AppLocalizations.of(context)!.apiAndServices,
-                                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18)),
+                                  style: const TextStyle(fontSize: 18)),
                               const Spacer(),
-                              Icon(Icons.keyboard_arrow_right_rounded, color: Theme.of(context).colorScheme.onSurface),
+                              const Icon(Icons.keyboard_arrow_right_rounded, ),
                             ],
                           ),
                         ),
@@ -297,10 +297,10 @@ class _AboutPageState extends State<AboutPage> {
                         padding: const EdgeInsets.all(24),
                         child: Row(
                           children: [
-                            Icon(Icons.balance, color: Theme.of(context).colorScheme.onSurface),
+                            const Icon(Icons.balance),
                             const SizedBox(width: 10,),
                             Text(AppLocalizations.of(context)!.licenseUppercase,
-                                style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18)),
+                                style: const TextStyle(fontSize: 18)),
                             const Spacer(),
                             Text("GPL-3.0 license",
                                 style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 18)),
@@ -323,7 +323,7 @@ class _AboutPageState extends State<AboutPage> {
                                           Icon(Icons.bug_report_outlined, color: Theme.of(context).colorScheme.tertiary),
                                           const SizedBox(height: 40,),
                                           Text(widgetBackgroundState,
-                                              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18)),
+                                              style: const TextStyle(fontSize: 18)),
                                         ],
                                       );
                                     },
@@ -339,12 +339,12 @@ class _AboutPageState extends State<AboutPage> {
                           ),
                           margin: const EdgeInsets.only(top: 40, bottom: 100),
                           padding: const EdgeInsets.all(14),
-                          child: Row(
+                          child: const Row(
                             children: [
                               Text("worker logs",
-                                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18)),
-                              const Spacer(),
-                              Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface, size: 18,),
+                                  style: TextStyle(fontSize: 18)),
+                              Spacer(),
+                              Icon(Icons.open_in_new, size: 18,),
                             ],
                           ),
                         ),
@@ -380,7 +380,7 @@ class ServicesPage extends StatelessWidget {
                   Navigator.pop(context);
                 }),
             title: Text(AppLocalizations.of(context)!.apiAndServices,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 30),),
+              style: const TextStyle(fontSize: 30),),
             backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
@@ -402,7 +402,7 @@ class ServicesPage extends StatelessWidget {
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
                        Text(AppLocalizations.of(context)!.weatherDataLowercase,
-                         style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 20),),
+                         style: const TextStyle(fontSize: 20),),
                        const SizedBox(height: 20,),
                        GestureDetector(
                          onTap: () {
@@ -448,7 +448,7 @@ class ServicesPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(AppLocalizations.of(context)!.radar,
-                            style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 20,),),
+                            style: const TextStyle(fontSize: 20,),),
                           const SizedBox(height: 20,),
                           GestureDetector(
                             onTap: () {
@@ -484,7 +484,7 @@ class ServicesPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(AppLocalizations.of(context)!.imagesLowercase,
-                          style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 20),),
+                          style: const TextStyle(fontSize: 20),),
                         const SizedBox(height: 20,),
                         GestureDetector(
                           onTap: () {
