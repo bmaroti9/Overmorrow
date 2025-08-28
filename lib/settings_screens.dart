@@ -256,6 +256,16 @@ class AppearancePage extends StatelessWidget {
                         ],
                       ),
 
+                      const SizedBox(height: 30),
+
+                      SettingsEntry(
+                        icon: Icons.download_for_offline_outlined,
+                        text: AppLocalizations.of(context)!.imageSource,
+                        rawText: 'Image source',
+                        selected: context.select((SettingsProvider p) => p.getImageSource),
+                        update: context.read<SettingsProvider>().setImageSource,
+                      ),
+
                       const SizedBox(height: 20,),
 
                       //settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source', context),
@@ -498,16 +508,16 @@ class LanguagePage extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(70),
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: Theme.of(context).colorScheme.tertiaryContainer,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(30.0),
                     child: Row(
                       children: [
                         Text(AppLocalizations.of(context)!.helpTranslate,
-                          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 21)),
+                          style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 21)),
                         const Spacer(),
-                        Icon(Icons.arrow_forward, color: Theme.of(context).colorScheme.primary, size: 23,)
+                        Icon(Icons.arrow_forward, color: Theme.of(context).colorScheme.tertiary, size: 23,)
                       ],
                     ),
                   ),

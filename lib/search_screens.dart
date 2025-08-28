@@ -807,7 +807,7 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
     return GestureDetector(
       onTap: () {
         HapticFeedback.lightImpact();
-        updateLocation('40.7128, -74.0060', placeName); // this is new york for backup
+        updateLocation(placeLatLon, placeName);
         if (!isTabletMode) {
           Navigator.pop(context);
         }

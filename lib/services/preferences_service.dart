@@ -164,6 +164,8 @@ class SettingsProvider with ChangeNotifier {
   String _timeMode = "12 hour";
   bool _radarHapticsOn = true;
 
+  String _imageSource = "network";
+
   Locale _locale = const Locale("en");
   String _localeName = "English";
 
@@ -176,6 +178,8 @@ class SettingsProvider with ChangeNotifier {
 
   String get getTimeMode => _timeMode;
   bool get getRadarHapticsOn => _radarHapticsOn;
+
+  String get getImageSource => _imageSource;
 
   Locale get getLocale => _locale;
   String get getLocaleName => _localeName;
@@ -197,6 +201,8 @@ class SettingsProvider with ChangeNotifier {
 
     _timeMode = PreferenceUtils.getString("Time mode", "12 hour");
     _radarHapticsOn = PreferenceUtils.getBool("RadarHapticOn", true);
+
+    _imageSource = PreferenceUtils.getString("Image source", "network");
 
     _location = PreferenceUtils.getString("LastPlaceN", "New York");
     _latLon = PreferenceUtils.getString("LastCord", "40.7128, -74.0060");
@@ -232,6 +238,12 @@ class SettingsProvider with ChangeNotifier {
   void setWindUnit(String to) {
     PreferenceUtils.setString("Wind", to);
     _windUnit = to;
+    notifyListeners();
+  }
+
+  void setImageSource(String to) {
+    PreferenceUtils.setString("Image source", to);
+    _imageSource = to;
     notifyListeners();
   }
 

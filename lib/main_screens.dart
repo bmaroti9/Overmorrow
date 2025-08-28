@@ -163,6 +163,9 @@ class NewMain extends StatelessWidget {
           header:  FadingImageWidget(
             key: imageKey,
             updateColorPalette: updateColorPalette,
+            condition: data.current.condition,
+            loc: data.place,
+            imageSource: context.select((SettingsProvider p) => p.getImageSource),
           ),
           //header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),color: BLACK),
           overlay: Stack(

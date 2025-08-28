@@ -23,7 +23,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/decoders/weather_data.dart';
 import 'package:overmorrow/services/color_service.dart';
+import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/weather_refact.dart';
+import 'package:provider/provider.dart';
 
 import '../api_key.dart';
 import '../caching.dart';
@@ -109,9 +111,9 @@ class ImageService {
 
   }
 
-  static Future<ImageService> getImageService(settings, String condition, String loc) async {
+  static Future<ImageService> getImageService(String condition, String loc, String imageSource) async {
 
-    if (settings["Image source"] == "network") {
+    if (imageSource == "network") {
       try {
         //ImageService i = await getUnsplashImage(condition, loc);
         ImageService i = await getUnsplashCollectionImage(condition, loc);
@@ -162,11 +164,17 @@ class ParrallaxBackground extends StatelessWidget {
 }
 
 class FadingImageWidget extends StatefulWidget {
-  final updateColorPalette;
+  final Function updateColorPalette;
+  final String imageSource;
+  final String condition;
+  final String loc;
 
   const FadingImageWidget({
     super.key,
-    required this.updateColorPalette
+    required this.updateColorPalette,
+    required this.imageSource,
+    required this.condition,
+    required this.loc,
   });
 
   @override
@@ -176,9 +184,9 @@ class FadingImageWidget extends StatefulWidget {
 class FadingImageWidgetState extends State<FadingImageWidget> {
   Image? _currentImage;
 
-  Future<void> updateImage(String condition, String loc) async {
+  Future<void> updateImage() async {
 
-    ImageService imageService = await ImageService.getUnsplashCollectionImage(condition, loc);
+    ImageService imageService = await ImageService.getImageService(widget.condition, widget.loc, widget.imageSource);
 
     print("image fetched");
 
@@ -198,6 +206,14 @@ class FadingImageWidgetState extends State<FadingImageWidget> {
     });
 
     await widget.updateColorPalette(colorSchemeLight, colorSchemeDark);
+  }
+
+  @override
+  void didUpdateWidget(covariant FadingImageWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.imageSource != oldWidget.imageSource) {
+      updateImage();
+    }
   }
 
   @override

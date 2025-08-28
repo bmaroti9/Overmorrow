@@ -227,7 +227,7 @@ class MyHomePageState extends State<MyHomePage> {
     final FadingImageWidgetState? imageState = imageKey.currentState;
 
     if (imageState != null) {
-      await imageState.updateImage(data!.current.condition, data!.place);
+      await imageState.updateImage();
     }
 
     print(("SUCCESS", location, latLon, imageState));
