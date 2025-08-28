@@ -498,16 +498,16 @@ class LanguagePage extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(70),
-                    color: Theme.of(context).colorScheme.primaryFixedDim,
+                    color: Theme.of(context).colorScheme.primaryContainer,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(30.0),
                     child: Row(
                       children: [
                         Text(AppLocalizations.of(context)!.helpTranslate,
-                          style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryFixedVariant, fontSize: 21)),
+                          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 21)),
                         const Spacer(),
-                        Icon(Icons.arrow_forward, color: Theme.of(context).colorScheme.onPrimaryFixedVariant, size: 22,)
+                        Icon(Icons.arrow_forward, color: Theme.of(context).colorScheme.primary, size: 23,)
                       ],
                     ),
                   ),

@@ -20,7 +20,6 @@ import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
-
 Map<String, List<String>> settingSwitches = {
   'Language' : [
     'English', //English

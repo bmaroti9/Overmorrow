@@ -45,6 +45,7 @@ class RadarSmall extends StatefulWidget {
 }
 
 class _RadarSmallState extends State<RadarSmall> {
+
   double currentFrameIndex = 0;
   late Timer timer;
 
@@ -129,6 +130,7 @@ class _RadarSmallState extends State<RadarSmall> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(31),
                     child: (widget.data.isOnline) ? FlutterMap(
+                      key: ValueKey(widget.data.place),
                       options: MapOptions(
                         onTap: (tapPosition, point) =>
                         {

@@ -248,6 +248,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   String locationState = "unknown";
   String locationMessage = "unknown";
   String placeName = "-";
+  String placeLatLon = "0.0, 0.0";
   String country = "-";
   String region = "-";
 
@@ -337,6 +338,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
         placeName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? "";
         country = place.isoCountryCode ?? place.country ?? "";
         region = place.administrativeArea ?? place.subAdministrativeArea ?? "";
+        placeLatLon = "${position.latitude}, ${position.longitude}";
+
         locationState = "enabled";
       });
     } on Error {
@@ -578,7 +581,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                 child: SingleChildScrollView(
                   child: buildRecommend(text, favorites, recommend,
                   updateLocation, onFavChanged, isEditing, locationState, locationMessage, askGrantLocationPermission,
-                  placeName, country, region, isTabletMode),
+                  placeName, country, region, placeLatLon, isTabletMode),
                 ),
               ),
             ),
@@ -591,7 +594,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
 
 Widget buildRecommend(String text, ValueListenable<List<String>> favoritesListen,
     ValueListenable<List<String>> recommend, updateLocation, onFavChanged, isEditing, locationState, locationMessage,
-    askGrantLocationPermission, placeName, country, region, isTabletMode) {
+    askGrantLocationPermission, placeName, country, region, placeLatLon, isTabletMode) {
 
   return ValueListenableBuilder(
     valueListenable: favoritesListen,
@@ -625,7 +628,7 @@ Widget buildRecommend(String text, ValueListenable<List<String>> favoritesListen
                     ],
                   ),
                   CurrentLocationWidget(locationState, locationMessage, askGrantLocationPermission,
-                      placeName, country, region, updateLocation, context, isTabletMode),
+                      placeName, country, region, updateLocation, context, placeLatLon, isTabletMode),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 14),
                     child: Row(
@@ -770,7 +773,7 @@ Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> 
 }
 
 Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPermission,
-    String placeName, String country, String region, updateLocation, context, isTabletMode) {
+    String placeName, String country, String region, updateLocation, context, placeLatLon, isTabletMode) {
   if (locationState == "denied") {
     return GestureDetector(
       onTap: () {
@@ -804,7 +807,7 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
     return GestureDetector(
       onTap: () {
         HapticFeedback.lightImpact();
-        updateLocation('40.7128, -74.0060', 'CurrentLocation'); // this is new york for backup
+        updateLocation('40.7128, -74.0060', placeName); // this is new york for backup
         if (!isTabletMode) {
           Navigator.pop(context);
         }
