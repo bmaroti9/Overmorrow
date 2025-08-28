@@ -35,7 +35,7 @@ String convertToShortTime(DateTime time, BuildContext context) {
   if (context.select((SettingsProvider p) => p.getTimeMode) == "12 hour") {
     return DateFormat('ha').format(time).toLowerCase();
   }
-  return DateFormat('hh').format(time);
+  return DateFormat('h:mm').format(time);
 }
 
 String getDateStringFromLocalTime(DateTime now) {

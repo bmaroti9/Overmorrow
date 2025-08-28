@@ -139,7 +139,7 @@ class SearchBar extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 13),
-                    child: Icon(Icons.place_outlined, color: Theme.of(context).colorScheme.primary),
+                    child: Icon(Icons.place_outlined, color: Theme.of(context).colorScheme.primary, size: 25,),
                   ),
                   Expanded(child: Text(place, style: const TextStyle(fontSize: 23), maxLines: 1,)),
                   IconButton(

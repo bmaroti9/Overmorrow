@@ -222,4 +222,10 @@ class SettingsProvider with ChangeNotifier {
     _windUnit = to;
     notifyListeners();
   }
+
+  void setTimeMode(String to) {
+    PreferenceUtils.setString("Time mode", to);
+    _timeMode = to;
+    notifyListeners();
+  }
 }

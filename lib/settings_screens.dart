@@ -121,31 +121,32 @@ class NewSettings extends StatelessWidget {
               pushTo: const AppearancePage(),
             ),
             MainSettingEntry(
-                title: AppLocalizations.of(context)!.general,
-                desc: AppLocalizations.of(context)!.generalSettingDesc,
-                icon: Icons.tune
+              title: AppLocalizations.of(context)!.general,
+              desc: AppLocalizations.of(context)!.generalSettingDesc,
+              icon: Icons.tune,
+              pushTo: const GeneralSettingsPage(),
             ),
             MainSettingEntry(
-                title: AppLocalizations.of(context)!.language,
-                desc: AppLocalizations.of(context)!.languageSettingDesc,
-                icon: Icons.language
+              title: AppLocalizations.of(context)!.language,
+              desc: AppLocalizations.of(context)!.languageSettingDesc,
+              icon: Icons.language
             ),
             MainSettingEntry(
-                title: AppLocalizations.of(context)!.units,
-                desc: AppLocalizations.of(context)!.unitsSettingdesc,
-                icon: Icons.straighten,
-                pushTo: const UnitsPage(),
+              title: AppLocalizations.of(context)!.units,
+              desc: AppLocalizations.of(context)!.unitsSettingdesc,
+              icon: Icons.straighten,
+              pushTo: const UnitsPage(),
             ),
             MainSettingEntry(
-                title: AppLocalizations.of(context)!.layout,
-                desc: AppLocalizations.of(context)!.layoutSettingDesc,
-                icon: Icons.widgets_outlined
+              title: AppLocalizations.of(context)!.layout,
+              desc: AppLocalizations.of(context)!.layoutSettingDesc,
+              icon: Icons.widgets_outlined
             ),
             MainSettingEntry(
-                title: AppLocalizations.of(context)!.about,
-                desc: AppLocalizations.of(context)!.aboutSettingsDesc,
-                icon: Icons.info_outline,
-                pushTo: const AboutPage(),
+              title: AppLocalizations.of(context)!.about,
+              desc: AppLocalizations.of(context)!.aboutSettingsDesc,
+              icon: Icons.info_outline,
+              pushTo: const AboutPage(),
             ),
           ],
         ),
@@ -395,75 +396,30 @@ class UnitsPage extends StatelessWidget {
   }
 }
 
-
-class GeneralSettingsPage extends StatefulWidget {
-  final settings;
-  final image;
-  final palette;
-  final updateMainPage;
-  final localizations;
-
-  const GeneralSettingsPage({Key? key, required this.palette, required this.settings,
-    required this.image, required this.updateMainPage, required this.localizations})
-      : super(key: key);
-
-  @override
-  _GeneralSettingsPageState createState() =>
-      _GeneralSettingsPageState(image: image, settings: settings, palette: palette,
-          updateMainPage: updateMainPage, localizations: localizations);
-}
-
-class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
-
-  final image;
-  final settings;
-  final ColorScheme palette;
-  final updateMainPage;
-  final localizations;
-
-  _GeneralSettingsPageState({required this.image, required this.settings, required this.palette,
-    required this.updateMainPage, required this.localizations});
-
-  Map<String, String> copySettings = {};
-
-  @override
-  void initState() {
-    super.initState();
-
-    copySettings = settings;
-  }
-
-  void updatePage(String name, String to) {
-    setState(() {
-      updateMainPage(name, to);
-      copySettings[name] = to;
-    });
-  }
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
+class GeneralSettingsPage extends StatelessWidget {
+  const GeneralSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
 
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
+
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
-                  goBack();
+                  HapticFeedback.selectionClick();
+                  Navigator.pop(context);
                 }),
-            title: comfortatext(
-                localizations.general, 30, settings,
-                color: palette.primary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.general,
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
+
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 60, left: 30),
@@ -478,6 +434,15 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                       ),
                     ),
                     children: [
+
+                      SettingsEntry(
+                        icon: Icons.access_time_outlined,
+                        text: AppLocalizations.of(context)!.timeMode,
+                        rawText: 'Time mode',
+                        selected: context.select((SettingsProvider p) => p.getTimeMode),
+                        update: context.read<SettingsProvider>().setTimeMode,
+                      ),
+
                       /*
                       settingEntry(Icons.access_time_outlined, localizations.timeMode, copySettings, palette, updatePage, 'Time mode', context),
                       settingEntry(Icons.date_range, localizations.dateFormat, copySettings, palette, updatePage, 'Date format', context),
