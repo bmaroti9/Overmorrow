@@ -223,6 +223,7 @@ class SettingsEntry extends StatelessWidget {
                                     groupValue: selected,
                                     onChanged: (String? value) {
                                       HapticFeedback.lightImpact();
+                                      update(options[index]);
                                       Navigator.pop(context, value);
                                     },
                                   ),
