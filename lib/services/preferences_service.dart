@@ -103,11 +103,14 @@ class PreferenceUtils {
 
 class ThemeProvider with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
+  String _brightness = "auto";
   Color _themeSeedColor = Colors.blue;
   ColorScheme _colorSchemeLight = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.light);
   ColorScheme _colorSchemeDark = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark);
 
   ThemeMode get getThemeMode => _themeMode;
+  String get getBrightness => _brightness;
+
   Color get getThemeSeedColor => _themeSeedColor;
   ColorScheme get getColorSchemeLight => _colorSchemeLight;
   ColorScheme get getColorSchemeDark => _colorSchemeDark;
@@ -123,20 +126,20 @@ class ThemeProvider with ChangeNotifier {
   }
 
   void loadTheme() {
-    String brightness = PreferenceUtils.getString("Color mode", "light");
-    switch (brightness) {
+    _brightness = PreferenceUtils.getString("Color mode", "light");
+    switch (_brightness) {
       case "light": _themeMode = ThemeMode.light;
       case "dark": _themeMode = ThemeMode.dark;
       case "auto": _themeMode = ThemeMode.system;
     }
   }
 
-  void changeTheme(String brightness) {
+  void setBrightness(String brightness) {
     PreferenceUtils.setString("Color mode", brightness);
     switch (brightness) {
-      case "light": _themeMode = ThemeMode.light;
-      case "dark": _themeMode = ThemeMode.dark;
-      case "auto": _themeMode = ThemeMode.system;
+      case "light": _themeMode = ThemeMode.light; _brightness = brightness;
+      case "dark": _themeMode = ThemeMode.dark; _brightness = brightness;
+      case "auto": _themeMode = ThemeMode.system; _brightness = brightness;
     }
     notifyListeners();
   }

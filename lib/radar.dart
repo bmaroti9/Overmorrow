@@ -95,11 +95,11 @@ class _RadarSmallState extends State<RadarSmall> {
   @override
   Widget build(BuildContext context) {
 
-    ThemeMode mode = context.watch<ThemeProvider>().getThemeMode;
+    String mode = context.watch<ThemeProvider>().getBrightness;
 
-    if (mode == ThemeMode.system) {
+    if (mode == "auto") {
       var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      mode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
+      mode = brightness == Brightness.dark ? "dark" : "light";
     }
 
     return Column(
@@ -140,7 +140,7 @@ class _RadarSmallState extends State<RadarSmall> {
                         },
                         initialCenter: LatLng(widget.data.lat, widget.data.lng),
                         initialZoom: 6,
-                        backgroundColor: mode == ThemeMode.light ? const Color(0xff262626) : const Color(0xffD4DADC),
+                        backgroundColor: mode == "dark" ? const Color(0xff262626) : const Color(0xffD4DADC),
                         keepAlive: true,
                         maxZoom: 6,
                         minZoom: 6,
@@ -156,7 +156,7 @@ class _RadarSmallState extends State<RadarSmall> {
                       ),
                       children: [
                         TileLayer(
-                          urlTemplate: mode == ThemeMode.dark
+                          urlTemplate: mode == "dark"
                               ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                               : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
                         ),
@@ -380,11 +380,11 @@ class _RadarBigState extends State<RadarBig> {
 
     double topPad = MediaQuery.of(context).padding.top;
 
-    ThemeMode mode = context.watch<ThemeProvider>().getThemeMode;
+    String mode = context.watch<ThemeProvider>().getBrightness;
 
-    if (mode == ThemeMode.system) {
+    if (mode == "auto") {
       var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      mode = brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
+      mode = brightness == Brightness.dark ? "dark" : "light";
     }
 
     return Scaffold(
@@ -398,15 +398,15 @@ class _RadarBigState extends State<RadarBig> {
               minZoom: 2,
               maxZoom: 9,
 
-              backgroundColor: mode == "dark"? const Color(0xff262626) : const Color(0xffD4DADC),
+              backgroundColor: mode == "dark" ? const Color(0xff262626) : const Color(0xffD4DADC),
               interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate,),
             ),
             children: [
               Container(
-                color: mode == ThemeMode.dark ? const Color(0xff262626) : const Color(0xffD4DADC),
+                color: mode == "light" ? const Color(0xff262626) : const Color(0xffD4DADC),
               ),
               TileLayer(
-                urlTemplate: mode == ThemeMode.dark
+                urlTemplate: mode == "dark"
                     ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                     : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
               ),
@@ -415,7 +415,7 @@ class _RadarBigState extends State<RadarBig> {
                 tileDisplay: const TileDisplay.instantaneous(),
               ),
               TileLayer(
-                urlTemplate: mode == ThemeMode.dark
+                urlTemplate: mode == "dark"
                     ? 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png'
                     : 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
               ),

@@ -99,6 +99,7 @@ class MainSettingEntry extends StatelessWidget {
 }
 
 class NewSettings extends StatelessWidget {
+  const NewSettings({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +117,8 @@ class NewSettings extends StatelessWidget {
             MainSettingEntry(
               title: AppLocalizations.of(context)!.appearance,
               desc: AppLocalizations.of(context)!.appearanceSettingDesc,
-              icon: Icons.palette_outlined
+              icon: Icons.palette_outlined,
+              pushTo: const AppearancePage(),
             ),
             MainSettingEntry(
                 title: AppLocalizations.of(context)!.general,
@@ -153,103 +155,26 @@ class NewSettings extends StatelessWidget {
 }
 
 
-class AppearancePage extends StatefulWidget {
-  final settings;
-  final image;
-  final colornotify;
-  final updateMainPage;
-  final localizations;
-
-  const AppearancePage({Key? key, required this.colornotify, required this.settings,
-    required this.image, required this.updateMainPage, required this.localizations})
-      : super(key: key);
-
-  @override
-  _AppearancePageState createState() =>
-      _AppearancePageState(image: image, settings: settings, colornotify: colornotify,
-          updateMainPage: updateMainPage, localizations: localizations);
-}
-
-class _AppearancePageState extends State<AppearancePage> {
-
-  final image;
-  final settings;
-  final colornotify;
-  final updateMainPage;
-  final localizations;
-
-  _AppearancePageState({required this.image, required this.settings, required this.colornotify, required this.updateMainPage,
-  required this.localizations});
-
-  Map<String, String> copySettings = {};
-
-  @override
-  void initState() {
-    super.initState();
-
-    copySettings = settings;
-  }
-
-  void updatePage(String name, String to) {
-    setState(() {
-      updateMainPage(name, to);
-      copySettings[name] = to;
-    });
-  }
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
+class AppearancePage extends StatelessWidget {
+  const AppearancePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-    return ValueListenableBuilder(
-      valueListenable: colornotify,
-      builder: (context, ColorPalette value, child) {
-        return AppearanceSelector(image: image,
-            settings: copySettings,
-            colorPalette: value,
-            updatePage: updatePage,
-            localizations: localizations,
-            goBack: goBack);
-      }
-    );
-
-  }
-}
-
-class AppearanceSelector extends StatelessWidget {
-
-  final image;
-  final settings;
-  final ColorPalette colorPalette;
-  final updatePage;
-  final localizations;
-  final goBack;
-
-  AppearanceSelector({required this.image, required this.settings, required this.colorPalette,
-    required this.updatePage, required this.localizations, required this.goBack});
-
-  @override
-  Widget build(BuildContext context) {
-    ColorScheme palette = colorPalette.palette;
 
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
-                  goBack();
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(context);
                 }),
-            title: comfortatext(
-                localizations.appearance, 30, settings,
-                color: palette.primary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.appearance,
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
@@ -267,6 +192,7 @@ class AppearanceSelector extends StatelessWidget {
                       ),
                     ),
                     children: [
+                      /*
                       Padding(
                         padding: const EdgeInsets.only(top: 30, bottom: 10),
                         child: Container(
@@ -276,7 +202,7 @@ class AppearanceSelector extends StatelessWidget {
                             borderRadius: BorderRadius.circular(100),
                             child: Stack(
                               children: [
-                                ParrallaxBackground(image: image, color: palette.surface),
+                                ParrallaxBackground(image: image, color: Theme.of(context).colorScheme.surface),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 40),
                                   child: Column(
@@ -284,9 +210,9 @@ class AppearanceSelector extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       comfortatext("${unitConversion(16, settings["Temperature"]!).toInt()}°", 67,
-                                          settings, color: colorPalette.colorPop, weight: FontWeight.w200),
+                                          settings, color: Theme.of(context).colorScheme.colorPop, weight: FontWeight.w200),
                                       comfortatext(localizations.clearSky, 26,
-                                          settings, color: colorPalette.descColor, weight: FontWeight.w400)
+                                          settings, color: Theme.of(context).colorScheme.descColor, weight: FontWeight.w400)
                                     ],
                                   ),
                                 ),
@@ -297,44 +223,35 @@ class AppearanceSelector extends StatelessWidget {
                         ),
                       ),
 
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 1, bottom: 14, top: 30),
-                            child: comfortatext("app theme", 17,
-                              settings,
-                              color: palette.onSurface),
-                          ),
-                        ],
+                       */
+
+                      Padding(
+                        padding: const EdgeInsets.only(left: 1, bottom: 14, top: 30),
+                        child: Text("app theme", style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface, fontSize: 17),)
                       ),
 
                       SegmentedButton(
-                        selected: <String>{settings["Color mode"]},
+                        selected: <String>{context.watch<ThemeProvider>().getBrightness},
                         onSelectionChanged: (Set<String> newSelection) {
                           HapticFeedback.mediumImpact();
-                          updatePage("Color mode", newSelection.first);
+                          context.read<ThemeProvider>().setBrightness(newSelection.first);
                         },
-                        style: SegmentedButton.styleFrom(
-                          backgroundColor: palette.surface,
-                          foregroundColor: palette.primary,
-                          selectedBackgroundColor: palette.secondaryContainer,
-                          selectedForegroundColor: palette.primary,
-                        ),
                         segments: [
                           ButtonSegment(
                             icon: const Icon(Icons.light_mode_outlined),
                             value: "light",
-                            label: comfortatext("light", 18, settings, color: palette.onSurface)
+                            label: Text("light", style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18),),
                           ),
                           ButtonSegment(
-                              icon: const Icon(Icons.dark_mode_outlined),
-                              value: "dark",
-                              label: comfortatext("dark", 18, settings, color: palette.onSurface)
+                            icon: const Icon(Icons.dark_mode_outlined),
+                            value: "dark",
+                            label: Text("dark", style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18),),
                           ),
                           ButtonSegment(
-                              icon: const Icon(Icons.brightness_6_outlined),
-                              value: "auto",
-                              label: comfortatext("auto", 18, settings, color: palette.onSurface)
+                            icon: const Icon(Icons.brightness_6_outlined),
+                            value: "auto",
+                            label: Text("auto", style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18),),
                           ),
                         ],
                       ),
@@ -343,6 +260,7 @@ class AppearanceSelector extends StatelessWidget {
 
                       //settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source', context),
 
+                      /*
                       if (settings["Color source"] == "custom") SizedBox(
                         height: 80,
                         child: ListView.builder(
@@ -378,6 +296,8 @@ class AppearanceSelector extends StatelessWidget {
                           },
                         ),
                       ),
+
+                       */
                       /*
                       settingEntry(Icons.image_outlined, localizations.imageSource, settings, palette, updatePage, 'Image source', context),
 
