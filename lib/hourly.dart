@@ -73,6 +73,8 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
                         color: index == _value ? Theme.of(context).colorScheme.secondaryContainer
                             : Theme.of(context).colorScheme.outlineVariant,
                         width: 1.6),
+                    backgroundColor: widget.elevated ? Theme.of(context).colorScheme.surfaceContainer
+                      : Theme.of(context).colorScheme.surface,
                     label: Text(
                       [
                       AppLocalizations.of(context)!.sumLowercase,

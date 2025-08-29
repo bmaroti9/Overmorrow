@@ -123,6 +123,7 @@ class NewMain extends StatelessWidget {
 
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     final Size size = (view.physicalSize) / view.devicePixelRatio;
+
     /*
 
     final Map<String, Widget> widgetsMap = {
@@ -152,7 +153,7 @@ class NewMain extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: StretchyHeader.listView(
-        displacement: 120,
+        displacement: 130,
         onRefresh: () async {
           await updateLocation("${data.lat}, ${data.lng}", data.place);
         },
@@ -209,7 +210,7 @@ class NewMain extends StatelessWidget {
           const SizedBox(height: 20,),
           Circles(data: data),
 
-          NewSunriseSunset(data: data, width: size.width,),
+          NewSunriseSunset(data: data, width: size.width),
 
           NewHourly(hours: data.hourly72, elevated: false,),
 

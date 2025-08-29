@@ -85,18 +85,30 @@ class WeatherPage extends StatelessWidget {
 }
 
 
-class SmoothTempTransition extends StatelessWidget {
+class SmoothTempTransition extends StatefulWidget {
+
+
   final double target;
 
   const SmoothTempTransition({super.key, required this.target});
 
   @override
+  State<SmoothTempTransition> createState() => _SmoothTempTransitionState();
+}
+
+class _SmoothTempTransitionState extends State<SmoothTempTransition> with AutomaticKeepAliveClientMixin {
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
 
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(
         begin: 0.0,
-        end: target,
+        end: widget.target,
       ),
 
       curve: Curves.easeOut,

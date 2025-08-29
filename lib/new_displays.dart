@@ -185,24 +185,32 @@ class _ClockUpdaterState extends State<ClockUpdater> {
   }
 }
 
-class NewSunriseSunset extends StatelessWidget {
+class NewSunriseSunset extends StatefulWidget {
   final WeatherData data;
   final width;
 
-  @override
-  NewSunriseSunset({super.key, required this.data, required this.width});
+  const NewSunriseSunset({super.key, required this.data, required this.width});
 
+  @override
+  State<NewSunriseSunset> createState() => _NewSunriseSunsetState();
+}
+
+class _NewSunriseSunsetState extends State<NewSunriseSunset> with AutomaticKeepAliveClientMixin {
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
 
     final currentTime = DateTime.now();
 
-    final localtimeOld = data.localTime;
+    final localtimeOld = widget.data.localTime;
 
     int hourDiff = localtimeOld.hour - currentTime.hour;
 
-    final double targetProgress = data.sunStatus.sunstatus;
+    final double targetProgress = widget.data.sunStatus.sunstatus;
 
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0.0, end: targetProgress),
@@ -216,7 +224,7 @@ class NewSunriseSunset extends StatelessWidget {
           child: Column(
             children: [
 
-              ClockUpdater(hourDiff: hourDiff, progress: targetProgress, width: width),
+              ClockUpdater(hourDiff: hourDiff, progress: targetProgress, width: widget.width),
 
               Padding(
                 padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 13),
@@ -242,10 +250,10 @@ class NewSunriseSunset extends StatelessWidget {
                         size: 14,
                       ),
                     ),
-                    Text(convertTime(data.sunStatus.sunrise, context),
+                    Text(convertTime(widget.data.sunStatus.sunrise, context),
                       style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.tertiary),),
                     const Spacer(),
-                    Text(convertTime(data.sunStatus.sunset, context),
+                    Text(convertTime(widget.data.sunStatus.sunset, context),
                       style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.secondary),),
                     Padding(
                       padding: const EdgeInsets.only(left: 4, top: 1),

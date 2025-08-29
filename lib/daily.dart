@@ -28,8 +28,6 @@ import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:provider/provider.dart';
 import 'l10n/app_localizations.dart';
-import 'ui_helper.dart';
-
 
 
 Widget dayStat(IconData icon, number, addon, context, {addWind = false, windDir = 0, iconSize = 16.0}) {
@@ -215,8 +213,8 @@ class DailyCollapsed extends StatelessWidget {
       },
       child: Padding(
         padding: EdgeInsets.only(left: 23, right: 23,
-            top: (index == 0) ? 21 : 20, //evens out the top size with bigger border radii
-            bottom: 20
+            top: (index == 0) ? 22 : 21, //evens out the top size with bigger border radii
+            bottom: 21
         ),
         child: Row(
           children: [
@@ -227,7 +225,7 @@ class DailyCollapsed extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(dayName.split(', ')[0], style: const TextStyle(fontSize: 18, height: 1.15),),
-                  Text(dayName.split(', ')[1], style: TextStyle(fontSize: 13,
+                  Text(dayName.split(', ')[1], style: TextStyle(fontSize: 12,
                       color: Theme.of(context).colorScheme.outline, height: 1.15, fontWeight: FontWeight.w600),),
                 ],
               ),
