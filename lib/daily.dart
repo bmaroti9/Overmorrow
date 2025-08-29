@@ -20,27 +20,33 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:overmorrow/decoders/weather_data.dart';
 import 'package:overmorrow/hourly.dart';
+import 'package:overmorrow/services/preferences_service.dart';
+import 'package:overmorrow/services/weather_service.dart';
+import 'package:overmorrow/weather_refact.dart';
+import 'package:provider/provider.dart';
 import 'l10n/app_localizations.dart';
 import 'ui_helper.dart';
 
 
 
-Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0, iconSize = 16.0}) {
+Widget dayStat(IconData icon, number, addon, context, {addWind = false, windDir = 0, iconSize = 16.0}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Icon(icon,
-          color: data.current.palette.primary, size: iconSize),
+      Icon(icon, color: Theme.of(context).colorScheme.primary, size: iconSize),
       Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 4),
-            child: comfortatext(number.toString(), 17, data.settings,
-                color: data.current.palette.onSecondaryContainer),
+            child: Text(number.toString(), style: TextStyle(
+                color: Theme.of(context).colorScheme.onSecondaryContainer, fontSize: 17),),
           ),
-          comfortatext(addon, 15, data.settings, color: data.current.palette.onSecondaryContainer)
+          Text(addon, style: TextStyle(
+              color: Theme.of(context).colorScheme.onSecondaryContainer, fontSize: 15),),
         ],
       ),
       if (addWind) Padding(
@@ -48,24 +54,23 @@ Widget dayStat(data, IconData icon, number, addon, {addWind = false, windDir = 0
           child: RotationTransition(
               turns: AlwaysStoppedAnimation(windDir / 360),
               child: Icon(Icons.arrow_circle_right_outlined,
-                  color: data.current.palette.primary, size: 18)
+                  color: Theme.of(context).colorScheme.primary, size: 18)
           )
       ),
     ],
   );
 }
 
-class buildDays extends StatefulWidget {
-  final data;
+class BuildDays extends StatefulWidget {
+  final WeatherData data;
 
-  buildDays({Key? key, required this.data}) : super(key: key);
+  BuildDays({Key? key, required this.data}) : super(key: key);
 
   @override
-  _buildDaysState createState() => _buildDaysState(data);
+  _BuildDaysState createState() => _BuildDaysState();
 }
 
-class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixin {
-  final data;
+class _BuildDaysState extends State<BuildDays> with AutomaticKeepAliveClientMixin {
 
   int daysToShow = 0;
   bool isDaysListExpanded = false;
@@ -76,14 +81,14 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
   @override
   void initState() {
     super.initState();
-    if (data.days.length > 7) {
+    if (widget.data.days.length > 7) {
       isDaysExpandable = true;
       daysToShow = 7;
     }
     else {
-      daysToShow = data.days.length;
+      daysToShow = widget.data.days.length;
     }
-    for (int i = 0; i < data.days.length; i++) {
+    for (int i = 0; i < widget.data.days.length; i++) {
       expand.add(false);
     }
   }
@@ -100,7 +105,7 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
       HapticFeedback.mediumImpact();
       isDaysListExpanded = !isDaysListExpanded;
       if (isDaysListExpanded) {
-        daysToShow = data.days.length;
+        daysToShow = widget.data.days.length;
       }
       else {
         daysToShow = 7;
@@ -111,21 +116,17 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
   @override
   bool get wantKeepAlive => true;
 
-  _buildDaysState(this.data);
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 25, top: 25),
+      padding: const EdgeInsets.only(left: 23, right: 23, bottom: 25, top: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 1, bottom: 14),
-            child: comfortatext(AppLocalizations.of(context)!.dailyLowercase, 17,
-                data.settings,
-                color: data.current.palette.onSurface),
+            child: Text(AppLocalizations.of(context)!.dailyLowercase, style: const TextStyle(fontSize: 17),)
           ),
 
           AnimatedSize(
@@ -139,7 +140,7 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
               physics: const NeverScrollableScrollPhysics(),
               itemCount: daysToShow,
               itemBuilder: (context, index) {
-                final day = data.days[index];
+                final day = widget.data.days[index];
                 return Padding(
                   padding: const EdgeInsets.only(top: 2, bottom: 2),
                   child: Container(
@@ -148,13 +149,13 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
                             top: index == 0 ? const Radius.circular(33) : const Radius.circular(6),
                             bottom: index == daysToShow - 1  && !isDaysExpandable ? const Radius.circular(33) : const Radius.circular(6),
                         ),
-                        color: data.current.palette.surfaceContainer
+                        color: Theme.of(context).colorScheme.surfaceContainer
                       ),
                       child: AnimatedSize(
                           duration: const Duration(milliseconds: 250),
                           curve: Curves.easeInOut,
-                          child: expand[index] ? dailyExpanded(day, data, data.current.palette, _onExpandTapped, index)
-                              : dailyCollapsed(data, day, data.current.palette, index, daysToShow, _onExpandTapped)
+                          child: expand[index] ? DailyExpanded(day: day, onExpandTapped:  _onExpandTapped, index: index)
+                            : DailyCollapsed(data: widget.data, day: day, index: index, onExpandTapped:  _onExpandTapped)
                       )
                   ),
                 );
@@ -168,21 +169,22 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
             },
             child: Container(
               decoration: BoxDecoration(
-                color: data.current.palette.secondaryContainer,
+                color: Theme.of(context).colorScheme.tertiaryContainer,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(6), bottom: Radius.circular(33))
               ),
-              padding: const EdgeInsets.only(left: 22, right: 22, top: 13, bottom: 13),
+              padding: const EdgeInsets.only(left: 22, right: 22, top: 11, bottom: 11),
               margin: const EdgeInsets.only(top: 2),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  comfortatext(
-                      isDaysListExpanded ? AppLocalizations.of(context)!.showLess : AppLocalizations.of(context)!.showMore
-                      , 16, data.settings, color: data.current.palette.onSecondaryContainer),
+                  Text(
+                    isDaysListExpanded ? AppLocalizations.of(context)!.showLess : AppLocalizations.of(context)!.showMore,
+                    style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 16),
+                  ),
                   const SizedBox(width: 4,),
                   Icon(
                     isDaysListExpanded ? Icons.arrow_upward : Icons.arrow_downward,
-                    color: data.current.palette.onSecondaryContainer, size: 16,)
+                    color: Theme.of(context).colorScheme.onTertiaryContainer, size: 16,)
                 ]
               ),
             ),
@@ -193,158 +195,224 @@ class _buildDaysState extends State<buildDays> with AutomaticKeepAliveClientMixi
   }
 }
 
-Widget dailyCollapsed(var data, var day, ColorScheme palette, int index, int daysToShow, onExpandTapped) {
-  return GestureDetector(
-    behavior: HitTestBehavior.translucent,
-    onTap: () {
-      onExpandTapped(index);
-    },
-    child: Padding(
-      padding: EdgeInsets.only(left: 21, right: 20,
-        top: index == 0 ? 21 : 20, //evens out the top size with bigger border radii
-        bottom: 20
+class DailyCollapsed extends StatelessWidget {
+  final Function onExpandTapped;
+  final int index;
+  final WeatherDay day;
+  final WeatherData data;
+
+  const DailyCollapsed({super.key, required this.onExpandTapped,
+    required this.index, required this.day, required this.data});
+
+
+  @override
+  Widget build(BuildContext context) {
+    String dayName = getDayName(day.date, context);
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        onExpandTapped(index);
+      },
+      child: Padding(
+        padding: EdgeInsets.only(left: 23, right: 23,
+            top: (index == 0) ? 21 : 20, //evens out the top size with bigger border radii
+            bottom: 20
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 45,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(dayName.split(', ')[0], style: const TextStyle(fontSize: 18, height: 1.15),),
+                  Text(dayName.split(', ')[1], style: TextStyle(fontSize: 13,
+                      color: Theme.of(context).colorScheme.outline, height: 1.15, fontWeight: FontWeight.w600),),
+                ],
+              ),
+            ),
+
+            SvgPicture.asset(
+              weatherIconPathMap[day.condition] ?? "assets/weather_icons/clear_sky.svg",
+              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+              width: 36,
+              height: 36,
+            ),
+
+            SizedBox(
+              width: 40,
+              child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    "${unitConversion(day.minTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
+                    style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+              ),
+            ),
+            Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 14, right: 14),
+                  height: 16,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest
+                  ),
+                  child: LayoutBuilder(
+                      builder: (BuildContext context, BoxConstraints constraints) {
+                        final double width = constraints.maxWidth;
+
+                        final lowest = data.dailyMinMaxTemp[0];
+                        final highest = data.dailyMinMaxTemp[1];
+                        const double smallest = 18;
+                        final double minPercent = min(max((day.minTempC - lowest) / (highest - lowest), 0), 1);
+                        final double maxPercent = min(max((day.maxTempC - lowest) / (highest - lowest), 0), 1);
+                        return Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            margin: EdgeInsets.only(left: min(width * minPercent, width - smallest)),
+                            width: max(smallest, (maxPercent - minPercent) * width),
+                            height: 16,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Theme.of(context).colorScheme.secondaryFixedDim
+                            ),
+                          ),
+                        );
+                      }
+                  ),
+                )
+            ),
+            Text(
+              "${unitConversion(day.maxTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 18, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(width: 12,),
+            Icon(Icons.expand_more, size: 23, color: Theme.of(context).colorScheme.onSurface,)
+          ],
+        ),
       ),
-      child: Row(
+    );
+  }
+}
+
+
+class DailyExpanded extends StatelessWidget {
+  final Function onExpandTapped;
+  final int index;
+  final WeatherDay day;
+
+  const DailyExpanded({super.key, required this.onExpandTapped,
+    required this.index, required this.day});
+
+  @override
+  Widget build(BuildContext context) {
+    String dayName = getDayName(day.date, context);
+    return Padding(
+      padding: const EdgeInsets.only(left: 14, right: 14, top: 0, bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 45,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              onExpandTapped(index);
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 23, bottom: 23),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const SizedBox(width: 8,),
+                  Text(dayName, style: const TextStyle(fontSize: 18),),
+                  const Spacer(),
+                  Icon(Icons.expand_less, size: 23, color: Theme.of(context).colorScheme.onSurface,),
+                  const SizedBox(width: 9,),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20, left: 6, right: 10),
+            child: Row(
               children: [
-                comfortatext(day.name.split(", ")[0], 19,
-                    data.settings,
-                    color: palette.secondary),
-                comfortatext(day.name.split(", ")[1], 12,
-                    data.settings,
-                    color: palette.outline,
-                    weight: FontWeight.w500
+                SvgPicture.asset(
+                  weatherIconPathMap[day.condition] ?? "assets/weather_icons/clear_sky.svg",
+                  colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+                  width: 38,
+                  height: 38,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 4),
+                  child: Text(
+                    day.condition,
+                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 22),
+                  )
+                ),
+                const Spacer(),
+                Icon(Icons.keyboard_double_arrow_down, size: 16, color: Theme.of(context).colorScheme.outline,),
+
+                Text(
+                  "${unitConversion(day.minTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
+                  style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 20),
+                ),
+                const SizedBox(width: 6,),
+                Icon(Icons.keyboard_double_arrow_up, size: 16, color: Theme.of(context).colorScheme.outline,),
+                Text(
+                  "${unitConversion(day.maxTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
+                  style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 20),
                 ),
               ],
             ),
           ),
-          Icon(day.icon, size: 37, color: palette.onSurface,),
-          SizedBox(
-            width: 40,
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: comfortatext("${day.minTemp.toString()}°", 18, data.settings, color: palette.primary, weight: FontWeight.w500)
+          Container(
+            decoration: BoxDecoration(
+              //color: Theme.of(context).colorScheme.tertiaryContainer,
+              border: Border.all(color: Theme.of(context).colorScheme.outlineVariant, width: 2),
+              borderRadius: BorderRadius.circular(18),
             ),
-          ),
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.only(left: 14, right: 14),
-              height: 16,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: palette.surfaceContainerHighest
-              ),
-              child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  final double width = constraints.maxWidth;
-
-                  final lowest = data.dailyMinMaxTemp[0];
-                  final highest = data.dailyMinMaxTemp[1];
-                  const double smallest = 18;
-                  final double minPercent = min(max((day.rawMinTemp - lowest) / (highest - lowest), 0), 1);
-                  final double maxPercent = min(max((day.rawMaxTemp - lowest) / (highest - lowest), 0), 1);
-                  return Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      margin: EdgeInsets.only(left: min(width * minPercent, width - smallest)),
-                      width: max(smallest, (maxPercent - minPercent) * width),
-                      height: 16,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: palette.secondaryFixedDim
-                      ),
-                    ),
-                  );
-                }
-              ),
-            )
-          ),
-          comfortatext("${day.maxTemp.toString()}°", 18, data.settings, color: palette.primary, weight: FontWeight.w500),
-          const SizedBox(width: 12,),
-          Icon(Icons.expand_more, size: 22, color: palette.secondary,)
-        ],
-      ),
-    ),
-  );
-}
-
-
-Widget dailyExpanded(var day, data, ColorScheme palette, onExpandTapped, index) {
-
-  return Padding(
-    padding: const EdgeInsets.only(left: 13, right: 13, top: 0, bottom: 16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            onExpandTapped(index);
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(top: 23, bottom: 23),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+            margin: const EdgeInsets.all(2),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const SizedBox(width: 8,),
-                comfortatext("${day.name.split(", ")[0]}, ", 19, data.settings, color: palette.secondary),
-                comfortatext(day.name.split(", ")[1], 14, data.settings, color: palette.outline),
-                const Spacer(),
-                Icon(Icons.expand_less, size: 22, color: palette.secondary,),
-                const SizedBox(width: 9,),
+                dayStat(
+                  Icons.umbrella_rounded,
+                  day.precipProb, "%",
+                  context
+                ),
+                dayStat(
+                  Icons.water_drop_outlined,
+                  unitConversion(day.totalPrecipMm, context.select((SettingsProvider p) => p.getPrecipUnit), decimals: 1),
+                  context.select((SettingsProvider p) => p.getPrecipUnit),
+                  context,
+                  iconSize: 16.5
+                ),
+                dayStat(
+                  Icons.air,
+                  unitConversion(day.windKph, context.select((SettingsProvider p) => p.getWindUnit), decimals: 1),
+                  context.select((SettingsProvider p) => p.getWindUnit),
+                  context,
+                  addWind: true,
+                  windDir: day.windDirA
+                ),
+                dayStat(
+                  Icons.wb_sunny_outlined,
+                  day.uv,
+                  "uv",
+                  context
+                ),
               ],
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20, left: 6, right: 10),
-          child: Row(
-            children: [
-              Icon(day.icon, size: 38, color: palette.onSurface,),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: comfortatext(day.text, 22, data.settings, color: palette.primary),
-              ),
-              const Spacer(),
-              Icon(Icons.keyboard_double_arrow_down, size: 16, color: palette.outline,),
-              comfortatext("${day.minTemp.toString()}°", 19, data.settings, color: palette.primary),
-              const SizedBox(width: 6,),
-              Icon(Icons.keyboard_double_arrow_up, size: 16, color: palette.outline,),
-              comfortatext("${day.maxTemp.toString()}°", 19, data.settings, color: palette.primary)
-            ],
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            //color: palette.secondaryContainer,
-            border: Border.all(color: palette.outlineVariant, width: 2),
-            borderRadius: BorderRadius.circular(18),
-          ),
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 25, bottom: 25),
-          margin: const EdgeInsets.all(2),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              dayStat(data, Icons.umbrella_rounded, day.precip_prob, "%"),
-              dayStat(data, Icons.water_drop_outlined, day.total_precip, data.settings["Precipitation"], iconSize: 16.5),
-              dayStat(data, Icons.air, day.windspeed, data.settings["Wind"], addWind: true,
-                  windDir: day.wind_dir),
-              dayStat(data, Icons.wb_sunny_outlined, day.uv, "uv"),
-            ],
-          ),
-        ),
 
-        Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: NewHourly(data: data, hours: day.hourly, elevated: true,),
-        )
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: NewHourly(hours: day.hourly, elevated: true,),
+          )
 
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }

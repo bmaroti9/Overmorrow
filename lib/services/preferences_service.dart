@@ -162,6 +162,8 @@ class SettingsProvider with ChangeNotifier {
   String _precipUnit = "mm";
 
   String _timeMode = "12 hour";
+  String _dateFormat = "mm/dd";
+
   bool _radarHapticsOn = true;
 
   String _imageSource = "network";
@@ -177,6 +179,8 @@ class SettingsProvider with ChangeNotifier {
   String get getPrecipUnit => _precipUnit;
 
   String get getTimeMode => _timeMode;
+  String get getDateFormat => _dateFormat;
+
   bool get getRadarHapticsOn => _radarHapticsOn;
 
   String get getImageSource => _imageSource;

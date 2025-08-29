@@ -211,9 +211,11 @@ class NewMain extends StatelessWidget {
 
           NewSunriseSunset(data: data, width: size.width,),
 
-          NewHourly(data: data, hours: data.hourly72, elevated: false,),
+          NewHourly(hours: data.hourly72, elevated: false,),
 
           RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
+
+          BuildDays(data: data),
 
           const SizedBox(height: 200,),
 
@@ -376,7 +378,7 @@ class TabletLayout extends StatelessWidget {
                       ),
 
                       NewSunriseSunset(data: data, key: Key(data.place), width: constraints.maxWidth,),
-                      NewHourly(data: data, hours: data.hourly72, elevated: false,),
+                      NewHourly(hours: data.hourly72, elevated: false,),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -399,7 +401,7 @@ class TabletLayout extends StatelessWidget {
                                 //since it's only available with weatherapi, and in that case there are only 3 days
                                 //this makes the two sides more even
                                 alertWidget(data, context, data.current.palette),
-                                buildDays(data: data),
+                                BuildDays(data: data),
                               ],
                             ),
                           )

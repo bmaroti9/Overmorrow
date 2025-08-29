@@ -43,14 +43,12 @@ class ImageService {
   final String username;
   final String userlink;
   final String photolink;
-  final Color color;
 
   const ImageService({
     required this.image,
     required this.username,
     required this.userlink,
     required this.photolink,
-    required this.color
   });
 
   static Future<ImageService> getUnsplashCollectionImage(String condition, String loc) async {
@@ -85,7 +83,6 @@ class ImageService {
         username: _userName,
         userlink: _userLink,
         photolink: _photoLink,
-        color: color
     );
   }
 
@@ -106,7 +103,6 @@ class ImageService {
       username: _userName,
       userlink: _userLink,
       photolink: _photoLink,
-      color: color
     );
 
   }
@@ -184,7 +180,10 @@ class FadingImageWidget extends StatefulWidget {
 class FadingImageWidgetState extends State<FadingImageWidget> {
   Image? _currentImage;
 
-  Future<void> updateImage() async {
+  //i tried multiple times to move out this logic from here,
+  //but every time i tried it became a lot more laggy and buggy i don't know why
+  //so in the end i just kept it here
+  Future<ImageService> updateImage() async {
 
     ImageService imageService = await ImageService.getImageService(widget.condition, widget.loc, widget.imageSource);
 
@@ -206,6 +205,8 @@ class FadingImageWidgetState extends State<FadingImageWidget> {
     });
 
     await widget.updateColorPalette(colorSchemeLight, colorSchemeDark);
+
+    return imageService;
   }
 
   @override

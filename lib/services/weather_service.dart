@@ -21,6 +21,7 @@ import 'package:intl/intl.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 
 import '../weather_refact.dart';
 
@@ -48,6 +49,24 @@ String getDateStringFromLocalTime(DateTime now) {
   return "${weekNames[now.weekday - 1]}, ${monthNames[now.month - 1]} ${now.day}";
 }
 
+String getDayName(DateTime day, BuildContext context) {
+  List<String> weeks = [
+    AppLocalizations.of(context)!.mon,
+    AppLocalizations.of(context)!.tue,
+    AppLocalizations.of(context)!.wed,
+    AppLocalizations.of(context)!.thu,
+    AppLocalizations.of(context)!.fri,
+    AppLocalizations.of(context)!.sat,
+    AppLocalizations.of(context)!.sun
+  ];
+  String weekName = weeks[day.weekday - 1];
+  final String format = context.select((SettingsProvider p) => p.getDateFormat) == "mm/dd"
+    ? "M/dd"
+    : "dd/MM";
+  final String date = DateFormat(format).format(day);
+  return "$weekName, $date";
+}
+
 num unitConversion(double value, String unit, {decimals = 2}) {
   List<double> p = conversionTable[unit] ?? [0, 0];
   double a = p[0] + value * p[1];
@@ -55,22 +74,6 @@ num unitConversion(double value, String unit, {decimals = 2}) {
     return a.round();
   }
   return double.parse(a.toStringAsFixed(decimals));
-}
-
-String getDayName(settings, DateTime time, localizations) {
-  List<String> weeks = [
-    localizations.mon,
-    localizations.tue,
-    localizations.wed,
-    localizations.thu,
-    localizations.fri,
-    localizations.sat,
-    localizations.sun
-  ];
-  String weekname = weeks[time.weekday - 1];
-  final String date = settings["Date format"] == "mm/dd" ? "${time.month}/${time.day}"
-      :"${time.day}/${time.month}";
-  return "$weekname, $date";
 }
 
 String aqiDescLocalization(index, localizations) {

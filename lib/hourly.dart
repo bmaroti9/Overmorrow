@@ -31,11 +31,10 @@ import 'ui_helper.dart';
 import 'package:provider/provider.dart';
 
 class NewHourly extends StatefulWidget {
-  final WeatherData data;
   final hours;
   final elevated;
 
-  NewHourly({Key? key, required this.data, required this.hours, required this.elevated}) : super(key: key);
+  NewHourly({Key? key, required this.hours, required this.elevated}) : super(key: key);
 
   @override
   _NewHourlyState createState() => _NewHourlyState();
@@ -61,7 +60,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
 
           SizedBox(
             height: 195,
-            child: hourBoxes(widget.hours, widget.data, _value, widget.elevated, context),
+            child: hourBoxes(widget.hours, _value, widget.elevated, context),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 0, left: 5),
@@ -100,7 +99,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
   }
 }
 
-Widget hourBoxes(hours, WeatherData data, _value, elevated, context) {
+Widget hourBoxes(hours, _value, elevated, context) {
 
   return AnimationLimiter(
     child: ListView.builder(
@@ -115,17 +114,17 @@ Widget hourBoxes(hours, WeatherData data, _value, elevated, context) {
             child: SlideAnimation(
               horizontalOffset: 100.0,
               child: FadeInAnimation(
-                child: dividerWidget(hour.day.toString(), data, context)
+                child: dividerWidget(hour.day.toString(), context)
               ),
             ),
           );
         }
 
         List<Widget> childWidgets = [
-          HourlySum(hour: hour, data: data,),
-          HourlyPrecip(hour: hour, data: data),
-          HourlyWind(hour: hour, data : data),
-          HourlyUv(hour: hour, data : data),
+          HourlySum(hour: hour),
+          HourlyPrecip(hour: hour),
+          HourlyWind(hour: hour),
+          HourlyUv(hour: hour),
         ];
     
         return AnimationConfiguration.staggeredList(
@@ -134,7 +133,7 @@ Widget hourBoxes(hours, WeatherData data, _value, elevated, context) {
           child: SlideAnimation(
             horizontalOffset: 100.0,
             child: FadeInAnimation(
-              child: hourlyDataBuilder(hour, elevated, childWidgets[_value], data, context)
+              child: hourlyDataBuilder(hour, elevated, childWidgets[_value], context)
             ),
           ),
         );
@@ -143,7 +142,7 @@ Widget hourBoxes(hours, WeatherData data, _value, elevated, context) {
   );
 }
 
-Widget hourlyDataBuilder(hour, elevated, childWidget, data, context) {
+Widget hourlyDataBuilder(hour, elevated, childWidget, context) {
   return Padding(
     padding: const EdgeInsets.all(3),
     child: AnimatedSwitcher(
@@ -174,7 +173,7 @@ Widget hourlyDataBuilder(hour, elevated, childWidget, data, context) {
   );
 }
 
-Widget dividerWidget(String name, data, context) {
+Widget dividerWidget(String name, context) {
   return Padding(
     padding: const EdgeInsets.only(top: 3, bottom: 3, left: 6, right: 6),
     child: RotatedBox(
@@ -202,9 +201,8 @@ Widget dividerWidget(String name, data, context) {
 
 class HourlySum extends StatelessWidget {
   final WeatherHour hour;
-  final WeatherData data;
 
-  const HourlySum({super.key, required this.hour, required this.data});
+  const HourlySum({super.key, required this.hour});
 
   @override
   Widget build(BuildContext context) {
@@ -254,9 +252,8 @@ class HourlySum extends StatelessWidget {
 
 class HourlyPrecip extends StatelessWidget {
   final WeatherHour hour;
-  final WeatherData data;
 
-  const HourlyPrecip({super.key, required this.hour, required this.data});
+  const HourlyPrecip({super.key, required this.hour});
 
   @override
   Widget build(BuildContext context) {
@@ -315,9 +312,8 @@ class HourlyPrecip extends StatelessWidget {
 
 class HourlyWind extends StatelessWidget {
   final WeatherHour hour;
-  final WeatherData data;
 
-  const HourlyWind({super.key, required this.hour, required this.data});
+  const HourlyWind({super.key, required this.hour});
 
   @override
   Widget build(BuildContext context) {
@@ -372,9 +368,8 @@ class HourlyWind extends StatelessWidget {
 
 class HourlyUv extends StatelessWidget {
   final hour;
-  final WeatherData data;
 
-  const HourlyUv({super.key, required this.hour, required this.data});
+  const HourlyUv({super.key, required this.hour});
 
   @override
   Widget build(BuildContext context) {

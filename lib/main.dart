@@ -173,6 +173,8 @@ class MyHomePageState extends State<MyHomePage> {
 
   bool isLoading = false;
   WeatherData? data;
+  ImageService? imageService;
+
   final GlobalKey<FadingImageWidgetState> imageKey = GlobalKey<FadingImageWidgetState>();
 
   @override
@@ -227,7 +229,7 @@ class MyHomePageState extends State<MyHomePage> {
     final FadingImageWidgetState? imageState = imageKey.currentState;
 
     if (imageState != null) {
-      await imageState.updateImage();
+      imageService = await imageState.updateImage();
     }
 
     print(("SUCCESS", location, latLon, imageState));
