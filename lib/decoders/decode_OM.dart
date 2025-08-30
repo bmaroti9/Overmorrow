@@ -379,13 +379,13 @@ class OMExtendedAqi{
 
   final List<int> dailyAqi;
 
-  final int european_aqi;
-  final int us_aqi;
+  final int europeanAqi;
+  final int usAqi;
   final int europeanDescIndex;
   final int usDescIndex;
 
   final double aod;
-  final int aod_index;
+  final int aodIndex;
 
   final double dust;
 
@@ -405,12 +405,12 @@ class OMExtendedAqi{
     required this.ragweed,
 
     required this.aod,
-    required this.aod_index,
+    required this.aodIndex,
 
     required this.dust,
 
-    required this.european_aqi,
-    required this.us_aqi,
+    required this.europeanAqi,
+    required this.usAqi,
     required this.europeanDescIndex,
     required this.usDescIndex,
 
@@ -565,7 +565,7 @@ class OMExtendedAqi{
       ragweed: item["current"]["ragweed_pollen"] ?? -1,
 
       aod: aod_value,
-      aod_index: aod_index,
+      aodIndex: aod_index,
 
       dust: item["current"]["dust"],
 
@@ -580,8 +580,8 @@ class OMExtendedAqi{
 
       dailyAqi: dailyAqi,
 
-      european_aqi: item["current"]["european_aqi"],
-      us_aqi: item["current"]["us_aqi"],
+      europeanAqi: item["current"]["european_aqi"],
+      usAqi: item["current"]["us_aqi"],
       usDescIndex: usIndex,
       europeanDescIndex: europeanIndex,
 

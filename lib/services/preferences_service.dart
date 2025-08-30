@@ -126,7 +126,7 @@ class ThemeProvider with ChangeNotifier {
   }
 
   void loadTheme() {
-    _brightness = PreferenceUtils.getString("Color mode", "light");
+    _brightness = PreferenceUtils.getString("Color mode", "auto");
     switch (_brightness) {
       case "light": _themeMode = ThemeMode.light;
       case "dark": _themeMode = ThemeMode.dark;
@@ -261,6 +261,12 @@ class SettingsProvider with ChangeNotifier {
   void setTimeMode(String to) {
     PreferenceUtils.setString("Time mode", to);
     _timeMode = to;
+    notifyListeners();
+  }
+
+  void setDateFormat(String to) {
+    PreferenceUtils.setString("Date format", to);
+    _dateFormat = to;
     notifyListeners();
   }
 }

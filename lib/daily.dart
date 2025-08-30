@@ -213,8 +213,8 @@ class DailyCollapsed extends StatelessWidget {
       },
       child: Padding(
         padding: EdgeInsets.only(left: 23, right: 23,
-            top: (index == 0) ? 22 : 21, //evens out the top size with bigger border radii
-            bottom: 21
+            top: (index == 0) ? 21 : 20, //evens out the top size with bigger border radii
+            bottom: 20
         ),
         child: Row(
           children: [
@@ -233,9 +233,9 @@ class DailyCollapsed extends StatelessWidget {
 
             SvgPicture.asset(
               weatherIconPathMap[day.condition] ?? "assets/weather_icons/clear_sky.svg",
-              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
-              width: 36,
-              height: 36,
+              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
+              width: 38,
+              height: 38,
             ),
 
             SizedBox(
@@ -244,7 +244,7 @@ class DailyCollapsed extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Text(
                     "${unitConversion(day.minTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
-                    style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 18, fontWeight: FontWeight.w600),
+                    style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 18, fontWeight: FontWeight.w600),
                   ),
               ),
             ),
@@ -283,7 +283,7 @@ class DailyCollapsed extends StatelessWidget {
             ),
             Text(
               "${unitConversion(day.maxTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 18, fontWeight: FontWeight.w600),
+              style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(width: 12,),
             Icon(Icons.expand_more, size: 23, color: Theme.of(context).colorScheme.onSurface,)
@@ -336,15 +336,15 @@ class DailyExpanded extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   weatherIconPathMap[day.condition] ?? "assets/weather_icons/clear_sky.svg",
-                  colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
-                  width: 38,
-                  height: 38,
+                  colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
+                  width: 40,
+                  height: 40,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 4),
                   child: Text(
                     day.condition,
-                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 22),
+                    style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 22),
                   )
                 ),
                 const Spacer(),

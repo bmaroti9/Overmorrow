@@ -452,6 +452,14 @@ class GeneralSettingsPage extends StatelessWidget {
                         update: context.read<SettingsProvider>().setTimeMode,
                       ),
 
+                      SettingsEntry(
+                        icon: Icons.date_range,
+                        text: AppLocalizations.of(context)!.dateFormat,
+                        rawText: 'Date format',
+                        selected: context.select((SettingsProvider p) => p.getDateFormat),
+                        update: context.read<SettingsProvider>().setDateFormat,
+                      ),
+
                       /*
                       settingEntry(Icons.access_time_outlined, localizations.timeMode, copySettings, palette, updatePage, 'Time mode', context),
                       settingEntry(Icons.date_range, localizations.dateFormat, copySettings, palette, updatePage, 'Date format', context),

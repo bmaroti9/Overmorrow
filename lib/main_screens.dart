@@ -218,6 +218,8 @@ class NewMain extends StatelessWidget {
 
           BuildDays(data: data),
 
+          AqiWidget(data: data, isTabletMode: false),
+
           const SizedBox(height: 200,),
 
           //SmoothTransitionDemo(targetScale: data.sunstatus.sunstatus),
@@ -390,7 +392,7 @@ class TabletLayout extends StatelessWidget {
                                 rain15MinuteChart(
                                     data, data.current.palette, context),
                                 RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
-                                aqiWidget(data, data.current.palette, context, true),
+                                AqiWidget(data: data, isTabletMode: true),
                                 providerSelector(data.settings, updateLocation, data.current.palette,
                                     data.provider, "${data.lat}, ${data.lng}", data.real_loc, context),
                               ],

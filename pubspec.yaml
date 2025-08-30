@@ -97,6 +97,7 @@ flutter:
     - assets/backdrops/
     - assets/icons/icon.png
     - assets/weather_icons/
+    - assets/m3shapes/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -53,7 +53,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
 
     return Padding(
       padding: widget.elevated ? const EdgeInsets.all(0)
-          : const EdgeInsets.only(left: 21, right: 21, top: 0, bottom: 15),
+          : const EdgeInsets.only(left: 21, right: 21, top: 0, bottom: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

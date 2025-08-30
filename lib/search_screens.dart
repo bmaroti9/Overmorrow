@@ -784,18 +784,18 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
         padding: const EdgeInsets.only(
             left: 25, right: 25, top: 23, bottom: 23),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.tertiaryFixedDim,
+          color: Theme.of(context).colorScheme.tertiaryContainer,
           borderRadius: BorderRadius.circular(40),
         ),
         child: Row(
           children: [
             Icon(Icons.gps_fixed,
-              color: Theme.of(context).colorScheme.onPrimaryFixedVariant, size: 19),
+              color: Theme.of(context).colorScheme.onTertiaryContainer, size: 19),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, bottom: 2),
                 child: Text(AppLocalizations.of(context)!.grantLocationPermission,
-                  style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryFixedVariant, fontSize: 19),)
+                  style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 19),)
               ),
             ),
           ],
@@ -817,7 +817,7 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
         padding: const EdgeInsets.only(
             left: 25, right: 25, top: 20, bottom: 20),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.tertiaryFixedDim,
+          color: Theme.of(context).colorScheme.secondaryFixedDim,
           borderRadius: BorderRadius.circular(40),
         ),
         child: Row(
@@ -826,13 +826,13 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
                 child: Column(
                   crossAxisAlignment : CrossAxisAlignment.start,
                   children: [
-                    Text(placeName, style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryFixed, fontSize: 19, height: 1.25),),
-                    Text("$region, $country", style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryFixed, fontSize: 14, height: 1.25),)
+                    Text(placeName, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryFixed, fontSize: 19, height: 1.25),),
+                    Text("$region, $country", style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryFixed, fontSize: 14, height: 1.25),)
                   ],
                 )
             ),
             Icon(Icons.keyboard_arrow_right_rounded,
-              color: Theme.of(context).colorScheme.onPrimaryFixed,)
+              color: Theme.of(context).colorScheme.onSecondaryFixed,)
           ],
         ),
       ),
@@ -843,18 +843,18 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
     padding: const EdgeInsets.only(
         left: 25, right: 25, top: 20, bottom: 20),
     decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.tertiaryFixedDim,
+      color: Theme.of(context).colorScheme.tertiaryContainer,
       borderRadius: BorderRadius.circular(40),
     ),
     child: Row(
       children: [
         Icon(Icons.gps_off,
-          color: Theme.of(context).colorScheme.onTertiaryFixedVariant, size: 19,),
+          color: Theme.of(context).colorScheme.onTertiaryContainer, size: 19,),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(left: 10, bottom: 2),
             child: Text(locationMessage, style: TextStyle(
-                color: Theme.of(context).colorScheme.onTertiaryFixedVariant, fontSize: 19),)
+                color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 19),)
           ),
         ),
 

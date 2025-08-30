@@ -21,6 +21,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/ui_helper.dart';
@@ -323,85 +324,96 @@ class _WaveTickerState extends State<WaveTicker> with SingleTickerProviderStateM
   }
 }
 
-Widget aqiWidget(var data, ColorScheme palette, context, bool isTabletMode) {
-  return Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(left: 25, top: 15),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: comfortatext(
-            AppLocalizations.of(context)!.airQualityLowercase, 17,
-            data.settings,
-            color: palette.onSurface
+class AqiWidget extends StatelessWidget {
+  final WeatherData data;
+  final bool isTabletMode;
+
+  const AqiWidget({super.key, required this.data, required this.isTabletMode});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 25, top: 15),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(AppLocalizations.of(context)!.airQualityLowercase,
+              style: const TextStyle(fontSize: 17),)
           ),
         ),
-      ),
-      GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: (){
-          HapticFeedback.lightImpact();
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AllergensPage(data: data, isTabletMode: isTabletMode,))
-          );
-        },
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          margin: const EdgeInsets.only(left: 25, right: 25, top: 14, bottom: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: palette.outlineVariant, width: 2)
-          ),
-          child: Row(
-            children: [
-              Container(
-                height: 85,
-                width: 85,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: palette.secondaryContainer,
-                ),
-                margin: const EdgeInsets.only(right: 20),
-                child: Center(
-                    child: comfortatext(data.aqi.aqi_index.toString(), 24, data.settings,
-                        color: palette.onSecondaryContainer)
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: (){
+            HapticFeedback.lightImpact();
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AllergensPage(data: data, isTabletMode: isTabletMode,))
+            );
+          },
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            margin: const EdgeInsets.only(left: 25, right: 25, top: 14, bottom: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant, width: 2)
+            ),
+            child: Row(
+              children: [
+                const SizedBox(width: 2,),
+                Stack(
+                  alignment: Alignment.center,
                   children: [
-                    comfortatext(
-                      data.aqi.aqi_title, 19, data.settings, color: palette.secondary, align: TextAlign.left,
-                      weight: FontWeight.w500,
+                    SvgPicture.asset(
+                      "assets/m3shapes/4_sided_cookie.svg",
+                      colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondaryContainer, BlendMode.srcIn),
+                      width: 82,
+                      height: 82,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6, left: 0),
-                      child: comfortatext(data.aqi.aqi_desc, 14, data.settings,
-                          color: palette.outline,
-                          weight: FontWeight.w400),
+                    Text(
+                      data.aqi.aqiIndex.toString(),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),
-              ),
-              IconButton(
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AllergensPage(data: data, isTabletMode: isTabletMode,))
-                  );
-                },
-                icon: Icon(Icons.keyboard_arrow_right_rounded, color: palette.primary,),
-              ),
-            ],
-          ),
+                const SizedBox(width: 20,),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(aqiTitleLocalization(data.aqi.aqiIndex, AppLocalizations.of(context)!),
+                        style: TextStyle( color: Theme.of(context).colorScheme.secondary, fontSize: 18,
+                        fontWeight: FontWeight.w600, height: 1.1),),
+                      const SizedBox(height: 7,),
+                      Text(aqiDescLocalization(data.aqi.aqiIndex, AppLocalizations.of(context)!),
+                        style: TextStyle( color: Theme.of(context).colorScheme.outline, fontSize: 14, height: 1.1),)
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AllergensPage(data: data, isTabletMode: isTabletMode,))
+                    );
+                  },
+                  icon: Icon(Icons.keyboard_arrow_right_rounded, color: Theme.of(context).colorScheme.onSurface, size: 24,),
+                ),
+              ],
+            ),
 
+          ),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
+
+
 }
 
 Widget alertWidget(var data, context, ColorScheme palette) {
