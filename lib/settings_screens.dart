@@ -162,6 +162,9 @@ class AppearancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    String colorSource = context.select((ThemeProvider p) => p.getColorSource);
+    String customColorHex = context.select((ThemeProvider p) => p.getThemeSeedColorHex);
+
     return Material(
       color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
@@ -270,8 +273,45 @@ class AppearancePage extends StatelessWidget {
                         icon: Icons.colorize,
                         text: AppLocalizations.of(context)!.colorSource,
                         rawText: 'Color source',
-                        selected: context.select((ThemeProvider p) => p.getColorSource),
+                        selected: colorSource,
                         update: context.read<ThemeProvider>().setColorSource,
+                      ),
+
+                      const SizedBox(height: 30,),
+
+                      if (colorSource == "custom") SizedBox(
+                        height: 65,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: settingSwitches["Custom color"]!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            String name = settingSwitches["Custom color"]![index];
+                            return GestureDetector(
+                              onTap: () {
+                                HapticFeedback.mediumImpact();
+                                context.read<ThemeProvider>().setCustomColorScheme(name);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Color(getColorFromHex(name)),
+                                            borderRadius: BorderRadius.circular(33)
+                                        ),
+                                      ),
+                                      if (customColorHex == name) const Center(
+                                          child: Icon(Icons.check, color: WHITE,))
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
 
                       const SizedBox(height: 20,),

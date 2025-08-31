@@ -179,21 +179,17 @@ class FadingImageWidget extends StatefulWidget {
   State<FadingImageWidget> createState() => FadingImageWidgetState();
 }
 
-class FadingImageWidgetState extends State<FadingImageWidget> {
+class FadingImageWidgetState extends State<FadingImageWidget>{
   Image? _currentImage;
 
   //i tried multiple times to move out this logic from here,
   //but every time i tried it became a lot more laggy and buggy i don't know why
   //so in the end i just kept it here
-  Future<ImageService> updateImage() async {
-
+  Future<void> updateImage() async {
     ImageService imageService = await ImageService.getImageService(widget.condition, widget.loc, widget.imageSource);
-
-    print("image fetched");
+    ImageProvider imageProvider = imageService.image.image;
 
     if (widget.colorSource == "image") {
-      ImageProvider imageProvider = imageService.image.image;
-
       ColorScheme colorSchemeLight = await ColorScheme.fromImageProvider(
         provider: imageProvider,
         brightness: Brightness.light,
@@ -202,14 +198,19 @@ class FadingImageWidgetState extends State<FadingImageWidget> {
         provider: imageProvider,
         brightness: Brightness.dark,
       );
-      widget.updateColorPalette(colorSchemeLight, colorSchemeDark);
+      await widget.updateColorPalette(colorSchemeLight, colorSchemeDark);
     }
 
-    setState(() {
-      _currentImage = imageService.image;
-    });
+    // precache the image so that it is guaranteed to be ready for the fading
+    if (mounted) {
+      await precacheImage(imageProvider, context);
+    }
 
-    return imageService;
+    if (mounted) {
+      setState(() {
+        _currentImage = imageService.image;
+      });
+    }
   }
 
   @override
@@ -226,24 +227,27 @@ class FadingImageWidgetState extends State<FadingImageWidget> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 800),
-          switchInCurve: Curves.easeIn,
-          switchOutCurve: Curves.easeOut,
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-          child: Container(
-            key: ValueKey(_currentImage.hashCode),
-            child: (_currentImage == null)
-                ? Container(color: Theme.of(context).colorScheme.inverseSurface,)
-                : _currentImage,
+        children: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 800),
+            switchInCurve: Curves.easeIn,
+            switchOutCurve: Curves.easeOut,
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: Container(
+              key: ValueKey(_currentImage.hashCode),
+              child: (_currentImage == null)
+                  ? Container(color: Theme
+                  .of(context)
+                  .colorScheme
+                  .inverseSurface,)
+                  : _currentImage,
+            ),
           ),
-        ),
-        //Add a slight tint to make the text more legible
-        Container(color: const Color.fromARGB(30, 0, 0, 0),)
-      ]
+          //Add a slight tint to make the text more legible
+          Container(color: const Color.fromARGB(30, 0, 0, 0),)
+        ]
     );
   }
 }

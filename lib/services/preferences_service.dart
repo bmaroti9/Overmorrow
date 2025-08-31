@@ -21,6 +21,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 
+import 'color_service.dart';
+
 Map<String, List<String>> settingSwitches = {
   'Language' : [
     'English', //English
@@ -105,7 +107,10 @@ class PreferenceUtils {
 class ThemeProvider with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   String _brightness = "auto";
-  Color _themeSeedColor = Colors.blue;
+
+  String _themeSeedColorHex = "#c62828";
+  Color _themeSeedColor = Colors.red;
+
   String _colorSource = "image";
 
   ColorScheme? _colorSchemeLight;
@@ -116,7 +121,9 @@ class ThemeProvider with ChangeNotifier {
 
   String get getColorSource => _colorSource;
 
+  String get getThemeSeedColorHex => _themeSeedColorHex;
   Color get getThemeSeedColor => _themeSeedColor;
+
   ColorScheme? get getColorSchemeLight => _colorSchemeLight;
   ColorScheme? get getColorSchemeDark => _colorSchemeDark;
 
@@ -126,7 +133,7 @@ class ThemeProvider with ChangeNotifier {
 
   void _load() {
     loadTheme();
-    _colorSource = PreferenceUtils.getString("Color source", "image");
+    _loadColorSource();
 
     notifyListeners();
   }
@@ -138,6 +145,18 @@ class ThemeProvider with ChangeNotifier {
       case "dark": _themeMode = ThemeMode.dark;
       case "auto": _themeMode = ThemeMode.system;
     }
+  }
+
+  void _loadColorSource() {
+    _colorSource = PreferenceUtils.getString("Color source", "image");
+    if (_colorSource == "custom") {
+      loadCustomColorScheme();
+    }
+  }
+
+  void loadCustomColorScheme() {
+    _themeSeedColorHex = PreferenceUtils.getString("Custom color", "#c62828");
+    updateCustomColorFromHex();
   }
 
   void setBrightness(String brightness) {
@@ -155,20 +174,36 @@ class ThemeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> changeColorSchemeToImageScheme(ColorScheme lightColorScheme, ColorScheme darkColorScheme) async {
+  void changeColorSchemeToImageScheme(ColorScheme lightColorScheme, ColorScheme darkColorScheme) {
     _colorSchemeLight = lightColorScheme;
     _colorSchemeDark = darkColorScheme;
     notifyListeners();
   }
 
-  Future<void> setColorSource(String to) async {
+  void setColorSource(String to) {
     PreferenceUtils.setString("Color source", to);
     _colorSource = to;
 
     if (_colorSource == "wallpaper") {
+      //null it so it falls back to the dynamic palettes
       _colorSchemeLight = null;
       _colorSchemeDark = null;
     }
+    else if (_colorSource == "custom") {
+      loadCustomColorScheme();
+    }
+    notifyListeners();
+  }
+
+  void updateCustomColorFromHex() {
+    _themeSeedColor = Color(getColorFromHex(_themeSeedColorHex));
+    _colorSchemeLight = ColorScheme.fromSeed(seedColor: _themeSeedColor, brightness: Brightness.light);
+    _colorSchemeDark = ColorScheme.fromSeed(seedColor: _themeSeedColor, brightness: Brightness.dark);
+  }
+
+  void setCustomColorScheme(String to) {
+    _themeSeedColorHex = to;
+    updateCustomColorFromHex();
     notifyListeners();
   }
 }

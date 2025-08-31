@@ -248,7 +248,7 @@ class MyHomePageState extends State<MyHomePage> {
     final FadingImageWidgetState? imageState = imageKey.currentState;
 
     if (imageState != null) {
-      imageService = await imageState.updateImage();
+      await imageState.updateImage();
     }
 
     print(("SUCCESS", location, latLon, imageState));
@@ -270,41 +270,6 @@ class MyHomePageState extends State<MyHomePage> {
           context: context),
         LoadingIndicator(isLoading: isLoading,)
       ],
-    );
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dark Theme Test'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-      ),
-      body: Center(
-        child: Stack(
-          children: [
-            if (isLoading) LoadingIndicator(isLoading: isLoading,),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20),
-
-                if (data != null) Text(data!.current.tempC.toString()),
-
-                ElevatedButton(
-                    onPressed: () {
-                      context.read<ThemeProvider>().changeThemeSeedColor(Colors.purple);
-                    },
-                    child: const Text('Styled Button')
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //toggleLoad();
-        },
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }
