@@ -201,7 +201,8 @@ class NewMain extends StatelessWidget {
         ),
         children: [
 
-          const SizedBox(height: 20,),
+          FadingWidget(data: data, time: data.updatedTime, imageService: imageService, key: Key(data.updatedTime.toString())),
+
           Circles(data: data),
 
           NewSunriseSunset(data: data, width: size.width),
@@ -345,7 +346,7 @@ class TabletLayout extends StatelessWidget {
                     children: [
                       Align(
                         alignment: Alignment.centerRight,
-                        child: FadingWidget(data: data, time: data.updatedTime, key: Key(data.updatedTime.toString())),
+                        child: FadingWidget(data: data, time: data.updatedTime, imageService: null,)
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 0),

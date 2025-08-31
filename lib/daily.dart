@@ -205,7 +205,7 @@ class DailyCollapsed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String dayName = getDayName(day.date, context);
+    String dayName = getDayName(day.date, context, context.select((SettingsProvider p) => p.getDateFormat));
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -305,7 +305,7 @@ class DailyExpanded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String dayName = getDayName(day.date, context);
+    String dayName = getDayName(day.date, context, context.select((SettingsProvider p) => p.getDateFormat));
     return Padding(
       padding: const EdgeInsets.only(left: 14, right: 14, top: 0, bottom: 16),
       child: Column(

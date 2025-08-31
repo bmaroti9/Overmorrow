@@ -51,6 +51,8 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     super.build(context);
 
+    String dateFormat = context.select((SettingsProvider p) => p.getDateFormat);
+
     return Padding(
       padding: widget.elevated ? const EdgeInsets.all(0)
           : const EdgeInsets.only(left: 21, right: 21, top: 0, bottom: 25),
@@ -60,7 +62,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
 
           SizedBox(
             height: 195,
-            child: hourBoxes(widget.hours, _value, widget.elevated, context),
+            child: hourBoxes(widget.hours, _value, widget.elevated, context, dateFormat),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 0, left: 5),
@@ -101,7 +103,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
   }
 }
 
-Widget hourBoxes(hours, _value, elevated, context) {
+Widget hourBoxes(hours, _value, elevated, context, String dateFormat) {
 
   return AnimationLimiter(
     child: ListView.builder(
@@ -116,7 +118,7 @@ Widget hourBoxes(hours, _value, elevated, context) {
             child: SlideAnimation(
               horizontalOffset: 100.0,
               child: FadeInAnimation(
-                child: dividerWidget(hour.day.toString(), context)
+                child: dividerWidget(getDayName(hour, context, dateFormat), context)
               ),
             ),
           );

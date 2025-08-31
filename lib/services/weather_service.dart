@@ -49,7 +49,7 @@ String getDateStringFromLocalTime(DateTime now) {
   return "${weekNames[now.weekday - 1]}, ${monthNames[now.month - 1]} ${now.day}";
 }
 
-String getDayName(DateTime day, BuildContext context) {
+String getDayName(DateTime day, BuildContext context, String dateFormat) {
   List<String> weeks = [
     AppLocalizations.of(context)!.mon,
     AppLocalizations.of(context)!.tue,
@@ -60,9 +60,7 @@ String getDayName(DateTime day, BuildContext context) {
     AppLocalizations.of(context)!.sun
   ];
   String weekName = weeks[day.weekday - 1];
-  final String format = context.select((SettingsProvider p) => p.getDateFormat) == "mm/dd"
-    ? "M/dd"
-    : "dd/MM";
+  final String format = dateFormat == "mm/dd" ? "M/dd" : "dd/MM";
   final String date = DateFormat(format).format(day);
   return "$weekName, $date";
 }

@@ -139,7 +139,7 @@ class Circles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 19, right: 19, bottom: 13, top: 2),
+        padding: const EdgeInsets.only(left: 19, right: 19, bottom: 13, top: 0),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -244,7 +244,7 @@ class DescriptionCircle extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top:6),
-                  child: Text(undercaption, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 15),)
+                  child: Text(undercaption, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 14),)
                 )
               )
             ]
@@ -256,10 +256,11 @@ class DescriptionCircle extends StatelessWidget {
 
 
 class FadingWidget extends StatefulWidget  {
-  final data;
+  final WeatherData data;
+  final ImageService? imageService;
   final time;
 
-  const FadingWidget({super.key, required this.data, required this.time});
+  const FadingWidget({super.key, required this.data, required this.time, required this.imageService});
 
   @override
   _FadingWidgetState createState() => _FadingWidgetState();
@@ -275,14 +276,7 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
   @override
   void initState() {
     super.initState();
-    _timer = Timer(const Duration(milliseconds: 400), () {
-      if (mounted) {
-        setState(() {
-          _isVisible = true;
-        });
-      }
-    });
-    _timer = Timer(const Duration(milliseconds: 2000), () {
+    _timer = Timer(const Duration(milliseconds: 3000), () {
       if (mounted) {
         setState(() {
           _isVisible = false;
@@ -302,163 +296,150 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
   Widget build(BuildContext context) {
     super.build(context);
 
-    final dif = widget.time.difference(widget.data.fetch_datetime).inMinutes;
+    if (widget.imageService != null) {
+      final dif = widget.time.difference(widget.data.fetchDatetime).inMinutes;
 
-    String text = AppLocalizations.of(context)!.updatedJustNow;
+      String text = AppLocalizations.of(context)!.updatedJustNow;
 
-    if (dif > 0 && dif < 45) {
-      text = AppLocalizations.of(context)!.updatedXMinutesAgo(dif);
-    }
-    else if (dif >= 45 && dif < 1440) {
-      int hour = (dif + 30) ~/ 60;
-      text = AppLocalizations.of(context)!.updatedXHoursAgo(hour);
-    }
-    else if (dif >= 1440) { //number of minutes in a day
-      int day = (dif + 720) ~/ 1440;
-      text = AppLocalizations.of(context)!.updatedXDaysAgo(day);
-    }
+      if (dif > 0 && dif < 45) {
+        text = AppLocalizations.of(context)!.updatedXMinutesAgo(dif);
+      }
+      else if (dif >= 45 && dif < 1440) {
+        int hour = (dif + 30) ~/ 60;
+        text = AppLocalizations.of(context)!.updatedXHoursAgo(hour);
+      }
+      else if (dif >= 1440) { //number of minutes in a day
+        int day = (dif + 720) ~/ 1440;
+        text = AppLocalizations.of(context)!.updatedXDaysAgo(day);
+      }
 
-    List<String> split = text.split(',');
+      List<String> split = text.split(',');
 
-    ColorScheme palette = widget.data.current.palette;
-
-    return Container(
-      color: widget.data.isonline ? Colors.transparent : palette.primaryContainer,
-      margin: widget.data.isonline ? const EdgeInsets.only(bottom: 1) : const EdgeInsets.only(bottom: 5),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 1000),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          final inAnimation = CurvedAnimation(
-            parent: animation,
-            curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
-          );
-          final outAnimation = CurvedAnimation(
-            parent: animation,
-            curve: const Interval(1.0, 0.5, curve: Curves.easeOut),
-          );
-          return FadeTransition(
-            opacity: _isVisible ? outAnimation : inAnimation,
-            child: child,
-          );
-        },
-        child: SinceLastUpdate(
-          key: ValueKey<bool>(_isVisible),
-          split: split,
-          data: widget.data,
-          isVisible: _isVisible,
+      return Container(
+        height: 25,
+        color: widget.data.isOnline ? Colors.transparent : Theme.of(context).colorScheme.primaryContainer,
+        margin: widget.data.isOnline ? const EdgeInsets.only(bottom: 1) : const EdgeInsets.only(bottom: 5),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 1000),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            final inAnimation = CurvedAnimation(
+              parent: animation,
+              curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
+            );
+            final outAnimation = CurvedAnimation(
+              parent: animation,
+              curve: const Interval(1.0, 0.5, curve: Curves.easeOut),
+            );
+            return FadeTransition(
+              opacity: _isVisible ? outAnimation : inAnimation,
+              child: child,
+            );
+          },
+          child: SinceLastUpdate(
+            key: ValueKey<bool>(_isVisible),
+            split: split,
+            data: widget.data,
+            isVisible: _isVisible,
+            imageService: widget.imageService!,
+          ),
         ),
-      ),
-    );
+      );
+    }
+    return const SizedBox(height: 25,);
   }
 }
 
+class SinceLastUpdate extends StatelessWidget {
 
-class SinceLastUpdate extends StatefulWidget {
-  final split;
-  final data;
-  final isVisible;
+  final List<String> split;
+  final WeatherData data;
+  final bool isVisible;
+  final ImageService imageService;
 
-  SinceLastUpdate({Key? key, required this.data, required this.split, required this.isVisible}) : super(key: key);
-
-  @override
-  _SinceLastUpdateState createState() => _SinceLastUpdateState();
-}
-
-class _SinceLastUpdateState extends State<SinceLastUpdate>{
+  const SinceLastUpdate({Key? key, required this.data, required this.split, required this.isVisible,
+    required this.imageService}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
-    Color text = widget.data.isonline ? widget.data.current.palette.onSurface
-        : widget.data.current.palette.onPrimaryContainer;
-    Color highlight = widget.data.isonline ? widget.data.current.palette.primary
-        : widget.data.current.palette.onPrimaryContainer;
+    Color text = data.isOnline ? Theme.of(context).colorScheme.outline
+        : Theme.of(context).colorScheme.onPrimaryContainer;
+    Color highlight = data.isOnline ? Theme.of(context).colorScheme.primary
+        : Theme.of(context).colorScheme.onPrimaryContainer;
 
-    if (widget.isVisible) {
-      return SizedBox(
-        height: 21,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              if (!widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 2),
-                child: Icon(Icons.download_for_offline_outlined, color: highlight, size: 13),
-              ),
-              if (!widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 7),
-                child: comfortatext(AppLocalizations.of(context)!.offline, 14, widget.data.settings,
-                    color: highlight, weight: FontWeight.w300,),
-              ),
-              if (widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 3, top: 1),
-                child: Icon(Icons.access_time, color: highlight, size: 13,),
-              ),
-              comfortatext('${widget.split[0]},', 14, widget.data.settings,
-                  color: widget.data.isonline ? highlight
-                      : text, weight: FontWeight.w300,),
+    if (isVisible) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 31),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (!data.isOnline) Padding(
+              padding: const EdgeInsets.only(right: 2),
+              child: Icon(Icons.download_for_offline_outlined, color: highlight, size: 13),
+            ),
+            if (!data.isOnline) Padding(
+              padding: const EdgeInsets.only(right: 7),
+              child: Text(AppLocalizations.of(context)!.offline, style: TextStyle(color: highlight, fontSize: 13),)
+            ),
+            if (data.isOnline) Padding(
+              padding: const EdgeInsets.only(right: 3, top: 1),
+              child: Icon(Icons.access_time, color: highlight, size: 13,),
+            ),
+            Text('${split[0]},', style: TextStyle(color: highlight, fontSize: 13),),
 
-              comfortatext(widget.split.length > 1 ? widget.split[1] : "", 14, widget.data.settings,
-                  color: text, weight: FontWeight.w300,),
-            ],
-          ),
+            Text(split.length > 1 ? split[1] : "", style: TextStyle(color: text, fontSize: 13),),
+
+          ],
         ),
       );
     } else{
       List<String> split = AppLocalizations.of(context)!.photoByXOnUnsplash.split(",");
-      return SizedBox(
-        height: 21,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              if (!widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 2),
-                child: Icon(Icons.download_for_offline_outlined, color: highlight, size: 13,),
-              ),
-              if (!widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 7),
-                child: comfortatext(AppLocalizations.of(context)!.offline, 13, widget.data.settings,
-                    color: highlight, weight: FontWeight.w300),
-              ),
-              TextButton(
-                onPressed: () async {
-                  await _launchUrl(widget.data.current.imageService.photolink + "?utm_source=overmorrow&utm_medium=referral");
-                },
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(1),
-                  minimumSize: const Size(0, 22),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
-                child: comfortatext(split[0], 13, widget.data.settings, color: text,
-                    decoration: TextDecoration.underline, weight: FontWeight.w300),
-              ),
-              comfortatext(split[1], 13, widget.data.settings, color: text, weight: FontWeight.w300),
-              TextButton(
-                onPressed: () async {
-                  await _launchUrl(widget.data.current.imageService.userlink + "?utm_source=overmorrow&utm_medium=referral");
-                },
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(1),
-                  minimumSize: const Size(0, 22),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
-                child: comfortatext(widget.data.current.imageService.username, 13, widget.data.settings, color: text,
-                    decoration: TextDecoration.underline, weight: FontWeight.w300),
-              ),
-              comfortatext(split[3], 13, widget.data.settings, color: text, weight: FontWeight.w300),              TextButton(
-                onPressed: () async {
-                  await _launchUrl("https://unsplash.com/?utm_source=overmorrow&utm_medium=referral");
-                },
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(1),
-                  minimumSize: const Size(0, 22),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
-                child: comfortatext(split[4], 13, widget.data.settings, color: text,
-                    decoration: TextDecoration.underline, weight: FontWeight.w300),
-              ),
-            ],
-          ),
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 31),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (!data.isOnline) Padding(
+              padding: const EdgeInsets.only(right: 2),
+              child: Icon(Icons.download_for_offline_outlined, color: highlight, size: 13,),
+            ),
+            if (!data.isOnline) Padding(
+              padding: const EdgeInsets.only(right: 7),
+                child: Text(AppLocalizations.of(context)!.offline, style: TextStyle(color: highlight, fontSize: 14),)
+            ),
+            TextButton(
+              onPressed: () async {
+                await _launchUrl("${imageService.photolink}?utm_source=overmorrow&utm_medium=referral");
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                minimumSize: const Size(0, 22),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: Text(split[0], style: TextStyle(color: text, fontSize: 13, ),)
+            ),
+            Text(split[1], style: TextStyle(color: text, fontSize: 13),),
+            TextButton(
+              onPressed: () async {
+                await _launchUrl("${imageService.userlink}?utm_source=overmorrow&utm_medium=referral");
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                minimumSize: const Size(0, 22),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: Text(imageService.username, style: TextStyle(color: text, fontSize: 13,),)
+            ),
+            Text(split[3], style: TextStyle(color: text, fontSize: 13),)      ,
+            TextButton(
+              onPressed: () async {
+                await _launchUrl("https://unsplash.com/?utm_source=overmorrow&utm_medium=referral");
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                minimumSize: const Size(0, 22),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: Text(split[4], style: TextStyle(color: text, fontSize: 13, ),)
+            ),
+          ],
         ),
       );
     }
