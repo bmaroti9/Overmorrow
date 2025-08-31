@@ -159,70 +159,11 @@ class ParrallaxBackground extends StatelessWidget {
   }
 }
 
-class FadingImageWidget extends StatefulWidget {
-  final Function updateColorPalette;
-  final String imageSource;
-  final String colorSource;
-  final String condition;
-  final String loc;
 
-  const FadingImageWidget({
-    super.key,
-    required this.updateColorPalette,
-    required this.imageSource,
-    required this.colorSource,
-    required this.condition,
-    required this.loc,
-  });
+class FadingImageWidget extends StatelessWidget {
+  final Image? image;
 
-  @override
-  State<FadingImageWidget> createState() => FadingImageWidgetState();
-}
-
-class FadingImageWidgetState extends State<FadingImageWidget>{
-  Image? _currentImage;
-
-  //i tried multiple times to move out this logic from here,
-  //but every time i tried it became a lot more laggy and buggy i don't know why
-  //so in the end i just kept it here
-  Future<void> updateImage() async {
-    ImageService imageService = await ImageService.getImageService(widget.condition, widget.loc, widget.imageSource);
-    ImageProvider imageProvider = imageService.image.image;
-
-    if (widget.colorSource == "image") {
-      ColorScheme colorSchemeLight = await ColorScheme.fromImageProvider(
-        provider: imageProvider,
-        brightness: Brightness.light,
-      );
-      ColorScheme colorSchemeDark = await ColorScheme.fromImageProvider(
-        provider: imageProvider,
-        brightness: Brightness.dark,
-      );
-      await widget.updateColorPalette(colorSchemeLight, colorSchemeDark);
-    }
-
-    // precache the image so that it is guaranteed to be ready for the fading
-    if (mounted) {
-      await precacheImage(imageProvider, context);
-    }
-
-    if (mounted) {
-      setState(() {
-        _currentImage = imageService.image;
-      });
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant FadingImageWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.imageSource != oldWidget.imageSource) {
-      updateImage();
-    }
-    if (widget.colorSource != oldWidget.colorSource) {
-      updateImage();
-    }
-  }
+  const FadingImageWidget({super.key, required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -236,13 +177,13 @@ class FadingImageWidgetState extends State<FadingImageWidget>{
               return FadeTransition(opacity: animation, child: child);
             },
             child: Container(
-              key: ValueKey(_currentImage.hashCode),
-              child: (_currentImage == null)
+              key: ValueKey(image.hashCode),
+              child: (image == null)
                   ? Container(color: Theme
                   .of(context)
                   .colorScheme
                   .inverseSurface,)
-                  : _currentImage,
+                  : image,
             ),
           ),
           //Add a slight tint to make the text more legible

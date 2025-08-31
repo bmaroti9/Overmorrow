@@ -39,11 +39,9 @@ import 'ui_helper.dart';
 class NewMain extends StatelessWidget {
   final WeatherData data;
   final updateLocation;
-  final context;
-  final imageKey;
-  final updateColorPalette;
+  final ImageService? imageService;
 
-  NewMain({required this.data, required this.updateLocation, required this.imageKey, required this.context, required this.updateColorPalette});
+  NewMain({required this.data, required this.updateLocation, required this.imageService});
 
   /*
   @override
@@ -162,12 +160,7 @@ class NewMain extends StatelessWidget {
           blurContent: false,
           headerHeight: (size.height ) * 0.495,
           header:  FadingImageWidget(
-            key: imageKey,
-            updateColorPalette: updateColorPalette,
-            condition: data.current.condition,
-            loc: data.place,
-            imageSource: context.select((SettingsProvider p) => p.getImageSource,),
-            colorSource: context.select((ThemeProvider p) => p.getColorSource,),
+            image: imageService?.image,
           ),
           //header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),color: BLACK),
           overlay: Stack(

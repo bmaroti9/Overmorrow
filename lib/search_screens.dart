@@ -784,18 +784,18 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
         padding: const EdgeInsets.only(
             left: 25, right: 25, top: 23, bottom: 23),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.tertiaryContainer,
+          color: Theme.of(context).colorScheme.secondaryFixedDim,
           borderRadius: BorderRadius.circular(40),
         ),
         child: Row(
           children: [
             Icon(Icons.gps_fixed,
-              color: Theme.of(context).colorScheme.onTertiaryContainer, size: 19),
+              color: Theme.of(context).colorScheme.onSecondaryFixed, size: 19),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, bottom: 2),
                 child: Text(AppLocalizations.of(context)!.grantLocationPermission,
-                  style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 19),)
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryFixed, fontSize: 19),)
               ),
             ),
           ],
@@ -843,18 +843,18 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
     padding: const EdgeInsets.only(
         left: 25, right: 25, top: 20, bottom: 20),
     decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.tertiaryContainer,
+      color: Theme.of(context).colorScheme.secondaryFixedDim,
       borderRadius: BorderRadius.circular(40),
     ),
     child: Row(
       children: [
         Icon(Icons.gps_off,
-          color: Theme.of(context).colorScheme.onTertiaryContainer, size: 19,),
+          color: Theme.of(context).colorScheme.onSecondaryFixed, size: 19,),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(left: 10, bottom: 2),
             child: Text(locationMessage, style: TextStyle(
-                color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 19),)
+                color: Theme.of(context).colorScheme.onSecondaryFixed, fontSize: 19),)
           ),
         ),
 

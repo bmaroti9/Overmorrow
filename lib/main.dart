@@ -194,7 +194,8 @@ class MyHomePageState extends State<MyHomePage> {
   WeatherData? data;
   ImageService? imageService;
 
-  final GlobalKey<FadingImageWidgetState> imageKey = GlobalKey<FadingImageWidgetState>();
+  String? _lastImageSource;
+  String? _lastColorSource;
 
   @override
   void initState() {
@@ -207,13 +208,28 @@ class MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final newImageSource = context.read<SettingsProvider>().getImageSource;
+    final newColorSource = context.read<ThemeProvider>().getColorSource;
+
+    //only update if these two have changed
+    if (newImageSource != _lastImageSource || newColorSource != _lastColorSource) {
+      _lastImageSource = newImageSource;
+      _lastColorSource = newColorSource;
+
+      if (data != null) {
+        updateImage(data!);
+      }
+    }
+  }
+
+
   void updateLocation(String latLon, String location) {
     fetchData(location, latLon);
     context.read<SettingsProvider>().setLocationAndLatLon(location, latLon);
-  }
-
-  void updateColorPalette(ColorScheme colorSchemeLight, ColorScheme colorSchemeDark) {
-    context.read<ThemeProvider>().changeColorSchemeToImageScheme(colorSchemeLight, colorSchemeDark);
   }
 
   void fetchData(String location, String latLon) async {
@@ -221,10 +237,7 @@ class MyHomePageState extends State<MyHomePage> {
       isLoading = true;
     });
 
-    //WeatherData _data = await WeatherData.getFullData("New York", "40.7128, -74.0060");
-
-    //I don't want to complete faster than this so everything has time to animate and it doesn't feel to abrupt
-    const minDuration = Duration(milliseconds: 500);
+    const minDuration = Duration(milliseconds: 300);
     final minimumDelayFuture = Future.delayed(minDuration);
 
     final dataFetchFuture = WeatherData.getFullData(location, latLon);
@@ -234,24 +247,13 @@ class MyHomePageState extends State<MyHomePage> {
       minimumDelayFuture,
     ]);
 
-    WeatherData _data = results[0] as WeatherData;
+    WeatherData _data = results[0];
 
     setState(() {
       data = _data;
     });
 
-    //I don't know why this works but it allows the imageState to load even in initState
-    final completer = Completer<void>();
-    WidgetsBinding.instance.addPostFrameCallback((_) => completer.complete());
-    await completer.future;
-
-    final FadingImageWidgetState? imageState = imageKey.currentState;
-
-    if (imageState != null) {
-      await imageState.updateImage();
-    }
-
-    print(("SUCCESS", location, latLon, imageState));
+    await updateImage(_data);
 
     //keep it there while the image is animating
     await Future.delayed(const Duration(milliseconds: 800));
@@ -261,13 +263,49 @@ class MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future<void> updateImage(WeatherData data) async {
+    final settingsProvider = context.read<SettingsProvider>();
+    final themeProvider = context.read<ThemeProvider>();
+
+    ImageService _imageService = await ImageService.getImageService(
+        data.current.condition, data.place, settingsProvider.getImageSource);
+    ImageProvider imageProvider = _imageService.image.image;
+
+    if (themeProvider.getColorSource == "image") {
+      ColorScheme colorSchemeLight = await ColorScheme.fromImageProvider(
+        provider: imageProvider,
+        brightness: Brightness.light,
+      );
+      ColorScheme colorSchemeDark = await ColorScheme.fromImageProvider(
+        provider: imageProvider,
+        brightness: Brightness.dark,
+      );
+
+      themeProvider.changeColorSchemeToImageScheme(colorSchemeLight, colorSchemeDark);
+    }
+
+    // precache the image so that it is guaranteed to be ready for the fading
+    if (mounted) {
+      await precacheImage(imageProvider, context);
+    }
+
+    if (mounted) {
+      setState(() {
+        imageService = _imageService;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    context.watch<SettingsProvider>().getImageSource;
+    context.watch<ThemeProvider>().getColorSource;
+
     return Stack(
       children: [
         Container(color: Theme.of(context).colorScheme.surface,),
-        if (data != null) NewMain(data: data!, updateLocation: updateLocation, imageKey: imageKey, updateColorPalette: updateColorPalette,
-          context: context),
+        if (data != null) NewMain(data: data!, updateLocation: updateLocation, imageService: imageService),
         LoadingIndicator(isLoading: isLoading,)
       ],
     );
