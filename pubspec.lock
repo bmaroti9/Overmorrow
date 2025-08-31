@@ -121,14 +121,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  dynamic_color:
+  dynamic_system_colors:
     dependency: "direct main"
     description:
-      name: dynamic_color
-      sha256: "43a5a6679649a7731ab860334a5812f2067c2d9ce6452cf069c5e0c25336c17c"
+      name: dynamic_system_colors
+      sha256: "43794e658fa88cbdec9f397dd1afd2eb69b6c9717e99b93b16ba37c3aa3b3a8c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.1"
+    version: "1.8.0"
   expressive_loading_indicator:
     dependency: "direct main"
     description:

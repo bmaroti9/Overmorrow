@@ -166,7 +166,8 @@ class NewMain extends StatelessWidget {
             updateColorPalette: updateColorPalette,
             condition: data.current.condition,
             loc: data.place,
-            imageSource: context.select((SettingsProvider p) => p.getImageSource),
+            imageSource: context.select((SettingsProvider p) => p.getImageSource,),
+            colorSource: context.select((ThemeProvider p) => p.getColorSource,),
           ),
           //header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),color: BLACK),
           overlay: Stack(

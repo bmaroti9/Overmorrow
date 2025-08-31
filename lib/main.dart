@@ -20,6 +20,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 import 'package:expressive_loading_indicator/expressive_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -113,6 +114,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeMode themeMode = context.watch<ThemeProvider>().getThemeMode;
+    final Locale locale = context.select((SettingsProvider p) => p.getLocale);
+
+    final ColorScheme? lightColorScheme = context.watch<ThemeProvider>().getColorSchemeLight;
+    final ColorScheme? darkColorScheme = context.watch<ThemeProvider>().getColorSchemeDark;
 
     final EdgeInsets systemGestureInsets = MediaQuery.of(context).systemGestureInsets;
     if (systemGestureInsets.left > 0) {
@@ -124,40 +130,53 @@ class _MyAppState extends State<MyApp> {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     }
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      themeMode: context.watch<ThemeProvider>().getThemeMode,
+    return DynamicColorBuilder(
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        ColorScheme dynamicLightColorScheme;
+        ColorScheme dynamicDarkColorScheme;
 
-      locale: context.select((SettingsProvider p) => p.getLocale),
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: AppLocalizations.supportedLocales,
+        if (lightDynamic != null && darkDynamic != null) {
+          dynamicLightColorScheme = lightDynamic.harmonized();
+          dynamicDarkColorScheme = darkDynamic.harmonized();
+        } else {
+          dynamicLightColorScheme = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.light);
+          dynamicDarkColorScheme = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark);
+        }
 
-      theme: ThemeData(
-        colorScheme: context.watch<ThemeProvider>().getColorSchemeLight,
-        useMaterial3: true,
-        fontFamily: GoogleFonts.outfit().fontFamily,
-        pageTransitionsTheme: const PageTransitionsTheme(
-          builders: {
-            TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
-          }
-        )
-      ),
-      darkTheme: ThemeData(
-        colorScheme: context.watch<ThemeProvider>().getColorSchemeDark,
-        useMaterial3: true,
-        fontFamily: GoogleFonts.outfit().fontFamily,
-        pageTransitionsTheme: const PageTransitionsTheme(
-          builders: {
-            TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
-          }
-        )
-      ),
-      home: const MyHomePage()
+        return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            themeMode: themeMode,
+            locale: locale,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            theme: ThemeData(
+                colorScheme: lightColorScheme ?? dynamicLightColorScheme,
+                useMaterial3: true,
+                fontFamily: GoogleFonts.outfit().fontFamily,
+                pageTransitionsTheme: const PageTransitionsTheme(
+                    builders: {
+                      TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
+                    }
+                )
+            ),
+            darkTheme: ThemeData(
+                colorScheme: darkColorScheme ?? dynamicDarkColorScheme,
+                useMaterial3: true,
+                fontFamily: GoogleFonts.outfit().fontFamily,
+                pageTransitionsTheme: const PageTransitionsTheme(
+                    builders: {
+                      TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
+                    }
+                )
+            ),
+            home: const MyHomePage()
+        );
+      },
     );
   }
 }

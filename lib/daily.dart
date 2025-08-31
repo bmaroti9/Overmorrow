@@ -244,7 +244,7 @@ class DailyCollapsed extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Text(
                     "${unitConversion(day.minTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
-                    style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 18, fontWeight: FontWeight.w600),
+                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 18, fontWeight: FontWeight.w600),
                   ),
               ),
             ),
@@ -283,7 +283,7 @@ class DailyCollapsed extends StatelessWidget {
             ),
             Text(
               "${unitConversion(day.maxTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
-              style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 18, fontWeight: FontWeight.w600),
+              style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(width: 12,),
             Icon(Icons.expand_more, size: 23, color: Theme.of(context).colorScheme.onSurface,)

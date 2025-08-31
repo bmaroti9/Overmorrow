@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:math';
 
+import 'package:expressive_loading_indicator/expressive_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -91,7 +92,7 @@ Widget pollenWidget(IconData icon, String name, double value, WeatherData data, 
     padding: const EdgeInsets.only(top:5, bottom: 5),
     child: Row(
       children: [
-        Icon(icon, size: 22, color: Theme.of(context).colorScheme.secondary),
+        Icon(icon, size: 22, color: Theme.of(context).colorScheme.tertiary),
         Padding(
           padding: const EdgeInsets.only(left: 17),
           child: Text(name, style: const TextStyle(fontSize: 17),)
@@ -100,10 +101,7 @@ Widget pollenWidget(IconData icon, String name, double value, WeatherData data, 
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: categoryIndex >= 4 ? Theme.of(context).colorScheme.errorContainer
-                : categoryIndex >= 3 ? Theme.of(context).colorScheme.primaryContainer
-                : categoryIndex >= 2 ? Theme.of(context).colorScheme.secondaryContainer
-                : Theme.of(context).colorScheme.surfaceContainerHigh,
+              color: Theme.of(context).colorScheme.tertiaryContainer
             ),
             padding: const EdgeInsets.only(top: 8, bottom: 8),
             width: 75,
@@ -235,10 +233,18 @@ class _AllergensPageState extends State<AllergensPage> {
                 if (snapshot.connectionState != ConnectionState.done) {
                   return Padding(
                     padding: const EdgeInsets.only(top: 200),
-                    child: Center(
-                      child: LoadingAnimationWidget.staggeredDotsWave(
-                        color: Theme.of(context).colorScheme.secondary,
-                        size: 40,
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: Theme.of(context).colorScheme.primaryContainer
+                        ),
+                        margin: const EdgeInsets.only(top: 210),
+                        padding: const EdgeInsets.all(3),
+                        width: 64,
+                        height: 64,
+                        child: const ExpressiveLoadingIndicator(),
                       ),
                     ),
                   );
@@ -428,7 +434,7 @@ Widget mainPollutantIndicator(WeatherData data, extendedAqi, context) {
     padding: const EdgeInsets.only(top: 25, bottom: 3),
     child: Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.tertiaryContainer,
+        color: Theme.of(context).colorScheme.secondaryContainer,
         borderRadius: BorderRadius.circular(33),
       ),
       height: 67,
@@ -436,10 +442,10 @@ Widget mainPollutantIndicator(WeatherData data, extendedAqi, context) {
       child: Row(
         children: [
           Text(AppLocalizations.of(context)!.mainPollutant, style: TextStyle(
-            color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 18)),
+            color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 18)),
           const Spacer(),
           Text(extendedAqi.mainPollutant, style: TextStyle(
-              color: Theme.of(context).colorScheme.tertiary, fontWeight: FontWeight.w600, fontSize: 18))
+              color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w600, fontSize: 18))
         ],
       ),
     ),
@@ -655,7 +661,7 @@ Widget dustAndAODIndicators(WeatherData data, OMExtendedAqi extendedAqi, context
                 height: 145,
                 decoration: BoxDecoration(
                   border: Border.all(width: 1.5, color: Theme.of(context).colorScheme.outlineVariant),
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(33), bottomLeft: Radius.circular(33),
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(33), bottomLeft: Radius.circular(33),
                     bottomRight: Radius.circular(18), topRight: Radius.circular(18)),
                 ),
                 padding: const EdgeInsets.all(22),
@@ -699,7 +705,7 @@ Widget dustAndAODIndicators(WeatherData data, OMExtendedAqi extendedAqi, context
                 height: 145,
                 decoration: BoxDecoration(
                   border: Border.all(width: 1.5, color: Theme.of(context).colorScheme.outlineVariant),
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(18), bottomLeft: Radius.circular(18),
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(18), bottomLeft: Radius.circular(18),
                       bottomRight: Radius.circular(33), topRight: Radius.circular(33)),
                 ),
                 padding: const EdgeInsets.all(22),
@@ -917,11 +923,11 @@ Widget HourlyQqi(WeatherData data, hourValues, name, OMExtendedAqi extendedAqi, 
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.tertiaryContainer,
+                  color: Theme.of(context).colorScheme.secondaryContainer,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 padding: const EdgeInsets.all(6),
-                child: Icon(Icons.grain, size: 18, color: Theme.of(context).colorScheme.tertiary)
+                child: Icon(Icons.grain, size: 18, color: Theme.of(context).colorScheme.primary)
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10),

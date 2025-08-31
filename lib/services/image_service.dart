@@ -162,6 +162,7 @@ class ParrallaxBackground extends StatelessWidget {
 class FadingImageWidget extends StatefulWidget {
   final Function updateColorPalette;
   final String imageSource;
+  final String colorSource;
   final String condition;
   final String loc;
 
@@ -169,6 +170,7 @@ class FadingImageWidget extends StatefulWidget {
     super.key,
     required this.updateColorPalette,
     required this.imageSource,
+    required this.colorSource,
     required this.condition,
     required this.loc,
   });
@@ -189,22 +191,23 @@ class FadingImageWidgetState extends State<FadingImageWidget> {
 
     print("image fetched");
 
-    ImageProvider imageProvider = imageService.image.image;
+    if (widget.colorSource == "image") {
+      ImageProvider imageProvider = imageService.image.image;
 
-    ColorScheme colorSchemeLight = await ColorScheme.fromImageProvider(
-      provider: imageProvider,
-      brightness: Brightness.light,
-    );
-    ColorScheme colorSchemeDark = await ColorScheme.fromImageProvider(
-      provider: imageProvider,
-      brightness: Brightness.dark,
-    );
+      ColorScheme colorSchemeLight = await ColorScheme.fromImageProvider(
+        provider: imageProvider,
+        brightness: Brightness.light,
+      );
+      ColorScheme colorSchemeDark = await ColorScheme.fromImageProvider(
+        provider: imageProvider,
+        brightness: Brightness.dark,
+      );
+      widget.updateColorPalette(colorSchemeLight, colorSchemeDark);
+    }
 
     setState(() {
       _currentImage = imageService.image;
     });
-
-    await widget.updateColorPalette(colorSchemeLight, colorSchemeDark);
 
     return imageService;
   }
@@ -213,6 +216,9 @@ class FadingImageWidgetState extends State<FadingImageWidget> {
   void didUpdateWidget(covariant FadingImageWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.imageSource != oldWidget.imageSource) {
+      updateImage();
+    }
+    if (widget.colorSource != oldWidget.colorSource) {
       updateImage();
     }
   }

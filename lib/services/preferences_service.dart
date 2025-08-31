@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 
 Map<String, List<String>> settingSwitches = {
   'Language' : [
@@ -105,15 +106,19 @@ class ThemeProvider with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   String _brightness = "auto";
   Color _themeSeedColor = Colors.blue;
-  ColorScheme _colorSchemeLight = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.light);
-  ColorScheme _colorSchemeDark = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark);
+  String _colorSource = "image";
+
+  ColorScheme? _colorSchemeLight;
+  ColorScheme? _colorSchemeDark;
 
   ThemeMode get getThemeMode => _themeMode;
   String get getBrightness => _brightness;
 
+  String get getColorSource => _colorSource;
+
   Color get getThemeSeedColor => _themeSeedColor;
-  ColorScheme get getColorSchemeLight => _colorSchemeLight;
-  ColorScheme get getColorSchemeDark => _colorSchemeDark;
+  ColorScheme? get getColorSchemeLight => _colorSchemeLight;
+  ColorScheme? get getColorSchemeDark => _colorSchemeDark;
 
   ThemeProvider() {
     _load();
@@ -121,6 +126,7 @@ class ThemeProvider with ChangeNotifier {
 
   void _load() {
     loadTheme();
+    _colorSource = PreferenceUtils.getString("Color source", "image");
 
     notifyListeners();
   }
@@ -152,6 +158,17 @@ class ThemeProvider with ChangeNotifier {
   Future<void> changeColorSchemeToImageScheme(ColorScheme lightColorScheme, ColorScheme darkColorScheme) async {
     _colorSchemeLight = lightColorScheme;
     _colorSchemeDark = darkColorScheme;
+    notifyListeners();
+  }
+
+  Future<void> setColorSource(String to) async {
+    PreferenceUtils.setString("Color source", to);
+    _colorSource = to;
+
+    if (_colorSource == "wallpaper") {
+      _colorSchemeLight = null;
+      _colorSchemeDark = null;
+    }
     notifyListeners();
   }
 }

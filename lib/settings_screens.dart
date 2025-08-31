@@ -266,6 +266,14 @@ class AppearancePage extends StatelessWidget {
                         update: context.read<SettingsProvider>().setImageSource,
                       ),
 
+                      SettingsEntry(
+                        icon: Icons.colorize,
+                        text: AppLocalizations.of(context)!.colorSource,
+                        rawText: 'Color source',
+                        selected: context.select((ThemeProvider p) => p.getColorSource),
+                        update: context.read<ThemeProvider>().setColorSource,
+                      ),
+
                       const SizedBox(height: 20,),
 
                       //settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source', context),
