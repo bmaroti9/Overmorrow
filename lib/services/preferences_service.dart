@@ -209,6 +209,8 @@ class ThemeProvider with ChangeNotifier {
 }
 
 class SettingsProvider with ChangeNotifier {
+  String _weatherProvider = "open-meteo";
+
   String _tempUnit = "˚C";
   String _windUnit = "m/s";
   String _precipUnit = "mm";
@@ -227,6 +229,8 @@ class SettingsProvider with ChangeNotifier {
 
   String _location = "New York";
   String _latLon = "40.7128, -74.0060";
+
+  String get getWeatherProvider => _weatherProvider;
 
   String get getTempUnit => _tempUnit;
   String get getWindUnit => _windUnit;
@@ -255,6 +259,8 @@ class SettingsProvider with ChangeNotifier {
   }
 
   void _load() {
+    _weatherProvider = PreferenceUtils.getString("Weather provider", "open-meteo");
+
     _tempUnit = PreferenceUtils.getString("Temperature", "˚C");
     _windUnit = PreferenceUtils.getString("Wind", "m/s");
     _precipUnit = PreferenceUtils.getString("Precipitation", "mm");
@@ -337,6 +343,12 @@ class SettingsProvider with ChangeNotifier {
   void setSearchProvider(String to) {
     PreferenceUtils.setString("Search provider", to);
     _searchProvider = to;
+    notifyListeners();
+  }
+
+  void setWeatherPovider(String to) {
+    PreferenceUtils.setString("Weather provider", to);
+    _weatherProvider = to;
     notifyListeners();
   }
 }

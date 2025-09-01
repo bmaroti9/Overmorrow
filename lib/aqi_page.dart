@@ -231,21 +231,18 @@ class _AllergensPageState extends State<AllergensPage> {
               builder: (BuildContext context,
                   AsyncSnapshot<OMExtendedAqi> snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 200),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Theme.of(context).colorScheme.primaryContainer
-                        ),
-                        margin: const EdgeInsets.only(top: 210),
-                        padding: const EdgeInsets.all(3),
-                        width: 64,
-                        height: 64,
-                        child: const ExpressiveLoadingIndicator(),
+                  return Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: Theme.of(context).colorScheme.primaryContainer
                       ),
+                      margin: const EdgeInsets.only(top: 130),
+                      padding: const EdgeInsets.all(3),
+                      width: 64,
+                      height: 64,
+                      child: const ExpressiveLoadingIndicator(),
                     ),
                   );
                 } else if (snapshot.hasError) {

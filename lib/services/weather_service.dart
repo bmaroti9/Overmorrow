@@ -21,9 +21,25 @@ import 'package:intl/intl.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../decoders/weather_data.dart';
 import '../l10n/app_localizations.dart';
 
 import '../weather_refact.dart';
+
+
+List<double> weatherGetMaxMinTempForDaily(List<WeatherDay> days) {
+  double minTemp = 100;
+  double maxTemp = -100;
+  for (int i = 0; i < days.length; i++) {
+    if (days[i].minTempC < minTemp) {
+      minTemp = days[i].minTempC;
+    }
+    if (days[i].maxTempC > maxTemp) {
+      maxTemp = days[i].maxTempC;
+    }
+  }
+  return [minTemp, maxTemp];
+}
 
 String convertTime(DateTime time, BuildContext context) {
   if (context.select((SettingsProvider p) => p.getTimeMode) == "12 hour") {

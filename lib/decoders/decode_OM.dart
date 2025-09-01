@@ -21,9 +21,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:overmorrow/decoders/decode_wapi.dart';
 
 import '../caching.dart';
 
@@ -31,21 +29,6 @@ import '../services/weather_service.dart';
 import '../weather_refact.dart';
 import 'decode_RV.dart';
 import 'weather_data.dart';
-
-
-List<double> oMGetMaxMinTempForDaily(List<WeatherDay> days) {
-  double minTemp = 100;
-  double maxTemp = -100;
-  for (int i = 0; i < days.length; i++) {
-    if (days[i].minTempC < minTemp) {
-      minTemp = days[i].minTempC;
-    }
-    if (days[i].maxTempC > maxTemp) {
-      maxTemp = days[i].maxTempC;
-    }
-  }
-  return [minTemp, maxTemp];
-}
 
 int aqiIndexCorrection(int aqi) {
   if (aqi <= 20) {
@@ -653,7 +636,7 @@ Future<WeatherData> oMGetWeatherData(lat, lng, place) async {
     
     alerts: [],
 
-    dailyMinMaxTemp: oMGetMaxMinTempForDaily(days),
+    dailyMinMaxTemp: weatherGetMaxMinTempForDaily(days),
 
     hourly72: hourly72,
 

@@ -240,7 +240,9 @@ class MyHomePageState extends State<MyHomePage> {
     const minDuration = Duration(milliseconds: 300);
     final minimumDelayFuture = Future.delayed(minDuration);
 
-    final dataFetchFuture = WeatherData.getFullData(location, latLon);
+    final String provider = context.read<SettingsProvider>().getWeatherProvider;
+
+    final dataFetchFuture = WeatherData.getFullData(location, latLon, provider);
 
     final results = await Future.wait([
       dataFetchFuture,

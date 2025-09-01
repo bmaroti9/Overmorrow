@@ -215,29 +215,15 @@ class NewMain extends StatelessWidget {
 
           AqiWidget(data: data, isTabletMode: false),
 
-          const SizedBox(height: 200,),
-
-          //SmoothTransitionDemo(targetScale: data.sunstatus.sunstatus),
-
           /*
-          FadingWidget(
-            data: data,
-            time: data.updatedTime,
-          ),
-
-
           Column(
             children: orderedWidgets.map((widget) {
               return widget;
             }).toList(),
           ),
-
            */
-          /*
-          providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
-            "${data.lat}, ${data.lng}", data.real_loc, context),
 
-           */
+          ProviderSelector(updateLocation: updateLocation, loc: data.place, latLon: "${data.lat}, ${data.lng}",),
         ],
       ),
     );
@@ -388,8 +374,7 @@ class TabletLayout extends StatelessWidget {
                                     data, data.current.palette, context),
                                 RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
                                 AqiWidget(data: data, isTabletMode: true),
-                                providerSelector(data.settings, updateLocation, data.current.palette,
-                                    data.provider, "${data.lat}, ${data.lng}", data.real_loc, context),
+                                ProviderSelector(updateLocation: updateLocation, loc: data.place, latLon: "${data.lat}, ${data.lng}",),
                               ],
                             ),
                           ),
