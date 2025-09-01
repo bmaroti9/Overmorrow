@@ -218,6 +218,8 @@ class SettingsProvider with ChangeNotifier {
 
   bool _radarHapticsOn = true;
 
+  String _searchProvider = "weatherapi";
+
   String _imageSource = "network";
 
   Locale _locale = const Locale("en");
@@ -234,6 +236,8 @@ class SettingsProvider with ChangeNotifier {
   String get getDateFormat => _dateFormat;
 
   bool get getRadarHapticsOn => _radarHapticsOn;
+
+  String get getSearchProvider => _searchProvider;
 
   String get getImageSource => _imageSource;
 
@@ -259,6 +263,8 @@ class SettingsProvider with ChangeNotifier {
     _radarHapticsOn = PreferenceUtils.getBool("RadarHapticOn", true);
 
     _imageSource = PreferenceUtils.getString("Image source", "network");
+
+    _searchProvider = PreferenceUtils.getString("Search provider", "weatherapi");
 
     _location = PreferenceUtils.getString("LastPlaceN", "New York");
     _latLon = PreferenceUtils.getString("LastCord", "40.7128, -74.0060");
@@ -319,6 +325,18 @@ class SettingsProvider with ChangeNotifier {
   void setDateFormat(String to) {
     PreferenceUtils.setString("Date format", to);
     _dateFormat = to;
+    notifyListeners();
+  }
+
+  void setRadarHaptics(bool to) {
+    PreferenceUtils.setBool("Radar haptics", to);
+    _radarHapticsOn = to;
+    notifyListeners();
+  }
+
+  void setSearchProvider(String to) {
+    PreferenceUtils.setString("Search provider", to);
+    _searchProvider = to;
     notifyListeners();
   }
 }

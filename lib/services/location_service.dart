@@ -25,8 +25,7 @@ import '../caching.dart';
 
 class LocationService {
 
-  static Future<List<String>> getRecommendation(String query) async {
-    String searchProvider = PreferenceUtils.getString("Search provider", "weatherapi");
+  static Future<List<String>> getRecommendation(String query, String searchProvider) async {
 
     query = _sanitizeQuery(query);
     if (query == '') {

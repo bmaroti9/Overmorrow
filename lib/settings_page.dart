@@ -252,7 +252,7 @@ class SettingsEntry extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(text, style: const TextStyle(fontSize: 21, height: 1.2),),
+                  Text(text, style: const TextStyle(fontSize: 20, height: 1.2),),
                   Text(selected, style: TextStyle(color: Theme.of(context).colorScheme.outline,
                       fontSize: 15, height: 1.2),)
                 ],
@@ -263,6 +263,47 @@ class SettingsEntry extends StatelessWidget {
       ),
     );
   }
+}
+
+class SwitchSettingEntry extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final bool selected;
+  final Function update;
+
+  const SwitchSettingEntry({super.key, required this.icon, required this.text,
+    required this.selected, required this.update});
+
+  static const WidgetStateProperty<Icon> thumbIcon = WidgetStateProperty<Icon>.fromMap(
+    <WidgetStatesConstraint, Icon>{
+      WidgetState.selected: Icon(Icons.check),
+      WidgetState.any: Icon(Icons.close),
+    },
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return  Padding(
+      padding: const EdgeInsets.only(top: 14, bottom: 14),
+      child: Row(
+        children: [
+          circleBorderIcon(icon, context),
+          const SizedBox(width: 20,),
+          Text(text, style: const TextStyle(fontSize: 20, height: 1.2),),
+          const Spacer(),
+          Switch(
+            value: selected,
+            onChanged: (bool value) {
+              HapticFeedback.mediumImpact();
+              update(value);
+            },
+            thumbIcon: thumbIcon,
+          ),
+        ],
+      ),
+    ) ;
+  }
+
 }
 
 class SettingsPage extends StatefulWidget {

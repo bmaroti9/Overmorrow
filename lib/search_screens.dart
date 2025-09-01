@@ -31,6 +31,7 @@ import 'package:overmorrow/services/widget_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 
 import 'l10n/app_localizations.dart';
 import 'main.dart';
@@ -257,7 +258,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 400), () async {
-      var result = await LocationService.getRecommendation(query);
+      var result = await LocationService.getRecommendation(query, context.read<SettingsProvider>().getSearchProvider);
       updateRec(result);
     });
   }
@@ -266,7 +267,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     if (!isTabletMode) {
       Navigator.pop(context);
     }
-    var rec = await LocationService.getRecommendation(submitted);
+    var rec = await LocationService.getRecommendation(submitted, context.read<SettingsProvider>().getSearchProvider);
     if (rec.isNotEmpty) {
       var split = json.decode(rec[0]);
       updateLocation('${split["lat"]}, ${split["lon"]}', split["name"]);

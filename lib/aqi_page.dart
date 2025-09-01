@@ -489,7 +489,7 @@ Widget pollutantIndicators(data, extendedAqi, context) {
         border: Border.all(width: 2, color: Theme.of(context).colorScheme.outlineVariant),
         borderRadius: BorderRadius.circular(33),
       ),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.only(top: 17, left: 15, right: 15, bottom: 11),
       child: GridView.count(
         physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,

@@ -479,7 +479,7 @@ class GeneralSettingsPage extends StatelessWidget {
 
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(left: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30),
               child: AnimationLimiter(
                 child: Column(
                   children: AnimationConfiguration.toStaggeredList(
@@ -506,6 +506,21 @@ class GeneralSettingsPage extends StatelessWidget {
                         rawText: 'Date format',
                         selected: context.select((SettingsProvider p) => p.getDateFormat),
                         update: context.read<SettingsProvider>().setDateFormat,
+                      ),
+
+                      SwitchSettingEntry(
+                          icon: Icons.vibration,
+                          text: AppLocalizations.of(context)!.radarHaptics,
+                          selected: context.select((SettingsProvider p) => p.getRadarHapticsOn),
+                          update: context.read<SettingsProvider>().setRadarHaptics,
+                      ),
+
+                      SettingsEntry(
+                        icon: Icons.manage_search,
+                        text: AppLocalizations.of(context)!.searchProvider,
+                        rawText: 'Search provider',
+                        selected: context.select((SettingsProvider p) => p.getSearchProvider),
+                        update: context.read<SettingsProvider>().setSearchProvider,
                       ),
 
                       /*
