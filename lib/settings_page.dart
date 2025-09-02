@@ -289,8 +289,7 @@ class SwitchSettingEntry extends StatelessWidget {
         children: [
           circleBorderIcon(icon, context),
           const SizedBox(width: 20,),
-          Text(text, style: const TextStyle(fontSize: 20, height: 1.2),),
-          const Spacer(),
+          Expanded(child: Text(text, style: const TextStyle(fontSize: 20, height: 1.2),),),
           Switch(
             value: selected,
             onChanged: (bool value) {

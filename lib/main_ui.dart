@@ -480,7 +480,7 @@ class ProviderSelector extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18),
                 icon: Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: Icon(Icons.unfold_more, color: Theme.of(context).colorScheme.secondary, size: 22,),
+                  child: Icon(Icons.unfold_more, color: Theme.of(context).colorScheme.tertiary, size: 22,),
                 ),
                 value: context.select((SettingsProvider p) => p.getWeatherProvider),
                 items: ["weatherapi", "open-meteo", "met-norway"].map((item) {
@@ -488,7 +488,7 @@ class ProviderSelector extends StatelessWidget {
                     value: item,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
-                      child: Text(item, style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 18),)
+                      child: Text(item, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18),)
                     ),
                   );
                 }).toList(),

@@ -209,10 +209,7 @@ class DailyCollapsed extends StatelessWidget {
         onExpandTapped(index);
       },
       child: Padding(
-        padding: EdgeInsets.only(left: 23, right: 23,
-            top: (index == 0) ? 21 : 20, //evens out the top size with bigger border radii
-            bottom: 20
-        ),
+        padding: const EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 21),
         child: Row(
           children: [
             SizedBox(
@@ -340,7 +337,7 @@ class DailyExpanded extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 4),
                   child: Text(
-                    day.condition,
+                    conditionTranslation(day.condition, AppLocalizations.of(context)!) ?? "Translation Err",
                     style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 22),
                   )
                 ),

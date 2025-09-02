@@ -45,14 +45,14 @@ String convertTime(DateTime time, BuildContext context) {
   if (context.select((SettingsProvider p) => p.getTimeMode) == "12 hour") {
     return DateFormat('h:mm a').format(time).toLowerCase();
   }
-  return DateFormat('hh:mm').format(time);
+  return DateFormat('HH:mm').format(time);
 }
 
 String convertToShortTime(DateTime time, BuildContext context) {
   if (context.select((SettingsProvider p) => p.getTimeMode) == "12 hour") {
     return DateFormat('ha').format(time).toLowerCase();
   }
-  return DateFormat('h:mm').format(time);
+  return DateFormat('H:mm').format(time);
 }
 
 String translateCondition(String condition, localizations) {
