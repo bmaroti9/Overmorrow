@@ -70,23 +70,17 @@ class BuildDays extends StatefulWidget {
 
 class _BuildDaysState extends State<BuildDays> with AutomaticKeepAliveClientMixin {
 
-  int daysToShow = 0;
-  bool isDaysListExpanded = false;
-  bool isDaysExpandable = false;
+  static const int maxToShow = 7;
+
+  bool isExpanded = false;
+  int dayCap = maxToShow;
 
   late List<bool> expand = [];
 
   @override
   void initState() {
     super.initState();
-    if (widget.data.days.length > 7) {
-      isDaysExpandable = true;
-      daysToShow = 7;
-    }
-    else {
-      daysToShow = widget.data.days.length;
-    }
-    for (int i = 0; i < widget.data.days.length; i++) {
+    for (int i = 0; i < 20; i++) { //there will never be more days than 20
       expand.add(false);
     }
   }
@@ -98,25 +92,16 @@ class _BuildDaysState extends State<BuildDays> with AutomaticKeepAliveClientMixi
     });
   }
 
-  void toggleMoreDays() {
-    setState(() {
-      HapticFeedback.mediumImpact();
-      isDaysListExpanded = !isDaysListExpanded;
-      if (isDaysListExpanded) {
-        daysToShow = widget.data.days.length;
-      }
-      else {
-        daysToShow = 7;
-      }
-    });
-  }
-
   @override
   bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    int daysToShow = min(dayCap, widget.data.days.length);
+    bool showButton = maxToShow < widget.data.days.length;
+
     return Padding(
       padding: const EdgeInsets.only(left: 23, right: 23, bottom: 25, top: 25),
       child: Column(
@@ -145,7 +130,8 @@ class _BuildDaysState extends State<BuildDays> with AutomaticKeepAliveClientMixi
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.vertical(
                             top: index == 0 ? const Radius.circular(33) : const Radius.circular(6),
-                            bottom: index == daysToShow - 1  && !isDaysExpandable ? const Radius.circular(33) : const Radius.circular(6),
+                            bottom: index == daysToShow - 1  && !showButton
+                                ? const Radius.circular(33) : const Radius.circular(6),
                         ),
                         color: Theme.of(context).colorScheme.surfaceContainer
                       ),
@@ -160,10 +146,21 @@ class _BuildDaysState extends State<BuildDays> with AutomaticKeepAliveClientMixi
               }
             ),
           ),
-          if (isDaysExpandable) GestureDetector(
+          if (showButton) GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              toggleMoreDays();
+              if (isExpanded) {
+                setState(() {
+                  dayCap = 7;
+                  isExpanded = false;
+                });
+              }
+              else {
+                setState(() {
+                  dayCap = 20;
+                  isExpanded = true;
+                });
+              }
             },
             child: Container(
               decoration: BoxDecoration(
@@ -176,12 +173,12 @@ class _BuildDaysState extends State<BuildDays> with AutomaticKeepAliveClientMixi
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    isDaysListExpanded ? AppLocalizations.of(context)!.showLess : AppLocalizations.of(context)!.showMore,
+                    isExpanded ? AppLocalizations.of(context)!.showLess : AppLocalizations.of(context)!.showMore,
                     style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 16),
                   ),
                   const SizedBox(width: 4,),
                   Icon(
-                    isDaysListExpanded ? Icons.arrow_upward : Icons.arrow_downward,
+                    isExpanded ? Icons.arrow_upward : Icons.arrow_downward,
                     color: Theme.of(context).colorScheme.onTertiaryContainer, size: 16,)
                 ]
               ),
