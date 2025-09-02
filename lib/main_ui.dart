@@ -70,11 +70,14 @@ class WeatherPage extends StatelessWidget {
     FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     Size size = view.physicalSize / view.devicePixelRatio;
 
+    /*
     if (size.width > 950) {
       return TabletLayout(
         data: data, updateLocation: updateLocation,
         key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
     }
+
+     */
 
     //return SearchHeroDemo();
 
@@ -86,11 +89,11 @@ class WeatherPage extends StatelessWidget {
 
 
 class SmoothTempTransition extends StatefulWidget {
-
-
   final double target;
+  final Color color;
+  final double fontSize;
 
-  const SmoothTempTransition({super.key, required this.target});
+  const SmoothTempTransition({super.key, required this.target, required this.color, required this.fontSize});
 
   @override
   State<SmoothTempTransition> createState() => _SmoothTempTransitionState();
@@ -119,8 +122,8 @@ class _SmoothTempTransitionState extends State<SmoothTempTransition> with Automa
         return Text(
           "${current.round()}°",
           style: GoogleFonts.outfit(
-            color: Theme.of(context).colorScheme.tertiaryFixedDim,
-            fontSize: 75,
+            color: widget.color,
+            fontSize: widget.fontSize,
             height: 1.05,
             fontWeight: FontWeight.w300,
           ),);

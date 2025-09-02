@@ -130,36 +130,6 @@ class ImageService {
 
 }
 
-class ParrallaxBackground extends StatelessWidget {
-  final Image image;
-  final Color color;
-
-  const ParrallaxBackground({Key? key, required this.image, required this.color}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-
-    return TweenAnimationBuilder<double>(
-      duration: const Duration(milliseconds: 1500),
-      tween: Tween<double>(begin: 0, end: 1.0),
-      curve: Curves.decelerate,
-      builder: (context, value, child) {
-        return Container(
-          color: color,
-          child: Opacity(
-            opacity: value,
-            child: Transform.scale(
-              scale: 1.0 + (0.1 * value),
-              child: image,
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-
 class FadingImageWidget extends StatelessWidget {
   final Image? image;
 

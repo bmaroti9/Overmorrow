@@ -93,14 +93,11 @@ class _MySearchWidgetState extends State<MySearchWidget> {
   Widget build(BuildContext context){
 
     if (widget.isTabletMode) {
-      //go straight to the page itself, since the sidebar has that by default
-      /*
-      return HeroSearchPage(place: place, recommend: recommend,
-        updateRec: updateRec, updateLocation: updateLocation, favorites: favorites,
-        updateFav: updateFav);
-
-       */
+      return HeroSearchPage(place: widget.place, recommend: recommend,
+          updateRec: updateRec, updateLocation: widget.updateLocation, favorites: favorites, updateFav: updateFav,
+          isTabletMode: true);
     }
+
     return SearchBar(recommend: recommend, updateLocation: widget.updateLocation,
         updateFav: updateFav, favorites: favorites, updateRec: updateRec, place: widget.place);
 
@@ -153,16 +150,7 @@ class SearchBar extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => const SettingsPage(),
                         ),
-                      );/*.then((value) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const MyApp();
-                            },
-                          ),
-                        );
-                      });
-                      */
+                      );
                     },
                   ),
                 ],
@@ -255,6 +243,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
 
   Timer? _debounce;
 
+  late final TextEditingController _controller;
+
   _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 400), () async {
@@ -292,29 +282,6 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     setState(() {
       updateFav(fav);
     });
-  }
-
-  openSettingsPage() {
-    HapticFeedback.selectionClick();
-    /*
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SettingsPage(image: image),
-      ),
-    ).then((value) {
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) {
-              return const MyApp();
-            },
-          ),
-        );
-      }
-    });
-
-     */
   }
 
   onIsEditingChanged() {
@@ -459,6 +426,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   void initState() {
     super.initState();
 
+    _controller = TextEditingController();
+
     WidgetsBinding.instance.addPostFrameCallback((_){
       checkIflocationState().then((x) {
         if (x == "enabled") {
@@ -468,6 +437,12 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
         }
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -487,7 +462,12 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
           child: IconButton(
             icon: Icon(Icons.settings_outlined, color: Theme.of(context).colorScheme.primary, size: 23,),
             onPressed: () {
-              openSettingsPage();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsPage(),
+                ),
+              );
             },
           ),
         ) : IconButton(
@@ -544,6 +524,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                     color: isTabletMode ? Theme.of(context).colorScheme.surfaceContainerHighest : Theme.of(context).colorScheme.surfaceContainer,
                     child: TextField(
                       autofocus: false,
+                      controller: _controller,
                       onChanged: (String to) async{
                         setState(() {
                           text = to;
@@ -553,6 +534,10 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                       onSubmitted: (String submission) {
                         HapticFeedback.lightImpact();
                         onSubmitted(submission);
+                        _controller.clear();
+                        setState(() {
+                          text = "";
+                        });
                       },
                       cursorWidth: 2,
                       decoration: const InputDecoration(

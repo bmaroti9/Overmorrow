@@ -51,7 +51,7 @@ import 'package:material_new_shapes/material_new_shapes.dart';
 
 import 'settings_page.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   Workmanager().initialize(
@@ -73,8 +73,7 @@ void main() {
     constraints: Constraints(networkType: NetworkType.connected, requiresBatteryNotLow: true),
   );
 
-
-  PreferenceUtils.init();
+  await PreferenceUtils.init();
 
   final data = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
   final ratio = WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
@@ -308,6 +307,7 @@ class MyHomePageState extends State<MyHomePage> {
       children: [
         Container(color: Theme.of(context).colorScheme.surface,),
         if (data != null) NewMain(data: data!, updateLocation: updateLocation, imageService: imageService),
+        //if (data != null) TabletLayout(data: data!, updateLocation: updateLocation, imageService: imageService),
         LoadingIndicator(isLoading: isLoading,)
       ],
     );

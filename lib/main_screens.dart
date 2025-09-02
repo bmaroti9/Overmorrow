@@ -172,7 +172,8 @@ class NewMain extends StatelessWidget {
                   children: [
                     const Spacer(),
                     SmoothTempTransition(target: unitConversion(data.current.tempC,
-                        context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0),
+                        context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
+                      color: Theme.of(context).colorScheme.tertiaryFixedDim, fontSize: 75,),
                     Text(
                       translateCondition(data.current.condition, AppLocalizations.of(context)!),
                       style: TextStyle(
@@ -268,10 +269,11 @@ class SmoothTransitionDemo extends StatelessWidget {
 }
 
 class TabletLayout extends StatelessWidget {
-  final data;
+  final WeatherData data;
   final updateLocation;
+  final ImageService? imageService;
 
-  TabletLayout({super.key, required this.data, required this.updateLocation});
+  TabletLayout({super.key, required this.data, required this.updateLocation, required this.imageService});
 
   @override
   Widget build(BuildContext context) {
@@ -282,10 +284,8 @@ class TabletLayout extends StatelessWidget {
 
     double panelWidth = size.width * 0.29;
 
-    ColorScheme palette = data.current.palette;
-
     return Scaffold(
-        backgroundColor: palette.surface,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -301,28 +301,30 @@ class TabletLayout extends StatelessWidget {
                     displacement: 130,
                     onRefresh: () async {
                       await updateLocation(
-                          "${data.lat}, ${data.lng}", data.real_loc, time: 400);
+                          "${data.lat}, ${data.lng}", data.place);
                     },
                     headerData: HeaderData(
                         blurContent: false,
                         headerHeight: (size.height) * 0.43,
-                        header: ParrallaxBackground(image: data.current.imageService.image, color: BLACK),
+                        header: FadingImageWidget(
+                          image: imageService?.image,
+                        ),
                         overlay: Padding(
                           padding: const EdgeInsets.all(30),
                           child: Align(
                             alignment: Alignment.topLeft,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: palette.inverseSurface,
+                                color: Theme.of(context).colorScheme.inverseSurface,
                                 borderRadius: BorderRadius.circular(30),
                               ),
                               padding: const EdgeInsets.all(18),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.place_outlined, color: palette.onInverseSurface, size: 22,),
+                                  Icon(Icons.place_outlined, color: Theme.of(context).colorScheme.onInverseSurface, size: 22,),
                                   const SizedBox(width: 4,),
-                                  comfortatext(data.place, 22, data.settings, color: palette.onInverseSurface)
+                                  Text(data.place, style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface, fontSize: 22),)
                                 ],
                               ),
                             ),
@@ -345,10 +347,16 @@ class TabletLayout extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  comfortatext("${data.current.temp}°", 72, data.settings,
-                                      color: palette.primary, weight: FontWeight.w200),
-                                  comfortatext(data.current.text, 27, data.settings,
-                                      color: palette.onSurface, weight: FontWeight.w400),
+                                  SmoothTempTransition(target: unitConversion(data.current.tempC,
+                                      context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
+                                      color: Theme.of(context).colorScheme.primary, fontSize: 68,),
+                                  Text(
+                                    translateCondition(data.current.condition, AppLocalizations.of(context)!),
+                                    style: TextStyle(
+                                        color: Theme.of(context).colorScheme.onSurface,
+                                        fontSize: 30, height: 1.05
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
@@ -361,7 +369,7 @@ class TabletLayout extends StatelessWidget {
                         ),
                       ),
 
-                      NewSunriseSunset(data: data, key: Key(data.place), width: constraints.maxWidth,),
+                      NewSunriseSunset(data: data, width: constraints.maxWidth,),
                       NewHourly(hours: data.hourly72, elevated: false,),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -370,8 +378,8 @@ class TabletLayout extends StatelessWidget {
                             child: Column(
                               children: [
                                 const SizedBox(height: 15,),
-                                rain15MinuteChart(
-                                    data, data.current.palette, context),
+                                //rain15MinuteChart(
+                                //    data, data.current.palette, context),
                                 RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
                                 AqiWidget(data: data, isTabletMode: true),
                                 ProviderSelector(updateLocation: updateLocation, loc: data.place, latLon: "${data.lat}, ${data.lng}",),
@@ -383,7 +391,7 @@ class TabletLayout extends StatelessWidget {
                               children: [
                                 //since it's only available with weatherapi, and in that case there are only 3 days
                                 //this makes the two sides more even
-                                alertWidget(data, context, data.current.palette),
+                                //alertWidget(data, context, data.current.palette),
                                 BuildDays(data: data),
                               ],
                             ),

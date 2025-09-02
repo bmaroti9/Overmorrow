@@ -297,7 +297,7 @@ class _AllergensPageState extends State<AllergensPage> {
                               child: Column(
                                 children: [
                                   aqiCircleAndDesc(widget.data, context),
-                                  pollutantIndicators(widget.data, extendedAqi, context),
+                                  pollenIndicators(widget.data, extendedAqi, context),
                                 ],
                               )
                             ),
@@ -315,8 +315,9 @@ class _AllergensPageState extends State<AllergensPage> {
                                 child: Column(
                                   children: [
                                     mainPollutantIndicator(widget.data, extendedAqi, context),
-                                    pollenIndicators(widget.data, extendedAqi, context),
+                                    pollutantIndicators(widget.data, extendedAqi, context),
                                     europeanAndUsAqi(widget.data, extendedAqi, context),
+                                    const SizedBox(height: 10,),
                                     dustAndAODIndicators(widget.data, extendedAqi, context),
                                   ],
                                 )
