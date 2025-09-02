@@ -209,11 +209,11 @@ class DailyCollapsed extends StatelessWidget {
         onExpandTapped(index);
       },
       child: Padding(
-        padding: const EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 21),
+        padding: const EdgeInsets.only(left: 23, right: 23, top: 15, bottom: 15),
         child: Row(
           children: [
             SizedBox(
-              width: 45,
+              width: 48,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,11 +225,22 @@ class DailyCollapsed extends StatelessWidget {
               ),
             ),
 
-            SvgPicture.asset(
-              weatherIconPathMap[day.condition] ?? "assets/weather_icons/clear_sky.svg",
-              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
-              width: 38,
-              height: 38,
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                SvgPicture.asset(
+                  "assets/m3shapes/4_sided_cookie.svg",
+                  colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondaryContainer, BlendMode.srcIn),
+                  width: 54,
+                  height: 54,
+                ),
+                SvgPicture.asset(
+                  weatherIconPathMap[day.condition] ?? "assets/weather_icons/clear_sky.svg",
+                  colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+                  width: 35,
+                  height: 35,
+                )
+              ],
             ),
 
             SizedBox(
@@ -238,7 +249,7 @@ class DailyCollapsed extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Text(
                     "${unitConversion(day.minTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
-                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 18, fontWeight: FontWeight.w600),
+                    style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 18, fontWeight: FontWeight.w600),
                   ),
               ),
             ),
@@ -277,7 +288,7 @@ class DailyCollapsed extends StatelessWidget {
             ),
             Text(
               "${unitConversion(day.maxTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
-              style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 18, fontWeight: FontWeight.w600),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(width: 12,),
             Icon(Icons.expand_more, size: 23, color: Theme.of(context).colorScheme.onSurface,)
@@ -316,7 +327,7 @@ class DailyExpanded extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   const SizedBox(width: 8,),
-                  Text(dayName, style: const TextStyle(fontSize: 18),),
+                  Text(dayName, style: const TextStyle(fontSize: 17),),
                   const Spacer(),
                   Icon(Icons.expand_less, size: 23, color: Theme.of(context).colorScheme.onSurface,),
                   const SizedBox(width: 9,),
@@ -328,32 +339,56 @@ class DailyExpanded extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 20, left: 6, right: 10),
             child: Row(
               children: [
-                SvgPicture.asset(
-                  weatherIconPathMap[day.condition] ?? "assets/weather_icons/clear_sky.svg",
-                  colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
-                  width: 40,
-                  height: 40,
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/m3shapes/4_sided_cookie.svg",
+                      colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondaryContainer, BlendMode.srcIn),
+                      width: 60,
+                      height: 60,
+                    ),
+                    SvgPicture.asset(
+                      weatherIconPathMap[day.condition] ?? "assets/weather_icons/clear_sky.svg",
+                      colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+                      width: 38,
+                      height: 38,
+                    )
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Text(
-                    conditionTranslation(day.condition, AppLocalizations.of(context)!) ?? "Translation Err",
-                    style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 22),
-                  )
-                ),
-                const Spacer(),
-                Icon(Icons.keyboard_double_arrow_down, size: 16, color: Theme.of(context).colorScheme.outline,),
 
-                Text(
-                  "${unitConversion(day.minTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
-                  style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 20),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Text(
+                      conditionTranslation(day.condition, AppLocalizations.of(context)!) ?? "Translation Err",
+                      style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 22),
+                    )
+                  ),
                 ),
-                const SizedBox(width: 6,),
-                Icon(Icons.keyboard_double_arrow_up, size: 16, color: Theme.of(context).colorScheme.outline,),
-                Text(
-                  "${unitConversion(day.maxTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
-                  style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 20),
-                ),
+
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiaryContainer,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: const EdgeInsets.all(9),
+                  child: Row(
+                    children: [
+                      Icon(Icons.keyboard_double_arrow_down, size: 16, color: Theme.of(context).colorScheme.onTertiaryContainer,),
+                      Text(
+                        "${unitConversion(day.minTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
+                        style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 17),
+                      ),
+                      const SizedBox(width: 6,),
+                      Icon(Icons.keyboard_double_arrow_up, size: 16, color: Theme.of(context).colorScheme.onTertiaryContainer,),
+                      Text(
+                        "${unitConversion(day.maxTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
+                        style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 17),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),

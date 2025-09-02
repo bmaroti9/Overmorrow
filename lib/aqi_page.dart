@@ -670,11 +670,11 @@ Widget dustAndAODIndicators(WeatherData data, OMExtendedAqi extendedAqi, context
                       children: [
                         Container(
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.secondaryContainer,
+                              color: Theme.of(context).colorScheme.primaryContainer,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             padding: const EdgeInsets.all(6),
-                            child: Icon(Icons.grain, size: 18, color: Theme.of(context).colorScheme.secondary)
+                            child: Icon(Icons.grain, size: 18, color: Theme.of(context).colorScheme.primary)
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
@@ -714,11 +714,11 @@ Widget dustAndAODIndicators(WeatherData data, OMExtendedAqi extendedAqi, context
                       children: [
                         Container(
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.secondaryContainer,
+                              color: Theme.of(context).colorScheme.primaryContainer,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             padding: const EdgeInsets.all(6),
-                            child: Icon(Icons.grain, size: 18, color: Theme.of(context).colorScheme.secondary)
+                            child: Icon(Icons.grain, size: 18, color: Theme.of(context).colorScheme.primary)
                         ),
                         Expanded(
                           child: Padding(
@@ -920,7 +920,7 @@ Widget HourlyQqi(WeatherData data, hourValues, name, OMExtendedAqi extendedAqi, 
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  color: Theme.of(context).colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 padding: const EdgeInsets.all(6),

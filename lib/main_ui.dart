@@ -488,7 +488,7 @@ class ProviderSelector extends StatelessWidget {
                     value: item,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
-                      child: Text(item, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 18),)
+                      child: Text(item, style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 18),)
                     ),
                   );
                 }).toList(),

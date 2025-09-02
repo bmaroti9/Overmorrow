@@ -352,7 +352,7 @@ class AqiWidget extends StatelessWidget {
             );
           },
           child: Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(22),
             margin: const EdgeInsets.only(left: 25, right: 25, top: 14, bottom: 10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
@@ -365,10 +365,10 @@ class AqiWidget extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     SvgPicture.asset(
-                      "assets/m3shapes/4_sided_cookie.svg",
+                      "assets/m3shapes/9_sided_cookie.svg",
                       colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondaryContainer, BlendMode.srcIn),
-                      width: 82,
-                      height: 82,
+                      width: 84,
+                      height: 84,
                     ),
                     Text(
                       data.aqi.aqiIndex.toString(),
