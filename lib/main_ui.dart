@@ -17,25 +17,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/decoders/weather_data.dart';
-import 'package:overmorrow/main_screens.dart';
-import 'package:overmorrow/search_screens.dart';
-import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
-import 'package:overmorrow/settings_page.dart';
 import 'package:provider/provider.dart';
-import 'package:stretchy_header/stretchy_header.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'api_key.dart';
-import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
 
 
@@ -67,8 +60,8 @@ class WeatherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-    Size size = view.physicalSize / view.devicePixelRatio;
+    //FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+    //Size size = view.physicalSize / view.devicePixelRatio;
 
     /*
     if (size.width > 950) {

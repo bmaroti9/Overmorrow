@@ -21,17 +21,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:overmorrow/about_page.dart';
 import 'package:overmorrow/services/color_service.dart';
-import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
-import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/settings_page.dart';
 import 'package:overmorrow/ui_helper.dart';
-import 'package:overmorrow/weather_refact.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'decoders/decode_wapi.dart';
-import 'main_ui.dart';
 import '../l10n/app_localizations.dart';
 
 Future<void> _launchUrl(String url) async {

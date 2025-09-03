@@ -22,15 +22,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
-import 'package:overmorrow/ui_helper.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 
-import 'decoders/decode_OM.dart';
 import 'decoders/weather_data.dart';
 
 class RadarSmall extends StatefulWidget {

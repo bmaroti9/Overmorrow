@@ -22,7 +22,6 @@ import 'dart:math';
 import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:overmorrow/services/preferences_service.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 import '../ui_helper.dart';

@@ -21,11 +21,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:overmorrow/decoders/weather_data.dart';
-import 'package:overmorrow/services/color_service.dart';
-import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/weather_refact.dart';
-import 'package:provider/provider.dart';
 
 import '../api_key.dart';
 import '../caching.dart';
@@ -76,7 +72,6 @@ class ImageService {
     final String _userName = unsplashBody[0]["user"]["name"] ?? "";
 
     final String _photoLink = unsplashBody[0]["links"]["html"] ?? "";
-    final Color color =  Color(getColorFromHex(unsplashBody[0]["color"]));
 
     return ImageService(
         image: image,
@@ -96,7 +91,6 @@ class ImageService {
     final String _photoLink = credits[0];
     final String _userName = credits[1];
     final String _userLink = credits[2];
-    final Color color = Colors.amber;
 
     return ImageService(
       image: image,

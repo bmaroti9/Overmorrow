@@ -19,8 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/search_screens.dart';
@@ -34,7 +32,6 @@ import 'hourly.dart';
 import 'l10n/app_localizations.dart';
 import 'main_ui.dart';
 import 'new_displays.dart';
-import 'ui_helper.dart';
 
 class NewMain extends StatelessWidget {
   final WeatherData data;

@@ -22,13 +22,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/ui_helper.dart';
 
 import 'alerts_page.dart';
 import 'aqi_page.dart';
-import 'decoders/decode_OM.dart';
 import '../l10n/app_localizations.dart';
 import 'decoders/weather_data.dart';
 

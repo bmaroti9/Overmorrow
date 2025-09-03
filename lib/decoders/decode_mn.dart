@@ -19,21 +19,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:overmorrow/decoders/decode_OM.dart';
-import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 
 import '../api_key.dart';
 import '../caching.dart';
-import '../l10n/app_localizations.dart';
-import '../services/color_service.dart';
-import '../ui_helper.dart';
 
 import '../weather_refact.dart';
 import 'decode_RV.dart';
-import 'decode_wapi.dart';
 import 'weather_data.dart';
 
 

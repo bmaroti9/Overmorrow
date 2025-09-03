@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:io';
 import 'dart:convert';
-import 'package:overmorrow/services/preferences_service.dart';
 
 import '../api_key.dart';
 import '../caching.dart';

@@ -18,17 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:io';
 import 'dart:math';
-import 'dart:async';
-import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:overmorrow/main.dart';
-import 'package:overmorrow/search_screens.dart';
-import 'package:overmorrow/services/widget_service.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
 
 const WHITE = Color(0xffFFFFFF);
 const BLACK = Color(0xff000000);

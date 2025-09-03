@@ -17,39 +17,24 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 import 'package:expressive_loading_indicator/expressive_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/main_screens.dart';
 import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
-import 'package:overmorrow/ui_helper.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:overmorrow/weather_refact.dart';
-import 'package:overmorrow/services/location_service.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
-import 'caching.dart';
 import 'decoders/weather_data.dart';
-import 'main_ui.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 
-import 'package:material_new_shapes/material_new_shapes.dart';
-
-import 'settings_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

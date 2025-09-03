@@ -27,7 +27,6 @@ import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'l10n/app_localizations.dart';
-import 'ui_helper.dart';
 import 'package:provider/provider.dart';
 
 class NewHourly extends StatefulWidget {

@@ -25,11 +25,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/services/weather_service.dart';
 
-import 'package:overmorrow/ui_helper.dart';
 import '../l10n/app_localizations.dart';
 import 'decoders/weather_data.dart';
 
