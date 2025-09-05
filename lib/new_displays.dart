@@ -412,78 +412,89 @@ class AqiWidget extends StatelessWidget {
       ],
     );
   }
-
-
 }
 
-Widget alertWidget(var data, context, ColorScheme palette) {
-  if (data.alerts.length > 0) {
-    return Padding(
-        padding: const EdgeInsets.only(
-            left: 25, right: 25, bottom: 10, top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 11),
-              child: comfortatext(
-                  AppLocalizations.of(context)!.alertsLowercase, 17,
-                  data.settings,
-                  color: palette.onSurface),
-            ),
-            Column(
-              children: List.generate(data.alerts.length, (index) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 2, bottom: 2),
-                  child: GestureDetector(
-                    onTap: () {
-                      HapticFeedback.lightImpact();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AlertsPage(data: data))
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 25, top: 23, bottom: 23, right: 22),
-                      decoration: BoxDecoration(
-                        color: palette.errorContainer,
+class AlertWidget extends StatelessWidget {
+  final WeatherData data;
+
+  const AlertWidget({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    if (data.alerts.isNotEmpty) {
+      return Padding(
+          padding: const EdgeInsets.only(
+              left: 25, right: 25, bottom: 10, top: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 11),
+                child: Text(AppLocalizations.of(context)!.alertsLowercase,
+                style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 17),),
+              ),
+              Column(
+                children: List.generate(data.alerts.length, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 2, bottom: 2),
+                    child: GestureDetector(
+                      onTap: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AlertsPage(data: data))
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 25, top: 23, bottom: 23, right: 22),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
                           borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min, //first time i realised this makes it wrap the content size
-                              children: [
-                                Flexible(
-                                  child: comfortatext(data.alerts[index].event, 18,
-                                      data.settings, color: palette.onErrorContainer,),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.errorContainer,
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: comfortatext("${data.alerts[index].start} - ${data.alerts[index].end}", 14, data.settings,
-                                      color: palette.outline),
-                                )
-                              ],
+                                padding: const EdgeInsets.only(left: 7, right: 7, top: 6, bottom: 8),
+                                child: Icon(Icons.warning_amber, size: 20, color: Theme.of(context).colorScheme.error)
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 5, left: 20),
-                            child: Icon(Icons.warning_amber_rounded, color: palette.error, size: 26,),
-                          )
-                        ],
+                            const SizedBox(width: 20,),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: Text(data.alerts[index].event, style: TextStyle(
+                                        color: Theme.of(context).colorScheme.onSurface, fontSize: 18, height: 1.2
+                                    ),),
+                                  ),
+                                  Padding(
+                                      padding: const EdgeInsets.only(top: 4),
+                                      child: Text(
+                                        "${convertToWeekDayTime(data.alerts[index].start, context)} - ${convertToWeekDayTime(data.alerts[index].end, context)}",
+                                        style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14),)
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }),
-            ),
-          ],
-        )
-    );
+                  );
+                }),
+              ),
+            ],
+          )
+      );
+    }
+    return Container();
   }
-  return Container();
+
 }
 
 class Rain15MinuteChart extends StatelessWidget {

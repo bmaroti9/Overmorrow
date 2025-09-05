@@ -532,10 +532,13 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                       onSubmitted: (String submission) {
                         HapticFeedback.lightImpact();
                         onSubmitted(submission);
+                        /*
                         _controller.clear();
                         setState(() {
                           text = "";
                         });
+
+                         */
                       },
                       cursorWidth: 2,
                       decoration: const InputDecoration(

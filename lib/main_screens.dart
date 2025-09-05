@@ -209,6 +209,8 @@ class NewMain extends StatelessWidget {
 
           NewHourly(hours: data.hourly72, elevated: false,),
 
+          AlertWidget(data: data),
+
           RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
 
           BuildDays(data: data),

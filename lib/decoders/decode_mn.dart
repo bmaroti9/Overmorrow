@@ -201,7 +201,7 @@ WeatherHour metNWeatherHourFromJson(item, hourDif) {
     condition: metNTextCorrection(nextHours["summary"]["symbol_code"]),
     tempC: item["data"]["instant"]["details"]["air_temperature"],
     precipMm: nextHours["details"]["precipitation_amount"],
-    precipProb: nextHours["details"]["probability_of_precipitation"] ?? 0,
+    precipProb: (nextHours["details"]["probability_of_precipitation"] ?? 0).round(),
     time: DateTime.parse(item["time"]),
     windKph: item["data"]["instant"]["details"]["wind_speed"] * 3.6,
     windDirA: item["data"]["instant"]["details"]["wind_from_direction"].round(),
