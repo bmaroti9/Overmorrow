@@ -205,6 +205,8 @@ class NewMain extends StatelessWidget {
 
           NewSunriseSunset(data: data, width: size.width),
 
+          Rain15MinuteChart(data: data),
+
           NewHourly(hours: data.hourly72, elevated: false,),
 
           RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),

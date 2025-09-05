@@ -22,8 +22,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/ui_helper.dart';
+import 'package:provider/provider.dart';
 
 import 'alerts_page.dart';
 import 'aqi_page.dart';
@@ -365,8 +367,8 @@ class AqiWidget extends StatelessWidget {
                     SvgPicture.asset(
                       "assets/m3shapes/9_sided_cookie.svg",
                       colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondaryContainer, BlendMode.srcIn),
-                      width: 84,
-                      height: 84,
+                      width: 88,
+                      height: 88,
                     ),
                     Text(
                       data.aqi.aqiIndex.toString(),
@@ -484,88 +486,116 @@ Widget alertWidget(var data, context, ColorScheme palette) {
   return Container();
 }
 
-Widget rain15MinuteChart(var data, ColorScheme palette, context) {
-  if (data.minutely_15_precip.t_minus != "") {
-    return Container(
-      margin: const EdgeInsets.only(left: 23, right: 23, top: 15, bottom: 30),
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(33),
-        color: palette.secondaryContainer,
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Padding(
-                padding:
-                const EdgeInsets.only(right: 3),
-                child: Icon(
-                  Icons.water_drop_outlined,
-                  color: palette.onSecondaryContainer,
-                  size: 20,
-                ),
-              ),
-              comfortatext(data.minutely_15_precip.precip_sum.toStringAsFixed(1),
-                  19, data.settings,
-                  color: palette.primary),
-              comfortatext(
-                  data.settings["Precipitation"], 16, data.settings,
-                  color: palette.primary),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: comfortatext(
-                    data.minutely_15_precip.t_minus,
-                    16,
-                    data.settings,
-                    color: palette.onSecondaryContainer),
-                ),
-              ),
+class Rain15MinuteChart extends StatelessWidget {
+  final WeatherData data;
 
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 10, left: 15, right: 15),
-            child: SizedBox(
-                height: 45,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                   children: List<Widget>.generate( data.minutely_15_precip.precips.length, (int index)  {
-                    return Container(
-                      width: 5,
-                      //i'm doing this because otherwise you wouldn't be
-                      // able to tell the 0mm rain apart from the 0.1mm, or just low values in general
-                      height: data.minutely_15_precip.precips[index] == 0 ?
-                        5 : 8.0 + data.minutely_15_precip.precips[index] * 30,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: data.minutely_15_precip.precips[index] == 0 ?
-                        palette.outline : palette.primary,
-                      ),
-                    );
-                  }
-                )
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  const Rain15MinuteChart({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+
+    String text = getRain15MinuteLocalization(data.minutely15Precip.text,
+        data.minutely15Precip.timeTo, AppLocalizations.of(context)!);
+
+    if (data.minutely15Precip.text != "") {
+      return Container(
+        margin: const EdgeInsets.only(left: 23, right: 23, top: 15, bottom: 30),
+        padding: const EdgeInsets.all(22),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(33),
+          color: Theme.of(context).colorScheme.surfaceContainer,
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                comfortatext(AppLocalizations.of(context)!.now, 13, data.settings, color: palette.onSurfaceVariant),
-                comfortatext('3${AppLocalizations.of(context)!.hr}', 13, data.settings, color: palette.onSurfaceVariant),
-                comfortatext('6${AppLocalizations.of(context)!.hr}', 13, data.settings, color: palette.onSurfaceVariant)
+                Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: const EdgeInsets.all(6),
+                    child: Icon(Icons.umbrella, size: 18, color: Theme.of(context).colorScheme.primary)
+                ),
+                const SizedBox(width: 10,),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        unitConversion(data.minutely15Precip.precipSumMm,
+                            context.select((SettingsProvider p) => p.getPrecipUnit)).toString(),
+                        style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 24, height: 1.2),
+                      ),
+                      Text(
+                        context.select((SettingsProvider p) => p.getPrecipUnit),
+                        style: TextStyle(color: Theme.of(context).colorScheme.primary,
+                            fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
+                      Expanded(
+                        child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: Text(
+                              text,
+                              style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 16, height: 1.44),
+                            )
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
-          )
-        ],
-      ),
-    );
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 10, left: 10, right: 10),
+              child: SizedBox(
+                height: 41,
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List<Widget>.generate(data.minutely15Precip.precipListMm.length, (int index)  {
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 1, right: 1),
+                          child: Container(
+                            //i'm doing this because otherwise you wouldn't be
+                            // able to tell the 0mm rain apart from the 0.1mm, or just low values in general
+                            height: data.minutely15Precip.precipListMm[index] == 0 ?
+                            5 : 6.0 + data.minutely15Precip.precipListMm[index] * 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: data.minutely15Precip.precipListMm[index] == 0 ?
+                              Theme.of(context).colorScheme.outlineVariant : Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    )
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(AppLocalizations.of(context)!.now,
+                    style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13),),
+                  Text('3${AppLocalizations.of(context)!.hr}',
+                    style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13),),
+                  Text('6${AppLocalizations.of(context)!.hr}',
+                    style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13),)
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    }
+    return Container();
   }
-  return Container();
+
 }

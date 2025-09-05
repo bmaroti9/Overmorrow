@@ -360,8 +360,6 @@ class SinceLastUpdate extends StatelessWidget {
 
     Color text = data.isOnline ? Theme.of(context).colorScheme.outline
         : Theme.of(context).colorScheme.onPrimaryContainer;
-    Color highlight = data.isOnline ? Theme.of(context).colorScheme.primary
-        : Theme.of(context).colorScheme.onPrimaryContainer;
 
     if (isVisible) {
       return Padding(
@@ -371,17 +369,17 @@ class SinceLastUpdate extends StatelessWidget {
           children: [
             if (!data.isOnline) Padding(
               padding: const EdgeInsets.only(right: 2),
-              child: Icon(Icons.download_for_offline_outlined, color: highlight, size: 13),
+              child: Icon(Icons.download_for_offline_outlined, color: text, size: 13),
             ),
             if (!data.isOnline) Padding(
               padding: const EdgeInsets.only(right: 7),
-              child: Text(AppLocalizations.of(context)!.offline, style: TextStyle(color: highlight, fontSize: 13),)
+              child: Text(AppLocalizations.of(context)!.offline, style: TextStyle(color: text, fontSize: 13),)
             ),
             if (data.isOnline) Padding(
               padding: const EdgeInsets.only(right: 3, top: 1),
-              child: Icon(Icons.access_time, color: highlight, size: 13,),
+              child: Icon(Icons.access_time, color: text, size: 13,),
             ),
-            Text('${split[0]},', style: TextStyle(color: highlight, fontSize: 13),),
+            Text('${split[0]},', style: TextStyle(color: text, fontSize: 13),),
 
             Text(split.length > 1 ? split[1] : "", style: TextStyle(color: text, fontSize: 13),),
 
@@ -397,11 +395,11 @@ class SinceLastUpdate extends StatelessWidget {
           children: [
             if (!data.isOnline) Padding(
               padding: const EdgeInsets.only(right: 2),
-              child: Icon(Icons.download_for_offline_outlined, color: highlight, size: 13,),
+              child: Icon(Icons.download_for_offline_outlined, color: text, size: 13,),
             ),
             if (!data.isOnline) Padding(
               padding: const EdgeInsets.only(right: 7),
-                child: Text(AppLocalizations.of(context)!.offline, style: TextStyle(color: highlight, fontSize: 14),)
+                child: Text(AppLocalizations.of(context)!.offline, style: TextStyle(color: text, fontSize: 14),)
             ),
             TextButton(
               onPressed: () async {
@@ -452,7 +450,7 @@ class ProviderSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 25, right: 25, bottom: 80, top: 35),
+      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 80, top: 35),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

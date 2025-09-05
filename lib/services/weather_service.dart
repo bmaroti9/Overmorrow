@@ -27,6 +27,20 @@ import '../l10n/app_localizations.dart';
 import '../weather_refact.dart';
 
 
+String getRain15MinuteLocalization(String key, int time, AppLocalizations localizations) {
+  switch (key) {
+    case "rainInHalfHour" : return localizations.rainInHalfHour;
+    case "rainInMinutes" : return localizations.rainInMinutes(time);
+    case "rainInOneHour" : return localizations.rainInOneHour;
+    case "rainInHours" : return localizations.rainInHours(time);
+    case "rainExpectedInMinutes" : return localizations.rainExpectedInMinutes(time);
+    case "rainExpectedInOneHour" : return localizations.rainExpectedInOneHour;
+    case "rainExpectedInHours" : return localizations.rainExpectedInHours(time);
+
+    default: return "wrong key: $key";
+  }
+}
+
 List<double> weatherGetMaxMinTempForDaily(List<WeatherDay> days) {
   double minTemp = 100;
   double maxTemp = -100;
