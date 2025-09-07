@@ -326,6 +326,7 @@ class ColorPalette {
     );
 
     return palette;
+
   }
 
 }

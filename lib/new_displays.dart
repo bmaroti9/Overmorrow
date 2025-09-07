@@ -24,7 +24,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
-import 'package:overmorrow/ui_helper.dart';
 import 'package:provider/provider.dart';
 
 import 'alerts_page.dart';
@@ -459,7 +458,7 @@ class AlertWidget extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 padding: const EdgeInsets.only(left: 7, right: 7, top: 6, bottom: 8),
-                                child: Icon(Icons.warning_amber, size: 20, color: Theme.of(context).colorScheme.error)
+                                child: Icon(Icons.warning_amber_rounded, size: 20, color: Theme.of(context).colorScheme.error)
                             ),
                             const SizedBox(width: 20,),
                             Expanded(

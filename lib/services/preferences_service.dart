@@ -223,6 +223,8 @@ class SettingsProvider with ChangeNotifier {
 
   String _imageSource = "network";
 
+  List<String> _layout = ["sunstatus", "rain indicator" ,"hourly", "alerts" ,"radar", "daily", "air quality"];
+
   Locale _locale = const Locale("en");
   String _localeName = "English";
 
@@ -243,6 +245,8 @@ class SettingsProvider with ChangeNotifier {
   String get getSearchProvider => _searchProvider;
 
   String get getImageSource => _imageSource;
+
+  List<String> get getLayout => _layout;
 
   Locale get getLocale => _locale;
   String get getLocaleName => _localeName;
@@ -270,6 +274,8 @@ class SettingsProvider with ChangeNotifier {
     _imageSource = PreferenceUtils.getString("Image source", "network");
 
     _searchProvider = PreferenceUtils.getString("Search provider", "weatherapi");
+
+    _layout = PreferenceUtils.getStringList("Layout order", ["sunstatus", "rain indicator" ,"hourly", "alerts" ,"radar", "daily", "air quality"]);
 
     _location = PreferenceUtils.getString("LastPlaceN", "New York");
     _latLon = PreferenceUtils.getString("LastCord", "40.7128, -74.0060");
@@ -348,6 +354,12 @@ class SettingsProvider with ChangeNotifier {
   void setWeatherPovider(String to) {
     PreferenceUtils.setString("Weather provider", to);
     _weatherProvider = to;
+    notifyListeners();
+  }
+
+  void setLayoutOrder(List<String> to) {
+    PreferenceUtils.setStringList("Layout order", to);
+    _layout = to;
     notifyListeners();
   }
 }

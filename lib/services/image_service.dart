@@ -24,7 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:overmorrow/weather_refact.dart';
 
 import '../api_key.dart';
-import '../caching.dart';
+import 'caching_service.dart';
 
 String backdropCorrection(String text) {
   return textBackground[text] ?? 'clear_sky3.jpg';

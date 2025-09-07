@@ -20,7 +20,7 @@ import 'dart:io';
 import 'dart:convert';
 
 import '../api_key.dart';
-import '../caching.dart';
+import 'caching_service.dart';
 
 class LocationService {
 

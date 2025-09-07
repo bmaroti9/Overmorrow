@@ -118,32 +118,23 @@ class NewMain extends StatelessWidget {
 
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     final Size size = (view.physicalSize) / view.devicePixelRatio;
-
-    /*
-
+    
+    
     final Map<String, Widget> widgetsMap = {
       'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), width: size.width,),
-      'rain indicator': rain15MinuteChart(data, data.current.palette, context),
-      'hourly': NewHourly(data: data, hours: data.hourly72, elevated: false,),
-      'alerts' : alertWidget(data, context, data.current.palette),
-      'radar': RadarSmall(data: data),
-      'daily': buildDays(data: data),
-      'air quality': aqiWidget(data, data.current.palette, context, false)
+      'rain indicator': Rain15MinuteChart(data: data),
+      'hourly': NewHourly(hours: data.hourly72, elevated: false,),
+      'alerts' : AlertWidget(data: data),
+      'radar': RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
+      'daily': BuildDays(data: data),
+      'air quality': AqiWidget(data: data, isTabletMode: false,)
     };
 
-    final List<String> order = data.settings["Layout"] == "" ? [] : data.settings["Layout"].split(",");
+    final List<String> order = context.select((SettingsProvider p) => p.getLayout);
     List<Widget> orderedWidgets = [];
     if (order.isNotEmpty && order[0] != "") {
       orderedWidgets = order.map((name) => widgetsMap[name]!).toList();
     }
-
-    String colorMode = data.settings["Color mode"];
-    if (colorMode == "auto") {
-      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      colorMode = brightness == Brightness.dark ? "dark" : "light";
-    }
-
-     */
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -203,27 +194,11 @@ class NewMain extends StatelessWidget {
 
           Circles(data: data),
 
-          NewSunriseSunset(data: data, width: size.width),
-
-          Rain15MinuteChart(data: data),
-
-          NewHourly(hours: data.hourly72, elevated: false,),
-
-          AlertWidget(data: data),
-
-          RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
-
-          BuildDays(data: data),
-
-          AqiWidget(data: data, isTabletMode: false),
-
-          /*
           Column(
             children: orderedWidgets.map((widget) {
               return widget;
             }).toList(),
           ),
-           */
 
           ProviderSelector(updateLocation: updateLocation, loc: data.place, latLon: "${data.lat}, ${data.lng}",),
         ],

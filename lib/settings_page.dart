@@ -20,20 +20,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
 import 'package:overmorrow/settings_screens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
-
-
-Future<List<dynamic>> getSettingsAndColors(image) async {
-  Map<String, String> settings = await getSettingsUsed();
-  ColorPalette colorPalette = await ColorPalette.getColorPalette(image, settings["Color mode"]!, settings);
-  return [settings, colorPalette];
-}
 
 Future<Map<String, String>> getSettingsUsed() async {
   Map<String, String> settings = {};

@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:convert';
 
-import '../caching.dart';
+import '../services/caching_service.dart';
 
 class RainviewerRadar {
   final List<String> images;

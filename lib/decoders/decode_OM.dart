@@ -23,7 +23,7 @@ import 'dart:math';
 
 import 'package:http/http.dart' as http;
 
-import '../caching.dart';
+import '../services/caching_service.dart';
 
 import '../services/weather_service.dart';
 import '../weather_refact.dart';

@@ -217,8 +217,6 @@ class WeatherData {
 
   static Future<WeatherData> getFullData(String placeName, latLon, String provider) async {
 
-    print(("fetching", provider));
-
     List<String> split = latLon.split(",");
     double lat = double.parse(split[0]);
     double lng = double.parse(split[1]);

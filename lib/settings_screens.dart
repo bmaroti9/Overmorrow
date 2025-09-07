@@ -135,7 +135,8 @@ class NewSettings extends StatelessWidget {
             MainSettingEntry(
               title: AppLocalizations.of(context)!.layout,
               desc: AppLocalizations.of(context)!.layoutSettingDesc,
-              icon: Icons.widgets_outlined
+              icon: Icons.widgets_outlined,
+              pushTo: const LayoutPage(),
             ),
             MainSettingEntry(
               title: AppLocalizations.of(context)!.about,
@@ -191,39 +192,6 @@ class AppearancePage extends StatelessWidget {
                       ),
                     ),
                     children: [
-                      /*
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30, bottom: 10),
-                        child: Container(
-                          height: 190,
-                          margin: const EdgeInsets.only(left: 10, right: 10),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Stack(
-                              children: [
-                                ParrallaxBackground(image: image, color: Theme.of(context).colorScheme.surface),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 40),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      comfortatext("${unitConversion(16, settings["Temperature"]!).toInt()}°", 67,
-                                          settings, color: Theme.of(context).colorScheme.colorPop, weight: FontWeight.w200),
-                                      comfortatext(localizations.clearSky, 26,
-                                          settings, color: Theme.of(context).colorScheme.descColor, weight: FontWeight.w400)
-                                    ],
-                                  ),
-                                ),
-
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                       */
-
                       const Padding(
                         padding: EdgeInsets.only(left: 1, bottom: 14, top: 30),
                         child: Text("app theme", style: TextStyle(fontSize: 17),)
@@ -638,98 +606,51 @@ class LanguagePage extends StatelessWidget {
   }
 }
 
+class LayoutPage extends StatelessWidget {
 
-
-class LayoutPage extends StatefulWidget {
-  final settings;
-  final image;
-  final ColorScheme palette;
-  final updateMainPage;
-  final localizations;
-
-  const LayoutPage({Key? key, required this.palette, required this.settings,
-    required this.image, required this.updateMainPage, required this.localizations})
-      : super(key: key);
-
-  @override
-  _LayoutPageState createState() =>
-      _LayoutPageState(image: image, settings: settings, palette: palette,
-          updateMainPage: updateMainPage, localizations: localizations);
-}
-
-class _LayoutPageState extends State<LayoutPage> {
-
-  final image;
-  final settings;
-  final ColorScheme palette;
-  final updateMainPage;
-  final AppLocalizations localizations;
-
-  _LayoutPageState({required this.image, required this.settings, required this.palette,
-    required this.updateMainPage, required this.localizations});
-
-  late List<String> _items;
+  const LayoutPage({super.key});
 
   //also the default order
   static const allNames = ["sunstatus", "rain indicator", "hourly", "alerts", "radar", "daily", "air quality"];
 
-  List<String> removed = [];
-
   @override
-  void initState() {
-    super.initState();
-    _items = settings["Layout"] == "" ? [] : settings["Layout"].split(",");
+  Widget build(BuildContext context) {
 
+    List<String> _items = context.watch<SettingsProvider>().getLayout;
+
+    List<String> removed = [];
     for (int i = 0; i < allNames.length; i++) {
       if (!_items.contains(allNames[i])) {
         removed.add(allNames[i]);
       }
     }
-  }
-
-  void updatePage(String name, String to) {
-    setState(() {
-      updateMainPage(name, to);
-    });
-  }
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
 
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: palette.primary),
+              icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary),
               onPressed: () {
-                goBack();
+                HapticFeedback.selectionClick();
+                Navigator.pop(context);
               },
             ),
             actions: [
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: IconButton(
-                  icon: Icon(Icons.restore, color: palette.primary, size: 26,),
+                  icon: Icon(Icons.restore, color: Theme.of(context).colorScheme.primary, size: 26,),
                   onPressed: () {
                     HapticFeedback.heavyImpact();
-                    setState(() {
-                      _items = allNames.toList();
-                      removed = [];
-                      updatePage('Layout', _items.join(","));
-                    });
+                    context.read<SettingsProvider>().setLayoutOrder(allNames);
                   },
                 ),
               ),
             ],
-            title: comfortatext(localizations.layout, 30, settings, color: palette.primary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.layout, style: const TextStyle(fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
@@ -748,11 +669,11 @@ class _LayoutPageState extends State<LayoutPage> {
                     for (int index = 0; index < _items.length; index += 1)
                       Container(
                         key: Key("$index"),
-                        color: palette.surface,
+                        color: Theme.of(context).colorScheme.surface,
                         padding: const EdgeInsets.all(4),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: palette.surfaceContainer,
+                            color: Theme.of(context).colorScheme.surfaceContainer,
                             borderRadius: BorderRadius.circular(33),
                           ),
                           height: 67,
@@ -761,71 +682,34 @@ class _LayoutPageState extends State<LayoutPage> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(right: 10),
-                                child: Icon(Icons.drag_indicator, color: palette.outline,),
+                                child: Icon(Icons.drag_indicator, color: Theme.of(context).colorScheme.outline,),
                               ),
                               Expanded(
-                                child: comfortatext(_items[index], 19, settings, color: palette.onSurface),
+                                child: Text(_items[index], style: const TextStyle(fontSize: 19),),
                               ),
                               IconButton(
                                 onPressed: () {
                                   HapticFeedback.mediumImpact();
-                                  setState(() {
-                                    removed.add(_items[index]);
-                                    _items.remove(_items[index]);
-                                    updatePage('Layout', _items.join(","));
-                                  });
+                                  _items.remove(_items[index]);
+                                  context.read<SettingsProvider>().setLayoutOrder(_items);
                                 },
                                 icon: Icon(
                                   Icons.remove_circle_outline_rounded,
-                                  color: palette.primary, size: 23,
+                                  color: Theme.of(context).colorScheme.primary, size: 23,
                                 ),
                               )
                             ],
                           ),
-                          /*
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              comfortatext(_items[index], 19, settings, color: palette.onSurface),
-                              const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 12),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print((_items[index], _items));
-                                    setState(() {
-                                      removed.add(_items[index]);
-                                      _items.remove(_items[index]);
-                                      updatePage('Layout order', _items.join(","));
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: palette.primaryContainer,
-                                      borderRadius: BorderRadius.circular(40)
-                                    ),
-                                    padding: const EdgeInsets.all(5),
-                                    child: Icon(Icons.remove_rounded, color: palette.surfaceContainer, size: 21,),
-                                  ),
-                                ),
-                              ),
-                              Icon(Icons.reorder_rounded, color: palette.primary, size: 21,),
-                            ],
-                          ),
-
-                           */
                         ),
                       ),
                   ],
                   onReorder: (int oldIndex, int newIndex) {
-                    setState(() {
-                      if (oldIndex < newIndex) {
-                        newIndex -= 1;
-                      }
-                      final String item = _items.removeAt(oldIndex);
-                      _items.insert(newIndex, item);
-                      updatePage('Layout', _items.join(","));
-                    });
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    final String item = _items.removeAt(oldIndex);
+                    _items.insert(newIndex, item);
+                    context.read<SettingsProvider>().setLayoutOrder(_items);
                   },
                 ),
                 Padding(
@@ -837,24 +721,22 @@ class _LayoutPageState extends State<LayoutPage> {
                       return GestureDetector(
                         onTap: () {
                           HapticFeedback.mediumImpact();
-                          setState(() {
-                            _items.add(removed[i]);
-                            removed.remove(removed[i]);
-                          });
+                          _items.add(removed[i]);
+                          context.read<SettingsProvider>().setLayoutOrder(_items);
                         },
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18),
-                            border: Border.all(width: 2, color: palette.outlineVariant)
+                            border: Border.all(width: 2, color: Theme.of(context).colorScheme.outlineVariant)
                           ),
                           padding: const EdgeInsets.all(10),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.add_rounded, color: palette.primary, size: 22,),
+                              Icon(Icons.add_rounded, color: Theme.of(context).colorScheme.primary, size: 22,),
                               Padding(
                                 padding: const EdgeInsets.only(left: 3, right: 3),
-                                child: comfortatext(removed[i], 17, settings, color: palette.onSurface),
+                                child: Text(removed[i], style: const TextStyle(fontSize: 17),),
                               ),
                             ],
                           ),

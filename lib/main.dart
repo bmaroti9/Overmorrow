@@ -165,6 +165,24 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+/*
+class ErrorState {
+  hasError = false;
+  String errorTitle = "";
+  String errorDesc = "";
+
+  static clearState() {
+    hasError = false;
+  }
+
+  static setError(String title, String desc) {
+    errorTitle = title;
+    errorDesc = desc;
+  }
+
+}
+ */
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({key}) : super(key: key);
 
@@ -210,7 +228,6 @@ class MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
   void updateLocation(String latLon, String location) {
     fetchData(location, latLon);
     context.read<SettingsProvider>().setLocationAndLatLon(location, latLon);
@@ -220,6 +237,7 @@ class MyHomePageState extends State<MyHomePage> {
     setState(() {
       isLoading = true;
     });
+
 
     const minDuration = Duration(milliseconds: 300);
     final minimumDelayFuture = Future.delayed(minDuration);

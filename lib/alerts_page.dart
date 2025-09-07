@@ -19,9 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:overmorrow/new_displays.dart';
 import 'package:overmorrow/services/weather_service.dart';
-import 'package:overmorrow/ui_helper.dart';
 import '../l10n/app_localizations.dart';
 import 'decoders/weather_data.dart';
 
@@ -174,23 +172,6 @@ class _AlertsPageState extends State<AlertsPage> {
                                 style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 14),),
                             ),
                           ),
-
-                          /*
-                          if (index != widget.data.alerts.length - 1)Padding(
-                            padding: const EdgeInsets.only(left: 4, right: 4, top: 30, bottom: 10),
-                            child: CustomPaint(
-                              painter: WavePainter(
-                                  0, Theme.of(context).colorScheme.secondaryContainer,
-                                  darken(Theme.of(context).colorScheme.surfaceContainerHighest, 0.03),
-                                  1),
-                              child: const SizedBox(
-                                width: double.infinity,
-                                height: 8.0,
-                              ),
-                            ),
-                          ),
-
-                           */
                         ],
                       ),
                     );
