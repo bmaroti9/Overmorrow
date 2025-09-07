@@ -677,7 +677,7 @@ class LayoutPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(33),
                           ),
                           height: 67,
-                          padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 14),
+                          padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 10),
                           child: Row(
                             children: [
                               Padding(
@@ -690,12 +690,13 @@ class LayoutPage extends StatelessWidget {
                               IconButton(
                                 onPressed: () {
                                   HapticFeedback.mediumImpact();
-                                  _items.remove(_items[index]);
-                                  context.read<SettingsProvider>().setLayoutOrder(_items);
+                                  final List<String> newOrder = List.from(_items);
+                                  newOrder.removeAt(index);
+                                  context.read<SettingsProvider>().setLayoutOrder(newOrder);
                                 },
                                 icon: Icon(
                                   Icons.remove_circle_outline_rounded,
-                                  color: Theme.of(context).colorScheme.primary, size: 23,
+                                  color: Theme.of(context).colorScheme.tertiary, size: 23,
                                 ),
                               )
                             ],
@@ -707,9 +708,10 @@ class LayoutPage extends StatelessWidget {
                     if (oldIndex < newIndex) {
                       newIndex -= 1;
                     }
-                    final String item = _items.removeAt(oldIndex);
-                    _items.insert(newIndex, item);
-                    context.read<SettingsProvider>().setLayoutOrder(_items);
+                    final List<String> newOrder = List.from(_items);
+                    final String item = newOrder.removeAt(oldIndex);
+                    newOrder.insert(newIndex, item);
+                    context.read<SettingsProvider>().setLayoutOrder(newOrder);
                   },
                 ),
                 Padding(
@@ -721,8 +723,9 @@ class LayoutPage extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           HapticFeedback.mediumImpact();
-                          _items.add(removed[i]);
-                          context.read<SettingsProvider>().setLayoutOrder(_items);
+                          final List<String> newOrder = List.from(_items);
+                          newOrder.add(removed[i]);
+                          context.read<SettingsProvider>().setLayoutOrder(newOrder);
                         },
                         child: Container(
                           decoration: BoxDecoration(

@@ -118,10 +118,9 @@ class NewMain extends StatelessWidget {
 
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     final Size size = (view.physicalSize) / view.devicePixelRatio;
-    
-    
+
     final Map<String, Widget> widgetsMap = {
-      'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), width: size.width,),
+      'sunstatus': NewSunriseSunset(data: data, width: size.width,),
       'rain indicator': Rain15MinuteChart(data: data),
       'hourly': NewHourly(hours: data.hourly72, elevated: false,),
       'alerts' : AlertWidget(data: data),
