@@ -220,7 +220,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with AutomaticKeepA
       builder: (context, animatedProgress, child) {
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 22, top: 15),
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 22),
           child: Column(
             children: [
 
@@ -509,7 +509,7 @@ class Rain15MinuteChart extends StatelessWidget {
 
     if (data.minutely15Precip.text != "") {
       return Container(
-        margin: const EdgeInsets.only(left: 23, right: 23, top: 15, bottom: 30),
+        margin: const EdgeInsets.only(left: 23, right: 23, bottom: 30),
         padding: const EdgeInsets.all(22),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(33),

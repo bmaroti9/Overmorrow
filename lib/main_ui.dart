@@ -135,7 +135,7 @@ class Circles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 19, right: 19, bottom: 13, top: 0),
+        padding: const EdgeInsets.only(left: 19, right: 19, bottom: 25, top: 0),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -312,7 +312,7 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
       List<String> split = text.split(',');
 
       return Container(
-        height: 25,
+        height: 23,
         color: widget.data.isOnline ? Colors.transparent : Theme.of(context).colorScheme.primaryContainer,
         margin: widget.data.isOnline ? const EdgeInsets.only(bottom: 1) : const EdgeInsets.only(bottom: 5),
         child: AnimatedSwitcher(

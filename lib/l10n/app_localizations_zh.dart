@@ -33,7 +33,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tomorrowLowercase => '明天';
 
   @override
-  String get overmorrowLowercase => 'Overmorrow';
+  String get overmorrowLowercase => '后天';
 
   @override
   String get language => '语言';
@@ -219,7 +219,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get fairAqiDesc => '可接受的空气质量；对敏感人群有轻微风险。';
 
   @override
-  String get moderateAqiDesc => '敏感人群可能会出现轻微影响。';
+  String get moderateAqiDesc => '易感人群可能出现轻微不适。';
 
   @override
   String get poorAqiDesc => '可能对所有人造成健康影响，对敏感人群影响严重。';
@@ -228,7 +228,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get veryPoorAqiDesc => '对所有人都有严重的健康影响。';
 
   @override
-  String get unhealthyAqiDesc => '紧急情况；对所有人造成严重的健康影响。';
+  String get unhealthyAqiDesc => '紧急状况；可能对所有人产生严重健康影响。';
 
   @override
   String get photoByXOnUnsplash => '照片, ,x, 拍摄，发布于 ,Unsplash';
@@ -357,19 +357,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get veryClear => '非常清晰';
 
   @override
-  String get clear => '晴';
+  String get clear => '清晰';
 
   @override
-  String get slightlyHazy => '略有薄雾';
+  String get slightlyHazy => '略微模糊';
 
   @override
-  String get hazy => '雾';
+  String get hazy => '模糊';
 
   @override
-  String get veryHazy => '浓雾';
+  String get veryHazy => '非常模糊';
 
   @override
-  String get extremelyHazy => '浊雾';
+  String get extremelyHazy => '极其模糊';
 
   @override
   String get poweredByOpenMeteo => '由 open-meteo 驱动';
@@ -706,19 +706,19 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get moderateAqiDesc => '敏感人群可能會出現輕微影響。';
 
   @override
-  String get poorAqiDesc => '可能對所有人造成健康影響，對敏感人群影響嚴重。';
+  String get poorAqiDesc => '健康影響可能對所有人生效，對敏感族群則較為嚴重。';
 
   @override
   String get veryPoorAqiDesc => '對所有人都有嚴重的健康影響。';
 
   @override
-  String get unhealthyAqiDesc => '緊急情況；對所有人造成嚴重的健康影響。';
+  String get unhealthyAqiDesc => '緊急狀況；對所有人有嚴重健康影響。';
 
   @override
   String get photoByXOnUnsplash => '圖片, ,x, 拍攝，發佈於 ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => '源代碼';
+  String get sourceCodeLowercase => '原始码';
 
   @override
   String get emailLowercase => '電子郵箱';
