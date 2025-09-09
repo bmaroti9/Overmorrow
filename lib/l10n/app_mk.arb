@@ -89,7 +89,7 @@
     "@general": {},
     "units": "Мерни Единици",
     "@units": {},
-    "about": "Повеќе за нас (This means \"More about us\" us as in the developer, this is the only way it'll make sense)",
+    "about": "Повеќе за нас",
     "@about": {},
     "appearanceSettingDesc": "тема на бојата, извор на сликата",
     "@appearanceSettingDesc": {},
@@ -167,7 +167,7 @@
     "@rainInHalfHour": {
         "description": "rain in the next half an hour"
     },
-    "rainInMinutes": "дожд во {следните X минути, plural, =1 {следната минута}}",
+    "rainInMinutes": "дожд во {minutes, plural, =1 {следната минута} other {следните {minutes} минути}}",
     "@rainInMinutes": {
         "description": "rain in the next X minutes",
         "placeholders": {
@@ -180,7 +180,7 @@
     "@rainInOneHour": {
         "description": "rain in the next hour"
     },
-    "rainInHours": "дожд во {следните X часови, plural, =1 {следниот час}}",
+    "rainInHours": "дожд во {hours, plural, =1 {следниот час} other {следните {hours} часови}}",
     "@rainInHours": {
         "description": "rain in the next X hours",
         "placeholders": {
@@ -189,7 +189,7 @@
             }
         }
     },
-    "rainExpectedInMinutes": "се очекува дожд за {минути, plural, =1 {минута} other {{минути} минути}}",
+    "rainExpectedInMinutes": "се очекува дожд за {minutes, plural, =1 {минута} other {{minutes} минути}}",
     "@rainExpectedInMinutes": {
         "description": "rain expected in the next X minutes",
         "placeholders": {
@@ -202,7 +202,7 @@
     "@rainExpectedInOneHour": {
         "description": "rain expected in the next hour"
     },
-    "rainExpectedInHours": "се очекува дожд за {часови, plural, =1 {час} other {{часови} часови}}",
+    "rainExpectedInHours": "се очекува дожд за {hours, plural, =1 {час} other {{hours} часови}}",
     "@rainExpectedInHours": {
         "description": "rain expected in the next X hours",
         "placeholders": {
@@ -222,7 +222,7 @@
             }
         }
     },
-    "updatedXDaysAgo": "ажурирано пред {дена, plural, =1 {1 ден} other {{days} дена}}",
+    "updatedXDaysAgo": "ажурирано пред {days, plural, =1 {1 ден} other {{days} дена}}",
     "@updatedXDaysAgo": {
         "description": "updated x days ago",
         "placeholders": {

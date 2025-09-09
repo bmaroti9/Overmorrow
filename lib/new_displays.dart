@@ -509,7 +509,7 @@ class Rain15MinuteChart extends StatelessWidget {
 
     if (data.minutely15Precip.text != "") {
       return Container(
-        margin: const EdgeInsets.only(left: 23, right: 23, bottom: 30),
+        margin: const EdgeInsets.only(left: 23, right: 23, bottom: 30, top: 10),
         padding: const EdgeInsets.all(22),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(33),

@@ -9,131 +9,131 @@ class AppLocalizationsMk extends AppLocalizations {
   AppLocalizationsMk([String locale = 'mk']) : super(locale);
 
   @override
-  String get feelsLike => 'Feels like';
+  String get feelsLike => 'Се чувствува како';
 
   @override
-  String get precipCapital => 'Precip.';
+  String get precipCapital => 'врнежи';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => 'Влажност';
 
   @override
-  String get windCapital => 'Wind';
+  String get windCapital => 'Ветер';
 
   @override
-  String get uvCapital => 'UV';
+  String get uvCapital => 'УВ';
 
   @override
-  String get settings => 'Settings';
+  String get settings => 'Поставки';
 
   @override
-  String get today => 'Today';
+  String get today => 'Денес';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'утре';
 
   @override
-  String get overmorrowLowercase => 'Overmorrow';
+  String get overmorrowLowercase => 'Задутре';
 
   @override
-  String get language => 'Language';
+  String get language => 'Јазик';
 
   @override
-  String get temperature => 'Temperature';
+  String get temperature => 'Температура';
 
   @override
-  String get precipitaion => 'Precipitation';
+  String get precipitaion => 'Врнеж';
 
   @override
-  String get rain => 'Rain';
+  String get rain => 'Дожд';
 
   @override
-  String get clearNight => 'Clear Night';
+  String get clearNight => 'Ведра Ноќ';
 
   @override
-  String get partlyCloudy => 'Partly Cloudy';
+  String get partlyCloudy => 'Делумно Облачно';
 
   @override
-  String get clearSky => 'Clear Sky';
+  String get clearSky => 'Ведро Небо';
 
   @override
-  String get overcast => 'Overcast';
+  String get overcast => 'Облачно';
 
   @override
-  String get haze => 'Haze';
+  String get haze => 'Измаглица';
 
   @override
-  String get sleet => 'Sleet';
+  String get sleet => 'Сунснежица';
 
   @override
-  String get drizzle => 'Drizzle';
+  String get drizzle => 'Ситен Дожд';
 
   @override
-  String get thunderstorm => 'Thunderstorm';
+  String get thunderstorm => 'Грмотевици';
 
   @override
-  String get heavySnow => 'Heavy Snow';
+  String get heavySnow => 'Обилен Снег';
 
   @override
-  String get fog => 'Fog';
+  String get fog => 'Магла';
 
   @override
-  String get snow => 'Snow';
+  String get snow => 'Снег';
 
   @override
-  String get heavyRain => 'Heavy Rain';
+  String get heavyRain => 'Обилен Дожд';
 
   @override
-  String get cloudyNight => 'Cloudy Night';
+  String get cloudyNight => 'Облачно Ноќ';
 
   @override
-  String get weakOrNoWifiConnection => 'Weak or no wifi connection';
+  String get weakOrNoWifiConnection => 'Слаба или без WiFi конекција';
 
   @override
-  String get notConnectedToTheInternet => 'Not connected to the internet';
+  String get notConnectedToTheInternet => 'Одврзано од интернет';
 
   @override
-  String get placeNotFound => 'Place not found';
+  String get placeNotFound => 'Местото не е најдено';
 
   @override
-  String get unableToLocateDevice => 'Unable to locate device';
+  String get unableToLocateDevice => 'Уредот не може да се лоцира';
 
   @override
-  String get locationServicesAreDisabled => 'location services are disabled.';
+  String get locationServicesAreDisabled => 'Локациски сервиси се исклучени.';
 
   @override
-  String get locationPermissionIsDenied => 'location permission is denied';
+  String get locationPermissionIsDenied => 'Локациски дозвола е одбиена';
 
   @override
   String get locationPermissionDeniedForever =>
-      'location permission denied forever';
+      'Локациски дозвола е целосно одбиена';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'Одобрете локациски дозвола';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'Моментална локација';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'Омилени';
 
   @override
-  String get failedToAccessGps => 'failed to access gps';
+  String get failedToAccessGps => 'Не може да се пристапи до GPS мрежата';
 
   @override
-  String get search => 'Search...';
+  String get search => 'Пребарај...';
 
   @override
-  String get sunriseSunset => 'sunrise/sunset';
+  String get sunriseSunset => 'изгрејсонце/зајдисонце';
 
   @override
-  String get airQuality => 'Air Quality';
+  String get airQuality => 'Квалитет на воздухот';
 
   @override
-  String get airQualityLowercase => 'air quality';
+  String get airQualityLowercase => 'квалитет на воздухот';
 
   @override
-  String get good => 'good';
+  String get good => 'добро';
 
   @override
   String get fair => 'fair';
@@ -266,145 +266,145 @@ class AppLocalizationsMk extends AppLocalizations {
   String get imagesLowercase => 'images';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Изглед';
 
   @override
-  String get general => 'General';
+  String get general => 'Општо';
 
   @override
-  String get units => 'Units';
+  String get units => 'Мерни Единици';
 
   @override
-  String get about => 'About';
+  String get about => 'Повеќе за нас';
 
   @override
-  String get appearanceSettingDesc => 'color theme, image source';
+  String get appearanceSettingDesc => 'тема на бојата, извор на сликата';
 
   @override
-  String get generalSettingDesc => 'time mode, font size';
+  String get generalSettingDesc => 'временски режим, големина на фонтот';
 
   @override
-  String get languageSettingDesc => 'the language used';
+  String get languageSettingDesc => 'јазикот во употреба';
 
   @override
-  String get unitsSettingdesc => 'the units used in the app';
+  String get unitsSettingdesc => 'мерни единици во корист';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'повеќе за апликацијава';
 
   @override
-  String get now => 'now';
+  String get now => 'моментално';
 
   @override
-  String get hr => 'hr';
+  String get hr => 'хр (context?)';
 
   @override
-  String get layout => 'Layout';
+  String get layout => 'распоред';
 
   @override
-  String get layoutSettingDesc => 'widget order, customization';
+  String get layoutSettingDesc => 'редослед на виџети, уредување';
 
   @override
-  String get thirtyMinutes => '30m';
+  String get thirtyMinutes => '30 минути';
 
   @override
-  String get mainPollutant => 'main pollutant';
+  String get mainPollutant => 'главен загадувач';
 
   @override
-  String get alderPollen => 'Alder Pollen';
+  String get alderPollen => 'полен на алдер (i\'m not aware what alder means)';
 
   @override
-  String get birchPollen => 'Birch Pollen';
+  String get birchPollen => 'полен од бреза';
 
   @override
-  String get grassPollen => 'Grass Pollen';
+  String get grassPollen => 'полен од трева';
 
   @override
-  String get mugwortPollen => 'Mugwort Pollen';
+  String get mugwortPollen => 'полен од пелин';
 
   @override
-  String get olivePollen => 'Olive Pollen';
+  String get olivePollen => 'полен од маслина';
 
   @override
-  String get ragweedPollen => 'Ragweed Pollen';
+  String get ragweedPollen => 'полен од амброзија';
 
   @override
-  String get dailyAqi => 'daily AQI';
+  String get dailyAqi => 'дневен индекс за квалитет на воздух';
 
   @override
-  String get dateFormat => 'Date format';
+  String get dateFormat => 'Формат на датуми';
 
   @override
-  String get d => 'd';
+  String get d => 'д';
 
   @override
-  String get aerosolOpticalDepth => 'aerosol optical depth';
+  String get aerosolOpticalDepth => 'оптичка длабочина на аеросоли';
 
   @override
-  String get dust => 'dust';
+  String get dust => 'прав';
 
   @override
-  String get europeanAqi => 'european aqi';
+  String get europeanAqi => 'европски индекс за квалитет на воздухот';
 
   @override
-  String get unitedStatesAqi => 'united states aqi';
+  String get unitedStatesAqi => 'американски индекс за квалитет на воздухот';
 
   @override
-  String get offline => 'offline';
+  String get offline => 'одврзано';
 
   @override
-  String get helpTranslate => 'help translate';
+  String get helpTranslate => 'помогни со превод';
 
   @override
-  String get extremelyClear => 'extremely clear';
+  String get extremelyClear => 'екстремно ведро';
 
   @override
-  String get veryClear => 'very clear';
+  String get veryClear => 'многу ведро';
 
   @override
-  String get clear => 'clear';
+  String get clear => 'ведро';
 
   @override
-  String get slightlyHazy => 'slightly hazy';
+  String get slightlyHazy => 'малку измаглено';
 
   @override
-  String get hazy => 'hazy';
+  String get hazy => 'измаглено';
 
   @override
-  String get veryHazy => 'very hazy';
+  String get veryHazy => 'многу измаглено';
 
   @override
-  String get extremelyHazy => 'extremely hazy';
+  String get extremelyHazy => 'екстремно измаглено';
 
   @override
-  String get poweredByOpenMeteo => 'powered by open-meteo';
+  String get poweredByOpenMeteo => 'со помош од open-meteo';
 
   @override
-  String get rainInHalfHour => 'rain in the next half an hour';
+  String get rainInHalfHour => 'дожд во следната половина час';
 
   @override
   String rainInMinutes(int minutes) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: 'следните $minutes минути',
+      one: 'следната минута',
     );
-    return 'rain in the next $_temp0';
+    return 'дожд во $_temp0';
   }
 
   @override
-  String get rainInOneHour => 'rain in the next hour';
+  String get rainInOneHour => 'дожд во следниот час';
 
   @override
   String rainInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: 'следните $hours часови',
+      one: 'следниот час',
     );
-    return 'rain in the next $_temp0';
+    return 'дожд во $_temp0';
   }
 
   @override
@@ -412,29 +412,29 @@ class AppLocalizationsMk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes минути',
+      one: 'минута',
     );
-    return 'rain expected in $_temp0';
+    return 'се очекува дожд за $_temp0';
   }
 
   @override
-  String get rainExpectedInOneHour => 'rain expected in an hour';
+  String get rainExpectedInOneHour => 'се очекува дожд за околу 1 час';
 
   @override
   String rainExpectedInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours часови',
+      one: 'час',
     );
-    return 'rain expected in $_temp0';
+    return 'се очекува дожд за $_temp0';
   }
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return 'updated, $minutes min ago';
+    return 'ажурирано пред $minutes минути';
   }
 
   @override
@@ -442,10 +442,10 @@ class AppLocalizationsMk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
+      other: '$hours часови',
+      one: '1 час',
     );
-    return 'updated, $_temp0 ago';
+    return 'ажурирано пред $_temp0 часови';
   }
 
   @override
@@ -453,42 +453,42 @@ class AppLocalizationsMk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: '$days days',
-      one: '1 day',
+      other: '$days дена',
+      one: '1 ден',
     );
-    return 'updated, $_temp0 ago';
+    return 'ажурирано пред $_temp0';
   }
 
   @override
-  String get radarHaptics => 'Radar haptics';
+  String get radarHaptics => 'радарски хаптики';
 
   @override
-  String get alertsCapital => 'Alerts';
+  String get alertsCapital => 'Известувања';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'известувања';
 
   @override
-  String get severity => 'severity';
+  String get severity => 'сериозност';
 
   @override
-  String get certainty => 'certainty';
+  String get certainty => 'сигурност';
 
   @override
-  String get urgency => 'urgency';
+  String get urgency => 'итност';
 
   @override
-  String get areas => 'areas';
+  String get areas => 'области';
 
   @override
-  String get light => 'light';
+  String get light => 'слабо';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'обилни';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'покажи повеќе';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'покажи помалку';
 }
