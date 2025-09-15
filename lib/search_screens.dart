@@ -246,8 +246,10 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
   _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 400), () async {
-      var result = await LocationService.getRecommendation(query, context.read<SettingsProvider>().getSearchProvider);
-      updateRec(result);
+      if (mounted) {
+        var result = await LocationService.getRecommendation(query, context.read<SettingsProvider>().getSearchProvider);
+        updateRec(result);
+      }
     });
   }
 

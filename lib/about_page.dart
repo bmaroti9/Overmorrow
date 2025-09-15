@@ -105,28 +105,27 @@ class _AboutPageState extends State<AboutPage> {
                       ),
                     ),
                     children: [
+                      const SizedBox(height: 40,),
                       Center(
-                        child: Container(
-                          width: 160,
-                          height: 160,
-                          margin: const EdgeInsets.only(top: 30, bottom: 10),
-                          padding: const EdgeInsets.only(top: 3, right: 3),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondaryContainer,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: SvgPicture.asset(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/m3shapes/4_sided_cookie.svg",
+                              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondaryContainer, BlendMode.srcIn),
+                              width: 200,
+                              height: 200,
+                            ),
+                            SvgPicture.asset(
                               "assets/weather_icons/partly_cloudy.svg",
                               colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
-                            ),
-                          ),
+                              width: 110,
+                              height: 110,
+                            )
+                          ],
                         ),
                       ),
-                      Center(child: Text("Overmorrow", style: TextStyle(color: Theme.of(context).colorScheme.primary,
-                          fontSize: 28, fontWeight: FontWeight.w600))),
-                      const SizedBox(height: 45,),
+                      const SizedBox(height: 60,),
 
                       Wrap(
                         spacing: 6.0,

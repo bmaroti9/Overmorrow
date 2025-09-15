@@ -50,6 +50,7 @@ dependencies:
   stretchy_header: ^2.0.0
   cached_network_image: ^3.4.1
   palette_generator: ^0.3.3+4
+  flutter_blurhash: ^0.9.1
 
   #the original dynamic color package handles surface and fixed colors incorrectly so i found this fork instead
   dynamic_system_colors: ^1.8.0

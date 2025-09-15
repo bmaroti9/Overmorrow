@@ -148,6 +148,7 @@ class NewMain extends StatelessWidget {
           headerHeight: (size.height ) * 0.495,
           header:  FadingImageWidget(
             image: imageService?.image,
+            blurHash: imageService?.blurHash,
           ),
           //header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),color: BLACK),
           overlay: Stack(
@@ -283,6 +284,7 @@ class TabletLayout extends StatelessWidget {
                         headerHeight: (size.height) * 0.43,
                         header: FadingImageWidget(
                           image: imageService?.image,
+                          blurHash: imageService?.blurHash,
                         ),
                         overlay: Padding(
                           padding: const EdgeInsets.all(30),

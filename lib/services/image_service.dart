@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:overmorrow/weather_refact.dart';
 
 import '../api_key.dart';
@@ -36,12 +37,14 @@ List<String> assetImageCredit(String name){
 
 class ImageService {
   final Image image;
+  final String blurHash;
   final String username;
   final String userlink;
   final String photolink;
 
   const ImageService({
     required this.image,
+    required this.blurHash,
     required this.username,
     required this.userlink,
     required this.photolink,
@@ -64,7 +67,7 @@ class ImageService {
     var response2 = await file[0].readAsString();
     var unsplashBody = jsonDecode(response2);
 
-    final String image_path = unsplashBody[0]["urls"]["raw"] + "&w=1500";
+    final String image_path = unsplashBody[0]["urls"]["raw"] + "&w=2500";
     Image image = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,
       width: double.infinity, height: double.infinity);
 
@@ -74,6 +77,7 @@ class ImageService {
     final String _photoLink = unsplashBody[0]["links"]["html"] ?? "";
 
     return ImageService(
+      blurHash: unsplashBody[0]["blur_hash"],
         image: image,
         username: _userName,
         userlink: _userLink,
@@ -93,6 +97,7 @@ class ImageService {
     final String _userLink = credits[2];
 
     return ImageService(
+      blurHash: "",
       image: image,
       username: _userName,
       userlink: _userLink,
@@ -126,8 +131,9 @@ class ImageService {
 
 class FadingImageWidget extends StatelessWidget {
   final Image? image;
+  final String? blurHash;
 
-  const FadingImageWidget({super.key, required this.image});
+  const FadingImageWidget({super.key, required this.image, required this.blurHash});
 
   @override
   Widget build(BuildContext context) {
@@ -142,12 +148,9 @@ class FadingImageWidget extends StatelessWidget {
             },
             child: Container(
               key: ValueKey(image.hashCode),
-              child: (image == null)
-                  ? Container(color: Theme
-                  .of(context)
-                  .colorScheme
-                  .inverseSurface,)
-                  : image,
+              child: (image == null || blurHash == null)
+                  ? Container(color: Theme.of(context).colorScheme.inverseSurface,)
+                  : BlurHash(hash: blurHash!),
             ),
           ),
           //Add a slight tint to make the text more legible

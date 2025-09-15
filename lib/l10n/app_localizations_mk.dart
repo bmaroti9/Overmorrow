@@ -9,10 +9,10 @@ class AppLocalizationsMk extends AppLocalizations {
   AppLocalizationsMk([String locale = 'mk']) : super(locale);
 
   @override
-  String get feelsLike => 'Се чувствува како';
+  String get feelsLike => 'чувствувo';
 
   @override
-  String get precipCapital => 'врнежи';
+  String get precipCapital => 'Врнежи';
 
   @override
   String get humidity => 'Влажност';
@@ -136,134 +136,135 @@ class AppLocalizationsMk extends AppLocalizations {
   String get good => 'добро';
 
   @override
-  String get fair => 'fair';
+  String get fair => 'ведро';
 
   @override
-  String get moderate => 'moderate';
+  String get moderate =>
+      'умерено (it would be \"умерен\" depending on the gender of the next word)';
 
   @override
-  String get poor => 'poor';
+  String get poor => 'слабо';
 
   @override
-  String get veryPoor => 'very poor';
+  String get veryPoor => 'многу слабо';
 
   @override
-  String get unhealthy => 'unhealthy';
+  String get unhealthy => 'не здраво';
 
   @override
-  String get radar => 'radar';
+  String get radar => 'радар';
 
   @override
-  String get colorMode => 'Color mode';
+  String get colorMode => 'режим на боја';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'обезбедувач на прогноза';
 
   @override
-  String get timeMode => 'Time mode';
+  String get timeMode => 'Временски режим';
 
   @override
-  String get mon => 'Mon';
+  String get mon => 'Пон (im assuming this is short for monday)';
 
   @override
-  String get tue => 'Tue';
+  String get tue => 'Вто';
 
   @override
-  String get wed => 'Wed';
+  String get wed => 'Сре';
 
   @override
-  String get thu => 'Thu';
+  String get thu => 'Чет';
 
   @override
-  String get fri => 'Fri';
+  String get fri => 'Пет';
 
   @override
-  String get sat => 'Sat';
+  String get sat => 'Саб';
 
   @override
-  String get sun => 'Sun';
+  String get sun => 'Нед';
 
   @override
-  String get fontSize => 'Font size';
+  String get fontSize => 'Големина на фонт';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'дневно';
 
   @override
-  String get searchProvider => 'Search provider';
+  String get searchProvider => 'Обезбедувач на пребарување';
 
   @override
-  String get updatedJustNow => 'updated, just now';
+  String get updatedJustNow => 'ажурирано, токму сега';
 
   @override
-  String get colorSource => 'Color source';
+  String get colorSource => 'Извор на боја';
 
   @override
-  String get imageSource => 'Image source';
+  String get imageSource => 'Извор на слика';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'Прег.';
 
   @override
-  String get precipLowercase => 'precip';
+  String get precipLowercase => 'врнеж';
 
   @override
-  String get windLowercase => 'wind';
+  String get windLowercase => 'ветер';
 
   @override
-  String get uvLowercase => 'uv';
+  String get uvLowercase => 'ув';
 
   @override
-  String get goodAqiDesc => 'Air quality is excellent; no health risk.';
+  String get goodAqiDesc =>
+      'Квалитетот на воздухот е одличен; нема ризик здравјето.';
 
   @override
   String get fairAqiDesc =>
-      'Acceptable air quality; minor risk for sensitive people.';
+      'Прифатилив квалитет на воздухот; мал ризик за сензитивни луѓе.';
 
   @override
   String get moderateAqiDesc =>
-      'Sensitive individuals may experience mild effects.';
+      'Сензитивни индивидуалци можат да почувствуваат благи ефекти.';
 
   @override
   String get poorAqiDesc =>
-      'Health effects possible for everyone, serious for sensitive groups.';
+      'Можни здравствени ефекти за сите, по сериозно за сензитивни групи.';
 
   @override
-  String get veryPoorAqiDesc => 'Serious health effects for everyone.';
+  String get veryPoorAqiDesc => 'Сериозни здравствени ефекти за сите.';
 
   @override
-  String get unhealthyAqiDesc =>
-      'Emergency conditions; severe health effects for all.';
+  String get unhealthyAqiDesc => 'Итни услови; сериозни ефекти за сите.';
 
   @override
-  String get photoByXOnUnsplash => 'Photo, by ,x, on ,Unsplash';
+  String get photoByXOnUnsplash => 'Слика, од ,x, на ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'изворен код';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'е-пошта';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'изјави проблем';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'донирај';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'Верзија';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'АПИ и Сервиси';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Лиценца';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'временски податоци';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'слики';
 
   @override
   String get appearance => 'Изглед';
@@ -299,7 +300,7 @@ class AppLocalizationsMk extends AppLocalizations {
   String get hr => 'хр (context?)';
 
   @override
-  String get layout => 'распоред';
+  String get layout => 'Распоред';
 
   @override
   String get layoutSettingDesc => 'редослед на виџети, уредување';
@@ -311,7 +312,7 @@ class AppLocalizationsMk extends AppLocalizations {
   String get mainPollutant => 'главен загадувач';
 
   @override
-  String get alderPollen => 'полен на алдер (i\'m not aware what alder means)';
+  String get alderPollen => 'Полен на алдер';
 
   @override
   String get birchPollen => 'полен од бреза';

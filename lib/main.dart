@@ -26,6 +26,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/main_screens.dart';
+import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
@@ -142,6 +143,7 @@ class _MyAppState extends State<MyApp> {
                 colorScheme: lightColorScheme ?? dynamicLightColorScheme,
                 useMaterial3: true,
                 fontFamily: GoogleFonts.outfit().fontFamily,
+                fontFamilyFallback: const ['NotoSans',],
                 pageTransitionsTheme: const PageTransitionsTheme(
                     builders: {
                       TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
@@ -152,6 +154,7 @@ class _MyAppState extends State<MyApp> {
                 colorScheme: darkColorScheme ?? dynamicDarkColorScheme,
                 useMaterial3: true,
                 fontFamily: GoogleFonts.outfit().fontFamily,
+                fontFamilyFallback: const ['NotoSans',],
                 pageTransitionsTheme: const PageTransitionsTheme(
                     builders: {
                       TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
@@ -194,7 +197,9 @@ class MyHomePageState extends State<MyHomePage> {
 
   bool isLoading = false;
   WeatherData? data;
+
   ImageService? imageService;
+  ImageColorList? imageColorList;
 
   String? _lastImageSource;
   String? _lastColorSource;
@@ -273,6 +278,9 @@ class MyHomePageState extends State<MyHomePage> {
 
     ImageService _imageService = await ImageService.getImageService(
         data.current.condition, data.place, settingsProvider.getImageSource);
+
+    imageColorList = await ImageColorList.getImageColorList(_imageService.image);
+
     ImageProvider imageProvider = _imageService.image.image;
 
     if (themeProvider.getColorSource == "image") {

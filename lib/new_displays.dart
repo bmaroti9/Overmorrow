@@ -493,7 +493,6 @@ class AlertWidget extends StatelessWidget {
     }
     return Container();
   }
-
 }
 
 class Rain15MinuteChart extends StatelessWidget {

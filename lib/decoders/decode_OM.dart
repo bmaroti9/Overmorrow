@@ -601,6 +601,8 @@ Future<WeatherData> oMGetWeatherData(lat, lng, place) async {
   int dayDif = DateTime(localtime.year, localtime.month, localtime.day).difference(
       DateTime(lastKnowTime.year, lastKnowTime.month, lastKnowTime.day)).inDays;
 
+  //print((DateTime(localtime.year, localtime.month, localtime.day), DateTime(lastKnowTime.year, lastKnowTime.month, lastKnowTime.day)));
+
   //make sure that there is data left
   if (dayDif >= oMBody["daily"]["weather_code"].length) {
     throw const SocketException("Cached data expired");
