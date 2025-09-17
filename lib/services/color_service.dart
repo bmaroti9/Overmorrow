@@ -18,6 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui' as ui;
+import 'dart:typed_data';
 
 import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,13 @@ int getColorFromHex(String hexColor) {
   return int.parse(hexColor, radix: 16);
 }
 
+double difFromBackColor(Color front, Color back) {
+  double l1 = front.computeLuminance();
+  final l2 = back.computeLuminance();
+  final lighter = max(l1, l2), darker = min(l1, l2);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
 double difFromBackColors(Color front, List<Color> backs) {
   double worst = double.infinity;
   double l1 = front.computeLuminance();
@@ -43,6 +52,58 @@ double difFromBackColors(Color front, List<Color> backs) {
     worst = min(worst, (lighter + 0.05) / (darker + 0.05));
   }
   return worst;
+}
+
+Future<ui.Image> getUiImageFromProvider(ImageProvider imageProvider) async {
+  final Completer<ui.Image> completer = Completer<ui.Image>();
+  final ImageStream stream = imageProvider.resolve(const ImageConfiguration());
+  late final ImageStreamListener listener; // Declare the listener with `late`
+
+  listener = ImageStreamListener(
+        (ImageInfo imageInfo, bool synchronousCall) {
+      completer.complete(imageInfo.image);
+      stream.removeListener(listener); // Remove the listener to prevent future calls
+    },
+    // Add an error listener to handle loading failures
+    onError: (Object exception, StackTrace? stackTrace) {
+      completer.completeError(exception, stackTrace);
+      stream.removeListener(listener);
+    },
+  );
+
+  stream.addListener(listener);
+  return completer.future;
+}
+
+Future<Color> getBottomLeftColor(ImageProvider imageProvider) async {
+  const widthFactor = 0.3;
+  const heightFactor = 0.7;
+
+  final ui.Image image = await getUiImageFromProvider(imageProvider);
+
+  final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
+
+  if (byteData != null) {
+
+    int r = 0;
+    int g = 0;
+    int b = 0;
+    int count = 0;
+
+    for (int y = (image.height * heightFactor).round(); y < image.height; y++) {
+      for (int x = 0; x < (image.width * widthFactor).round(); x++) {
+        final int byteOffset = (y * image.width + x) * 4;
+
+        r += byteData.getUint8(byteOffset);
+        g += byteData.getUint8(byteOffset + 1);
+        b += byteData.getUint8(byteOffset + 2);
+        count += 1;
+      }
+    }
+
+    return Color.fromARGB(255, (r / count).round(), (g / count).round(), (b / count).round());
+  }
+  return Colors.black;
 }
 
 class ImageColorList {
@@ -57,58 +118,118 @@ class ImageColorList {
   static Future<ImageColorList> getImageColorList(Image imageWidget) async {
     final ImageProvider imageProvider = imageWidget.image;
 
-    final Completer<ImageInfo> completer = Completer();
-    final ImageStreamListener listener = ImageStreamListener((ImageInfo info, bool _) {
-      if (!completer.isCompleted) {
-        completer.complete(info);
-      }
-    });
+    // Define a max size for the analysis. 500x500 is often more than enough.
+    const Size analysisSize = Size(60, 60);
 
-    imageProvider.resolve(const ImageConfiguration()).addListener(listener);
+    print(Rect.fromLTWH(0, analysisSize.height / 2, analysisSize.width / 2, analysisSize.height / 2));
 
-    final ImageInfo imageInfo = await completer.future;
-    final int imageHeight = imageInfo.image.height;
-    final int imageWidth = imageInfo.image.height;
-
-    const int desiredSquare = 400; //approximation because the top half image cropped is almost a square
-
-    final double cropX = desiredSquare / imageWidth;
-    final double cropY = desiredSquare / imageHeight;
-
-    final double cropAbsolute = max(cropY, cropX);
-
-    final double centerX = imageWidth / 2;
-    final double centerY = imageHeight / 2;
-
-    final newLeft = centerX - ((desiredSquare / 2) / cropAbsolute);
-    final newTop = centerY - ((desiredSquare / 2) / cropAbsolute);
-
-    const double regionWidth = 50;
-    const double regionHeight = 50;
-    final Rect region = Rect.fromLTWH(
-      newLeft + (50 / cropAbsolute),
-      newTop + (300 / cropAbsolute),
-      (regionWidth / cropAbsolute),
-      (regionHeight / cropAbsolute),
-    );
-
-    PaletteGenerator regionColors = await PaletteGenerator.fromImage(
-      imageInfo.image,
-      region: region,
+    // Generate palettes from the ImageProvider, which handles decoding AND resizing!
+    final regionColorsFuture = PaletteGenerator.fromImageProvider(
+      imageProvider,
+      size: analysisSize, // Resizes the image before analysis
       maximumColorCount: 3,
-      filters: [],
-    );
-    PaletteGenerator imageColors = await PaletteGenerator.fromImage(
-      imageInfo.image,
-      maximumColorCount: 4,
-      filters: [],
     );
 
-    imageProvider.resolve(const ImageConfiguration()).removeListener(listener);
+    final imageColorsFuture = PaletteGenerator.fromImageProvider(
+      imageProvider,
+      size: analysisSize,
+      maximumColorCount: 4,
+    );
+
+    // Await both results
+    final results = await Future.wait([regionColorsFuture, imageColorsFuture]);
 
     return ImageColorList(
-      imageColors: imageColors.colors.toList(),
-      regionColors: regionColors.colors.toList()
+      regionColors: results[0].colors.toList(),
+      imageColors: results[1].colors.toList(),
+    );
+  }
+
+}
+
+class ColorsOnImage {
+  final Color colorPop; //The color that is applied to the temperature display
+  final Color descColor; //the color that is applied to the description under the temperature
+  final Color regionColor;
+
+  const ColorsOnImage({
+    required this.colorPop,
+    required this.descColor,
+    required this.regionColor,
+  });
+
+  static Future<ColorsOnImage> getColorsOnImage(ImageProvider imageProvider, ColorScheme palette) async {
+
+    final Color backColor = await getBottomLeftColor(imageProvider);
+
+    //the intended look is temperature with tertiaryFixedDim and description with surface
+    //though that can be adjusted to help contrast
+
+    double surfaceDif = difFromBackColor(palette.surface, backColor);
+    //if the desc can keep the surface color or has to adapt to help contrast
+    bool descUnique = surfaceDif >= 1.9;
+
+    //predefined list of colors in order that still match the color scheme
+    final colorList = [palette.tertiaryFixedDim, palette.primaryFixedDim, palette.surface,
+      palette.secondaryContainer, palette.tertiary, palette.onSurface];
+
+    double dif;
+
+    Color color;
+    for (int i = 0; i < colorList.length; i++) {
+      color = colorList[i];
+      dif = difFromBackColor(color, backColor);
+      if (dif >= 1.9) {
+        return ColorsOnImage(
+          colorPop: color,
+          descColor: descUnique ? palette.surface : color,
+          regionColor: backColor
+        );
+      }
+    }
+
+    //at this point neither of the predefined colors have enough contrast
+    //loop through all brightnesses to see which works best
+
+    Color newColor;
+    Color bestColor = Colors.blue;
+    double bestDif = -1;
+    for (int i = 1; i < 5; i++) {
+      //LIGHT
+      newColor = lighten(palette.tertiaryFixedDim, i / 4);
+      dif = difFromBackColor(newColor, backColor);
+      if (dif > bestDif) {
+        if (dif >= 1.9) { //try to keep it close as possible to the palette while still readable
+          return ColorsOnImage(
+            colorPop: newColor,
+            descColor: newColor,
+            regionColor: backColor
+          );
+        }
+        bestDif = dif;
+        bestColor = newColor;
+      }
+
+      //DARK
+      newColor = darken(palette.tertiaryFixedDim, i / 4);
+      dif = difFromBackColor(newColor, backColor);
+      if (dif > bestDif) {
+        if (dif >= 1.9) { //try to keep it close as possible to the palette while still readable
+          return ColorsOnImage(
+            colorPop: newColor,
+            descColor: newColor,
+            regionColor: backColor
+          );
+        }
+        bestDif = dif;
+        bestColor = newColor;
+      }
+    }
+
+    return ColorsOnImage(
+      colorPop: bestColor,
+      descColor: bestColor,
+      regionColor: backColor
     );
   }
 }

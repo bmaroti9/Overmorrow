@@ -22,6 +22,7 @@ import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 import 'package:expressive_loading_indicator/expressive_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_widget/home_widget.dart';
@@ -199,7 +200,7 @@ class MyHomePageState extends State<MyHomePage> {
   WeatherData? data;
 
   ImageService? imageService;
-  ImageColorList? imageColorList;
+  ColorsOnImage colorsOnImage = const ColorsOnImage(colorPop: Colors.black, descColor: Colors.black, regionColor: Colors.black);
 
   String? _lastImageSource;
   String? _lastColorSource;
@@ -275,11 +276,10 @@ class MyHomePageState extends State<MyHomePage> {
   Future<void> updateImage(WeatherData data) async {
     final settingsProvider = context.read<SettingsProvider>();
     final themeProvider = context.read<ThemeProvider>();
+    final ColorScheme palette = Theme.of(context).colorScheme;
 
     ImageService _imageService = await ImageService.getImageService(
         data.current.condition, data.place, settingsProvider.getImageSource);
-
-    imageColorList = await ImageColorList.getImageColorList(_imageService.image);
 
     ImageProvider imageProvider = _imageService.image.image;
 
@@ -294,6 +294,19 @@ class MyHomePageState extends State<MyHomePage> {
       );
 
       themeProvider.changeColorSchemeToImageScheme(colorSchemeLight, colorSchemeDark);
+
+      String mode = themeProvider.getBrightness;
+
+      if (mode == "auto") {
+        var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+        mode = brightness == Brightness.dark ? "dark" : "light";
+      }
+
+      colorsOnImage = await ColorsOnImage.getColorsOnImage(imageProvider,
+        mode == "light" ? colorSchemeLight : colorSchemeDark);
+    }
+    else {
+      colorsOnImage = await ColorsOnImage.getColorsOnImage(imageProvider, palette);
     }
 
     // precache the image so that it is guaranteed to be ready for the fading
@@ -317,7 +330,8 @@ class MyHomePageState extends State<MyHomePage> {
     return Stack(
       children: [
         Container(color: Theme.of(context).colorScheme.surface,),
-        if (data != null) NewMain(data: data!, updateLocation: updateLocation, imageService: imageService),
+        if (data != null) NewMain(data: data!, updateLocation: updateLocation, imageService: imageService,
+          colorsOnImage: colorsOnImage),
         //if (data != null) TabletLayout(data: data!, updateLocation: updateLocation, imageService: imageService),
         LoadingIndicator(isLoading: isLoading,)
       ],

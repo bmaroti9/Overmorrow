@@ -21,7 +21,6 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:overmorrow/weather_refact.dart';
 
 import '../api_key.dart';
@@ -53,6 +52,7 @@ class ImageService {
   static Future<ImageService> getUnsplashCollectionImage(String condition, String loc) async {
 
     String collectionId = conditionToCollection[condition] ?? 'XMGA2-GGjyw';
+    //String collectionId = "-mvW8OMC15Y";
 
     final params = {
       'client_id': access_key,
@@ -150,7 +150,7 @@ class FadingImageWidget extends StatelessWidget {
               key: ValueKey(image.hashCode),
               child: (image == null || blurHash == null)
                   ? Container(color: Theme.of(context).colorScheme.inverseSurface,)
-                  : BlurHash(hash: blurHash!),
+                  : image,
             ),
           ),
           //Add a slight tint to make the text more legible

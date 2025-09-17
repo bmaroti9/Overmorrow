@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/search_screens.dart';
+import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
@@ -33,12 +34,14 @@ import 'l10n/app_localizations.dart';
 import 'main_ui.dart';
 import 'new_displays.dart';
 
+
 class NewMain extends StatelessWidget {
   final WeatherData data;
   final updateLocation;
   final ImageService? imageService;
+  final ColorsOnImage colorsOnImage;
 
-  NewMain({required this.data, required this.updateLocation, required this.imageService});
+  NewMain({required this.data, required this.updateLocation, required this.imageService, required this.colorsOnImage});
 
   /*
   @override
@@ -155,35 +158,8 @@ class NewMain extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 26, right: 26, bottom: 26),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Spacer(),
-                    SmoothTempTransition(target: unitConversion(data.current.tempC,
-                        context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
-                      color: Theme.of(context).colorScheme.tertiaryFixedDim, fontSize: 75,),
-                    Text(
-                      translateCondition(data.current.condition, AppLocalizations.of(context)!),
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.surface,
-                          fontSize: 33, height: 1.05
-                      ),
-                    )
-                    /*
-                    comfortatext(
-                        "${data.current.temp}°", 75, data.settings,
-                        color: data.current.colorPop, weight: FontWeight.w200,
-                    ),
-                    comfortatext(
-                        data.current.text, 33, data.settings,
-                        weight: FontWeight.w400,
-                        color: data.current.descColor)
-
-                     */
-                  ],
-                ),
+                child: TempAndConditionText(data: data, colorsOnImage: colorsOnImage,)
               ),
-
               MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,)
             ],
           )
@@ -206,7 +182,6 @@ class NewMain extends StatelessWidget {
     );
   }
 }
-
 
 //I'm using this as a reference for everything i want animated between places
 class SmoothTransitionDemo extends StatelessWidget {

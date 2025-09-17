@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/decoders/weather_data.dart';
+import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
@@ -80,6 +81,39 @@ class WeatherPage extends StatelessWidget {
   }
 }
 
+
+
+class TempAndConditionText extends StatelessWidget {
+  final WeatherData data;
+  final ColorsOnImage colorsOnImage;
+
+  const TempAndConditionText({super.key, required this.data, required this.colorsOnImage});
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        //Container(width: 100, height: 100, color: colorsOnImage.regionColor,),
+        SmoothTempTransition(target: unitConversion(data.current.tempC,
+            context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
+          color: colorsOnImage.colorPop, fontSize: 75,),
+        Text(
+          translateCondition(data.current.condition, AppLocalizations.of(context)!),
+          style: GoogleFonts.outfit(
+            color: colorsOnImage.descColor,
+            fontSize: 32,
+            height: 1.05,
+            fontWeight: FontWeight.w500,
+          ),
+        )
+      ],
+    );
+  }
+
+}
 
 class SmoothTempTransition extends StatefulWidget {
   final double target;
