@@ -99,7 +99,7 @@ class TempAndConditionText extends StatelessWidget {
         //Container(width: 100, height: 100, color: colorsOnImage.regionColor,),
         SmoothTempTransition(target: unitConversion(data.current.tempC,
             context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
-          color: colorsOnImage.colorPop, fontSize: 75,),
+          color: colorsOnImage.colorPop, fontSize: 77,),
         Text(
           translateCondition(data.current.condition, AppLocalizations.of(context)!),
           style: GoogleFonts.outfit(

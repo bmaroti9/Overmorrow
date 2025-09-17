@@ -244,7 +244,6 @@ class MyHomePageState extends State<MyHomePage> {
       isLoading = true;
     });
 
-
     const minDuration = Duration(milliseconds: 300);
     final minimumDelayFuture = Future.delayed(minDuration);
 
