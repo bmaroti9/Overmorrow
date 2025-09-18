@@ -22,7 +22,6 @@ import 'package:flutter/material.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/search_screens.dart';
-import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
@@ -39,9 +38,8 @@ class NewMain extends StatelessWidget {
   final WeatherData data;
   final updateLocation;
   final ImageService? imageService;
-  final ColorsOnImage colorsOnImage;
 
-  NewMain({required this.data, required this.updateLocation, required this.imageService, required this.colorsOnImage});
+  NewMain({required this.data, required this.updateLocation, required this.imageService});
 
   /*
   @override
@@ -119,6 +117,8 @@ class NewMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    print("CALLED mainScreens");
+
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     final Size size = (view.physicalSize) / view.devicePixelRatio;
 
@@ -151,14 +151,13 @@ class NewMain extends StatelessWidget {
           headerHeight: (size.height ) * 0.495,
           header:  FadingImageWidget(
             image: imageService?.image,
-            blurHash: imageService?.blurHash,
           ),
           //header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),color: BLACK),
           overlay: Stack(
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 26, right: 26, bottom: 26),
-                child: TempAndConditionText(data: data, colorsOnImage: colorsOnImage,)
+                child: TempAndConditionText(data: data, textRegionColor: imageService?.textRegionColor,)
               ),
               MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,)
             ],
@@ -259,7 +258,6 @@ class TabletLayout extends StatelessWidget {
                         headerHeight: (size.height) * 0.43,
                         header: FadingImageWidget(
                           image: imageService?.image,
-                          blurHash: imageService?.blurHash,
                         ),
                         overlay: Padding(
                           padding: const EdgeInsets.all(30),

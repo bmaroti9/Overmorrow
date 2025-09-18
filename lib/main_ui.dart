@@ -82,15 +82,18 @@ class WeatherPage extends StatelessWidget {
 }
 
 
-
 class TempAndConditionText extends StatelessWidget {
   final WeatherData data;
-  final ColorsOnImage colorsOnImage;
+  final Color? textRegionColor;
 
-  const TempAndConditionText({super.key, required this.data, required this.colorsOnImage});
+  const TempAndConditionText({super.key, required this.data, required this.textRegionColor});
 
   @override
   Widget build(BuildContext context) {
+
+    print("CALLED");
+    ColorsOnImage colorsOnImage = ColorsOnImage.getColorsOnImage(Theme.of(context).colorScheme,
+        textRegionColor ?? Colors.black);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -437,7 +440,7 @@ class SinceLastUpdate extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                await _launchUrl("${imageService.photolink}?utm_source=overmorrow&utm_medium=referral");
+                await _launchUrl("${imageService.photoLink}?utm_source=overmorrow&utm_medium=referral");
               },
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.all(1),
@@ -448,7 +451,7 @@ class SinceLastUpdate extends StatelessWidget {
             Text(split[1], style: TextStyle(color: text, fontSize: 13),),
             TextButton(
               onPressed: () async {
-                await _launchUrl("${imageService.userlink}?utm_source=overmorrow&utm_medium=referral");
+                await _launchUrl("${imageService.userLink}?utm_source=overmorrow&utm_medium=referral");
               },
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.all(1),

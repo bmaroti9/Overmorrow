@@ -22,12 +22,10 @@ import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 import 'package:expressive_loading_indicator/expressive_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/main_screens.dart';
-import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
@@ -200,7 +198,6 @@ class MyHomePageState extends State<MyHomePage> {
   WeatherData? data;
 
   ImageService? imageService;
-  ColorsOnImage colorsOnImage = const ColorsOnImage(colorPop: Colors.black, descColor: Colors.black, regionColor: Colors.black);
 
   String? _lastImageSource;
   String? _lastColorSource;
@@ -275,7 +272,6 @@ class MyHomePageState extends State<MyHomePage> {
   Future<void> updateImage(WeatherData data) async {
     final settingsProvider = context.read<SettingsProvider>();
     final themeProvider = context.read<ThemeProvider>();
-    final ColorScheme palette = Theme.of(context).colorScheme;
 
     ImageService _imageService = await ImageService.getImageService(
         data.current.condition, data.place, settingsProvider.getImageSource);
@@ -293,19 +289,6 @@ class MyHomePageState extends State<MyHomePage> {
       );
 
       themeProvider.changeColorSchemeToImageScheme(colorSchemeLight, colorSchemeDark);
-
-      String mode = themeProvider.getBrightness;
-
-      if (mode == "auto") {
-        var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-        mode = brightness == Brightness.dark ? "dark" : "light";
-      }
-
-      colorsOnImage = await ColorsOnImage.getColorsOnImage(imageProvider,
-        mode == "light" ? colorSchemeLight : colorSchemeDark);
-    }
-    else {
-      colorsOnImage = await ColorsOnImage.getColorsOnImage(imageProvider, palette);
     }
 
     // precache the image so that it is guaranteed to be ready for the fading
@@ -323,14 +306,10 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
-    context.watch<SettingsProvider>().getImageSource;
-    context.watch<ThemeProvider>().getColorSource;
-
     return Stack(
       children: [
         Container(color: Theme.of(context).colorScheme.surface,),
-        if (data != null) NewMain(data: data!, updateLocation: updateLocation, imageService: imageService,
-          colorsOnImage: colorsOnImage),
+        if (data != null) NewMain(data: data!, updateLocation: updateLocation, imageService: imageService),
         //if (data != null) TabletLayout(data: data!, updateLocation: updateLocation, imageService: imageService),
         LoadingIndicator(isLoading: isLoading,)
       ],

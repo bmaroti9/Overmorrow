@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/weather_refact.dart';
 
 import '../api_key.dart';
@@ -36,17 +37,17 @@ List<String> assetImageCredit(String name){
 
 class ImageService {
   final Image image;
-  final String blurHash;
   final String username;
-  final String userlink;
-  final String photolink;
+  final String userLink;
+  final String photoLink;
+  final Color textRegionColor;
 
   const ImageService({
     required this.image,
-    required this.blurHash,
     required this.username,
-    required this.userlink,
-    required this.photolink,
+    required this.userLink,
+    required this.photoLink,
+    required this.textRegionColor,
   });
 
   static Future<ImageService> getUnsplashCollectionImage(String condition, String loc) async {
@@ -76,16 +77,18 @@ class ImageService {
 
     final String _photoLink = unsplashBody[0]["links"]["html"] ?? "";
 
+    Color textRegionColor = await getBottomLeftColor(image.image);
+
     return ImageService(
-      blurHash: unsplashBody[0]["blur_hash"],
-        image: image,
-        username: _userName,
-        userlink: _userLink,
-        photolink: _photoLink,
+      image: image,
+      username: _userName,
+      userLink: _userLink,
+      photoLink: _photoLink,
+      textRegionColor: textRegionColor,
     );
   }
 
-  static ImageService getAssetImage(String condition) {
+  static Future<ImageService> getAssetImage(String condition) async {
 
     final String imagePath = backdropCorrection(condition);
     final Image image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
@@ -96,12 +99,15 @@ class ImageService {
     final String _userName = credits[1];
     final String _userLink = credits[2];
 
+    Color textRegionColor = await getBottomLeftColor(image.image);
+
     return ImageService(
-      blurHash: "",
       image: image,
       username: _userName,
-      userlink: _userLink,
-      photolink: _photoLink,
+      userLink: _userLink,
+      photoLink: _photoLink,
+
+      textRegionColor: textRegionColor
     );
 
   }
@@ -110,7 +116,6 @@ class ImageService {
 
     if (imageSource == "network") {
       try {
-        //ImageService i = await getUnsplashImage(condition, loc);
         ImageService i = await getUnsplashCollectionImage(condition, loc);
         return i;
       }
@@ -119,11 +124,11 @@ class ImageService {
         if (kDebugMode) {
           print(error);
         }
-        return getAssetImage(condition);
+        return await getAssetImage(condition);
       }
     }
     else {
-      return getAssetImage(condition);
+      return await getAssetImage(condition);
     }
   }
 
@@ -131,9 +136,8 @@ class ImageService {
 
 class FadingImageWidget extends StatelessWidget {
   final Image? image;
-  final String? blurHash;
 
-  const FadingImageWidget({super.key, required this.image, required this.blurHash});
+  const FadingImageWidget({super.key, required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +152,7 @@ class FadingImageWidget extends StatelessWidget {
             },
             child: Container(
               key: ValueKey(image.hashCode),
-              child: (image == null || blurHash == null)
+              child: (image == null)
                   ? Container(color: Theme.of(context).colorScheme.inverseSurface,)
                   : image,
             ),
