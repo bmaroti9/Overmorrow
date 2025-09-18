@@ -116,9 +116,6 @@ class NewMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    print("CALLED mainScreens");
-
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     final Size size = (view.physicalSize) / view.devicePixelRatio;
 

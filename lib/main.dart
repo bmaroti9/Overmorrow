@@ -306,6 +306,9 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
+    context.select((SettingsProvider p) => p.getImageSource);
+    context.select((ThemeProvider p) => p.getColorSource);
+
     return Stack(
       children: [
         Container(color: Theme.of(context).colorScheme.surface,),

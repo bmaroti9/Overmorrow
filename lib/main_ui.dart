@@ -82,40 +82,70 @@ class WeatherPage extends StatelessWidget {
 }
 
 
-class TempAndConditionText extends StatelessWidget {
+class TempAndConditionText extends StatefulWidget {
   final WeatherData data;
   final Color? textRegionColor;
 
-  const TempAndConditionText({super.key, required this.data, required this.textRegionColor});
+  const TempAndConditionText({
+    super.key,
+    required this.data,
+    required this.textRegionColor,
+  });
+
+  @override
+  State<TempAndConditionText> createState() => _TempAndConditionTextState();
+}
+
+class _TempAndConditionTextState extends State<TempAndConditionText> {
+  late ColorsOnImage colorsOnImage = const ColorsOnImage(colorPop: Colors.black, descColor: Colors.black, regionColor: Colors.black);
+  ColorScheme? lastColorScheme;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  //this ensures that the color contrast checking logic only runs when it actually needs to
+  @override
+  void didUpdateWidget(covariant TempAndConditionText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.textRegionColor != widget.textRegionColor || lastColorScheme != Theme.of(context).colorScheme) {
+      _recalculateColors();
+      lastColorScheme = Theme.of(context).colorScheme;
+    }
+  }
+
+  void _recalculateColors() {
+    colorsOnImage = ColorsOnImage.getColorsOnImage(
+      Theme.of(context).colorScheme,
+      widget.textRegionColor ?? Colors.black,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    print("CALLED");
-    ColorsOnImage colorsOnImage = ColorsOnImage.getColorsOnImage(Theme.of(context).colorScheme,
-        textRegionColor ?? Colors.black);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         //Container(width: 100, height: 100, color: colorsOnImage.regionColor,),
-        SmoothTempTransition(target: unitConversion(data.current.tempC,
+        SmoothTempTransition(target: unitConversion(widget.data.current.tempC,
             context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
           color: colorsOnImage.colorPop, fontSize: 77,),
         Text(
-          translateCondition(data.current.condition, AppLocalizations.of(context)!),
+          translateCondition(widget.data.current.condition,
+              AppLocalizations.of(context)!),
           style: GoogleFonts.outfit(
             color: colorsOnImage.descColor,
             fontSize: 32,
             height: 1.05,
             fontWeight: FontWeight.w500,
           ),
-        )
+        ),
       ],
     );
   }
-
 }
 
 class SmoothTempTransition extends StatefulWidget {
@@ -526,7 +556,7 @@ class ProviderSelector extends StatelessWidget {
                 onChanged: (String? value) async {
                   if (value != null) {
                     HapticFeedback.mediumImpact();
-                    context.read<SettingsProvider>().setWeatherPovider(value);
+                    context.read<SettingsProvider>().setWeatherProvider(value);
                     await updateLocation(latLon, loc);
                   }
                 },

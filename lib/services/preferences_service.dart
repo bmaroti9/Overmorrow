@@ -104,7 +104,6 @@ class PreferenceUtils {
   }
 }
 
-
 class ThemeProvider with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   String _brightness = "auto";
@@ -353,7 +352,7 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setWeatherPovider(String to) {
+  void setWeatherProvider(String to) {
     PreferenceUtils.setString("Weather provider", to);
     _weatherProvider = to;
     notifyListeners();
