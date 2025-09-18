@@ -156,7 +156,7 @@ class NewMain extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 26, right: 26, bottom: 26),
                 child: TempAndConditionText(data: data, textRegionColor: imageService?.textRegionColor,)
               ),
-              MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,)
+              MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,),
             ],
           )
         ),

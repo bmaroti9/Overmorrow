@@ -21,6 +21,7 @@ import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/decoders/decode_RV.dart';
 import 'package:overmorrow/decoders/decode_mn.dart';
 import 'decode_wapi.dart';
+import 'package:flutter/material.dart';
 
 class WeatherCurrent {
   final String condition;
@@ -331,4 +332,21 @@ class LightHourlyForecastData {
         return omGetHourlyForecast(settings, placeName, lat, lon);
     }
   }
+}
+
+
+class WeatherError {
+  String? errorTitle;
+  String? errorDesc;
+  IconData? errorIcon;
+  String latLon;
+  String location;
+
+  WeatherError({
+    this.errorTitle,
+    this.errorDesc,
+    this.errorIcon,
+    required this.location,
+    required this.latLon,
+  });
 }

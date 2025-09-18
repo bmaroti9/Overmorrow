@@ -71,8 +71,10 @@ Future<ui.Image> getUiImageFromProvider(ImageProvider imageProvider) async {
 }
 
 Future<Color> getBottomLeftColor(ImageProvider imageProvider) async {
-  const widthFactor = 0.3;
-  const heightFactor = 0.7;
+  const widthFactorStart = 0.1;
+  const widthFactorEnd = 0.3;
+  const heightFactorStart = 0.7;
+  const heightFactorEnd = 0.9;
 
   final ui.Image image = await getUiImageFromProvider(imageProvider);
 
@@ -85,8 +87,8 @@ Future<Color> getBottomLeftColor(ImageProvider imageProvider) async {
     int b = 0;
     int count = 0;
 
-    for (int y = (image.height * heightFactor).round(); y < image.height; y++) {
-      for (int x = 0; x < (image.width * widthFactor).round(); x++) {
+    for (int y = (image.height * heightFactorStart).round(); y < (image.height * heightFactorEnd).round(); y++) {
+      for (int x = (image.width * widthFactorStart).round(); x < (image.width * widthFactorEnd).round(); x++) {
         final int byteOffset = (y * image.width + x) * 4;
 
         r += byteData.getUint8(byteOffset);

@@ -19,15 +19,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:expressive_loading_indicator/expressive_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/decoders/weather_data.dart';
+import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:provider/provider.dart';
+import 'package:stretchy_header/stretchy_header.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'api_key.dart';
 import '../l10n/app_localizations.dart';
@@ -81,6 +84,41 @@ class WeatherPage extends StatelessWidget {
   }
 }
 
+
+class LoadingIndicator extends StatelessWidget {
+  final bool isLoading;
+  const LoadingIndicator({super.key, required this.isLoading});
+
+  @override
+  Widget build(BuildContext context) {
+    final Offset offset = isLoading ? Offset.zero : const Offset(0, -0.3);
+
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 300),
+      opacity: isLoading ? 1.0 : 0.0,
+      curve: Curves.easeInOut,
+      child: AnimatedSlide(
+        duration: const Duration(milliseconds: 300),
+        offset: offset,
+        curve: Curves.easeInOut,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Theme.of(context).colorScheme.primaryContainer
+            ),
+            margin: const EdgeInsets.only(top: 210),
+            padding: const EdgeInsets.all(3),
+            width: 64,
+            height: 64,
+            child: const ExpressiveLoadingIndicator(),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class TempAndConditionText extends StatefulWidget {
   final WeatherData data;
@@ -202,7 +240,7 @@ class Circles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 19, right: 19, bottom: 25, top: 0),
+        padding: const EdgeInsets.only(left: 19, right: 19, bottom: 25, top: 1),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -316,7 +354,6 @@ class DescriptionCircle extends StatelessWidget {
     );
   }
 }
-
 
 class FadingWidget extends StatefulWidget  {
   final WeatherData data;
@@ -574,20 +611,11 @@ class ProviderSelector extends StatelessWidget {
 
 }
 
-/*
 class ErrorPage extends StatelessWidget {
-  final errorMessage;
-  final updateLocation;
-  final place;
-  final icon;
-  final settings;
-  final provider;
-  final latlng;
-  final shouldAdd;
+  final WeatherError weatherError;
+  final Function updateLocation;
 
-  ErrorPage({super.key, required this.errorMessage,
-    required this.updateLocation, required this.icon, required this.place,
-    required this.settings, required this.provider, required this.latlng,  this.shouldAdd});
+  ErrorPage({super.key, required this.weatherError, required this.updateLocation});
 
   @override
   Widget build(BuildContext context) {
@@ -596,25 +624,20 @@ class ErrorPage extends StatelessWidget {
 
     Size size = view.physicalSize / view.devicePixelRatio;
 
-    String newStr = sanitizeErrorMessage(errorMessage);
-
     Image image = Image.asset("assets/backdrops/grayscale_snow2.jpg",
         fit: BoxFit.cover, width: double.infinity, height: double.infinity);
 
-    ColorScheme palette = ColorPalette.getErrorPagePalette(settings["Color mode"]);
-
     return Scaffold(
-      backgroundColor: palette.surface,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: StretchyHeader.singleChild(
         displacement: 150,
         onRefresh: () async {
-          await updateLocation(latlng, place, time: 400);
+          await updateLocation(weatherError.latLon, weatherError.location);
         },
         headerData: HeaderData(
             blurContent: false,
-            headerHeight: max(size.height * 0.5, 400), //we don't want it to be smaller than 400
-            header: ParrallaxBackground(image: Image.asset("assets/backdrops/grayscale_snow2.jpg", fit: BoxFit.cover,), key: Key(place),
-                color: palette.surfaceContainerHigh),
+            headerHeight: (size.height ) * 0.495,
+            header: image,
             overlay: Stack(
               children: [
                 Padding(
@@ -626,15 +649,15 @@ class ErrorPage extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 50, bottom: 20),
-                          child: Icon(icon, color: Colors.black54, size: 20),
+                          child: Icon(weatherError.errorIcon, color: Colors.black, size: 20),
                         ),
-                        comfortatext(newStr, 17, settings, color: Colors.black54, weight: FontWeight.w500,
-                            align: TextAlign.center),
+                        Text(weatherError.errorTitle ?? "", style: const TextStyle(fontSize: 20, color: Colors.black),),
+                        Text(sanitizeErrorMessage(weatherError.errorDesc ?? ""), style: const TextStyle(fontSize: 16, color: Colors.black),)
                       ],
                     ),
                   ),
                 ),
-                MySearchWidget(place: place, updateLocation: updateLocation, isTabletMode: false)
+                MySearchWidget(place: weatherError.location, updateLocation: updateLocation, isTabletMode: false,),
               ],
             )
         ),
@@ -642,12 +665,8 @@ class ErrorPage extends StatelessWidget {
         Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: comfortatext(shouldAdd ?? "", 16, settings, color: palette.onSurface, weight: FontWeight.w400,),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: providerSelector(settings, updateLocation, palette, provider, latlng, place, context),
+              padding: const EdgeInsets.only(top: 0),
+              child: ProviderSelector(updateLocation: updateLocation, loc: weatherError.location, latLon: weatherError.latLon,)
             ),
           ],
         ),
@@ -655,5 +674,3 @@ class ErrorPage extends StatelessWidget {
     );
   }
 }
-
- */

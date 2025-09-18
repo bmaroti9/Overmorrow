@@ -120,8 +120,8 @@ class ImageService {
         return i;
       }
       catch (e) {
-        String error = e.toString().replaceAll(access_key, "<key>");
         if (kDebugMode) {
+          String error = e.toString().replaceAll(access_key, "<key>");
           print(error);
         }
         return await getAssetImage(condition);
