@@ -135,7 +135,7 @@ class TempAndConditionText extends StatefulWidget {
 }
 
 class _TempAndConditionTextState extends State<TempAndConditionText> {
-  late ColorsOnImage colorsOnImage = const ColorsOnImage(colorPop: Colors.black, descColor: Colors.black, regionColor: Colors.black);
+  ColorsOnImage? colorsOnImage;
   ColorScheme? lastColorScheme;
 
   @override
@@ -168,14 +168,17 @@ class _TempAndConditionTextState extends State<TempAndConditionText> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         //Container(width: 100, height: 100, color: colorsOnImage.regionColor,),
-        SmoothTempTransition(target: unitConversion(widget.data.current.tempC,
-            context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
-          color: colorsOnImage.colorPop, fontSize: 77,),
+        SmoothTempTransition(
+          target: unitConversion(widget.data.current.tempC,
+          context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
+          color: colorsOnImage?.colorPop ?? Theme.of(context).colorScheme.tertiaryContainer,
+          fontSize: 77,
+        ),
         Text(
           translateCondition(widget.data.current.condition,
               AppLocalizations.of(context)!),
           style: GoogleFonts.outfit(
-            color: colorsOnImage.descColor,
+            color: colorsOnImage?.descColor ?? Theme.of(context).colorScheme.surface,
             fontSize: 32,
             height: 1.05,
             fontWeight: FontWeight.w500,

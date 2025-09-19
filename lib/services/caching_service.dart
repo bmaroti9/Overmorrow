@@ -87,12 +87,17 @@ class MyFileService extends HttpFileService {
   }
 }
 
-CacheManager cacheManager = CacheManager(Config(
+final CacheManager cacheManager = CacheManager(Config(
   "20dayCache",
   stalePeriod: const Duration(days: 20),
   fileService: MyFileService(),
 ));
 
+final CacheManager customImageCacheManager = CacheManager(Config(
+  "ImageCache",
+  stalePeriod: const Duration(days: 7), //the weather data goes stale by then anyway
+  maxNrOfCacheObjects: 50
+));
 
 CustomCacheManager XCustomCacheManager = CustomCacheManager();
 

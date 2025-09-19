@@ -37,7 +37,6 @@ import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 import 'main_ui.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -211,6 +210,7 @@ class MyHomePageState extends State<MyHomePage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
+        loadOldImageServiceFromCache();
         updateLocation(context.read<SettingsProvider>().getLatLon, context.read<SettingsProvider>().getLocation);
       }
     });
@@ -322,6 +322,21 @@ class MyHomePageState extends State<MyHomePage> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  Future<void> loadOldImageServiceFromCache() async {
+    ImageService? _imageService = await ImageService.getOldImageServiceFromCache();
+    if (_imageService != null) {
+      if (mounted) {
+        await precacheImage(_imageService.image.image, context);
+      }
+
+      if (mounted) {
+        setState(() {
+          imageService = _imageService;
+        });
+      }
+    }
   }
 
   Future<void> updateImage(WeatherData data) async {

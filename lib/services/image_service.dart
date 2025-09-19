@@ -22,6 +22,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:overmorrow/services/color_service.dart';
+import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/weather_refact.dart';
 
 import '../api_key.dart';
@@ -69,8 +70,8 @@ class ImageService {
     var unsplashBody = jsonDecode(response2);
 
     final String image_path = unsplashBody[0]["urls"]["raw"] + "&w=2500";
-    Image image = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,
-      width: double.infinity, height: double.infinity);
+    Image image = Image(image: CachedNetworkImageProvider(image_path, cacheManager: customImageCacheManager),
+        fit: BoxFit.cover, width: double.infinity, height: double.infinity);
 
     final String _userLink = (unsplashBody[0]["user"]["links"]["html"]) ?? "";
     final String _userName = unsplashBody[0]["user"]["name"] ?? "";
@@ -78,6 +79,10 @@ class ImageService {
     final String _photoLink = unsplashBody[0]["links"]["html"] ?? "";
 
     Color textRegionColor = await getBottomLeftColor(image.image);
+
+    //this can be used for displaying this old image when the app is opened before the new one loads
+    //so it wont just be a blank screen
+    PreferenceUtils.setString("lastSuccessfulImageFetch", image_path);
 
     return ImageService(
       image: image,
@@ -130,6 +135,25 @@ class ImageService {
     else {
       return await getAssetImage(condition);
     }
+  }
+
+  static Future<ImageService?> getOldImageServiceFromCache() async {
+
+    String url = PreferenceUtils.getString("lastSuccessfulImageFetch", "");
+    print(("old url", url));
+    if (url == "") return null;
+
+    // Check if the image exists in the cache
+    final file = await customImageCacheManager.getFileFromCache(url);
+
+    if (file != null) {
+      final Image image = Image.file(file.file, fit: BoxFit.cover,
+        width: double.infinity, height: double.infinity,);
+      return ImageService(image: image, username: "", userLink: "", photoLink: "", textRegionColor: Colors.black);
+    }
+
+    // If not, return null
+    return null;
   }
 
 }
