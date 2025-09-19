@@ -24,7 +24,6 @@ import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
 import 'package:overmorrow/settings_screens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
 
 Future<Map<String, String>> getSettingsUsed() async {
@@ -129,7 +128,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
     ),
     style: GoogleFonts.comfortaa(
       color: textcolor,
-      fontSize: 19 * getFontSize(settings["Font size"]),
+      fontSize: 19,
       fontWeight: FontWeight.w300,
     ),
     alignment: Alignment.centerRight,

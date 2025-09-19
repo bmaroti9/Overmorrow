@@ -28,7 +28,6 @@ import 'package:overmorrow/services/location_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
 import 'package:overmorrow/settings_page.dart';
-import 'package:overmorrow/ui_helper.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +39,27 @@ import 'l10n/app_localizations.dart';
 String generateSimplifier(var split) {
   return "${split["name"]}, ${split["lat"].toStringAsFixed(2)}, ${split["lon"].toStringAsFixed(2)}";
 }
+
+bool isUppercase(String str){
+  return str == str.toUpperCase();
+}
+
+String generateAbbreviation(String countryName) {
+  List<String> words = countryName.split(' ');
+
+  if (words.length == 1) {
+    return countryName;
+  } else {
+    String abbreviation = '';
+    for (String word in words) {
+      if (word.isNotEmpty && isUppercase(word[0])) {
+        abbreviation += word[0];
+      }
+    }
+    return abbreviation;
+  }
+}
+
 
 class MySearchWidget extends StatefulWidget{
   final place;

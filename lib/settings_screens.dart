@@ -23,7 +23,6 @@ import 'package:overmorrow/about_page.dart';
 import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/settings_page.dart';
-import 'package:overmorrow/ui_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -267,7 +266,7 @@ class AppearancePage extends StatelessWidget {
                                         ),
                                       ),
                                       if (customColorHex == name) const Center(
-                                          child: Icon(Icons.check, color: WHITE,))
+                                          child: Icon(Icons.check, color: Colors.white,))
                                     ],
                                   ),
                                 ),
