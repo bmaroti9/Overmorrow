@@ -29,21 +29,16 @@ import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
-import androidx.glance.layout.wrapContentHeight
 import androidx.glance.layout.wrapContentWidth
 import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
 import es.antonborri.home_widget.actionStartActivity
-import getBackColor
-import getFrontColor
-import getIconForCondition
-import getOnFrontColor
-import java.lang.reflect.Type
+import com.marotidev.overmorrow.services.getBackColor
+import com.marotidev.overmorrow.services.getFrontColor
+import com.marotidev.overmorrow.services.getIconForCondition
 
 class OneHourlyWidget : GlanceAppWidget() {
 

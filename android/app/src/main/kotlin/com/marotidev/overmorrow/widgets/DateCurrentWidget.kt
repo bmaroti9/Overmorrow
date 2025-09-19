@@ -38,10 +38,10 @@ import androidx.glance.text.TextStyle
 import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
 import es.antonborri.home_widget.actionStartActivity
-import getBackColor
-import getFrontColor
-import getIconForCondition
-import getOnFrontColor
+import com.marotidev.overmorrow.services.getBackColor
+import com.marotidev.overmorrow.services.getFrontColor
+import com.marotidev.overmorrow.services.getIconForCondition
+import com.marotidev.overmorrow.services.getOnFrontColor
 
 class DateCurrentWidget : GlanceAppWidget() {
 

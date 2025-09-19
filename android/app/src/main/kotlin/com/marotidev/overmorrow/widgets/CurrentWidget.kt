@@ -3,7 +3,6 @@ package com.marotidev.overmorrow.widgets
 import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
 import android.content.Context
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,12 +29,10 @@ import androidx.glance.text.TextStyle
 import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
 import es.antonborri.home_widget.actionStartActivity
-import getIconForCondition
+import com.marotidev.overmorrow.services.getIconForCondition
 import androidx.core.net.toUri
-import androidx.glance.unit.ColorProvider
-import getBackColor
-import getFrontColor
-import getOnFrontColor
+import com.marotidev.overmorrow.services.getBackColor
+import com.marotidev.overmorrow.services.getFrontColor
 
 class CurrentWidget : GlanceAppWidget() {
 
