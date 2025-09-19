@@ -37,7 +37,6 @@ fun getBackColor(colorName: String): ColorProvider {
     }
 }
 
-
 @Composable
 fun getFrontColor(colorName: String): ColorProvider {
     return when (colorName) {

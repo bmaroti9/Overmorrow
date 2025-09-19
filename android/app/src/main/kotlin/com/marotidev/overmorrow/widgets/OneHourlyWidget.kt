@@ -107,7 +107,7 @@ class OneHourlyWidget : GlanceAppWidget() {
             weatherIconList.add(getIconForCondition(item))
         }
 
-        Column (
+        Row (
             modifier = GlanceModifier
                 .fillMaxSize()
                 .background(backColor)
@@ -118,57 +118,58 @@ class OneHourlyWidget : GlanceAppWidget() {
                         "overmorrrow://opened?location=$location&latlon=$latLon".toUri()
                     )
                 ),
-            verticalAlignment = Alignment.Vertical.Top
+            verticalAlignment = Alignment.Vertical.CenterVertically
+
         ) {
             Row(
-                modifier = GlanceModifier
-                    .wrapContentHeight()
-                    .padding(start = 8.dp, end = 8.dp, top = 8.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.Vertical.Top
+                modifier = GlanceModifier.padding(start = 12.dp)
             ) {
-                Text(
-                    text = "$currentTemp°",
-                    style = TextStyle(
-                        color = frontColor,
-                        fontSize = 32.sp,
-                    ),
-                )
-
-                Row(
-                    verticalAlignment = Alignment.Vertical.CenterVertically,
-                    horizontalAlignment = Alignment.End,
-                    modifier = GlanceModifier.padding(top = 2.dp, end = 2.dp, start = 2.dp).fillMaxWidth()
+                Column(
                 ) {
-                    Image(
-                        provider = ImageProvider(R.drawable.icon_location),
-                        contentDescription = "Location icon",
-                        colorFilter = ColorFilter.tint(GlanceTheme.colors.outline),
-                        modifier = GlanceModifier.size(18.dp).padding(end = 4.dp)
-                    )
                     Text(
-                        text = placeName,
+                        text = "$currentTemp°",
                         style = TextStyle(
-                            color = GlanceTheme.colors.outline,
-                            fontSize = 16.sp
-                        )
+                            color = frontColor,
+                            fontSize = 28.sp,
+                        ),
                     )
-                }
-            }
 
-            Text(
-                text = currentCondition,
-                style = TextStyle(
-                    color = GlanceTheme.colors.onSurface,
-                    fontSize = 20.sp,
-                ),
-                modifier = GlanceModifier.padding(start = 8.dp)
-            )
+                    Text(
+                        text = currentCondition,
+                        style = TextStyle(
+                            color = GlanceTheme.colors.onSurface,
+                            fontSize = 18.sp,
+                        ),
+                    )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            provider = ImageProvider(R.drawable.icon_location),
+                            contentDescription = "Location icon",
+                            colorFilter = ColorFilter.tint(GlanceTheme.colors.outline),
+                            modifier = GlanceModifier.size(18.dp).padding(end = 4.dp)
+                        )
+                        Text(
+                            text = placeName,
+                            style = TextStyle(
+                                color = GlanceTheme.colors.outline,
+                                fontSize = 16.sp
+                            )
+                        )
+                    }
+                }
+
+            }
 
             Row (
                 verticalAlignment = Alignment.Vertical.CenterVertically,
                 horizontalAlignment = Alignment.Horizontal.CenterHorizontally,
-                modifier = GlanceModifier.fillMaxWidth().fillMaxHeight()
+                modifier = GlanceModifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .background(backColor)
             ) {
                 timeList.forEachIndexed { index, item ->
                     Column (

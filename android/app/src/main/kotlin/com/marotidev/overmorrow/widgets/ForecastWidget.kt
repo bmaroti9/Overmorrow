@@ -73,8 +73,6 @@ class ForecastWidget : GlanceAppWidget() {
         val hourlyConditionList = prefs.getString("hourlyForecast.hourly6Conditions.$appWidgetId", "[]") ?: "[]"
         val hourlyTimeList = prefs.getString("hourlyForecast.hourly6Names.$appWidgetId", "[]") ?: "[]"
 
-        val updatedTime = prefs.getString("hourlyForecast.updatedTime.$appWidgetId", "--") ?: "?"
-
         val placeName = prefs.getString("widget.place.$appWidgetId", "N/A") ?: "?"
 
         val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
@@ -171,15 +169,6 @@ class ForecastWidget : GlanceAppWidget() {
                     fontSize = 20.sp,
                 ),
                 modifier = GlanceModifier.padding(start = 8.dp)
-            )
-
-            Text(
-                text = updatedTime,
-                style = TextStyle(
-                    color = GlanceTheme.colors.outline,
-                    fontSize = 12.sp,
-                ),
-                modifier = GlanceModifier.padding(start = 8.dp, bottom = 8.dp,)
             )
 
             Row (
