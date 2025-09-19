@@ -45,12 +45,7 @@ import getIconForCondition
 import getOnFrontColor
 import java.lang.reflect.Type
 
-val gson = Gson()
-val hourlyTempType: Type = object : TypeToken<List<Int>>() {}.type
-val hourlyConditionType = object : TypeToken<List<String>>() {}.type
-val hourlyTimeType = object : TypeToken<List<String>>() {}.type
-
-class ForecastWidget : GlanceAppWidget() {
+class OneHourlyWidget : GlanceAppWidget() {
 
     override val stateDefinition: GlanceStateDefinition<*>
         get() = HomeWidgetGlanceStateDefinition()
@@ -68,12 +63,9 @@ class ForecastWidget : GlanceAppWidget() {
         val prefs = currentState.preferences
         val currentTemp = prefs.getInt("hourlyForecast.currentTemp.$appWidgetId", 0)
         val currentCondition = prefs.getString("hourlyForecast.currentCondition.$appWidgetId", "N/A") ?: "?"
-
-        val hourlyTempList = prefs.getString("hourlyForecast.hourly6Temps.$appWidgetId", "[]") ?: "[]"
-        val hourlyConditionList = prefs.getString("hourlyForecast.hourly6Conditions.$appWidgetId", "[]") ?: "[]"
-        val hourlyTimeList = prefs.getString("hourlyForecast.hourly6Names.$appWidgetId", "[]") ?: "[]"
-
-        val updatedTime = prefs.getString("hourlyForecast.updatedTime.$appWidgetId", "--") ?: "?"
+        val hourlyTempList = prefs.getString("hourlyForecast.hourly1Temps.$appWidgetId", "[]") ?: "[]"
+        val hourlyConditionList = prefs.getString("hourlyForecast.hourly1Conditions.$appWidgetId", "[]") ?: "[]"
+        val hourlyTimeList = prefs.getString("hourlyForecast.hourly1Names.$appWidgetId", "[]") ?: "[]"
 
         val placeName = prefs.getString("widget.place.$appWidgetId", "N/A") ?: "?"
 
@@ -171,15 +163,6 @@ class ForecastWidget : GlanceAppWidget() {
                     fontSize = 20.sp,
                 ),
                 modifier = GlanceModifier.padding(start = 8.dp)
-            )
-
-            Text(
-                text = updatedTime,
-                style = TextStyle(
-                    color = GlanceTheme.colors.outline,
-                    fontSize = 12.sp,
-                ),
-                modifier = GlanceModifier.padding(start = 8.dp, bottom = 8.dp,)
             )
 
             Row (

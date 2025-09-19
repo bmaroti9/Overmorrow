@@ -420,6 +420,8 @@ Future<dynamic> metNGetLightResponse(settings, placeName, lat, lon) async {
   };
   final url = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/compact', params);
 
+  print(url);
+
   final response = (await http.get(url, headers: headers)).body;
 
   return jsonDecode(response);
@@ -468,7 +470,7 @@ Future<LightHourlyForecastData> metNGetLightHourlyData(settings, placeName, lat,
   for (int i = 0; i < min(item["properties"]["timeseries"].length, 23); i++) {
     final hour = item["properties"]["timeseries"][i];
 
-    DateTime d = DateTime.parse(hour["time"]);
+    DateTime d = DateTime.parse(hour["time"]).toLocal();
 
     if (d.hour % 6 == 0) {
       hourly6Conditions.add(metNTextCorrection(

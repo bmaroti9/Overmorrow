@@ -57,6 +57,7 @@ import com.marotidev.overmorrow.R
 import com.marotidev.overmorrow.widgets.CurrentWidget
 import com.marotidev.overmorrow.widgets.DateCurrentWidget
 import com.marotidev.overmorrow.widgets.ForecastWidget
+import com.marotidev.overmorrow.widgets.OneHourlyWidget
 import com.marotidev.overmorrow.widgets.WindWidget
 
 //this is to stop proguard from messing up the structure
@@ -95,6 +96,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                     "com.marotidev.overmorrow.receivers.DateCurrentWidgetReceiver" -> DateCurrentWidget()
                     "com.marotidev.overmorrow.receivers.WindWidgetReceiver" -> WindWidget()
                     "com.marotidev.overmorrow.receivers.ForecastWidgetReceiver" -> ForecastWidget()
+                    "com.marotidev.overmorrow.receivers.OneHourlyWidgetReceiver" -> OneHourlyWidget()
                     else -> {
                         Log.w("WidgetConfig", "Unknown widget provider: $providerClassName for appWidgetId: $appWidgetId")
                         null

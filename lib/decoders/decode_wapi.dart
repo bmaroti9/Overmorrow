@@ -491,7 +491,7 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(settings, placeName, lat,
       hourly6Names.add("${d.hour}h");
     }
 
-    if (d.difference(now).inHours >= 0 && d.difference(now).inHours <= 4) {
+    if (d.difference(now).inHours >= 0 && d.difference(now).inHours < 3) {
       hourly1Conditions.add(wapiTextCorrection(hour["condition"]["code"], hour["is_day"]));
       hourly1Temps.add(unitConversion(hour["temp_c"], settings["Temperature"]).round());
       hourly1Names.add("${d.hour}h");
@@ -508,8 +508,8 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(settings, placeName, lat,
     hourly6Names: jsonEncode(hourly6Names),
     hourly6Temps: jsonEncode(hourly6Temps),
 
-    hourly1Conditions: jsonEncode(hourly6Conditions),
-    hourly1Names: jsonEncode(hourly6Names),
-    hourly1Temps: jsonEncode(hourly6Temps),
+    hourly1Conditions: jsonEncode(hourly1Conditions),
+    hourly1Names: jsonEncode(hourly1Names),
+    hourly1Temps: jsonEncode(hourly1Temps),
   );
 }

@@ -743,12 +743,11 @@ Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lo
       hourly6Names.add("${d.hour}h");
     }
 
-    if (d.difference(now).inHours >= 0 && d.difference(now).inHours <= 4) {
+    if (d.difference(now).inHours >= 0 && d.difference(now).inHours < 3) {
       hourly1Conditions.add(oMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, d));
       hourly1Temps.add(unitConversion(item["hourly"]["temperature_2m"][i], settings["Temperature"]).round());
       hourly1Names.add("${d.hour}h");
     }
-
   }
 
   return LightHourlyForecastData(

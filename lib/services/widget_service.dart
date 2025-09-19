@@ -30,6 +30,7 @@ const currentWidgetReceiver = 'com.marotidev.overmorrow.receivers.CurrentWidgetR
 const dateCurrentWidgetReceiver = 'com.marotidev.overmorrow.receivers.DateCurrentWidgetReceiver';
 const windWidgetReceiver = 'com.marotidev.overmorrow.receivers.WindWidgetReceiver';
 const forecastWidgetReceiver = 'com.marotidev.overmorrow.receivers.ForecastWidgetReceiver';
+const oneHourlyWidgetReceiver = 'com.marotidev.overmorrow.receivers.OneHourlyWidgetReceiver';
 
 class WidgetService {
 
@@ -90,6 +91,10 @@ class WidgetService {
     HomeWidget.updateWidget(
       androidName: 'ForecastWidget',
       qualifiedAndroidName: forecastWidgetReceiver,
+    );
+    HomeWidget.updateWidget(
+      androidName: 'OneHourlyWidget',
+      qualifiedAndroidName: oneHourlyWidgetReceiver,
     );
   }
 }
@@ -167,7 +172,7 @@ void myCallbackDispatcher() {
 
               await WidgetService.syncWindDataToWidget(data, widgetId);
             }
-            else if (widgetClassName == forecastWidgetReceiver) {
+            else if (widgetClassName == forecastWidgetReceiver || widgetClassName == oneHourlyWidgetReceiver) {
 
               LightHourlyForecastData data = await LightHourlyForecastData
                   .getLightForecastData(placeName, latLon, widgetProvider, settings);
