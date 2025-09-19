@@ -154,7 +154,7 @@ class _ClockUpdaterState extends State<ClockUpdater> {
     String write = convertTime(localTime, context);
 
     final textPainter = TextPainter(
-        text: TextSpan(text: write, style: const TextStyle(fontSize: 15)),
+        text: TextSpan(text: write, style: const TextStyle(fontSize: 14)),
         textDirection: TextDirection.ltr);
     textPainter.layout();
     final textWidth = textPainter.width * 1.1;
@@ -177,7 +177,7 @@ class _ClockUpdaterState extends State<ClockUpdater> {
                   widget.width - 53 - textWidth)),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(write, style: TextStyle(fontSize: 15, )),
+            child: Text(write, style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.tertiary, fontWeight: FontWeight.w600)),
           ),
         );
       },
@@ -220,14 +220,14 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with AutomaticKeepA
       builder: (context, animatedProgress, child) {
 
         return Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 22),
+          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 28),
           child: Column(
             children: [
 
               ClockUpdater(hourDiff: hourDiff, progress: targetProgress, width: widget.width),
 
               Padding(
-                padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 13),
+                padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 11),
                 child: SizedBox(
                   width: double.infinity,
                   height: 8.0,

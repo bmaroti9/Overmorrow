@@ -243,7 +243,7 @@ class Circles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 19, right: 19, bottom: 25, top: 1),
+        padding: const EdgeInsets.only(left: 19, right: 19, bottom: 21, top: 3),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

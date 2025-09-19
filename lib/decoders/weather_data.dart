@@ -236,6 +236,25 @@ class WeatherData {
 }
 
 
+class WeatherError {
+  String? errorTitle;
+  String? errorDesc;
+  IconData? errorIcon;
+  String latLon;
+  String location;
+
+  WeatherError({
+    this.errorTitle,
+    this.errorDesc,
+    this.errorIcon,
+    required this.location,
+    required this.latLon,
+  });
+}
+
+
+//---------------------------------- WIDGET DATA CLASSES -------------------------------------
+
 //A more lightweight version of data fetching for the current weather widgets to use
 class LightCurrentWeatherData {
   final String place;
@@ -303,18 +322,28 @@ class LightHourlyForecastData {
   final String currentCondition;
   final String place;
   final String updatedTime;
-  final String hourlyConditions;
-  final String hourlyTemps;
-  final String hourlyNames;
+
+  //hours with 6 hourly interval
+  final String hourly6Conditions;
+  final String hourly6Temps;
+  final String hourly6Names;
+
+  //hours with 1 hourly interval
+  final String hourly1Conditions;
+  final String hourly1Temps;
+  final String hourly1Names;
 
   LightHourlyForecastData({
     required this.place,
     required this.currentCondition,
     required this.currentTemp,
     required this.updatedTime,
-    required this.hourlyConditions,
-    required this.hourlyNames,
-    required this.hourlyTemps
+    required this.hourly6Conditions,
+    required this.hourly6Names,
+    required this.hourly6Temps,
+    required this.hourly1Conditions,
+    required this.hourly1Names,
+    required this.hourly1Temps
   });
 
   static Future<LightHourlyForecastData> getLightForecastData(placeName, latLon, provider, settings) async {
@@ -332,21 +361,4 @@ class LightHourlyForecastData {
         return omGetHourlyForecast(settings, placeName, lat, lon);
     }
   }
-}
-
-
-class WeatherError {
-  String? errorTitle;
-  String? errorDesc;
-  IconData? errorIcon;
-  String latLon;
-  String location;
-
-  WeatherError({
-    this.errorTitle,
-    this.errorDesc,
-    this.errorIcon,
-    required this.location,
-    required this.latLon,
-  });
 }

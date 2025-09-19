@@ -140,7 +140,6 @@ class ImageService {
   static Future<ImageService?> getOldImageServiceFromCache() async {
 
     String url = PreferenceUtils.getString("lastSuccessfulImageFetch", "");
-    print(("old url", url));
     if (url == "") return null;
 
     // Check if the image exists in the cache

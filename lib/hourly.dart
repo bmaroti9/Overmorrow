@@ -64,7 +64,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
             child: hourBoxes(widget.hours, _value, widget.elevated, context, dateFormat),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 15, bottom: 0, left: 5),
+            padding: const EdgeInsets.only(top: 20, bottom: 0, left: 5),
             child: Wrap(
               spacing: 5.0,
               children: List<Widget>.generate(4, (int index) {

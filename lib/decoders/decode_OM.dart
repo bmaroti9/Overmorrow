@@ -727,17 +727,28 @@ Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lo
 
   WeatherSunStatus sunStatus = oMWeatherSunStatusFromJson(item);
 
-  List<String> hourlyConditions = [];
-  List<int> hourlyTemps = [];
-  List<String> hourlyNames = [];
+  List<String> hourly6Conditions = [];
+  List<int> hourly6Temps = [];
+  List<String> hourly6Names = [];
+
+  List<String> hourly1Conditions = [];
+  List<int> hourly1Temps = [];
+  List<String> hourly1Names = [];
 
   for (int i = 0; i < item["hourly"]["temperature_2m"].length; i++) {
     DateTime d = DateTime.parse(item["hourly"]["time"][i]);
     if (d.hour % 6 == 0) {
-      hourlyConditions.add(oMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, d));
-      hourlyTemps.add(unitConversion(item["hourly"]["temperature_2m"][i], settings["Temperature"]).round());
-      hourlyNames.add("${d.hour}h");
+      hourly6Conditions.add(oMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, d));
+      hourly6Temps.add(unitConversion(item["hourly"]["temperature_2m"][i], settings["Temperature"]).round());
+      hourly6Names.add("${d.hour}h");
     }
+
+    if (d.difference(now).inHours >= 0 && d.difference(now).inHours <= 4) {
+      hourly1Conditions.add(oMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, d));
+      hourly1Temps.add(unitConversion(item["hourly"]["temperature_2m"][i], settings["Temperature"]).round());
+      hourly1Names.add("${d.hour}h");
+    }
+
   }
 
   return LightHourlyForecastData(
@@ -746,8 +757,11 @@ Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lo
       currentTemp: unitConversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
       updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
       //i can't sync lists to widgets so i need to encode and then decode them
-      hourlyConditions: jsonEncode(hourlyConditions),
-      hourlyNames: jsonEncode(hourlyNames),
-      hourlyTemps: jsonEncode(hourlyTemps),
+      hourly6Conditions: jsonEncode(hourly6Conditions),
+      hourly6Names: jsonEncode(hourly6Names),
+      hourly6Temps: jsonEncode(hourly6Temps),
+      hourly1Conditions: jsonEncode(hourly1Conditions),
+      hourly1Names: jsonEncode(hourly1Names),
+      hourly1Temps: jsonEncode(hourly1Temps),
   );
 }

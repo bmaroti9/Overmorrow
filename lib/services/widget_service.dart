@@ -59,9 +59,13 @@ class WidgetService {
     await saveData("hourlyForecast.currentCondition.$widgetId", data.currentCondition);
     await saveData("hourlyForecast.updatedTime.$widgetId", data.updatedTime);
 
-    await saveData("hourlyForecast.hourlyTemps.$widgetId", data.hourlyTemps);
-    await saveData("hourlyForecast.hourlyConditions.$widgetId", data.hourlyConditions);
-    await saveData("hourlyForecast.hourlyNames.$widgetId", data.hourlyNames);
+    await saveData("hourlyForecast.hourly6Temps.$widgetId", data.hourly6Temps);
+    await saveData("hourlyForecast.hourly6Conditions.$widgetId", data.hourly6Conditions);
+    await saveData("hourlyForecast.hourly6Names.$widgetId", data.hourly6Names);
+
+    await saveData("hourlyForecast.hourly1Temps.$widgetId", data.hourly1Temps);
+    await saveData("hourlyForecast.hourly1Conditions.$widgetId", data.hourly1Conditions);
+    await saveData("hourlyForecast.hourly1Names.$widgetId", data.hourly1Names);
 
     await saveData("widget.place.$widgetId", data.place);
   }
@@ -181,7 +185,7 @@ void myCallbackDispatcher() {
             print((err, stacktrace));
           }
           String e = sanitizeErrorMessage(err.toString());
-          WidgetService.saveBackgroundTaskState(e.toString());
+          WidgetService.saveBackgroundTaskState("WORKER RESULT FAILURE AT ${DateTime.now()} \n $e");
           return Future.value(false);
         }
     }
