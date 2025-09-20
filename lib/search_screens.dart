@@ -574,7 +574,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                         hintText: 'search...',
                         border: InputBorder.none,
                       ),
-                      style: const TextStyle(fontSize: 19),
+                      style: const TextStyle(fontSize: 19.5),
                     ),
                   ),
                 ),
@@ -748,7 +748,7 @@ Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> 
                                         crossAxisAlignment : CrossAxisAlignment.start,
                                         children: [
                                           Text(name, style: const TextStyle(
-                                              fontSize: 19, height: 1.25),),
+                                              fontSize: 19.5, height: 1.2),),
                                           Text("$region, $country", style: TextStyle(
                                               color: Theme.of(context).colorScheme.outline, fontSize: 14, height: 1.25))
                                         ],
@@ -844,7 +844,7 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
                 child: Column(
                   crossAxisAlignment : CrossAxisAlignment.start,
                   children: [
-                    Text(placeName, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryFixed, fontSize: 19, height: 1.25),),
+                    Text(placeName, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryFixed, fontSize: 19.5, height: 1.2),),
                     Text("$region, $country", style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryFixed, fontSize: 14, height: 1.25),)
                   ],
                 )
@@ -929,7 +929,7 @@ Widget buildFavorites(List<String> favorites, updateLocation, context, isTabletM
                             crossAxisAlignment : CrossAxisAlignment.start,
                             children: [
                               Text(name, style: const TextStyle(
-                                  fontSize: 19, height: 1.25),),
+                                  fontSize: 19.5, height: 1.2),),
                               Text("$region, $country", style: TextStyle(
                                   color: Theme.of(context).colorScheme.outline, fontSize: 14, height: 1.25))
                             ],
@@ -1000,7 +1000,7 @@ Widget reorderableItem(List<dynamic> items, index, onFavChanged, isTabletMode, c
                 crossAxisAlignment : CrossAxisAlignment.start,
                 children: [
                   Text(name, style: const TextStyle(
-                      fontSize: 19, height: 1.25),),
+                      fontSize: 19.5, height: 1.2),),
                   Text("$region, $country", style: TextStyle(
                       color: Theme.of(context).colorScheme.outline, fontSize: 14, height: 1.25))
                 ],

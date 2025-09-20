@@ -229,8 +229,8 @@ List<WeatherAlert> wapiGetWeatherAlerts(item) {
 WeatherAlert wapiWeatherAlertFromJson(item) {
   return WeatherAlert(
     headline: item["headline"].trim() ?? "No Headline",
-    start: DateTime.parse(item["effective"]),
-    end: DateTime.parse(item["expires"]),
+    start: safeParseDate(item["effective"]),
+    end: safeParseDate(item["expires"]),
     event: item["event"].trim() ?? "No Event",
     desc: item["desc"].trim() ?? "No Desc",
     urgency: item["urgency"] ?? "--",

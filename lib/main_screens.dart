@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/search_screens.dart';
@@ -140,6 +141,7 @@ class NewMain extends StatelessWidget {
       body: StretchyHeader.listView(
         displacement: 130,
         onRefresh: () async {
+          HapticFeedback.lightImpact();
           await updateLocation("${data.lat}, ${data.lng}", data.place);
         },
         headerData: HeaderData(
@@ -236,10 +238,13 @@ class TabletLayout extends StatelessWidget {
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /*
             SizedBox(
               width: panelWidth,
               child: MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: true)
             ),
+
+             */
 
             Expanded(
               child: LayoutBuilder(
@@ -252,100 +257,86 @@ class TabletLayout extends StatelessWidget {
                     },
                     headerData: HeaderData(
                         blurContent: false,
-                        headerHeight: (size.height) * 0.43,
+                        headerHeight: (size.height) * 0.49,
                         header: FadingImageWidget(
                           image: imageService?.image,
                         ),
-                        overlay: Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.inverseSurface,
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              padding: const EdgeInsets.all(18),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(Icons.place_outlined, color: Theme.of(context).colorScheme.onInverseSurface, size: 22,),
-                                  const SizedBox(width: 4,),
-                                  Text(data.place, style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface, fontSize: 22),)
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
+                        overlay: MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,),
                     ),
                     children: [
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: FadingWidget(data: data, time: data.updatedTime, imageService: null,)
-                      ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        padding: const EdgeInsetsGeometry.only(left: 10, right: 10),
+                        child: Column(
                           children: [
+                            Align(
+                                alignment: Alignment.centerRight,
+                                child: FadingWidget(data: data, time: data.updatedTime, imageService: null,)
+                            ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: 7, left: 30),
-                              child: Column(
+                              padding: const EdgeInsets.only(top: 0),
+                              child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SmoothTempTransition(target: unitConversion(data.current.tempC,
-                                      context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
-                                      color: Theme.of(context).colorScheme.primary, fontSize: 68,),
-                                  Text(
-                                    translateCondition(data.current.condition, AppLocalizations.of(context)!),
-                                    style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onSurface,
-                                        fontSize: 30, height: 1.05
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 7, left: 30),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SmoothTempTransition(target: unitConversion(data.current.tempC,
+                                            context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
+                                          color: Theme.of(context).colorScheme.primary, fontSize: 68,),
+                                        Text(
+                                          translateCondition(data.current.condition, AppLocalizations.of(context)!),
+                                          style: TextStyle(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                              fontSize: 30, height: 1.05
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                  )
+                                  ),
+                                  const Spacer(),
+                                  SizedBox(
+                                      width: 397,
+                                      child: Circles(data : data)
+                                  ),
                                 ],
                               ),
                             ),
-                            const Spacer(),
-                            SizedBox(
-                              width: 397,
-                              child: Circles(data : data)
+
+                            NewSunriseSunset(data: data, width: constraints.maxWidth,),
+                            NewHourly(hours: data.hourly72, elevated: false,),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(height: 15,),
+                                      //rain15MinuteChart(
+                                      //    data, data.current.palette, context),
+                                      RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
+                                      AqiWidget(data: data, isTabletMode: true),
+                                      ProviderSelector(updateLocation: updateLocation, loc: data.place, latLon: "${data.lat}, ${data.lng}",),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      //since it's only available with weatherapi, and in that case there are only 3 days
+                                      //this makes the two sides more even
+                                      //alertWidget(data, context, data.current.palette),
+                                      BuildDays(data: data),
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
                           ],
                         ),
-                      ),
-
-                      NewSunriseSunset(data: data, width: constraints.maxWidth,),
-                      NewHourly(hours: data.hourly72, elevated: false,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 15,),
-                                //rain15MinuteChart(
-                                //    data, data.current.palette, context),
-                                RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
-                                AqiWidget(data: data, isTabletMode: true),
-                                ProviderSelector(updateLocation: updateLocation, loc: data.place, latLon: "${data.lat}, ${data.lng}",),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                //since it's only available with weatherapi, and in that case there are only 3 days
-                                //this makes the two sides more even
-                                //alertWidget(data, context, data.current.palette),
-                                BuildDays(data: data),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-
+                      )
                     ],
                   );
                 }

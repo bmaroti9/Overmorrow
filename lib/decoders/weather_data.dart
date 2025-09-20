@@ -120,8 +120,8 @@ class WeatherSunStatus {
 
 class WeatherAlert {
   final String headline;
-  final DateTime start;
-  final DateTime end;
+  final DateTime? start;
+  final DateTime? end;
   final String desc;
   final String event;
   final String urgency;

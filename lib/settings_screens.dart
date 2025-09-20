@@ -56,13 +56,6 @@ class MainSettingEntry extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => pushTo!)
             );
           }
-          /*
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => pushTo)
-          );
-
-           */
         },
         child: Padding(
           padding: const EdgeInsets.only(top: 13, bottom: 13),

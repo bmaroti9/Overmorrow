@@ -251,6 +251,7 @@ class MyHomePageState extends State<MyHomePage> {
       }
       weatherError = null;
     } on TimeoutException {
+      await Future.delayed(const Duration(milliseconds: 600));
       setState(() {
         weatherError = WeatherError(
           errorTitle: AppLocalizations.of(context)!.weakOrNoWifiConnection,
@@ -262,6 +263,7 @@ class MyHomePageState extends State<MyHomePage> {
       });
 
     } on HttpExceptionWithStatus catch (exception){
+      await Future.delayed(const Duration(milliseconds: 600));
       setState(() {
         weatherError = WeatherError(
           errorTitle: "Http exception with status",
@@ -274,6 +276,7 @@ class MyHomePageState extends State<MyHomePage> {
       });
 
     } on SocketException {
+      await Future.delayed(const Duration(milliseconds: 600));
       setState(() {
         weatherError = WeatherError(
           errorTitle: AppLocalizations.of(context)!.notConnectedToTheInternet,
@@ -285,6 +288,7 @@ class MyHomePageState extends State<MyHomePage> {
       });
     }
     catch (e, stacktrace) {
+      await Future.delayed(const Duration(milliseconds: 600));
       if (kDebugMode) {
         debugPrint('Stack trace: $stacktrace');
       }
@@ -307,7 +311,7 @@ class MyHomePageState extends State<MyHomePage> {
       isLoading = true;
     });
 
-    const minDuration = Duration(milliseconds: 300);
+    const minDuration = Duration(milliseconds: 600);
     final minimumDelayFuture = Future.delayed(minDuration);
 
     final String provider = context.read<SettingsProvider>().getWeatherProvider;

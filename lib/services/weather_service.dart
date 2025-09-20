@@ -69,9 +69,13 @@ String convertToShortTime(DateTime time, BuildContext context) {
   return DateFormat('H:mm').format(time);
 }
 
-String convertToWeekDayTime(DateTime time, context) {
-  String weekName = getWeekName(time.weekday - 1, context);
-  return "$weekName ${convertTime(time, context)}";
+String convertToWeekDayTime(DateTime? time, context) {
+  if (time != null) {
+    String weekName = getWeekName(time.weekday - 1, context);
+    return "$weekName ${convertTime(time, context)}";
+  }
+  return "unknown";
+
 }
 
 String translateCondition(String condition, localizations) {
@@ -83,6 +87,16 @@ String getDateStringFromLocalTime(DateTime now) {
   final List<String> monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   return "${weekNames[now.weekday - 1]}, ${monthNames[now.month - 1]} ${now.day}";
 }
+
+
+DateTime? safeParseDate(String date) {
+  try {
+    return DateTime.parse(date);
+  } on FormatException {
+    return null;
+  }
+}
+
 
 String getWeekName(int index, context) {
   List<String> weeks = [
