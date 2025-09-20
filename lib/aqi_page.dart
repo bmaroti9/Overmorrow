@@ -188,9 +188,8 @@ Widget pollutantWidget(WeatherData data, name, value, percent, context) {
 
 class AllergensPage extends StatefulWidget {
   final WeatherData data;
-  final isTabletMode;
 
-  const AllergensPage({Key? key, required this.data, required this.isTabletMode})
+  const AllergensPage({Key? key, required this.data})
       : super(key: key);
 
   @override
@@ -280,93 +279,19 @@ class _AllergensPageState extends State<AllergensPage> {
                     ),
                   );
                 }
+
                 final OMExtendedAqi extendedAqi = snapshot.data!;
-                final highestAqi = extendedAqi.dailyAqi.reduce(max);
 
-                if (widget.isTabletMode) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25),
-                    child: Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  aqiCircleAndDesc(widget.data, context),
-                                  pollenIndicators(widget.data, extendedAqi, context),
-                                ],
-                              )
-                            ),
-                            const SizedBox(width: 40,),
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  NewHourlyAqi(data: widget.data, extendedAqi: extendedAqi),
-                                  dailyAqi(widget.data, extendedAqi, context, highestAqi),
-                                ],
-                              )
-                            ),
-                            const SizedBox(width: 40,),
-                            Expanded(
-                                child: Column(
-                                  children: [
-                                    mainPollutantIndicator(widget.data, extendedAqi, context),
-                                    pollutantIndicators(widget.data, extendedAqi, context),
-                                    europeanAndUsAqi(widget.data, extendedAqi, context),
-                                    const SizedBox(height: 10,),
-                                    dustAndAODIndicators(widget.data, extendedAqi, context),
-                                  ],
-                                )
-                            )
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 70, bottom: 70),
-                            child: Text(AppLocalizations.of(context)!.poweredByOpenMeteo, style: const TextStyle(fontSize: 16),)
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                }
-                return Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25),
-                  child: AnimationLimiter(
-                    child: Column(
-                      children: AnimationConfiguration.toStaggeredList(
-                        duration: const Duration(milliseconds: 500),
-                        childAnimationBuilder: (widget) => SlideAnimation(
-                          verticalOffset: 100.0,
-                          child: FadeInAnimation(
-                            child: widget,
-                          ),
-                        ),
-                        children:[
-                          aqiCircleAndDesc(widget.data, context),
-                          mainPollutantIndicator(widget.data, extendedAqi, context),
-                          pollenIndicators(widget.data, extendedAqi, context),
-                          NewHourlyAqi(data: widget.data, extendedAqi: extendedAqi),
-                          europeanAndUsAqi(widget.data, extendedAqi, context),
-                          pollutantIndicators(widget.data, extendedAqi, context),
-                          dailyAqi(widget.data, extendedAqi, context, highestAqi),
-                          dustAndAODIndicators(widget.data, extendedAqi, context),
-
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 70, bottom: 70),
-                              child: Text(AppLocalizations.of(context)!.poweredByOpenMeteo,
-                                style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 16),)
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth < 600) {
+                      return OneRowLayout(data: widget.data, extendedAqi: extendedAqi);
+                    }
+                    if (constraints.maxWidth < 1000) {
+                      return TwoRowLayout(data: widget.data, extendedAqi: extendedAqi);
+                    }
+                    return ThreeRowLayout(data: widget.data, extendedAqi: extendedAqi);
+                  }
                 );
               },
             ),
@@ -375,6 +300,172 @@ class _AllergensPageState extends State<AllergensPage> {
       ),
     );
   }
+}
+
+class OneRowLayout extends StatelessWidget {
+  final WeatherData data;
+  final OMExtendedAqi extendedAqi;
+  
+  const OneRowLayout({super.key, required this.data, required this.extendedAqi});
+
+  @override
+  Widget build(BuildContext context) {
+    final highestAqi = extendedAqi.dailyAqi.reduce(max);
+    
+    return Padding(
+        padding: const EdgeInsets.only(left: 25, right: 25),
+        child: AnimationLimiter(
+          child: Column(
+            children: AnimationConfiguration.toStaggeredList(
+              duration: const Duration(milliseconds: 500),
+              childAnimationBuilder: (widget) => SlideAnimation(
+                verticalOffset: 100.0,
+                child: FadeInAnimation(
+                  child: widget,
+                ),
+              ),
+              children:[
+                aqiCircleAndDesc(data, context),
+                mainPollutantIndicator(data, extendedAqi, context),
+                pollenIndicators(data, extendedAqi, context),
+                NewHourlyAqi(data: data, extendedAqi: extendedAqi),
+                europeanAndUsAqi(data, extendedAqi, context),
+                pollutantIndicators(data, extendedAqi, context),
+                dailyAqi(data, extendedAqi, context, highestAqi),
+                dustAndAODIndicators(data, extendedAqi, context),
+
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                      padding: const EdgeInsets.only(top: 70, bottom: 70),
+                      child: Text(AppLocalizations.of(context)!.poweredByOpenMeteo,
+                        style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 16),)
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+    );
+  }
+  
+}
+
+
+class TwoRowLayout extends StatelessWidget {
+  final WeatherData data;
+  final OMExtendedAqi extendedAqi;
+
+  const TwoRowLayout({super.key, required this.data, required this.extendedAqi});
+
+  @override
+  Widget build(BuildContext context) {
+    final highestAqi = extendedAqi.dailyAqi.reduce(max);
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 25),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Column(
+                    children: [
+                      aqiCircleAndDesc(data, context),
+                      mainPollutantIndicator(data, extendedAqi, context),
+                      pollenIndicators(data, extendedAqi, context),
+                      pollutantIndicators(data, extendedAqi, context),
+                    ],
+                  )
+              ),
+              const SizedBox(width: 40,),
+              Expanded(
+                  child: Column(
+                    children: [
+                      NewHourlyAqi(data: data, extendedAqi: extendedAqi),
+                      europeanAndUsAqi(data, extendedAqi, context),
+                      dailyAqi(data, extendedAqi, context, highestAqi),
+                      dustAndAODIndicators(data, extendedAqi, context),
+                    ],
+                  )
+              ),
+            ],
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Padding(
+                padding: const EdgeInsets.only(top: 70, bottom: 70),
+                child: Text(AppLocalizations.of(context)!.poweredByOpenMeteo, style: const TextStyle(fontSize: 16),)
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+}
+
+class ThreeRowLayout extends StatelessWidget {
+  final WeatherData data;
+  final OMExtendedAqi extendedAqi;
+
+  const ThreeRowLayout({super.key, required this.data, required this.extendedAqi});
+
+  @override
+  Widget build(BuildContext context) {
+    final highestAqi = extendedAqi.dailyAqi.reduce(max);
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 25),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Column(
+                    children: [
+                      aqiCircleAndDesc(data, context),
+                      pollenIndicators(data, extendedAqi, context),
+                    ],
+                  )
+              ),
+              const SizedBox(width: 40,),
+              Expanded(
+                  child: Column(
+                    children: [
+                      NewHourlyAqi(data: data, extendedAqi: extendedAqi),
+                      dailyAqi(data, extendedAqi, context, highestAqi),
+                    ],
+                  )
+              ),
+              const SizedBox(width: 40,),
+              Expanded(
+                  child: Column(
+                    children: [
+                      mainPollutantIndicator(data, extendedAqi, context),
+                      pollutantIndicators(data, extendedAqi, context),
+                      europeanAndUsAqi(data, extendedAqi, context),
+                      const SizedBox(height: 10,),
+                      dustAndAODIndicators(data, extendedAqi, context),
+                    ],
+                  )
+              )
+            ],
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Padding(
+                padding: const EdgeInsets.only(top: 70, bottom: 70),
+                child: Text(AppLocalizations.of(context)!.poweredByOpenMeteo, style: const TextStyle(fontSize: 16),)
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
 }
 
 Widget aqiCircleAndDesc(WeatherData data, context) {
@@ -694,7 +785,7 @@ Widget dustAndAODIndicators(WeatherData data, OMExtendedAqi extendedAqi, context
             )
         ),
         Expanded(
-            flex: 9,
+            flex: 8,
             child: Padding(
               padding: const EdgeInsets.only(left: 4),
               child: Container(

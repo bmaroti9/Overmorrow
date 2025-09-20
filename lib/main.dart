@@ -220,21 +220,23 @@ class MyHomePageState extends State<MyHomePage> {
     String latLon = context.read<SettingsProvider>().getLatLon;
     String location = context.read<SettingsProvider>().getLocation;
 
-    Uri? appLaunchUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
+    if (Platform.isAndroid) {
+      Uri? appLaunchUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
 
-    if (appLaunchUri != null) {
-      if (appLaunchUri.host == "opened" && appLaunchUri.queryParameters.containsKey("location")
-          && appLaunchUri.queryParameters.containsKey("latlon")) {
+      if (appLaunchUri != null) {
+        if (appLaunchUri.host == "opened" && appLaunchUri.queryParameters.containsKey("location")
+            && appLaunchUri.queryParameters.containsKey("latlon")) {
 
-        if (appLaunchUri.queryParameters["location"] != null && appLaunchUri.queryParameters["latlon"] != null) {
+          if (appLaunchUri.queryParameters["location"] != null && appLaunchUri.queryParameters["latlon"] != null) {
 
-          if (appLaunchUri.queryParameters["location"] == "CurrentLocation") {
-            location = PreferenceUtils.getString('LastKnownPositionName', 'unknown');
-            latLon = PreferenceUtils.getString('LastKnownPositionCord', 'unknown');
-          }
-          else {
-            location = appLaunchUri.queryParameters["location"]!;
-            latLon = appLaunchUri.queryParameters["latlon"]!;
+            if (appLaunchUri.queryParameters["location"] == "CurrentLocation") {
+              location = PreferenceUtils.getString('LastKnownPositionName', 'unknown');
+              latLon = PreferenceUtils.getString('LastKnownPositionCord', 'unknown');
+            }
+            else {
+              location = appLaunchUri.queryParameters["location"]!;
+              latLon = appLaunchUri.queryParameters["latlon"]!;
+            }
           }
         }
       }
@@ -400,8 +402,8 @@ class MyHomePageState extends State<MyHomePage> {
       children: [
         Container(color: Theme.of(context).colorScheme.surface,),
         if (weatherError != null) ErrorPage(weatherError: weatherError!, updateLocation: updateLocation),
-        if (data != null && weatherError == null) NewMain(data: data!, updateLocation: updateLocation, imageService: imageService),
-        //if (data != null) TabletLayout(data: data!, updateLocation: updateLocation, imageService: imageService),
+        //if (data != null && weatherError == null) NewMain(data: data!, updateLocation: updateLocation, imageService: imageService),
+        if (data != null) TabletLayout(data: data!, updateLocation: updateLocation, imageService: imageService),
         LoadingIndicator(isLoading: isLoading,)
       ],
     );

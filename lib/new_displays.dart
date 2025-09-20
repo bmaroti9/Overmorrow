@@ -325,9 +325,8 @@ class _WaveTickerState extends State<WaveTicker> with SingleTickerProviderStateM
 
 class AqiWidget extends StatelessWidget {
   final WeatherData data;
-  final bool isTabletMode;
 
-  const AqiWidget({super.key, required this.data, required this.isTabletMode});
+  const AqiWidget({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -347,7 +346,7 @@ class AqiWidget extends StatelessWidget {
             HapticFeedback.lightImpact();
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AllergensPage(data: data, isTabletMode: isTabletMode,))
+                MaterialPageRoute(builder: (context) => AllergensPage(data: data))
             );
           },
           child: Container(
@@ -398,7 +397,7 @@ class AqiWidget extends StatelessWidget {
                     HapticFeedback.lightImpact();
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AllergensPage(data: data, isTabletMode: isTabletMode,))
+                        MaterialPageRoute(builder: (context) => AllergensPage(data: data,))
                     );
                   },
                   icon: Icon(Icons.keyboard_arrow_right_rounded, color: Theme.of(context).colorScheme.onSurface, size: 24,),

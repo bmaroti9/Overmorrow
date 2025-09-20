@@ -127,7 +127,7 @@ class NewMain extends StatelessWidget {
       'alerts' : AlertWidget(data: data),
       'radar': RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
       'daily': BuildDays(data: data),
-      'air quality': AqiWidget(data: data, isTabletMode: false,)
+      'air quality': AqiWidget(data: data)
     };
 
     final List<String> order = context.select((SettingsProvider p) => p.getLayout);
@@ -227,24 +227,21 @@ class TabletLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-
-    Size size = view.physicalSize / view.devicePixelRatio;
-
-    double panelWidth = size.width * 0.29;
+    final currentSize = MediaQuery.of(context).size;
+    final currentWidth = currentSize.width;
+    final currentHeight = currentSize.height;
+    final showPanel = currentWidth > 1000;
 
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /*
-            SizedBox(
-              width: panelWidth,
+
+            if (showPanel) SizedBox(
+              width: currentWidth * 0.3,
               child: MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: true)
             ),
-
-             */
 
             Expanded(
               child: LayoutBuilder(
@@ -257,11 +254,13 @@ class TabletLayout extends StatelessWidget {
                     },
                     headerData: HeaderData(
                         blurContent: false,
-                        headerHeight: (size.height) * 0.49,
+                        headerHeight: currentHeight * 0.49,
                         header: FadingImageWidget(
                           image: imageService?.image,
                         ),
-                        overlay: MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,),
+                        overlay: !showPanel
+                            ? MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,)
+                            : Container(),
                     ),
                     children: [
                       Padding(
@@ -285,7 +284,7 @@ class TabletLayout extends StatelessWidget {
                                       children: [
                                         SmoothTempTransition(target: unitConversion(data.current.tempC,
                                             context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
-                                          color: Theme.of(context).colorScheme.primary, fontSize: 68,),
+                                          color: Theme.of(context).colorScheme.tertiary, fontSize: 68,),
                                         Text(
                                           translateCondition(data.current.condition, AppLocalizations.of(context)!),
                                           style: TextStyle(
@@ -317,7 +316,7 @@ class TabletLayout extends StatelessWidget {
                                       //rain15MinuteChart(
                                       //    data, data.current.palette, context),
                                       RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
-                                      AqiWidget(data: data, isTabletMode: true),
+                                      AqiWidget(data: data),
                                       ProviderSelector(updateLocation: updateLocation, loc: data.place, latLon: "${data.lat}, ${data.lng}",),
                                     ],
                                   ),
