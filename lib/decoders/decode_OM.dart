@@ -718,6 +718,9 @@ Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lo
   };
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
+
+  print(oMUrl);
+
   final response = (await http.get(oMUrl)).body;
 
   final item = jsonDecode(response);
@@ -736,15 +739,16 @@ Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lo
   List<String> hourly1Names = [];
 
   for (int i = 0; i < item["hourly"]["temperature_2m"].length; i++) {
-    DateTime d = DateTime.parse(item["hourly"]["time"][i]);
+    DateTime there = DateTime.parse(item["hourly"]["time"][i]);
+    DateTime d = there.add(Duration(seconds: -item["utc_offset_seconds"]));
     if (d.hour % 6 == 0) {
-      hourly6Conditions.add(oMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, d));
+      hourly6Conditions.add(oMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, there));
       hourly6Temps.add(unitConversion(item["hourly"]["temperature_2m"][i], settings["Temperature"]).round());
       hourly6Names.add("${d.hour}h");
     }
 
     if (d.difference(now).inHours >= 0 && d.difference(now).inHours < 3) {
-      hourly1Conditions.add(oMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, d));
+      hourly1Conditions.add(oMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, there));
       hourly1Temps.add(unitConversion(item["hourly"]["temperature_2m"][i], settings["Temperature"]).round());
       hourly1Names.add("${d.hour}h");
     }
