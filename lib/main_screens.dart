@@ -115,6 +115,28 @@ class NewMain extends StatelessWidget {
   }
    */
 
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 680) {
+          return PhoneLayout(data: data, updateLocation: updateLocation, imageService: imageService,);
+        }
+        return TabletLayout(data: data, updateLocation: updateLocation, imageService: imageService);
+      }
+    );
+  }
+
+}
+
+class PhoneLayout extends StatelessWidget {
+  final WeatherData data;
+  final Function updateLocation;
+  final ImageService? imageService;
+
+  const PhoneLayout({super.key, required this.data, required this.updateLocation, required this.imageService});
+
   @override
   Widget build(BuildContext context) {
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
@@ -146,21 +168,21 @@ class NewMain extends StatelessWidget {
         },
         headerData: HeaderData(
           //backgroundColor: WHITE,
-          blurContent: false,
-          headerHeight: (size.height ) * 0.495,
-          header:  FadingImageWidget(
-            image: imageService?.image,
-          ),
-          //header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),color: BLACK),
-          overlay: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 26, right: 26, bottom: 26),
-                child: TempAndConditionText(data: data, textRegionColor: imageService?.textRegionColor,)
-              ),
-              MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,),
-            ],
-          )
+            blurContent: false,
+            headerHeight: (size.height ) * 0.495,
+            header:  FadingImageWidget(
+              image: imageService?.image,
+            ),
+            //header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),color: BLACK),
+            overlay: Stack(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.only(left: 26, right: 26, bottom: 26),
+                    child: TempAndConditionText(data: data, textRegionColor: imageService?.textRegionColor,)
+                ),
+                MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,),
+              ],
+            )
         ),
         children: [
 
@@ -179,50 +201,15 @@ class NewMain extends StatelessWidget {
       ),
     );
   }
-}
 
-//I'm using this as a reference for everything i want animated between places
-class SmoothTransitionDemo extends StatelessWidget {
-  final double targetScale;
-
-  const SmoothTransitionDemo({super.key, required this.targetScale});
-
-  @override
-  Widget build(BuildContext context) {
-
-    return TweenAnimationBuilder<double>(
-      tween: Tween<double>(
-        begin: 1.0,
-        end: targetScale,
-      ),
-
-      duration: const Duration(milliseconds: 3000),
-
-      builder: (context, currentScale, child) {
-        return Transform.scale(
-          scale: currentScale,
-          child: Container(
-            width: 100,
-            height: 100,
-            color: Colors.blue,
-            alignment: Alignment.center,
-            child: Text(
-              targetScale.toStringAsFixed(2),
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-            ),
-          ),
-        );
-      },
-    );
-  }
 }
 
 class TabletLayout extends StatelessWidget {
   final WeatherData data;
-  final updateLocation;
+  final Function updateLocation;
   final ImageService? imageService;
 
-  TabletLayout({super.key, required this.data, required this.updateLocation, required this.imageService});
+  const TabletLayout({super.key, required this.data, required this.updateLocation, required this.imageService});
 
   @override
   Widget build(BuildContext context) {
@@ -260,7 +247,25 @@ class TabletLayout extends StatelessWidget {
                         ),
                         overlay: !showPanel
                             ? MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,)
-                            : Container(),
+                            : Align(
+                              alignment: Alignment.topLeft,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.inverseSurface,
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                margin: const EdgeInsets.only(left: 25, top: 25),
+                                padding: const EdgeInsets.all(18),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.place_outlined, color: Theme.of(context).colorScheme.onInverseSurface, size: 22,),
+                                    const SizedBox(width: 4,),
+                                    Text(data.place, style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface, fontSize: 22),)
+                                  ],
+                                ),
+                              ),
+                            ),
                     ),
                     children: [
                       Padding(

@@ -402,8 +402,7 @@ class MyHomePageState extends State<MyHomePage> {
       children: [
         Container(color: Theme.of(context).colorScheme.surface,),
         if (weatherError != null) ErrorPage(weatherError: weatherError!, updateLocation: updateLocation),
-        //if (data != null && weatherError == null) NewMain(data: data!, updateLocation: updateLocation, imageService: imageService),
-        if (data != null) TabletLayout(data: data!, updateLocation: updateLocation, imageService: imageService),
+        if (data != null && weatherError == null) NewMain(data: data!, updateLocation: updateLocation, imageService: imageService),
         LoadingIndicator(isLoading: isLoading,)
       ],
     );

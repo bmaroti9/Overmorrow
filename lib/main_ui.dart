@@ -358,6 +358,43 @@ class DescriptionCircle extends StatelessWidget {
   }
 }
 
+
+//I'm using this as a reference for everything i want animated between places
+class SmoothTransitionDemo extends StatelessWidget {
+  final double targetScale;
+
+  const SmoothTransitionDemo({super.key, required this.targetScale});
+
+  @override
+  Widget build(BuildContext context) {
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(
+        begin: 1.0,
+        end: targetScale,
+      ),
+
+      duration: const Duration(milliseconds: 3000),
+
+      builder: (context, currentScale, child) {
+        return Transform.scale(
+          scale: currentScale,
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.blue,
+            alignment: Alignment.center,
+            child: Text(
+              targetScale.toStringAsFixed(2),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
 class FadingWidget extends StatefulWidget  {
   final WeatherData data;
   final ImageService? imageService;
