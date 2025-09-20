@@ -246,7 +246,9 @@ class MyHomePageState extends State<MyHomePage> {
   Future<void> updateLocation(String latLon, String location) async {
     try {
       await fetchData(location, latLon);
-      context.read<SettingsProvider>().setLocationAndLatLon(location, latLon);
+      if (mounted) {
+        context.read<SettingsProvider>().setLocationAndLatLon(location, latLon);
+      }
       weatherError = null;
     } on TimeoutException {
       setState(() {
@@ -334,7 +336,8 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> loadOldImageServiceFromCache() async {
-    ImageService? _imageService = await ImageService.getOldImageServiceFromCache();
+    String imageSource = context.read<SettingsProvider>().getImageSource;
+    ImageService? _imageService = await ImageService.getOldImageServiceFromCache(imageSource);
     if (_imageService != null) {
       if (mounted) {
         await precacheImage(_imageService.image.image, context);

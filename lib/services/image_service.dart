@@ -106,6 +106,8 @@ class ImageService {
 
     Color textRegionColor = await getBottomLeftColor(image.image);
 
+    PreferenceUtils.setString("lastAssetImage", condition);
+
     return ImageService(
       image: image,
       username: _userName,
@@ -137,24 +139,30 @@ class ImageService {
     }
   }
 
-  static Future<ImageService?> getOldImageServiceFromCache() async {
+  static Future<ImageService?> getOldImageServiceFromCache(String imageProvider) async {
 
-    String url = PreferenceUtils.getString("lastSuccessfulImageFetch", "");
-    if (url == "") return null;
+    if (imageProvider == "network") {
+      String url = PreferenceUtils.getString("lastSuccessfulImageFetch", "");
+      if (url != "") {
+        // Check if the image exists in the cache
+        final file = await customImageCacheManager.getFileFromCache(url);
 
-    // Check if the image exists in the cache
-    final file = await customImageCacheManager.getFileFromCache(url);
-
-    if (file != null) {
-      final Image image = Image.file(file.file, fit: BoxFit.cover,
-        width: double.infinity, height: double.infinity,);
-      return ImageService(image: image, username: "", userLink: "", photoLink: "", textRegionColor: Colors.black);
+        if (file != null) {
+          final Image image = Image.file(file.file, fit: BoxFit.cover,
+            width: double.infinity, height: double.infinity,);
+          return ImageService(image: image, username: "", userLink: "", photoLink: "", textRegionColor: Colors.black);
+        }
+      }
     }
 
-    // If not, return null
-    return null;
-  }
+    String lastCondition = PreferenceUtils.getString("lastAssetImage", "Clear Sky");
 
+    final String imagePath = backdropCorrection(lastCondition);
+    final Image image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
+      width: double.infinity, height: double.infinity,);
+
+    return ImageService(image: image, username: "", userLink: "", photoLink: "", textRegionColor: Colors.black);
+  }
 }
 
 class FadingImageWidget extends StatelessWidget {
