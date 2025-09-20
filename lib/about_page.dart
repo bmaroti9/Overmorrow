@@ -68,7 +68,7 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   void goBack() {
-    HapticFeedback.selectionClick();
+    HapticFeedback.lightImpact();
     Navigator.pop(context);
   }
 
@@ -133,7 +133,7 @@ class _AboutPageState extends State<AboutPage> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              HapticFeedback.mediumImpact();
+                              HapticFeedback.lightImpact();
                               _launchUrl("https://github.com/bmaroti9/Overmorrow");
                             },
                             behavior: HitTestBehavior.translucent,
@@ -156,7 +156,7 @@ class _AboutPageState extends State<AboutPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              HapticFeedback.mediumImpact();
+                              HapticFeedback.lightImpact();
                               final Uri emailLaunchUri = Uri(
                                 scheme: 'mailto',
                                 path: 'maroti.devel@gmail.com',
@@ -183,7 +183,7 @@ class _AboutPageState extends State<AboutPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              HapticFeedback.mediumImpact();
+                              HapticFeedback.lightImpact();
                               _launchUrl("https://github.com/bmaroti9/Overmorrow/issues");
                             },
                             behavior: HitTestBehavior.translucent,
@@ -206,7 +206,7 @@ class _AboutPageState extends State<AboutPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              HapticFeedback.mediumImpact();
+                              HapticFeedback.lightImpact();
                               _launchUrl("https://paypal.me/miklosmaroti");
                             },
                             behavior: HitTestBehavior.translucent,
@@ -374,7 +374,7 @@ class ServicesPage extends StatelessWidget {
             leading:
             IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
-                  HapticFeedback.selectionClick();
+                  HapticFeedback.lightImpact();
                   Navigator.pop(context);
                 }),
             title: Text(AppLocalizations.of(context)!.apiAndServices,
@@ -404,7 +404,7 @@ class ServicesPage extends StatelessWidget {
                        const SizedBox(height: 20,),
                        GestureDetector(
                          onTap: () {
-                           HapticFeedback.selectionClick();
+                           HapticFeedback.lightImpact();
                            _launchUrl("https://open-meteo.com");
                          },
                          child: Text("open-meteo",
@@ -414,7 +414,7 @@ class ServicesPage extends StatelessWidget {
                        const SizedBox(height: 10,),
                        GestureDetector(
                          onTap: () {
-                           HapticFeedback.selectionClick();
+                           HapticFeedback.lightImpact();
                            _launchUrl("https://www.weatherapi.com/");
                          },
                          child: Text("weatherapi",
@@ -424,7 +424,7 @@ class ServicesPage extends StatelessWidget {
                        const SizedBox(height: 10,),
                        GestureDetector(
                          onTap: () {
-                           HapticFeedback.selectionClick();
+                           HapticFeedback.lightImpact();
                            _launchUrl("https://api.met.no/");
                          },
                          child: Text("met-norway",
@@ -450,7 +450,7 @@ class ServicesPage extends StatelessWidget {
                           const SizedBox(height: 20,),
                           GestureDetector(
                             onTap: () {
-                              HapticFeedback.selectionClick();
+                              HapticFeedback.lightImpact();
                               _launchUrl("https://www.rainviewer.com/api.html");
                             },
                             child: Text("rainviewer",
@@ -460,7 +460,7 @@ class ServicesPage extends StatelessWidget {
                           const SizedBox(height: 10,),
                           GestureDetector(
                             onTap: () {
-                              HapticFeedback.selectionClick();
+                              HapticFeedback.lightImpact();
                               _launchUrl("https://carto.com/");
                             },
                             child: Text("carto",
@@ -486,7 +486,7 @@ class ServicesPage extends StatelessWidget {
                         const SizedBox(height: 20,),
                         GestureDetector(
                           onTap: () {
-                            HapticFeedback.selectionClick();
+                            HapticFeedback.lightImpact();
                             _launchUrl("https://unsplash.com/");
                           },
                           child: Text("unsplash",

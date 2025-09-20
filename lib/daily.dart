@@ -149,7 +149,7 @@ class _BuildDaysState extends State<BuildDays> with AutomaticKeepAliveClientMixi
           if (showButton) GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              HapticFeedback.lightImpact();
+              HapticFeedback.mediumImpact();
               if (isExpanded) {
                 setState(() {
                   dayCap = 7;

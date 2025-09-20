@@ -52,7 +52,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
       );
     }).toList(),
     onChanged: (Object? value) {
-      HapticFeedback.lightImpact();
+      HapticFeedback.mediumImpact();
       settings[rawName] = value;
       updatePage(rawName, value);
     }
@@ -111,7 +111,7 @@ class SettingsEntry extends StatelessWidget {
                             return GestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () {
-                                HapticFeedback.lightImpact();
+                                HapticFeedback.mediumImpact();
                                 Navigator.pop(context);
                                 update(options[index]);
                               },
@@ -121,7 +121,7 @@ class SettingsEntry extends StatelessWidget {
                                     value: options[index],
                                     groupValue: selected,
                                     onChanged: (String? value) {
-                                      HapticFeedback.lightImpact();
+                                      HapticFeedback.mediumImpact();
                                       update(options[index]);
                                       Navigator.pop(context, value);
                                     },

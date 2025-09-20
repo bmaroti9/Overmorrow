@@ -59,7 +59,7 @@ class _RadarSmallState extends State<RadarSmall> {
     timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer t) {
       if (isPlaying) {
         if (widget.radarHapticsOn) {
-          HapticFeedback.lightImpact();
+          HapticFeedback.selectionClick();
         }
         setState(() {
           currentFrameIndex =
@@ -204,7 +204,7 @@ class _RadarSmallState extends State<RadarSmall> {
                               ),
                             ),
                             onPressed: () {
-                              HapticFeedback.selectionClick();
+                              HapticFeedback.lightImpact();
                               setState(() {
                                 isPlaying = false;
                               });
@@ -251,7 +251,7 @@ class _RadarSmallState extends State<RadarSmall> {
                           )
                       ),
                       onPressed: () async {
-                        HapticFeedback.selectionClick();
+                        HapticFeedback.mediumImpact();
                         togglePlayPause();
                       },
                       child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
@@ -286,7 +286,7 @@ class _RadarSmallState extends State<RadarSmall> {
                     
                         onChanged: (double value) {
                           if (widget.radarHapticsOn) {
-                            HapticFeedback.lightImpact();
+                            HapticFeedback.selectionClick();
                           }
                           setState(() {
                             hasBeenPlayed = true;
@@ -341,7 +341,7 @@ class _RadarBigState extends State<RadarBig> {
     timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer t) {
       if (isPlaying) {
         if (widget.radarHapticsOn) {
-          HapticFeedback.lightImpact();
+          HapticFeedback.selectionClick();
         }
         setState(() {
           currentFrameIndex =
@@ -507,7 +507,7 @@ class _RadarBigState extends State<RadarBig> {
                                       )
                                   ),
                                   onPressed: () async {
-                                    HapticFeedback.selectionClick();
+                                    HapticFeedback.mediumImpact();
                                     togglePlayPause();
                                   },
                                   child: Icon(isPlaying ? Icons.pause_outlined : Icons.play_arrow,
@@ -541,7 +541,7 @@ class _RadarBigState extends State<RadarBig> {
 
                                     onChanged: (double value) {
                                       if (widget.radarHapticsOn) {
-                                        HapticFeedback.lightImpact();
+                                        HapticFeedback.selectionClick();
                                       }
                                       setState(() {
                                         hasBeenPlayed = true;
@@ -581,7 +581,7 @@ class _RadarBigState extends State<RadarBig> {
                       ),
                     ),
                     onPressed: () {
-                      HapticFeedback.selectionClick();
+                      HapticFeedback.lightImpact();
                       setState(() {
                         isPlaying = false;
                       });

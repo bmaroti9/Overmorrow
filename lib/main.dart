@@ -334,6 +334,7 @@ class MyHomePageState extends State<MyHomePage> {
     //keep it there while the image is animating
     await Future.delayed(const Duration(milliseconds: 800));
 
+    HapticFeedback.selectionClick();
     setState(() {
       isLoading = false;
     });

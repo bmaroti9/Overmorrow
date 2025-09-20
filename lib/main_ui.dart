@@ -576,7 +576,7 @@ class ProviderSelector extends StatelessWidget {
               child: DropdownButton(
                 underline: Container(),
                 onTap: () {
-                  HapticFeedback.mediumImpact();
+                  HapticFeedback.lightImpact();
                 },
                 borderRadius: BorderRadius.circular(18),
                 icon: Padding(

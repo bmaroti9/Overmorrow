@@ -141,7 +141,7 @@ class NewMain extends StatelessWidget {
       body: StretchyHeader.listView(
         displacement: 130,
         onRefresh: () async {
-          HapticFeedback.lightImpact();
+          HapticFeedback.mediumImpact();
           await updateLocation("${data.lat}, ${data.lng}", data.place);
         },
         headerData: HeaderData(

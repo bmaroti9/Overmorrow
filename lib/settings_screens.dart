@@ -283,7 +283,7 @@ class UnitsPage extends StatelessWidget {
             leading:
             IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
-                  HapticFeedback.selectionClick();
+                  HapticFeedback.lightImpact();
                   Navigator.pop(context);
                 }),
             title: Text(AppLocalizations.of(context)!.units,
@@ -362,7 +362,7 @@ class GeneralSettingsPage extends StatelessWidget {
             leading:
             IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
               onPressed: () {
-                HapticFeedback.selectionClick();
+                HapticFeedback.lightImpact();
                 Navigator.pop(context);
               }),
             title: Text(AppLocalizations.of(context)!.general,
@@ -454,7 +454,7 @@ class LanguagePage extends StatelessWidget {
             leading:
             IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
-                  HapticFeedback.selectionClick();
+                  HapticFeedback.lightImpact();
                   Navigator.pop(context);
                 }),
             title: Text(AppLocalizations.of(context)!.language, style: const TextStyle(fontSize: 30),),
@@ -467,7 +467,7 @@ class LanguagePage extends StatelessWidget {
               padding: const EdgeInsets.only(left: 25, right: 25, top: 30),
               child: GestureDetector(
                 onTap: () {
-                  HapticFeedback.selectionClick();
+                  HapticFeedback.lightImpact();
                   _launchUrl("https://hosted.weblate.org/engage/overmorrow-weather/");
                 },
                 child: Container(
@@ -564,7 +564,7 @@ class LayoutPage extends StatelessWidget {
             leading: IconButton(
               icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary),
               onPressed: () {
-                HapticFeedback.selectionClick();
+                HapticFeedback.lightImpact();
                 Navigator.pop(context);
               },
             ),
@@ -620,7 +620,7 @@ class LayoutPage extends StatelessWidget {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  HapticFeedback.mediumImpact();
+                                  HapticFeedback.heavyImpact();
                                   final List<String> newOrder = List.from(_items);
                                   newOrder.removeAt(index);
                                   context.read<SettingsProvider>().setLayoutOrder(newOrder);

@@ -66,7 +66,7 @@ class _AlertsPageState extends State<AlertsPage> {
   }
 
   void goBack() {
-    HapticFeedback.selectionClick();
+    HapticFeedback.lightImpact();
     Navigator.pop(context);
   }
 

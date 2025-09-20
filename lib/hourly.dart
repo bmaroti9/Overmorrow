@@ -88,7 +88,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
                     onSelected: (bool selected) {
                       setState(() {
                         _value = index;
-                        HapticFeedback.lightImpact();
+                        HapticFeedback.selectionClick();
                       });
                     },
                   );

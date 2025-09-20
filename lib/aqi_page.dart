@@ -201,7 +201,7 @@ class AllergensPage extends StatefulWidget {
 class _AllergensPageState extends State<AllergensPage> {
 
   void goBack() {
-    HapticFeedback.selectionClick();
+    HapticFeedback.lightImpact();
     Navigator.pop(context);
   }
 
@@ -837,7 +837,7 @@ class _NewHourlyAqiState extends State<NewHourlyAqi> with AutomaticKeepAliveClie
                 onSelected: (bool selected) {
                   _value = index;
                   setState(() {
-                    HapticFeedback.lightImpact();
+                    HapticFeedback.selectionClick();
                     _onItemTapped(index);
                   });
                 },

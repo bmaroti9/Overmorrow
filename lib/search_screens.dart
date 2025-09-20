@@ -161,7 +161,7 @@ class SearchBar extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.settings_outlined, color: Theme.of(context).colorScheme.primary, size: 25,),
                     onPressed: () {
-                      HapticFeedback.selectionClick();
+                      HapticFeedback.mediumImpact();
 
                       Navigator.push(
                         context,
@@ -730,7 +730,7 @@ Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> 
                           return GestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: () {
-                              HapticFeedback.selectionClick();
+                              HapticFeedback.lightImpact();
                               updateLocation(
                                   '${split["lat"]}, ${split["lon"]}',
                                   split["name"]);
@@ -912,7 +912,7 @@ Widget buildFavorites(List<String> favorites, updateLocation, context, isTabletM
               return GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
-                  HapticFeedback.selectionClick();
+                  HapticFeedback.lightImpact();
                   updateLocation(
                       '${split["lat"]}, ${split["lon"]}', split["name"]);
                   if (!isTabletMode) {
