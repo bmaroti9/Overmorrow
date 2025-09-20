@@ -314,6 +314,10 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
 
     Position position;
 
+    setState(() {
+      locationState = "pending";
+    });
+
     //start by getting the last position, so there is always some place showing, and then update it later
     try {
       position = (await Geolocator.getLastKnownPosition())!;
@@ -321,6 +325,8 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
       List<Placemark> placemarks = await placemarkFromCoordinates(
           position.latitude, position.longitude);
       Placemark place = placemarks[0];
+
+      print("WORKED");
 
       setState(() {
         placeName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? "";
@@ -338,7 +344,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     try {
       position = await Geolocator.getCurrentPosition(
           locationSettings: AndroidSettings(accuracy: LocationAccuracy.medium,
-              timeLimit: const Duration(seconds: 20)
+              timeLimit: const Duration(seconds: 10)
           )
       );
     } on Error {
@@ -812,13 +818,15 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
       ),
     );
   }
-  if (locationState == "enabled") {
+  if (locationState == "enabled" || locationState == "pending") {
     return GestureDetector(
       onTap: () {
-        HapticFeedback.lightImpact();
-        updateLocation(placeLatLon, placeName);
-        if (!isTabletMode) {
-          Navigator.pop(context);
+        if (locationState == "enabled") {
+          HapticFeedback.lightImpact();
+          updateLocation(placeLatLon, placeName);
+          if (!isTabletMode) {
+            Navigator.pop(context);
+          }
         }
       },
       child: Container(
@@ -840,8 +848,11 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
                   ],
                 )
             ),
-            Icon(Icons.keyboard_arrow_right_rounded,
+            locationState == "enabled"
+                ? Icon(Icons.keyboard_arrow_right_rounded,
               color: Theme.of(context).colorScheme.onSecondaryFixed,)
+                : CircularProgressIndicator(year2023: false, strokeWidth: 3,  color: Theme.of(context).colorScheme.onSecondaryFixed,
+                  constraints: const BoxConstraints(maxWidth: 18, maxHeight: 18, minWidth: 18, minHeight: 18))
           ],
         ),
       ),

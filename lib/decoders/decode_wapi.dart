@@ -483,7 +483,7 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(settings, placeName, lat,
   for (int i = 0; i < item["forecast"]["forecastday"][0]["hour"].length; i++) {
     final hour = item["forecast"]["forecastday"][0]["hour"][i];
 
-    DateTime d = DateTime.parse(hour["time"]);
+    DateTime d = DateTime.fromMillisecondsSinceEpoch(hour["time_epoch"] * 1000, isUtc: true).toLocal();
 
     if (d.hour % 6 == 0) {
       hourly6Conditions.add(wapiTextCorrection(hour["condition"]["code"], hour["is_day"]));

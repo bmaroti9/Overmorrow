@@ -171,7 +171,7 @@ class _TempAndConditionTextState extends State<TempAndConditionText> {
         SmoothTempTransition(
           target: unitConversion(widget.data.current.tempC,
           context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
-          color: colorsOnImage?.colorPop ?? Theme.of(context).colorScheme.tertiaryContainer,
+          color: colorsOnImage?.colorPop ?? Theme.of(context).colorScheme.tertiaryFixedDim,
           fontSize: 77,
         ),
         Text(
