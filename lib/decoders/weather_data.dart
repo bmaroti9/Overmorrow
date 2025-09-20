@@ -20,6 +20,7 @@ import 'dart:async';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/decoders/decode_RV.dart';
 import 'package:overmorrow/decoders/decode_mn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'decode_wapi.dart';
 import 'package:flutter/material.dart';
 
@@ -271,7 +272,7 @@ class LightCurrentWeatherData {
     required this.dateString,
   });
 
-  static Future<LightCurrentWeatherData> getLightCurrentWeatherData(placeName, latlong, provider, settings) async {
+  static Future<LightCurrentWeatherData> getLightCurrentWeatherData(placeName, latlong, provider, SharedPreferences prefs) async {
 
     List<String> split = latlong.split(",");
     double lat = double.parse(split[0]);
@@ -279,11 +280,11 @@ class LightCurrentWeatherData {
 
     switch (provider) {
       case "weatherapi":
-        return wapiGetLightCurrentData(settings, placeName, lat, lng);
+        return wapiGetLightCurrentData(placeName, lat, lng, prefs);
       case "met-norway":
-        return metNGetLightCurrentData(settings, placeName, lat, lng);
+        return metNGetLightCurrentData(placeName, lat, lng, prefs);
       default:
-        return omGetLightCurrentData(settings, placeName, lat, lng);
+        return omGetLightCurrentData(placeName, lat, lng, prefs);
     }
   }
 }
@@ -299,7 +300,7 @@ class LightWindData {
     required this.windUnit,
   });
 
-  static Future<LightWindData> getLightWindData(placeName, latlong, provider, settings) async {
+  static Future<LightWindData> getLightWindData(placeName, latlong, provider, SharedPreferences prefs) async {
 
     List<String> split = latlong.split(",");
     double lat = double.parse(split[0]);
@@ -308,11 +309,11 @@ class LightWindData {
 
     switch (provider) {
       case "weatherapi":
-        return wapiGetLightWindData(settings, placeName, lat, lon);
+        return wapiGetLightWindData(lat, lon, prefs);
       case "met-norway":
-        return metNGetLightWindData(settings, placeName, lat, lon);
+        return metNGetLightWindData(lat, lon, prefs);
       default:
-        return omGetLightWindData(settings, lat, lon);
+        return omGetLightWindData(lat, lon, prefs);
     }
   }
 }
@@ -346,7 +347,7 @@ class LightHourlyForecastData {
     required this.hourly1Temps
   });
 
-  static Future<LightHourlyForecastData> getLightForecastData(placeName, latLon, provider, settings) async {
+  static Future<LightHourlyForecastData> getLightForecastData(placeName, latLon, provider, SharedPreferences prefs) async {
 
     List<String> split = latLon.split(",");
     double lat = double.parse(split[0]);
@@ -354,11 +355,11 @@ class LightHourlyForecastData {
 
     switch (provider) {
       case "weatherapi":
-        return wapiGetLightHourlyData(settings, placeName, lat, lon);
+        return wapiGetLightHourlyData(placeName, lat, lon, prefs);
       case "met-norway":
-        return metNGetLightHourlyData(settings, placeName, lat, lon);
+        return metNGetLightHourlyData(placeName, lat, lon, prefs);
       default:
-        return omGetHourlyForecast(settings, placeName, lat, lon);
+        return omGetHourlyForecast(placeName, lat, lon, prefs);
     }
   }
 }

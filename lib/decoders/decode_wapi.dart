@@ -24,6 +24,7 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:overmorrow/services/weather_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api_key.dart';
 import '../services/caching_service.dart';
@@ -419,7 +420,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, placeName) async {
   );
 }
 
-Future<dynamic> wapiGetCurrentResponse(settings, placeName, lat, lon) async {
+Future<dynamic> wapiGetCurrentResponse(lat, lon) async {
   final params = {
     'key': wapi_Key,
     'q': "$lat, $lon",
@@ -433,31 +434,31 @@ Future<dynamic> wapiGetCurrentResponse(settings, placeName, lat, lon) async {
   return jsonDecode(response);
 }
 
-Future<LightCurrentWeatherData> wapiGetLightCurrentData(settings, placeName, lat, lon) async {
-  final item = await wapiGetCurrentResponse(settings, placeName, lat, lon);
+Future<LightCurrentWeatherData> wapiGetLightCurrentData(placeName, lat, lon, SharedPreferences prefs) async {
+  final item = await wapiGetCurrentResponse(lat, lon);
 
   DateTime now = DateTime.now();
 
   return LightCurrentWeatherData(
     condition: wapiTextCorrection(item["current"]["condition"]["code"], item["current"]["is_day"]),
     place: placeName,
-    temp:  unitConversion(item["current"]["temp_c"], settings["Temperature"]).round(),
+    temp:  unitConversion(item["current"]["temp_c"], prefs.getString("Temperature") ?? "˚C").round(),
     updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
     dateString: getDateStringFromLocalTime(now),
   );
 }
 
-Future<LightWindData> wapiGetLightWindData(settings, placeName, lat, lon) async {
-  final item = await wapiGetCurrentResponse(settings, placeName, lat, lon);
+Future<LightWindData> wapiGetLightWindData(lat, lon, SharedPreferences prefs) async {
+  final item = await wapiGetCurrentResponse(lat, lon);
 
   return LightWindData(
       windDirAngle: item["current"]["wind_degree"],
-      windSpeed:  unitConversion(item["current"]["wind_kph"], settings["Wind"]).round(),
-      windUnit: settings["Wind"],
+      windSpeed:  unitConversion(item["current"]["wind_kph"], prefs.getString("Wind") ?? "m/s").round(),
+      windUnit: prefs.getString("Wind") ?? "m/s",
   );
 }
 
-Future<LightHourlyForecastData> wapiGetLightHourlyData(settings, placeName, lat, lon) async {
+Future<LightHourlyForecastData> wapiGetLightHourlyData(placeName, lat, lon, SharedPreferences prefs) async {
   final params = {
     'key': wapi_Key,
     'q': "$lat, $lon",
@@ -480,6 +481,8 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(settings, placeName, lat,
 
   DateTime now = DateTime.now();
 
+  final String tempUnit = prefs.getString("Temperature") ?? "˚C";
+
   for (int i = 0; i < item["forecast"]["forecastday"][0]["hour"].length; i++) {
     final hour = item["forecast"]["forecastday"][0]["hour"][i];
 
@@ -487,13 +490,13 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(settings, placeName, lat,
 
     if (d.hour % 6 == 0) {
       hourly6Conditions.add(wapiTextCorrection(hour["condition"]["code"], hour["is_day"]));
-      hourly6Temps.add(unitConversion(hour["temp_c"], settings["Temperature"]).round());
+      hourly6Temps.add(unitConversion(hour["temp_c"], tempUnit).round());
       hourly6Names.add("${d.hour}h");
     }
 
     if (d.difference(now).inHours >= 0 && d.difference(now).inHours < 3) {
       hourly1Conditions.add(wapiTextCorrection(hour["condition"]["code"], hour["is_day"]));
-      hourly1Temps.add(unitConversion(hour["temp_c"], settings["Temperature"]).round());
+      hourly1Temps.add(unitConversion(hour["temp_c"], tempUnit).round());
       hourly1Names.add("${d.hour}h");
     }
   }
@@ -501,7 +504,7 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(settings, placeName, lat,
   return LightHourlyForecastData(
     place: placeName,
     currentCondition: wapiTextCorrection(item["current"]["condition"]["code"], item["current"]["is_day"]),
-    currentTemp: unitConversion(item["current"]["temp_c"], settings["Temperature"]).round(),
+    currentTemp: unitConversion(item["current"]["temp_c"], tempUnit).round(),
     updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
     //i can't sync lists to widgets so i need to encode and then decode them
     hourly6Conditions: jsonEncode(hourly6Conditions),

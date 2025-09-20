@@ -168,24 +168,6 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-/*
-class ErrorState {
-  hasError = false;
-  String errorTitle = "";
-  String errorDesc = "";
-
-  static clearState() {
-    hasError = false;
-  }
-
-  static setError(String title, String desc) {
-    errorTitle = title;
-    errorDesc = desc;
-  }
-
-}
- */
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({key}) : super(key: key);
 
@@ -211,7 +193,7 @@ class MyHomePageState extends State<MyHomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         loadOldImageServiceFromCache();
-        updateLocation(context.read<SettingsProvider>().getLatLon, context.read<SettingsProvider>().getLocation);
+        initialLocationLoad();
       }
     });
   }
@@ -232,6 +214,33 @@ class MyHomePageState extends State<MyHomePage> {
         updateImage(data!);
       }
     }
+  }
+
+  Future<void> initialLocationLoad() async {
+    String latLon = context.read<SettingsProvider>().getLatLon;
+    String location = context.read<SettingsProvider>().getLocation;
+
+    Uri? appLaunchUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
+
+    if (appLaunchUri != null) {
+      if (appLaunchUri.host == "opened" && appLaunchUri.queryParameters.containsKey("location")
+          && appLaunchUri.queryParameters.containsKey("latlon")) {
+
+        if (appLaunchUri.queryParameters["location"] != null && appLaunchUri.queryParameters["latlon"] != null) {
+
+          if (appLaunchUri.queryParameters["location"] == "CurrentLocation") {
+            location = PreferenceUtils.getString('LastKnownPositionName', 'unknown');
+            latLon = PreferenceUtils.getString('LastKnownPositionCord', 'unknown');
+          }
+          else {
+            location = appLaunchUri.queryParameters["location"]!;
+            latLon = appLaunchUri.queryParameters["latlon"]!;
+          }
+        }
+      }
+    }
+
+    updateLocation(latLon, location);
   }
 
   Future<void> updateLocation(String latLon, String location) async {

@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:overmorrow/about_page.dart';
 import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/settings_page.dart';
@@ -90,66 +89,6 @@ class MainSettingEntry extends StatelessWidget {
     );
   }
 }
-
-class NewSettings extends StatelessWidget {
-  const NewSettings({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimationLimiter(
-      child: Column(
-        children: AnimationConfiguration.toStaggeredList(
-          duration: const Duration(milliseconds: 375),
-          childAnimationBuilder: (widget) => SlideAnimation(
-            horizontalOffset: 50.0,
-            child: FadeInAnimation(
-              child: widget,
-            ),
-          ),
-          children: [
-            MainSettingEntry(
-              title: AppLocalizations.of(context)!.appearance,
-              desc: AppLocalizations.of(context)!.appearanceSettingDesc,
-              icon: Icons.palette_outlined,
-              pushTo: const AppearancePage(),
-            ),
-            MainSettingEntry(
-              title: AppLocalizations.of(context)!.general,
-              desc: AppLocalizations.of(context)!.generalSettingDesc,
-              icon: Icons.tune,
-              pushTo: const GeneralSettingsPage(),
-            ),
-            MainSettingEntry(
-              title: AppLocalizations.of(context)!.language,
-              desc: AppLocalizations.of(context)!.languageSettingDesc,
-              icon: Icons.language,
-              pushTo: const LanguagePage(),
-            ),
-            MainSettingEntry(
-              title: AppLocalizations.of(context)!.units,
-              desc: AppLocalizations.of(context)!.unitsSettingdesc,
-              icon: Icons.straighten,
-              pushTo: const UnitsPage(),
-            ),
-            MainSettingEntry(
-              title: AppLocalizations.of(context)!.layout,
-              desc: AppLocalizations.of(context)!.layoutSettingDesc,
-              icon: Icons.widgets_outlined,
-              pushTo: const LayoutPage(),
-            ),
-            MainSettingEntry(
-              title: AppLocalizations.of(context)!.about,
-              desc: AppLocalizations.of(context)!.aboutSettingsDesc,
-              icon: Icons.info_outline,
-              pushTo: const AboutPage(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 
 class AppearancePage extends StatelessWidget {
   const AppearancePage({super.key});

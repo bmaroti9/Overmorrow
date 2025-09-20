@@ -22,6 +22,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/caching_service.dart';
 
@@ -658,7 +659,7 @@ Future<WeatherData> oMGetWeatherData(lat, lng, place) async {
   );
 }
 
-Future<LightCurrentWeatherData> omGetLightCurrentData(settings, placeName, lat, lon) async {
+Future<LightCurrentWeatherData> omGetLightCurrentData(placeName, lat, lon, SharedPreferences prefs) async {
   final oMParams = {
     "latitude": lat.toString(),
     "longitude": lon.toString(),
@@ -681,13 +682,13 @@ Future<LightCurrentWeatherData> omGetLightCurrentData(settings, placeName, lat, 
   return LightCurrentWeatherData(
     condition: oMCurrentTextCorrection(item["current"]["weather_code"], sunStatus, localtime),
     place: placeName,
-    temp: unitConversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
+    temp: unitConversion(item["current"]["temperature_2m"], prefs.getString("Temperature") ?? "˚C").round(),
     updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
     dateString: getDateStringFromLocalTime(now),
   );
 }
 
-Future<LightWindData> omGetLightWindData(settings, lat, lon) async {
+Future<LightWindData> omGetLightWindData(lat, lon, SharedPreferences prefs) async {
   final oMParams = {
     "latitude": lat.toString(),
     "longitude": lon.toString(),
@@ -701,12 +702,12 @@ Future<LightWindData> omGetLightWindData(settings, lat, lon) async {
 
   return LightWindData(
       windDirAngle: item["current"]["wind_direction_10m"],
-      windSpeed: unitConversion(item["current"]["wind_speed_10m"], settings["Wind"]).round(),
-      windUnit: settings["Wind"]
+      windSpeed: unitConversion(item["current"]["wind_speed_10m"], prefs.getString("Wind") ?? "m/s").round(),
+      windUnit: prefs.getString("Wind") ?? "m/s"
   );
 }
 
-Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lon) async {
+Future<LightHourlyForecastData> omGetHourlyForecast(placeName, lat, lon, SharedPreferences prefs) async {
   final oMParams = {
     "latitude": lat.toString(),
     "longitude": lon.toString(),
@@ -718,8 +719,6 @@ Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lo
   };
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
-
-  print(oMUrl);
 
   final response = (await http.get(oMUrl)).body;
 
@@ -738,18 +737,20 @@ Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lo
   List<int> hourly1Temps = [];
   List<String> hourly1Names = [];
 
+  final String tempUnit = prefs.getString("Temperature") ?? "˚C";
+
   for (int i = 0; i < item["hourly"]["temperature_2m"].length; i++) {
     DateTime there = DateTime.parse(item["hourly"]["time"][i]);
     DateTime d = there.add(Duration(seconds: -item["utc_offset_seconds"]));
     if (d.hour % 6 == 0) {
       hourly6Conditions.add(oMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, there));
-      hourly6Temps.add(unitConversion(item["hourly"]["temperature_2m"][i], settings["Temperature"]).round());
+      hourly6Temps.add(unitConversion(item["hourly"]["temperature_2m"][i],tempUnit).round());
       hourly6Names.add("${d.hour}h");
     }
 
     if (d.difference(now).inHours >= 0 && d.difference(now).inHours < 3) {
       hourly1Conditions.add(oMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, there));
-      hourly1Temps.add(unitConversion(item["hourly"]["temperature_2m"][i], settings["Temperature"]).round());
+      hourly1Temps.add(unitConversion(item["hourly"]["temperature_2m"][i],tempUnit).round());
       hourly1Names.add("${d.hour}h");
     }
   }
@@ -757,7 +758,7 @@ Future<LightHourlyForecastData> omGetHourlyForecast(settings, placeName, lat, lo
   return LightHourlyForecastData(
       place: placeName,
       currentCondition: oMCurrentTextCorrection(item["current"]["weather_code"], sunStatus, localtime),
-      currentTemp: unitConversion(item["current"]["temperature_2m"], settings["Temperature"]).round(),
+      currentTemp: unitConversion(item["current"]["temperature_2m"],tempUnit).round(),
       updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
       //i can't sync lists to widgets so i need to encode and then decode them
       hourly6Conditions: jsonEncode(hourly6Conditions),

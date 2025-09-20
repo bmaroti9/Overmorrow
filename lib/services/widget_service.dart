@@ -18,11 +18,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter/foundation.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
 import '../decoders/weather_data.dart';
 import '../main_ui.dart';
-import '../settings_page.dart';
 
 const updateWeatherDataKey = "com.marotidev.overmorrow.updateWeatherData";
 
@@ -115,6 +115,8 @@ void myCallbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     print("Native called background task: $task"); //simpleTask will be emitted here.
 
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     switch (task) {
       case updateWeatherDataKey :
 
@@ -127,8 +129,6 @@ void myCallbackDispatcher() {
             print("no widgets installed, skipping update");
             return Future.value(true);
           }
-
-          Map<String, String> settings = await getSettingsUsed();
 
           for (HomeWidgetInfo widgetInfo in installedWidgets) {
             final int widgetId = widgetInfo.androidWidgetId!;
@@ -148,9 +148,8 @@ void myCallbackDispatcher() {
             String latLon;
 
             if (widgetLocation == "CurrentLocation") {
-              List<String> lastKnown = await getLastKnownLocation();
-              placeName = lastKnown[0];
-              latLon = lastKnown[1];
+              placeName = prefs.getString('LastKnownPositionName') ?? 'unknown';
+              latLon = prefs.getString('LastKnownPositionCord') ?? 'unknown';
             }
             else {
               placeName = widgetLocation;
@@ -161,21 +160,21 @@ void myCallbackDispatcher() {
             if (widgetClassName == currentWidgetReceiver || widgetClassName == dateCurrentWidgetReceiver) {
 
               LightCurrentWeatherData data = await LightCurrentWeatherData
-                  .getLightCurrentWeatherData(placeName, latLon, widgetProvider, settings);
+                  .getLightCurrentWeatherData(placeName, latLon, widgetProvider, prefs);
 
               await WidgetService.syncCurrentDataToWidget(data, widgetId);
             }
             else if (widgetClassName == windWidgetReceiver) {
 
               LightWindData data = await LightWindData
-                  .getLightWindData(placeName, latLon, widgetProvider, settings);
+                  .getLightWindData(placeName, latLon, widgetProvider, prefs);
 
               await WidgetService.syncWindDataToWidget(data, widgetId);
             }
             else if (widgetClassName == forecastWidgetReceiver || widgetClassName == oneHourlyWidgetReceiver) {
 
               LightHourlyForecastData data = await LightHourlyForecastData
-                  .getLightForecastData(placeName, latLon, widgetProvider, settings);
+                  .getLightForecastData(placeName, latLon, widgetProvider, prefs);
 
               await WidgetService.syncHourlyForecastDataToWidget(data, widgetId);
             }

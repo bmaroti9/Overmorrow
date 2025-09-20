@@ -374,8 +374,9 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
         locationState = "enabled";
       });
 
-      //update the last known position for the home screen widgets
-      setLastKnownLocation(placeName, "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}");
+      await PreferenceUtils.setString('LastKnownPositionName', placeName);
+      await PreferenceUtils.setString('LastKnownPositionCord', "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}");
+      WidgetService.saveData("widget.lastKnownPlace", placeName); //save the name of the place to the widgets
 
     } on Error {
 

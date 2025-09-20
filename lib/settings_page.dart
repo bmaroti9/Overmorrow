@@ -18,100 +18,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/services/preferences_service.dart';
-import 'package:overmorrow/services/widget_service.dart';
 import 'package:overmorrow/settings_screens.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../l10n/app_localizations.dart';
-
-Future<Map<String, String>> getSettingsUsed() async {
-  Map<String, String> settings = {};
-  for (var v in settingSwitches.entries) {
-    final prefs = await SharedPreferences.getInstance();
-    final ifnot = v.value[0];
-    final used = prefs.getString('setting${v.key}') ?? ifnot;
-    if (v.value.length > 1) { //this is so that ones like the layout don't have to include all possible options
-      settings[v.key] = v.value.contains(used) ? used: ifnot;
-    }
-    else {
-      settings[v.key] = used;
-    }
-  }
-  return settings;
-}
-
-Future<String> isLocationSafe(translationProv) async {
-  bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    return translationProv.locationServicesAreDisabled;
-  }
-
-  LocationPermission permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      return translationProv.locationPermissionIsDenied;
-    }
-  }
-  if (permission == LocationPermission.deniedForever) {
-    return translationProv.locationPermissionDeniedForever;
-  }
-  if (permission == LocationPermission.whileInUse ||
-      permission == LocationPermission.always) {
-    return "enabled";
-  }
-  return translationProv.failedToAccessGps;
-}
-
-
-//the last place you viewed in the app,
-// so that's where it will start up next time you open it
-Future<List<String>> getLastPlace() async {
-  final prefs = await SharedPreferences.getInstance();
-  final place = prefs.getString('LastPlaceN') ?? 'New York';
-  final cord = prefs.getString('LastCord') ?? '40.7128, -74.0060';
-  return [place, cord];
-}
-
-setLastPlace(String place, String cord) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('LastPlaceN', place);
-  await prefs.setString('LastCord', cord);
-}
-
-//the actual last known current location
-Future<List<String>> getLastKnownLocation() async {
-  final prefs = await SharedPreferences.getInstance();
-  final place = prefs.getString('LastKnownPositionName') ?? 'unknown';
-  final cord = prefs.getString('LastKnownPositionCord') ?? 'unknown';
-  return [place, cord];
-}
-
-setLastKnownLocation(String place, String cord) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('LastKnownPositionName', place);
-  await prefs.setString('LastKnownPositionCord', cord);
-  WidgetService.saveData("widget.lastKnownPlace", place); //save the name of the place to the widgets
-}
-
-Future<String> getWeatherProvider() async {
-  final prefs = await SharedPreferences.getInstance();
-  final used = prefs.getString('weather_provider') ?? 'open-meteo';
-  return used;
-}
-
-Future<String> getLanguageUsed() async {
-  final prefs = await SharedPreferences.getInstance();
-  final used = prefs.getString('settingLanguage') ?? 'English';
-  return used;
-}
-
-SetData(String name, String to) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString(name, to);
-}
+import 'about_page.dart';
 
 Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, settings, textcolor,
     Color primary, rawName) {
@@ -328,6 +240,66 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
 
         ],
+      ),
+    );
+  }
+}
+
+
+class NewSettings extends StatelessWidget {
+  const NewSettings({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimationLimiter(
+      child: Column(
+        children: AnimationConfiguration.toStaggeredList(
+          duration: const Duration(milliseconds: 375),
+          childAnimationBuilder: (widget) => SlideAnimation(
+            horizontalOffset: 50.0,
+            child: FadeInAnimation(
+              child: widget,
+            ),
+          ),
+          children: [
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.appearance,
+              desc: AppLocalizations.of(context)!.appearanceSettingDesc,
+              icon: Icons.palette_outlined,
+              pushTo: const AppearancePage(),
+            ),
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.general,
+              desc: AppLocalizations.of(context)!.generalSettingDesc,
+              icon: Icons.tune,
+              pushTo: const GeneralSettingsPage(),
+            ),
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.language,
+              desc: AppLocalizations.of(context)!.languageSettingDesc,
+              icon: Icons.language,
+              pushTo: const LanguagePage(),
+            ),
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.units,
+              desc: AppLocalizations.of(context)!.unitsSettingdesc,
+              icon: Icons.straighten,
+              pushTo: const UnitsPage(),
+            ),
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.layout,
+              desc: AppLocalizations.of(context)!.layoutSettingDesc,
+              icon: Icons.widgets_outlined,
+              pushTo: const LayoutPage(),
+            ),
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.about,
+              desc: AppLocalizations.of(context)!.aboutSettingsDesc,
+              icon: Icons.info_outline,
+              pushTo: const AboutPage(),
+            ),
+          ],
+        ),
       ),
     );
   }
