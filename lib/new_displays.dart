@@ -220,7 +220,7 @@ class _NewSunriseSunsetState extends State<NewSunriseSunset> with AutomaticKeepA
       builder: (context, animatedProgress, child) {
 
         return Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 28),
+          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 23),
           child: Column(
             children: [
 

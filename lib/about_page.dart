@@ -111,10 +111,10 @@ class _AboutPageState extends State<AboutPage> {
                           alignment: Alignment.center,
                           children: [
                             SvgPicture.asset(
-                              "assets/m3shapes/4_sided_cookie.svg",
+                              "assets/m3shapes/9_sided_cookie.svg",
                               colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondaryContainer, BlendMode.srcIn),
-                              width: 200,
-                              height: 200,
+                              width: 220,
+                              height: 220,
                             ),
                             SvgPicture.asset(
                               "assets/weather_icons/partly_cloudy.svg",
