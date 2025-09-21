@@ -112,7 +112,7 @@ class _RadarSmallState extends State<RadarSmall> {
         ),
         Padding(
           padding: const EdgeInsets.only(
-              left: 23, right: 23, top: 14, bottom: 10,),
+              left: 23, right: 23, top: 14, bottom: 35,),
           child: AspectRatio(
             aspectRatio: 1.70,
             child: Container(

@@ -95,8 +95,8 @@ final CacheManager cacheManager = CacheManager(Config(
 
 final CacheManager customImageCacheManager = CacheManager(Config(
   "ImageCache",
-  stalePeriod: const Duration(days: 7), //the weather data goes stale by then anyway
-  maxNrOfCacheObjects: 50
+  stalePeriod: const Duration(days: 3),
+  maxNrOfCacheObjects: 40
 ));
 
 CustomCacheManager XCustomCacheManager = CustomCacheManager();

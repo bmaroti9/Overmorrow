@@ -149,7 +149,10 @@ String aqiTitleLocalization(index, localizations) {
   ][index];
 }
 
-String aerosolOpticalDepthLocalizations(index, localizations) {
+String aerosolOpticalDepthLocalizations(index, AppLocalizations localizations) {
+  if (index == 0) { //i have no idea how the index can even end up being 0
+    return localizations.good;
+  }
   return [
     localizations.good,
     localizations.fair,

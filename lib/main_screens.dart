@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -241,7 +242,7 @@ class TabletLayout extends StatelessWidget {
                     },
                     headerData: HeaderData(
                         blurContent: false,
-                        headerHeight: currentHeight * 0.49,
+                        headerHeight: min(currentHeight * 0.49, 500),
                         header: FadingImageWidget(
                           image: imageService?.image,
                         ),
@@ -274,7 +275,7 @@ class TabletLayout extends StatelessWidget {
                           children: [
                             Align(
                                 alignment: Alignment.centerRight,
-                                child: FadingWidget(data: data, time: data.updatedTime, imageService: null,)
+                                child: FadingWidget(data: data, time: data.updatedTime, imageService: imageService, key: Key(data.updatedTime.toString())),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 0),
@@ -317,9 +318,6 @@ class TabletLayout extends StatelessWidget {
                                 Expanded(
                                   child: Column(
                                     children: [
-                                      const SizedBox(height: 15,),
-                                      //rain15MinuteChart(
-                                      //    data, data.current.palette, context),
                                       RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
                                       AqiWidget(data: data),
                                       ProviderSelector(updateLocation: updateLocation, loc: data.place, latLon: "${data.lat}, ${data.lng}",),
@@ -329,6 +327,9 @@ class TabletLayout extends StatelessWidget {
                                 Expanded(
                                   child: Column(
                                     children: [
+                                      Rain15MinuteChart(data: data),
+                                      AlertWidget(data: data),
+
                                       //since it's only available with weatherapi, and in that case there are only 3 days
                                       //this makes the two sides more even
                                       //alertWidget(data, context, data.current.palette),

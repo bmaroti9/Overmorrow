@@ -103,7 +103,7 @@ class _BuildDaysState extends State<BuildDays> with AutomaticKeepAliveClientMixi
     bool showButton = maxToShow < widget.data.days.length;
 
     return Padding(
-      padding: const EdgeInsets.only(left: 23, right: 23, bottom: 25, top: 25),
+      padding: const EdgeInsets.only(left: 23, right: 23, bottom: 25, top: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

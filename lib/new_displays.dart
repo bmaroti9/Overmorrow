@@ -422,7 +422,7 @@ class AlertWidget extends StatelessWidget {
     if (data.alerts.isNotEmpty) {
       return Padding(
           padding: const EdgeInsets.only(
-              left: 25, right: 25, bottom: 10, top: 20),
+              left: 25, right: 25, bottom: 25, top: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
