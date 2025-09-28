@@ -399,9 +399,6 @@ class _RadarBigState extends State<RadarBig> {
               interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate,),
             ),
             children: [
-              Container(
-                color: mode == "light" ? const Color(0xff262626) : const Color(0xffD4DADC),
-              ),
               TileLayer(
                 urlTemplate: mode == "dark"
                     ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'

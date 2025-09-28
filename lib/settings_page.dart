@@ -182,7 +182,7 @@ class SwitchSettingEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.only(top: 14, bottom: 14),
       child: Row(
         children: [
@@ -199,7 +199,7 @@ class SwitchSettingEntry extends StatelessWidget {
           ),
         ],
       ),
-    ) ;
+    );
   }
 
 }

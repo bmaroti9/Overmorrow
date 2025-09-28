@@ -91,6 +91,10 @@ class PreferenceUtils {
     return instance.getBool(key) ?? defValue;
   }
 
+  static getDouble(String key, double defValue) {
+    return instance.getDouble(key) ?? defValue;
+  }
+
   static setString(String key, String value) {
     instance.setString(key, value);
   }
@@ -101,6 +105,10 @@ class PreferenceUtils {
 
   static setBool(String key, bool value) {
     instance.setBool(key, value);
+  }
+
+  static setDouble(String key, double value) {
+    instance.setDouble(key, value);
   }
 }
 
@@ -226,6 +234,8 @@ class SettingsProvider with ChangeNotifier {
 
   List<String> _layout = ["sunstatus", "rain indicator" ,"hourly", "alerts" ,"radar", "daily", "air quality"];
 
+  double _textScale = 1.0;
+
   Locale _locale = const Locale("en");
   String _localeName = "English";
 
@@ -248,6 +258,8 @@ class SettingsProvider with ChangeNotifier {
   String get getImageSource => _imageSource;
 
   List<String> get getLayout => _layout;
+
+  double get getTextScale => _textScale;
 
   Locale get getLocale => _locale;
   String get getLocaleName => _localeName;
@@ -277,6 +289,8 @@ class SettingsProvider with ChangeNotifier {
     _searchProvider = PreferenceUtils.getString("Search provider", "weatherapi");
 
     _layout = PreferenceUtils.getStringList("Layout order", ["sunstatus", "rain indicator" ,"hourly", "alerts" ,"radar", "daily", "air quality"]);
+
+    _textScale = PreferenceUtils.getDouble("Text scale", 1.0);
 
     _location = PreferenceUtils.getString("LastPlaceN", "New York");
     _latLon = PreferenceUtils.getString("LastCord", "40.7128, -74.0060");
@@ -361,6 +375,12 @@ class SettingsProvider with ChangeNotifier {
   void setLayoutOrder(List<String> to) {
     PreferenceUtils.setStringList("Layout order", to);
     _layout = to;
+    notifyListeners();
+  }
+
+  void setTextScale(double to) {
+    PreferenceUtils.setDouble("Text scale", to);
+    _textScale = to;
     notifyListeners();
   }
 }

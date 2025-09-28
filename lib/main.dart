@@ -105,6 +105,8 @@ class _MyAppState extends State<MyApp> {
     final ColorScheme? lightColorScheme = context.watch<ThemeProvider>().getColorSchemeLight;
     final ColorScheme? darkColorScheme = context.watch<ThemeProvider>().getColorSchemeDark;
 
+    final textScaleFactor = context.watch<SettingsProvider>().getTextScale;
+
     final EdgeInsets systemGestureInsets = MediaQuery.of(context).systemGestureInsets;
     if (systemGestureInsets.left > 0) {
       SystemChrome.setSystemUIOverlayStyle(
@@ -131,6 +133,16 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
             debugShowCheckedModeBanner: false,
             themeMode: themeMode,
+
+            builder: (context, child) {
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  textScaler: TextScaler.linear(textScaleFactor),
+                ),
+                child: child!,
+              );
+            },
+
             locale: locale,
             localizationsDelegates: const [
               AppLocalizations.delegate,
@@ -145,9 +157,9 @@ class _MyAppState extends State<MyApp> {
                 fontFamily: GoogleFonts.outfit().fontFamily,
                 fontFamilyFallback: const ['NotoSans',],
                 pageTransitionsTheme: const PageTransitionsTheme(
-                    builders: {
-                      TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
-                    }
+                  builders: {
+                    TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
+                  }
                 )
             ),
             darkTheme: ThemeData(
@@ -156,9 +168,9 @@ class _MyAppState extends State<MyApp> {
                 fontFamily: GoogleFonts.outfit().fontFamily,
                 fontFamilyFallback: const ['NotoSans',],
                 pageTransitionsTheme: const PageTransitionsTheme(
-                    builders: {
-                      TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
-                    }
+                  builders: {
+                    TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
+                  }
                 )
             ),
             home: const MyHomePage()

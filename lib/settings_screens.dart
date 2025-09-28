@@ -417,6 +417,36 @@ class GeneralSettingsPage extends StatelessWidget {
                         update: context.read<SettingsProvider>().setSearchProvider,
                       ),
 
+                      Padding(
+                        padding: const EdgeInsets.only(top: 14, bottom: 14),
+                        child: Row(
+                          children: [
+                            circleBorderIcon(Icons.format_size_rounded, context),
+                            const SizedBox(width: 20,),
+                            Expanded(child: Text(AppLocalizations.of(context)!.fontSize,
+                              style: const TextStyle(fontSize: 20, height: 1.2),),),
+                            SliderTheme(
+                              data: SliderTheme.of(context).copyWith(
+                                trackHeight: 19,
+                                thumbColor: Theme.of(context).colorScheme.secondary,
+                                activeTrackColor: Theme.of(context).colorScheme.secondary,
+
+                                year2023: false,
+                              ),
+                              child: Slider(
+                                min: 0.5,
+                                max: 1.5,
+                                divisions: 10,
+                                value: context.select((SettingsProvider p) => p.getTextScale),
+                                  onChanged: (double value) {
+                                    context.read<SettingsProvider>().setTextScale(value);
+                                  }
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
                       /*
                       settingEntry(Icons.access_time_outlined, localizations.timeMode, copySettings, palette, updatePage, 'Time mode', context),
                       settingEntry(Icons.date_range, localizations.dateFormat, copySettings, palette, updatePage, 'Date format', context),
