@@ -434,8 +434,8 @@ class GeneralSettingsPage extends StatelessWidget {
                                 year2023: false,
                               ),
                               child: Slider(
-                                min: 0.5,
-                                max: 1.5,
+                                min: 0.7,
+                                max: 1.3,
                                 divisions: 10,
                                 value: context.select((SettingsProvider p) => p.getTextScale),
                                   onChanged: (double value) {

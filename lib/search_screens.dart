@@ -326,8 +326,6 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
           position.latitude, position.longitude);
       Placemark place = placemarks[0];
 
-      print("WORKED");
-
       setState(() {
         placeName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? "";
         country = place.isoCountryCode ?? place.country ?? "";
@@ -852,7 +850,7 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
             locationState == "enabled"
                 ? Icon(Icons.keyboard_arrow_right_rounded,
               color: Theme.of(context).colorScheme.onPrimaryFixed,)
-                : CircularProgressIndicator(year2023: false, strokeWidth: 3,  color: Theme.of(context).colorScheme.onPrimaryFixed,
+                : CircularProgressIndicator(year2023: false, strokeWidth: 2.7,  color: Theme.of(context).colorScheme.onPrimaryFixed,
                   constraints: const BoxConstraints(maxWidth: 18, maxHeight: 18, minWidth: 18, minHeight: 18))
           ],
         ),

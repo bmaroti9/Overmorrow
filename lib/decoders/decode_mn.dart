@@ -320,8 +320,6 @@ WeatherRain15Minutes metNWeatherRain15MinutesFromJson(item) {
 
 Future<WeatherData> MetNGetWeatherData(lat, lng, placeName) async {
 
-  print("fetching with metN");
-
   var Mn = await MetNMakeRequest(lat, lng, placeName);
   var MnBody = Mn[0];
 
