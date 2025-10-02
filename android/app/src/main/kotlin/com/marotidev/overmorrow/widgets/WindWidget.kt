@@ -1,7 +1,5 @@
 package com.marotidev.overmorrow.widgets
 
-// Standard Glance and Compose imports (as we discussed before)
-
 import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
 import android.content.Context
@@ -10,12 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.AndroidRemoteViews
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
@@ -36,7 +36,12 @@ import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
+import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
+import es.antonborri.home_widget.actionStartActivity
+import com.marotidev.overmorrow.services.getBackColor
+import com.marotidev.overmorrow.services.getFrontColor
+import com.marotidev.overmorrow.services.getOnFrontColor
 
 
 class WindWidget : GlanceAppWidget() {
@@ -60,19 +65,35 @@ class WindWidget : GlanceAppWidget() {
         val windUnit = prefs.getString("wind.windUnit.$appWidgetId", "N/A") ?: "?"
         val windDirAngle = prefs.getInt("wind.windDirAngle.$appWidgetId", 0)
 
+        val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
+        val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
+
+        val backColorString = prefs.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
+        val frontColorString = prefs.getString("widget.frontColor.$appWidgetId", "primary") ?: "primary"
+
+        val backColor = getBackColor(backColorString)
+        val frontColor = getFrontColor(frontColorString)
+        val onFrontColor = getOnFrontColor(frontColorString)
+
         //the bitmaps didn't work either because it was doing too much main thread work
         //i know this is depreciated but i found no other way to rotate a simple icon
         val remoteArrowView = RemoteViews(context.packageName, R.layout.rotated_arrow_layout).apply {
             setImageViewResource(R.id.rotated_arrow, R.drawable.icon_arrow_up)
             setFloat(R.id.rotated_arrow, "setRotation", windDirAngle.toFloat() + 180f)
-            setInt(R.id.rotated_arrow, "setColorFilter", GlanceTheme.colors.onPrimary.getColor(context).toArgb())
+            setInt(R.id.rotated_arrow, "setColorFilter", onFrontColor.getColor(context).toArgb())
         }
 
         Row(
             modifier = GlanceModifier
                 .fillMaxSize()
-                .background(GlanceTheme.colors.secondaryContainer)
-                .cornerRadius(100.dp).padding(start = 16.dp),
+                .background(backColor)
+                .cornerRadius(100.dp).padding(start = 16.dp)
+                .clickable(
+                    onClick = actionStartActivity<MainActivity>(
+                        context,
+                        "overmorrrow://opened?location=$location&latlon=$latLon".toUri()
+                    )
+                ),
             verticalAlignment = Alignment.Vertical.CenterVertically
         ) {
 
@@ -109,7 +130,7 @@ class WindWidget : GlanceAppWidget() {
                 Image(
                     provider = ImageProvider(R.drawable.shapes_nine_sided_cookie),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(GlanceTheme.colors.primary),
+                    colorFilter = ColorFilter.tint(frontColor),
                     contentScale = ContentScale.Fit,
                     modifier = GlanceModifier.fillMaxHeight().wrapContentWidth()
                 )

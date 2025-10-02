@@ -1,18 +1,19 @@
 package com.marotidev.overmorrow.widgets
 
-// Standard Glance and Compose imports (as we discussed before)
 import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
@@ -34,8 +35,13 @@ import androidx.glance.layout.size
 import androidx.glance.layout.wrapContentSize
 import androidx.glance.layout.wrapContentWidth
 import androidx.glance.text.TextStyle
+import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
-import getIconForCondition
+import es.antonborri.home_widget.actionStartActivity
+import com.marotidev.overmorrow.services.getBackColor
+import com.marotidev.overmorrow.services.getFrontColor
+import com.marotidev.overmorrow.services.getIconForCondition
+import com.marotidev.overmorrow.services.getOnFrontColor
 
 class DateCurrentWidget : GlanceAppWidget() {
 
@@ -56,17 +62,33 @@ class DateCurrentWidget : GlanceAppWidget() {
 
         val temp = prefs.getInt("current.temp.$appWidgetId", 0)
         val condition = prefs.getString("current.condition.$appWidgetId", "N/A") ?: "?"
-        val place = prefs.getString("current.place.$appWidgetId", "--") ?: "?"
+        val place = prefs.getString("widget.place.$appWidgetId", "--") ?: "?"
         val dateString = prefs.getString("current.date.$appWidgetId", "N/A") ?: "?"
+
+        val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
+        val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
+
+        val backColorString = prefs.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
+        val frontColorString = prefs.getString("widget.frontColor.$appWidgetId", "primary") ?: "primary"
+
+        val backColor = getBackColor(backColorString)
+        val frontColor = getFrontColor(frontColorString)
+        val onFrontColor = getOnFrontColor(frontColorString)
 
         val iconResId = getIconForCondition(condition)
 
         Row(
             modifier = GlanceModifier
                 .fillMaxSize()
-                .background(GlanceTheme.colors.secondaryContainer)
+                .background(backColor)
                 .cornerRadius(100.dp)
-                .padding(16.dp),
+                .padding(16.dp)
+                .clickable(
+                    onClick = actionStartActivity<MainActivity>(
+                        context,
+                        "overmorrrow://opened?location=$location&latlon=$latLon".toUri()
+                    )
+                ),
             verticalAlignment = Alignment.Vertical.CenterVertically
         ) {
             Box(
@@ -76,7 +98,7 @@ class DateCurrentWidget : GlanceAppWidget() {
                 Image(
                     provider = ImageProvider(R.drawable.shapes_four_sided_cookie),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(GlanceTheme.colors.primary),
+                    colorFilter = ColorFilter.tint(frontColor),
                     contentScale = ContentScale.Fit,
                     modifier = GlanceModifier.fillMaxHeight().wrapContentWidth()
                 )
@@ -84,7 +106,7 @@ class DateCurrentWidget : GlanceAppWidget() {
                 Image(
                     provider = ImageProvider(iconResId),
                     contentDescription = "Weather icon",
-                    colorFilter = ColorFilter.tint(GlanceTheme.colors.onPrimary),
+                    colorFilter = ColorFilter.tint(onFrontColor),
                     modifier = GlanceModifier.size(width = 40.dp, height = 40.dp)
                 )
             }
@@ -105,7 +127,7 @@ class DateCurrentWidget : GlanceAppWidget() {
 
             Text(
                 text = "$temp°",
-                style = TextStyle(fontSize = 40.sp, color = GlanceTheme.colors.secondary),
+                style = TextStyle(fontSize = 40.sp, color = frontColor),
             )
 
         }

@@ -9,7 +9,7 @@ class AppLocalizationsNl extends AppLocalizations {
   AppLocalizationsNl([String locale = 'nl']) : super(locale);
 
   @override
-  String get feelsLike => 'Voelt als';
+  String get feelsLike => 'Voelt alsv';
 
   @override
   String get precipCapital => 'Neersl.';

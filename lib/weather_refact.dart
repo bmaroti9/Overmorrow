@@ -16,10 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'package:overmorrow/Icons/overmorrow_weather_icons3_icons.dart';
 import 'package:flutter/material.dart';
-
-import 'ui_helper.dart';
 
 Map<String, Locale> languageNameToLocale = {
   'English': const Locale('en'),
@@ -28,6 +25,7 @@ Map<String, Locale> languageNameToLocale = {
   'Deutsch': const Locale('de'),
   'Italiano': const Locale('it'),
   'Português': const Locale('pt'),
+  'Português brasileiro' : const Locale('pt', 'BR'),
   'Русский': const Locale('ru'),
   'Magyar': const Locale('hu'),
   'Polski': const Locale('pl'),
@@ -45,24 +43,28 @@ Map<String, Locale> languageNameToLocale = {
   'Nederlands' : const Locale('nl'),
   'اُردُو' : const Locale('ur'),
   'Hrvat' : const Locale('hr'),
+  'Македонски': const Locale('mk'),
+  'Română' : const Locale('ro'),
+  'Tiếng Việt' : const Locale('vi'),
 };
 
-Map<String, IconData> textMaterialIcon = {
-  'Clear Night': OvermorrowWeatherIcons3.clear_night,
-  'Partly Cloudy': OvermorrowWeatherIcons3.partly_cloudy,
-  'Clear Sky': OvermorrowWeatherIcons3.clear_sky,
-  'Overcast': OvermorrowWeatherIcons3.cloudy,
-  'Haze': OvermorrowWeatherIcons3.haze,
-  'Rain': OvermorrowWeatherIcons3.rain,
-  'Sleet': OvermorrowWeatherIcons3.sleet,
-  'Drizzle': OvermorrowWeatherIcons3.drizzle,
-  'Thunderstorm': OvermorrowWeatherIcons3.thunderstorm,
-  'Heavy Snow': OvermorrowWeatherIcons3.heavy_snow,
-  'Fog': OvermorrowWeatherIcons3.fog,
-  'Snow': OvermorrowWeatherIcons3.snow,
-  'Heavy Rain': OvermorrowWeatherIcons3.heavy_rain,
-  'Cloudy Night' : OvermorrowWeatherIcons3.cloudy_night,
+Map<String, String> weatherIconPathMap = {
+  'Clear Night': "assets/weather_icons/clear_night.svg",
+  'Partly Cloudy': "assets/weather_icons/partly_cloudy.svg",
+  'Clear Sky': "assets/weather_icons/clear_sky.svg",
+  'Overcast': "assets/weather_icons/cloudy.svg",
+  'Haze': "assets/weather_icons/haze.svg",
+  'Rain': "assets/weather_icons/rain.svg",
+  'Sleet': "assets/weather_icons/sleet.svg",
+  'Drizzle': "assets/weather_icons/drizzle.svg",
+  'Thunderstorm': "assets/weather_icons/thunderstorm.svg",
+  'Heavy Snow': "assets/weather_icons/heavy_snow.svg",
+  'Fog': "assets/weather_icons/fog.svg",
+  'Snow': "assets/weather_icons/snow.svg",
+  'Heavy Rain': "assets/weather_icons/heavy_rain.svg",
+  'Cloudy Night' : "assets/weather_icons/cloudy_night.svg",
 };
+
 
 //each condition has a separate unsplash collection where i selected the best images i could find
 //this map links the weather conditions to the collection's id
@@ -313,7 +315,7 @@ Map<String, String> metNWeatherToText = {
   'snowshowersandthunder_polartwilight' : 'Thunderstorm'
  };
 
-Map<int, String> OMCodes = {
+Map<int, String> oMCodes = {
   0: 'Clear Sky',
   1: 'Clear Sky',
   2: 'Partly Cloudy',
@@ -359,74 +361,6 @@ Map<String, String> textBackground = {
   'Snow': 'snowy_sky.jpg',
   'Heavy Rain': 'heavy_rainy_sky.jpg',
   'Cloudy Night' : 'clear_night_color.jpg'
-};
-
-Map<String, List<Color>> textFontColor = {
-  'Clear Night': const [BLACK, WHITE],
-  'Partly Cloudy': const [WHITE, WHITE],
-  'Clear Sky': const [WHITE, BLACK],
-  'Overcast': const [WHITE, WHITE],
-  'Haze': const [WHITE, WHITE],
-  'Rain': const [WHITE, WHITE],
-  'Sleet': const [WHITE, WHITE],
-  'Drizzle': const [WHITE, WHITE],
-  'Thunderstorm': const [WHITE, WHITE],
-  'Heavy Snow': const [WHITE, WHITE],
-  'Fog': const [WHITE, WHITE],
-  'Snow': const [WHITE, WHITE],
-  'Heavy Rain': const [WHITE, WHITE],
-  'Cloudy Night': const [BLACK, WHITE]
-};
-
-Map<String, Color> textBackColor = {
-  'Clear Night': const Color(0xff2d2b3f),
-  'Partly Cloudy': const Color(0xffc3beb2),
-  'Clear Sky': const Color(0xff3570A7),
-  'Overcast': const Color(0xff1C293A),
-  'Haze': const Color(0xff18374A),
-  'Rain': const Color(0xff807699),
-  'Sleet': const Color(0xff7A94B9),
-  'Drizzle': const Color(0xff959f9c),
-  'Thunderstorm': const Color(0xff776475),
-  'Heavy Snow': const Color(0xffb0c4ba),
-  'Fog': const Color(0xff151E1B),
-  'Snow': const Color(0xff919186),
-  'Heavy Rain': const Color(0xff314949),
-  'Cloudy Night': const Color(0xff112f56)
-};
-
-Map<String, Color> accentColors = {
-  'Clear Night': const Color(0xFF8D8F7D),
-  'Partly Cloudy': const Color(0xff526181),
-  'Clear Sky': const Color(0xFFA1C1D2),
-  'Overcast': const Color(0xFFCDA07E),
-  'Haze': const Color(0xFF968C82),
-  'Rain': const Color(0xFF262A3D),
-  'Sleet': const Color(0xFFD2B1C5),
-  'Drizzle': const Color(0xFF45516D),
-  'Thunderstorm': const Color(0xFF889B8A),
-  'Heavy Snow': const Color(0xFF4A5258),
-  'Fog': const Color(0xFF4C6381),
-  'Snow': const Color(0xFF9BC5BD),
-  'Heavy Rain': const Color(0xFF8A8667),
-  'Cloudy Night': const Color(0xFF998BB5),
-};
-
-Map<String, List<int>> colorPop = {
-  'Clear Night': [0, 2],
-  'Partly Cloudy': [0, 0],
-  'Clear Sky': [0, 0],
-  'Overcast': [0, 0],
-  'Haze': [0, 0],
-  'Rain': [1, 0],
-  'Sleet': [0, 0],
-  'Drizzle': [0, 0],
-  'Thunderstorm': [0, 0],
-  'Heavy Snow': [0, 0],
-  'Fog': [0, 0],
-  'Snow': [0, 0],
-  'Heavy Rain': [0, 0],
-  'Cloudy Night': [0, 0],
 };
 
 Map<String, List<double>> conversionTable = {

@@ -16,50 +16,48 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
+import 'package:overmorrow/search_screens.dart';
+import 'package:overmorrow/services/image_service.dart';
+import 'package:overmorrow/services/preferences_service.dart';
+import 'package:overmorrow/services/weather_service.dart';
+import 'package:provider/provider.dart';
 import 'package:stretchy_header/stretchy_header.dart';
+import 'decoders/weather_data.dart';
 import 'hourly.dart';
+import 'l10n/app_localizations.dart';
 import 'main_ui.dart';
 import 'new_displays.dart';
-import 'ui_helper.dart';
 
-class NewMain extends StatefulWidget {
-  final data;
+
+class NewMain extends StatelessWidget {
+  final WeatherData data;
   final updateLocation;
-  final context;
+  final ImageService? imageService;
 
-  NewMain({Key? key, required this.data, required this.updateLocation, required this.context}) : super(key: key);
+  NewMain({required this.data, required this.updateLocation, required this.imageService});
 
-  @override
-  _NewMainState createState() => _NewMainState(data, updateLocation, context);
-}
-
-class _NewMainState extends State<NewMain> {
-  final data;
-  final updateLocation;
-  final context;
-
-  _NewMainState(this.data, this.updateLocation, this.context);
-
+  /*
   @override
   void initState() {
     super.initState();
-    /*
+
     i'm keeping this in case i need another pop-up sometime
     if (data.settings['networkImageDialogShown'] == "false") {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showFeatureDialog(context, data.settings);
       });
     }
-     */
+
   }
 
-  /*
+
   void _showFeatureDialog(BuildContext context, settings) {
     showDialog(
       context: context,
@@ -118,148 +116,119 @@ class _NewMainState extends State<NewMain> {
   }
    */
 
+
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 680) {
+          return PhoneLayout(data: data, updateLocation: updateLocation, imageService: imageService,);
+        }
+        return TabletLayout(data: data, updateLocation: updateLocation, imageService: imageService);
+      }
+    );
+  }
 
+}
+
+class PhoneLayout extends StatelessWidget {
+  final WeatherData data;
+  final Function updateLocation;
+  final ImageService? imageService;
+
+  const PhoneLayout({super.key, required this.data, required this.updateLocation, required this.imageService});
+
+  @override
+  Widget build(BuildContext context) {
     final FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     final Size size = (view.physicalSize) / view.devicePixelRatio;
 
     final Map<String, Widget> widgetsMap = {
-      'sunstatus': NewSunriseSunset(data: data, key: Key(data.place), width: size.width,),
-      'rain indicator': rain15MinuteChart(data, data.current.palette, context),
-      'hourly': NewHourly(data: data, hours: data.hourly72, elevated: false,),
-      'alerts' : alertWidget(data, context, data.current.palette),
-      'radar': RadarSmall(data: data),
-      'daily': buildDays(data: data),
-      'air quality': aqiWidget(data, data.current.palette, context, false)
+      'sunstatus': NewSunriseSunset(data: data, width: size.width,),
+      'rain indicator': Rain15MinuteChart(data: data),
+      'hourly': NewHourly(hours: data.hourly72, elevated: false,),
+      'alerts' : AlertWidget(data: data),
+      'radar': RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
+      'daily': BuildDays(data: data),
+      'air quality': AqiWidget(data: data)
     };
 
-    final List<String> order = data.settings["Layout"] == "" ? [] : data.settings["Layout"].split(",");
+    final List<String> order = context.select((SettingsProvider p) => p.getLayout);
     List<Widget> orderedWidgets = [];
     if (order.isNotEmpty && order[0] != "") {
       orderedWidgets = order.map((name) => widgetsMap[name]!).toList();
     }
 
-    String colorMode = data.settings["Color mode"];
-    if (colorMode == "auto") {
-      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      colorMode = brightness == Brightness.dark ? "dark" : "light";
-    }
-
     return Scaffold(
-      backgroundColor: data.current.palette.surface,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: StretchyHeader.listView(
         displacement: 130,
         onRefresh: () async {
-          await updateLocation("${data.lat}, ${data.lng}", data.real_loc, time: 400);
+          HapticFeedback.mediumImpact();
+          await updateLocation("${data.lat}, ${data.lng}", data.place);
         },
         headerData: HeaderData(
           //backgroundColor: WHITE,
-          blurContent: false,
-          headerHeight: (size.height ) * 0.495,
-          header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),
-              color: BLACK),
-          overlay: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 26, right: 26, bottom: 26),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Spacer(),
-                    comfortatext(
-                        "${data.current.temp}°", 75, data.settings,
-                        color: data.current.colorPop, weight: FontWeight.w200,
-                    ),
-                    comfortatext(
-                        data.current.text, 33, data.settings,
-                        weight: FontWeight.w400,
-                        color: data.current.descColor)
-                  ],
+            blurContent: false,
+            headerHeight: (size.height ) * 0.495,
+            header:  FadingImageWidget(
+              image: imageService?.image,
+            ),
+            //header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),color: BLACK),
+            overlay: Stack(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.only(left: 26, right: 26, bottom: 26),
+                    child: TempAndConditionText(data: data, textRegionColor: imageService?.textRegionColor,)
                 ),
-              ),
-
-              MySearchParent(updateLocation: updateLocation, palette: data.current.palette, place: data.place,
-                settings: data.settings, image: data.current.imageService.image, isTabletMode: false,
-              ),
-            ],
-          )
+                MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,),
+              ],
+            )
         ),
         children: [
-          FadingWidget(
-            data: data,
-            time: data.updatedTime,
-          ),
-          Circles(data, 0.5, context, data.current.palette),
 
-            /*
-            Padding(
-              padding: const EdgeInsets.only(left: 30),
-              child: SizedBox(
-                height: 35,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: data.current.debugColors.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                        padding: EdgeInsets.all(5),
-                        child: Container(
-                          width: 25,
-                          height: 25,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: data.current.debugColors[index]
-                          ),
-                        ),
-                    );
-                  }
-                ),
-              ),
-            ),
-             */
+          FadingWidget(data: data, time: data.updatedTime, imageService: imageService, key: Key(data.updatedTime.toString())),
+
+          Circles(data: data),
+
           Column(
             children: orderedWidgets.map((widget) {
               return widget;
             }).toList(),
           ),
-          providerSelector(data.settings, updateLocation, data.current.palette, data.provider,
-            "${data.lat}, ${data.lng}", data.real_loc, context),
+
+          ProviderSelector(updateLocation: updateLocation, loc: data.place, latLon: "${data.lat}, ${data.lng}",),
         ],
       ),
     );
   }
+
 }
 
-
 class TabletLayout extends StatelessWidget {
-  final data;
-  final updateLocation;
+  final WeatherData data;
+  final Function updateLocation;
+  final ImageService? imageService;
 
-  TabletLayout({super.key, required this.data, required this.updateLocation});
+  const TabletLayout({super.key, required this.data, required this.updateLocation, required this.imageService});
 
   @override
   Widget build(BuildContext context) {
 
-    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-
-    Size size = view.physicalSize / view.devicePixelRatio;
-
-    double panelWidth = size.width * 0.29;
-
-    ColorScheme palette = data.current.palette;
+    final currentSize = MediaQuery.of(context).size;
+    final currentWidth = currentSize.width;
+    final currentHeight = currentSize.height;
+    final showPanel = currentWidth > 1000;
 
     return Scaffold(
-        backgroundColor: palette.surface,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: panelWidth,
-              child: MySearchParent(updateLocation: updateLocation, palette: data.current.palette, place: data.place,
-                settings: data.settings, image: data.current.imageService.image, isTabletMode: true,
-              ),
+
+            if (showPanel) SizedBox(
+              width: currentWidth * 0.3,
+              child: MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: true)
             ),
 
             Expanded(
@@ -269,97 +238,110 @@ class TabletLayout extends StatelessWidget {
                     displacement: 130,
                     onRefresh: () async {
                       await updateLocation(
-                          "${data.lat}, ${data.lng}", data.real_loc, time: 400);
+                          "${data.lat}, ${data.lng}", data.place);
                     },
                     headerData: HeaderData(
                         blurContent: false,
-                        headerHeight: (size.height) * 0.43,
-                        header: ParrallaxBackground(image: data.current.imageService.image, color: BLACK),
-                        overlay: Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: palette.inverseSurface,
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              padding: const EdgeInsets.all(18),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(Icons.place_outlined, color: palette.onInverseSurface, size: 22,),
-                                  const SizedBox(width: 4,),
-                                  comfortatext(data.place, 22, data.settings, color: palette.onInverseSurface)
-                                ],
+                        headerHeight: min(currentHeight * 0.49, 500),
+                        header: FadingImageWidget(
+                          image: imageService?.image,
+                        ),
+                        overlay: !showPanel
+                            ? MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: false,)
+                            : Align(
+                              alignment: Alignment.topLeft,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.inverseSurface,
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                margin: const EdgeInsets.only(left: 25, top: 25),
+                                padding: const EdgeInsets.all(18),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.place_outlined, color: Theme.of(context).colorScheme.onInverseSurface, size: 22,),
+                                    const SizedBox(width: 4,),
+                                    Text(data.place, style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface, fontSize: 22),)
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        )
                     ),
                     children: [
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: FadingWidget(data: data, time: data.updatedTime, key: Key(data.updatedTime.toString())),
-                      ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        padding: const EdgeInsetsGeometry.only(left: 10, right: 10),
+                        child: Column(
                           children: [
+                            Align(
+                                alignment: Alignment.centerRight,
+                                child: FadingWidget(data: data, time: data.updatedTime, imageService: imageService, key: Key(data.updatedTime.toString())),
+                            ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: 7, left: 30),
-                              child: Column(
+                              padding: const EdgeInsets.only(top: 0),
+                              child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  comfortatext("${data.current.temp}°", 72, data.settings,
-                                      color: palette.primary, weight: FontWeight.w200),
-                                  comfortatext(data.current.text, 27, data.settings,
-                                      color: palette.onSurface, weight: FontWeight.w400),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 7, left: 30),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SmoothTempTransition(target: unitConversion(data.current.tempC,
+                                            context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
+                                          color: Theme.of(context).colorScheme.tertiary, fontSize: 68,),
+                                        Text(
+                                          translateCondition(data.current.condition, AppLocalizations.of(context)!),
+                                          style: TextStyle(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                              fontSize: 30, height: 1.05
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  SizedBox(
+                                      width: 397,
+                                      child: Circles(data : data)
+                                  ),
                                 ],
                               ),
                             ),
-                            const Spacer(),
-                            SizedBox(
-                              width: 397,
-                              child: Circles(data, 0.3, context, data.current.palette)
+
+                            NewSunriseSunset(data: data, width: constraints.maxWidth,),
+                            NewHourly(hours: data.hourly72, elevated: false,),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      RadarSmall(data: data, radarHapticsOn: context.select((SettingsProvider p) => p.getRadarHapticsOn),),
+                                      AqiWidget(data: data),
+                                      ProviderSelector(updateLocation: updateLocation, loc: data.place, latLon: "${data.lat}, ${data.lng}",),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Rain15MinuteChart(data: data),
+                                      AlertWidget(data: data),
+
+                                      //since it's only available with weatherapi, and in that case there are only 3 days
+                                      //this makes the two sides more even
+                                      //alertWidget(data, context, data.current.palette),
+                                      BuildDays(data: data),
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
                           ],
                         ),
-                      ),
-
-                      NewSunriseSunset(data: data, key: Key(data.place), width: constraints.maxWidth,),
-                      NewHourly(data: data, hours: data.hourly72, elevated: false,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 15,),
-                                rain15MinuteChart(
-                                    data, data.current.palette, context),
-                                RadarSmall(data: data),
-                                aqiWidget(data, data.current.palette, context, true),
-                                providerSelector(data.settings, updateLocation, data.current.palette,
-                                    data.provider, "${data.lat}, ${data.lng}", data.real_loc, context),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                //since it's only available with weatherapi, and in that case there are only 3 days
-                                //this makes the two sides more even
-                                alertWidget(data, context, data.current.palette),
-                                buildDays(data: data),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-
+                      )
                     ],
                   );
                 }

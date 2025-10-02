@@ -17,20 +17,31 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
-import 'dart:math';
 import 'dart:ui';
 
+import 'package:expressive_loading_indicator/expressive_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:overmorrow/main_screens.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:overmorrow/decoders/weather_data.dart';
+import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/services/color_service.dart';
-import 'package:overmorrow/settings_page.dart';
+import 'package:overmorrow/services/image_service.dart';
+import 'package:overmorrow/services/preferences_service.dart';
+import 'package:overmorrow/services/weather_service.dart';
+import 'package:provider/provider.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'api_key.dart';
-import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
 
+
+String sanitizeErrorMessage(String e) {
+  String newStr = e.toString().replaceAll(wapi_Key, "WAPIKEY");
+  newStr = newStr.replaceAll(access_key, "UNSPLASHKEY");
+  newStr = newStr.replaceAll(timezonedbKey, "TIMEZONEDBKEY");
+  return newStr;
+}
 
 Future<void> _launchUrl(String url) async {
   final Uri _url = Uri.parse(url);
@@ -53,92 +64,220 @@ class WeatherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-    Size size = view.physicalSize / view.devicePixelRatio;
+    //FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
+    //Size size = view.physicalSize / view.devicePixelRatio;
 
+    /*
     if (size.width > 950) {
       return TabletLayout(
         data: data, updateLocation: updateLocation,
         key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
     }
 
+     */
+
     //return SearchHeroDemo();
 
-    return NewMain(data: data, updateLocation: updateLocation, context: context,
-        key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
+    return Container();
+    //return NewMain(data: data, updateLocation: updateLocation, context: context,
+    //    key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
   }
 }
 
-class ParrallaxBackground extends StatelessWidget {
-  final Image image;
-  final Color color;
 
-  const ParrallaxBackground({Key? key, required this.image, required this.color}) : super(key: key);
+class LoadingIndicator extends StatelessWidget {
+  final bool isLoading;
+  const LoadingIndicator({super.key, required this.isLoading});
 
   @override
   Widget build(BuildContext context) {
+    final Offset offset = isLoading ? Offset.zero : const Offset(0, -0.3);
+
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 300),
+      opacity: isLoading ? 1.0 : 0.0,
+      curve: Curves.easeInOut,
+      child: AnimatedSlide(
+        duration: const Duration(milliseconds: 300),
+        offset: offset,
+        curve: Curves.easeInOut,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Theme.of(context).colorScheme.primaryContainer
+            ),
+            margin: const EdgeInsets.only(top: 210),
+            padding: const EdgeInsets.all(3),
+            width: 62,
+            height: 62,
+            child: const ExpressiveLoadingIndicator(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TempAndConditionText extends StatefulWidget {
+  final WeatherData data;
+  final Color? textRegionColor;
+
+  const TempAndConditionText({
+    super.key,
+    required this.data,
+    required this.textRegionColor,
+  });
+
+  @override
+  State<TempAndConditionText> createState() => _TempAndConditionTextState();
+}
+
+class _TempAndConditionTextState extends State<TempAndConditionText> {
+  ColorsOnImage? colorsOnImage;
+  ColorScheme? lastColorScheme;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  //this ensures that the color contrast checking logic only runs when it actually needs to
+  @override
+  void didUpdateWidget(covariant TempAndConditionText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.textRegionColor != widget.textRegionColor || lastColorScheme != Theme.of(context).colorScheme) {
+      _recalculateColors();
+      lastColorScheme = Theme.of(context).colorScheme;
+    }
+  }
+
+  void _recalculateColors() {
+    colorsOnImage = ColorsOnImage.getColorsOnImage(
+      Theme.of(context).colorScheme,
+      widget.textRegionColor ?? Colors.black,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        //Container(width: 100, height: 100, color: colorsOnImage.regionColor,),
+        SmoothTempTransition(
+          target: unitConversion(widget.data.current.tempC,
+          context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
+          color: colorsOnImage?.colorPop ?? Theme.of(context).colorScheme.tertiaryFixedDim,
+          fontSize: 77,
+        ),
+        Text(
+          translateCondition(widget.data.current.condition,
+              AppLocalizations.of(context)!),
+          style: GoogleFonts.outfit(
+            color: colorsOnImage?.descColor ?? Theme.of(context).colorScheme.surface,
+            fontSize: 32,
+            height: 1.05,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class SmoothTempTransition extends StatefulWidget {
+  final double target;
+  final Color color;
+  final double fontSize;
+
+  const SmoothTempTransition({super.key, required this.target, required this.color, required this.fontSize});
+
+  @override
+  State<SmoothTempTransition> createState() => _SmoothTempTransitionState();
+}
+
+class _SmoothTempTransitionState extends State<SmoothTempTransition> with AutomaticKeepAliveClientMixin {
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
 
     return TweenAnimationBuilder<double>(
-      duration: const Duration(milliseconds: 1500),
-      tween: Tween<double>(begin: 0, end: 1.0),
-      curve: Curves.decelerate,
-      builder: (context, value, child) {
-        return Container(
-          color: color,
-          child: Opacity(
-            opacity: value,
-            child: Transform.scale(
-              scale: 1.0 + (0.1 * value),
-              child: image,
-            ),
-          ),
-        );
+      tween: Tween<double>(
+        begin: 0.0,
+        end: widget.target,
+      ),
+
+      curve: Curves.easeOut,
+
+      duration: const Duration(milliseconds: 1000),
+
+      builder: (context, current, child) {
+        return Text(
+          "${current.round()}°",
+          style: GoogleFonts.outfit(
+            color: widget.color,
+            fontSize: widget.fontSize,
+            height: 1.05,
+            fontWeight: FontWeight.w300,
+          ),);
       },
     );
   }
 }
 
-Widget Circles(var data, double bottom, context, ColorScheme palette) {
-  return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 13, top: 2),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DescriptionCircle(
-              text: '${data.current.feels_like}°',
-              undercaption: AppLocalizations.of(context)!.feelsLike,
-              extra: '',
-              settings: data.settings,
-              dir: -1,
-              palette: palette
-            ),
-            DescriptionCircle(
-              text: '${data.current.humidity}',
-              undercaption: AppLocalizations.of(context)!.humidity,
-              extra: '%',
-              settings: data.settings,
-              dir: -1,
-              palette: palette
-            ),
-            DescriptionCircle(
-              text: '${data.current.precip}',
-              undercaption: AppLocalizations.of(context)!.precipCapital,
-              extra: data.settings["Precipitation"],
-              settings: data.settings,
-              dir: -1,
-              palette: palette
-            ),
-            DescriptionCircle(
-              text: '${data.current.wind}',
-              undercaption: AppLocalizations.of(context)!.windCapital,
-              extra: data.settings["Wind"],
-              settings: data.settings,
-              dir: data.current.wind_dir + 180,
-              palette: palette
-            ),
-          ]
-      )
-  );
+
+class Circles extends StatelessWidget {
+
+  final WeatherData data;
+
+  const Circles({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 19, right: 19, bottom: 21, top: 1),
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DescriptionCircle(
+                text: '${unitConversion(data.current.feelsLikeC,
+                    context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°',
+                undercaption: AppLocalizations.of(context)!.feelsLike,
+                extra: '',
+                dir: -1,
+              ),
+              DescriptionCircle(
+                text: '${data.current.humidity}',
+                undercaption: AppLocalizations.of(context)!.humidity,
+                extra: '%',
+                dir: -1,
+              ),
+              DescriptionCircle(
+                text: '${data.current.precipMm}',
+                undercaption: AppLocalizations.of(context)!.precipCapital,
+                extra: context.select((SettingsProvider p) => p.getPrecipUnit),
+                dir: -1,
+              ),
+              DescriptionCircle(
+                text: '${unitConversion(data.current.windKph,
+                    context.select((SettingsProvider p) => p.getWindUnit), decimals: 0)}',
+                undercaption: AppLocalizations.of(context)!.windCapital,
+                extra: context.select((SettingsProvider p) => p.getWindUnit),
+                dir: data.current.windDirA + 180,
+              ),
+            ]
+        )
+    );
+  }
+
 }
 
 
@@ -147,15 +286,10 @@ class DescriptionCircle extends StatelessWidget {
   final String text;
   final String undercaption;
   final String extra;
-  final settings;
   final dir;
 
-  final ColorScheme palette;
-
   const DescriptionCircle({super.key, required this.text,
-    required this.undercaption,  required this.extra,
-    required this.settings, required this.dir,
-    required this.palette});
+    required this.undercaption,  required this.extra, required this.dir});
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +306,8 @@ class DescriptionCircle extends StatelessWidget {
                     child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(width: 2, color: palette.primary),
+                          border: Border.all(width: 2, color: Theme.of(context).colorScheme.primary),
+                          //color: Theme.of(context).colorScheme.secondaryContainer,
                         ),
                         child: Center(
                           child: Row(
@@ -180,9 +315,9 @@ class DescriptionCircle extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.baseline,
                             textBaseline: TextBaseline.alphabetic,
                             children: [
-                              comfortatext(text, 20, settings, color: palette.primary, weight: FontWeight.w400),
+                              Text(text, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 20, height: 1.1),),
                               Flexible(
-                                  child: comfortatext(extra, 16, settings, color: palette.primary, weight: FontWeight.w400)
+                                child: Text(extra, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16, height: 1.3),)
                               ),
                             ],
                           ),
@@ -200,7 +335,7 @@ class DescriptionCircle extends StatelessWidget {
                                     turns: AlwaysStoppedAnimation(dir / 360),
                                     child: Padding(
                                         padding: EdgeInsets.only(bottom: constraints.maxWidth * 0.70),
-                                        child: Icon(Icons.keyboard_arrow_up_outlined, color: palette.onSurface, size: 17,)
+                                        child: const Icon(Icons.keyboard_arrow_up_outlined, size: 18,)
                                     )
                                 ),
                               )
@@ -213,8 +348,7 @@ class DescriptionCircle extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top:6),
-                  child: comfortatext(undercaption, 14, settings, align: TextAlign.center, color: palette.outline,
-                  weight: FontWeight.w300)
+                  child: Text(undercaption, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 14),)
                 )
               )
             ]
@@ -225,11 +359,48 @@ class DescriptionCircle extends StatelessWidget {
 }
 
 
+//I'm using this as a reference for everything i want animated between places
+class SmoothTransitionDemo extends StatelessWidget {
+  final double targetScale;
+
+  const SmoothTransitionDemo({super.key, required this.targetScale});
+
+  @override
+  Widget build(BuildContext context) {
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(
+        begin: 1.0,
+        end: targetScale,
+      ),
+
+      duration: const Duration(milliseconds: 3000),
+
+      builder: (context, currentScale, child) {
+        return Transform.scale(
+          scale: currentScale,
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.blue,
+            alignment: Alignment.center,
+            child: Text(
+              targetScale.toStringAsFixed(2),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
 class FadingWidget extends StatefulWidget  {
-  final data;
+  final WeatherData data;
+  final ImageService? imageService;
   final time;
 
-  const FadingWidget({super.key, required this.data, required this.time});
+  const FadingWidget({super.key, required this.data, required this.time, required this.imageService});
 
   @override
   _FadingWidgetState createState() => _FadingWidgetState();
@@ -245,14 +416,7 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
   @override
   void initState() {
     super.initState();
-    _timer = Timer(const Duration(milliseconds: 400), () {
-      if (mounted) {
-        setState(() {
-          _isVisible = true;
-        });
-      }
-    });
-    _timer = Timer(const Duration(milliseconds: 2000), () {
+    _timer = Timer(const Duration(milliseconds: 3000), () {
       if (mounted) {
         setState(() {
           _isVisible = false;
@@ -272,243 +436,226 @@ class _FadingWidgetState extends State<FadingWidget> with AutomaticKeepAliveClie
   Widget build(BuildContext context) {
     super.build(context);
 
-    final dif = widget.time.difference(widget.data.fetch_datetime).inMinutes;
+    if (widget.imageService != null) {
+      final dif = widget.time.difference(widget.data.fetchDatetime).inMinutes;
 
-    String text = AppLocalizations.of(context)!.updatedJustNow;
+      String text = AppLocalizations.of(context)!.updatedJustNow;
 
-    if (dif > 0 && dif < 45) {
-      text = AppLocalizations.of(context)!.updatedXMinutesAgo(dif);
-    }
-    else if (dif >= 45 && dif < 1440) {
-      int hour = (dif + 30) ~/ 60;
-      text = AppLocalizations.of(context)!.updatedXHoursAgo(hour);
-    }
-    else if (dif >= 1440) { //number of minutes in a day
-      int day = (dif + 720) ~/ 1440;
-      text = AppLocalizations.of(context)!.updatedXDaysAgo(day);
-    }
+      if (dif > 0 && dif < 45) {
+        text = AppLocalizations.of(context)!.updatedXMinutesAgo(dif);
+      }
+      else if (dif >= 45 && dif < 1440) {
+        int hour = (dif + 30) ~/ 60;
+        text = AppLocalizations.of(context)!.updatedXHoursAgo(hour);
+      }
+      else if (dif >= 1440) { //number of minutes in a day
+        int day = (dif + 720) ~/ 1440;
+        text = AppLocalizations.of(context)!.updatedXDaysAgo(day);
+      }
 
-    List<String> split = text.split(',');
+      List<String> split = text.split(',');
 
-    ColorScheme palette = widget.data.current.palette;
-
-    return Container(
-      color: widget.data.isonline ? Colors.transparent : palette.primaryContainer,
-      margin: widget.data.isonline ? const EdgeInsets.only(bottom: 1) : const EdgeInsets.only(bottom: 5),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 1000),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          final inAnimation = CurvedAnimation(
-            parent: animation,
-            curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
-          );
-          final outAnimation = CurvedAnimation(
-            parent: animation,
-            curve: const Interval(1.0, 0.5, curve: Curves.easeOut),
-          );
-          return FadeTransition(
-            opacity: _isVisible ? outAnimation : inAnimation,
-            child: child,
-          );
-        },
-        child: SinceLastUpdate(
-          key: ValueKey<bool>(_isVisible),
-          split: split,
-          data: widget.data,
-          isVisible: _isVisible,
+      return Container(
+        height: 23,
+        color: widget.data.isOnline ? Colors.transparent : Theme.of(context).colorScheme.primaryContainer,
+        margin: widget.data.isOnline ? const EdgeInsets.only(bottom: 1) : const EdgeInsets.only(bottom: 5),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 1000),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            final inAnimation = CurvedAnimation(
+              parent: animation,
+              curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
+            );
+            final outAnimation = CurvedAnimation(
+              parent: animation,
+              curve: const Interval(1.0, 0.5, curve: Curves.easeOut),
+            );
+            return FadeTransition(
+              opacity: _isVisible ? outAnimation : inAnimation,
+              child: child,
+            );
+          },
+          child: SinceLastUpdate(
+            key: ValueKey<bool>(_isVisible),
+            split: split,
+            data: widget.data,
+            isVisible: _isVisible,
+            imageService: widget.imageService!,
+          ),
         ),
-      ),
-    );
+      );
+    }
+    return const SizedBox(height: 25,);
   }
 }
 
+class SinceLastUpdate extends StatelessWidget {
 
-class SinceLastUpdate extends StatefulWidget {
-  final split;
-  final data;
-  final isVisible;
+  final List<String> split;
+  final WeatherData data;
+  final bool isVisible;
+  final ImageService imageService;
 
-  SinceLastUpdate({Key? key, required this.data, required this.split, required this.isVisible}) : super(key: key);
-
-  @override
-  _SinceLastUpdateState createState() => _SinceLastUpdateState();
-}
-
-class _SinceLastUpdateState extends State<SinceLastUpdate>{
+  const SinceLastUpdate({Key? key, required this.data, required this.split, required this.isVisible,
+    required this.imageService}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
-    Color text = widget.data.isonline ? widget.data.current.palette.onSurface
-        : widget.data.current.palette.onPrimaryContainer;
-    Color highlight = widget.data.isonline ? widget.data.current.palette.primary
-        : widget.data.current.palette.onPrimaryContainer;
+    Color text = data.isOnline ? Theme.of(context).colorScheme.outline
+        : Theme.of(context).colorScheme.onPrimaryContainer;
 
-    if (widget.isVisible) {
-      return SizedBox(
-        height: 21,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              if (!widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 2),
-                child: Icon(Icons.download_for_offline_outlined, color: highlight, size: 13),
-              ),
-              if (!widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 7),
-                child: comfortatext(AppLocalizations.of(context)!.offline, 14, widget.data.settings,
-                    color: highlight, weight: FontWeight.w300,),
-              ),
-              if (widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 3, top: 1),
-                child: Icon(Icons.access_time, color: highlight, size: 13,),
-              ),
-              comfortatext('${widget.split[0]},', 14, widget.data.settings,
-                  color: widget.data.isonline ? highlight
-                      : text, weight: FontWeight.w300,),
+    if (isVisible) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 31),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (!data.isOnline) Padding(
+              padding: const EdgeInsets.only(right: 2),
+              child: Icon(Icons.download_for_offline_outlined, color: text, size: 13),
+            ),
+            if (!data.isOnline) Padding(
+              padding: const EdgeInsets.only(right: 7),
+              child: Text(AppLocalizations.of(context)!.offline, style: TextStyle(color: text, fontSize: 13),)
+            ),
+            if (data.isOnline) Padding(
+              padding: const EdgeInsets.only(right: 3, top: 1),
+              child: Icon(Icons.access_time, color: text, size: 13,),
+            ),
+            Text('${split[0]},', style: TextStyle(color: text, fontSize: 13),),
 
-              comfortatext(widget.split.length > 1 ? widget.split[1] : "", 14, widget.data.settings,
-                  color: text, weight: FontWeight.w300,),
-            ],
-          ),
+            Text(split.length > 1 ? split[1] : "", style: TextStyle(color: text, fontSize: 13),),
+
+          ],
         ),
       );
     } else{
       List<String> split = AppLocalizations.of(context)!.photoByXOnUnsplash.split(",");
-      return SizedBox(
-        height: 21,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              if (!widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 2),
-                child: Icon(Icons.download_for_offline_outlined, color: highlight, size: 13,),
-              ),
-              if (!widget.data.isonline) Padding(
-                padding: const EdgeInsets.only(right: 7),
-                child: comfortatext(AppLocalizations.of(context)!.offline, 13, widget.data.settings,
-                    color: highlight, weight: FontWeight.w300),
-              ),
-              TextButton(
-                onPressed: () async {
-                  await _launchUrl(widget.data.current.imageService.photolink + "?utm_source=overmorrow&utm_medium=referral");
-                },
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(1),
-                  minimumSize: const Size(0, 22),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
-                child: comfortatext(split[0], 13, widget.data.settings, color: text,
-                    decoration: TextDecoration.underline, weight: FontWeight.w300),
-              ),
-              comfortatext(split[1], 13, widget.data.settings, color: text, weight: FontWeight.w300),
-              TextButton(
-                onPressed: () async {
-                  await _launchUrl(widget.data.current.imageService.userlink + "?utm_source=overmorrow&utm_medium=referral");
-                },
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(1),
-                  minimumSize: const Size(0, 22),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
-                child: comfortatext(widget.data.current.imageService.username, 13, widget.data.settings, color: text,
-                    decoration: TextDecoration.underline, weight: FontWeight.w300),
-              ),
-              comfortatext(split[3], 13, widget.data.settings, color: text, weight: FontWeight.w300),              TextButton(
-                onPressed: () async {
-                  await _launchUrl("https://unsplash.com/?utm_source=overmorrow&utm_medium=referral");
-                },
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(1),
-                  minimumSize: const Size(0, 22),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
-                child: comfortatext(split[4], 13, widget.data.settings, color: text,
-                    decoration: TextDecoration.underline, weight: FontWeight.w300),
-              ),
-            ],
-          ),
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 31),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (!data.isOnline) Padding(
+              padding: const EdgeInsets.only(right: 2),
+              child: Icon(Icons.download_for_offline_outlined, color: text, size: 13,),
+            ),
+            if (!data.isOnline) Padding(
+              padding: const EdgeInsets.only(right: 7),
+                child: Text(AppLocalizations.of(context)!.offline, style: TextStyle(color: text, fontSize: 14),)
+            ),
+            TextButton(
+              onPressed: () async {
+                await _launchUrl("${imageService.photoLink}?utm_source=overmorrow&utm_medium=referral");
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                minimumSize: const Size(0, 22),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: Text(split[0], style: TextStyle(color: text, fontSize: 13, ),)
+            ),
+            Text(split[1], style: TextStyle(color: text, fontSize: 13),),
+            TextButton(
+              onPressed: () async {
+                await _launchUrl("${imageService.userLink}?utm_source=overmorrow&utm_medium=referral");
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                minimumSize: const Size(0, 22),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: Text(imageService.username, style: TextStyle(color: text, fontSize: 13,),)
+            ),
+            Text(split[3], style: TextStyle(color: text, fontSize: 13),)      ,
+            TextButton(
+              onPressed: () async {
+                await _launchUrl("https://unsplash.com/?utm_source=overmorrow&utm_medium=referral");
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(1),
+                minimumSize: const Size(0, 22),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+              child: Text(split[4], style: TextStyle(color: text, fontSize: 13, ),)
+            ),
+          ],
         ),
       );
     }
   }
 }
 
+class ProviderSelector extends StatelessWidget {
+  final Function updateLocation;
+  final String latLon;
+  final String loc;
 
-Widget providerSelector(settings, updateLocation, ColorScheme palette, provider, latlng, real_loc, context) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 25, right: 25, bottom: 80, top: 35),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 2, top: 0),
-          child: comfortatext(
-              AppLocalizations.of(context)!.weatherProvderLowercase, 17,
-              settings,
-              color: palette.onSurface),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 12),
-          child: Container(
-            decoration: BoxDecoration(
-              color: palette.surfaceContainerHigh,
-              borderRadius: BorderRadius.circular(18),
-              //border: Border.all(color: palette.secondary, width: 2)
-            ),
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 7, bottom: 7),
-            child: DropdownButton(
-              underline: Container(),
-              onTap: () {
-                HapticFeedback.mediumImpact();
-              },
-              borderRadius: BorderRadius.circular(18),
-              icon: Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: Icon(Icons.unfold_more, color: palette.secondary, size: 22,),
+  const ProviderSelector({super.key, required this.loc, required this.latLon, required this.updateLocation});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 80, top: 35),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 2, top: 0),
+            child: Text(AppLocalizations.of(context)!.weatherProvderLowercase, style: const TextStyle(fontSize: 17),)
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                borderRadius: BorderRadius.circular(18),
               ),
-              value: provider.toString(),
-              items: ['weatherapi.com', 'open-meteo', 'met norway'].map((item) {
-                return DropdownMenuItem(
-                  value: item,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: comfortatext(item, 18, settings, color: palette.secondary),
-                  ),
-                );
-              }).toList(),
-              onChanged: (String? value) async {
-                HapticFeedback.mediumImpact();
-                SetData('weather_provider', value!);
-                await updateLocation(latlng, real_loc);
-              },
-              itemHeight: 55,
-              isExpanded: true,
-              dropdownColor: palette.surfaceContainerHigh,
-              elevation: 0,
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 7, bottom: 7),
+              child: DropdownButton(
+                underline: Container(),
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                },
+                borderRadius: BorderRadius.circular(18),
+                icon: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Icon(Icons.unfold_more, color: Theme.of(context).colorScheme.tertiary, size: 22,),
+                ),
+                value: context.select((SettingsProvider p) => p.getWeatherProvider),
+                items: ["weatherapi", "open-meteo", "met-norway"].map((item) {
+                  return DropdownMenuItem(
+                    value: item,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(item, style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 18),)
+                    ),
+                  );
+                }).toList(),
+                onChanged: (String? value) async {
+                  if (value != null) {
+                    HapticFeedback.mediumImpact();
+                    context.read<SettingsProvider>().setWeatherProvider(value);
+                    await updateLocation(latLon, loc);
+                  }
+                },
+                itemHeight: 55,
+                isExpanded: true,
+                dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+                elevation: 0,
+              ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
+
 }
 
-
 class ErrorPage extends StatelessWidget {
-  final errorMessage;
-  final updateLocation;
-  final place;
-  final icon;
-  final settings;
-  final provider;
-  final latlng;
-  final shouldAdd;
+  final WeatherError weatherError;
+  final Function updateLocation;
 
-  ErrorPage({super.key, required this.errorMessage,
-    required this.updateLocation, required this.icon, required this.place,
-    required this.settings, required this.provider, required this.latlng,  this.shouldAdd});
+  ErrorPage({super.key, required this.weatherError, required this.updateLocation});
 
   @override
   Widget build(BuildContext context) {
@@ -517,28 +664,20 @@ class ErrorPage extends StatelessWidget {
 
     Size size = view.physicalSize / view.devicePixelRatio;
 
-    const replacement = "<api_key>";
-    String newStr = errorMessage.toString().replaceAll(wapi_Key, replacement);
-    newStr = newStr.replaceAll(access_key, replacement);
-    newStr = newStr.replaceAll(timezonedbKey, replacement);
-
     Image image = Image.asset("assets/backdrops/grayscale_snow2.jpg",
         fit: BoxFit.cover, width: double.infinity, height: double.infinity);
 
-    ColorScheme palette = ColorPalette.getErrorPagePalette(settings["Color mode"]);
-
     return Scaffold(
-      backgroundColor: palette.surface,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: StretchyHeader.singleChild(
         displacement: 150,
         onRefresh: () async {
-          await updateLocation(latlng, place, time: 400);
+          await updateLocation(weatherError.latLon, weatherError.location);
         },
         headerData: HeaderData(
             blurContent: false,
-            headerHeight: max(size.height * 0.5, 400), //we don't want it to be smaller than 400
-            header: ParrallaxBackground(image: Image.asset("assets/backdrops/grayscale_snow2.jpg", fit: BoxFit.cover,), key: Key(place),
-                color: palette.surfaceContainerHigh),
+            headerHeight: (size.height ) * 0.495,
+            header: image,
             overlay: Stack(
               children: [
                 Padding(
@@ -550,17 +689,15 @@ class ErrorPage extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 50, bottom: 20),
-                          child: Icon(icon, color: Colors.black54, size: 20),
+                          child: Icon(weatherError.errorIcon, color: Colors.black, size: 20),
                         ),
-                        comfortatext(newStr, 17, settings, color: Colors.black54, weight: FontWeight.w500,
-                            align: TextAlign.center),
+                        Text(weatherError.errorTitle ?? "", style: const TextStyle(fontSize: 20, color: Colors.black),),
+                        Text(sanitizeErrorMessage(weatherError.errorDesc ?? ""), style: const TextStyle(fontSize: 16, color: Colors.black),)
                       ],
                     ),
                   ),
                 ),
-                MySearchParent(updateLocation: updateLocation,
-                  palette: palette, place: place, settings: settings, image: image,
-                isTabletMode: false,)
+                MySearchWidget(place: weatherError.location, updateLocation: updateLocation, isTabletMode: false,),
               ],
             )
         ),
@@ -568,12 +705,8 @@ class ErrorPage extends StatelessWidget {
         Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: comfortatext(shouldAdd ?? "", 16, settings, color: palette.onSurface, weight: FontWeight.w400,),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: providerSelector(settings, updateLocation, palette, provider, latlng, place, context),
+              padding: const EdgeInsets.only(top: 0),
+              child: ProviderSelector(updateLocation: updateLocation, loc: weatherError.location, latLon: weatherError.latLon,)
             ),
           ],
         ),

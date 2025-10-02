@@ -18,13 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui' as ui;
+import 'dart:typed_data';
 
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:palette_generator/palette_generator.dart';
-
-import '../ui_helper.dart';
 
 int getColorFromHex(String hexColor) {
   hexColor = hexColor.toUpperCase().replaceAll("#", "");
@@ -32,6 +29,13 @@ int getColorFromHex(String hexColor) {
     hexColor = "FF$hexColor";
   }
   return int.parse(hexColor, radix: 16);
+}
+
+double difFromBackColor(Color front, Color back) {
+  double l1 = front.computeLuminance();
+  final l2 = back.computeLuminance();
+  final lighter = max(l1, l2), darker = min(l1, l2);
+  return (lighter + 0.05) / (darker + 0.05);
 }
 
 double difFromBackColors(Color front, List<Color> backs) {
@@ -45,286 +49,111 @@ double difFromBackColors(Color front, List<Color> backs) {
   return worst;
 }
 
-class ImageColorList {
-  final List<Color> imageColors; //a list of colors for the whole image
-  final List<Color> regionColors; //a list of colors for the region where the text will appear
+Future<ui.Image> getUiImageFromProvider(ImageProvider imageProvider) async {
+  final Completer<ui.Image> completer = Completer<ui.Image>();
+  final ImageStream stream = imageProvider.resolve(const ImageConfiguration());
+  late final ImageStreamListener listener; // Declare the listener with `late`
 
-  const ImageColorList({
-    required this.imageColors,
-    required this.regionColors
-  });
+  listener = ImageStreamListener(
+        (ImageInfo imageInfo, bool synchronousCall) {
+      completer.complete(imageInfo.image);
+      stream.removeListener(listener); // Remove the listener to prevent future calls
+    },
+    // Add an error listener to handle loading failures
+    onError: (Object exception, StackTrace? stackTrace) {
+      completer.completeError(exception, stackTrace);
+      stream.removeListener(listener);
+    },
+  );
 
-  static Future<ImageColorList> getImageColorList(Image imageWidget) async {
-    final ImageProvider imageProvider = imageWidget.image;
-
-    final Completer<ImageInfo> completer = Completer();
-    final ImageStreamListener listener = ImageStreamListener((ImageInfo info, bool _) {
-      if (!completer.isCompleted) {
-        completer.complete(info);
-      }
-    });
-
-    imageProvider.resolve(const ImageConfiguration()).addListener(listener);
-
-    final ImageInfo imageInfo = await completer.future;
-    final int imageHeight = imageInfo.image.height;
-    final int imageWidth = imageInfo.image.height;
-
-    const int desiredSquare = 400; //approximation because the top half image cropped is almost a square
-
-    final double cropX = desiredSquare / imageWidth;
-    final double cropY = desiredSquare / imageHeight;
-
-    final double cropAbsolute = max(cropY, cropX);
-
-    final double centerX = imageWidth / 2;
-    final double centerY = imageHeight / 2;
-
-    final newLeft = centerX - ((desiredSquare / 2) / cropAbsolute);
-    final newTop = centerY - ((desiredSquare / 2) / cropAbsolute);
-
-    const double regionWidth = 50;
-    const double regionHeight = 50;
-    final Rect region = Rect.fromLTWH(
-      newLeft + (50 / cropAbsolute),
-      newTop + (300 / cropAbsolute),
-      (regionWidth / cropAbsolute),
-      (regionHeight / cropAbsolute),
-    );
-
-    PaletteGenerator regionColors = await PaletteGenerator.fromImage(
-      imageInfo.image,
-      region: region,
-      maximumColorCount: 4,
-      filters: [],
-    );
-    PaletteGenerator imageColors = await PaletteGenerator.fromImage(
-      imageInfo.image,
-      maximumColorCount: 4,
-      filters: [],
-    );
-
-    imageProvider.resolve(const ImageConfiguration()).removeListener(listener);
-
-    return ImageColorList(
-      imageColors: imageColors.colors.toList(),
-      regionColors: regionColors.colors.toList()
-    );
-  }
+  stream.addListener(listener);
+  return completer.future;
 }
 
-class ColorPalette {
-  final ColorScheme palette;
+Future<Color> getBottomLeftColor(ImageProvider imageProvider) async {
+  const widthFactorStart = 0.1;
+  const widthFactorEnd = 0.3;
+  const heightFactorStart = 0.7;
+  const heightFactorEnd = 0.9;
+
+  final ui.Image image = await getUiImageFromProvider(imageProvider);
+
+  final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
+
+  if (byteData != null) {
+
+    int r = 0;
+    int g = 0;
+    int b = 0;
+    int count = 0;
+
+    for (int y = (image.height * heightFactorStart).round(); y < (image.height * heightFactorEnd).round(); y++) {
+      for (int x = (image.width * widthFactorStart).round(); x < (image.width * widthFactorEnd).round(); x++) {
+        final int byteOffset = (y * image.width + x) * 4;
+
+        r += byteData.getUint8(byteOffset);
+        g += byteData.getUint8(byteOffset + 1);
+        b += byteData.getUint8(byteOffset + 2);
+        count += 1;
+      }
+    }
+
+    return Color.fromARGB(255, (r / count).round(), (g / count).round(), (b / count).round());
+  }
+  return Colors.black;
+}
+
+class ColorsOnImage {
   final Color colorPop; //The color that is applied to the temperature display
   final Color descColor; //the color that is applied to the description under the temperature
+  final Color regionColor;
 
-  //used for debugging to see what colors the palette generator sees
-  final List<Color> imageColors;
-  final List<Color> regionColors;
+  static const minimumContrast = 1.7;
 
-  const ColorPalette({
-    required this.palette,
+  const ColorsOnImage({
     required this.colorPop,
     required this.descColor,
-    required this.imageColors,
-    required this.regionColors,
+    required this.regionColor,
   });
 
-  static double scoreColor(Color c) {
-    //trying to get more non-blue palettes, but avoid shades of gray,
-    // because somehow those result in green palettes, while the image doesn't even have green
+  static ColorsOnImage getColorsOnImage(ColorScheme palette, Color backColor) {
 
-    final hsv = HSVColor.fromColor(c);
-    final h = hsv.hue;
-    final s = hsv.saturation;
-    if (s < 0.2) return 0.1;
-
-    //distance from blue
-    final dist = ( (h - 240).abs() % 360 ).clamp(0.0, 180.0) / 180;
-    final hueWeight = 0.5 + (dist * 0.5);
-    return hueWeight * (0.5 + 0.5 * s);
-  }
-
-
-  //make sure the temperature and description text remain readable
-  static List<Color> checkTextContrast(List<Color> regionColors, ColorScheme palette) {
-
-    //the intended look is temperature with primaryFixedDim and description with surface
+    //the intended look is temperature with tertiaryFixedDim and description with surface
     //though that can be adjusted to help contrast
 
-    double surfaceDif = difFromBackColors(palette.surface, regionColors);
+    double surfaceDif = difFromBackColor(palette.surface, backColor);
     //if the desc can keep the surface color or has to adapt to help contrast
-    bool descUnique = surfaceDif >= 1.9;
+    bool descUnique = surfaceDif >= minimumContrast;
 
     //predefined list of colors in order that still match the color scheme
-    final colorList = [palette.primaryFixedDim, palette.surface, palette.secondaryContainer,
-      palette.primaryContainer, palette.primary, palette.secondary, palette.onSurface
-    ];
+    final colorList = [palette.tertiaryFixedDim, palette.primaryFixedDim, palette.surface,
+      palette.secondaryContainer, palette.tertiary, palette.onSurface];
 
-    double dif;
+    Color bestColor = Colors.black;
+    int bestDif = 0;
 
-    Color color;
     for (int i = 0; i < colorList.length; i++) {
-      color = colorList[i];
-      dif = difFromBackColors(color, regionColors);
-      if (dif >= 1.9) {
-        return [color, descUnique ? palette.surface : color];
+      final Color color = colorList[i];
+      final double dif = difFromBackColor(color, backColor);
+      if (dif >= minimumContrast) {
+        return ColorsOnImage(
+          colorPop: color,
+          descColor: descUnique ? palette.surface : color,
+          regionColor: backColor
+        );
       }
-    }
-
-    //at this point neither of the predefined colors have enough contrast
-    //loop through all brightnesses to see which works best
-
-    Color newColor;
-    Color bestColor = Colors.blue;
-    double bestDif = -1;
-    for (int i = 1; i < 5; i++) {
-      //LIGHT
-      newColor = lighten(palette.primaryContainer, i / 4);
-      dif = difFromBackColors(newColor, regionColors);
       if (dif > bestDif) {
-        if (dif >= 1.9) { //try to keep it close as possible to the palette while still readable
-          return [newColor, newColor];
-        }
-        bestDif = dif;
-        bestColor = newColor;
-      }
-
-      //DARK
-      newColor = darken(palette.primaryContainer, i / 4);
-      dif = difFromBackColors(newColor, regionColors);
-      if (dif > bestDif) {
-        if (dif >= 1.9) { //try to keep it close as possible to the palette while still readable
-          return [newColor, newColor];
-        }
-        bestDif = dif;
-        bestColor = newColor;
+        bestColor = color;
       }
     }
 
-    return [bestColor, bestColor];
-  }
+    //none of them were "good enough" so just return the best one
 
-  static Future<ColorPalette> getColorPalette(Image image, String theme, settings) async {
-
-    ImageColorList colorList = await ImageColorList.getImageColorList(image);
-    List<Color> regionColors = colorList.regionColors;
-    List<Color> imageColors = colorList.imageColors;
-
-    if (theme == "auto") {
-      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      theme= brightness == Brightness.dark ? "dark" : "light";
-    }
-
-    ColorScheme palette;
-
-    if (settings["Color source"] == "wallpaper") {
-      palette = await getWallpaperPalette(theme);
-    }
-    else if (settings["Color source"] == "custom") {
-      palette = getCustomColorPalette(theme, settings);
-    }
-    else {
-      palette = getImagePalette(theme, imageColors);
-    }
-
-    List<Color> textColors = checkTextContrast(regionColors, palette);
-
-    return ColorPalette(
-      palette: palette,
-      colorPop: textColors[0],
-      descColor: textColors[1],
-      regionColors: regionColors,
-      imageColors: imageColors,
+    return ColorsOnImage(
+      colorPop: bestColor,
+      descColor: bestColor,
+      regionColor: backColor
     );
   }
-
-  static ColorScheme getImagePalette(String theme, List<Color> imageColors) {
-
-    Color seedColor = Colors.blue;
-    double bestValue = -1;
-
-    //my second attempt at trying to minimize the number of blue pallets because there are too many otherwise
-    for (int i = 0; i < imageColors.length; i++) {
-      double score = scoreColor(imageColors[i]);
-      if (score > bestValue) {
-        bestValue = score;
-        seedColor = imageColors[i];
-      }
-    }
-
-    if (theme == "auto") {
-      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      theme= brightness == Brightness.dark ? "dark" : "light";
-    }
-
-    //generate color palette with that seedColor
-    ColorScheme palette = ColorScheme.fromSeed(
-        seedColor: seedColor,
-        brightness: theme == 'light' ? Brightness.light : Brightness.dark
-    );
-
-    return palette;
-
-  }
-
-  static Future<ColorScheme> getWallpaperPalette(String theme) async {
-    final corePalette = await DynamicColorPlugin.getCorePalette();
-
-    Color? mainColor;
-    if (corePalette != null) {
-      mainColor = corePalette.toColorScheme().primary;
-    } else {
-      mainColor = Colors.blue;
-    }
-
-    if (theme == "auto") {
-      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      theme= brightness == Brightness.dark ? "dark" : "light";
-    }
-
-    final ColorScheme palette = ColorScheme.fromSeed(
-      seedColor: mainColor,
-      brightness: theme == 'light' ? Brightness.light : Brightness.dark,
-      dynamicSchemeVariant: theme == 'original' || theme == 'mono' ? DynamicSchemeVariant.tonalSpot :
-      DynamicSchemeVariant.tonalSpot,
-    );
-
-    return palette;
-  }
-
-  static ColorScheme getCustomColorPalette(String theme, settings) {
-    Color mainColor = Color(getColorFromHex(settings["Custom color"]));
-
-    if (theme == "auto") {
-      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      theme= brightness == Brightness.dark ? "dark" : "light";
-    }
-
-    final ColorScheme palette = ColorScheme.fromSeed(
-      seedColor: mainColor,
-      brightness: theme == 'light' ? Brightness.light : Brightness.dark,
-      dynamicSchemeVariant: theme == 'original' || theme == 'mono' ? DynamicSchemeVariant.tonalSpot :
-      DynamicSchemeVariant.tonalSpot,
-    );
-
-    return palette;
-  }
-
-  //i specifically made this because it's always the same,
-  // so there's no point in loading it from the image every time
-  static ColorScheme getErrorPagePalette(theme,) {
-    if (theme == "auto") {
-      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      theme= brightness == Brightness.dark ? "dark" : "light";
-    }
-
-    ColorScheme palette = ColorScheme.fromSeed(
-        seedColor: Colors.deepPurple,
-        brightness: theme == 'light' ? Brightness.light : Brightness.dark
-    );
-
-    return palette;
-  }
-
 }
+

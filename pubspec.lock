@@ -121,14 +121,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  dynamic_color:
+  dynamic_system_colors:
     dependency: "direct main"
     description:
-      name: dynamic_color
-      sha256: eae98052fa6e2826bdac3dd2e921c6ce2903be15c6b7f8b6d8a5d49b5086298d
+      name: dynamic_system_colors
+      sha256: "43794e658fa88cbdec9f397dd1afd2eb69b6c9717e99b93b16ba37c3aa3b3a8c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.7.0"
+    version: "1.8.0"
+  expressive_loading_indicator:
+    dependency: "direct main"
+    description:
+      name: expressive_loading_indicator
+      sha256: df84bb56f6f1e977df01e2455ccf033e89f92bc1ecf4dc78e71d44fcbc947331
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -211,6 +219,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  flutter_svg:
+    dependency: "direct main"
+    description:
+      name: flutter_svg
+      sha256: cd57f7969b4679317c17af6fd16ee233c1e60a82ed209d8a475c54fd6fd6f845
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -306,10 +322,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_fonts
-      sha256: b1ac0fe2832c9cc95e5e88b57d627c5e68c223b9657f4b96e1487aa9098c7b82
+      sha256: df9763500dadba0155373e9cb44e202ce21bd9ed5de6bdbd05c5854e86839cb8
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.1"
+    version: "6.3.0"
   home_widget:
     dependency: "direct main"
     description:
@@ -406,14 +422,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  loading_animation_widget:
-    dependency: "direct main"
-    description:
-      name: loading_animation_widget
-      sha256: "9fe23381f3096e902f39e87e487648ff7f74925e86234353fa885bb9f6c98004"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.3.0"
   logger:
     dependency: transitive
     description:
@@ -438,14 +446,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.1"
-  material_floating_search_bar_2:
-    dependency: "direct main"
+  material_new_shapes:
+    dependency: transitive
     description:
-      name: material_floating_search_bar_2
-      sha256: ab0c6d209d9491f98dd4c72f2641d0ba1dd35c87effca1f23d8679bece43add0
+      name: material_new_shapes
+      sha256: e4bc375205e187e8fb232573387112dd8c0dd45b03af8aa2b3c79eb4b9e3e0dc
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.0"
+    version: "1.0.0"
   meta:
     dependency: transitive
     description:
@@ -462,6 +470,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   octo_image:
     dependency: transitive
     description:
@@ -486,14 +502,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
-  palette_generator:
-    dependency: "direct main"
-    description:
-      name: palette_generator
-      sha256: "4420f7ccc3f0a4a906144e73f8b6267cd940b64f57a7262e95cb8cec3a8ae0ed"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.3+7"
   path:
     dependency: transitive
     description:
@@ -502,6 +510,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  path_parsing:
+    dependency: transitive
+    description:
+      name: path_parsing
+      sha256: "883402936929eac138ee0a45da5b0f2c80f89913e6dc3bf77eb65b84b409c6ca"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   path_provider:
     dependency: transitive
     description:
@@ -590,6 +606,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      sha256: "4e82183fa20e5ca25703ead7e05de9e4cceed1fbd1eadc1ac3cb6f565a09f272"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.5+1"
   rxdart:
     dependency: transitive
     description:
@@ -859,6 +883,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.5.1"
+  vector_graphics:
+    dependency: transitive
+    description:
+      name: vector_graphics
+      sha256: a4f059dc26fc8295b5921376600a194c4ec7d55e72f2fe4c7d2831e103d461e6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.19"
+  vector_graphics_codec:
+    dependency: transitive
+    description:
+      name: vector_graphics_codec
+      sha256: "99fd9fbd34d9f9a32efd7b6a6aae14125d8237b10403b422a6a6dfeac2806146"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.13"
+  vector_graphics_compiler:
+    dependency: transitive
+    description:
+      name: vector_graphics_compiler
+      sha256: d354a7ec6931e6047785f4db12a1f61ec3d43b207fc0790f863818543f8ff0dc
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.19"
   vector_math:
     dependency: transitive
     description:
@@ -932,5 +980,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.8.0 <4.0.0"
+  dart: ">=3.8.1 <4.0.0"
   flutter: ">=3.27.0"

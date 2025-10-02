@@ -21,10 +21,12 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:overmorrow/services/color_service.dart';
+import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/weather_refact.dart';
 
 import '../api_key.dart';
-import '../caching.dart';
+import 'caching_service.dart';
 
 String backdropCorrection(String text) {
   return textBackground[text] ?? 'clear_sky3.jpg';
@@ -37,19 +39,22 @@ List<String> assetImageCredit(String name){
 class ImageService {
   final Image image;
   final String username;
-  final String userlink;
-  final String photolink;
+  final String userLink;
+  final String photoLink;
+  final Color textRegionColor;
 
   const ImageService({
     required this.image,
     required this.username,
-    required this.userlink,
-    required this.photolink
+    required this.userLink,
+    required this.photoLink,
+    required this.textRegionColor,
   });
 
   static Future<ImageService> getUnsplashCollectionImage(String condition, String loc) async {
 
     String collectionId = conditionToCollection[condition] ?? 'XMGA2-GGjyw';
+    //String collectionId = "-mvW8OMC15Y";
 
     final params = {
       'client_id': access_key,
@@ -64,25 +69,31 @@ class ImageService {
     var response2 = await file[0].readAsString();
     var unsplashBody = jsonDecode(response2);
 
-    final String image_path = unsplashBody[0]["urls"]["raw"] + "&w=1500";
-    Image image = Image(image: CachedNetworkImageProvider(image_path), fit: BoxFit.cover,
-      width: double.infinity, height: double.infinity);
-
+    final String image_path = unsplashBody[0]["urls"]["raw"] + "&w=2500";
+    Image image = Image(image: CachedNetworkImageProvider(image_path, cacheManager: customImageCacheManager),
+        fit: BoxFit.cover, width: double.infinity, height: double.infinity);
 
     final String _userLink = (unsplashBody[0]["user"]["links"]["html"]) ?? "";
     final String _userName = unsplashBody[0]["user"]["name"] ?? "";
 
     final String _photoLink = unsplashBody[0]["links"]["html"] ?? "";
 
+    Color textRegionColor = await getBottomLeftColor(image.image);
+
+    //this can be used for displaying this old image when the app is opened before the new one loads
+    //so it wont just be a blank screen
+    PreferenceUtils.setString("lastSuccessfulImageFetch", image_path);
+
     return ImageService(
-        image: image,
-        username: _userName,
-        userlink: _userLink,
-        photolink: _photoLink
+      image: image,
+      username: _userName,
+      userLink: _userLink,
+      photoLink: _photoLink,
+      textRegionColor: textRegionColor,
     );
   }
 
-  static ImageService getAssetImage(String condition) {
+  static Future<ImageService> getAssetImage(String condition) async {
 
     final String imagePath = backdropCorrection(condition);
     final Image image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
@@ -93,34 +104,93 @@ class ImageService {
     final String _userName = credits[1];
     final String _userLink = credits[2];
 
+    Color textRegionColor = await getBottomLeftColor(image.image);
+
+    PreferenceUtils.setString("lastAssetImage", condition);
+
     return ImageService(
       image: image,
       username: _userName,
-      userlink: _userLink,
-      photolink: _photoLink
+      userLink: _userLink,
+      photoLink: _photoLink,
+
+      textRegionColor: textRegionColor
     );
 
   }
 
-  static Future<ImageService> getImageService(String condition, String loc, settings) async {
+  static Future<ImageService> getImageService(String condition, String loc, String imageSource) async {
 
-    if (settings["Image source"] == "network") {
+    if (imageSource == "network") {
       try {
-        //ImageService i = await getUnsplashImage(condition, loc);
         ImageService i = await getUnsplashCollectionImage(condition, loc);
         return i;
       }
       catch (e) {
-        String error = e.toString().replaceAll(access_key, "<key>");
         if (kDebugMode) {
+          String error = e.toString().replaceAll(access_key, "<key>");
           print(error);
         }
-        return getAssetImage(condition);
+        return await getAssetImage(condition);
       }
     }
     else {
-      return getAssetImage(condition);
+      return await getAssetImage(condition);
     }
   }
 
+  static Future<ImageService?> getOldImageServiceFromCache(String imageProvider) async {
+
+    if (imageProvider == "network") {
+      String url = PreferenceUtils.getString("lastSuccessfulImageFetch", "");
+      if (url != "") {
+        // Check if the image exists in the cache
+        final file = await customImageCacheManager.getFileFromCache(url);
+
+        if (file != null) {
+          final Image image = Image.file(file.file, fit: BoxFit.cover,
+            width: double.infinity, height: double.infinity,);
+          return ImageService(image: image, username: "", userLink: "", photoLink: "", textRegionColor: Colors.black);
+        }
+      }
+    }
+
+    String lastCondition = PreferenceUtils.getString("lastAssetImage", "Clear Sky");
+
+    final String imagePath = backdropCorrection(lastCondition);
+    final Image image = Image.asset("assets/backdrops/$imagePath", fit: BoxFit.cover,
+      width: double.infinity, height: double.infinity,);
+
+    return ImageService(image: image, username: "", userLink: "", photoLink: "", textRegionColor: Colors.black);
+  }
+}
+
+class FadingImageWidget extends StatelessWidget {
+  final Image? image;
+
+  const FadingImageWidget({super.key, required this.image});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+        children: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 800),
+            switchInCurve: Curves.easeIn,
+            switchOutCurve: Curves.easeOut,
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: Container(
+              key: ValueKey(image.hashCode),
+              child: (image == null)
+                  ? Container(color: Theme.of(context).colorScheme.inverseSurface,)
+                  : image,
+            ),
+          ),
+          //Add a slight tint to make the text more legible
+          Container(color: const Color.fromARGB(30, 0, 0, 0),)
+        ]
+    );
+  }
 }

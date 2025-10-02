@@ -87,17 +87,16 @@ class MyFileService extends HttpFileService {
   }
 }
 
-CacheManager cacheManager = CacheManager(Config(
-  "pudzikey",
+final CacheManager cacheManager = CacheManager(Config(
+  "20dayCache",
   stalePeriod: const Duration(days: 20),
   fileService: MyFileService(),
 ));
 
-
-CacheManager cacheManager2 = CacheManager(Config(
-  "hihikey",
-  stalePeriod: const Duration(hours: 3),
-  fileService: MyFileService(),
+final CacheManager customImageCacheManager = CacheManager(Config(
+  "ImageCache",
+  stalePeriod: const Duration(days: 3),
+  maxNrOfCacheObjects: 40
 ));
 
 CustomCacheManager XCustomCacheManager = CustomCacheManager();
@@ -117,7 +116,7 @@ class CustomCacheManager {
       //print(("got here", fileInfo?.validTill, fileInfo?.validTill.difference(DateTime.now())));
 
       if (fileInfo == null || fileInfo.validTill.difference(DateTime.now()).isNegative) {
-        final file = await _cacheManager.downloadFile(url, key: cacheKey, authHeaders: headers).timeout(const Duration(seconds: 5));
+        final file = await _cacheManager.downloadFile(url, key: cacheKey, authHeaders: headers).timeout(const Duration(seconds: 7));
         return [file.file, true];
       } else {
         return [fileInfo.file, true];

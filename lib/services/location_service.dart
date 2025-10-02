@@ -18,12 +18,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:io';
 import 'dart:convert';
+
 import '../api_key.dart';
-import '../caching.dart';
+import 'caching_service.dart';
 
 class LocationService {
 
-  static Future<List<String>> getRecommendation(String query, String? searchProvider, settings) async {
+  static Future<List<String>> getRecommendation(String query, String searchProvider) async {
+
     query = _sanitizeQuery(query);
     if (query == '') {
       return [];
@@ -32,7 +34,7 @@ class LocationService {
     if (searchProvider == "weatherapi") {
       return _getWapiRecommendation(query);
     } else {
-      return _getOMRecommendation(query, settings);
+      return _getOMRecommendation(query);
     }
   }
 
@@ -61,10 +63,10 @@ class LocationService {
     return recommendations;
   }
 
-  static Future<List<String>> _getOMRecommendation(String query, settings) async {
+  static Future<List<String>> _getOMRecommendation(String query) async {
     var params = {
       'name': query,
-      'count': '6',
+      'count': '10',
       'language': 'en',
     };
 
@@ -75,7 +77,7 @@ class LocationService {
       var file = await cacheManager.getSingleFile(url.toString(), 
         key: "$query, open-meteo search",
         headers: {'cache-control': 'private, max-age=120'})
-        .timeout(const Duration(seconds: 3));
+        .timeout(const Duration(seconds: 4));
       var response = await file.readAsString();
       jsonbody = jsonDecode(response)["results"];
     } catch(e) {

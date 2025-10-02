@@ -18,14 +18,17 @@ import 'app_localizations_hu.dart';
 import 'app_localizations_id.dart';
 import 'app_localizations_it.dart';
 import 'app_localizations_ja.dart';
+import 'app_localizations_mk.dart';
 import 'app_localizations_nl.dart';
 import 'app_localizations_pl.dart';
 import 'app_localizations_pt.dart';
+import 'app_localizations_ro.dart';
 import 'app_localizations_ru.dart';
 import 'app_localizations_ta.dart';
 import 'app_localizations_tr.dart';
 import 'app_localizations_uk.dart';
 import 'app_localizations_ur.dart';
+import 'app_localizations_vi.dart';
 import 'app_localizations_zh.dart';
 
 // ignore_for_file: type=lint
@@ -127,14 +130,18 @@ abstract class AppLocalizations {
     Locale('id'),
     Locale('it'),
     Locale('ja'),
+    Locale('mk'),
     Locale('nl'),
     Locale('pl'),
     Locale('pt'),
+    Locale('pt', 'BR'),
+    Locale('ro'),
     Locale('ru'),
     Locale('ta'),
     Locale('tr'),
     Locale('uk'),
     Locale('ur'),
+    Locale('vi'),
     Locale('zh'),
     Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')
   ];
@@ -1022,14 +1029,17 @@ class _AppLocalizationsDelegate
         'id',
         'it',
         'ja',
+        'mk',
         'nl',
         'pl',
         'pt',
+        'ro',
         'ru',
         'ta',
         'tr',
         'uk',
         'ur',
+        'vi',
         'zh'
       ].contains(locale.languageCode);
 
@@ -1045,6 +1055,18 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
         switch (locale.scriptCode) {
           case 'Hant':
             return AppLocalizationsZhHant();
+        }
+        break;
+      }
+  }
+
+  // Lookup logic when language+country codes are specified.
+  switch (locale.languageCode) {
+    case 'pt':
+      {
+        switch (locale.countryCode) {
+          case 'BR':
+            return AppLocalizationsPtBr();
         }
         break;
       }
@@ -1078,12 +1100,16 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsIt();
     case 'ja':
       return AppLocalizationsJa();
+    case 'mk':
+      return AppLocalizationsMk();
     case 'nl':
       return AppLocalizationsNl();
     case 'pl':
       return AppLocalizationsPl();
     case 'pt':
       return AppLocalizationsPt();
+    case 'ro':
+      return AppLocalizationsRo();
     case 'ru':
       return AppLocalizationsRu();
     case 'ta':
@@ -1094,6 +1120,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsUk();
     case 'ur':
       return AppLocalizationsUr();
+    case 'vi':
+      return AppLocalizationsVi();
     case 'zh':
       return AppLocalizationsZh();
   }

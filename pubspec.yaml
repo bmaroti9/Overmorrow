@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.6.0+49
+version: 2.6.1+56
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -31,7 +31,6 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.1.0
-  material_floating_search_bar_2: ^0.5.0
   shared_preferences: ^2.5.3
   flutter_launcher_icons: ^0.14.3
   url_launcher: ^6.1.14
@@ -43,15 +42,18 @@ dependencies:
   #i also used this version in the build.gradle for some plugins
   home_widget: ^0.8.0
 
+  expressive_loading_indicator: ^0.0.1
   flutter_cache_manager: ^3.4.1
   flutter_map: ^8.1.1
-  loading_animation_widget: ^1.2.0+4
   stretchy_header: ^2.0.0
   cached_network_image: ^3.4.1
-  palette_generator: ^0.3.3+4
-  dynamic_color: ^1.7.0
+
+  #the original dynamic color package handles surface and fixed colors incorrectly so i found this fork instead
+  dynamic_system_colors: ^1.8.0
   flutter_staggered_animations: ^1.1.1
   package_info_plus: ^8.3.0
+  provider: ^6.1.5+1
+  flutter_svg: ^2.2.0
 
   #for the .arb files for translation
   flutter_localizations:
@@ -109,6 +111,8 @@ flutter:
   assets:
     - assets/backdrops/
     - assets/icons/icon.png
+    - assets/weather_icons/
+    - assets/m3shapes/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -135,9 +139,6 @@ flutter:
   #
 
   fonts:
-    - family: OvermorrowWeatherIcons3
-      fonts:
-        - asset: fonts/OvermorrowWeatherIcons3.ttf
     - family: NotoSans
       fonts:
         - asset: fonts/NotoSans_Condensed-Regular.ttf

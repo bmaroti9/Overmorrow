@@ -16,159 +16,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:overmorrow/services/color_service.dart';
+import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/settings_screens.dart';
-import 'package:overmorrow/weather_refact.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'main.dart';
-import 'ui_helper.dart';
 import '../l10n/app_localizations.dart';
-
-Map<String, List<String>> settingSwitches = {
-  'Language' : [
-    'English', //English
-    'Español', //Spanish
-    'Français', //French
-    'Deutsch', //German
-    'Italiano', //Italian
-    'Português', //Portuguese
-    'Русский', //Russian
-    'Magyar', //Hungarian
-    'Polski', //Polish
-    'Ελληνικά', //Greek
-    '简体中文', //Chinese (Simplified Han)
-    '繁體字', //Chinese (Traditional Han)
-    '日本語', //Japanese
-    'українська', //Ukrainian
-    'türkçe', //Turkish
-    'தமிழ்', //Tamil
-    'български', //Bulgarian
-    'Indonesia', //Indonesian
-    'عربي', //Arablic
-    'Suomi', //Finnish
-    'Nederlands', //Dutch
-    'اُردُو', //Urdu
-    'Hrvat', //Croatian
-  ],
-  'Temperature': ['˚C', '˚F'],
-  'Precipitation': ['mm', 'in'],
-  'Wind': ['m/s', 'kph', 'mph', 'kn'],
-
-  'Time mode': ['12 hour', '24 hour'],
-  'Date format': ['mm/dd', 'dd/mm'],
-
-  'Font size': ['normal', 'small', 'very small', 'big'],
-
-  'Color mode' : ['auto', 'light', 'dark'],
-
-  'Color source' : ['image', 'wallpaper', 'custom'],
-  'Image source' : ['network', 'asset'],
-  'Custom color': ['#c62828', '#ff80ab', '#7b1fa2', '#9575cd', '#3949ab', '#40c4ff',
-        '#4db6ac', '#4caf50', '#b2ff59', '#ffeb3b', '#ffab40',],
-
-  'Search provider' : ['weatherapi', 'open-meteo'],
-
-  'Layout' : ["sunstatus,rain indicator,hourly,alerts,radar,daily,air quality"],
-  'Radar haptics': ["on", "off"],
-};
-
-Future<List<dynamic>> getSettingsAndColors(image) async {
-  Map<String, String> settings = await getSettingsUsed();
-  ColorPalette colorPalette = await ColorPalette.getColorPalette(image, settings["Color mode"]!, settings);
-  return [settings, colorPalette];
-}
-
-Future<Map<String, String>> getSettingsUsed() async {
-  Map<String, String> settings = {};
-  for (var v in settingSwitches.entries) {
-    final prefs = await SharedPreferences.getInstance();
-    final ifnot = v.value[0];
-    final used = prefs.getString('setting${v.key}') ?? ifnot;
-    if (v.value.length > 1) { //this is so that ones like the layout don't have to include all possible options
-      settings[v.key] = v.value.contains(used) ? used: ifnot;
-    }
-    else {
-      settings[v.key] = used;
-    }
-  }
-  return settings;
-}
-
-Future<String> isLocationSafe(translationProv) async {
-  bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    return translationProv.locationServicesAreDisabled;
-  }
-
-  LocationPermission permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      return translationProv.locationPermissionIsDenied;
-    }
-  }
-  if (permission == LocationPermission.deniedForever) {
-    return translationProv.locationPermissionDeniedForever;
-  }
-  if (permission == LocationPermission.whileInUse ||
-      permission == LocationPermission.always) {
-    return "enabled";
-  }
-  return translationProv.failedToAccessGps;
-}
-
-
-//the last place you viewed in the app,
-// so that's where it will start up next time you open it
-Future<List<String>> getLastPlace() async {
-  final prefs = await SharedPreferences.getInstance();
-  final place = prefs.getString('LastPlaceN') ?? 'New York';
-  final cord = prefs.getString('LastCord') ?? '40.7128, -74.0060';
-  return [place, cord];
-}
-
-setLastPlace(String place, String cord) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('LastPlaceN', place);
-  await prefs.setString('LastCord', cord);
-}
-
-//the actual last known current location
-Future<List<String>> getLastKnownLocation() async {
-  final prefs = await SharedPreferences.getInstance();
-  final place = prefs.getString('LastKnownPositionName') ?? 'unknown';
-  final cord = prefs.getString('LastKnownPositionCord') ?? 'unknown';
-  return [place, cord];
-}
-
-setLastKnownLocation(String place, String cord) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('LastKnownPositionName', place);
-  await prefs.setString('LastKnownPositionCord', cord);
-  WidgetService.saveData("widget.lastKnownPlace", place); //save the name of the place to the widgets
-}
-
-Future<String> getWeatherProvider() async {
-  final prefs = await SharedPreferences.getInstance();
-  final used = prefs.getString('weather_provider') ?? 'open-meteo';
-  return used;
-}
-
-Future<String> getLanguageUsed() async {
-  final prefs = await SharedPreferences.getInstance();
-  final used = prefs.getString('settingLanguage') ?? 'English';
-  return used;
-}
-
-SetData(String name, String to) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString(name, to);
-}
+import 'about_page.dart';
 
 Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, settings, textcolor,
     Color primary, rawName) {
@@ -185,7 +40,7 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
     ),
     style: GoogleFonts.comfortaa(
       color: textcolor,
-      fontSize: 19 * getFontSize(settings["Font size"]),
+      fontSize: 19,
       fontWeight: FontWeight.w300,
     ),
     alignment: Alignment.centerRight,
@@ -197,201 +52,254 @@ Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, se
       );
     }).toList(),
     onChanged: (Object? value) {
-      HapticFeedback.lightImpact();
+      HapticFeedback.mediumImpact();
       settings[rawName] = value;
       updatePage(rawName, value);
     }
   );
 }
 
-Widget settingEntry(icon, text, settings, ColorScheme palette, updatePage, rawText, context) {
-  return GestureDetector(
-    behavior: HitTestBehavior.translucent,
-    onTap: () {
-      HapticFeedback.lightImpact();
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) {
-          List<String> options = settingSwitches[rawText] ?? [""];
-          return AlertDialog(
-            backgroundColor: palette.surface,
-            content: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20, top: 10, left: 0),
-                      child: comfortatext(text, 22, settings, color: palette.onSurface),
-                    ),
-                    Column(
+Widget circleBorderIcon(IconData icon, context) {
+  return Container(
+    decoration: BoxDecoration(
+      color: Theme.of(context).colorScheme.secondaryContainer,
+      borderRadius: BorderRadius.circular(30),
+    ),
+    width: 50,
+    height: 50,
+    child: Center(child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 24,)),
+  );
+}
+
+class SettingsEntry extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final String rawText;
+  final String selected;
+  final Function update;
+
+  const SettingsEntry({super.key, required this.icon, required this.text, required this.rawText,
+  required this.selected, required this.update});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        HapticFeedback.lightImpact();
+        showDialog<String>(
+            context: context,
+            builder: (BuildContext context) {
+              List<String> options = settingSwitches[rawText] ?? [""];
+              return AlertDialog(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                content: StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: List<Widget>.generate(options.length, (int index) {
-                        return GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            HapticFeedback.lightImpact();
-                            Navigator.pop(context);
-                            updatePage(rawText, options[index]);
-                          },
-                          child: Row(
-                            children: [
-                              Radio<String>(
-                                value: options[index],
-                                groupValue: settings[rawText],
-                                activeColor: palette.primary,
-                                onChanged: (String? value) {
-                                  HapticFeedback.lightImpact();
-                                  Navigator.pop(context, value);
-                                },
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10, top: 10, left: 0),
+                          child: Text(text, style: const TextStyle(fontSize: 22),),
+                        ),
+
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: List<Widget>.generate(options.length, (int index) {
+                            return GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                HapticFeedback.mediumImpact();
+                                Navigator.pop(context);
+                                update(options[index]);
+                              },
+                              child: Row(
+                                children: [
+                                  Radio<String>(
+                                    value: options[index],
+                                    groupValue: selected,
+                                    onChanged: (String? value) {
+                                      HapticFeedback.mediumImpact();
+                                      update(options[index]);
+                                      Navigator.pop(context, value);
+                                    },
+                                  ),
+                                  Text(options[index], style: const TextStyle(fontSize: 18),)
+                                ],
                               ),
-                              comfortatext(options[index], 18, settings, color: palette.onSurface)
-                            ],
-                          ),
-                        );
-                      }),
-                    ),
-                  ],
-                );
-              },
-            ),
-          );
-        }
-      ).then((selectedValue) {
-        if (selectedValue != null) {
-          updatePage(rawText, selectedValue);
-        }
-      });
+                            );
+                          }),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              );
+            }
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 14, bottom: 14),
+        child: Row(
+          children: [
+            circleBorderIcon(icon, context),
+            const SizedBox(width: 20,),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(text, style: const TextStyle(fontSize: 20, height: 1.2),),
+                  Text(selected, style: TextStyle(color: Theme.of(context).colorScheme.outline,
+                      fontSize: 15, height: 1.2),)
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SwitchSettingEntry extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final bool selected;
+  final Function update;
+
+  const SwitchSettingEntry({super.key, required this.icon, required this.text,
+    required this.selected, required this.update});
+
+  static const WidgetStateProperty<Icon> thumbIcon = WidgetStateProperty<Icon>.fromMap(
+    <WidgetStatesConstraint, Icon>{
+      WidgetState.selected: Icon(Icons.check),
+      WidgetState.any: Icon(Icons.close),
     },
-    child: Padding(
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
       padding: const EdgeInsets.only(top: 14, bottom: 14),
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 17),
-            child: Icon(icon, color: palette.primary, size: 22,),
-          ),
-          Expanded(
-            child: Column(
-             crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                comfortatext(text, 19, settings, color: palette.onSurface),
-                comfortatext(settings[rawText]!, 15, settings, color: palette.outline,),
-              ],
-            ),
+          circleBorderIcon(icon, context),
+          const SizedBox(width: 20,),
+          Expanded(child: Text(text, style: const TextStyle(fontSize: 20, height: 1.2),),),
+          Switch(
+            value: selected,
+            onChanged: (bool value) {
+              HapticFeedback.mediumImpact();
+              update(value);
+            },
+            thumbIcon: thumbIcon,
           ),
         ],
       ),
-    ),
-  );
+    );
+  }
+
 }
 
 class SettingsPage extends StatefulWidget {
 
-  final image;
-
-  const SettingsPage({Key? key, required this.image}) : super(key: key);
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  _SettingsPageState createState() => _SettingsPageState(image: image);
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
 
-  final image;
-
-  String _locale = 'English';
-  //this is so that appearance page setting changes take effect in place rather that having to exit the page
-  ValueNotifier<ColorPalette> colornotify = ValueNotifier<ColorPalette>(
-      const ColorPalette(palette: ColorScheme.light(), imageColors: [], regionColors: [],
-          descColor: WHITE, colorPop: WHITE));
-
-  _SettingsPageState({required this.image});
-
-  void updatePage(String name, String to) {
-    setState(() {
-      SetData('setting$name', to);
-      if (name == "Language") {
-        _locale = to;
-      }
-    });
-  }
   void goBack() {
     Navigator.of(context).pop();
   }
 
   @override
-  void dispose() {
-    colornotify.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: getSettingsAndColors(image),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<dynamic>> snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Container();
-        } else if (snapshot.hasError) {
-          if (kDebugMode) {
-            print((snapshot.error, snapshot.stackTrace));
-          }
-          return Center(
-            child: ErrorWidget(snapshot.error as Object),
-          );
-        }
-        _locale = snapshot.data?[0]["Language"];
-        //this is needed so flutter wont complain about setstate during build
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          colornotify.value = snapshot.data?[1];
-        });
-        return Localizations.override(
-          context: context,
-          locale: languageNameToLocale[_locale] ?? const Locale('en'),
-          child: SettingsMain(settings: snapshot.data?[0], updatePage: updatePage, goBack: goBack, image: image,
-              palette: snapshot.data?[1].palette, colornotify: colornotify,),
-        );
-      },
+    return  Material(
+      color: Theme.of(context).colorScheme.surface,
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            leading:
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
+                onPressed: () {
+                  HapticFeedback.selectionClick();
+                  goBack();
+                }),
+            title: Text(AppLocalizations.of(context)!.settings, style: const TextStyle(fontSize: 30),),
+            pinned: false,
+          ),
+
+          const SliverToBoxAdapter(
+            child: NewSettings(),
+          ),
+
+        ],
+      ),
     );
   }
 }
 
 
-class SettingsMain extends StatelessWidget {
-  final ColorScheme palette;
-  final goBack;
-  final settings;
-  final updatePage;
-  final image;
-  final colornotify;
-
-  const SettingsMain({super.key, this.settings, this.updatePage, this.goBack, this.image, required this.palette, this.colornotify});
+class NewSettings extends StatelessWidget {
+  const NewSettings({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Material(
-      color: palette.surface,
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar.large(
-            leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
-                onPressed: () {
-                  HapticFeedback.selectionClick();
-                  goBack();
-                }),
-            title: comfortatext(AppLocalizations.of(context)!.settings, 30, settings, color: palette.primary),
-            backgroundColor: palette.surface,
-            pinned: false,
+    return AnimationLimiter(
+      child: Column(
+        children: AnimationConfiguration.toStaggeredList(
+          duration: const Duration(milliseconds: 375),
+          childAnimationBuilder: (widget) => SlideAnimation(
+            horizontalOffset: 50.0,
+            child: FadeInAnimation(
+              child: widget,
+            ),
           ),
-          // Just some content big enough to have something to scroll.
-          SliverToBoxAdapter(
-            child: NewSettings(settings!, updatePage, image, palette, context, colornotify),
-          ),
-        ],
+          children: [
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.appearance,
+              desc: AppLocalizations.of(context)!.appearanceSettingDesc,
+              icon: Icons.palette_outlined,
+              pushTo: const AppearancePage(),
+            ),
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.general,
+              desc: AppLocalizations.of(context)!.generalSettingDesc,
+              icon: Icons.tune,
+              pushTo: const GeneralSettingsPage(),
+            ),
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.language,
+              desc: AppLocalizations.of(context)!.languageSettingDesc,
+              icon: Icons.language,
+              pushTo: const LanguagePage(),
+            ),
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.units,
+              desc: AppLocalizations.of(context)!.unitsSettingdesc,
+              icon: Icons.straighten,
+              pushTo: const UnitsPage(),
+            ),
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.layout,
+              desc: AppLocalizations.of(context)!.layoutSettingDesc,
+              icon: Icons.widgets_outlined,
+              pushTo: const LayoutPage(),
+            ),
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.about,
+              desc: AppLocalizations.of(context)!.aboutSettingsDesc,
+              icon: Icons.info_outline,
+              pushTo: const AboutPage(),
+            ),
+          ],
+        ),
       ),
     );
   }

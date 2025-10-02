@@ -21,80 +21,74 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:overmorrow/decoders/weather_data.dart';
+import 'package:overmorrow/services/preferences_service.dart';
+import 'package:overmorrow/services/weather_service.dart';
+import 'package:overmorrow/weather_refact.dart';
 import 'l10n/app_localizations.dart';
-import 'ui_helper.dart';
-
+import 'package:provider/provider.dart';
 
 class NewHourly extends StatefulWidget {
-  final data;
   final hours;
   final elevated;
 
-  NewHourly({Key? key, required this.data, required this.hours, required this.elevated}) : super(key: key);
+  NewHourly({Key? key, required this.hours, required this.elevated}) : super(key: key);
 
   @override
-  _NewHourlyState createState() => _NewHourlyState(data, hours, elevated);
+  _NewHourlyState createState() => _NewHourlyState();
 }
 
 class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixin {
-  final data;
-  final hours;
-  final elevated;
 
   int _value = 0;
 
   @override
   bool get wantKeepAlive => true;
 
-  _NewHourlyState(this.data, this.hours, this.elevated);
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    ColorScheme palette = data.current.palette;
+    String dateFormat = context.select((SettingsProvider p) => p.getDateFormat);
+
     return Padding(
-      padding: elevated ? const EdgeInsets.all(0)
-          : const EdgeInsets.only(left: 21, right: 21, top: 0, bottom: 15),
+      padding: widget.elevated ? const EdgeInsets.all(0)
+          : const EdgeInsets.only(left: 22, right: 22, top: 0, bottom: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
           SizedBox(
-            height: 196,
-            child: hourBoxes(hours, data, _value, elevated, context),
+            height: 195,
+            child: hourBoxes(widget.hours, _value, widget.elevated, context, dateFormat),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 15, bottom: 0, left: 5),
+            padding: const EdgeInsets.only(top: 20, bottom: 0, left: 5),
             child: Wrap(
               spacing: 5.0,
               children: List<Widget>.generate(4, (int index) {
                   return ChoiceChip(
                     elevation: 0.0,
-                    checkmarkColor: palette.onSecondaryContainer,
-                    color: WidgetStateProperty.resolveWith((states) {
-                      if (index == _value) {
-                        return palette.secondaryContainer;
-                      }
-                      return elevated ? palette.surfaceContainer : palette.surface;
-                    }),
                     side: BorderSide(
-                        color: index == _value ? palette.secondaryContainer : palette.outlineVariant,
+                        color: index == _value ? Theme.of(context).colorScheme.secondaryContainer
+                            : Theme.of(context).colorScheme.outlineVariant,
                         width: 1.6),
-                    label: comfortatext(
-                        [
-                          AppLocalizations.of(context)!.sumLowercase,
-                          AppLocalizations.of(context)!.precipLowercase,
-                          AppLocalizations.of(context)!.windLowercase,
-                          AppLocalizations.of(context)!.uvLowercase,
-                        ][index],
-                        14, data.settings,
-                        color: _value == index ? palette.onSecondaryContainer : palette.onSurface),
+                    backgroundColor: widget.elevated ? Theme.of(context).colorScheme.surfaceContainer
+                      : Theme.of(context).colorScheme.surface,
+                    label: Text(
+                      [
+                      AppLocalizations.of(context)!.sumLowercase,
+                      AppLocalizations.of(context)!.precipLowercase,
+                      AppLocalizations.of(context)!.windLowercase,
+                      AppLocalizations.of(context)!.uvLowercase,
+                      ][index],
+                    ),
                     selected: _value == index,
                     onSelected: (bool selected) {
                       setState(() {
                         _value = index;
-                        HapticFeedback.lightImpact();
+                        HapticFeedback.selectionClick();
                       });
                     },
                   );
@@ -108,8 +102,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
   }
 }
 
-Widget hourBoxes(hours, data, _value, elevated, context) {
-  ColorScheme palette = data.current.palette;
+Widget hourBoxes(hours, _value, elevated, context, String dateFormat) {
 
   return AnimationLimiter(
     child: ListView.builder(
@@ -117,23 +110,24 @@ Widget hourBoxes(hours, data, _value, elevated, context) {
       scrollDirection: Axis.horizontal,
       itemBuilder: (BuildContext context, int index) {
         var hour = hours[index];
-        if (hour is String) {
+        if (hour is DateTime) {
           return AnimationConfiguration.staggeredList(
             position: index,
             duration: const Duration(milliseconds: 500),
             child: SlideAnimation(
               horizontalOffset: 100.0,
               child: FadeInAnimation(
-                child: dividerWidget(palette, hour, data)
+                child: dividerWidget(getDayName(hour, context, dateFormat), context)
               ),
             ),
           );
         }
+
         List<Widget> childWidgets = [
-          buildHourlySum(hour, palette, data),
-          buildHourlyPrecip(hour, palette, data),
-          buildHourlyWind(hour, palette, data),
-          buildHourlyUv(hour, palette, data),
+          HourlySum(hour: hour),
+          HourlyPrecip(hour: hour),
+          HourlyWind(hour: hour),
+          HourlyUv(hour: hour),
         ];
     
         return AnimationConfiguration.staggeredList(
@@ -142,7 +136,7 @@ Widget hourBoxes(hours, data, _value, elevated, context) {
           child: SlideAnimation(
             horizontalOffset: 100.0,
             child: FadeInAnimation(
-              child: hourlyDataBuilder(hour, palette, elevated, childWidgets[_value], data)
+              child: hourlyDataBuilder(hour, elevated, childWidgets[_value], context)
             ),
           ),
         );
@@ -151,7 +145,7 @@ Widget hourBoxes(hours, data, _value, elevated, context) {
   );
 }
 
-Widget hourlyDataBuilder(hour, ColorScheme palette, elevated, childWidget, data) {
+Widget hourlyDataBuilder(hour, elevated, childWidget, context) {
   return Padding(
     padding: const EdgeInsets.all(3),
     child: AnimatedSwitcher(
@@ -170,7 +164,7 @@ Widget hourlyDataBuilder(hour, ColorScheme palette, elevated, childWidget, data)
               width: 67,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),
-                color: elevated ? palette.surfaceContainerHighest : palette.surfaceContainer,
+                color: elevated ? Theme.of(context).colorScheme.surfaceContainerHighest : Theme.of(context).colorScheme.surfaceContainer,
               ),
               child: child,
             ),
@@ -182,7 +176,7 @@ Widget hourlyDataBuilder(hour, ColorScheme palette, elevated, childWidget, data)
   );
 }
 
-Widget dividerWidget(ColorScheme palette, name, data) {
+Widget dividerWidget(String name, context) {
   return Padding(
     padding: const EdgeInsets.only(top: 3, bottom: 3, left: 6, right: 6),
     child: RotatedBox(
@@ -190,201 +184,253 @@ Widget dividerWidget(ColorScheme palette, name, data) {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: palette.secondaryContainer,
+          color: Theme.of(context).colorScheme.secondaryContainer,
           borderRadius: BorderRadius.circular(6),
         ),
         padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
-        child: Center(child: comfortatext(
-            name, 17,
-            data.settings,
-            color: palette.onSecondaryContainer,
-            weight: FontWeight.w500)
+        child: Center(
+          child: Text(
+            name,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSecondaryContainer,
+              fontSize: 17,
+            ),
+          )
         )
       )
     ),
   );
 }
 
-Widget buildHourlySum(var hour, ColorScheme palette, data) {
-  return Column(
-    key: const ValueKey("sum"),
-    crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(left: 2),
-        child: comfortatext("${hour.temp}°", 18, data.settings, color: palette.primary,
-            weight: FontWeight.w500),
-      ),
+class HourlySum extends StatelessWidget {
+  final WeatherHour hour;
 
-      Icon(
-        hour.icon,
-        color: palette.onSurface,
-        size: 37.0,
-      ),
+  const HourlySum({super.key, required this.hour});
 
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.umbrella, size: 14, color: palette.primary),
-          comfortatext("${hour.precip_prob}%", 14, data.settings, color: palette.primary,
-              weight: FontWeight.w500)
-        ],
-      ),
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      key: const ValueKey("sum"),
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Padding(
+            padding: const EdgeInsets.only(left: 2),
+            child: Text(
+              "${unitConversion(hour.tempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 18,
+                fontWeight: FontWeight.w600
+              ),
+            )
+        ),
 
-      comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
-    ],
-  );
+        SvgPicture.asset(
+          weatherIconPathMap[hour.condition] ?? "assets/weather_icons/clear_sky.svg",
+          colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
+          width: 38,
+          height: 38,
+        ),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 1),
+              child: Icon(Icons.umbrella, size: 14, color: Theme.of(context).colorScheme.tertiary),
+            ),
+            Text("${hour.precipProb}%",
+              style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 13, fontWeight: FontWeight.w600),)
+          ],
+        ),
+
+        Text(convertToShortTime(hour.time, context),
+          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14, fontWeight: FontWeight.w600),),
+      ],
+    );
+  }
 }
 
-Widget buildHourlyPrecip(var hour, ColorScheme palette, data) {
-  return Stack(
-    children: [
-      Column(
-        key: const ValueKey("precip"),
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              comfortatext('${hour.precip}', 18, data.settings, color: palette.primary,
-                  weight: FontWeight.w500),
-              comfortatext('${data.settings["Precipitation"]}', 9, data.settings, color: palette.primary,
-                  weight: FontWeight.w500),
-            ],
-          ),
 
-          SizedBox(
-            width: 33,
-            height: 33,
-            child: Center(
-              child: CircularProgressIndicator(
-                //this seems to be falsely depreciated, wrapping it in the CircularProgressIndicatorTheme
-                //as instructed also trows the same exception
-                year2023: false,
-                value: hour.precip_prob / 100,
-                strokeWidth: 3.5,
-                backgroundColor: palette.outlineVariant,
-                color: palette.secondary,
-              ),
+class HourlyPrecip extends StatelessWidget {
+  final WeatherHour hour;
+
+  const HourlyPrecip({super.key, required this.hour});
+
+  @override
+  Widget build(BuildContext context) {
+    String precipUnit = context.select((SettingsProvider p) => p.getPrecipUnit);
+    return Column(
+      key: const ValueKey("precip"),
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('${unitConversion(hour.precipMm, precipUnit)}',
+              style: TextStyle(color: Theme.of(context).colorScheme.primary,
+                  fontSize: 18, fontWeight: FontWeight.w600, height: 1.1),),
+            Text(precipUnit,
+              style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 10, fontWeight: FontWeight.w600),),
+          ],
+        ),
+
+        SizedBox(
+          width: 33,
+          height: 33,
+          child: Center(
+            child: CircularProgressIndicator(
+              //this seems to be falsely depreciated, wrapping it in the CircularProgressIndicatorTheme
+              //as instructed also trows the same exception
+              year2023: false,
+              value: hour.precipProb / 100,
+              strokeWidth: 3.5,
+              backgroundColor: Theme.of(context).colorScheme.outlineVariant,
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.umbrella, size: 14, color: palette.primary),
-              comfortatext("${hour.precip_prob}%", 14, data.settings, color: palette.primary,
-                  weight: FontWeight.w500)
-            ],
-          ),
-
-          comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
-        ],
-      ),
-    ],
-  );
-}
-
-
-Widget buildHourlyWind(var hour, ColorScheme palette, data) {
-  return Column(
-    key: const ValueKey("wind"),
-    crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: [
-
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          comfortatext('${hour.wind}', 18, data.settings, color: palette.primary,
-              weight: FontWeight.w400),
-          comfortatext('${data.settings["Wind"]}', 9, data.settings, color: palette.primary,
-              weight: FontWeight.w500),
-        ],
-      ),
-
-      Transform.rotate(
-          angle: (hour.wind_dir + 180) * pi / 180,
-          child: Icon(Icons.navigation_outlined, color: palette.onSurface, size: 18,)
-      ),
-
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Icon(Icons.trending_up, size: 13, color: palette.primary),
-          Padding(
-            padding: const EdgeInsets.only(left: 2),
-            child: comfortatext("${hour.wind_gusts}", 14, data.settings, color: palette.primary,
-                weight: FontWeight.w500),
-          ),
-          comfortatext('${data.settings["Wind"]}', 9, data.settings, color: palette.primary,
-              weight: FontWeight.w500),
-        ],
-      ),
-
-      comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
-    ],
-  );
-}
-
-
-Widget buildHourlyUv(var hour, ColorScheme palette, data) {
-  return Column(
-    key: const ValueKey("uv"),
-    crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: [
-  
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          comfortatext('${hour.uv}', 19, data.settings, color: palette.primary,
-              weight: FontWeight.w500),
-          comfortatext('UV', 9, data.settings, color: palette.primary,
-              weight: FontWeight.w500),
-        ],
-      ),
-
-      SizedBox(
-        height: 65,
-        child: ListView.builder(
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 10,
-            itemExtent: 6.5,
-            itemBuilder: (BuildContext context, int index) {
-              if (index < min(max(10 - hour.uv, 0), 10)) {
-                return Center(
-                  child: Container(
-                    width: 13,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: palette.outlineVariant,
-                    ),
-                  ),
-                );
-              }
-              else {
-                return Center(
-                  child: Container(
-                    width: 13,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: palette.secondary,
-                    ),
-                  ),
-                );
-              }
-            }
         ),
-      ),
-  
-      comfortatext(hour.time, 14, data.settings, color: palette.outline, weight: FontWeight.w400)
-    ],
-  );
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 1),
+              child: Icon(Icons.umbrella, size: 14, color: Theme.of(context).colorScheme.tertiary),
+            ),
+            Text("${hour.precipProb}%",
+              style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 13, fontWeight: FontWeight.w600),)
+          ],
+        ),
+
+        Text(convertToShortTime(hour.time, context),
+          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14, fontWeight: FontWeight.w600),),
+      ],
+    );
+  }
+}
+
+
+class HourlyWind extends StatelessWidget {
+  final WeatherHour hour;
+
+  const HourlyWind({super.key, required this.hour});
+
+  @override
+  Widget build(BuildContext context) {
+
+    String windUnit = context.select((SettingsProvider p) => p.getWindUnit);
+
+    return Column(
+      key: const ValueKey("wind"),
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('${unitConversion(hour.windKph, windUnit, decimals: 1)}',
+              style: TextStyle(color: Theme.of(context).colorScheme.primary,
+                  fontSize: 18, fontWeight: FontWeight.w600, height: 1.1),),
+            Text(windUnit, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 10,
+            fontWeight: FontWeight.w600),)
+          ],
+        ),
+
+        Transform.rotate(
+            angle: (hour.windDirA + 180) * pi / 180,
+            child: Icon(Icons.navigation_outlined, size: 19,)
+        ),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Icon(Icons.trending_up, size: 13, color: Theme.of(context).colorScheme.tertiary),
+            Padding(
+                padding: const EdgeInsets.only(left: 2),
+                child: Text("${unitConversion(hour.windGustKph, windUnit, decimals: 0)}",
+                  style: TextStyle(color: Theme.of(context).colorScheme.tertiary,
+                      fontSize: 14, fontWeight: FontWeight.w600, height: 1.2),)
+            ),
+            Text(windUnit, style: TextStyle(color: Theme.of(context).colorScheme.tertiary,
+                fontSize: 9, fontWeight: FontWeight.w600),)
+          ],
+        ),
+
+        Text(convertToShortTime(hour.time, context),
+          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14, fontWeight: FontWeight.w600),),
+      ],
+    );
+  }
+}
+
+
+class HourlyUv extends StatelessWidget {
+  final hour;
+
+  const HourlyUv({super.key, required this.hour});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      key: const ValueKey("uv"),
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('${hour.uv}', style: TextStyle(color: Theme.of(context).colorScheme.primary,
+                fontSize: 19, fontWeight: FontWeight.w600, height: 1.2)),
+            Text('UV', style: TextStyle(color: Theme.of(context).colorScheme.primary,
+                fontSize: 10, fontWeight: FontWeight.w600),)
+          ],
+        ),
+
+        SizedBox(
+          height: 65,
+          child: ListView.builder(
+              padding: EdgeInsets.zero,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 10,
+              itemExtent: 6.5,
+              itemBuilder: (BuildContext context, int index) {
+                if (index < min(max(10 - hour.uv, 0), 10)) {
+                  return Center(
+                    child: Container(
+                      width: 15,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).colorScheme.outlineVariant,
+                      ),
+                    ),
+                  );
+                }
+                else {
+                  return Center(
+                    child: Container(
+                      width: 15,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                    ),
+                  );
+                }
+              }
+          ),
+        ),
+
+        Text(convertToShortTime(hour.time, context),
+          style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14, fontWeight: FontWeight.w600),),
+      ],
+    );
+  }
 }

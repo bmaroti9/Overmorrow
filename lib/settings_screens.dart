@@ -19,15 +19,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:overmorrow/about_page.dart';
 import 'package:overmorrow/services/color_service.dart';
+import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/settings_page.dart';
-import 'package:overmorrow/ui_helper.dart';
-import 'package:overmorrow/weather_refact.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'decoders/decode_wapi.dart';
-import 'main_ui.dart';
 import '../l10n/app_localizations.dart';
 
 Future<void> _launchUrl(String url) async {
@@ -37,196 +34,78 @@ Future<void> _launchUrl(String url) async {
   }
 }
 
-Widget mainSettingEntry(String title, String desc, ColorScheme palette,
-    IconData icon, settings, Widget pushTo, context, updatePage) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 25, right: 25, top: 5, bottom: 5),
-    child: GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        HapticFeedback.selectionClick();
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => pushTo)
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(top: 13, bottom: 13),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 18, left: 15),
-              child: Icon(icon, color: palette.primary, size: 24,),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 3),
-                    child: comfortatext(title, 21, settings, color: palette.onSurface),
-                  ),
-                  comfortatext(desc, 15, settings, color: palette.outline),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    ),
-  );
-}
+class MainSettingEntry extends StatelessWidget {
+  final String title;
+  final String desc;
+  final IconData icon;
+  final Widget? pushTo;
 
-Widget NewSettings(Map<String, String> settings, Function updatePage, Image image, ColorScheme palette, context, colornotify) {
-
-  AppLocalizations localizations = AppLocalizations.of(context)!;
-
-  return Padding(
-    padding: const EdgeInsets.only(top: 20, bottom: 20),
-    child: AnimationLimiter(
-      child: Column(
-        children: AnimationConfiguration.toStaggeredList(
-          duration: const Duration(milliseconds: 375),
-          childAnimationBuilder: (widget) => SlideAnimation(
-            horizontalOffset: 50.0,
-            child: FadeInAnimation(
-            child: widget,
-          ),
-        ),
-        children: [
-          mainSettingEntry(localizations.appearance, localizations.appearanceSettingDesc,
-              palette, Icons.palette_outlined, settings,
-              AppearancePage(settings: settings, image: image, colornotify: colornotify, updateMainPage: updatePage,
-                  localizations: localizations),
-              context, updatePage
-          ),
-          mainSettingEntry(localizations.general, localizations.generalSettingDesc,
-              palette, Icons.tune, settings,
-              GeneralSettingsPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
-                localizations: localizations,),
-              context, updatePage),
-          mainSettingEntry(localizations.language, localizations.languageSettingDesc,
-              palette, Icons.language, settings,
-              LangaugePage(palette: palette, settings: settings, image: image, updateMainPage: updatePage),
-              context, updatePage),
-          mainSettingEntry(localizations.units, localizations.unitsSettingdesc,
-              palette, Icons.straighten, settings,
-              UnitsPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
-              localizations: localizations,),
-              context, updatePage),
-          mainSettingEntry(localizations.layout, localizations.layoutSettingDesc,
-              palette, Icons.widgets_outlined, settings,
-              LayoutPage(palette: palette, settings: settings, image: image, updateMainPage: updatePage,
-                localizations: localizations,), context, updatePage),
-          mainSettingEntry(localizations.about, "about this app",
-              palette, Icons.info_outline, settings,
-              AboutPage(settings: settings, palette: palette), context, updatePage),
-          ],
-        ),
-      ),
-    )
-  );
-}
-
-class AppearancePage extends StatefulWidget {
-  final settings;
-  final image;
-  final colornotify;
-  final updateMainPage;
-  final localizations;
-
-  const AppearancePage({Key? key, required this.colornotify, required this.settings,
-    required this.image, required this.updateMainPage, required this.localizations})
-      : super(key: key);
-
-  @override
-  _AppearancePageState createState() =>
-      _AppearancePageState(image: image, settings: settings, colornotify: colornotify,
-          updateMainPage: updateMainPage, localizations: localizations);
-}
-
-class _AppearancePageState extends State<AppearancePage> {
-
-  final image;
-  final settings;
-  final colornotify;
-  final updateMainPage;
-  final localizations;
-
-  _AppearancePageState({required this.image, required this.settings, required this.colornotify, required this.updateMainPage,
-  required this.localizations});
-
-  Map<String, String> copySettings = {};
-
-  @override
-  void initState() {
-    super.initState();
-
-    copySettings = settings;
-  }
-
-  void updatePage(String name, String to) {
-    setState(() {
-      updateMainPage(name, to);
-      copySettings[name] = to;
-    });
-  }
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
+  const MainSettingEntry({super.key, required this.title, required this.desc, required this.icon, this.pushTo});
 
   @override
   Widget build(BuildContext context) {
-
-    return ValueListenableBuilder(
-      valueListenable: colornotify,
-      builder: (context, ColorPalette value, child) {
-        return AppearanceSelector(image: image,
-            settings: copySettings,
-            colorPalette: value,
-            updatePage: updatePage,
-            localizations: localizations,
-            goBack: goBack);
-      }
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 25, top: 5, bottom: 5),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          HapticFeedback.selectionClick();
+          if (pushTo != null) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => pushTo!)
+            );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(top: 13, bottom: 13),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              circleBorderIcon(icon, context),
+              const SizedBox(width: 20,),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: const TextStyle(fontSize: 21, height: 1.2),),
+                    Text(desc, style: TextStyle(color: Theme.of(context).colorScheme.outline,
+                        fontSize: 15, height: 1.2),)
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
-
   }
 }
 
-class AppearanceSelector extends StatelessWidget {
-
-  final image;
-  final settings;
-  final ColorPalette colorPalette;
-  final updatePage;
-  final localizations;
-  final goBack;
-
-  AppearanceSelector({required this.image, required this.settings, required this.colorPalette,
-    required this.updatePage, required this.localizations, required this.goBack});
+class AppearancePage extends StatelessWidget {
+  const AppearancePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme palette = colorPalette.palette;
+
+    String colorSource = context.select((ThemeProvider p) => p.getColorSource);
+    String customColorHex = context.select((ThemeProvider p) => p.getThemeSeedColorHex);
 
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
-                  goBack();
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(context);
                 }),
-            title: comfortatext(
-                localizations.appearance, 30, settings,
-                color: palette.primary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.appearance,
+              style: const TextStyle(fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
@@ -244,82 +123,96 @@ class AppearanceSelector extends StatelessWidget {
                       ),
                     ),
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30, bottom: 10),
-                        child: Container(
-                          height: 190,
-                          margin: const EdgeInsets.only(left: 10, right: 10),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Stack(
-                              children: [
-                                ParrallaxBackground(image: image, color: palette.surface),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 40),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      comfortatext("${unit_coversion(16, settings["Temperature"]!).toInt()}°", 67,
-                                          settings, color: colorPalette.colorPop, weight: FontWeight.w200),
-                                      comfortatext(localizations.clearSky, 26,
-                                          settings, color: colorPalette.descColor, weight: FontWeight.w400)
-                                    ],
-                                  ),
-                                ),
-
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 1, bottom: 14, top: 30),
-                            child: comfortatext("app theme", 17,
-                              settings,
-                              color: palette.onSurface),
-                          ),
-                        ],
+                      const Padding(
+                        padding: EdgeInsets.only(left: 1, bottom: 14, top: 30),
+                        child: Text("app theme", style: TextStyle(fontSize: 17),)
                       ),
 
                       SegmentedButton(
-                        selected: <String>{settings["Color mode"]},
+                        selected: <String>{context.watch<ThemeProvider>().getBrightness},
                         onSelectionChanged: (Set<String> newSelection) {
                           HapticFeedback.mediumImpact();
-                          updatePage("Color mode", newSelection.first);
+                          context.read<ThemeProvider>().setBrightness(newSelection.first);
                         },
-                        style: SegmentedButton.styleFrom(
-                          backgroundColor: palette.surface,
-                          foregroundColor: palette.primary,
-                          selectedBackgroundColor: palette.secondaryContainer,
-                          selectedForegroundColor: palette.primary,
-                        ),
-                        segments: [
+                        segments: const [
                           ButtonSegment(
-                            icon: const Icon(Icons.light_mode_outlined),
+                            icon: Icon(Icons.light_mode_outlined),
                             value: "light",
-                            label: comfortatext("light", 18, settings, color: palette.onSurface)
+                            label: Text("light", style: TextStyle(fontSize: 18),),
                           ),
                           ButtonSegment(
-                              icon: const Icon(Icons.dark_mode_outlined),
-                              value: "dark",
-                              label: comfortatext("dark", 18, settings, color: palette.onSurface)
+                            icon: Icon(Icons.dark_mode_outlined),
+                            value: "dark",
+                            label: Text("dark", style: TextStyle(fontSize: 18),),
                           ),
                           ButtonSegment(
-                              icon: const Icon(Icons.brightness_6_outlined),
-                              value: "auto",
-                              label: comfortatext("auto", 18, settings, color: palette.onSurface)
+                            icon: Icon(Icons.brightness_6_outlined),
+                            value: "auto",
+                            label: Text("auto", style: TextStyle(fontSize: 18),),
                           ),
                         ],
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      SettingsEntry(
+                        icon: Icons.download_for_offline_outlined,
+                        text: AppLocalizations.of(context)!.imageSource,
+                        rawText: 'Image source',
+                        selected: context.select((SettingsProvider p) => p.getImageSource),
+                        update: context.read<SettingsProvider>().setImageSource,
+                      ),
+
+                      SettingsEntry(
+                        icon: Icons.colorize,
+                        text: AppLocalizations.of(context)!.colorSource,
+                        rawText: 'Color source',
+                        selected: colorSource,
+                        update: context.read<ThemeProvider>().setColorSource,
+                      ),
+
+                      const SizedBox(height: 30,),
+
+                      if (colorSource == "custom") SizedBox(
+                        height: 65,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: settingSwitches["Custom color"]!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            String name = settingSwitches["Custom color"]![index];
+                            return GestureDetector(
+                              onTap: () {
+                                HapticFeedback.mediumImpact();
+                                context.read<ThemeProvider>().setCustomColorScheme(name);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Color(getColorFromHex(name)),
+                                            borderRadius: BorderRadius.circular(33)
+                                        ),
+                                      ),
+                                      if (customColorHex == name) const Center(
+                                          child: Icon(Icons.check, color: Colors.white,))
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
 
                       const SizedBox(height: 20,),
 
-                      settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source', context),
+                      //settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source', context),
 
+                      /*
                       if (settings["Color source"] == "custom") SizedBox(
                         height: 80,
                         child: ListView.builder(
@@ -355,7 +248,12 @@ class AppearanceSelector extends StatelessWidget {
                           },
                         ),
                       ),
+
+                       */
+                      /*
                       settingEntry(Icons.image_outlined, localizations.imageSource, settings, palette, updatePage, 'Image source', context),
+
+                       */
                       const SizedBox(height: 70,),
                     ],
                   )
@@ -371,77 +269,32 @@ class AppearanceSelector extends StatelessWidget {
 
 }
 
-class UnitsPage extends StatefulWidget {
-  final settings;
-  final image;
-  final palette;
-  final updateMainPage;
-  final localizations;
-
-  const UnitsPage({Key? key, required this.palette, required this.settings,
-    required this.image, required this.updateMainPage, required this.localizations})
-      : super(key: key);
-
-  @override
-  _UnitsPageState createState() =>
-      _UnitsPageState(image: image, settings: settings, palette: palette,
-          updateMainPage: updateMainPage, localizations: localizations);
-}
-
-class _UnitsPageState extends State<UnitsPage> {
-
-  final image;
-  final settings;
-  final ColorScheme palette;
-  final updateMainPage;
-  final localizations;
-
-  _UnitsPageState({required this.image, required this.settings, required this.palette,
-    required this.updateMainPage, required this.localizations});
-
-  Map<String, String> copySettings = {};
-
-  @override
-  void initState() {
-    super.initState();
-
-    copySettings = settings;
-  }
-
-  void updatePage(String name, String to) {
-    setState(() {
-      updateMainPage(name, to);
-      copySettings[name] = to;
-    });
-  }
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
+class UnitsPage extends StatelessWidget {
+  const UnitsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
 
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
-                  goBack();
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(context);
                 }),
-            title: comfortatext(
-                localizations.units, 30, settings,
-                color: palette.primary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.units,
+              style: const TextStyle(fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
+
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 30, bottom: 60, left: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30),
               child: AnimationLimiter(
                 child: Column(
                   children: AnimationConfiguration.toStaggeredList(
@@ -453,9 +306,35 @@ class _UnitsPageState extends State<UnitsPage> {
                       ),
                     ),
                     children: [
+
+                      SettingsEntry(
+                          icon: Icons.ac_unit,
+                          text: AppLocalizations.of(context)!.temperature,
+                          rawText: 'Temperature',
+                          selected: context.select((SettingsProvider p) => p.getTempUnit),
+                          update: context.read<SettingsProvider>().setTempUnit,
+                      ),
+                      SettingsEntry(
+                        icon: Icons.water_drop_outlined,
+                        text: AppLocalizations.of(context)!.precipitaion,
+                        rawText: 'Precipitation',
+                        selected: context.select((SettingsProvider p) => p.getPrecipUnit),
+                        update: context.read<SettingsProvider>().setPrecipUnit,
+                      ),
+                      SettingsEntry(
+                        icon: Icons.air,
+                        text: AppLocalizations.of(context)!.windCapital,
+                        rawText: 'Wind',
+                        selected: context.select((SettingsProvider p) => p.getWindUnit),
+                        update: context.read<SettingsProvider>().setWindUnit,
+                      ),
+
+                      /*
                       settingEntry(Icons.device_thermostat, localizations.temperature, copySettings, palette, updatePage, 'Temperature', context),
                       settingEntry(Icons.water_drop_outlined, localizations.precipitaion, copySettings, palette, updatePage, 'Precipitation', context),
                       settingEntry(Icons.air, localizations.windCapital, copySettings, palette, updatePage, 'Wind', context),
+
+                       */
                     ],
                   )
                 ),
@@ -468,78 +347,33 @@ class _UnitsPageState extends State<UnitsPage> {
   }
 }
 
-
-class GeneralSettingsPage extends StatefulWidget {
-  final settings;
-  final image;
-  final palette;
-  final updateMainPage;
-  final localizations;
-
-  const GeneralSettingsPage({Key? key, required this.palette, required this.settings,
-    required this.image, required this.updateMainPage, required this.localizations})
-      : super(key: key);
-
-  @override
-  _GeneralSettingsPageState createState() =>
-      _GeneralSettingsPageState(image: image, settings: settings, palette: palette,
-          updateMainPage: updateMainPage, localizations: localizations);
-}
-
-class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
-
-  final image;
-  final settings;
-  final ColorScheme palette;
-  final updateMainPage;
-  final localizations;
-
-  _GeneralSettingsPageState({required this.image, required this.settings, required this.palette,
-    required this.updateMainPage, required this.localizations});
-
-  Map<String, String> copySettings = {};
-
-  @override
-  void initState() {
-    super.initState();
-
-    copySettings = settings;
-  }
-
-  void updatePage(String name, String to) {
-    setState(() {
-      updateMainPage(name, to);
-      copySettings[name] = to;
-    });
-  }
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
+class GeneralSettingsPage extends StatelessWidget {
+  const GeneralSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
 
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
+
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
-                onPressed: () {
-                  goBack();
-                }),
-            title: comfortatext(
-                localizations.general, 30, settings,
-                color: palette.primary),
-            backgroundColor: palette.surface,
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.pop(context);
+              }),
+            title: Text(AppLocalizations.of(context)!.general,
+              style: const TextStyle(fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
+
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 30, bottom: 60, left: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30),
               child: AnimationLimiter(
                 child: Column(
                   children: AnimationConfiguration.toStaggeredList(
@@ -551,11 +385,76 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
                       ),
                     ),
                     children: [
+
+                      SettingsEntry(
+                        icon: Icons.access_time_outlined,
+                        text: AppLocalizations.of(context)!.timeMode,
+                        rawText: 'Time mode',
+                        selected: context.select((SettingsProvider p) => p.getTimeMode),
+                        update: context.read<SettingsProvider>().setTimeMode,
+                      ),
+
+                      SettingsEntry(
+                        icon: Icons.date_range,
+                        text: AppLocalizations.of(context)!.dateFormat,
+                        rawText: 'Date format',
+                        selected: context.select((SettingsProvider p) => p.getDateFormat),
+                        update: context.read<SettingsProvider>().setDateFormat,
+                      ),
+
+                      SwitchSettingEntry(
+                          icon: Icons.vibration,
+                          text: AppLocalizations.of(context)!.radarHaptics,
+                          selected: context.select((SettingsProvider p) => p.getRadarHapticsOn),
+                          update: context.read<SettingsProvider>().setRadarHaptics,
+                      ),
+
+                      SettingsEntry(
+                        icon: Icons.manage_search,
+                        text: AppLocalizations.of(context)!.searchProvider,
+                        rawText: 'Search provider',
+                        selected: context.select((SettingsProvider p) => p.getSearchProvider),
+                        update: context.read<SettingsProvider>().setSearchProvider,
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(top: 14, bottom: 14),
+                        child: Row(
+                          children: [
+                            circleBorderIcon(Icons.format_size_rounded, context),
+                            const SizedBox(width: 20,),
+                            Expanded(child: Text(AppLocalizations.of(context)!.fontSize,
+                              style: const TextStyle(fontSize: 20, height: 1.2),),),
+                            SliderTheme(
+                              data: SliderTheme.of(context).copyWith(
+                                trackHeight: 19,
+                                thumbColor: Theme.of(context).colorScheme.secondary,
+                                activeTrackColor: Theme.of(context).colorScheme.secondary,
+
+                                year2023: false,
+                              ),
+                              child: Slider(
+                                min: 0.7,
+                                max: 1.3,
+                                divisions: 10,
+                                value: context.select((SettingsProvider p) => p.getTextScale),
+                                  onChanged: (double value) {
+                                    context.read<SettingsProvider>().setTextScale(value);
+                                  }
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      /*
                       settingEntry(Icons.access_time_outlined, localizations.timeMode, copySettings, palette, updatePage, 'Time mode', context),
                       settingEntry(Icons.date_range, localizations.dateFormat, copySettings, palette, updatePage, 'Date format', context),
                       settingEntry(Icons.format_size, localizations.fontSize, copySettings, palette, updatePage, 'Font size', context),
                       settingEntry(Icons.manage_search_outlined, localizations.searchProvider, copySettings, palette, updatePage, 'Search provider', context),
                       settingEntry(Icons.vibration_rounded, localizations.radarHaptics, copySettings, palette, updatePage, 'Radar haptics', context),
+
+                       */
                     ],
                   )
                 ),
@@ -568,121 +467,52 @@ class _GeneralSettingsPageState extends State<GeneralSettingsPage> {
   }
 }
 
-class LangaugePage extends StatefulWidget {
-  final settings;
-  final image;
-  final palette;
-  final updateMainPage;
-
-  const LangaugePage({Key? key, required this.palette, required this.settings,
-    required this.image, required this.updateMainPage})
-      : super(key: key);
-
-  @override
-  _LangaugePageState createState() =>
-      _LangaugePageState(image: image, settings: settings, palette: palette,
-          updateMainPage: updateMainPage);
-}
-
-class _LangaugePageState extends State<LangaugePage> {
-
-  final image;
-  final settings;
-  final ColorScheme palette;
-  final updateMainPage;
-
-  _LangaugePageState({required this.image, required this.settings, required this.palette,
-    required this.updateMainPage});
-
-  String _locale = 'English';
-
-  @override
-  void initState() {
-    super.initState();
-    _locale = settings["Language"];
-  }
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
+class LanguagePage extends StatelessWidget {
+  const LanguagePage({super.key});
 
   @override
   Widget build(BuildContext context) {
 
-    String selected = settings["Language"] ?? "English";
+    String selectedLocale = context.select((SettingsProvider p) => p.getLocaleName);
+
     List<String> options = settingSwitches["Language"]!;
-
-    void onTap(value) {
-      setState(() {
-        HapticFeedback.mediumImpact();
-        if (value != null) {
-          settings["Language"] = value;
-          updateMainPage("Language", value);
-          _locale = value;
-        }
-      });
-    }
-
-    return Localizations.override(
-      context: context,
-      locale: languageNameToLocale[_locale] ?? const Locale('en'),
-      child: TranslationSelection(settings: settings, goBack: goBack, onTap: onTap, options: options, selected: selected,
-        palette: palette,)
-    );
-  }
-}
-
-class TranslationSelection extends StatelessWidget {
-  final goBack;
-  final onTap;
-  final settings;
-  final options;
-  final selected;
-  final ColorScheme palette;
-
-
-  const TranslationSelection({super.key, this.settings, this.goBack,
-    this.onTap, this.options, this.selected, required this.palette});
-
-  @override
-  Widget build(BuildContext context) {
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
-                  goBack();
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(context);
                 }),
-            title: comfortatext(
-                AppLocalizations.of(context)!.language, 30, settings,
-                color: palette.primary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.language, style: const TextStyle(fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
+
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 30, left: 25, right: 25, bottom: 10),
+              padding: const EdgeInsets.only(left: 25, right: 25, top: 30),
               child: GestureDetector(
                 onTap: () {
-                  HapticFeedback.selectionClick();
+                  HapticFeedback.lightImpact();
                   _launchUrl("https://hosted.weblate.org/engage/overmorrow-weather/");
                 },
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(70),
-                    color: palette.primaryFixedDim,
+                    color: Theme.of(context).colorScheme.tertiaryContainer,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(30.0),
                     child: Row(
                       children: [
-                        comfortatext(AppLocalizations.of(context)!.helpTranslate, 21, settings, color: palette.onPrimaryFixedVariant),
+                        Text(AppLocalizations.of(context)!.helpTranslate,
+                          style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 21)),
                         const Spacer(),
-                        Icon(Icons.arrow_forward, color: palette.onPrimaryFixedVariant, size: 22,)
+                        Icon(Icons.arrow_forward, color: Theme.of(context).colorScheme.tertiary, size: 23,)
                       ],
                     ),
                   ),
@@ -706,19 +536,21 @@ class TranslationSelection extends StatelessWidget {
                       child: FadeInAnimation(
                         child: ListTile(
                           onTap: () {
-                            onTap(options[index]);
+                            HapticFeedback.mediumImpact();
+                            context.read<SettingsProvider>().setLocale(options[index]);
                           },
                           title: Padding(
-                            padding: const EdgeInsets.only(top: 15, bottom: 15, left: 13),
-                            child: comfortatext(options[index], 20, settings, color: palette.onSurface),
+                            padding: const EdgeInsets.only(top: 12, bottom: 12, left: 13),
+                            child: Text(options[index], style: const TextStyle(fontSize: 20),)
                           ),
                           contentPadding: EdgeInsets.zero,
                           trailing: Radio<String>(
-                            fillColor: WidgetStateProperty.all(palette.primary),
+                            fillColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
                             value: options[index],
-                            groupValue: selected,
+                            groupValue: selectedLocale,
                             onChanged: (String? value) {
-                              onTap(value);
+                              HapticFeedback.mediumImpact();
+                              context.read<SettingsProvider>().setLocale(options[index]);
                             },
                           ),
                         ),
@@ -735,98 +567,51 @@ class TranslationSelection extends StatelessWidget {
   }
 }
 
+class LayoutPage extends StatelessWidget {
 
-
-class LayoutPage extends StatefulWidget {
-  final settings;
-  final image;
-  final ColorScheme palette;
-  final updateMainPage;
-  final localizations;
-
-  const LayoutPage({Key? key, required this.palette, required this.settings,
-    required this.image, required this.updateMainPage, required this.localizations})
-      : super(key: key);
-
-  @override
-  _LayoutPageState createState() =>
-      _LayoutPageState(image: image, settings: settings, palette: palette,
-          updateMainPage: updateMainPage, localizations: localizations);
-}
-
-class _LayoutPageState extends State<LayoutPage> {
-
-  final image;
-  final settings;
-  final ColorScheme palette;
-  final updateMainPage;
-  final AppLocalizations localizations;
-
-  _LayoutPageState({required this.image, required this.settings, required this.palette,
-    required this.updateMainPage, required this.localizations});
-
-  late List<String> _items;
+  const LayoutPage({super.key});
 
   //also the default order
   static const allNames = ["sunstatus", "rain indicator", "hourly", "alerts", "radar", "daily", "air quality"];
 
-  List<String> removed = [];
-
   @override
-  void initState() {
-    super.initState();
-    _items = settings["Layout"] == "" ? [] : settings["Layout"].split(",");
+  Widget build(BuildContext context) {
 
+    List<String> _items = context.watch<SettingsProvider>().getLayout;
+
+    List<String> removed = [];
     for (int i = 0; i < allNames.length; i++) {
       if (!_items.contains(allNames[i])) {
         removed.add(allNames[i]);
       }
     }
-  }
-
-  void updatePage(String name, String to) {
-    setState(() {
-      updateMainPage(name, to);
-    });
-  }
-
-  void goBack() {
-    HapticFeedback.selectionClick();
-    Navigator.pop(context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
 
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: palette.primary),
+              icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary),
               onPressed: () {
-                goBack();
+                HapticFeedback.lightImpact();
+                Navigator.pop(context);
               },
             ),
             actions: [
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: IconButton(
-                  icon: Icon(Icons.restore, color: palette.primary, size: 26,),
+                  icon: Icon(Icons.restore, color: Theme.of(context).colorScheme.primary, size: 26,),
                   onPressed: () {
                     HapticFeedback.heavyImpact();
-                    setState(() {
-                      _items = allNames.toList();
-                      removed = [];
-                      updatePage('Layout', _items.join(","));
-                    });
+                    context.read<SettingsProvider>().setLayoutOrder(allNames);
                   },
                 ),
               ),
             ],
-            title: comfortatext(localizations.layout, 30, settings, color: palette.primary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.layout, style: const TextStyle(fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
@@ -845,84 +630,49 @@ class _LayoutPageState extends State<LayoutPage> {
                     for (int index = 0; index < _items.length; index += 1)
                       Container(
                         key: Key("$index"),
-                        color: palette.surface,
+                        color: Theme.of(context).colorScheme.surface,
                         padding: const EdgeInsets.all(4),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: palette.surfaceContainer,
+                            color: Theme.of(context).colorScheme.surfaceContainer,
                             borderRadius: BorderRadius.circular(33),
                           ),
                           height: 67,
-                          padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 14),
+                          padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 10),
                           child: Row(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(right: 10),
-                                child: Icon(Icons.drag_indicator, color: palette.outline,),
+                                child: Icon(Icons.drag_indicator, color: Theme.of(context).colorScheme.outline,),
                               ),
                               Expanded(
-                                child: comfortatext(_items[index], 19, settings, color: palette.onSurface),
+                                child: Text(_items[index], style: const TextStyle(fontSize: 19),),
                               ),
                               IconButton(
                                 onPressed: () {
-                                  HapticFeedback.mediumImpact();
-                                  setState(() {
-                                    removed.add(_items[index]);
-                                    _items.remove(_items[index]);
-                                    updatePage('Layout', _items.join(","));
-                                  });
+                                  HapticFeedback.heavyImpact();
+                                  final List<String> newOrder = List.from(_items);
+                                  newOrder.removeAt(index);
+                                  context.read<SettingsProvider>().setLayoutOrder(newOrder);
                                 },
                                 icon: Icon(
                                   Icons.remove_circle_outline_rounded,
-                                  color: palette.primary, size: 23,
+                                  color: Theme.of(context).colorScheme.tertiary, size: 23,
                                 ),
                               )
                             ],
                           ),
-                          /*
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              comfortatext(_items[index], 19, settings, color: palette.onSurface),
-                              const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 12),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print((_items[index], _items));
-                                    setState(() {
-                                      removed.add(_items[index]);
-                                      _items.remove(_items[index]);
-                                      updatePage('Layout order', _items.join(","));
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: palette.primaryContainer,
-                                      borderRadius: BorderRadius.circular(40)
-                                    ),
-                                    padding: const EdgeInsets.all(5),
-                                    child: Icon(Icons.remove_rounded, color: palette.surfaceContainer, size: 21,),
-                                  ),
-                                ),
-                              ),
-                              Icon(Icons.reorder_rounded, color: palette.primary, size: 21,),
-                            ],
-                          ),
-
-                           */
                         ),
                       ),
                   ],
                   onReorder: (int oldIndex, int newIndex) {
-                    setState(() {
-                      if (oldIndex < newIndex) {
-                        newIndex -= 1;
-                      }
-                      final String item = _items.removeAt(oldIndex);
-                      _items.insert(newIndex, item);
-                      updatePage('Layout', _items.join(","));
-                    });
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    final List<String> newOrder = List.from(_items);
+                    final String item = newOrder.removeAt(oldIndex);
+                    newOrder.insert(newIndex, item);
+                    context.read<SettingsProvider>().setLayoutOrder(newOrder);
                   },
                 ),
                 Padding(
@@ -934,24 +684,23 @@ class _LayoutPageState extends State<LayoutPage> {
                       return GestureDetector(
                         onTap: () {
                           HapticFeedback.mediumImpact();
-                          setState(() {
-                            _items.add(removed[i]);
-                            removed.remove(removed[i]);
-                          });
+                          final List<String> newOrder = List.from(_items);
+                          newOrder.add(removed[i]);
+                          context.read<SettingsProvider>().setLayoutOrder(newOrder);
                         },
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18),
-                            border: Border.all(width: 2, color: palette.outlineVariant)
+                            border: Border.all(width: 2, color: Theme.of(context).colorScheme.outlineVariant)
                           ),
                           padding: const EdgeInsets.all(10),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.add_rounded, color: palette.primary, size: 22,),
+                              Icon(Icons.add_rounded, color: Theme.of(context).colorScheme.primary, size: 22,),
                               Padding(
                                 padding: const EdgeInsets.only(left: 3, right: 3),
-                                child: comfortatext(removed[i], 17, settings, color: palette.onSurface),
+                                child: Text(removed[i], style: const TextStyle(fontSize: 17),),
                               ),
                             ],
                           ),

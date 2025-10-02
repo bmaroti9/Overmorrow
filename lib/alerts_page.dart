@@ -19,27 +19,27 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:overmorrow/new_displays.dart';
-import 'package:overmorrow/ui_helper.dart';
+import 'package:overmorrow/services/weather_service.dart';
 import '../l10n/app_localizations.dart';
+import 'decoders/weather_data.dart';
 
 
-Widget alertBadge(name, text, data, ColorScheme palette) {
+Widget alertBadge(name, text, WeatherData data, context) {
   return Padding(
     padding: const EdgeInsets.only(right: 3.0, top: 3, bottom: 3),
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        comfortatext("$name:", 15, data.settings, color: palette.onSurface),
+        Text("$name:", style: const TextStyle(fontSize: 15),),
         Padding(
           padding: const EdgeInsets.only(left: 5),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(13),
-              color: palette.secondaryContainer,
+              color: Theme.of(context).colorScheme.secondaryContainer,
             ),
             padding: const EdgeInsets.only(left: 7, right: 7, top: 6, bottom: 6),
-            child: comfortatext(text, 13, data.settings, color: palette.onSecondaryContainer),
+            child: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer, fontSize: 13),),
           ),
         )
       ],
@@ -48,21 +48,17 @@ Widget alertBadge(name, text, data, ColorScheme palette) {
 }
 
 class AlertsPage extends StatefulWidget {
-  final data;
+  final WeatherData data;
 
   const AlertsPage({Key? key, required this.data})
       : super(key: key);
 
   @override
   _AlertsPageState createState() =>
-      _AlertsPageState(data: data);
+      _AlertsPageState();
 }
 
 class _AlertsPageState extends State<AlertsPage> {
-
-  final data;
-
-  _AlertsPageState({required this.data});
 
   @override
   void initState() {
@@ -70,104 +66,119 @@ class _AlertsPageState extends State<AlertsPage> {
   }
 
   void goBack() {
-    HapticFeedback.selectionClick();
+    HapticFeedback.lightImpact();
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    
-    final ColorScheme palette = data.current.palette;
 
     return Material(
-      color: palette.surface,
+      color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
             leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: palette.primary,),
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
                 onPressed: () {
                   goBack();
                 }),
-            title: comfortatext(
-                AppLocalizations.of(context)!.alertsCapital, 30, data.settings,
-                color: palette.secondary),
-            backgroundColor: palette.surface,
+            title: Text(AppLocalizations.of(context)!.alertsCapital, style: const TextStyle(fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 100),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(data.alerts.length, (index) {
-                  final alert = data.alerts[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30, top: 35, bottom: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        comfortatext(alert.event, 23, data.settings, color: palette.primary),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 25, left: 3),
-                          child: comfortatext(alert.headline, 16, data.settings, color: palette.onSurface),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20, left: 3, bottom: 20),
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 15, bottom: 3, top: 3),
-                            decoration: BoxDecoration(
-                                border: Border(left:
-                                BorderSide(width: 2, color: palette.secondaryContainer),
-                            )
-                            ),
-                            child: comfortatext(alert.desc, 16, data.settings, color: palette.outline)
+            child: Column(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List.generate(widget.data.alerts.length, (index) {
+                    final alert = widget.data.alerts[index];
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceContainer,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      margin: const EdgeInsets.only(left: 24, right: 24, top: 2, bottom: 2),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.errorContainer,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  padding: const EdgeInsets.only(left: 7, right: 7, top: 6, bottom: 8),
+                                  child: Icon(Icons.warning_amber, size: 20, color: Theme.of(context).colorScheme.error)
+                              ),
+                              const SizedBox(width: 15,),
+                              Expanded(
+                                child: Text(alert.event,
+                                  style: const TextStyle(fontSize: 21, height: 1.3),
+                                )
+                              ),
+                            ],
                           ),
-                        ),
 
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20, top: 5),
-                          child: comfortatext("${data.alerts[index].start} - ${data.alerts[index].end}", 15, data.settings,
-                              color: palette.primary),
-                        ),
-                        
-                        Wrap(
-                          children: [
-                            alertBadge(AppLocalizations.of(context)!.severity, alert.severity, data, palette),
-                            alertBadge(AppLocalizations.of(context)!.certainty, alert.certainty, data, palette),
-                            alertBadge(AppLocalizations.of(context)!.urgency, alert.urgency, data, palette),
-                          ],
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25, left: 3),
+                            child: Text(alert.headline, style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.secondary, height: 1.3),)
+                          ),
 
-                        Padding(
-                          padding: const EdgeInsets.only(left: 2, top: 15),
-                          child: comfortatext("${AppLocalizations.of(context)!.areas}:", 16, data.settings, color: palette.primary),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20, top: 5),
-                          child: comfortatext(alert.areas, 15, data.settings,
-                              color: palette.outline),
-                        ),
-
-                        if (index != data.alerts.length - 1)Padding(
-                          padding: const EdgeInsets.only(left: 4, right: 4, top: 30, bottom: 10),
-                          child: CustomPaint(
-                            painter: WavePainter(
-                                0, palette.secondaryContainer,
-                                darken(palette.surfaceContainerHighest, 0.03),
-                                1),
-                            child: const SizedBox(
-                              width: double.infinity,
-                              height: 8.0,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25, left: 3, bottom: 20),
+                            child: Container(
+                              padding: const EdgeInsets.only(left: 15, bottom: 3, top: 3),
+                              decoration: BoxDecoration(
+                                  border: Border(left:
+                                  BorderSide(width: 2, color: Theme.of(context).colorScheme.secondaryContainer),
+                              )
+                              ),
+                              child: Text(alert.desc, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 16),)
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-              ),
+
+                          Wrap(
+                            children: [
+                              alertBadge(AppLocalizations.of(context)!.severity, alert.severity, widget.data, context),
+                              alertBadge(AppLocalizations.of(context)!.certainty, alert.certainty, widget.data, context),
+                              alertBadge(AppLocalizations.of(context)!.urgency, alert.urgency, widget.data, context),
+                            ],
+                          ),
+
+                          Padding(
+                            padding: const EdgeInsets.only(left: 2, top: 15),
+                            child: Text("${AppLocalizations.of(context)!.areas}:", style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16),)
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 30, top: 5),
+                            child: Text(alert.areas, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 15),)
+                          ),
+
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.tertiaryContainer,
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                "${convertToWeekDayTime(widget.data.alerts[index].start, context)} - "
+                                    "${convertToWeekDayTime(widget.data.alerts[index].end, context)}",
+                                style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 14),),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+                const SizedBox(height: 200,),
+              ],
             )
           ),
         ],

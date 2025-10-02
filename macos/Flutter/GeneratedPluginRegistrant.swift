@@ -5,7 +5,7 @@
 import FlutterMacOS
 import Foundation
 
-import dynamic_color
+import dynamic_system_colors
 import geolocator_apple
 import package_info_plus
 import path_provider_foundation

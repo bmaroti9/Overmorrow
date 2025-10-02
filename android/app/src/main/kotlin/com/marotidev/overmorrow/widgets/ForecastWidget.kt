@@ -1,23 +1,23 @@
 package com.marotidev.overmorrow.widgets
 
-// Standard Glance and Compose imports (as we discussed before)
-
 import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.currentState
@@ -29,17 +29,19 @@ import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
-import androidx.glance.layout.width
 import androidx.glance.layout.wrapContentHeight
 import androidx.glance.layout.wrapContentWidth
 import androidx.glance.state.GlanceStateDefinition
-import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
-import getIconForCondition
+import es.antonborri.home_widget.actionStartActivity
+import com.marotidev.overmorrow.services.getBackColor
+import com.marotidev.overmorrow.services.getFrontColor
+import com.marotidev.overmorrow.services.getIconForCondition
 import java.lang.reflect.Type
 
 val gson = Gson()
@@ -65,10 +67,21 @@ class ForecastWidget : GlanceAppWidget() {
         val prefs = currentState.preferences
         val currentTemp = prefs.getInt("hourlyForecast.currentTemp.$appWidgetId", 0)
         val currentCondition = prefs.getString("hourlyForecast.currentCondition.$appWidgetId", "N/A") ?: "?"
-        val placeName = prefs.getString("hourlyForecast.place.$appWidgetId", "N/A") ?: "?"
-        val hourlyTempList = prefs.getString("hourlyForecast.hourlyTemps.$appWidgetId", "[]") ?: "[]"
-        val hourlyConditionList = prefs.getString("hourlyForecast.hourlyConditions.$appWidgetId", "[]") ?: "[]"
-        val hourlyTimeList = prefs.getString("hourlyForecast.hourlyNames.$appWidgetId", "[]") ?: "[]"
+
+        val hourlyTempList = prefs.getString("hourlyForecast.hourly6Temps.$appWidgetId", "[]") ?: "[]"
+        val hourlyConditionList = prefs.getString("hourlyForecast.hourly6Conditions.$appWidgetId", "[]") ?: "[]"
+        val hourlyTimeList = prefs.getString("hourlyForecast.hourly6Names.$appWidgetId", "[]") ?: "[]"
+
+        val placeName = prefs.getString("widget.place.$appWidgetId", "N/A") ?: "?"
+
+        val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
+        val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
+
+        val backColorString = prefs.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
+        val frontColorString = prefs.getString("widget.frontColor.$appWidgetId", "primary") ?: "primary"
+
+        val backColor = getBackColor(backColorString)
+        val frontColor = getFrontColor(frontColorString)
 
         val tempList: List<Int> = try {
             hourlyTempList.let { gson.fromJson(it, hourlyTempType) } ?: emptyList()
@@ -102,8 +115,14 @@ class ForecastWidget : GlanceAppWidget() {
         Column (
             modifier = GlanceModifier
                 .fillMaxSize()
-                .background(GlanceTheme.colors.secondaryContainer)
-                .padding(8.dp),
+                .background(backColor)
+                .padding(8.dp).cornerRadius(24.dp)
+                .clickable(
+                    onClick = actionStartActivity<MainActivity>(
+                        context,
+                        "overmorrrow://opened?location=$location&latlon=$latLon".toUri()
+                    )
+                ),
             verticalAlignment = Alignment.Vertical.Top
         ) {
             Row(
@@ -116,7 +135,7 @@ class ForecastWidget : GlanceAppWidget() {
                 Text(
                     text = "$currentTemp°",
                     style = TextStyle(
-                        color = GlanceTheme.colors.primary,
+                        color = frontColor,
                         fontSize = 32.sp,
                     ),
                 )
@@ -148,7 +167,7 @@ class ForecastWidget : GlanceAppWidget() {
                     color = GlanceTheme.colors.onSurface,
                     fontSize = 20.sp,
                 ),
-                modifier = GlanceModifier.padding(bottom = 8.dp, start = 8.dp)
+                modifier = GlanceModifier.padding(start = 8.dp)
             )
 
             Row (
@@ -166,7 +185,7 @@ class ForecastWidget : GlanceAppWidget() {
                         Text(
                             text = "${tempList[index]}°",
                             style = TextStyle(
-                                color = GlanceTheme.colors.primary,
+                                color = frontColor,
                                 fontSize = 16.sp,
                             ),
                             modifier = GlanceModifier.padding(bottom = 2.dp)
