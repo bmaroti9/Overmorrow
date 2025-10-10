@@ -21,11 +21,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
-import 'package:overmorrow/settings_page.dart';
+import 'package:overmorrow/pages/settings_pages/settings_page.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../l10n/app_localizations.dart';
+import '../../../l10n/app_localizations.dart';
 
 Future<void> _launchUrl(String url) async {
   final Uri _url = Uri.parse(url);

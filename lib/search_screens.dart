@@ -27,7 +27,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:overmorrow/services/location_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
-import 'package:overmorrow/settings_page.dart';
+import 'package:overmorrow/pages/settings_pages/settings_page.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 

@@ -581,6 +581,41 @@ class OMExtendedAqi{
   }
 }
 
+class OmExtendedPrecip {
+  final List<DateTime> minutely15Times;
+  final List<double> minutely15PrecipMm;
+  final List<int> minutely15PrecipChance;
+
+  const OmExtendedPrecip({
+    required this.minutely15PrecipChance,
+    required this.minutely15PrecipMm,
+    required this.minutely15Times,
+  });
+
+/*
+  static Future<OmExtendedPrecip> fromJson(lat, lng) async {
+    final params = {
+      "latitude": lat.toString(),
+      "longitude": lng.toString(),
+      "current": [],
+      "minutely_15" : ["precipitation"],
+      "hourly" : ["precipitation_probability"],
+      "timezone": "auto",
+      "forecast_minutely_15" : "96",
+      "past_minutely_15" : "96"
+    };
+
+    final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
+
+    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi-extended open-meteo");
+
+    var response = await file[0].readAsString();
+    final item = jsonDecode(response);
+  }
+
+   */
+}
+
 Future<WeatherData> oMGetWeatherData(lat, lng, place) async {
 
   var oM = await oMRequestData(lat, lng, place);

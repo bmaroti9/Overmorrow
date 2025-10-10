@@ -21,7 +21,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:home_widget/home_widget.dart';
-import '../l10n/app_localizations.dart';
+import '../../../l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:url_launcher/url_launcher.dart';

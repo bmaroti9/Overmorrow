@@ -261,7 +261,7 @@ class Circles extends StatelessWidget {
                 dir: -1,
               ),
               DescriptionCircle(
-                text: '${data.current.precipMm}',
+                text: '${unitConversion(data.current.precipMm ,context.select((SettingsProvider p) => p.getPrecipUnit))}',
                 undercaption: AppLocalizations.of(context)!.precipCapital,
                 extra: context.select((SettingsProvider p) => p.getPrecipUnit),
                 dir: -1,

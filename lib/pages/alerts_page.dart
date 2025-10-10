@@ -20,8 +20,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overmorrow/services/weather_service.dart';
-import '../l10n/app_localizations.dart';
-import 'decoders/weather_data.dart';
+import '../../l10n/app_localizations.dart';
+import '../decoders/weather_data.dart';
 
 
 Widget alertBadge(name, text, WeatherData data, context) {

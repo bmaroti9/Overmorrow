@@ -28,8 +28,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/services/weather_service.dart';
 
-import '../l10n/app_localizations.dart';
-import 'decoders/weather_data.dart';
+import '../../l10n/app_localizations.dart';
+import '../decoders/weather_data.dart';
 
 class SquigglyCirclePainter extends CustomPainter {
 

@@ -61,15 +61,14 @@ Future<void> main() async {
 
   await PreferenceUtils.init();
 
-  final data = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
-  final ratio = WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
+  final display = PlatformDispatcher.instance.views.first.display;
 
   final commonProviders = [
     ChangeNotifierProvider(create: (_) => ThemeProvider()),
     ChangeNotifierProvider(create: (_) => SettingsProvider()),
   ];
 
-  if (data.shortestSide / ratio < 600) {
+  if (display.size.shortestSide / display.devicePixelRatio < 600) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((value) => runApp(
           MultiProvider(
