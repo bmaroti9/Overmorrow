@@ -304,7 +304,7 @@
     },
     "dailyLowercase": "по дням",
     "@dailyLowercase": {},
-    "grantLocationPermission": "Предоставление доступа к местоположению",
+    "grantLocationPermission": "Предоставить доступ к местоположению",
     "@grantLocationPermission": {},
     "weatherDataLowercase": "данные о погоде",
     "@weatherDataLowercase": {},
