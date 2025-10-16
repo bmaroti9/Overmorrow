@@ -46,6 +46,7 @@ Map<String, Locale> languageNameToLocale = {
   'Македонски': const Locale('mk'),
   'Română' : const Locale('ro'),
   'Tiếng Việt' : const Locale('vi'),
+  'Kiswahili' : const Locale('sw'),
 };
 
 Map<String, String> weatherIconPathMap = {

@@ -12,7 +12,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get feelsLike => 'Ощущается';
 
   @override
-  String get precipCapital => 'Осадки';
+  String get precipCapital => 'Осадки.';
 
   @override
   String get humidity => 'Влажность';
@@ -33,7 +33,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get tomorrowLowercase => 'завтра';
 
   @override
-  String get overmorrowLowercase => 'Overmorrow';
+  String get overmorrowLowercase => 'Послезавтра';
 
   @override
   String get language => 'Язык';
@@ -112,8 +112,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Разрешение на местоположение отклонено навсегда';
 
   @override
-  String get grantLocationPermission =>
-      'Предоставление доступа к местоположению';
+  String get grantLocationPermission => 'Предоставить доступ к местоположению';
 
   @override
   String get currentLocation => 'текущее местоположение';
@@ -161,7 +160,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get colorMode => 'Режим цвета';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'Поставщик погоды';
 
   @override
   String get timeMode => 'Формат времени';
@@ -361,28 +360,28 @@ class AppLocalizationsRu extends AppLocalizations {
   String get helpTranslate => 'Помочь с переводом';
 
   @override
-  String get extremelyClear => 'extremely clear';
+  String get extremelyClear => 'чрезвычайно ясно';
 
   @override
-  String get veryClear => 'very clear';
+  String get veryClear => 'очень ясно';
 
   @override
-  String get clear => 'clear';
+  String get clear => 'ясно';
 
   @override
-  String get slightlyHazy => 'slightly hazy';
+  String get slightlyHazy => 'легкая туманность';
 
   @override
-  String get hazy => 'hazy';
+  String get hazy => 'туманность';
 
   @override
-  String get veryHazy => 'very hazy';
+  String get veryHazy => 'сильная туманность';
 
   @override
-  String get extremelyHazy => 'extremely hazy';
+  String get extremelyHazy => 'чрезвычайно туманно';
 
   @override
-  String get poweredByOpenMeteo => 'powered by open-meteo';
+  String get poweredByOpenMeteo => 'на базе open-meteo';
 
   @override
   String get rainInHalfHour => 'дождь в течение получаса';
@@ -444,16 +443,28 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String updatedXHoursAgo(int hours) {
-    return 'обновлено $hours ч. назад';
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: '$hours часов',
+      one: '1 час',
+    );
+    return 'обновлено , $_temp0 назад';
   }
 
   @override
   String updatedXDaysAgo(int days) {
-    return 'обновлено $days дн. назад';
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days дней',
+      one: '1 день',
+    );
+    return 'обновлено $_temp0 назад';
   }
 
   @override
-  String get radarHaptics => 'Radar haptics';
+  String get radarHaptics => 'тактильная отдача на радаре';
 
   @override
   String get alertsCapital => 'Оповещения';
@@ -462,22 +473,22 @@ class AppLocalizationsRu extends AppLocalizations {
   String get alertsLowercase => 'оповещения';
 
   @override
-  String get severity => 'severity';
+  String get severity => 'серьезность';
 
   @override
-  String get certainty => 'certainty';
+  String get certainty => 'достоверность';
 
   @override
-  String get urgency => 'urgency';
+  String get urgency => 'срочность';
 
   @override
-  String get areas => 'areas';
+  String get areas => 'области';
 
   @override
-  String get light => 'light';
+  String get light => 'небольшие';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'сильные';
 
   @override
   String get showMore => 'Показать';

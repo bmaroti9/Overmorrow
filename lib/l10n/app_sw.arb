@@ -147,7 +147,7 @@
     "@veryPoorAqiDesc": {},
     "unhealthyAqiDesc": "Hali ya dharura; madhara makubwa kiafya kwa wote.",
     "@unhealthyAqiDesc": {},
-    "photoByXOnUnsplash": "Picha, na,x,Kutonyunyiza",
+    "photoByXOnUnsplash": "Picha, na,x,,Kutonyunyiza",
     "@photoByXOnUnsplash": {},
     "sourceCodeLowercase": "Msimbo wa chanzo",
     "@sourceCodeLowercase": {},
@@ -251,7 +251,7 @@
     "@rainInHalfHour": {
         "description": "rain in the next half an hour"
     },
-    "rainInMinutes": "mvua kwa dakika { wingi,=1 {dakika} zingine {dakika} dakika}",
+    "rainInMinutes": "mvua kwa dakika {minutes, plural, =1 {minutes} other {{minutes} dakika}}",
     "@rainInMinutes": {
         "description": "rain in the next X minutes",
         "placeholders": {
@@ -264,7 +264,7 @@
     "@rainInOneHour": {
         "description": "rain in the next hour"
     },
-    "rainInHours": "mvua kwa { wingi, =1 {saa} nyingine {masaa} masaa}",
+    "rainInHours": "mvua kwa {hours, plural, =1 {hours} other {{hours} masaa}}",
     "@rainInHours": {
         "description": "rain in the next X hours",
         "placeholders": {

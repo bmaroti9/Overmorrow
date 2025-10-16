@@ -216,7 +216,7 @@ class AppLocalizationsMk extends AppLocalizations {
 
   @override
   String get goodAqiDesc =>
-      'Квалитетот на воздухот е одличен; нема ризик здравјето.';
+      'Квалитетот на воздухот е одличен; нема ризик по здравјето.';
 
   @override
   String get fairAqiDesc =>

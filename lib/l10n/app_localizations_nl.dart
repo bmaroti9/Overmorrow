@@ -9,13 +9,13 @@ class AppLocalizationsNl extends AppLocalizations {
   AppLocalizationsNl([String locale = 'nl']) : super(locale);
 
   @override
-  String get feelsLike => 'Voelt alsv';
+  String get feelsLike => 'Gevoels­temperatuur';
 
   @override
-  String get precipCapital => 'Neersl.';
+  String get precipCapital => 'Neerslag';
 
   @override
-  String get humidity => 'Luchtvochtigheid';
+  String get humidity => 'Lucht­vochtigheid';
 
   @override
   String get windCapital => 'Wind';
@@ -30,10 +30,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get today => 'Vandaag';
 
   @override
-  String get tomorrowLowercase => 'morgen';
+  String get tomorrowLowercase => 'Morgen';
 
   @override
-  String get overmorrowLowercase => 'overmorgen';
+  String get overmorrowLowercase => 'Overmorgen';
 
   @override
   String get language => 'Taal';
@@ -100,68 +100,68 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get locationServicesAreDisabled =>
-      'Locatiediensten zijn uitgeschakeld.';
+      'Locatie­diensten zijn uit­geschakeld';
 
   @override
-  String get locationPermissionIsDenied => 'Locatietoestemming geweigerd';
+  String get locationPermissionIsDenied => 'Locatie­rechten zijn geweigerd';
 
   @override
   String get locationPermissionDeniedForever =>
-      'Locatietoestemming voor altijd geweigerd';
+      'Locatie­rechten zijn permanent geweigerd';
 
   @override
-  String get grantLocationPermission => 'Locatietoestemming geven';
+  String get grantLocationPermission => 'Locatie­rechten verlenen';
 
   @override
-  String get currentLocation => 'huidige locatie';
+  String get currentLocation => 'Huidige locatie';
 
   @override
-  String get favoritesLowercase => 'favorieten';
+  String get favoritesLowercase => 'Favorieten';
 
   @override
-  String get failedToAccessGps => 'GPS-toestemming mislukt';
+  String get failedToAccessGps => 'Geen toegang tot GPS';
 
   @override
-  String get search => 'Zoeken...';
+  String get search => 'Zoeken…';
 
   @override
-  String get sunriseSunset => 'Zonsopkomst/Zonsondergang';
+  String get sunriseSunset => 'Zons­opkomst/zons­ondergang';
 
   @override
-  String get airQuality => 'Luchtkwaliteit';
+  String get airQuality => 'Lucht­kwaliteit';
 
   @override
-  String get airQualityLowercase => 'luchtkwaliteit';
+  String get airQualityLowercase => 'Lucht­kwaliteit';
 
   @override
-  String get good => 'goed';
+  String get good => 'Goed';
 
   @override
-  String get fair => 'redelijk';
+  String get fair => 'Redelijk';
 
   @override
-  String get moderate => 'matig';
+  String get moderate => 'Matig';
 
   @override
-  String get poor => 'slecht';
+  String get poor => 'Slecht';
 
   @override
-  String get veryPoor => 'zeer slecht';
+  String get veryPoor => 'Zeer slecht';
 
   @override
-  String get unhealthy => 'ongezond';
+  String get unhealthy => 'Ongezond';
 
   @override
-  String get radar => 'radar';
+  String get radar => 'Radar';
 
   @override
-  String get colorMode => 'Kleurenmodus';
+  String get colorMode => 'Kleur­modus';
 
   @override
-  String get weatherProvderLowercase => 'weerprovider';
+  String get weatherProvderLowercase => 'Weer­aanbieder';
 
   @override
-  String get timeMode => 'Tijdmodus';
+  String get timeMode => 'Tijd­modus';
 
   @override
   String get mon => 'Ma';
@@ -170,7 +170,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get tue => 'Di';
 
   @override
-  String get wed => 'Woe';
+  String get wed => 'Wo';
 
   @override
   String get thu => 'Do';
@@ -179,44 +179,44 @@ class AppLocalizationsNl extends AppLocalizations {
   String get fri => 'Vr';
 
   @override
-  String get sat => 'Zat';
+  String get sat => 'Za';
 
   @override
-  String get sun => 'Zon';
+  String get sun => 'Zo';
 
   @override
-  String get fontSize => 'Lettergrootte';
+  String get fontSize => 'Letter­grootte';
 
   @override
-  String get dailyLowercase => 'dagelijks';
+  String get dailyLowercase => 'Dagelijks';
 
   @override
-  String get searchProvider => 'Zoekprovider';
+  String get searchProvider => 'Zoek­aanbieder';
 
   @override
-  String get updatedJustNow => 'Geüpdatet, zojuist';
+  String get updatedJustNow => 'Zojuist bijgewerkt';
 
   @override
-  String get colorSource => 'Kleurbron';
+  String get colorSource => 'Kleur­bron';
 
   @override
-  String get imageSource => 'Beeldbron';
+  String get imageSource => 'Afbeeldings­bron';
 
   @override
-  String get sumLowercase => 'overz';
+  String get sumLowercase => 'Overzicht';
 
   @override
-  String get precipLowercase => 'neerslag';
+  String get precipLowercase => 'Neerslag';
 
   @override
-  String get windLowercase => 'wind';
+  String get windLowercase => 'Wind';
 
   @override
-  String get uvLowercase => 'uv';
+  String get uvLowercase => 'UV';
 
   @override
   String get goodAqiDesc =>
-      'De luchtkwaliteit is prima; geen gezondheidsrisico.';
+      'De lucht­kwaliteit is uitstekend; geen gezondheids­risico.';
 
   @override
   String get fairAqiDesc =>
@@ -241,31 +241,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String get photoByXOnUnsplash => 'Foto, door ,x, op ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'broncode';
+  String get sourceCodeLowercase => 'Bron­code';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'E-mail';
 
   @override
-  String get reportAnIssueLowercase => 'probleem melden';
+  String get reportAnIssueLowercase => 'Probleem melden';
 
   @override
-  String get donateLowercase => 'doneren';
+  String get donateLowercase => 'Doneren';
 
   @override
   String get versionUppercase => 'Versie';
 
   @override
-  String get apiAndServices => 'APIs & Diensten';
+  String get apiAndServices => 'API\'s en diensten';
 
   @override
   String get licenseUppercase => 'Licentie';
 
   @override
-  String get weatherDataLowercase => 'weerdata';
+  String get weatherDataLowercase => 'Weer­gegevens';
 
   @override
-  String get imagesLowercase => 'beelden';
+  String get imagesLowercase => 'Afbeeldingen';
 
   @override
   String get appearance => 'Uiterlijk';
@@ -280,28 +280,28 @@ class AppLocalizationsNl extends AppLocalizations {
   String get about => 'Over';
 
   @override
-  String get appearanceSettingDesc => 'Kleurschema, beeldbron';
+  String get appearanceSettingDesc => 'Kleur­thema, afbeeldings­bron';
 
   @override
-  String get generalSettingDesc => 'Tijdmodus, lettergrootte';
+  String get generalSettingDesc => 'Tijd­modus, letter­grootte';
 
   @override
-  String get languageSettingDesc => 'de gebruikte taal';
+  String get languageSettingDesc => 'De gebruikte taal';
 
   @override
-  String get unitsSettingdesc => 'de in de app gebruikte eenheden';
+  String get unitsSettingdesc => 'De in de app gebruikte eenheden';
 
   @override
-  String get aboutSettingsDesc => 'over deze app';
+  String get aboutSettingsDesc => 'Over deze app';
 
   @override
-  String get now => 'nu';
+  String get now => 'Nu';
 
   @override
-  String get hr => 'uur';
+  String get hr => 'Uur';
 
   @override
-  String get layout => 'Opmaak';
+  String get layout => 'Lay-out';
 
   @override
   String get layoutSettingDesc => 'Widget-volgorde, aanpassing';
@@ -319,10 +319,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get birchPollen => 'Berkenpollen';
 
   @override
-  String get grassPollen => 'graspollen';
+  String get grassPollen => 'Graspollen';
 
   @override
-  String get mugwortPollen => 'bijvoetpollen';
+  String get mugwortPollen => 'Bijvoetpollen';
 
   @override
   String get olivePollen => 'Olijfpollen';
@@ -331,7 +331,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get ragweedPollen => 'Raaigraspollen';
 
   @override
-  String get dailyAqi => 'dagelijkse LKI';
+  String get dailyAqi => 'Dagelijkse LKI';
 
   @override
   String get dateFormat => 'Datumnotatie';
@@ -340,10 +340,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get d => 'd';
 
   @override
-  String get aerosolOpticalDepth => 'aërosol optische diepte';
+  String get aerosolOpticalDepth => 'Aërosol optische diepte';
 
   @override
-  String get dust => 'stof';
+  String get dust => 'Stof';
 
   @override
   String get europeanAqi => 'Europese LKI';
@@ -352,61 +352,61 @@ class AppLocalizationsNl extends AppLocalizations {
   String get unitedStatesAqi => 'Verenigde Staten LKI';
 
   @override
-  String get offline => 'offline';
+  String get offline => 'Offline';
 
   @override
-  String get helpTranslate => 'help met vertalen';
+  String get helpTranslate => 'Help mee vertalen';
 
   @override
-  String get extremelyClear => 'extreem helder';
+  String get extremelyClear => 'Extreem helder';
 
   @override
-  String get veryClear => 'zeer helder';
+  String get veryClear => 'Zeer helder';
 
   @override
-  String get clear => 'helder';
+  String get clear => 'Helder';
 
   @override
-  String get slightlyHazy => 'licht wazig';
+  String get slightlyHazy => 'Licht wazig';
 
   @override
-  String get hazy => 'wazig';
+  String get hazy => 'Wazig';
 
   @override
-  String get veryHazy => 'zeer wazig';
+  String get veryHazy => 'Zeer wazig';
 
   @override
   String get extremelyHazy => 'Extreem wazig';
 
   @override
-  String get poweredByOpenMeteo => 'verstrekt door Open-Meteo';
+  String get poweredByOpenMeteo => 'Verstrekt door Open-Meteo';
 
   @override
-  String get rainInHalfHour => 'Regen in het volgende halfuur';
+  String get rainInHalfHour => 'Regen in het komende halfuur';
 
   @override
   String rainInMinutes(int minutes) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes minuten',
+      one: 'minuut',
     );
-    return 'Regen in de volgende $_temp0';
+    return 'Regen in de komende $_temp0';
   }
 
   @override
-  String get rainInOneHour => 'Regen in het volgende uur';
+  String get rainInOneHour => 'Regen in het komende uur';
 
   @override
   String rainInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: 'de komende $hours uur',
+      one: 'het komende uur',
     );
-    return 'regen in de volgende $_temp0';
+    return 'Regen in $_temp0';
   }
 
   @override
@@ -421,22 +421,22 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get rainExpectedInOneHour => 'regen verwacht over een uur';
+  String get rainExpectedInOneHour => 'Regen verwacht over een uur';
 
   @override
   String rainExpectedInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours uur',
+      one: 'een uur',
     );
     return 'Regen verwacht over $_temp0';
   }
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return 'Geüpdatet, $minutes geleden';
+    return '$minutes minuten geleden bijgewerkt';
   }
 
   @override
@@ -444,10 +444,10 @@ class AppLocalizationsNl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
+      other: '$hours uur',
+      one: '1 uur',
     );
-    return 'geüpdatet, $_temp0 geleden';
+    return '$_temp0 geleden bijgewerkt';
   }
 
   @override
@@ -455,42 +455,42 @@ class AppLocalizationsNl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: '$days days',
-      one: '1 day',
+      other: '$days dagen',
+      one: '1 dag',
     );
-    return 'geüpdatet, $_temp0 geleden';
+    return '$_temp0 geleden bijgewerkt';
   }
 
   @override
-  String get radarHaptics => 'Radarhaptiek';
+  String get radarHaptics => 'Radar­haptiek';
 
   @override
   String get alertsCapital => 'Waarschuwingen';
 
   @override
-  String get alertsLowercase => 'waarschuwingen';
+  String get alertsLowercase => 'Waarschuwingen';
 
   @override
   String get severity => 'Ernst';
 
   @override
-  String get certainty => 'bepaalde';
+  String get certainty => 'Zekerheid';
 
   @override
-  String get urgency => 'urgentie';
+  String get urgency => 'Urgentie';
 
   @override
-  String get areas => 'gebieden';
+  String get areas => 'Gebieden';
 
   @override
-  String get light => 'licht';
+  String get light => 'Licht';
 
   @override
-  String get heavy => 'sterk';
+  String get heavy => 'Sterk';
 
   @override
-  String get showMore => 'toon meer';
+  String get showMore => 'Meer tonen';
 
   @override
-  String get showLess => 'toon minder';
+  String get showLess => 'Minder tonen';
 }

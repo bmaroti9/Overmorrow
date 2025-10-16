@@ -9,13 +9,13 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
-  String get feelsLike => 'Gefühlt';
+  String get feelsLike => 'Gefühlt wie';
 
   @override
   String get precipCapital => 'Niederschlag';
 
   @override
-  String get humidity => 'Luftfeuchte';
+  String get humidity => 'Luftfeuchtigkeit';
 
   @override
   String get windCapital => 'Wind';
@@ -51,7 +51,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get clearNight => 'Klare Nacht';
 
   @override
-  String get partlyCloudy => 'Teils wolkig';
+  String get partlyCloudy => 'Teils bewölkt';
 
   @override
   String get clearSky => 'Klarer Himmel';
@@ -96,23 +96,24 @@ class AppLocalizationsDe extends AppLocalizations {
   String get placeNotFound => 'Ort nicht gefunden';
 
   @override
-  String get unableToLocateDevice => 'Gerät kann nicht gefunden werden';
+  String get unableToLocateDevice => 'Standort konnte nicht gefunden werden';
 
   @override
   String get locationServicesAreDisabled => 'Standortdienste sind deaktiviert.';
 
   @override
-  String get locationPermissionIsDenied => 'Standortberechtigung verweigert';
+  String get locationPermissionIsDenied =>
+      'Standortberechtigungen sind verweigert';
 
   @override
   String get locationPermissionDeniedForever =>
-      'Standortberechtigung für immer verweigert';
+      'Standortberechtigungen sind für immer verweigert';
 
   @override
-  String get grantLocationPermission => 'Genehmigung für den Standort';
+  String get grantLocationPermission => 'Standort Berechtigungen erteilen';
 
   @override
-  String get currentLocation => 'aktueller Standort';
+  String get currentLocation => 'aktuelle Position';
 
   @override
   String get favoritesLowercase => 'Favoriten';
@@ -160,7 +161,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get weatherProvderLowercase => 'Wetteranbieter';
 
   @override
-  String get timeMode => 'Zeitmodus';
+  String get timeMode => 'Zeitformat';
 
   @override
   String get mon => 'Mo';
@@ -223,7 +224,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get moderateAqiDesc =>
-      'Empfindliche Personen können leichte Auswirkungen erfahren.';
+      'Bei Empfindliche Personen können leichte Effekte auftreten.';
 
   @override
   String get poorAqiDesc =>
