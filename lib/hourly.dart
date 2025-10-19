@@ -23,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:overmorrow/decoders/weather_data.dart';
+import 'package:overmorrow/pages/hourly_sheet.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/weather_refact.dart';
@@ -159,14 +160,27 @@ Widget hourlyDataBuilder(hour, elevated, childWidget, context) {
           borderRadius: BorderRadius.circular(10),
           child: SlideTransition(
             position: offsetAnimation,
-            child: Container(
-              padding: const EdgeInsets.only(top: 7, bottom: 5),
-              width: 67,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                color: elevated ? Theme.of(context).colorScheme.surfaceContainerHighest : Theme.of(context).colorScheme.surfaceContainer,
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.lightImpact();
+                showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  enableDrag: true,
+                  builder: (BuildContext context) {
+                    return HourlyBottomSheet(hour: hour);
+                  },
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.only(top: 7, bottom: 5),
+                width: 67,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  color: elevated ? Theme.of(context).colorScheme.surfaceContainerHighest : Theme.of(context).colorScheme.surfaceContainer,
+                ),
+                child: child,
               ),
-              child: child,
             ),
           ),
         );
@@ -342,7 +356,7 @@ class HourlyWind extends StatelessWidget {
 
         Transform.rotate(
             angle: (hour.windDirA + 180) * pi / 180,
-            child: Icon(Icons.navigation_outlined, size: 19,)
+            child: const Icon(Icons.navigation_outlined, size: 19,)
         ),
 
         Row(
