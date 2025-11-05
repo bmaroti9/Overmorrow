@@ -137,7 +137,8 @@ class _AlertsPageState extends State<AlertsPage> {
                                   BorderSide(width: 2, color: Theme.of(context).colorScheme.secondaryContainer),
                               )
                               ),
-                              child: Text(alert.desc, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 16),)
+                              child: Text(alert.desc, style: TextStyle(color: Theme.of(context).colorScheme.outline,
+                                  fontSize: 16))
                             ),
                           ),
 
@@ -155,7 +156,8 @@ class _AlertsPageState extends State<AlertsPage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 30, top: 5),
-                            child: Text(alert.areas, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 15),)
+                            child: Text(alert.areas, style: TextStyle(color: Theme.of(context).colorScheme.outline,
+                                fontSize: 15))
                           ),
 
                           Align(

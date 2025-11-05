@@ -112,7 +112,7 @@ class _RadarSmallState extends State<RadarSmall> {
         ),
         Padding(
           padding: const EdgeInsets.only(
-              left: 23, right: 23, top: 14, bottom: 35,),
+              left: 23, right: 23, top: 14, bottom: 22,),
           child: AspectRatio(
             aspectRatio: 1.70,
             child: Container(
@@ -227,7 +227,7 @@ class _RadarSmallState extends State<RadarSmall> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 36, right: 32, bottom: 25, top: 5),
+          padding: const EdgeInsets.only(left: 36, right: 32, bottom: 35, top: 5),
           child: Row(
             children: [
               AnimatedSwitcher(
@@ -404,9 +404,18 @@ class _RadarBigState extends State<RadarBig> {
                     ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                     : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
               ),
+              /*
               TileLayer(
                 urlTemplate: "${widget.data.radar.images[currentFrameIndex.toInt()]}/256/{z}/{x}/{y}/2/1_1.png",
                 tileDisplay: const TileDisplay.instantaneous(),
+              ),
+               */
+              Opacity(
+                opacity: 0.7,
+                child: TileLayer(
+                  urlTemplate: "https://weathermaps.weatherapi.com/pressure/tiles/2025102915/{z}/{x}/{y}.png",
+                  tileDisplay: const TileDisplay.instantaneous(),
+                ),
               ),
               TileLayer(
                 urlTemplate: mode == "dark"
@@ -574,7 +583,7 @@ class _RadarBigState extends State<RadarBig> {
                       backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
                       //side: BorderSide(width: 3, color: main),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(19)
+                          borderRadius: BorderRadius.circular(19),
                       ),
                     ),
                     onPressed: () {

@@ -104,7 +104,10 @@ String oMTextCorrection(int code) {
 }
 
 String oMCurrentTextCorrection(int code, WeatherSunStatus sunStatus, DateTime time) {
-  if (time.difference(sunStatus.sunrise).isNegative || sunStatus.sunset.difference(time).isNegative) {
+  // i need to set them to be on the same day
+  DateTime sameDayTime = sunStatus.sunrise.copyWith(hour: time.hour, minute: time.minute);
+
+  if (sameDayTime.difference(sunStatus.sunrise).isNegative || sunStatus.sunset.difference(sameDayTime).isNegative) {
     if (code == 0 || code == 1) {
       return 'Clear Night';
     }
