@@ -33,7 +33,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get tomorrowLowercase => 'domani';
 
   @override
-  String get overmorrowLowercase => 'Overmorrow';
+  String get overmorrowLowercase => 'dopodomani';
 
   @override
   String get language => 'Lingua';
@@ -63,7 +63,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get haze => 'Foschia';
 
   @override
-  String get sleet => 'Pioggia congelata';
+  String get sleet => 'Nevischio';
 
   @override
   String get drizzle => 'Pioggerella';
@@ -185,7 +185,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get sun => 'Dom';
 
   @override
-  String get fontSize => 'Carattere';
+  String get fontSize => 'Dimensione carattere';
 
   @override
   String get dailyLowercase => 'quotidianamente';
@@ -203,7 +203,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get imageSource => 'Fonte dell\'immagine';
 
   @override
-  String get sumLowercase => 'somma';
+  String get sumLowercase => 'riep';
 
   @override
   String get precipLowercase => 'precip';
@@ -262,7 +262,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get licenseUppercase => 'Licenza';
 
   @override
-  String get weatherDataLowercase => 'dati metereologici';
+  String get weatherDataLowercase => 'dati meteorologici';
 
   @override
   String get imagesLowercase => 'immagini';
@@ -283,7 +283,8 @@ class AppLocalizationsIt extends AppLocalizations {
   String get appearanceSettingDesc => 'tema colore, sorgente immagine';
 
   @override
-  String get generalSettingDesc => 'modalità tempo, dimensione del carattere';
+  String get generalSettingDesc =>
+      'modalità orologio, dimensione del carattere';
 
   @override
   String get languageSettingDesc => 'la lingua utilizzata';
@@ -367,16 +368,16 @@ class AppLocalizationsIt extends AppLocalizations {
   String get clear => 'sereno';
 
   @override
-  String get slightlyHazy => 'leggermente fosco';
+  String get slightlyHazy => 'foschia leggera';
 
   @override
   String get hazy => 'foschia';
 
   @override
-  String get veryHazy => 'molto fosco';
+  String get veryHazy => 'molta foschia';
 
   @override
-  String get extremelyHazy => 'estremamente fosco';
+  String get extremelyHazy => 'foschia estrema';
 
   @override
   String get poweredByOpenMeteo => 'offerto da open-meteo';
@@ -462,7 +463,7 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String get radarHaptics => 'Radar tattile';
+  String get radarHaptics => 'Feedback aptico radar';
 
   @override
   String get alertsCapital => 'Avvisi';

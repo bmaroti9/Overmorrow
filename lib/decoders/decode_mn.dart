@@ -187,7 +187,7 @@ WeatherDay metNWeatherDayFromJson(item, start, end, index, hourDif) {
       maxTempC:  rawTemps.reduce(max),
       hourly: hours,
       windKph: (windspeeds.reduce((a, b) => a + b) / windspeeds.length),
-      date: DateTime.parse(item["properties"]["timeseries"][start]["time"]),
+      date: DateTime.parse(item["properties"]["timeseries"][start]["time"]).add(Duration(hours: -hourDif)),
       condition: weather_names[BIndex],
       windDirA: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
       uv: uvs.reduce(max)
@@ -203,7 +203,7 @@ WeatherHour metNWeatherHourFromJson(item, hourDif) {
     tempC: item["data"]["instant"]["details"]["air_temperature"],
     precipMm: nextHours["details"]["precipitation_amount"],
     precipProb: (nextHours["details"]["probability_of_precipitation"] ?? 0).round(),
-    time: DateTime.parse(item["time"]),
+    time: DateTime.parse(item["time"]).add(Duration(hours: -hourDif)),
     windKph: item["data"]["instant"]["details"]["wind_speed"] * 3.6,
     windDirA: item["data"]["instant"]["details"]["wind_from_direction"].round(),
     uv: (item["data"]["instant"]["details"]["ultraviolet_index_clear_sky"] ?? 0)
@@ -357,7 +357,9 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, placeName) async {
   int previous_hour = 0;
   for (int n = 0; n < MnBody["properties"]["timeseries"].length; n++) {
     int hour = (int.parse(MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0]) - hourDif) % 24;
+    //int hour = DateTime.parse(MnBody["properties"]["timeseries"][n]["time"]).toLocal().hour;
     if (n > 0 && hour - previous_hour < 1) {
+      print((MnBody["properties"]["timeseries"][begin]["time"], MnBody["properties"]["timeseries"][n]["time"]));
       WeatherDay day = metNWeatherDayFromJson(MnBody, begin, n, index, hourDif);
       days.add(day);
 
