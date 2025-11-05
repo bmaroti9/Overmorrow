@@ -168,13 +168,14 @@ class PhoneLayout extends StatelessWidget {
           await updateLocation("${data.lat}, ${data.lng}", data.place);
         },
         headerData: HeaderData(
-          //backgroundColor: WHITE,
             blurContent: false,
             headerHeight: (size.height ) * 0.495,
+
             header:  FadingImageWidget(
               image: imageService?.image,
             ),
-            //header: ParrallaxBackground(image: data.current.imageService.image, key: Key(data.place),color: BLACK),
+
+            //header: Container(color: Theme.of(context).colorScheme.primary,),
             overlay: Stack(
               children: [
                 Padding(
