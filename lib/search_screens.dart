@@ -357,6 +357,15 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
         locationMessage = AppLocalizations.of(context)!.locationServicesAreDisabled;
       });
       return "disabled";
+    } on TimeoutException {
+      if (locationState != "enabled") {
+        setState(() {
+          locationState = "disabled";
+          locationMessage = AppLocalizations.of(context)!.unableToLocateDevice;
+        });
+        return "disabled";
+      }
+      return "enabled";
     }
 
     try {
@@ -641,8 +650,17 @@ Widget buildRecommend(String text, ValueListenable<List<String>> favoritesListen
                         style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 18, height: 1.2),)
                     ],
                   ),
-                  CurrentLocationWidget(locationState, locationMessage, askGrantLocationPermission,
-                      placeName, country, region, updateLocation, context, placeLatLon, isTabletMode),
+                  const SizedBox(height: 14,),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(46),
+                      border: Border.all(width: 0, color: Theme.of(context).colorScheme.primaryFixedDim)
+                    ),
+                    padding: const EdgeInsets.all(0),
+                    child: currentLocationWidget(locationState, locationMessage, askGrantLocationPermission,
+                        placeName, country, region, updateLocation, context, placeLatLon, isTabletMode),
+                  ),
+                  const SizedBox(height: 30,),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 14),
                     child: Row(
@@ -786,7 +804,7 @@ Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> 
   );
 }
 
-Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPermission,
+Widget currentLocationWidget(locationState, locationMessage, askGrantLocationPermission,
     String placeName, String country, String region, updateLocation, context, placeLatLon, isTabletMode) {
   if (locationState == "denied") {
     return GestureDetector(
@@ -794,7 +812,6 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
         askGrantLocationPermission();
       },
       child: Container(
-        margin: const EdgeInsets.only(top: 20, bottom: 30),
         padding: const EdgeInsets.only(
             left: 25, right: 25, top: 23, bottom: 23),
         decoration: BoxDecoration(
@@ -829,9 +846,8 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
         }
       },
       child: Container(
-        margin: const EdgeInsets.only(top: 14, bottom: 30),
         padding: const EdgeInsets.only(
-            left: 25, right: 25, top: 20, bottom: 20),
+            left: 24, right: 24, top: 19, bottom: 19),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryFixedDim,
           borderRadius: BorderRadius.circular(40),
@@ -858,7 +874,6 @@ Widget CurrentLocationWidget(locationState, locationMessage, askGrantLocationPer
     );
   }
   return Container(
-    margin: const EdgeInsets.only(top: 20, bottom: 30),
     padding: const EdgeInsets.only(
         left: 25, right: 25, top: 20, bottom: 20),
     decoration: BoxDecoration(
@@ -895,7 +910,7 @@ Widget buildFavorites(List<String> favorites, updateLocation, context, isTabletM
   return SingleChildScrollView(
     child: Container(
         key: const ValueKey<String>("normal"),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.only(left: 7, right: 7, top: 20, bottom: 20),
         decoration: BoxDecoration(
           color: isTabletMode ? Theme.of(context).colorScheme.surfaceContainerHighest
               : Theme.of(context).colorScheme.surfaceContainer,
@@ -917,9 +932,18 @@ Widget buildFavorites(List<String> favorites, updateLocation, context, isTabletM
                     Navigator.pop(context);
                   }
                 },
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 7, top: 8, bottom: 8),
+                child: Container(
+                  decoration: index == -1 ? BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(width: 3, color: Theme.of(context).colorScheme.primaryFixedDim)
+                    //color: Theme.of(context).colorScheme.secondaryContainer
+                  ) : const BoxDecoration(),
+                  padding: EdgeInsets.only(
+                    left: index == -1 ? 20 : 23,
+                    right: index == -1 ? 17 : 20,
+                    top: index == -1 ? 14 : index == -1 || index == -1 ? 7 : 9,
+                    bottom: index == -1 ? 14 : index == -1 || index == -1 ? 7 : 9,
+                  ),
                   child: Row(
                     children: [
                       Expanded(

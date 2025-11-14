@@ -594,7 +594,7 @@ class ProviderSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 130, top: 35),
+      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 110, top: 35),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -644,7 +644,25 @@ class ProviderSelector extends StatelessWidget {
                     ),
                   ),
                 ),
+                /*
+                const SizedBox(width: 8,),
+                GestureDetector(
+                  onTap: () {
 
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                    ),
+                    width: 52,
+                    height: 52,
+                    child: Icon(Icons.shuffle_rounded, size: 23,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,),
+                  ),
+                )
+
+                 */
               ],
             ),
           ),

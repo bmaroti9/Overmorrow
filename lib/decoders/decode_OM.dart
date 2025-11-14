@@ -529,10 +529,10 @@ class OMExtendedAqi{
     int europeanIndex = 0;
     for (int i = 0; i < aqiCategories.length; i++) {
       if (item["current"]["european_aqi"] > aqiCategories[i])  {
-        usIndex = i;
+        usIndex = i + 1;
       }
       if (item["current"]["us_aqi"] > europeanAqiCategories[i])  {
-        europeanIndex = i;
+        europeanIndex = i + 1;
       }
     }
 

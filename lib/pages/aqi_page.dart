@@ -435,8 +435,9 @@ class ThreeRowLayout extends StatelessWidget {
               Expanded(
                   child: Column(
                     children: [
-                      NewHourlyAqi(data: data, extendedAqi: extendedAqi),
+                      europeanAndUsAqi(data, extendedAqi, context),
                       dailyAqi(data, extendedAqi, context, highestAqi),
+                      pollutantIndicators(data, extendedAqi, context),
                     ],
                   )
               ),
@@ -445,8 +446,7 @@ class ThreeRowLayout extends StatelessWidget {
                   child: Column(
                     children: [
                       mainPollutantIndicator(data, extendedAqi, context),
-                      pollutantIndicators(data, extendedAqi, context),
-                      europeanAndUsAqi(data, extendedAqi, context),
+                      NewHourlyAqi(data: data, extendedAqi: extendedAqi),
                       const SizedBox(height: 10,),
                       dustAndAODIndicators(data, extendedAqi, context),
                     ],
@@ -671,7 +671,6 @@ Widget europeanAndUsAqi(WeatherData data, OMExtendedAqi extendedAqi, context) {
       ],
     ),
   );
-
 }
 
 Widget dailyAqi(WeatherData data, OMExtendedAqi extendedAqi, context, highestAqi) {
