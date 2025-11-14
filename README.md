@@ -1,14 +1,14 @@
 ![page48](Screenshots/overmorrow_brown_rounded.png)
 
 <div align="center">
-  <img alt="GitHub License" src="https://img.shields.io/github/license/bmaroti9/Overmorrow?style=flat-square&labelColor=%23F9FAEF&color=%2348576C">
- <img alt="GitHub Release" src="https://img.shields.io/github/v/release/bmaroti9/Overmorrow?style=flat-square&labelColor=%23F9FAEF&color=%23DB9E6D">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF9EB&color=%2348576C">
+ <img alt="GitHub Release" src="https://img.shields.io/github/v/release/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF9EB&color=%23DB9E6D">
   <img alt="GitHub Downloads (all assets, all releases)" 
-  src="https://img.shields.io/github/downloads/bmaroti9/Overmorrow/total?style=flat-square&labelColor=%23F9FAEF&color=%23A2C8AE"> 
+  src="https://img.shields.io/github/downloads/bmaroti9/Overmorrow/total?style=flat-square&labelColor=%23FFF9EB&color=%23A2C8AE"> 
   
   <img alt="GitHub Downloads (all assets, all releases)"
-  src="https://img.shields.io/github/stars/bmaroti9/Overmorrow?style=flat-square&labelColor=%23F9FAEF&color=%23F1E48A">
-  <img alt="GitHub Release" src="https://img.shields.io/github/forks/bmaroti9/Overmorrow?style=flat-square&labelColor=%23F9FAEF&color=%2390797B">
+  src="https://img.shields.io/github/stars/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF9EB&color=%23F1E48A">
+  <img alt="GitHub Release" src="https://img.shields.io/github/forks/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF9EB&color=%2390797B">
 </a>
 
 <h4 align="center">modern material design weather app</h4>
