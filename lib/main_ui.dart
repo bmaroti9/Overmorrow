@@ -644,7 +644,7 @@ class ProviderSelector extends StatelessWidget {
                     ),
                   ),
                 ),
-                /*
+
                 const SizedBox(width: 8,),
                 GestureDetector(
                   onTap: () {
@@ -661,8 +661,6 @@ class ProviderSelector extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onPrimaryContainer,),
                   ),
                 )
-
-                 */
               ],
             ),
           ),

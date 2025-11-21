@@ -318,12 +318,43 @@ class RadarBig extends StatefulWidget {
 
 class _RadarBigState extends State<RadarBig> {
 
-  final List<Color> radarColors = [
+  static List<Color> radarColors = [
     const Color(0xFF88ddee), const Color(0xFF0099cc), const Color(0xFF0077aa), const Color(0xFF005588),
     const Color(0xFFffee00), const Color(0xFFffaa00), const Color(0xFFff7700),
     const Color(0xFFff4400), const Color(0xFFee0000), const Color(0xFF990000),
     const Color(0xFFffaaff), const Color(0xFFff77ff), const Color(0xFFff00ff),
   ];
+
+  static List<Color> tempColors = [
+    const Color(0xFF000080), const Color(0xFF0033CC), const Color(0xFF0088FF),
+    const Color(0xFF00DDEE), const Color(0xFF88FFFF), const Color(0xFF88FF88),
+    const Color(0xFF00DD00), const Color(0xFFFFFF00), const Color(0xFFFFAA00),
+    const Color(0xFFFF6600), const Color(0xFFFF0000),
+  ];
+
+  static List<Color> windColors = [
+    const Color(0xFFFFFFFF), const Color(0xFFBBEEFF), const Color(0xFF77CCFF),
+    const Color(0xFF3399FF), const Color(0xFF0066FF), const Color(0xFF558844),
+    const Color(0xFFFFDD00), const Color(0xFFFF8800), const Color(0xFFFF0000),
+    const Color(0xFFCC0033), const Color(0xFF880066),
+  ];
+
+  static List<Color> pressureColors = [
+    const Color(0xFF880088), const Color(0xFFAA00CC), const Color(0xFF6600DD),
+    const Color(0xFF0044FF), const Color(0xFF0099FF), const Color(0xFF66CCFF),
+    const Color(0xFFDDFFEE), const Color(0xFFFFEE88), const Color(0xFFFFAA44),
+    const Color(0xFFFF4422),
+  ];
+
+  static Map<String, String> layerToUlr = {
+    "precip": "https://weathermaps.weatherapi.com/precip/tiles/2025112115/{z}/{x}/{y}.png",
+    "temp": "https://weathermaps.weatherapi.com/tmp2m/tiles/2025112115/{z}/{x}/{y}.png",
+    "wind": "https://weathermaps.weatherapi.com/wind/tiles/2025112115/{z}/{x}/{y}.png",
+    "pressure": "https://weathermaps.weatherapi.com/pressure/tiles/2025112115/{z}/{x}/{y}.png",
+  };
+
+  static List<String> layerOptions = ["precip", "temp", "wind", "pressure"];
+  String selectedLayer = layerOptions[0];
 
   double currentFrameIndex = 0;
   late Timer timer;
@@ -413,7 +444,7 @@ class _RadarBigState extends State<RadarBig> {
               Opacity(
                 opacity: 0.7,
                 child: TileLayer(
-                  urlTemplate: "https://weathermaps.weatherapi.com/pressure/tiles/2025102915/{z}/{x}/{y}.png",
+                  urlTemplate: layerToUlr[selectedLayer],
                   tileDisplay: const TileDisplay.instantaneous(),
                 ),
               ),
@@ -568,36 +599,96 @@ class _RadarBigState extends State<RadarBig> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(right: 15, top: topPad + 15),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Hero(
-                tag: 'switch',
-                child: SizedBox(
-                  height: 57,
-                  width: 57,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(10),
-                      elevation: 0.0,
-                      backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-                      //side: BorderSide(width: 3, color: main),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(19),
-                      ),
-                    ),
-                    onPressed: () {
+            padding: EdgeInsets.only(right: 15, top: topPad + 15, left: 15),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(19),
+                    color: Theme.of(context).colorScheme.secondaryContainer
+                  ),
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: DropdownButton(
+                    underline: Container(),
+                    onTap: () {
                       HapticFeedback.lightImpact();
-                      setState(() {
-                        isPlaying = false;
-                      });
-                      Navigator.of(context).pop();
                     },
-                    child: Icon(Icons.close_fullscreen,
-                      color: Theme.of(context).colorScheme.onTertiaryContainer, size: 21,),
+                    dropdownColor: Theme.of(context).colorScheme.secondaryContainer,
+                    borderRadius: BorderRadius.circular(19),
+                    icon: Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: Icon(Icons.unfold_more, color: Theme.of(context).colorScheme.onSecondaryContainer, size: 22,),
+                    ),
+                    value: selectedLayer,
+                    selectedItemBuilder: (BuildContext context) {
+                      return layerOptions.map((String item) {
+                        return Center(
+                          child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Text(item, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                  fontSize: 18),)
+                          ),
+                        );
+                      }).toList();
+                    },
+
+                    items: layerOptions.map((item) {
+                      return DropdownMenuItem(
+                        value: item,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(item, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer,
+                                  fontSize: 18),),
+                              const SizedBox(width: 5,),
+                              if (selectedLayer == item) Icon(Icons.check, size: 20,)
+                            ],
+                          )
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (String? value) {
+                      if (value != null) {
+                        setState(() {
+                          selectedLayer = value;
+                        });
+                      }
+                    },
+                    itemHeight: 57,
                   ),
                 ),
-              ),
+                const Spacer(),
+                Hero(
+                  tag: 'switch',
+                  child: SizedBox(
+                    height: 57,
+                    width: 57,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(10),
+                        elevation: 0.0,
+                        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+                        //side: BorderSide(width: 3, color: main),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(19),
+                        ),
+                      ),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        setState(() {
+                          isPlaying = false;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                      child: Icon(Icons.close_fullscreen,
+                        color: Theme.of(context).colorScheme.onTertiaryContainer, size: 21,),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

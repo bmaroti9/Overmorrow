@@ -131,4 +131,4 @@ That was a year ago. Since then i have discovered material-You and have redesign
   - ✅ Add offline mode
   - ✅ Add layout customisation
   - ✅ Add weather alerts
-  - ✅ Add layout customisation
+  - ✅ Add widgets
