@@ -32,6 +32,27 @@ const windWidgetReceiver = 'com.marotidev.overmorrow.receivers.WindWidgetReceive
 const forecastWidgetReceiver = 'com.marotidev.overmorrow.receivers.ForecastWidgetReceiver';
 const oneHourlyWidgetReceiver = 'com.marotidev.overmorrow.receivers.OneHourlyWidgetReceiver';
 
+void initializeWidgetServices() {
+  Workmanager().initialize(
+      myCallbackDispatcher, // The top level function, aka callbackDispatcher
+      isInDebugMode: kDebugMode // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  );
+
+  HomeWidget.registerInteractivityCallback(interactiveCallback);
+
+  if (kDebugMode) {
+    print("thissssssssssssssssssssssssssssssssss");
+    Workmanager().registerOneOffTask("test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
+  }
+
+  Workmanager().registerPeriodicTask(
+    "updateWeatherWidget",
+    updateWeatherDataKey,
+    frequency: const Duration(hours: 1),
+    constraints: Constraints(networkType: NetworkType.connected, requiresBatteryNotLow: true),
+  );
+}
+
 class WidgetService {
 
   static Future<void> saveData(String id, value) async {

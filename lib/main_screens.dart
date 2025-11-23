@@ -228,7 +228,7 @@ class TabletLayout extends StatelessWidget {
           children: [
 
             if (showPanel) SizedBox(
-              width: currentWidth * 0.3,
+              width: min(currentWidth * 0.3, 380),
               child: MySearchWidget(place: data.place, updateLocation: updateLocation, isTabletMode: true)
             ),
 

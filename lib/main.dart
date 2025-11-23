@@ -31,7 +31,6 @@ import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
 import 'package:provider/provider.dart';
-import 'package:workmanager/workmanager.dart';
 import 'decoders/weather_data.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
@@ -40,24 +39,9 @@ import 'main_ui.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Workmanager().initialize(
-      myCallbackDispatcher, // The top level function, aka callbackDispatcher
-      isInDebugMode: kDebugMode // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-  );
-
-  HomeWidget.registerInteractivityCallback(interactiveCallback);
-
-  if (kDebugMode) {
-    print("thissssssssssssssssssssssssssssssssss");
-    Workmanager().registerOneOffTask("test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
+  if (!kIsWeb) {
+    initializeWidgetServices();
   }
-
-  Workmanager().registerPeriodicTask(
-    "updateWeatherWidget",
-    updateWeatherDataKey,
-    frequency: const Duration(hours: 1),
-    constraints: Constraints(networkType: NetworkType.connected, requiresBatteryNotLow: true),
-  );
 
   await PreferenceUtils.init();
 
@@ -98,6 +82,40 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
+    if (kIsWeb) {
+      return BuildMaterialApp(dynamicLightColorScheme: ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.light),
+          dynamicDarkColorScheme: ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark));
+    }
+
+    return DynamicColorBuilder(
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        ColorScheme dynamicLightColorScheme;
+        ColorScheme dynamicDarkColorScheme;
+
+        if (lightDynamic != null && darkDynamic != null) {
+          dynamicLightColorScheme = lightDynamic.harmonized();
+          dynamicDarkColorScheme = darkDynamic.harmonized();
+        } else {
+          dynamicLightColorScheme = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.light);
+          dynamicDarkColorScheme = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark);
+        }
+
+        return BuildMaterialApp(dynamicLightColorScheme: dynamicLightColorScheme, dynamicDarkColorScheme: dynamicDarkColorScheme);
+      },
+    );
+  }
+}
+
+class BuildMaterialApp extends StatelessWidget {
+  final ColorScheme dynamicLightColorScheme;
+  final ColorScheme dynamicDarkColorScheme;
+
+  const BuildMaterialApp({super.key, required this.dynamicLightColorScheme, required this.dynamicDarkColorScheme});
+
+  @override
+  Widget build(BuildContext context) {
+
     final ThemeMode themeMode = context.watch<ThemeProvider>().getThemeMode;
     final Locale locale = context.select((SettingsProvider p) => p.getLocale);
 
@@ -116,65 +134,50 @@ class _MyAppState extends State<MyApp> {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     }
 
-    return DynamicColorBuilder(
-      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        ColorScheme dynamicLightColorScheme;
-        ColorScheme dynamicDarkColorScheme;
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        themeMode: themeMode,
 
-        if (lightDynamic != null && darkDynamic != null) {
-          dynamicLightColorScheme = lightDynamic.harmonized();
-          dynamicDarkColorScheme = darkDynamic.harmonized();
-        } else {
-          dynamicLightColorScheme = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.light);
-          dynamicDarkColorScheme = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark);
-        }
-
-        return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            themeMode: themeMode,
-
-            builder: (context, child) {
-              return MediaQuery(
-                data: MediaQuery.of(context).copyWith(
-                  textScaler: TextScaler.linear(textScaleFactor),
-                ),
-                child: child!,
-              );
-            },
-
-            locale: locale,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: AppLocalizations.supportedLocales,
-            theme: ThemeData(
-                colorScheme: lightColorScheme ?? dynamicLightColorScheme,
-                useMaterial3: true,
-                fontFamily: GoogleFonts.outfit().fontFamily,
-                fontFamilyFallback: const ['NotoSans',],
-                pageTransitionsTheme: const PageTransitionsTheme(
-                  builders: {
-                    TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
-                  }
-                )
+        builder: (context, child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: TextScaler.linear(textScaleFactor),
             ),
-            darkTheme: ThemeData(
-                colorScheme: darkColorScheme ?? dynamicDarkColorScheme,
-                useMaterial3: true,
-                fontFamily: GoogleFonts.outfit().fontFamily,
-                fontFamilyFallback: const ['NotoSans',],
-                pageTransitionsTheme: const PageTransitionsTheme(
-                  builders: {
-                    TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
-                  }
-                )
-            ),
-            home: const MyHomePage()
-        );
-      },
+            child: child!,
+          );
+        },
+
+        locale: locale,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: ThemeData(
+            colorScheme: lightColorScheme ?? dynamicLightColorScheme,
+            useMaterial3: true,
+            fontFamily: GoogleFonts.outfit().fontFamily,
+            fontFamilyFallback: const ['NotoSans',],
+            pageTransitionsTheme: const PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
+                }
+            )
+        ),
+        darkTheme: ThemeData(
+            colorScheme: darkColorScheme ?? dynamicDarkColorScheme,
+            useMaterial3: true,
+            fontFamily: GoogleFonts.outfit().fontFamily,
+            fontFamilyFallback: const ['NotoSans',],
+            pageTransitionsTheme: const PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
+                }
+            )
+        ),
+        home: const MyHomePage()
     );
   }
 }
@@ -231,22 +234,24 @@ class MyHomePageState extends State<MyHomePage> {
     String latLon = context.read<SettingsProvider>().getLatLon;
     String location = context.read<SettingsProvider>().getLocation;
 
-    if (Platform.isAndroid) {
-      Uri? appLaunchUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
+    if (!kIsWeb) {
+      if (Platform.isAndroid) {
+        Uri? appLaunchUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
 
-      if (appLaunchUri != null) {
-        if (appLaunchUri.host == "opened" && appLaunchUri.queryParameters.containsKey("location")
-            && appLaunchUri.queryParameters.containsKey("latlon")) {
+        if (appLaunchUri != null) {
+          if (appLaunchUri.host == "opened" && appLaunchUri.queryParameters.containsKey("location")
+              && appLaunchUri.queryParameters.containsKey("latlon")) {
 
-          if (appLaunchUri.queryParameters["location"] != null && appLaunchUri.queryParameters["latlon"] != null) {
+            if (appLaunchUri.queryParameters["location"] != null && appLaunchUri.queryParameters["latlon"] != null) {
 
-            if (appLaunchUri.queryParameters["location"] == "CurrentLocation") {
-              location = PreferenceUtils.getString('LastKnownPositionName', 'unknown');
-              latLon = PreferenceUtils.getString('LastKnownPositionCord', 'unknown');
-            }
-            else {
-              location = appLaunchUri.queryParameters["location"]!;
-              latLon = appLaunchUri.queryParameters["latlon"]!;
+              if (appLaunchUri.queryParameters["location"] == "CurrentLocation") {
+                location = PreferenceUtils.getString('LastKnownPositionName', 'unknown');
+                latLon = PreferenceUtils.getString('LastKnownPositionCord', 'unknown');
+              }
+              else {
+                location = appLaunchUri.queryParameters["location"]!;
+                latLon = appLaunchUri.queryParameters["latlon"]!;
+              }
             }
           }
         }

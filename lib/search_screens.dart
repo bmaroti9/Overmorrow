@@ -273,6 +273,14 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     });
   }
 
+  _onSearchCleared() async {
+    await Future.delayed(const Duration(milliseconds: 1000));
+    _controller.clear();
+    setState(() {
+      text = "";
+    });
+  }
+
   onSubmitted(String submitted) async {
     if (!isTabletMode) {
       Navigator.pop(context);
@@ -568,13 +576,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                       onSubmitted: (String submission) {
                         HapticFeedback.lightImpact();
                         onSubmitted(submission);
-                        /*
-                        _controller.clear();
-                        setState(() {
-                          text = "";
-                        });
-
-                         */
+                        _onSearchCleared();
                       },
                       cursorWidth: 2,
                       decoration: const InputDecoration(
@@ -604,7 +606,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
                 child: SingleChildScrollView(
                   child: buildRecommend(text, favorites, recommend,
                   updateLocation, onFavChanged, isEditing, locationState, locationMessage, askGrantLocationPermission,
-                  placeName, country, region, placeLatLon, isTabletMode),
+                  placeName, country, region, placeLatLon, isTabletMode, _onSearchCleared),
                 ),
               ),
             ),
@@ -617,7 +619,7 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
 
 Widget buildRecommend(String text, ValueListenable<List<String>> favoritesListen,
     ValueListenable<List<String>> recommend, updateLocation, onFavChanged, isEditing, locationState, locationMessage,
-    askGrantLocationPermission, placeName, country, region, placeLatLon, isTabletMode) {
+    askGrantLocationPermission, placeName, country, region, placeLatLon, isTabletMode, onSearchCleared) {
 
   return ValueListenableBuilder(
     valueListenable: favoritesListen,
@@ -695,14 +697,14 @@ Widget buildRecommend(String text, ValueListenable<List<String>> favoritesListen
         );
       }
       else {
-        return buildSearchResults(favorites, recommend, updateLocation, onFavChanged, isTabletMode);
+        return buildSearchResults(favorites, recommend, updateLocation, onFavChanged, isTabletMode, onSearchCleared);
       }
     }
   );
 }
 
 Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> recommend, updateLocation,
-    onFavChanged, isTabletMode) {
+    onFavChanged, isTabletMode, onSearchCleared) {
   List<String> favoriteNarrow = [];
   for (int i = 0; i < favorites.length; i++) {
     var d = jsonDecode(favorites[i]);
@@ -750,6 +752,9 @@ Widget buildSearchResults(List<String> favorites, ValueListenable<List<String>> 
                               updateLocation(
                                   '${split["lat"]}, ${split["lon"]}',
                                   split["name"]);
+                              if (isTabletMode) {
+                                onSearchCleared();
+                              }
                               if (!isTabletMode) {
                                 Navigator.pop(context);
                               }
