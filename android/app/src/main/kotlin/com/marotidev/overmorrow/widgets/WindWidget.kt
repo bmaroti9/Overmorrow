@@ -73,6 +73,7 @@ class WindWidget : GlanceAppWidget() {
 
         val backColor = getBackColor(backColorString)
         val frontColor = getFrontColor(frontColorString)
+        val isFrontTransparent = frontColorString == "transparent"
         val onFrontColor = getOnFrontColor(frontColorString)
 
         //the bitmaps didn't work either because it was doing too much main thread work
@@ -127,13 +128,15 @@ class WindWidget : GlanceAppWidget() {
                 modifier = GlanceModifier.padding(start = 4.dp, end = 16.dp, top = 16.dp, bottom = 16.dp).wrapContentSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    provider = ImageProvider(R.drawable.shapes_nine_sided_cookie),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(frontColor),
-                    contentScale = ContentScale.Fit,
-                    modifier = GlanceModifier.fillMaxHeight().wrapContentWidth()
-                )
+                if (!isFrontTransparent) {
+                    Image(
+                        provider = ImageProvider(R.drawable.shapes_nine_sided_cookie),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(frontColor),
+                        contentScale = ContentScale.Fit,
+                        modifier = GlanceModifier.fillMaxHeight().wrapContentWidth()
+                    )
+                }
 
                 AndroidRemoteViews(remoteArrowView)
 

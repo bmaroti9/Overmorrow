@@ -4,6 +4,7 @@ import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
@@ -26,6 +27,7 @@ import androidx.glance.text.Text
 
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.cornerRadius
+import androidx.glance.color.ColorProvider
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.ContentScale
@@ -73,6 +75,7 @@ class DateCurrentWidget : GlanceAppWidget() {
 
         val backColor = getBackColor(backColorString)
         val frontColor = getFrontColor(frontColorString)
+        val isFrontTransparent = frontColorString == "transparent"
         val onFrontColor = getOnFrontColor(frontColorString)
 
         val iconResId = getIconForCondition(condition)
@@ -95,13 +98,15 @@ class DateCurrentWidget : GlanceAppWidget() {
                 modifier = GlanceModifier.padding(start = 2.dp).wrapContentSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    provider = ImageProvider(R.drawable.shapes_four_sided_cookie),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(frontColor),
-                    contentScale = ContentScale.Fit,
-                    modifier = GlanceModifier.fillMaxHeight().wrapContentWidth()
-                )
+                if (!isFrontTransparent) {
+                    Image(
+                        provider = ImageProvider(R.drawable.shapes_four_sided_cookie),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(frontColor),
+                        contentScale = ContentScale.Fit,
+                        modifier = GlanceModifier.fillMaxHeight().wrapContentWidth()
+                    )
+                }
 
                 Image(
                     provider = ImageProvider(iconResId),

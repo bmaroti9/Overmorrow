@@ -280,8 +280,8 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         Log.i("selectedBackground", selectedBackgroundOnStartup)
 
         val providers : List<String> = listOf("open-meteo", "weatherapi", "met-norway")
-        val backColors : List<String> = listOf("secondary container", "primary container", "tertiary container", "surface")
-        val frontColors : List<String> = listOf("primary", "secondary", "tertiary")
+        val backColors : List<String> = listOf("secondary container", "primary container", "tertiary container", "surface", "transparent")
+        val frontColors : List<String> = listOf("primary", "secondary", "tertiary", "transparent")
 
         Log.i("Favorite len", favorites.size.toString())
 

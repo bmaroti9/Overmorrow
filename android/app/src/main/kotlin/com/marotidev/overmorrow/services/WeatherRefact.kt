@@ -2,7 +2,9 @@ package com.marotidev.overmorrow.services
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.glance.GlanceTheme
+import androidx.glance.color.ColorProvider
 import androidx.glance.unit.ColorProvider
 import com.marotidev.overmorrow.R
 
@@ -35,6 +37,8 @@ fun getBackColor(colorName: String): ColorProvider {
         "primary container" -> GlanceTheme.colors.primaryContainer
         "tertiary container" -> GlanceTheme.colors.tertiaryContainer
         "surface" -> GlanceTheme.colors.surface
+        "transparent" -> ColorProvider(day = Color.Transparent, night = Color.Transparent)
+
         else -> GlanceTheme.colors.errorContainer
     }
 }
@@ -45,6 +49,8 @@ fun getFrontColor(colorName: String): ColorProvider {
         "primary" -> GlanceTheme.colors.primary
         "secondary" -> GlanceTheme.colors.secondary
         "tertiary" -> GlanceTheme.colors.tertiary
+        "transparent" -> GlanceTheme.colors.onSurface
+
         else -> GlanceTheme.colors.error
     }
 }
@@ -56,6 +62,7 @@ fun getOnFrontColor(colorName: String): ColorProvider {
         "primary" -> GlanceTheme.colors.onPrimary
         "secondary" -> GlanceTheme.colors.onSecondary
         "tertiary" -> GlanceTheme.colors.onTertiary
+        "transparent" -> GlanceTheme.colors.onSurface
         else -> GlanceTheme.colors.onError
     }
 }
