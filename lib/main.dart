@@ -39,6 +39,8 @@ import 'main_ui.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
   if (!kIsWeb) {
     initializeWidgetServices();
   }
@@ -125,14 +127,6 @@ class BuildMaterialApp extends StatelessWidget {
     final textScaleFactor = context.watch<SettingsProvider>().getTextScale;
 
     final EdgeInsets systemGestureInsets = MediaQuery.of(context).systemGestureInsets;
-    if (systemGestureInsets.left > 0) {
-      SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.transparent,
-        ),
-      );
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    }
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -177,7 +171,17 @@ class BuildMaterialApp extends StatelessWidget {
                 }
             )
         ),
-        home: const MyHomePage()
+        home: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: (systemGestureInsets.left > 0)
+              ? const SystemUiOverlayStyle(
+                systemNavigationBarColor: Colors.transparent,
+                statusBarColor: Colors.transparent,
+              )
+              : const SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+              ),
+          child: const MyHomePage()
+        )
     );
   }
 }
@@ -422,5 +426,6 @@ class MyHomePageState extends State<MyHomePage> {
         LoadingIndicator(isLoading: isLoading,)
       ],
     );
+
   }
 }

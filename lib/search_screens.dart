@@ -275,10 +275,12 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
 
   _onSearchCleared() async {
     await Future.delayed(const Duration(milliseconds: 1000));
-    _controller.clear();
-    setState(() {
-      text = "";
-    });
+    if (mounted) {
+      _controller.clear();
+      setState(() {
+        text = "";
+      });
+    }
   }
 
   onSubmitted(String submitted) async {
