@@ -648,7 +648,16 @@ class ProviderSelector extends StatelessWidget {
                 const SizedBox(width: 8,),
                 GestureDetector(
                   onTap: () {
-
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("Coming soon!"),
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
+                      ),
+                    );
                   },
                   child: Container(
                     decoration: BoxDecoration(

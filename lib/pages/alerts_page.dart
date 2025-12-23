@@ -112,7 +112,7 @@ class _AlertsPageState extends State<AlertsPage> {
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   padding: const EdgeInsets.only(left: 7, right: 7, top: 6, bottom: 8),
-                                  child: Icon(Icons.warning_amber, size: 20, color: Theme.of(context).colorScheme.error)
+                                  child: Icon(Icons.warning_amber_rounded, size: 20, color: Theme.of(context).colorScheme.error)
                               ),
                               const SizedBox(width: 15,),
                               Expanded(

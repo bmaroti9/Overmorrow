@@ -126,8 +126,8 @@ class ColorsOnImage {
     bool descUnique = surfaceDif >= minimumContrast;
 
     //predefined list of colors in order that still match the color scheme
-    final colorList = [palette.tertiaryFixedDim, palette.primaryFixedDim, palette.surface,
-      palette.secondaryContainer, palette.tertiary, palette.onSurface];
+    final colorList = [palette.tertiaryFixedDim, palette.primaryFixedDim,
+      palette.secondaryFixedDim, palette.surface,];
 
     Color bestColor = Colors.black;
     int bestDif = 0;

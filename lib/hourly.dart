@@ -162,6 +162,7 @@ Widget hourlyDataBuilder(hour, elevated, childWidget, context) {
             position: offsetAnimation,
             child: GestureDetector(
               onTap: () {
+                /*
                 HapticFeedback.lightImpact();
                 showModalBottomSheet<void>(
                   context: context,
@@ -171,6 +172,7 @@ Widget hourlyDataBuilder(hour, elevated, childWidget, context) {
                     return HourlyBottomSheet(hour: hour);
                   },
                 );
+                 */
               },
               child: Container(
                 padding: const EdgeInsets.only(top: 7, bottom: 5),
