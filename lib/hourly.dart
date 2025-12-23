@@ -254,7 +254,7 @@ class HourlySum extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 1),
               child: Icon(Icons.umbrella, size: 14, color: Theme.of(context).colorScheme.tertiary),
             ),
-            Text("${hour.precipProb}%",
+            Text(hour.precipProb != null ? "${hour.precipProb}%" : "--",
               style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 13, fontWeight: FontWeight.w600),)
           ],
         ),
@@ -299,7 +299,7 @@ class HourlyPrecip extends StatelessWidget {
               //this seems to be falsely depreciated, wrapping it in the CircularProgressIndicatorTheme
               //as instructed also trows the same exception
               year2023: false,
-              value: hour.precipProb / 100,
+              value: (hour.precipProb ?? 0) / 100,
               strokeWidth: 3.5,
               backgroundColor: Theme.of(context).colorScheme.outlineVariant,
               color: Theme.of(context).colorScheme.secondary,
@@ -314,7 +314,7 @@ class HourlyPrecip extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 1),
               child: Icon(Icons.umbrella, size: 14, color: Theme.of(context).colorScheme.tertiary),
             ),
-            Text("${hour.precipProb}%",
+            Text(hour.precipProb != null ? "${hour.precipProb}%" : "--",
               style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 13, fontWeight: FontWeight.w600),)
           ],
         ),
@@ -354,10 +354,11 @@ class HourlyWind extends StatelessWidget {
           ],
         ),
 
-        Transform.rotate(
-            angle: (hour.windDirA + 180) * pi / 180,
+        
+        if (hour.windDirA != null ) Transform.rotate(
+            angle: (hour.windDirA! + 180) * pi / 180,
             child: const Icon(Icons.navigation_outlined, size: 19,)
-        ),
+        ) else const Icon(Icons.near_me_disabled_outlined, size: 19,),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -366,11 +367,12 @@ class HourlyWind extends StatelessWidget {
             Icon(Icons.trending_up, size: 13, color: Theme.of(context).colorScheme.tertiary),
             Padding(
                 padding: const EdgeInsets.only(left: 2),
-                child: Text("${unitConversion(hour.windGustKph, windUnit, decimals: 0)}",
+                child: Text(
+                  hour.windGustKph != null ? "${unitConversion(hour.windGustKph!, windUnit, decimals: 0)}" : "--",
                   style: TextStyle(color: Theme.of(context).colorScheme.tertiary,
                       fontSize: 14, fontWeight: FontWeight.w600, height: 1.2),)
             ),
-            Text(windUnit, style: TextStyle(color: Theme.of(context).colorScheme.tertiary,
+            if (hour.windGustKph != null) Text(windUnit, style: TextStyle(color: Theme.of(context).colorScheme.tertiary,
                 fontSize: 9, fontWeight: FontWeight.w600),)
           ],
         ),
@@ -384,7 +386,7 @@ class HourlyWind extends StatelessWidget {
 
 
 class HourlyUv extends StatelessWidget {
-  final hour;
+  final WeatherHour hour;
 
   const HourlyUv({super.key, required this.hour});
 
@@ -399,7 +401,8 @@ class HourlyUv extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('${hour.uv}', style: TextStyle(color: Theme.of(context).colorScheme.primary,
+            Text(hour.uv != null ? '${hour.uv}' : "--",
+                style: TextStyle(color: Theme.of(context).colorScheme.primary,
                 fontSize: 19, fontWeight: FontWeight.w600, height: 1.2)),
             Text('UV', style: TextStyle(color: Theme.of(context).colorScheme.primary,
                 fontSize: 10, fontWeight: FontWeight.w600),)
@@ -414,7 +417,7 @@ class HourlyUv extends StatelessWidget {
               itemCount: 10,
               itemExtent: 6.5,
               itemBuilder: (BuildContext context, int index) {
-                if (index < min(max(10 - hour.uv, 0), 10)) {
+                if (index < min(max(10 - (hour.uv ?? 0), 0), 10)) {
                   return Center(
                     child: Container(
                       width: 15,

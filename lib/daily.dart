@@ -30,7 +30,7 @@ import 'package:provider/provider.dart';
 import 'l10n/app_localizations.dart';
 
 
-Widget dayStat(IconData icon, number, addon, context, {addWind = false, windDir = 0, iconSize = 16.0}) {
+Widget dayStat(IconData icon, num? number, addon, context, {int? windDir, iconSize = 16.0}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -40,14 +40,15 @@ Widget dayStat(IconData icon, number, addon, context, {addWind = false, windDir 
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 4),
-            child: Text(number.toString(), style: TextStyle(
-                color: Theme.of(context).colorScheme.onSecondaryContainer, fontSize: 17),),
+            child: Text(number != null ? number.toString() : "--",
+              style: TextStyle(
+              color: Theme.of(context).colorScheme.onSecondaryContainer, fontSize: 17),),
           ),
-          Text(addon, style: TextStyle(
+          if (number != null) Text(addon, style: TextStyle(
               color: Theme.of(context).colorScheme.onSecondaryContainer, fontSize: 15),),
         ],
       ),
-      if (addWind) Padding(
+      if (windDir != null) Padding(
           padding: const EdgeInsets.only(left: 5, right: 3),
           child: RotationTransition(
               turns: AlwaysStoppedAnimation(windDir / 360),
@@ -421,7 +422,6 @@ class DailyExpanded extends StatelessWidget {
                   unitConversion(day.windKph, context.select((SettingsProvider p) => p.getWindUnit), decimals: 1),
                   context.select((SettingsProvider p) => p.getWindUnit),
                   context,
-                  addWind: true,
                   windDir: day.windDirA
                 ),
                 dayStat(
