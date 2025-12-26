@@ -486,6 +486,24 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get showLess => '隐藏更多';
+
+  @override
+  String get cold => 'cold';
+
+  @override
+  String get hot => 'hot';
+
+  @override
+  String get calm => 'calm';
+
+  @override
+  String get severe => 'severe';
+
+  @override
+  String get low => 'low';
+
+  @override
+  String get high => 'high';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).

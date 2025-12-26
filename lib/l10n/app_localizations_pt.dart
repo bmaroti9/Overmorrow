@@ -492,6 +492,24 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get showLess => 'mostrar menos';
+
+  @override
+  String get cold => 'cold';
+
+  @override
+  String get hot => 'hot';
+
+  @override
+  String get calm => 'calm';
+
+  @override
+  String get severe => 'severe';
+
+  @override
+  String get low => 'low';
+
+  @override
+  String get high => 'high';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).

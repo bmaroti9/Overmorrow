@@ -492,4 +492,22 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get showLess => 'show less';
+
+  @override
+  String get cold => 'cold';
+
+  @override
+  String get hot => 'hot';
+
+  @override
+  String get calm => 'calm';
+
+  @override
+  String get severe => 'severe';
+
+  @override
+  String get low => 'low';
+
+  @override
+  String get high => 'high';
 }

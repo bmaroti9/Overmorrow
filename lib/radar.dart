@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:intl/intl.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:latlong2/latlong.dart';
@@ -325,32 +326,32 @@ class _RadarBigState extends State<RadarBig> {
     const Color(0xFFffaaff), const Color(0xFFff77ff), const Color(0xFFff00ff),
   ];
 
-  static List<Color> tempColors = [
-    const Color(0xFF000080), const Color(0xFF0033CC), const Color(0xFF0088FF),
-    const Color(0xFF00DDEE), const Color(0xFF88FFFF), const Color(0xFF88FF88),
-    const Color(0xFF00DD00), const Color(0xFFFFFF00), const Color(0xFFFFAA00),
-    const Color(0xFFFF6600), const Color(0xFFFF0000),
-  ];
-
-  static List<Color> windColors = [
+  static Map<String, List<Color>> layerToScale = {
+    "precip": [
+      const Color(0xFFBFE1FF), const Color(0xFF44A4FF), const Color(0xFF2096FF),
+      const Color(0xFF028DFD), const Color(0xFF57A0A8), const Color(0xFFABB454),
+      const Color(0xFFFFC800), const Color(0xFFFFB400), const Color(0xFFFFA000),
+      const Color(0xFFFF8D00), const Color(0xFFFF7900), const Color(0xFFFF6500),
+      const Color(0xFFFF5100),
+    ],
+    "temp": [
+      const Color(0xFF000080), const Color(0xFF0033CC), const Color(0xFF0088FF),
+      const Color(0xFF00DDEE), const Color(0xFF88FFFF), const Color(0xFF88FF88),
+      const Color(0xFF00DD00), const Color(0xFFFFFF00), const Color(0xFFFFAA00),
+      const Color(0xFFFF6600), const Color(0xFFFF0000),
+    ],
+    "wind": [
     const Color(0xFFFFFFFF), const Color(0xFFBBEEFF), const Color(0xFF77CCFF),
     const Color(0xFF3399FF), const Color(0xFF0066FF), const Color(0xFF558844),
     const Color(0xFFFFDD00), const Color(0xFFFF8800), const Color(0xFFFF0000),
     const Color(0xFFCC0033), const Color(0xFF880066),
-  ];
-
-  static List<Color> pressureColors = [
-    const Color(0xFF880088), const Color(0xFFAA00CC), const Color(0xFF6600DD),
-    const Color(0xFF0044FF), const Color(0xFF0099FF), const Color(0xFF66CCFF),
-    const Color(0xFFDDFFEE), const Color(0xFFFFEE88), const Color(0xFFFFAA44),
-    const Color(0xFFFF4422),
-  ];
-
-  static Map<String, String> layerToUlr = {
-    "precip": "https://weathermaps.weatherapi.com/precip/tiles/2025112115/{z}/{x}/{y}.png",
-    "temp": "https://weathermaps.weatherapi.com/tmp2m/tiles/2025112115/{z}/{x}/{y}.png",
-    "wind": "https://weathermaps.weatherapi.com/wind/tiles/2025112115/{z}/{x}/{y}.png",
-    "pressure": "https://weathermaps.weatherapi.com/pressure/tiles/2025112115/{z}/{x}/{y}.png",
+    ],
+    "pressure": [
+      const Color(0xFF880088), const Color(0xFFAA00CC), const Color(0xFF6600DD),
+      const Color(0xFF0044FF), const Color(0xFF0099FF), const Color(0xFF66CCFF),
+      const Color(0xFFDDFFEE), const Color(0xFFFFEE88), const Color(0xFFFFAA44),
+      const Color(0xFFFF4422),
+    ],
   };
 
   static List<String> layerOptions = ["precip", "temp", "wind", "pressure"];
@@ -410,10 +411,33 @@ class _RadarBigState extends State<RadarBig> {
 
     String mode = context.watch<ThemeProvider>().getBrightness;
 
+    String formattedDate = DateFormat('yyyyMMddHH').format(DateTime.now());
+
     if (mode == "auto") {
       var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
       mode = brightness == Brightness.dark ? "dark" : "light";
     }
+
+    Map<String, String> layerToUlr = {
+      "precip": "https://weathermaps.weatherapi.com/precip/tiles/$formattedDate/{z}/{x}/{y}.png",
+      "temp": "https://weathermaps.weatherapi.com/tmp2m/tiles/$formattedDate/{z}/{x}/{y}.png",
+      "wind": "https://weathermaps.weatherapi.com/wind/tiles/$formattedDate/{z}/{x}/{y}.png",
+      "pressure": "https://weathermaps.weatherapi.com/pressure/tiles/$formattedDate/{z}/{x}/{y}.png",
+    };
+
+    Map<String, String> radarLowText = {
+      "precip": AppLocalizations.of(context)!.light,
+      "temp": AppLocalizations.of(context)!.cold,
+      "wind": AppLocalizations.of(context)!.low,
+      "pressure": AppLocalizations.of(context)!.low,
+    };
+
+    Map<String, String> radarHighText = {
+      "precip": AppLocalizations.of(context)!.heavy,
+      "temp": AppLocalizations.of(context)!.hot,
+      "wind": AppLocalizations.of(context)!.severe,
+      "pressure": AppLocalizations.of(context)!.high,
+    };
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -488,19 +512,19 @@ class _RadarBigState extends State<RadarBig> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(AppLocalizations.of(context)!.light, style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface, fontSize: 16),),
+                        Text(radarLowText[selectedLayer]!, style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface, fontSize: 16),),
                         Padding(
                           padding: const EdgeInsets.only(left: 8, right: 8),
                           child: Row(
-                              children: List<Widget>.generate(radarColors.length, (int index) {
+                              children: List<Widget>.generate(layerToScale[selectedLayer]!.length, (int index) {
                                 return Container(
                                   width: 10,
                                   height: 15,
                                   decoration: BoxDecoration(
-                                      color: radarColors[index],
+                                      color: layerToScale[selectedLayer]![index],
                                       borderRadius: index == 0
                                           ? const BorderRadius.only(topLeft: Radius.circular(7), bottomLeft: Radius.circular(7))
-                                          : index == (radarColors.length - 1)
+                                          : index == (layerToScale[selectedLayer]!.length - 1)
                                           ? const BorderRadius.only(topRight: Radius.circular(7), bottomRight: Radius.circular(7))
                                           : BorderRadius.circular(0)
 
@@ -509,7 +533,7 @@ class _RadarBigState extends State<RadarBig> {
                               })
                           ),
                         ),
-                        Text(AppLocalizations.of(context)!.heavy, style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface, fontSize: 16),),
+                        Text(radarHighText[selectedLayer]!, style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface, fontSize: 16),),
                       ],
                     ),
                   ),

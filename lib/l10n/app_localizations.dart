@@ -1007,6 +1007,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'show less'**
   String get showLess;
+
+  /// No description provided for @cold.
+  ///
+  /// In en, this message translates to:
+  /// **'cold'**
+  String get cold;
+
+  /// No description provided for @hot.
+  ///
+  /// In en, this message translates to:
+  /// **'hot'**
+  String get hot;
+
+  /// No description provided for @calm.
+  ///
+  /// In en, this message translates to:
+  /// **'calm'**
+  String get calm;
+
+  /// No description provided for @severe.
+  ///
+  /// In en, this message translates to:
+  /// **'severe'**
+  String get severe;
+
+  /// No description provided for @low.
+  ///
+  /// In en, this message translates to:
+  /// **'low'**
+  String get low;
+
+  /// No description provided for @high.
+  ///
+  /// In en, this message translates to:
+  /// **'high'**
+  String get high;
 }
 
 class _AppLocalizationsDelegate
