@@ -246,7 +246,7 @@
     "@precipitaion": {},
     "helpTranslate": "帮助翻译",
     "@helpTranslate": {},
-    "poweredByOpenMeteo": "由 open-meteo 驱动",
+    "poweredByOpenMeteo": "open-meteo 提供气象支持",
     "@poweredByOpenMeteo": {
         "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
     },
