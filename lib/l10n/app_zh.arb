@@ -371,5 +371,17 @@
         }
     },
     "updatedXMinutesAgo": "{minutes}分钟前更新",
-    "@updatedXMinutesAgo": {}
+    "@updatedXMinutesAgo": {},
+    "cold": "冷",
+    "@cold": {},
+    "hot": "热",
+    "@hot": {},
+    "calm": "平静",
+    "@calm": {},
+    "severe": "剧烈",
+    "@severe": {},
+    "low": "低",
+    "@low": {},
+    "high": "高",
+    "@high": {}
 }
