@@ -11,6 +11,8 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.Keep
+import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,17 +22,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -48,12 +52,16 @@ import es.antonborri.home_widget.HomeWidgetPlugin
 import kotlinx.coroutines.launch
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.glance.GlanceId
-import androidx.glance.GlanceModifier
 import androidx.glance.appwidget.GlanceAppWidget
 import com.marotidev.overmorrow.OvermorrowTheme
 import com.marotidev.overmorrow.R
+import com.marotidev.overmorrow.services.getBackColor
 import com.marotidev.overmorrow.widgets.CurrentWidget
 import com.marotidev.overmorrow.widgets.DateCurrentWidget
 import com.marotidev.overmorrow.widgets.ForecastWidget
@@ -413,6 +421,49 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                                 ),
                                 modifier = Modifier.padding(start = 16.dp)
                             )
+                        }
+                    }
+
+                    Row(
+                        Modifier.horizontalScroll(rememberScrollState()),
+                    ) {
+                        backColors.forEach { backColor ->
+                            Column (
+                                Modifier
+                                    .width(100.dp)
+                                    .clip(RoundedCornerShape(20.dp))
+                                    .selectable(
+                                        selected = (backColor == selectedBackground.value),
+                                        onClick = {
+                                            selectedBackground.value = backColor
+                                            saveBackColorPref(applicationContext, appWidgetId, backColor)
+                                        },
+                                        role = Role.RadioButton
+                                    )
+                                    .background(color = MaterialTheme.colorScheme.surfaceContainer),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                RadioButton(
+                                    modifier = Modifier.padding(start = 12.dp, end = 12.dp),
+                                    selected = (backColor == selectedBackground.value),
+                                    onClick = null // null recommended for accessibility with screen readers
+                                )
+                                Box(
+                                    Modifier.size(40.dp, 40.dp)
+                                        .clip(RoundedCornerShape(percent = 50))
+                                        .background(color = getBackColor(backColor)
+                                            .getColor(context = applicationContext))
+                                )
+                                Text(
+                                    text = backColor,
+                                    style = TextStyle(
+                                        fontSize = 12.sp,
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        textAlign = TextAlign.Center
+                                    ),
+                                    modifier = Modifier.padding(end = 12.dp, start = 12.dp)
+                                )
+                            }
                         }
                     }
 

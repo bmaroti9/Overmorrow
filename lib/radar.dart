@@ -460,6 +460,7 @@ class _RadarBigState extends State<RadarBig> {
             ),
             children: [
               TileLayer(
+                tileProvider: NetworkTileProvider(abortObsoleteRequests: true),
                 urlTemplate: mode == "dark"
                     ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                     : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
@@ -485,6 +486,7 @@ class _RadarBigState extends State<RadarBig> {
                 },
               ),
               TileLayer(
+                tileProvider: NetworkTileProvider(abortObsoleteRequests: true),
                 urlTemplate: mode == "dark"
                     ? 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png'
                     : 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
