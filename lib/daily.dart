@@ -280,7 +280,7 @@ class DailyCollapsed extends StatelessWidget {
                             height: 16,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: Theme.of(context).colorScheme.secondaryFixedDim
+                                color: Theme.of(context).colorScheme.primaryFixedDim
                             ),
                           ),
                         );

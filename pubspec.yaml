@@ -44,7 +44,7 @@ dependencies:
 
   expressive_loading_indicator: ^0.0.1
   flutter_cache_manager: ^3.4.1
-  flutter_map: ^8.1.1
+  flutter_map: ^8.2.2
   stretchy_header: ^2.0.0
   cached_network_image: ^3.4.1
 

@@ -357,28 +357,41 @@ class _RadarBigState extends State<RadarBig> {
   static List<String> layerOptions = ["precip", "temp", "wind", "pressure"];
   String selectedLayer = layerOptions[0];
 
-  double currentFrameIndex = 0;
+  final ValueNotifier<double> _frameNotifier = ValueNotifier<double>(0);
   late Timer timer;
 
   bool hasBeenPlayed = false;
 
   bool isPlaying = false;
 
+  String timeLayerToUrl(DateTime time) {
+    String formattedDate = DateFormat('yyyyMMddHH').format(time);
+    return {
+      "precip": "https://weathermaps.weatherapi.com/precip/tiles/$formattedDate/{z}/{x}/{y}.png",
+      "temp": "https://weathermaps.weatherapi.com/tmp2m/tiles/$formattedDate/{z}/{x}/{y}.png",
+      "wind": "https://weathermaps.weatherapi.com/wind/tiles/$formattedDate/{z}/{x}/{y}.png",
+      "pressure": "https://weathermaps.weatherapi.com/pressure/tiles/$formattedDate/{z}/{x}/{y}.png",
+    }[selectedLayer]!;
+  }
+
   @override
   void initState() {
     super.initState();
 
-    currentFrameIndex = widget.data.radar.startingIndex * 1.0;
+    _frameNotifier.value = widget.data.radar.startingIndex * 1.0;
 
     timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer t) {
       if (isPlaying) {
         if (widget.radarHapticsOn) {
           HapticFeedback.selectionClick();
         }
-        setState(() {
-          currentFrameIndex =
-          ((currentFrameIndex + 1) % (widget.data.radar.images.length - 1));
-        });
+        //setState(() {
+          //currentFrameIndex =
+          //((currentFrameIndex + 1) % (widget.data.radar.images.length - 1));
+        //});
+
+        double nextFrame = (_frameNotifier.value + 1) % 72;
+        _frameNotifier.value = nextFrame;
       }
     });
   }
@@ -386,6 +399,7 @@ class _RadarBigState extends State<RadarBig> {
   @override
   void dispose() {
     timer.cancel();
+    _frameNotifier.dispose();
     super.dispose();
   }
 
@@ -398,7 +412,7 @@ class _RadarBigState extends State<RadarBig> {
     else {
       setState(() {
         hasBeenPlayed = true;
-        currentFrameIndex = 0;
+        _frameNotifier.value = 0;
         isPlaying = !isPlaying;
       });
     }
@@ -411,19 +425,10 @@ class _RadarBigState extends State<RadarBig> {
 
     String mode = context.watch<ThemeProvider>().getBrightness;
 
-    String formattedDate = DateFormat('yyyyMMddHH').format(DateTime.now());
-
     if (mode == "auto") {
       var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
       mode = brightness == Brightness.dark ? "dark" : "light";
     }
-
-    Map<String, String> layerToUlr = {
-      "precip": "https://weathermaps.weatherapi.com/precip/tiles/$formattedDate/{z}/{x}/{y}.png",
-      "temp": "https://weathermaps.weatherapi.com/tmp2m/tiles/$formattedDate/{z}/{x}/{y}.png",
-      "wind": "https://weathermaps.weatherapi.com/wind/tiles/$formattedDate/{z}/{x}/{y}.png",
-      "pressure": "https://weathermaps.weatherapi.com/pressure/tiles/$formattedDate/{z}/{x}/{y}.png",
-    };
 
     Map<String, String> radarLowText = {
       "precip": AppLocalizations.of(context)!.light,
@@ -465,12 +470,19 @@ class _RadarBigState extends State<RadarBig> {
                 tileDisplay: const TileDisplay.instantaneous(),
               ),
                */
-              Opacity(
-                opacity: 0.7,
-                child: TileLayer(
-                  urlTemplate: layerToUlr[selectedLayer],
-                  tileDisplay: const TileDisplay.instantaneous(),
-                ),
+              ValueListenableBuilder<double>(
+                valueListenable: _frameNotifier,
+                builder: (context, frameIndex, child) {
+                  return Opacity(
+                    opacity: 0.7,
+                    child: TileLayer(
+                      tileProvider: NetworkTileProvider(abortObsoleteRequests: true),
+                      urlTemplate: timeLayerToUrl(DateTime.now().add(Duration(hours: frameIndex.toInt()))),
+                      tileDisplay: const TileDisplay.instantaneous(),
+                      key: ValueKey('radar_$frameIndex'),
+                    ),
+                  );
+                },
               ),
               TileLayer(
                 urlTemplate: mode == "dark"
@@ -592,11 +604,12 @@ class _RadarBigState extends State<RadarBig> {
                                     year2023: false,
                                   ),
                                   child: Slider(
-                                    value: currentFrameIndex,
+                                    value: _frameNotifier.value,
                                     min: 0,
-                                    max: widget.data.radar.times.length - 1.0,
-                                    divisions: widget.data.radar.times.length,
-                                    label: convertTime(widget.data.radar.times[currentFrameIndex.toInt()], context),
+                                    max: 71,
+                                    divisions: 71,
+                                    //label: convertTime(widget.data.radar.times[currentFrameIndex.toInt()], context),
+                                    label: timeLayerToUrl(DateTime.now().add(Duration(hours: _frameNotifier.value.toInt()))),
 
                                     padding: const EdgeInsets.symmetric(horizontal: 15),
 
@@ -606,7 +619,7 @@ class _RadarBigState extends State<RadarBig> {
                                       }
                                       setState(() {
                                         hasBeenPlayed = true;
-                                        currentFrameIndex = value;
+                                        _frameNotifier.value = value;
                                       });
                                     },
                                   ),
