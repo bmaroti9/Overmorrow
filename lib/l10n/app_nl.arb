@@ -344,5 +344,17 @@
     "urgency": "Urgentie",
     "@urgency": {},
     "weatherDataLowercase": "Weer­gegevens",
-    "@weatherDataLowercase": {}
+    "@weatherDataLowercase": {},
+    "cold": "Koud",
+    "@cold": {},
+    "hot": "Heet",
+    "@hot": {},
+    "calm": "Kalm",
+    "@calm": {},
+    "severe": "Ernstig",
+    "@severe": {},
+    "low": "Laag",
+    "@low": {},
+    "high": "Hoog",
+    "@high": {}
 }
