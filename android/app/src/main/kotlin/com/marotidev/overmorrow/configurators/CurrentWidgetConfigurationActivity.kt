@@ -12,11 +12,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.Keep
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,8 +28,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Icon
@@ -62,6 +68,7 @@ import androidx.glance.appwidget.GlanceAppWidget
 import com.marotidev.overmorrow.OvermorrowTheme
 import com.marotidev.overmorrow.R
 import com.marotidev.overmorrow.services.getBackColor
+import com.marotidev.overmorrow.services.getFrontColor
 import com.marotidev.overmorrow.widgets.CurrentWidget
 import com.marotidev.overmorrow.widgets.DateCurrentWidget
 import com.marotidev.overmorrow.widgets.ForecastWidget
@@ -253,6 +260,11 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         }
     }
 
+    fun isColorDark(color: Color): Boolean {
+        val luminance = (0.299 * color.red + 0.587 * color.green + 0.114 * color.blue)
+        return luminance < 0.5
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -424,49 +436,6 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                         }
                     }
 
-                    Row(
-                        Modifier.horizontalScroll(rememberScrollState()),
-                    ) {
-                        backColors.forEach { backColor ->
-                            Column (
-                                Modifier
-                                    .width(100.dp)
-                                    .clip(RoundedCornerShape(20.dp))
-                                    .selectable(
-                                        selected = (backColor == selectedBackground.value),
-                                        onClick = {
-                                            selectedBackground.value = backColor
-                                            saveBackColorPref(applicationContext, appWidgetId, backColor)
-                                        },
-                                        role = Role.RadioButton
-                                    )
-                                    .background(color = MaterialTheme.colorScheme.surfaceContainer),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                RadioButton(
-                                    modifier = Modifier.padding(start = 12.dp, end = 12.dp),
-                                    selected = (backColor == selectedBackground.value),
-                                    onClick = null // null recommended for accessibility with screen readers
-                                )
-                                Box(
-                                    Modifier.size(40.dp, 40.dp)
-                                        .clip(RoundedCornerShape(percent = 50))
-                                        .background(color = getBackColor(backColor)
-                                            .getColor(context = applicationContext))
-                                )
-                                Text(
-                                    text = backColor,
-                                    style = TextStyle(
-                                        fontSize = 12.sp,
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                        textAlign = TextAlign.Center
-                                    ),
-                                    modifier = Modifier.padding(end = 12.dp, start = 12.dp)
-                                )
-                            }
-                        }
-                    }
-
                     Text(
                         text = "Background color",
                         style = TextStyle(
@@ -476,34 +445,73 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                         modifier = Modifier.padding(start = 16.dp, top = 24.dp, bottom = 4.dp)
                     )
 
-                    backColors.forEach { backColor ->
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .height(46.dp)
-                                .selectable(
-                                    selected = (backColor == selectedBackground.value),
-                                    onClick = {
-                                        selectedBackground.value = backColor
-                                        saveBackColorPref(applicationContext, appWidgetId, backColor)
-                                    },
-                                    role = Role.RadioButton
+                    Row(
+                        Modifier.horizontalScroll(rememberScrollState())
+                            .height(IntrinsicSize.Max)
+                    ) {
+                        backColors.forEach { backColor ->
+                            val isSelected = backColor == selectedBackground.value
+                            val colorValue = getBackColor(backColor).getColor(context = applicationContext)
+
+                            Column(
+                                Modifier
+                                    .width(80.dp)
+                                    .fillMaxHeight()
+                                    .padding(vertical = 8.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .selectable(
+                                        selected = isSelected,
+                                        onClick = {
+                                            selectedBackground.value = backColor
+                                            saveBackColorPref(applicationContext, appWidgetId, backColor)
+                                        },
+                                        role = Role.RadioButton
+                                    )
+                                    .background(
+                                        if (isSelected) MaterialTheme.colorScheme.surfaceVariant
+                                        else Color.Transparent
+                                    ),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Box(
+                                    contentAlignment = Alignment.Center, // Centers the Checkmark
+                                    modifier = Modifier
+                                        .padding(top = 12.dp)
+                                        .size(48.dp)
+                                        .clip(CircleShape)
+                                        .background(colorValue)
+                                        .border(
+                                            width = 2.dp,
+                                            color = if (isSelected) MaterialTheme.colorScheme.primary
+                                            else MaterialTheme.colorScheme.outlineVariant,
+                                            shape = CircleShape
+                                        )
+                                ) {
+                                    if (backColor == "transparent") {
+                                        Icon(
+                                            painter = painterResource(R.drawable.icon_block),
+                                            tint = MaterialTheme.colorScheme.error,
+                                            contentDescription = "transparent",
+                                            modifier = Modifier.size(30.dp)
+                                        )
+                                    } else if (isSelected) {
+                                        Icon(
+                                            imageVector = Icons.Default.Check,
+                                            contentDescription = "Selected",
+                                            tint = if (isColorDark(colorValue)) Color.White else Color.Black,
+                                            modifier = Modifier.size(24.dp)
+                                        )
+                                    }
+                                }
+
+                                Text(
+                                    text = backColor,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 4.dp),
+                                    textAlign = TextAlign.Center
                                 )
-                                .padding(horizontal = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = (backColor == selectedBackground.value),
-                                onClick = null // null recommended for accessibility with screen readers
-                            )
-                            Text(
-                                text = backColor,
-                                style = TextStyle(
-                                    fontSize = 18.sp,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                ),
-                                modifier = Modifier.padding(start = 16.dp)
-                            )
+                            }
                         }
                     }
 
@@ -516,34 +524,75 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                         modifier = Modifier.padding(start = 16.dp, top = 24.dp, bottom = 4.dp)
                     )
 
-                    frontColors.forEach { frontColor ->
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .height(46.dp)
-                                .selectable(
-                                    selected = (frontColor == selectedForeground.value),
-                                    onClick = {
-                                        selectedForeground.value = frontColor
-                                        saveFrontColorPref(applicationContext, appWidgetId, frontColor)
-                                    },
-                                    role = Role.RadioButton
+                    Row(
+                        Modifier.horizontalScroll(rememberScrollState())
+                            .height(IntrinsicSize.Max)
+                    ) {
+                        frontColors.forEach { frontColor ->
+                            val isSelected = frontColor == selectedForeground.value
+                            val colorValue = getFrontColor(frontColor).getColor(context = applicationContext)
+
+                            Column(
+                                Modifier
+                                    .width(80.dp)
+                                    .fillMaxHeight()
+                                    .padding(vertical = 8.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .selectable(
+                                        selected = isSelected,
+                                        onClick = {
+                                            selectedForeground.value = frontColor
+                                            saveFrontColorPref(applicationContext, appWidgetId, frontColor)
+                                        },
+                                        role = Role.RadioButton
+                                    )
+                                    .background(
+                                        if (isSelected) MaterialTheme.colorScheme.surfaceVariant
+                                        else Color.Transparent
+                                    ),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Box(
+                                    contentAlignment = Alignment.Center,
+                                    modifier = Modifier
+                                        .padding(top = 12.dp)
+                                        .size(48.dp)
+                                        .clip(CircleShape)
+                                        .then(if(frontColor == "transparent")
+                                            Modifier.background(color = Color.Transparent)
+                                            else Modifier.background(colorValue))
+                                        .border(
+                                            width = 2.dp,
+                                            color = if (isSelected) MaterialTheme.colorScheme.primary
+                                            else MaterialTheme.colorScheme.outlineVariant,
+                                            shape = CircleShape
+                                        )
+                                ) {
+                                    if (frontColor == "transparent") {
+                                        Icon(
+                                            painter = painterResource(R.drawable.icon_block),
+                                            tint = MaterialTheme.colorScheme.error,
+                                            contentDescription = "transparent",
+                                            modifier = Modifier.size(30.dp)
+                                        )
+                                    } else if (isSelected) {
+                                        Icon(
+                                            imageVector = Icons.Default.Check,
+                                            contentDescription = "Selected",
+                                            tint = if (isColorDark(colorValue)) Color.White else Color.Black,
+                                            modifier = Modifier.size(24.dp)
+                                        )
+                                    }
+                                }
+
+                                Text(
+                                    text = frontColor,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 4.dp),
+                                    textAlign = TextAlign.Center
                                 )
-                                .padding(horizontal = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = (frontColor == selectedForeground.value),
-                                onClick = null // null recommended for accessibility with screen readers
-                            )
-                            Text(
-                                text = frontColor,
-                                style = TextStyle(
-                                    fontSize = 18.sp,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                ),
-                                modifier = Modifier.padding(start = 16.dp)
-                            )
+                            }
                         }
                     }
 
@@ -560,4 +609,5 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
             }
         }
     }
+
 }
