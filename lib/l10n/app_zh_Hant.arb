@@ -344,5 +344,17 @@
         }
     },
     "overmorrowLowercase": "後天",
-    "@overmorrowLowercase": {}
+    "@overmorrowLowercase": {},
+    "cold": "冷",
+    "@cold": {},
+    "hot": "熱",
+    "@hot": {},
+    "calm": "晴朗無風",
+    "@calm": {},
+    "severe": "惡劣",
+    "@severe": {},
+    "low": "低",
+    "@low": {},
+    "high": "高",
+    "@high": {}
 }
