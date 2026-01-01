@@ -495,20 +495,20 @@ class AppLocalizationsNl extends AppLocalizations {
   String get showLess => 'Minder tonen';
 
   @override
-  String get cold => 'cold';
+  String get cold => 'Koud';
 
   @override
-  String get hot => 'hot';
+  String get hot => 'Heet';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'Kalm';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'Ernstig';
 
   @override
-  String get low => 'low';
+  String get low => 'Laag';
 
   @override
-  String get high => 'high';
+  String get high => 'Hoog';
 }

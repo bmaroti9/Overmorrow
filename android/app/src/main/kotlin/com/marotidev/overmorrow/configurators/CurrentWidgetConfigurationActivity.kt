@@ -34,6 +34,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -60,7 +61,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -310,7 +313,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         setContent {
             OvermorrowTheme {
 
-                val selectedFavorite : MutableState<String?> = remember { mutableStateOf(selectedPlaceOnStartup) }
+                val selectedLocation : MutableState<String?> = remember { mutableStateOf(selectedPlaceOnStartup) }
                 val selectedProvider : MutableState<String?> = remember { mutableStateOf(selectedProviderOnStartup) }
                 val selectedBackground : MutableState<String?> = remember { mutableStateOf(selectedBackgroundOnStartup) }
                 val selectedForeground : MutableState<String?> = remember { mutableStateOf(selectedForegroundOnStartup) }
@@ -335,17 +338,18 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
 
                     Card(
                         onClick = {
-                            selectedFavorite.value = "CurrentLocation"
+                            selectedLocation.value = "CurrentLocation"
                             saveLocationPref(applicationContext, appWidgetId,  "CurrentLocation", null)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 2.dp),
                         colors = CardDefaults.cardColors(
-                            containerColor = if ("CurrentLocation" == selectedFavorite.value) MaterialTheme.colorScheme.primaryContainer
+                            containerColor = if ("CurrentLocation" == selectedLocation.value) MaterialTheme.colorScheme.primaryContainer
                             else MaterialTheme.colorScheme.surfaceContainer
                         ),
-                        shape = RoundedCornerShape(10.dp)
+                        shape = RoundedCornerShape(10.dp),
+                        enabled = lastKnownLocation != "unknown"
                     ) {
                         Row(
                             Modifier.padding(12.dp),
@@ -357,7 +361,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                                 modifier = Modifier.weight(1f),
                                 style = MaterialTheme.typography.bodyLarge
                             )
-                            if ("CurrentLocation" == selectedFavorite.value) {
+                            if ("CurrentLocation" == selectedLocation.value) {
                                 Icon(
                                     Icons.Default.Check,
                                     contentDescription = null,
@@ -370,10 +374,10 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                     CurrentLocationUnavailableText(lastKnownLocation)
 
                     favorites.forEach { favorite ->
-                        val isSelected = (favorite.name == selectedFavorite.value)
+                        val isSelected = (favorite.name == selectedLocation.value)
                         Card(
                             onClick = {
-                                selectedFavorite.value = favorite.name
+                                selectedLocation.value = favorite.name
                                 saveLocationPref(applicationContext, appWidgetId,  favorite.name, "${favorite.lat}, ${favorite.lon}")
                             },
                             modifier = Modifier
@@ -621,13 +625,27 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                             exitWithOk()
                         },
                         modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-                            .padding(top = 40.dp, bottom = 50.dp)
+                            .padding(top = 40.dp),
+                        enabled = selectedLocation.value != "unknown"
                     ) {
                         Text("Place Widget")
                     }
+
+                    if (selectedLocation.value == "unknown") {
+                        Text(
+                            text = "you need to select a location",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(top = 8.dp)
+                                .align(alignment = Alignment.CenterHorizontally)
+                        )
+                    }
+
+                    Box(modifier = Modifier.padding(bottom = 50.dp))
                 }
             }
         }
     }
 
 }
+
