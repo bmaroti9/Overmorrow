@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -366,7 +367,7 @@ class _RadarBigState extends State<RadarBig> {
   String frameIndexToUrl(int frameIndex) {
     String formattedDate = DateFormat('yyyyMMddHH').format(DateTime.now().add(Duration(hours: frameIndex)));
     return {
-      "precip (rv)" : "${widget.data.radar.images[frameIndex]}/256/{z}/{x}/{y}/2/1_1.png",
+      "precip (rv)" : "${widget.data.radar.images[min(frameIndex, widget.data.radar.images.length - 1)]}/256/{z}/{x}/{y}/2/1_1.png",
       "precip (wa)": "https://weathermaps.weatherapi.com/precip/tiles/$formattedDate/{z}/{x}/{y}.png",
       "temp": "https://weathermaps.weatherapi.com/tmp2m/tiles/$formattedDate/{z}/{x}/{y}.png",
       "wind": "https://weathermaps.weatherapi.com/wind/tiles/$formattedDate/{z}/{x}/{y}.png",
@@ -478,7 +479,7 @@ class _RadarBigState extends State<RadarBig> {
                 valueListenable: _frameNotifier,
                 builder: (context, frameIndex, child) {
                   return Opacity(
-                    opacity: 0.7,
+                    opacity: (selectedLayer == "precip (rv)" ? 1.0 : 0.7),
                     child: TileLayer(
                       tileProvider: NetworkTileProvider(abortObsoleteRequests: true),
                       urlTemplate: frameIndexToUrl(frameIndex.toInt()),
@@ -696,6 +697,9 @@ class _RadarBigState extends State<RadarBig> {
                       if (value != null) {
                         setState(() {
                           selectedLayer = value;
+                          if (selectedLayer == "precip (rv)") {
+                            _frameNotifier.value = min(_frameNotifier.value, (widget.data.radar.images.length - 1));
+                          }
                         });
                       }
                     },
