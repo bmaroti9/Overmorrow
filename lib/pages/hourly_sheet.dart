@@ -210,7 +210,7 @@ class HourlyBottomSheet extends StatelessWidget {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: ListView.builder(
-            controller: scrollController, // 🚨 ESSENTIAL: Assign the controller here
+            controller: scrollController,
             itemCount: 50,
             itemBuilder: (context, index) {
               return ListTile(

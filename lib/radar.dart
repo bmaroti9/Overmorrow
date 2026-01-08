@@ -228,7 +228,7 @@ class _RadarSmallState extends State<RadarSmall> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 36, right: 32, bottom: 35, top: 5),
+          padding: const EdgeInsets.only(left: 38, right: 32, bottom: 35, top: 5),
           child: Row(
             children: [
               AnimatedSwitcher(
@@ -319,15 +319,14 @@ class RadarBig extends StatefulWidget {
 
 class _RadarBigState extends State<RadarBig> {
 
-  static List<Color> radarColors = [
-    const Color(0xFF88ddee), const Color(0xFF0099cc), const Color(0xFF0077aa), const Color(0xFF005588),
-    const Color(0xFFffee00), const Color(0xFFffaa00), const Color(0xFFff7700),
-    const Color(0xFFff4400), const Color(0xFFee0000), const Color(0xFF990000),
-    const Color(0xFFffaaff), const Color(0xFFff77ff), const Color(0xFFff00ff),
-  ];
-
   static Map<String, List<Color>> layerToScale = {
-    "precip": [
+    "precip (rv)" : [
+      const Color(0xFF88ddee), const Color(0xFF0099cc), const Color(0xFF0077aa), const Color(0xFF005588),
+      const Color(0xFFffee00), const Color(0xFFffaa00), const Color(0xFFff7700),
+      const Color(0xFFff4400), const Color(0xFFee0000), const Color(0xFF990000),
+      const Color(0xFFffaaff), const Color(0xFFff77ff), const Color(0xFFff00ff),
+    ],
+    "precip (wa)": [
       const Color(0xFFBFE1FF), const Color(0xFF44A4FF), const Color(0xFF2096FF),
       const Color(0xFF028DFD), const Color(0xFF57A0A8), const Color(0xFFABB454),
       const Color(0xFFFFC800), const Color(0xFFFFB400), const Color(0xFFFFA000),
@@ -354,7 +353,7 @@ class _RadarBigState extends State<RadarBig> {
     ],
   };
 
-  static List<String> layerOptions = ["precip", "temp", "wind", "pressure"];
+  static List<String> layerOptions = ["precip (rv)", "precip (wa)", "temp", "wind", "pressure"];
   String selectedLayer = layerOptions[0];
 
   final ValueNotifier<double> _frameNotifier = ValueNotifier<double>(0);
@@ -364,10 +363,11 @@ class _RadarBigState extends State<RadarBig> {
 
   bool isPlaying = false;
 
-  String timeLayerToUrl(DateTime time) {
-    String formattedDate = DateFormat('yyyyMMddHH').format(time);
+  String frameIndexToUrl(int frameIndex) {
+    String formattedDate = DateFormat('yyyyMMddHH').format(DateTime.now().add(Duration(hours: frameIndex)));
     return {
-      "precip": "https://weathermaps.weatherapi.com/precip/tiles/$formattedDate/{z}/{x}/{y}.png",
+      "precip (rv)" : "${widget.data.radar.images[frameIndex]}/256/{z}/{x}/{y}/2/1_1.png",
+      "precip (wa)": "https://weathermaps.weatherapi.com/precip/tiles/$formattedDate/{z}/{x}/{y}.png",
       "temp": "https://weathermaps.weatherapi.com/tmp2m/tiles/$formattedDate/{z}/{x}/{y}.png",
       "wind": "https://weathermaps.weatherapi.com/wind/tiles/$formattedDate/{z}/{x}/{y}.png",
       "pressure": "https://weathermaps.weatherapi.com/pressure/tiles/$formattedDate/{z}/{x}/{y}.png",
@@ -390,7 +390,8 @@ class _RadarBigState extends State<RadarBig> {
           //((currentFrameIndex + 1) % (widget.data.radar.images.length - 1));
         //});
 
-        double nextFrame = (_frameNotifier.value + 1) % 72;
+        double nextFrame = (_frameNotifier.value + 1)
+            % (selectedLayer == "precip (rv)" ? (widget.data.radar.images.length - 1) : 71);
         _frameNotifier.value = nextFrame;
       }
     });
@@ -431,14 +432,16 @@ class _RadarBigState extends State<RadarBig> {
     }
 
     Map<String, String> radarLowText = {
-      "precip": AppLocalizations.of(context)!.light,
+      "precip (rv)": AppLocalizations.of(context)!.light,
+      "precip (wa)": AppLocalizations.of(context)!.light,
       "temp": AppLocalizations.of(context)!.cold,
       "wind": AppLocalizations.of(context)!.low,
       "pressure": AppLocalizations.of(context)!.low,
     };
 
     Map<String, String> radarHighText = {
-      "precip": AppLocalizations.of(context)!.heavy,
+      "precip (rv)": AppLocalizations.of(context)!.heavy,
+      "precip (wa)": AppLocalizations.of(context)!.heavy,
       "temp": AppLocalizations.of(context)!.hot,
       "wind": AppLocalizations.of(context)!.severe,
       "pressure": AppLocalizations.of(context)!.high,
@@ -478,7 +481,7 @@ class _RadarBigState extends State<RadarBig> {
                     opacity: 0.7,
                     child: TileLayer(
                       tileProvider: NetworkTileProvider(abortObsoleteRequests: true),
-                      urlTemplate: timeLayerToUrl(DateTime.now().add(Duration(hours: frameIndex.toInt()))),
+                      urlTemplate: frameIndexToUrl(frameIndex.toInt()),
                       tileDisplay: const TileDisplay.instantaneous(),
                       key: ValueKey('radar_$frameIndex'),
                     ),
@@ -608,10 +611,10 @@ class _RadarBigState extends State<RadarBig> {
                                   child: Slider(
                                     value: _frameNotifier.value,
                                     min: 0,
-                                    max: 71,
-                                    divisions: 71,
+                                    max: (selectedLayer == "precip (rv)" ? (widget.data.radar.images.length - 1) : 71),
+                                    divisions: (selectedLayer == "precip (rv)" ? (widget.data.radar.images.length) : 72),
                                     //label: convertTime(widget.data.radar.times[currentFrameIndex.toInt()], context),
-                                    label: timeLayerToUrl(DateTime.now().add(Duration(hours: _frameNotifier.value.toInt()))),
+                                    label: frameIndexToUrl(_frameNotifier.value.toInt()),
 
                                     padding: const EdgeInsets.symmetric(horizontal: 15),
 

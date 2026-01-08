@@ -79,7 +79,7 @@ class CurrentWidget : GlanceAppWidget() {
                     .size(160.dp, 160.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
+                if (backColorString != "transparent") Image(
                     provider = ImageProvider(R.drawable.shapes_custom_pill_shape),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(backColor),

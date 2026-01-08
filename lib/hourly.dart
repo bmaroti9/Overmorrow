@@ -23,7 +23,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:overmorrow/decoders/weather_data.dart';
-import 'package:overmorrow/pages/hourly_sheet.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/weather_refact.dart';
