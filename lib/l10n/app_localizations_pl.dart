@@ -494,10 +494,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get showLess => 'pokaż mniej';
 
   @override
-  String get cold => 'cold';
+  String get cold => 'zimno';
 
   @override
-  String get hot => 'hot';
+  String get hot => 'ciepło';
 
   @override
   String get calm => 'calm';

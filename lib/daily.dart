@@ -371,22 +371,22 @@ class DailyExpanded extends StatelessWidget {
 
                 Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: Theme.of(context).colorScheme.tertiaryContainer,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   padding: const EdgeInsets.all(9),
                   child: Row(
                     children: [
-                      Icon(Icons.keyboard_double_arrow_down, size: 16, color: Theme.of(context).colorScheme.onPrimaryContainer,),
+                      Icon(Icons.keyboard_double_arrow_down, size: 16, color: Theme.of(context).colorScheme.onTertiaryContainer,),
                       Text(
                         "${unitConversion(day.minTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
-                        style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 17),
+                        style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 17),
                       ),
                       const SizedBox(width: 6,),
-                      Icon(Icons.keyboard_double_arrow_up, size: 16, color: Theme.of(context).colorScheme.onPrimaryContainer,),
+                      Icon(Icons.keyboard_double_arrow_up, size: 16, color: Theme.of(context).colorScheme.onTertiaryContainer,),
                       Text(
                         "${unitConversion(day.maxTempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
-                        style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 17),
+                        style: TextStyle(color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 17),
                       ),
                     ],
                   ),

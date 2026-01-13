@@ -461,6 +461,16 @@ class ServicesPage extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               HapticFeedback.lightImpact();
+                              _launchUrl("https://www.weatherapi.com/docs/#intro-weather-maps");
+                            },
+                            child: Text("weatherapi",
+                              style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 17,
+                                decoration: TextDecoration.underline,),),
+                          ),
+                          const SizedBox(height: 10,),
+                          GestureDetector(
+                            onTap: () {
+                              HapticFeedback.lightImpact();
                               _launchUrl("https://carto.com/");
                             },
                             child: Text("carto",
