@@ -495,20 +495,20 @@ class AppLocalizationsUk extends AppLocalizations {
   String get showLess => 'Згорнути';
 
   @override
-  String get cold => 'cold';
+  String get cold => 'Холодно';
 
   @override
-  String get hot => 'hot';
+  String get hot => 'Жарко';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'Спокійно';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'Важко';
 
   @override
-  String get low => 'low';
+  String get low => 'Низько';
 
   @override
-  String get high => 'high';
+  String get high => 'Високо';
 }

@@ -45,7 +45,7 @@ class RadarSmall extends StatefulWidget {
 
 class _RadarSmallState extends State<RadarSmall> {
 
-  double currentFrameIndex = 0;
+  final ValueNotifier<double> _frameNotifier = ValueNotifier<double>(0);
   late Timer timer;
 
   bool hasBeenPlayed = false;
@@ -56,17 +56,20 @@ class _RadarSmallState extends State<RadarSmall> {
   void initState() {
     super.initState();
 
-    currentFrameIndex = widget.data.radar.startingIndex * 1.0;
+    _frameNotifier.value = widget.data.radar.startingIndex * 1.0;
 
     timer = Timer.periodic(const Duration(milliseconds: 1000), (Timer t) {
       if (isPlaying) {
         if (widget.radarHapticsOn) {
           HapticFeedback.selectionClick();
         }
-        setState(() {
-          currentFrameIndex =
-          ((currentFrameIndex + 1) % (widget.data.radar.images.length - 1));
-        });
+        //setState(() {
+        //currentFrameIndex =
+        //((currentFrameIndex + 1) % (widget.data.radar.images.length - 1));
+        //});
+
+        double nextFrame = (_frameNotifier.value + 1) % (widget.data.radar.images.length - 1);
+        _frameNotifier.value = nextFrame;
       }
     });
   }
@@ -86,7 +89,7 @@ class _RadarSmallState extends State<RadarSmall> {
     else {
       setState(() {
         hasBeenPlayed = true;
-        currentFrameIndex = 0;
+        _frameNotifier.value = 0;
         isPlaying = !isPlaying;
       });
     }
@@ -162,12 +165,19 @@ class _RadarSmallState extends State<RadarSmall> {
                               ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                               : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
                         ),
-                        TileLayer(
-                          urlTemplate: "${widget.data.radar.images[currentFrameIndex
-                              .toInt()]}/256/{z}/{x}/{y}/2/1_1.png",
-                          //whoah i didn't know that the radar stuttering was because of a fading animation
-                          //this makes it so much more fluid, because there is no fade between frames
-                          tileDisplay: const TileDisplay.instantaneous(),
+                        ValueListenableBuilder<double>(
+                          valueListenable: _frameNotifier,
+                          builder: (context, frameIndex, child) {
+                            return TileLayer(
+                              tileProvider: NetworkTileProvider(abortObsoleteRequests: true),
+                              urlTemplate: "${widget.data.radar.images[_frameNotifier.value
+                                  .toInt()]}/256/{z}/{x}/{y}/2/1_1.png",
+                              //whoah i didn't know that the radar stuttering was because of a fading animation
+                              //this makes it so much more fluid, because there is no fade between frames
+                              tileDisplay: const TileDisplay.instantaneous(),
+                              key: ValueKey('radar_$frameIndex'),
+                            );
+                          },
                         ),
                         MarkerLayer(
                           markers: [
@@ -277,23 +287,28 @@ class _RadarSmallState extends State<RadarSmall> {
 
                         year2023: false,
                       ),
-                      child: Slider(
-                        value: currentFrameIndex,
-                        min: 0,
-                        max: widget.data.radar.times.length - 1.0,
-                        divisions: widget.data.radar.times.length,
-                        label: convertTime(widget.data.radar.times[currentFrameIndex.toInt()], context),
-                    
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                    
-                        onChanged: (double value) {
-                          if (widget.radarHapticsOn) {
-                            HapticFeedback.selectionClick();
-                          }
-                          setState(() {
-                            hasBeenPlayed = true;
-                            currentFrameIndex = value;
-                          });
+                      child: ValueListenableBuilder<double>(
+                        valueListenable: _frameNotifier,
+                        builder: (context, frameIndex, child) {
+                          return Slider(
+                            value: frameIndex,
+                            min: 0,
+                            max:  widget.data.radar.images.length - 1,
+                            divisions: widget.data.radar.images.length,
+                            label: convertTime(widget.data.radar.times[frameIndex.toInt()], context),
+
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+
+                            onChanged: (double value) {
+                              if (widget.radarHapticsOn) {
+                                HapticFeedback.selectionClick();
+                              }
+                              setState(() {
+                                hasBeenPlayed = true;
+                                _frameNotifier.value = value;
+                              });
+                            },
+                          );
                         },
                       ),
                     ),
@@ -364,8 +379,13 @@ class _RadarBigState extends State<RadarBig> {
 
   bool isPlaying = false;
 
+  DateTime getDateTimeFromFrameIndex(int frameIndex) {
+    DateTime now = DateTime.now().add(Duration(hours: frameIndex));
+    return DateTime(now.year, now.month, now.day, now.hour);
+  }
+
   String frameIndexToUrl(int frameIndex) {
-    String formattedDate = DateFormat('yyyyMMddHH').format(DateTime.now().add(Duration(hours: frameIndex)));
+    String formattedDate = DateFormat('yyyyMMddHH').format(getDateTimeFromFrameIndex(frameIndex));
     return {
       "precip (rv)" : "${widget.data.radar.images[min(frameIndex, widget.data.radar.images.length - 1)]}/256/{z}/{x}/{y}/2/1_1.png",
       "precip (wa)": "https://weathermaps.weatherapi.com/precip/tiles/$formattedDate/{z}/{x}/{y}.png",
@@ -373,6 +393,21 @@ class _RadarBigState extends State<RadarBig> {
       "wind": "https://weathermaps.weatherapi.com/wind/tiles/$formattedDate/{z}/{x}/{y}.png",
       "pressure": "https://weathermaps.weatherapi.com/pressure/tiles/$formattedDate/{z}/{x}/{y}.png",
     }[selectedLayer]!;
+  }
+
+  String labelFromFrameIndex(int frameIndex, String timeMode) {
+    if (selectedLayer == "precip (rv)") {
+      if (timeMode == "12 hour") {
+        return DateFormat('h:mm a').format(widget.data.radar.times[frameIndex.toInt()]).toLowerCase();
+      }
+      return DateFormat('HH:mm').format(widget.data.radar.times[frameIndex.toInt()]);
+    } else {
+      if (timeMode == "12 hour") {
+        return DateFormat('E ha', Localizations.localeOf(context).toString())
+            .format(getDateTimeFromFrameIndex(frameIndex)).toLowerCase();
+      }
+      return DateFormat('E HH:mm', Localizations.localeOf(context).toString()).format(getDateTimeFromFrameIndex(frameIndex));
+    }
   }
 
   @override
@@ -386,10 +421,6 @@ class _RadarBigState extends State<RadarBig> {
         if (widget.radarHapticsOn) {
           HapticFeedback.selectionClick();
         }
-        //setState(() {
-          //currentFrameIndex =
-          //((currentFrameIndex + 1) % (widget.data.radar.images.length - 1));
-        //});
 
         double nextFrame = (_frameNotifier.value + 1)
             % (selectedLayer == "precip (rv)" ? (widget.data.radar.images.length - 1) : 71);
@@ -447,6 +478,8 @@ class _RadarBigState extends State<RadarBig> {
       "wind": AppLocalizations.of(context)!.severe,
       "pressure": AppLocalizations.of(context)!.high,
     };
+
+    String timeMode = context.read<SettingsProvider>().getTimeMode;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -609,24 +642,28 @@ class _RadarBigState extends State<RadarBig> {
 
                                     year2023: false,
                                   ),
-                                  child: Slider(
-                                    value: _frameNotifier.value,
-                                    min: 0,
-                                    max: (selectedLayer == "precip (rv)" ? (widget.data.radar.images.length - 1) : 71),
-                                    divisions: (selectedLayer == "precip (rv)" ? (widget.data.radar.images.length) : 72),
-                                    //label: convertTime(widget.data.radar.times[currentFrameIndex.toInt()], context),
-                                    label: frameIndexToUrl(_frameNotifier.value.toInt()),
+                                  child: ValueListenableBuilder<double>(
+                                    valueListenable: _frameNotifier,
+                                    builder: (context, frameIndex, child) {
+                                      return Slider(
+                                        value: frameIndex,
+                                        min: 0,
+                                        max: (selectedLayer == "precip (rv)" ? (widget.data.radar.images.length - 1) : 71),
+                                        divisions: (selectedLayer == "precip (rv)" ? (widget.data.radar.images.length) : 72),
+                                        label: labelFromFrameIndex(frameIndex.toInt(), timeMode),
 
-                                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                                        padding: const EdgeInsets.symmetric(horizontal: 15),
 
-                                    onChanged: (double value) {
-                                      if (widget.radarHapticsOn) {
-                                        HapticFeedback.selectionClick();
-                                      }
-                                      setState(() {
-                                        hasBeenPlayed = true;
-                                        _frameNotifier.value = value;
-                                      });
+                                        onChanged: (double value) {
+                                          if (widget.radarHapticsOn) {
+                                            HapticFeedback.selectionClick();
+                                          }
+                                          setState(() {
+                                            hasBeenPlayed = true;
+                                            _frameNotifier.value = value;
+                                          });
+                                        },
+                                      );
                                     },
                                   ),
                                 ),
