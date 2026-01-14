@@ -109,7 +109,7 @@
     "@veryPoorAqiDesc": {},
     "unhealthyAqiDesc": "Acil durum koşulları; herkes için ciddi sağlık etkileri.",
     "@unhealthyAqiDesc": {},
-    "photoByXOnUnsplash": "Fotoğraf, x, tarafından , Unsplah , üzerineden",
+    "photoByXOnUnsplash": "Fotoğraf, x, tarafından ,Unsplash , üzerinden",
     "@photoByXOnUnsplash": {},
     "sourceCode": "Kaynak kodu",
     "@sourceCode": {},
@@ -352,5 +352,35 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "updatedXHoursAgo": "güncellendi, {hours, plural, =1 {1 saat} other {{hours} saat}} önce",
+    "@updatedXHoursAgo": {
+        "description": "updated x hours ago",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXDaysAgo": "güncellendi, {days, plural, =1 {1 gün} other {{days} gün}} önce",
+    "@updatedXDaysAgo": {
+        "description": "updated x days ago",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "cold": "soğuk",
+    "@cold": {},
+    "hot": "sıcak",
+    "@hot": {},
+    "calm": "sakin",
+    "@calm": {},
+    "severe": "şiddetli",
+    "@severe": {},
+    "low": "düşük",
+    "@low": {},
+    "high": "yüksek",
+    "@high": {}
 }
