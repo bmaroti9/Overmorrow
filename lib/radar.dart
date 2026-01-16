@@ -336,13 +336,13 @@ class RadarBig extends StatefulWidget {
 class _RadarBigState extends State<RadarBig> {
 
   static Map<String, List<Color>> layerToScale = {
-    "precip (rv)" : [
+    "live radar" : [
       const Color(0xFF88ddee), const Color(0xFF0099cc), const Color(0xFF0077aa), const Color(0xFF005588),
       const Color(0xFFffee00), const Color(0xFFffaa00), const Color(0xFFff7700),
       const Color(0xFFff4400), const Color(0xFFee0000), const Color(0xFF990000),
       const Color(0xFFffaaff), const Color(0xFFff77ff), const Color(0xFFff00ff),
     ],
-    "precip (wa)": [
+    "precip": [
       const Color(0xFFBFE1FF), const Color(0xFF44A4FF), const Color(0xFF2096FF),
       const Color(0xFF028DFD), const Color(0xFF57A0A8), const Color(0xFFABB454),
       const Color(0xFFFFC800), const Color(0xFFFFB400), const Color(0xFFFFA000),
@@ -369,7 +369,7 @@ class _RadarBigState extends State<RadarBig> {
     ],
   };
 
-  static List<String> layerOptions = ["precip (rv)", "precip (wa)", "temp", "wind", "pressure"];
+  static List<String> layerOptions = ["live radar", "precip", "temp", "wind", "pressure"];
   String selectedLayer = layerOptions[0];
 
   final ValueNotifier<double> _frameNotifier = ValueNotifier<double>(0);
@@ -387,8 +387,8 @@ class _RadarBigState extends State<RadarBig> {
   String frameIndexToUrl(int frameIndex) {
     String formattedDate = DateFormat('yyyyMMddHH').format(getDateTimeFromFrameIndex(frameIndex));
     return {
-      "precip (rv)" : "${widget.data.radar.images[min(frameIndex, widget.data.radar.images.length - 1)]}/256/{z}/{x}/{y}/2/1_1.png",
-      "precip (wa)": "https://weathermaps.weatherapi.com/precip/tiles/$formattedDate/{z}/{x}/{y}.png",
+      "live radar" : "${widget.data.radar.images[min(frameIndex, widget.data.radar.images.length - 1)]}/256/{z}/{x}/{y}/2/1_1.png",
+      "precip": "https://weathermaps.weatherapi.com/precip/tiles/$formattedDate/{z}/{x}/{y}.png",
       "temp": "https://weathermaps.weatherapi.com/tmp2m/tiles/$formattedDate/{z}/{x}/{y}.png",
       "wind": "https://weathermaps.weatherapi.com/wind/tiles/$formattedDate/{z}/{x}/{y}.png",
       "pressure": "https://weathermaps.weatherapi.com/pressure/tiles/$formattedDate/{z}/{x}/{y}.png",
@@ -396,7 +396,7 @@ class _RadarBigState extends State<RadarBig> {
   }
 
   String labelFromFrameIndex(int frameIndex, String timeMode) {
-    if (selectedLayer == "precip (rv)") {
+    if (selectedLayer == "live radar") {
       if (timeMode == "12 hour") {
         return DateFormat('h:mm a').format(widget.data.radar.times[frameIndex.toInt()]).toLowerCase();
       }
@@ -423,7 +423,7 @@ class _RadarBigState extends State<RadarBig> {
         }
 
         double nextFrame = (_frameNotifier.value + 1)
-            % (selectedLayer == "precip (rv)" ? (widget.data.radar.images.length - 1) : 71);
+            % (selectedLayer == "live radar" ? (widget.data.radar.images.length - 1) : 71);
         _frameNotifier.value = nextFrame;
       }
     });
@@ -464,16 +464,16 @@ class _RadarBigState extends State<RadarBig> {
     }
 
     Map<String, String> radarLowText = {
-      "precip (rv)": AppLocalizations.of(context)!.light,
-      "precip (wa)": AppLocalizations.of(context)!.light,
+      "live radar": AppLocalizations.of(context)!.light,
+      "precip": AppLocalizations.of(context)!.light,
       "temp": AppLocalizations.of(context)!.cold,
       "wind": AppLocalizations.of(context)!.low,
       "pressure": AppLocalizations.of(context)!.low,
     };
 
     Map<String, String> radarHighText = {
-      "precip (rv)": AppLocalizations.of(context)!.heavy,
-      "precip (wa)": AppLocalizations.of(context)!.heavy,
+      "live radar": AppLocalizations.of(context)!.heavy,
+      "precip": AppLocalizations.of(context)!.heavy,
       "temp": AppLocalizations.of(context)!.hot,
       "wind": AppLocalizations.of(context)!.severe,
       "pressure": AppLocalizations.of(context)!.high,
@@ -512,7 +512,7 @@ class _RadarBigState extends State<RadarBig> {
                 valueListenable: _frameNotifier,
                 builder: (context, frameIndex, child) {
                   return Opacity(
-                    opacity: (selectedLayer == "precip (rv)" ? 1.0 : 0.7),
+                    opacity: (selectedLayer == "live radar" ? 1.0 : 0.7),
                     child: TileLayer(
                       tileProvider: NetworkTileProvider(abortObsoleteRequests: true),
                       urlTemplate: frameIndexToUrl(frameIndex.toInt()),
@@ -648,8 +648,8 @@ class _RadarBigState extends State<RadarBig> {
                                       return Slider(
                                         value: frameIndex,
                                         min: 0,
-                                        max: (selectedLayer == "precip (rv)" ? (widget.data.radar.images.length - 1) : 71),
-                                        divisions: (selectedLayer == "precip (rv)" ? (widget.data.radar.images.length) : 72),
+                                        max: (selectedLayer == "live radar" ? (widget.data.radar.images.length - 1) : 71),
+                                        divisions: (selectedLayer == "live radar" ? (widget.data.radar.images.length) : 72),
                                         label: labelFromFrameIndex(frameIndex.toInt(), timeMode),
 
                                         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -707,7 +707,7 @@ class _RadarBigState extends State<RadarBig> {
                           child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Text(item, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                  fontSize: 18),)
+                                  fontSize: 17),)
                           ),
                         );
                       }).toList();
@@ -722,9 +722,9 @@ class _RadarBigState extends State<RadarBig> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(item, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                  fontSize: 18),),
+                                  fontSize: 17),),
                               const SizedBox(width: 5,),
-                              if (selectedLayer == item) Icon(Icons.check, size: 20,)
+                              if (selectedLayer == item) const Icon(Icons.check, size: 20,)
                             ],
                           )
                         ),
@@ -734,7 +734,7 @@ class _RadarBigState extends State<RadarBig> {
                       if (value != null) {
                         setState(() {
                           selectedLayer = value;
-                          if (selectedLayer == "precip (rv)") {
+                          if (selectedLayer == "live radar") {
                             _frameNotifier.value = min(_frameNotifier.value, (widget.data.radar.images.length - 1));
                           }
                         });

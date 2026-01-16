@@ -108,7 +108,7 @@ class ColorsOnImage {
   final Color descColor; //the color that is applied to the description under the temperature
   final Color regionColor;
 
-  static const minimumContrast = 1.7;
+  static const minimumContrast = 1.75;
 
   const ColorsOnImage({
     required this.colorPop,

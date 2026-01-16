@@ -361,7 +361,6 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, placeName) async {
     int hour = (int.parse(MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0]) - hourDif) % 24;
     //int hour = DateTime.parse(MnBody["properties"]["timeseries"][n]["time"]).toLocal().hour;
     if (n > 0 && hour - previous_hour < 1) {
-      print((MnBody["properties"]["timeseries"][begin]["time"], MnBody["properties"]["timeseries"][n]["time"]));
       WeatherDay day = metNWeatherDayFromJson(MnBody, begin, n, index, hourDif);
       days.add(day);
 
@@ -423,7 +422,6 @@ Future<dynamic> metNGetLightResponse(lat, lon) async {
   };
   final url = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/compact', params);
 
-  print(url);
 
   final response = (await http.get(url, headers: headers)).body;
 
