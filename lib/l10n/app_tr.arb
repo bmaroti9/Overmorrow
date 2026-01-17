@@ -326,7 +326,7 @@
             }
         }
     },
-    "rainInHours": "{minutes, plural, =1 {saat} other {{hours} saat}} içinde yağmur",
+    "rainInHours": "{hours, plural, =1 {saat} other {{hours} saat}} içinde yağmur",
     "@rainInHours": {
         "description": "rain in the next X hours",
         "placeholders": {

@@ -237,7 +237,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get photoByXOnUnsplash =>
-      'Fotoğraf, x, tarafından , Unsplah , üzerineden';
+      'Fotoğraf, x, tarafından ,Unsplash , üzerinden';
 
   @override
   String get sourceCodeLowercase => 'kaynak kodu';
@@ -388,10 +388,10 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes dakika',
+      one: 'dakika',
     );
-    return 'rain in the next $_temp0';
+    return '$_temp0 içinde yağmur';
   }
 
   @override
@@ -402,10 +402,10 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours saat',
+      one: 'saat',
     );
-    return 'rain in the next $_temp0';
+    return '$_temp0 içinde yağmur';
   }
 
   @override
@@ -413,10 +413,10 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes dakika',
+      one: 'dakika',
     );
-    return 'rain expected in $_temp0';
+    return '$_temp0 içinde yağmur bekleniyor';
   }
 
   @override
@@ -427,10 +427,10 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours saat',
+      one: 'saat',
     );
-    return 'rain expected in $_temp0';
+    return '$_temp0 içinde yağmur bekleniyor';
   }
 
   @override
@@ -443,10 +443,10 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
+      other: '$hours saat',
+      one: '1 saat',
     );
-    return 'updated, $_temp0 ago';
+    return 'güncellendi, $_temp0 önce';
   }
 
   @override
@@ -454,10 +454,10 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: '$days days',
-      one: '1 day',
+      other: '$days gün',
+      one: '1 gün',
     );
-    return 'updated, $_temp0 ago';
+    return 'güncellendi, $_temp0 önce';
   }
 
   @override
@@ -494,20 +494,20 @@ class AppLocalizationsTr extends AppLocalizations {
   String get showLess => 'daha az göster';
 
   @override
-  String get cold => 'cold';
+  String get cold => 'soğuk';
 
   @override
-  String get hot => 'hot';
+  String get hot => 'sıcak';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'sakin';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'şiddetli';
 
   @override
-  String get low => 'low';
+  String get low => 'düşük';
 
   @override
-  String get high => 'high';
+  String get high => 'yüksek';
 }
