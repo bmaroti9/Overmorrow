@@ -58,13 +58,13 @@ class WeatherDay {
 
   final List<WeatherHour> hourly;
 
-  final int precipProb;
+  final int? precipProb;
   final double totalPrecipMm;
 
   final double windKph;
-  final int windDirA;
+  final int? windDirA;
 
-  final int uv;
+  final int? uv;
 
   WeatherDay ({
     required this.condition,
@@ -87,11 +87,11 @@ class WeatherHour {
 
   final String condition;
   final double precipMm;
-  final int precipProb;
+  final int? precipProb;
   final double windKph;
-  final int windDirA;
-  final double windGustKph;
-  final int uv;
+  final int? windDirA;
+  final double? windGustKph;
+  final int? uv;
 
   WeatherHour({
     required this.tempC,

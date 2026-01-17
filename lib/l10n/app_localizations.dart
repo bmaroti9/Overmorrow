@@ -24,6 +24,8 @@ import 'app_localizations_pl.dart';
 import 'app_localizations_pt.dart';
 import 'app_localizations_ro.dart';
 import 'app_localizations_ru.dart';
+import 'app_localizations_sr.dart';
+import 'app_localizations_sw.dart';
 import 'app_localizations_ta.dart';
 import 'app_localizations_tr.dart';
 import 'app_localizations_uk.dart';
@@ -137,6 +139,8 @@ abstract class AppLocalizations {
     Locale('pt', 'BR'),
     Locale('ro'),
     Locale('ru'),
+    Locale('sr'),
+    Locale('sw'),
     Locale('ta'),
     Locale('tr'),
     Locale('uk'),
@@ -1003,6 +1007,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'show less'**
   String get showLess;
+
+  /// No description provided for @cold.
+  ///
+  /// In en, this message translates to:
+  /// **'cold'**
+  String get cold;
+
+  /// No description provided for @hot.
+  ///
+  /// In en, this message translates to:
+  /// **'hot'**
+  String get hot;
+
+  /// No description provided for @calm.
+  ///
+  /// In en, this message translates to:
+  /// **'calm'**
+  String get calm;
+
+  /// No description provided for @severe.
+  ///
+  /// In en, this message translates to:
+  /// **'severe'**
+  String get severe;
+
+  /// No description provided for @low.
+  ///
+  /// In en, this message translates to:
+  /// **'low'**
+  String get low;
+
+  /// No description provided for @high.
+  ///
+  /// In en, this message translates to:
+  /// **'high'**
+  String get high;
 }
 
 class _AppLocalizationsDelegate
@@ -1035,6 +1075,8 @@ class _AppLocalizationsDelegate
         'pt',
         'ro',
         'ru',
+        'sr',
+        'sw',
         'ta',
         'tr',
         'uk',
@@ -1112,6 +1154,10 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsRo();
     case 'ru':
       return AppLocalizationsRu();
+    case 'sr':
+      return AppLocalizationsSr();
+    case 'sw':
+      return AppLocalizationsSw();
     case 'ta':
       return AppLocalizationsTa();
     case 'tr':

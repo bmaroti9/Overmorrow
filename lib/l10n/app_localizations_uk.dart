@@ -493,4 +493,22 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get showLess => 'Згорнути';
+
+  @override
+  String get cold => 'Холодно';
+
+  @override
+  String get hot => 'Жарко';
+
+  @override
+  String get calm => 'Спокійно';
+
+  @override
+  String get severe => 'Важко';
+
+  @override
+  String get low => 'Низько';
+
+  @override
+  String get high => 'Високо';
 }

@@ -108,7 +108,7 @@ class ColorsOnImage {
   final Color descColor; //the color that is applied to the description under the temperature
   final Color regionColor;
 
-  static const minimumContrast = 1.7;
+  static const minimumContrast = 1.75;
 
   const ColorsOnImage({
     required this.colorPop,
@@ -126,8 +126,8 @@ class ColorsOnImage {
     bool descUnique = surfaceDif >= minimumContrast;
 
     //predefined list of colors in order that still match the color scheme
-    final colorList = [palette.tertiaryFixedDim, palette.primaryFixedDim, palette.surface,
-      palette.secondaryContainer, palette.tertiary, palette.onSurface];
+    final colorList = [palette.tertiaryFixedDim, palette.primaryFixedDim,
+      palette.secondaryFixedDim, palette.surface,];
 
     Color bestColor = Colors.black;
     int bestDif = 0;

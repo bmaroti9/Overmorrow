@@ -20,8 +20,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overmorrow/services/weather_service.dart';
-import '../l10n/app_localizations.dart';
-import 'decoders/weather_data.dart';
+import '../../l10n/app_localizations.dart';
+import '../decoders/weather_data.dart';
 
 
 Widget alertBadge(name, text, WeatherData data, context) {
@@ -112,7 +112,7 @@ class _AlertsPageState extends State<AlertsPage> {
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   padding: const EdgeInsets.only(left: 7, right: 7, top: 6, bottom: 8),
-                                  child: Icon(Icons.warning_amber, size: 20, color: Theme.of(context).colorScheme.error)
+                                  child: Icon(Icons.warning_amber_rounded, size: 20, color: Theme.of(context).colorScheme.error)
                               ),
                               const SizedBox(width: 15,),
                               Expanded(
@@ -137,7 +137,8 @@ class _AlertsPageState extends State<AlertsPage> {
                                   BorderSide(width: 2, color: Theme.of(context).colorScheme.secondaryContainer),
                               )
                               ),
-                              child: Text(alert.desc, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 16),)
+                              child: Text(alert.desc, style: TextStyle(color: Theme.of(context).colorScheme.outline,
+                                  fontSize: 16))
                             ),
                           ),
 
@@ -155,7 +156,8 @@ class _AlertsPageState extends State<AlertsPage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 30, top: 5),
-                            child: Text(alert.areas, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 15),)
+                            child: Text(alert.areas, style: TextStyle(color: Theme.of(context).colorScheme.outline,
+                                fontSize: 15))
                           ),
 
                           Align(

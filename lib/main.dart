@@ -31,7 +31,6 @@ import 'package:overmorrow/services/image_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
 import 'package:provider/provider.dart';
-import 'package:workmanager/workmanager.dart';
 import 'decoders/weather_data.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
@@ -40,36 +39,22 @@ import 'main_ui.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Workmanager().initialize(
-      myCallbackDispatcher, // The top level function, aka callbackDispatcher
-      isInDebugMode: kDebugMode // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-  );
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-  HomeWidget.registerInteractivityCallback(interactiveCallback);
-
-  if (kDebugMode) {
-    print("thissssssssssssssssssssssssssssssssss");
-    Workmanager().registerOneOffTask("test_task_${DateTime.now().millisecondsSinceEpoch}", updateWeatherDataKey);
+  if (!kIsWeb) {
+    initializeWidgetServices();
   }
-
-  Workmanager().registerPeriodicTask(
-    "updateWeatherWidget",
-    updateWeatherDataKey,
-    frequency: const Duration(hours: 1),
-    constraints: Constraints(networkType: NetworkType.connected, requiresBatteryNotLow: true),
-  );
 
   await PreferenceUtils.init();
 
-  final data = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
-  final ratio = WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
+  final display = PlatformDispatcher.instance.views.first.display;
 
   final commonProviders = [
     ChangeNotifierProvider(create: (_) => ThemeProvider()),
     ChangeNotifierProvider(create: (_) => SettingsProvider()),
   ];
 
-  if (data.shortestSide / ratio < 600) {
+  if (display.size.shortestSide / display.devicePixelRatio < 600) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((value) => runApp(
           MultiProvider(
@@ -99,22 +84,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeMode themeMode = context.watch<ThemeProvider>().getThemeMode;
-    final Locale locale = context.select((SettingsProvider p) => p.getLocale);
 
-    final ColorScheme? lightColorScheme = context.watch<ThemeProvider>().getColorSchemeLight;
-    final ColorScheme? darkColorScheme = context.watch<ThemeProvider>().getColorSchemeDark;
-
-    final textScaleFactor = context.watch<SettingsProvider>().getTextScale;
-
-    final EdgeInsets systemGestureInsets = MediaQuery.of(context).systemGestureInsets;
-    if (systemGestureInsets.left > 0) {
-      SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.transparent,
-        ),
-      );
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    if (kIsWeb) {
+      return BuildMaterialApp(dynamicLightColorScheme: ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.light),
+          dynamicDarkColorScheme: ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark));
     }
 
     return DynamicColorBuilder(
@@ -130,52 +103,85 @@ class _MyAppState extends State<MyApp> {
           dynamicDarkColorScheme = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark);
         }
 
-        return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            themeMode: themeMode,
-
-            builder: (context, child) {
-              return MediaQuery(
-                data: MediaQuery.of(context).copyWith(
-                  textScaler: TextScaler.linear(textScaleFactor),
-                ),
-                child: child!,
-              );
-            },
-
-            locale: locale,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: AppLocalizations.supportedLocales,
-            theme: ThemeData(
-                colorScheme: lightColorScheme ?? dynamicLightColorScheme,
-                useMaterial3: true,
-                fontFamily: GoogleFonts.outfit().fontFamily,
-                fontFamilyFallback: const ['NotoSans',],
-                pageTransitionsTheme: const PageTransitionsTheme(
-                  builders: {
-                    TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
-                  }
-                )
-            ),
-            darkTheme: ThemeData(
-                colorScheme: darkColorScheme ?? dynamicDarkColorScheme,
-                useMaterial3: true,
-                fontFamily: GoogleFonts.outfit().fontFamily,
-                fontFamilyFallback: const ['NotoSans',],
-                pageTransitionsTheme: const PageTransitionsTheme(
-                  builders: {
-                    TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
-                  }
-                )
-            ),
-            home: const MyHomePage()
-        );
+        return BuildMaterialApp(dynamicLightColorScheme: dynamicLightColorScheme, dynamicDarkColorScheme: dynamicDarkColorScheme);
       },
+    );
+  }
+}
+
+class BuildMaterialApp extends StatelessWidget {
+  final ColorScheme dynamicLightColorScheme;
+  final ColorScheme dynamicDarkColorScheme;
+
+  const BuildMaterialApp({super.key, required this.dynamicLightColorScheme, required this.dynamicDarkColorScheme});
+
+  @override
+  Widget build(BuildContext context) {
+
+    final ThemeMode themeMode = context.watch<ThemeProvider>().getThemeMode;
+    final Locale locale = context.select((SettingsProvider p) => p.getLocale);
+
+    final ColorScheme? lightColorScheme = context.watch<ThemeProvider>().getColorSchemeLight;
+    final ColorScheme? darkColorScheme = context.watch<ThemeProvider>().getColorSchemeDark;
+
+    final textScaleFactor = context.watch<SettingsProvider>().getTextScale;
+
+    final EdgeInsets systemGestureInsets = MediaQuery.of(context).systemGestureInsets;
+
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        themeMode: themeMode,
+
+        builder: (context, child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: TextScaler.linear(textScaleFactor),
+            ),
+            child: child!,
+          );
+        },
+
+        locale: locale,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: ThemeData(
+            colorScheme: lightColorScheme ?? dynamicLightColorScheme,
+            useMaterial3: true,
+            fontFamily: GoogleFonts.outfit().fontFamily,
+            fontFamilyFallback: const ['NotoSans',],
+            pageTransitionsTheme: const PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
+                }
+            )
+        ),
+        darkTheme: ThemeData(
+            colorScheme: darkColorScheme ?? dynamicDarkColorScheme,
+            useMaterial3: true,
+            fontFamily: GoogleFonts.outfit().fontFamily,
+            fontFamilyFallback: const ['NotoSans',],
+            pageTransitionsTheme: const PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android: FadeForwardsPageTransitionsBuilder()
+                }
+            )
+        ),
+        home: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: (systemGestureInsets.left > 0)
+              ? const SystemUiOverlayStyle(
+                systemNavigationBarColor: Colors.transparent,
+                statusBarColor: Colors.transparent,
+              )
+              : const SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+              ),
+          child: const MyHomePage()
+        )
     );
   }
 }
@@ -232,22 +238,24 @@ class MyHomePageState extends State<MyHomePage> {
     String latLon = context.read<SettingsProvider>().getLatLon;
     String location = context.read<SettingsProvider>().getLocation;
 
-    if (Platform.isAndroid) {
-      Uri? appLaunchUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
+    if (!kIsWeb) {
+      if (Platform.isAndroid) {
+        Uri? appLaunchUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
 
-      if (appLaunchUri != null) {
-        if (appLaunchUri.host == "opened" && appLaunchUri.queryParameters.containsKey("location")
-            && appLaunchUri.queryParameters.containsKey("latlon")) {
+        if (appLaunchUri != null) {
+          if (appLaunchUri.host == "opened" && appLaunchUri.queryParameters.containsKey("location")
+              && appLaunchUri.queryParameters.containsKey("latlon")) {
 
-          if (appLaunchUri.queryParameters["location"] != null && appLaunchUri.queryParameters["latlon"] != null) {
+            if (appLaunchUri.queryParameters["location"] != null && appLaunchUri.queryParameters["latlon"] != null) {
 
-            if (appLaunchUri.queryParameters["location"] == "CurrentLocation") {
-              location = PreferenceUtils.getString('LastKnownPositionName', 'unknown');
-              latLon = PreferenceUtils.getString('LastKnownPositionCord', 'unknown');
-            }
-            else {
-              location = appLaunchUri.queryParameters["location"]!;
-              latLon = appLaunchUri.queryParameters["latlon"]!;
+              if (appLaunchUri.queryParameters["location"] == "CurrentLocation") {
+                location = PreferenceUtils.getString('LastKnownPositionName', 'unknown');
+                latLon = PreferenceUtils.getString('LastKnownPositionCord', 'unknown');
+              }
+              else {
+                location = appLaunchUri.queryParameters["location"]!;
+                latLon = appLaunchUri.queryParameters["latlon"]!;
+              }
             }
           }
         }
@@ -418,5 +426,6 @@ class MyHomePageState extends State<MyHomePage> {
         LoadingIndicator(isLoading: isLoading,)
       ],
     );
+
   }
 }

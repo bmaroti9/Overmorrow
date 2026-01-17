@@ -26,8 +26,8 @@ import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:provider/provider.dart';
 
-import 'alerts_page.dart';
-import 'aqi_page.dart';
+import 'pages/alerts_page.dart';
+import 'pages/aqi_page.dart';
 import '../l10n/app_localizations.dart';
 import 'decoders/weather_data.dart';
 

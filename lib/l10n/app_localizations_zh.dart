@@ -372,7 +372,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get extremelyHazy => '极其模糊';
 
   @override
-  String get poweredByOpenMeteo => '由 open-meteo 驱动';
+  String get poweredByOpenMeteo => 'open-meteo 提供气象支持';
 
   @override
   String get rainInHalfHour => '半小时后有雨';
@@ -486,6 +486,24 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get showLess => '隐藏更多';
+
+  @override
+  String get cold => '冷';
+
+  @override
+  String get hot => '热';
+
+  @override
+  String get calm => '平静';
+
+  @override
+  String get severe => '剧烈';
+
+  @override
+  String get low => '低';
+
+  @override
+  String get high => '高';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -970,4 +988,22 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get showLess => '隱藏更多';
+
+  @override
+  String get cold => '冷';
+
+  @override
+  String get hot => '熱';
+
+  @override
+  String get calm => '晴朗無風';
+
+  @override
+  String get severe => '惡劣';
+
+  @override
+  String get low => '低';
+
+  @override
+  String get high => '高';
 }

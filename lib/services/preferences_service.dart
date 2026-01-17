@@ -50,7 +50,9 @@ Map<String, List<String>> settingSwitches = {
     'Hrvat', //Croatian
     'Македонски', //Macedonian
     'Română', //Romanian
-    'Tiếng Việt' //Vietnamese
+    'Tiếng Việt', //Vietnamese
+    'Kiswahili', //Swahili
+    'Srpski' //Serbian
   ],
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
@@ -178,11 +180,6 @@ class ThemeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeThemeSeedColor(Color color) {
-    _themeSeedColor = color;
-    notifyListeners();
-  }
-
   void changeColorSchemeToImageScheme(ColorScheme lightColorScheme, ColorScheme darkColorScheme) {
     _colorSchemeLight = lightColorScheme;
     _colorSchemeDark = darkColorScheme;
@@ -213,6 +210,7 @@ class ThemeProvider with ChangeNotifier {
   void setCustomColorScheme(String to) {
     _themeSeedColorHex = to;
     updateCustomColorFromHex();
+    PreferenceUtils.setString("Custom color", to);
     notifyListeners();
   }
 }

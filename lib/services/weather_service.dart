@@ -135,10 +135,10 @@ String aqiDescLocalization(index, localizations) {
     localizations.poorAqiDesc,
     localizations.veryPoorAqiDesc,
     localizations.unhealthyAqiDesc,
-  ][index];
+  ][index - 1];
 }
 
-String aqiTitleLocalization(index, localizations) {
+String aqiTitleLocalization(index, AppLocalizations localizations) {
   return [
     localizations.good,
     localizations.fair,
@@ -146,7 +146,7 @@ String aqiTitleLocalization(index, localizations) {
     localizations.poor,
     localizations.veryPoor,
     localizations.unhealthy,
-  ][index];
+  ][index - 1];
 }
 
 String aerosolOpticalDepthLocalizations(index, AppLocalizations localizations) {

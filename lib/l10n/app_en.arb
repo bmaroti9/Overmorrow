@@ -321,5 +321,11 @@
     "description": "heavy precipitation"
   },
   "showMore": "show more",
-  "showLess": "show less"
+  "showLess": "show less",
+  "cold": "cold",
+  "hot": "hot",
+  "calm": "calm",
+  "severe": "severe",
+  "low": "low",
+  "high": "high"
 }

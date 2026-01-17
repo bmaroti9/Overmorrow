@@ -8,6 +8,8 @@ Meet Overmorrow, a beautiful material design weather app, that makes checking th
   <i>Plan your days ahead easily with 14 days of forecast</i>
 -  <b>🖼️ Beautiful weather images: </b>
   <i>The weather images seamlessly adapt to your current weather condition</i>
+-  <b>📱Home screen weather widgets: </b>
+  <i>Beautiful Material-You home screen widgets</i>
 -  <b>🕒 72 hour forecast: </b>
   <i>Track the temperature, precipitation chance, wind-speed, uv and more for the next 72 hours</i>
 -  <b>🍃 Dedicated Air quality page: </b>

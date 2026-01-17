@@ -145,11 +145,11 @@ WeatherCurrent metNWeatherCurrentFromJson(item, ) {
 WeatherDay metNWeatherDayFromJson(item, start, end, index, hourDif) {
   List<double> rawTemps = [];
   List<double> windspeeds = [];
-  List<int> winddirs = [];
+  List<int?> winddirs = [];
   List<double> precip = [];
-  List<int> uvs = [];
 
-  int precipProb = -10;
+  int? uv;
+  int? precipProb;
 
   List<int> oneSummary = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   const weather_names = ['Clear Night', 'Partly Cloudy', 'Clear Sky', 'Overcast',
@@ -163,7 +163,6 @@ WeatherDay metNWeatherDayFromJson(item, start, end, index, hourDif) {
     rawTemps.add(hour.tempC);
     windspeeds.add(hour.windKph);
     winddirs.add(hour.windDirA);
-    uvs.add(hour.uv);
 
     precip.add(hour.precipMm);
 
@@ -171,9 +170,13 @@ WeatherDay metNWeatherDayFromJson(item, start, end, index, hourDif) {
     int value = weatherConditionBiassTable[hour.condition] ?? 0;
     oneSummary[index] += value;
 
-    if (hour.precipProb > precipProb) {
-      precipProb = hour.precipProb.toInt();
+    if ((hour.precipProb ?? 0) > (precipProb ?? 0)) {
+      precipProb = hour.precipProb?.toInt();
     }
+    if ((hour.uv ?? 0) > (uv ?? 0)) {
+      uv = hour.uv?.toInt();
+    }
+
     hours.add(hour);
   }
 
@@ -187,10 +190,10 @@ WeatherDay metNWeatherDayFromJson(item, start, end, index, hourDif) {
       maxTempC:  rawTemps.reduce(max),
       hourly: hours,
       windKph: (windspeeds.reduce((a, b) => a + b) / windspeeds.length),
-      date: DateTime.parse(item["properties"]["timeseries"][start]["time"]),
+      date: DateTime.parse(item["properties"]["timeseries"][start]["time"]).add(Duration(hours: -hourDif)),
       condition: weather_names[BIndex],
-      windDirA: (windspeeds.reduce((a, b) => a + b) / windspeeds.length).round(),
-      uv: uvs.reduce(max)
+      windDirA: (winddirs.whereType<int>().reduce((a, b) => a + b) / winddirs.whereType<int>().length).round(),
+      uv: uv,
   );
 }
 
@@ -198,16 +201,15 @@ WeatherHour metNWeatherHourFromJson(item, hourDif) {
   var nextHours = item["data"]["next_1_hours"] ?? item["data"]["next_6_hours"];
 
   return WeatherHour(
-    windGustKph: 0, //met norway sadly doesn't have any gust data
+    windGustKph: null,
     condition: metNTextCorrection(nextHours["summary"]["symbol_code"]),
     tempC: item["data"]["instant"]["details"]["air_temperature"],
     precipMm: nextHours["details"]["precipitation_amount"],
-    precipProb: (nextHours["details"]["probability_of_precipitation"] ?? 0).round(),
-    time: DateTime.parse(item["time"]),
+    precipProb: nextHours["details"]["probability_of_precipitation"]?.round(),
+    time: DateTime.parse(item["time"]).add(Duration(hours: -hourDif)),
     windKph: item["data"]["instant"]["details"]["wind_speed"] * 3.6,
-    windDirA: item["data"]["instant"]["details"]["wind_from_direction"].round(),
-    uv: (item["data"]["instant"]["details"]["ultraviolet_index_clear_sky"] ?? 0)
-        .round(),
+    windDirA: item["data"]["instant"]["details"]["wind_from_direction"]?.round(),
+    uv: item["data"]["instant"]["details"]["ultraviolet_index_clear_sky"]?.round(),
   );
 }
 
@@ -357,6 +359,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, placeName) async {
   int previous_hour = 0;
   for (int n = 0; n < MnBody["properties"]["timeseries"].length; n++) {
     int hour = (int.parse(MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0]) - hourDif) % 24;
+    //int hour = DateTime.parse(MnBody["properties"]["timeseries"][n]["time"]).toLocal().hour;
     if (n > 0 && hour - previous_hour < 1) {
       WeatherDay day = metNWeatherDayFromJson(MnBody, begin, n, index, hourDif);
       days.add(day);
@@ -419,7 +422,6 @@ Future<dynamic> metNGetLightResponse(lat, lon) async {
   };
   final url = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/compact', params);
 
-  print(url);
 
   final response = (await http.get(url, headers: headers)).body;
 

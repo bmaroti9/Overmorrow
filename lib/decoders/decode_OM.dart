@@ -104,7 +104,10 @@ String oMTextCorrection(int code) {
 }
 
 String oMCurrentTextCorrection(int code, WeatherSunStatus sunStatus, DateTime time) {
-  if (time.difference(sunStatus.sunrise).isNegative || sunStatus.sunset.difference(time).isNegative) {
+  // i need to set them to be on the same day
+  DateTime sameDayTime = sunStatus.sunrise.copyWith(hour: time.hour, minute: time.minute);
+
+  if (sameDayTime.difference(sunStatus.sunrise).isNegative || sunStatus.sunset.difference(sameDayTime).isNegative) {
     if (code == 0 || code == 1) {
       return 'Clear Night';
     }
@@ -152,12 +155,12 @@ WeatherDay oMWeatherDayFromJson(item, index, WeatherSunStatus sunStatus, approxi
     maxTempC: item["daily"]["temperature_2m_max"][index],
 
     totalPrecipMm: item["daily"]["precipitation_sum"][index],
-    precipProb: item["daily"]["precipitation_probability_max"][index] ?? 0,
+    precipProb: item["daily"]["precipitation_probability_max"][index],
 
     uv: item["daily"]["uv_index_max"][index].round(),
 
     windKph: item["daily"]["wind_speed_10m_max"][index],
-    windDirA: item["daily"]["wind_direction_10m_dominant"][index] ?? 0,
+    windDirA: item["daily"]["wind_direction_10m_dominant"][index],
 
     hourly: oMBuildWeatherHourList(index, item, sunStatus, approximateLocal),
   );
@@ -189,7 +192,7 @@ WeatherHour oMWeatherHourFromJson(item, index, WeatherSunStatus sunStatus) {
     tempC: item["hourly"]["temperature_2m"][index],
     condition: condition,
     precipMm: item["hourly"]["precipitation"][index],
-    precipProb: item["hourly"]["precipitation_probability"][index] ?? 0,
+    precipProb: item["hourly"]["precipitation_probability"][index],
     windKph: item["hourly"]["wind_speed_10m"][index],
     windGustKph: item["hourly"]["wind_gusts_10m"][index],
     windDirA: item["hourly"]["wind_direction_10m"][index],
@@ -526,10 +529,10 @@ class OMExtendedAqi{
     int europeanIndex = 0;
     for (int i = 0; i < aqiCategories.length; i++) {
       if (item["current"]["european_aqi"] > aqiCategories[i])  {
-        usIndex = i;
+        usIndex = i + 1;
       }
       if (item["current"]["us_aqi"] > europeanAqiCategories[i])  {
-        europeanIndex = i;
+        europeanIndex = i + 1;
       }
     }
 
@@ -579,6 +582,41 @@ class OMExtendedAqi{
       no2_p: no2_h[0] * 24.45 / 46.0055 / 1000 / breakpoints[5][breakpoints[5].length - 2] * 100,
     );
   }
+}
+
+class OmExtendedPrecip {
+  final List<DateTime> minutely15Times;
+  final List<double> minutely15PrecipMm;
+  final List<int> minutely15PrecipChance;
+
+  const OmExtendedPrecip({
+    required this.minutely15PrecipChance,
+    required this.minutely15PrecipMm,
+    required this.minutely15Times,
+  });
+
+/*
+  static Future<OmExtendedPrecip> fromJson(lat, lng) async {
+    final params = {
+      "latitude": lat.toString(),
+      "longitude": lng.toString(),
+      "current": [],
+      "minutely_15" : ["precipitation"],
+      "hourly" : ["precipitation_probability"],
+      "timezone": "auto",
+      "forecast_minutely_15" : "96",
+      "past_minutely_15" : "96"
+    };
+
+    final url = Uri.https("air-quality-api.open-meteo.com", 'v1/air-quality', params);
+
+    var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng, aqi-extended open-meteo");
+
+    var response = await file[0].readAsString();
+    final item = jsonDecode(response);
+  }
+
+   */
 }
 
 Future<WeatherData> oMGetWeatherData(lat, lng, place) async {

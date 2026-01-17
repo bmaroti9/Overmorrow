@@ -189,7 +189,7 @@ class FadingImageWidget extends StatelessWidget {
             ),
           ),
           //Add a slight tint to make the text more legible
-          Container(color: const Color.fromARGB(30, 0, 0, 0),)
+          Container(color: const Color.fromARGB(20, 0, 0, 0),)
         ]
     );
   }

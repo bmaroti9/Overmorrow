@@ -21,8 +21,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:overmorrow/services/preferences_service.dart';
-import 'package:overmorrow/settings_screens.dart';
-import '../l10n/app_localizations.dart';
+import 'package:overmorrow/pages/settings_pages/settings_screens.dart';
+import '../../../l10n/app_localizations.dart';
 import 'about_page.dart';
 
 Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, settings, textcolor,

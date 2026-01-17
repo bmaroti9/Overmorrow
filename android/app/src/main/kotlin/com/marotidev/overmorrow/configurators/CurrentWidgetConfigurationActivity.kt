@@ -1,6 +1,5 @@
 package com.marotidev.overmorrow.configurators
 
-import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
 import android.content.Context
@@ -11,26 +10,38 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.Keep
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -47,13 +58,22 @@ import es.antonborri.home_widget.HomeWidgetBackgroundIntent
 import es.antonborri.home_widget.HomeWidgetPlugin
 import kotlinx.coroutines.launch
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.draw.alpha
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.glance.GlanceId
-import androidx.glance.GlanceModifier
 import androidx.glance.appwidget.GlanceAppWidget
 import com.marotidev.overmorrow.OvermorrowTheme
 import com.marotidev.overmorrow.R
+import com.marotidev.overmorrow.services.getBackColor
+import com.marotidev.overmorrow.services.getFrontColor
 import com.marotidev.overmorrow.widgets.CurrentWidget
 import com.marotidev.overmorrow.widgets.DateCurrentWidget
 import com.marotidev.overmorrow.widgets.ForecastWidget
@@ -130,7 +150,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
             val resultIntent = Intent().apply {
                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             }
-            setResult(Activity.RESULT_OK, resultIntent)
+            setResult(RESULT_OK, resultIntent)
             finish()
         }
     }
@@ -227,13 +247,13 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         }
         Row (
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(top = 8.dp, bottom = 16.dp, start = 2.dp)
+            modifier = Modifier.padding(top = 12.dp, end = 4.dp, bottom = 16.dp)
         ){
             Icon(
                 painter = painterResource(R.drawable.icon_info),
                 tint = MaterialTheme.colorScheme.outline,
                 contentDescription = "info icon",
-                modifier = Modifier.padding(start = 16.dp, end = 8.dp).size(18.dp)
+                modifier = Modifier.padding(end = 4.dp).size(16.dp)
             )
             Text(
                 infoText,
@@ -243,6 +263,11 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                 ),
             )
         }
+    }
+
+    fun isColorDark(color: Color): Boolean {
+        val luminance = (0.299 * color.red + 0.587 * color.green + 0.114 * color.blue)
+        return luminance < 0.5
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -263,7 +288,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
 
         // Set the result to CANCELED in case the user backs out without adding
         val resultValue = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        setResult(Activity.RESULT_CANCELED, resultValue)
+        setResult(RESULT_CANCELED, resultValue)
 
         val data = HomeWidgetPlugin.getData(applicationContext)
 
@@ -280,101 +305,120 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         Log.i("selectedBackground", selectedBackgroundOnStartup)
 
         val providers : List<String> = listOf("open-meteo", "weatherapi", "met-norway")
-        val backColors : List<String> = listOf("secondary container", "primary container", "tertiary container", "surface")
-        val frontColors : List<String> = listOf("primary", "secondary", "tertiary")
+        val backColors : List<String> = listOf("secondary container", "primary container", "tertiary container", "surface", "transparent")
+        val frontColors : List<String> = listOf("primary", "secondary", "tertiary", "transparent")
 
         Log.i("Favorite len", favorites.size.toString())
 
         setContent {
             OvermorrowTheme {
 
-                val selectedFavorite : MutableState<String?> = remember { mutableStateOf(selectedPlaceOnStartup) }
+                val selectedLocation : MutableState<String?> = remember { mutableStateOf(selectedPlaceOnStartup) }
                 val selectedProvider : MutableState<String?> = remember { mutableStateOf(selectedProviderOnStartup) }
                 val selectedBackground : MutableState<String?> = remember { mutableStateOf(selectedBackgroundOnStartup) }
                 val selectedForeground : MutableState<String?> = remember { mutableStateOf(selectedForegroundOnStartup) }
 
                 Column (
-                    modifier = Modifier.fillMaxSize().padding(16.dp).
-                        verticalScroll(rememberScrollState()),
+                    modifier = Modifier.fillMaxSize()
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(24.dp)
+                        .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.Start
                 ) {
 
-                    Box(modifier = Modifier.padding(top = 50.dp))
+                    Text(
+                        text = "Location",
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.primary
+                        ),
+                        modifier = Modifier.padding(top = 50.dp, bottom = 8.dp)
+                    )
 
-                    Row(
-                        Modifier
+                    Card(
+                        onClick = {
+                            selectedLocation.value = "CurrentLocation"
+                            saveLocationPref(applicationContext, appWidgetId,  "CurrentLocation", null)
+                        },
+                        modifier = Modifier
                             .fillMaxWidth()
-                            .height(46.dp)
-                            .selectable(
-                                selected = ("CurrentLocation" == selectedFavorite.value),
-                                onClick = {
-                                    selectedFavorite.value = "CurrentLocation"
-                                    saveLocationPref(applicationContext, appWidgetId,  "CurrentLocation", null)
-                                },
-                                role = Role.RadioButton,
-                                enabled = lastKnownLocation != "unknown"
-                            )
-                            .alpha(if (lastKnownLocation != "unknown") 1.0f else 0.5f)
-                            .padding(start = 16.dp, end = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                            .padding(vertical = 2.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = if ("CurrentLocation" == selectedLocation.value) MaterialTheme.colorScheme.primaryContainer
+                            else MaterialTheme.colorScheme.surfaceContainer
+                        ),
+                        shape = RoundedCornerShape(10.dp),
+                        enabled = lastKnownLocation != "unknown"
                     ) {
-                        RadioButton(
-                            selected = ("CurrentLocation" == selectedFavorite.value),
-                            onClick = null // null recommended for accessibility with screen readers
-                        )
-                        Text(
-                            text = "Current Location ($lastKnownLocation)",
-                            style = TextStyle(
-                                fontSize = 18.sp,
-                                color = MaterialTheme.colorScheme.onSurface
-                            ),
-                            modifier = Modifier.padding(start = 16.dp)
-                        )
+                        Row(
+                            Modifier.padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Spacer(Modifier.width(12.dp))
+                            Text(
+                                text = "Current Location ($lastKnownLocation)",
+                                modifier = Modifier.weight(1f),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                            if ("CurrentLocation" == selectedLocation.value) {
+                                Icon(
+                                    Icons.Default.Check,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        }
                     }
 
                     CurrentLocationUnavailableText(lastKnownLocation)
 
                     favorites.forEach { favorite ->
-                        Row(
-                            Modifier
+                        val isSelected = (favorite.name == selectedLocation.value)
+                        Card(
+                            onClick = {
+                                selectedLocation.value = favorite.name
+                                saveLocationPref(applicationContext, appWidgetId,  favorite.name, "${favorite.lat}, ${favorite.lon}")
+                            },
+                            modifier = Modifier
                                 .fillMaxWidth()
-                                .height(46.dp)
-                                .selectable(
-                                    selected = (favorite.name == selectedFavorite.value),
-                                    onClick = {
-                                        selectedFavorite.value = favorite.name
-                                        saveLocationPref(applicationContext, appWidgetId,  favorite.name, "${favorite.lat}, ${favorite.lon}")
-                                    },
-                                    role = Role.RadioButton
-                                )
-                                .padding(horizontal = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                                .padding(vertical = 2.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer
+                                else MaterialTheme.colorScheme.surfaceContainer
+                            ),
+                            shape = RoundedCornerShape(10.dp)
                         ) {
-                            RadioButton(
-                                selected = (favorite.name == selectedFavorite.value),
-                                onClick = null // null recommended for accessibility with screen readers
-                            )
-                            Text(
-                                text = favorite.name,
-                                style = TextStyle(
-                                    fontSize = 18.sp,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                ),
-                                modifier = Modifier.padding(start = 16.dp)
-                            )
+                            Row(
+                                Modifier.padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Spacer(Modifier.width(12.dp))
+                                Text(
+                                    text = favorite.name,
+                                    modifier = Modifier.weight(1f),
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                                if (isSelected) {
+                                    Icon(
+                                        Icons.Default.Check,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            }
                         }
                     }
 
                     Row (
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(top = 16.dp, bottom = 40.dp, start = 2.dp)
+                        modifier = Modifier.padding(top = 12.dp, end = 4.dp)
                     ){
                         Icon(
                             painter = painterResource(R.drawable.icon_info),
                             tint = MaterialTheme.colorScheme.outline,
                             contentDescription = "info icon",
-                            modifier = Modifier.padding(start = 16.dp, end = 8.dp).size(18.dp)
+                            modifier = Modifier.padding(end = 4.dp).size(16.dp)
                         )
                         Text(
                             "favorites you add in the app appear here",
@@ -385,114 +429,194 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                         )
                     }
 
-                    providers.forEach { provider ->
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .height(46.dp)
-                                .selectable(
-                                    selected = (provider == selectedProvider.value),
+                    Text(
+                        text = "Weather provider",
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.primary
+                        ),
+                        modifier = Modifier.padding(top = 32.dp, bottom = 8.dp)
+                    )
+
+                    Row(
+                        modifier = Modifier.horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        SingleChoiceSegmentedButtonRow {
+                            providers.forEachIndexed { index, provider ->
+                                SegmentedButton(
+                                    shape = SegmentedButtonDefaults.itemShape(
+                                        index = index,
+                                        count = providers.size
+                                    ),
                                     onClick = {
                                         selectedProvider.value = provider
                                         saveProviderPref(applicationContext, appWidgetId, provider)
                                     },
-                                    role = Role.RadioButton
+                                    selected = provider == selectedProvider.value,
+                                    label = { Text(provider) },
                                 )
-                                .padding(horizontal = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = (provider == selectedProvider.value),
-                                onClick = null // null recommended for accessibility with screen readers
-                            )
-                            Text(
-                                text = provider,
-                                style = TextStyle(
-                                    fontSize = 18.sp,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                ),
-                                modifier = Modifier.padding(start = 16.dp)
-                            )
+                            }
                         }
                     }
 
                     Text(
                         text = "Background color",
                         style = TextStyle(
-                            fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.secondary
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.primary
                         ),
-                        modifier = Modifier.padding(start = 16.dp, top = 24.dp, bottom = 4.dp)
+                        modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
                     )
 
-                    backColors.forEach { backColor ->
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .height(46.dp)
-                                .selectable(
-                                    selected = (backColor == selectedBackground.value),
-                                    onClick = {
-                                        selectedBackground.value = backColor
-                                        saveBackColorPref(applicationContext, appWidgetId, backColor)
-                                    },
-                                    role = Role.RadioButton
+                    Row(
+                        Modifier.horizontalScroll(rememberScrollState())
+                            .height(IntrinsicSize.Max)
+                    ) {
+                        backColors.forEach { backColor ->
+                            val isSelected = backColor == selectedBackground.value
+                            val colorValue = getBackColor(backColor).getColor(context = applicationContext)
+
+                            Column(
+                                Modifier
+                                    .width(80.dp)
+                                    .fillMaxHeight()
+                                    .padding(vertical = 8.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .selectable(
+                                        selected = isSelected,
+                                        onClick = {
+                                            selectedBackground.value = backColor
+                                            saveBackColorPref(applicationContext, appWidgetId, backColor)
+                                        },
+                                        role = Role.RadioButton
+                                    )
+                                    .background(
+                                        if (isSelected) MaterialTheme.colorScheme.surfaceVariant
+                                        else Color.Transparent
+                                    ),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Box(
+                                    contentAlignment = Alignment.Center, // Centers the Checkmark
+                                    modifier = Modifier
+                                        .padding(top = 12.dp)
+                                        .size(48.dp)
+                                        .clip(CircleShape)
+                                        .background(colorValue)
+                                        .border(
+                                            width = 2.dp,
+                                            color = if (isSelected) MaterialTheme.colorScheme.primary
+                                            else MaterialTheme.colorScheme.outlineVariant,
+                                            shape = CircleShape
+                                        )
+                                ) {
+                                    if (backColor == "transparent") {
+                                        Icon(
+                                            painter = painterResource(R.drawable.icon_block),
+                                            tint = MaterialTheme.colorScheme.error,
+                                            contentDescription = "transparent",
+                                            modifier = Modifier.size(30.dp)
+                                        )
+                                    } else if (isSelected) {
+                                        Icon(
+                                            imageVector = Icons.Default.Check,
+                                            contentDescription = "Selected",
+                                            tint = if (isColorDark(colorValue)) Color.White else Color.Black,
+                                            modifier = Modifier.size(24.dp)
+                                        )
+                                    }
+                                }
+
+                                Text(
+                                    text = backColor,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 4.dp),
+                                    textAlign = TextAlign.Center
                                 )
-                                .padding(horizontal = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = (backColor == selectedBackground.value),
-                                onClick = null // null recommended for accessibility with screen readers
-                            )
-                            Text(
-                                text = backColor,
-                                style = TextStyle(
-                                    fontSize = 18.sp,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                ),
-                                modifier = Modifier.padding(start = 16.dp)
-                            )
+                            }
                         }
                     }
 
                     Text(
                         text = "Foreground color",
                         style = TextStyle(
-                            fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.secondary
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.primary
                         ),
-                        modifier = Modifier.padding(start = 16.dp, top = 24.dp, bottom = 4.dp)
+                        modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
                     )
 
-                    frontColors.forEach { frontColor ->
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .height(46.dp)
-                                .selectable(
-                                    selected = (frontColor == selectedForeground.value),
-                                    onClick = {
-                                        selectedForeground.value = frontColor
-                                        saveFrontColorPref(applicationContext, appWidgetId, frontColor)
-                                    },
-                                    role = Role.RadioButton
+                    Row(
+                        Modifier.horizontalScroll(rememberScrollState())
+                            .height(IntrinsicSize.Max)
+                    ) {
+                        frontColors.forEach { frontColor ->
+                            val isSelected = frontColor == selectedForeground.value
+                            val colorValue = getFrontColor(frontColor).getColor(context = applicationContext)
+
+                            Column(
+                                Modifier
+                                    .width(80.dp)
+                                    .fillMaxHeight()
+                                    .padding(vertical = 8.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .selectable(
+                                        selected = isSelected,
+                                        onClick = {
+                                            selectedForeground.value = frontColor
+                                            saveFrontColorPref(applicationContext, appWidgetId, frontColor)
+                                        },
+                                        role = Role.RadioButton
+                                    )
+                                    .background(
+                                        if (isSelected) MaterialTheme.colorScheme.surfaceVariant
+                                        else Color.Transparent
+                                    ),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Box(
+                                    contentAlignment = Alignment.Center,
+                                    modifier = Modifier
+                                        .padding(top = 12.dp)
+                                        .size(48.dp)
+                                        .clip(CircleShape)
+                                        .then(if(frontColor == "transparent")
+                                            Modifier.background(color = Color.Transparent)
+                                            else Modifier.background(colorValue))
+                                        .border(
+                                            width = 2.dp,
+                                            color = if (isSelected) MaterialTheme.colorScheme.primary
+                                            else MaterialTheme.colorScheme.outlineVariant,
+                                            shape = CircleShape
+                                        )
+                                ) {
+                                    if (frontColor == "transparent") {
+                                        Icon(
+                                            painter = painterResource(R.drawable.icon_block),
+                                            tint = MaterialTheme.colorScheme.error,
+                                            contentDescription = "transparent",
+                                            modifier = Modifier.size(30.dp)
+                                        )
+                                    } else if (isSelected) {
+                                        Icon(
+                                            imageVector = Icons.Default.Check,
+                                            contentDescription = "Selected",
+                                            tint = if (isColorDark(colorValue)) Color.White else Color.Black,
+                                            modifier = Modifier.size(24.dp)
+                                        )
+                                    }
+                                }
+
+                                Text(
+                                    text = frontColor,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 4.dp),
+                                    textAlign = TextAlign.Center
                                 )
-                                .padding(horizontal = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = (frontColor == selectedForeground.value),
-                                onClick = null // null recommended for accessibility with screen readers
-                            )
-                            Text(
-                                text = frontColor,
-                                style = TextStyle(
-                                    fontSize = 18.sp,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                ),
-                                modifier = Modifier.padding(start = 16.dp)
-                            )
+                            }
                         }
                     }
 
@@ -501,12 +625,27 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                             exitWithOk()
                         },
                         modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-                            .padding(top = 40.dp, bottom = 50.dp)
+                            .padding(top = 40.dp),
+                        enabled = selectedLocation.value != "unknown"
                     ) {
                         Text("Place Widget")
                     }
+
+                    if (selectedLocation.value == "unknown") {
+                        Text(
+                            text = "you need to select a location",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(top = 8.dp)
+                                .align(alignment = Alignment.CenterHorizontally)
+                        )
+                    }
+
+                    Box(modifier = Modifier.padding(bottom = 50.dp))
                 }
             }
         }
     }
+
 }
+

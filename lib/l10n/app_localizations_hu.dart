@@ -30,7 +30,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get today => 'Ma';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'Holnap';
 
   @override
   String get overmorrowLowercase => 'Overmorrow';
@@ -66,7 +66,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get sleet => 'Hószitálás';
 
   @override
-  String get drizzle => 'Szemerkél';
+  String get drizzle => 'Szemerkélő';
 
   @override
   String get thunderstorm => 'Zivatar';
@@ -100,10 +100,11 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get locationServicesAreDisabled =>
-      'A helymeghatározás szolgáltatások kikapcsolva vannak.';
+      'A helymeghatározás ki van kapcsolva';
 
   @override
-  String get locationPermissionIsDenied => 'A helyengedélyt megtagadták';
+  String get locationPermissionIsDenied =>
+      'A helymeghatározási engedély nincs megadva';
 
   @override
   String get locationPermissionDeniedForever =>
@@ -113,13 +114,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get grantLocationPermission => 'helymeghatározás engedélyezése';
 
   @override
-  String get currentLocation => 'tartózkodási hely';
+  String get currentLocation => 'Jelenlegi tartózkodási hely';
 
   @override
   String get favoritesLowercase => 'kedvencek';
 
   @override
-  String get failedToAccessGps => 'Nem sikerült hozzáférni a GPS-hez';
+  String get failedToAccessGps => 'Nem sikerült csatlakozni a GPS-hez';
 
   @override
   String get search => 'Keresés...';
@@ -128,7 +129,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get sunriseSunset => 'napkelte/napnyugta';
 
   @override
-  String get airQuality => 'Légszennyezettség';
+  String get airQuality => 'Levegő minőség';
 
   @override
   String get airQualityLowercase => 'légszennyezettség';
@@ -152,7 +153,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get unhealthy => 'egészségtelen';
 
   @override
-  String get radar => 'radar';
+  String get radar => 'radár';
 
   @override
   String get colorMode => 'Színmód';
@@ -164,25 +165,25 @@ class AppLocalizationsHu extends AppLocalizations {
   String get timeMode => 'Idő mód';
 
   @override
-  String get mon => 'H';
+  String get mon => 'Hét';
 
   @override
-  String get tue => 'K';
+  String get tue => 'Ked';
 
   @override
-  String get wed => 'Sz';
+  String get wed => 'Sze';
 
   @override
-  String get thu => 'Cs';
+  String get thu => 'Csü';
 
   @override
-  String get fri => 'P';
+  String get fri => 'Pén';
 
   @override
   String get sat => 'Szo';
 
   @override
-  String get sun => 'V';
+  String get sun => 'Vas';
 
   @override
   String get fontSize => 'Betűméret';
@@ -462,13 +463,13 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get radarHaptics => 'radar haptikus visszajelzés';
+  String get radarHaptics => 'radár haptikus visszajelzés';
 
   @override
   String get alertsCapital => 'Figyelmeztetések';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'Riasztások';
 
   @override
   String get severity => 'súlyosság';
@@ -483,14 +484,32 @@ class AppLocalizationsHu extends AppLocalizations {
   String get areas => 'területek';
 
   @override
-  String get light => 'light';
+  String get light => 'Könnyű';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'Erős';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'Mutas többet';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'Mutas kevesebbet';
+
+  @override
+  String get cold => 'cold';
+
+  @override
+  String get hot => 'hot';
+
+  @override
+  String get calm => 'calm';
+
+  @override
+  String get severe => 'severe';
+
+  @override
+  String get low => 'low';
+
+  @override
+  String get high => 'high';
 }

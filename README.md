@@ -1,14 +1,14 @@
-![page48](Screenshots/overmorrow_green_github.png)
+![page48](Screenshots/overmorrow_brown_rounded.png)
 
 <div align="center">
-  <img alt="GitHub License" src="https://img.shields.io/github/license/bmaroti9/Overmorrow?style=flat-square&labelColor=%23F9FAEF&color=%2398B1B7">
- <img alt="GitHub Release" src="https://img.shields.io/github/v/release/bmaroti9/Overmorrow?style=flat-square&labelColor=%23F9FAEF&color=%23B2D189">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF9EB&color=%2348576C">
+ <img alt="GitHub Release" src="https://img.shields.io/github/v/release/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF9EB&color=%23DB9E6D">
   <img alt="GitHub Downloads (all assets, all releases)" 
-  src="https://img.shields.io/github/downloads/bmaroti9/Overmorrow/total?style=flat-square&labelColor=%23F9FAEF&color=%23946E57">
+  src="https://img.shields.io/github/downloads/bmaroti9/Overmorrow/total?style=flat-square&labelColor=%23FFF9EB&color=%23A2C8AE"> 
   
   <img alt="GitHub Downloads (all assets, all releases)"
-  src="https://img.shields.io/github/stars/bmaroti9/Overmorrow?style=flat-square&labelColor=%23F9FAEF&color=%233F4B4B">
-  <img alt="GitHub Release" src="https://img.shields.io/github/forks/bmaroti9/Overmorrow?style=flat-square&labelColor=%23F9FAEF&color=%236C8490">
+  src="https://img.shields.io/github/stars/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF9EB&color=%23F1E48A">
+  <img alt="GitHub Release" src="https://img.shields.io/github/forks/bmaroti9/Overmorrow?style=flat-square&labelColor=%23FFF9EB&color=%2390797B">
 </a>
 
 <h4 align="center">modern material design weather app</h4>
@@ -37,6 +37,8 @@
   *Plan your days ahead easily with 14 days of forecast*
 -  **🖼️ Beautiful weather images**  
   *The weather images seamlessly adapt to your current weather condition*
+-  **📱Home screen weather widgets**  
+  *Beautiful Material-You home screen widgets*
 -  **🕒 72 hour forecast**  
   *Track the temperature, precipitation chance, wind-speed, uv and more for the next 72 hours*
 -  **🍃 Dedicated Air quality page**  
@@ -65,20 +67,23 @@
 ### Phone
 
 <p align="center" width="100%">
-  <img src="Screenshots/overmorrow_green_play_1.png" width="30%">
-  <img src="Screenshots/overmorrow_green_play_2.png" width="30%">
-  <img src="Screenshots/overmorrow_green_play_3.png" width="30%">
-  <img src="Screenshots/overmorrow_green_play_4.png" width="30%">
-  <img src="Screenshots/overmorrow_green_play_5.png" width="30%">
-  <img src="Screenshots/overmorrow_green_play_6.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_1.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_2.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_3.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_4.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_5.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_6.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_7.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_8.png" width="30%">
 </p>
 
 
 ### Tablet
 
 <p align="center" width="100%">
-  <img src="Screenshots/overmorrow_green_tablet_1.png" width="90%">
-  <img src="Screenshots/overmorrow_green_tablet_2.png" width="90%">
+  <img src="Screenshots/overmorrow_brown_tablet_1.png" width="90%">
+  <img src="Screenshots/overmorrow_brown_tablet_2.png" width="90%">
+  <img src="Screenshots/overmorrow_brown_tablet_3.png" width="90%">
 </p>
 
 
@@ -125,3 +130,5 @@ That was a year ago. Since then i have discovered material-You and have redesign
   - ✅ Implement Material-You 
   - ✅ Add offline mode
   - ✅ Add layout customisation
+  - ✅ Add weather alerts
+  - ✅ Add widgets

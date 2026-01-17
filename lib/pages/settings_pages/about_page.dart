@@ -21,7 +21,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:home_widget/home_widget.dart';
-import '../l10n/app_localizations.dart';
+import '../../../l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -454,6 +454,16 @@ class ServicesPage extends StatelessWidget {
                               _launchUrl("https://www.rainviewer.com/api.html");
                             },
                             child: Text("rainviewer",
+                              style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 17,
+                                decoration: TextDecoration.underline,),),
+                          ),
+                          const SizedBox(height: 10,),
+                          GestureDetector(
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              _launchUrl("https://www.weatherapi.com/docs/#intro-weather-maps");
+                            },
+                            child: Text("weatherapi",
                               style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 17,
                                 decoration: TextDecoration.underline,),),
                           ),

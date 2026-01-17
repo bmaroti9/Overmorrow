@@ -9,7 +9,7 @@ class AppLocalizationsMk extends AppLocalizations {
   AppLocalizationsMk([String locale = 'mk']) : super(locale);
 
   @override
-  String get feelsLike => 'чувствувo';
+  String get feelsLike => 'се чувствува како';
 
   @override
   String get precipCapital => 'Врнежи';
@@ -139,8 +139,7 @@ class AppLocalizationsMk extends AppLocalizations {
   String get fair => 'ведро';
 
   @override
-  String get moderate =>
-      'умерено (it would be \"умерен\" depending on the gender of the next word)';
+  String get moderate => 'умерено';
 
   @override
   String get poor => 'слабо';
@@ -164,7 +163,7 @@ class AppLocalizationsMk extends AppLocalizations {
   String get timeMode => 'Временски режим';
 
   @override
-  String get mon => 'Пон (im assuming this is short for monday)';
+  String get mon => 'Пон';
 
   @override
   String get tue => 'Вто';
@@ -216,7 +215,7 @@ class AppLocalizationsMk extends AppLocalizations {
 
   @override
   String get goodAqiDesc =>
-      'Квалитетот на воздухот е одличен; нема ризик здравјето.';
+      'Квалитетот на воздухот е одличен; нема ризик по здравјето.';
 
   @override
   String get fairAqiDesc =>
@@ -297,7 +296,7 @@ class AppLocalizationsMk extends AppLocalizations {
   String get now => 'моментално';
 
   @override
-  String get hr => 'хр (context?)';
+  String get hr => 'час';
 
   @override
   String get layout => 'Распоред';
@@ -492,4 +491,22 @@ class AppLocalizationsMk extends AppLocalizations {
 
   @override
   String get showLess => 'покажи помалку';
+
+  @override
+  String get cold => 'cold';
+
+  @override
+  String get hot => 'hot';
+
+  @override
+  String get calm => 'calm';
+
+  @override
+  String get severe => 'severe';
+
+  @override
+  String get low => 'low';
+
+  @override
+  String get high => 'high';
 }

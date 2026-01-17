@@ -495,4 +495,22 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get showLess => 'покажи по-малко';
+
+  @override
+  String get cold => 'студено';
+
+  @override
+  String get hot => 'горещо';
+
+  @override
+  String get calm => 'спокойно';
+
+  @override
+  String get severe => 'тежко';
+
+  @override
+  String get low => 'ниско';
+
+  @override
+  String get high => 'високо';
 }
