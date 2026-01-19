@@ -30,5 +30,5 @@ const String access_key = "YourUnsplashApiKey"; //your api key from unsplash.com
 //the app works without this if you set the image source to asset
 
 const String timezonedbKey = "YourTimezonedbKey"; //your api key from timezonedb.com
-//the app works without this is you use open-meteo as weather provider
+//the app works without this if you use open-meteo as weather provider
 //both the others don't return local times so they need this instead
