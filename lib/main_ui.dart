@@ -50,40 +50,6 @@ Future<void> _launchUrl(String url) async {
   }
 }
 
-class WeatherPage extends StatelessWidget {
-  final data;
-  final updateLocation;
-
-  WeatherPage({super.key, required this.data,
-        required this.updateLocation});
-
-  void openDrawer(BuildContext context) {
-    Scaffold.of(context).openDrawer();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    //FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-    //Size size = view.physicalSize / view.devicePixelRatio;
-
-    /*
-    if (size.width > 950) {
-      return TabletLayout(
-        data: data, updateLocation: updateLocation,
-        key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
-    }
-
-     */
-
-    //return SearchHeroDemo();
-
-    return Container();
-    //return NewMain(data: data, updateLocation: updateLocation, context: context,
-    //    key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
-  }
-}
-
 
 class LoadingIndicator extends StatelessWidget {
   final bool isLoading;

@@ -38,6 +38,13 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+    //using this the apk size decreases to half
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
 }
 
 flutter {
