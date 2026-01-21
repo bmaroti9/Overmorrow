@@ -5,6 +5,7 @@ import HomeWidgetGlanceStateDefinition
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
@@ -31,10 +32,14 @@ import com.marotidev.overmorrow.R
 import es.antonborri.home_widget.actionStartActivity
 import com.marotidev.overmorrow.services.getIconForCondition
 import androidx.core.net.toUri
+import androidx.glance.LocalSize
+import androidx.glance.appwidget.SizeMode
 import com.marotidev.overmorrow.services.getBackColor
 import com.marotidev.overmorrow.services.getFrontColor
 
 class CurrentWidget : GlanceAppWidget() {
+
+    override val sizeMode = SizeMode.Exact
 
     override val stateDefinition: GlanceStateDefinition<*>
         get() = HomeWidgetGlanceStateDefinition()
@@ -64,6 +69,9 @@ class CurrentWidget : GlanceAppWidget() {
 
         val iconResId = getIconForCondition(condition)
 
+        val size = LocalSize.current
+        val minSize = min(size.width, size.height).value
+
         Box (
             modifier = GlanceModifier.fillMaxSize()
                 .clickable(
@@ -72,40 +80,36 @@ class CurrentWidget : GlanceAppWidget() {
                         "overmorrrow://opened?location=$location&latlon=$latLon".toUri()
                     )
                 ),
-            contentAlignment = Alignment.Center // Align content within the box
-        ){
-            Box(
-                modifier = GlanceModifier
-                    .size(160.dp, 160.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                if (backColorString != "transparent") Image(
+            contentAlignment = Alignment.Center
+        ) {
+
+            if (backColorString != "transparent") {
+                Image(
                     provider = ImageProvider(R.drawable.shapes_custom_pill_shape),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(backColor),
                     contentScale = ContentScale.Fit,
-                    modifier = GlanceModifier.fillMaxSize()
-                )
-
-                Text(
-                    text = "$temp°",
-                    style = TextStyle(
-                        color = frontColor,
-                        fontSize = 50.sp
-                    ),
-                    modifier = GlanceModifier.padding(start = 49.dp, bottom = 49.dp)
-                )
-
-                Image(
-                    provider = ImageProvider(iconResId),
-                    contentDescription = "Weather Icon",
-                    colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
-                    modifier = GlanceModifier
-                        .size(118.dp, 118.dp)
-                        .padding(top = 52.dp, end = 52.dp)
                 )
             }
-        }
 
+            Text(
+                text = "$temp°",
+                style = TextStyle(
+                    color = frontColor,
+                    (minSize * 0.31f).sp
+                ),
+                modifier = GlanceModifier.padding(start = (minSize * 0.30f).dp, bottom = (minSize * 0.30f).dp)
+            )
+
+            Image(
+                provider = ImageProvider(iconResId),
+                contentDescription = "Weather Icon",
+                colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
+                modifier = GlanceModifier
+                    .size((minSize * 0.74f).dp)
+                    .padding(top = (minSize * 0.30f).dp, end = (minSize * 0.30f).dp)
+            )
+
+        }
     }
 }

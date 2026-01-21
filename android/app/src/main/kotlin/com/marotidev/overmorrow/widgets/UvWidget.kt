@@ -93,12 +93,14 @@ class UvWidget : GlanceAppWidget() {
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Image(
-                provider = ImageProvider(R.drawable.shapes_circle),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(backColor),
-                contentScale = ContentScale.Fit,
-            )
+            if (backColorString != "transparent") {
+                Image(
+                    provider = ImageProvider(R.drawable.shapes_circle),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(backColor),
+                    contentScale = ContentScale.Fit,
+                )
+            }
 
             if (!isFrontTransparent) {
                 Image(
