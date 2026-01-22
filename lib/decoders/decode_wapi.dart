@@ -458,6 +458,14 @@ Future<LightWindData> wapiGetLightWindData(lat, lon, SharedPreferences prefs) as
   );
 }
 
+Future<LightUvData> wapiGetLightUvData(lat, lon, SharedPreferences prefs) async {
+  final item = await wapiGetCurrentResponse(lat, lon);
+
+  return LightUvData(
+      uv: item["current"]["uv"].round()
+  );
+}
+
 Future<LightHourlyForecastData> wapiGetLightHourlyData(placeName, lat, lon, SharedPreferences prefs) async {
   final params = {
     'key': wapi_Key,

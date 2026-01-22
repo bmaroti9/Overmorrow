@@ -306,7 +306,6 @@ class LightWindData {
     double lat = double.parse(split[0]);
     double lon = double.parse(split[1]);
 
-
     switch (provider) {
       case "weatherapi":
         return wapiGetLightWindData(lat, lon, prefs);
@@ -314,6 +313,30 @@ class LightWindData {
         return metNGetLightWindData(lat, lon, prefs);
       default:
         return omGetLightWindData(lat, lon, prefs);
+    }
+  }
+}
+
+class LightUvData {
+  final int uv;
+
+  LightUvData({
+    required this.uv
+  });
+
+  static Future<LightUvData> getLightUvData(placeName, latlong, provider, SharedPreferences prefs) async {
+
+    List<String> split = latlong.split(",");
+    double lat = double.parse(split[0]);
+    double lon = double.parse(split[1]);
+
+    switch (provider) {
+      case "weatherapi":
+        return wapiGetLightUvData(lat, lon, prefs);
+      case "met-norway":
+        return metNGetLightUvData(lat, lon, prefs);
+      default:
+        return omGetLightUvData(lat, lon, prefs);
     }
   }
 }

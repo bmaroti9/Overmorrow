@@ -409,8 +409,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, placeName) async {
   );
 }
 
-
-Future<dynamic> metNGetLightResponse(lat, lon) async {
+Future<dynamic> metNGetLightResponse(lat, lon, {bool isCompact = true}) async {
   final params = {
     "lat" : lat.toString(),
     "lon" : lon.toString(),
@@ -420,8 +419,7 @@ Future<dynamic> metNGetLightResponse(lat, lon) async {
   final headers = {
     "User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"
   };
-  final url = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/compact', params);
-
+  final url = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/${isCompact ? "compact" : "complete"}', params);
 
   final response = (await http.get(url, headers: headers)).body;
 
@@ -454,6 +452,13 @@ Future<LightWindData> metNGetLightWindData(lat, lon, SharedPreferences prefs) as
   );
 }
 
+Future<LightUvData> metNGetLightUvData(lat, lon, SharedPreferences prefs) async {
+  final item = await metNGetLightResponse(lat, lon, isCompact: false);
+
+  return LightUvData(
+      uv: item["properties"]["timeseries"][0]["data"]["instant"]["details"]["ultraviolet_index_clear_sky"].round(),
+  );
+}
 
 Future<LightHourlyForecastData> metNGetLightHourlyData(placeName, lat, lon, SharedPreferences prefs) async {
   final item = await metNGetLightResponse(lat, lon);

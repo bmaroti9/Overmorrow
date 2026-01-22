@@ -68,6 +68,8 @@ class UvWidget : GlanceAppWidget() {
 
         val prefs = currentState.preferences
 
+        val uv = prefs.getInt("uv.uv.$appWidgetId", 0)
+
         val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
         val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
 
@@ -113,7 +115,7 @@ class UvWidget : GlanceAppWidget() {
             }
 
             Text(
-                "4",
+                "$uv",
                 style = TextStyle(
                     color = onFrontColor,
                     fontSize = (minSize * 0.25f).sp,

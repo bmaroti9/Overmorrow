@@ -745,6 +745,24 @@ Future<LightWindData> omGetLightWindData(lat, lon, SharedPreferences prefs) asyn
   );
 }
 
+Future<LightUvData> omGetLightUvData(lat, lon, SharedPreferences prefs) async {
+  final oMParams = {
+    "latitude": lat.toString(),
+    "longitude": lon.toString(),
+    "hourly" : ["uv_index"],
+    "forecast_hours" : "1",
+  };
+
+  final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
+  final response = (await http.get(oMUrl)).body;
+
+  final item = jsonDecode(response);
+
+  return LightUvData(
+      uv: item["hourly"]["uv_index"][0].round()
+  );
+}
+
 Future<LightHourlyForecastData> omGetHourlyForecast(placeName, lat, lon, SharedPreferences prefs) async {
   final oMParams = {
     "latitude": lat.toString(),
