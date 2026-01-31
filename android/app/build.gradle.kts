@@ -5,13 +5,15 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
     id("org.jetbrains.kotlin.plugin.compose") version "2.2.10"
 }
-
 android {
     namespace = "com.marotidev.overmorrow"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
-
     compileOptions {
+        //required by flutter_local_notifications
+        // Flag to enable support for the new language APIs
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -52,6 +54,9 @@ flutter {
 }
 
 dependencies {
+    //desuraging for flutter_local_notifications
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+
     // Compose BOM
     implementation(platform("androidx.compose:compose-bom:2025.08.00"))
 

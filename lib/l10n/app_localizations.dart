@@ -558,6 +558,18 @@ abstract class AppLocalizations {
   /// **'uv'**
   String get uvLowercase;
 
+  /// No description provided for @tempLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'temp'**
+  String get tempLowercase;
+
+  /// No description provided for @pressureLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'pressure'**
+  String get pressureLowercase;
+
   /// No description provided for @goodAqiDesc.
   ///
   /// In en, this message translates to:
@@ -1043,6 +1055,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'high'**
   String get high;
+
+  /// No description provided for @liveRadar.
+  ///
+  /// In en, this message translates to:
+  /// **'live radar'**
+  String get liveRadar;
 }
 
 class _AppLocalizationsDelegate

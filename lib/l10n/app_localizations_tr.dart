@@ -215,6 +215,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc => 'Hava kalitesi mükemmel; sağlık riski yok.';
 
   @override
@@ -510,4 +516,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get high => 'yüksek';
+
+  @override
+  String get liveRadar => 'live radar';
 }

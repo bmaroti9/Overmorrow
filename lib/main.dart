@@ -28,6 +28,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/main_screens.dart';
 import 'package:overmorrow/services/image_service.dart';
+import 'package:overmorrow/services/notification_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
 import 'package:provider/provider.dart';
@@ -46,6 +47,7 @@ Future<void> main() async {
   }
 
   await PreferenceUtils.init();
+  await NotificationService().init();
 
   final display = PlatformDispatcher.instance.views.first.display;
 

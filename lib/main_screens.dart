@@ -25,6 +25,7 @@ import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/services/image_service.dart';
+import 'package:overmorrow/services/notification_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:provider/provider.dart';
@@ -191,6 +192,13 @@ class PhoneLayout extends StatelessWidget {
           FadingWidget(data: data, time: data.updatedTime, imageService: imageService, key: Key(data.updatedTime.toString())),
 
           Circles(data: data),
+
+          IconButton(
+              onPressed: () {
+                NotificationService().showSimpleNotification();
+              },
+              icon: Icon(Icons.notification_add_outlined)
+          ),
 
           Column(
             children: orderedWidgets.map((widget) {

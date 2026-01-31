@@ -55,6 +55,8 @@ dependencies:
   provider: ^6.1.5+1
   flutter_svg: ^2.2.0
 
+  flutter_local_notifications: ^19.5.0
+
   #for the .arb files for translation
   flutter_localizations:
     sdk: flutter

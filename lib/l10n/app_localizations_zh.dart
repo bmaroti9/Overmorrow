@@ -213,6 +213,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get uvLowercase => '紫外线';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc => '空气质量极佳；无健康风险。';
 
   @override
@@ -504,6 +510,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get high => '高';
+
+  @override
+  String get liveRadar => 'live radar';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).

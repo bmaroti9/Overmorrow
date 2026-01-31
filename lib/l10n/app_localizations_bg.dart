@@ -217,6 +217,12 @@ class AppLocalizationsBg extends AppLocalizations {
   String get uvLowercase => 'uv индекс';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc =>
       'Качеството на въздуха е отлично; няма риск за здравето.';
 
@@ -513,4 +519,7 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get high => 'високо';
+
+  @override
+  String get liveRadar => 'live radar';
 }

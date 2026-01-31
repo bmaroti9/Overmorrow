@@ -132,6 +132,8 @@
   "@windLowercase": {},
   "uvLowercase": "uv",
   "@uvLowercase": {},
+  "tempLowercase": "temp",
+  "pressureLowercase": "pressure",
   "goodAqiDesc": "Air quality is excellent; no health risk.",
   "@goodAqiDesc": {},
   "fairAqiDesc": "Acceptable air quality; minor risk for sensitive people.",
@@ -327,5 +329,6 @@
   "calm": "calm",
   "severe": "severe",
   "low": "low",
-  "high": "high"
+  "high": "high",
+  "liveRadar": "live radar"
 }

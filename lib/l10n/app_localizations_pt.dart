@@ -215,6 +215,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc => 'A qualidade do ar é excelente; sem risco à saúde.';
 
   @override
@@ -510,6 +516,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).

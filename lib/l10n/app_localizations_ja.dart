@@ -213,6 +213,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get uvLowercase => '紫外線';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc => '空気の質は非常に良好です。健康へのリスクはありません。';
 
   @override
@@ -504,4 +510,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
 }

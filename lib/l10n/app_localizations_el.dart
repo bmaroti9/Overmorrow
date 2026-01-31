@@ -216,6 +216,12 @@ class AppLocalizationsEl extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc =>
       'Η ποιότητα του αέρα είναι εξαιρετική. Δεν υπάρχει κίνδυνος για την υγεία.';
 
@@ -513,4 +519,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
 }

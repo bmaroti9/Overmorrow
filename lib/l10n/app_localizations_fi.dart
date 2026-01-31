@@ -30,7 +30,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get today => 'Tänään';
 
   @override
-  String get tomorrowLowercase => 'tomorrow';
+  String get tomorrowLowercase => 'huomenna';
 
   @override
   String get overmorrowLowercase => 'Overmorrow';
@@ -110,13 +110,13 @@ class AppLocalizationsFi extends AppLocalizations {
       'sijainnin käyttöoikeus estetty ikuisesti';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'myönnä sijainnin käyttöoikeus';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'nykyinen sijainti';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'suosikit';
 
   @override
   String get failedToAccessGps => 'gps:n käyttö epäonnistui';
@@ -158,7 +158,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get colorMode => 'Väritila';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'säätietojen tarjoaja';
 
   @override
   String get timeMode => 'Aikamuoto';
@@ -188,7 +188,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get fontSize => 'Fontin koko';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'päivittäinen';
 
   @override
   String get searchProvider => 'Hakupalvelu';
@@ -203,7 +203,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get imageSource => 'Kuvalähde';
 
   @override
-  String get sumLowercase => 'sum';
+  String get sumLowercase => 'yht.';
 
   @override
   String get precipLowercase => 'sade';
@@ -213,6 +213,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get uvLowercase => 'uv';
+
+  @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
 
   @override
   String get goodAqiDesc => 'Ilmanlaatu on erinomainen; ei terveysriskiä.';
@@ -240,31 +246,31 @@ class AppLocalizationsFi extends AppLocalizations {
   String get photoByXOnUnsplash => 'Kuva, ottanut ,x, palvelussa ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'lähdekoodi';
 
   @override
-  String get emailLowercase => 'email';
+  String get emailLowercase => 'sähköposti';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'ilmoita ongelmasta';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'lahjoita';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'Versio';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'API:t ja palvelut';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Lisenssi';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'säädata';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'kuvat';
 
   @override
   String get appearance => 'Ulkoasu';
@@ -291,7 +297,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get unitsSettingdesc => 'sovelluksessa käytettävät yksiköt';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get aboutSettingsDesc => 'tietoja sovelluksesta';
 
   @override
   String get now => 'nyt';
@@ -467,7 +473,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get alertsCapital => 'Hälytykset';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'hälytykset';
 
   @override
   String get severity => 'vakavuus';
@@ -488,10 +494,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get heavy => 'heavy';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'näytä lisää';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'näytä vähemmän';
 
   @override
   String get cold => 'cold';
@@ -510,4 +516,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
 }

@@ -215,6 +215,12 @@ class AppLocalizationsSw extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc => 'Ubora wa hewa ni bora; hakuna hatari kwa afya.';
 
   @override
@@ -509,4 +515,7 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
 }
