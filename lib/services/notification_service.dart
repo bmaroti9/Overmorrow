@@ -18,6 +18,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:overmorrow/decoders/weather_data.dart';
+
+import '../weather_refact.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -31,11 +34,11 @@ class NotificationService {
     'Alerts',
     importance: Importance.max,
     priority: Priority.high,
-    largeIcon: DrawableResourceAndroidBitmap("@drawable/shapes_four_sided_cookie"),
+    //icon: "@drawable/icon_info"
   );
 
   Future<void> init() async {
-    const androidSettings = AndroidInitializationSettings('@drawable/ic_launcher_monochrome');
+    const androidSettings = AndroidInitializationSettings('@drawable/weather_partly_cloudy');
     const settings = InitializationSettings(android: androidSettings);
 
     await _plugin.initialize(settings);
@@ -59,4 +62,27 @@ class NotificationService {
       details,
     );
   }
+
+  Future<void> showOngoingNotification(LightCurrentWeatherData data) async {
+
+    AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
+      'weather_ongoing',
+      'Ongoing Weather',
+      importance: Importance.low,
+      priority: Priority.low,
+      ongoing: true,
+      autoCancel: false,
+      onlyAlertOnce: true,
+      showWhen: false,
+      icon: weatherIconResMap[data.condition] ?? "@drawable/weather_partly_cloudy"
+    );
+
+    await _plugin.show(
+      1,
+      '${data.temp}° ${data.condition}',
+      data.place,
+      NotificationDetails(android: androidNotificationDetails,),
+    );
+  }
+
 }

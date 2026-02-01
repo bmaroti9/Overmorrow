@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter/foundation.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:overmorrow/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -152,6 +153,15 @@ void myCallbackDispatcher() {
 
         try {
           print("HEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE");
+
+          //--------------------NOTIFICATIONS--------------------
+
+          LightCurrentWeatherData data = await LightCurrentWeatherData
+              .getLightCurrentWeatherData("Nashville", "36.17, -86.76", "open-meteo", prefs);
+
+          NotificationService().showOngoingNotification(data);
+
+          //--------------------WIDGETS--------------------------
 
           final List<HomeWidgetInfo> installedWidgets = await HomeWidget.getInstalledWidgets();
 
