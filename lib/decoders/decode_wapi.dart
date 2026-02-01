@@ -144,7 +144,7 @@ WeatherCurrent wapiWeatherCurrentFromJson(item, start) {
     uv: item["hour"][start]["uv"].round(),
     humidity: item["hour"][start]["humidity"],
     precipMm: item["day"]["totalprecip_mm"],
-    windKph: item["hour"][start]["wind_kph"],
+    windKmh: item["hour"][start]["wind_kph"],
     windDirA: item["hour"][start]["wind_degree"],
   );
 }
@@ -161,7 +161,7 @@ WeatherDay wapiWeatherDayFromJson(item, approximatelocal) {
 
     totalPrecipMm: item["day"]["totalprecip_mm"] + item["day"]["totalsnow_cm"] / 10,
     precipProb: item["day"]["daily_chance_of_rain"],
-    windKph: item["day"]["maxwind_kph"],
+    windKmh: item["day"]["maxwind_kph"],
     uv: item["day"]["uv"].round(),
     windDirA: wapiGetWindDir(item["hour"]),
   );
@@ -186,8 +186,8 @@ WeatherHour wapiWeatherHourFromJson(item, approximatelocal) {
     time: DateTime.parse(item["time"]),
     precipMm: item["precip_mm"] + (item["snow_cm"] / 10),
 
-    windKph: item["wind_kph"],
-    windGustKph: item["gust_kph"],
+    windKmh: item["wind_kph"],
+    windGustKmh: item["gust_kph"],
 
     precipProb: max(item["chance_of_rain"], item["chance_of_snow"]),
     uv: item["uv"].round(),

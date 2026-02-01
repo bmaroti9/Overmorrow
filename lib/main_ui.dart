@@ -233,7 +233,7 @@ class Circles extends StatelessWidget {
                 dir: -1,
               ),
               DescriptionCircle(
-                text: '${unitConversion(data.current.windKph,
+                text: '${unitConversion(data.current.windKmh,
                     context.select((SettingsProvider p) => p.getWindUnit), decimals: 0)}',
                 undercaption: AppLocalizations.of(context)!.windCapital,
                 extra: context.select((SettingsProvider p) => p.getWindUnit),

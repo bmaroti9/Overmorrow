@@ -56,7 +56,7 @@ Map<String, List<String>> settingSwitches = {
   ],
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
-  'Wind': ['m/s', 'kph', 'mph', 'kn'],
+  'Wind': ['m/s', 'km/h', 'mph', 'kn'],
 
   'Time mode': ['12 hour', '24 hour'],
   'Date format': ['mm/dd', 'dd/mm'],
@@ -278,6 +278,14 @@ class SettingsProvider with ChangeNotifier {
 
     _tempUnit = PreferenceUtils.getString("Temperature", "˚C");
     _windUnit = PreferenceUtils.getString("Wind", "m/s");
+
+    //I'm migrating kph to km/h because it was confusing to a lot of people
+    //this should be removed after next release
+    if (_windUnit == "kph") {
+      PreferenceUtils.setString("Wind", "km/h");
+      _windUnit = "km/h";
+    }
+
     _precipUnit = PreferenceUtils.getString("Precipitation", "mm");
 
     _timeMode = PreferenceUtils.getString("Time mode", "12 hour");

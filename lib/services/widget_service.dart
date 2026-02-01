@@ -157,7 +157,7 @@ void myCallbackDispatcher() {
           //--------------------NOTIFICATIONS--------------------
 
           LightCurrentWeatherData data = await LightCurrentWeatherData
-              .getLightCurrentWeatherData("Nashville", "36.17, -86.76", "open-meteo", prefs);
+              .getLightCurrentWeatherData("Szeged", "46.25, 20.14", "open-meteo", prefs);
 
           NotificationService().showOngoingNotification(data);
 

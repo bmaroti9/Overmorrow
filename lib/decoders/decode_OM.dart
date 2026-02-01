@@ -138,7 +138,7 @@ WeatherCurrent oMWeatherCurrentFromJson(item, WeatherSunStatus sunstatus, DateTi
     uv: item["daily"]["uv_index_max"][dayDif].round(),
     feelsLikeC: item["current"]["apparent_temperature"],
     precipMm: item["daily"]["precipitation_sum"][dayDif],
-    windKph: item["hourly"]["wind_speed_10m"][start],
+    windKmh: item["hourly"]["wind_speed_10m"][start],
     humidity: item["current"]["relative_humidity_2m"],
     tempC: isonline ? item["current"]["temperature_2m"] : item["hourly"]["temperature_2m"][start],
     windDirA: item["hourly"]["wind_direction_10m"][start],
@@ -159,7 +159,7 @@ WeatherDay oMWeatherDayFromJson(item, index, WeatherSunStatus sunStatus, approxi
 
     uv: item["daily"]["uv_index_max"][index].round(),
 
-    windKph: item["daily"]["wind_speed_10m_max"][index],
+    windKmh: item["daily"]["wind_speed_10m_max"][index],
     windDirA: item["daily"]["wind_direction_10m_dominant"][index],
 
     hourly: oMBuildWeatherHourList(index, item, sunStatus, approximateLocal),
@@ -193,8 +193,8 @@ WeatherHour oMWeatherHourFromJson(item, index, WeatherSunStatus sunStatus) {
     condition: condition,
     precipMm: item["hourly"]["precipitation"][index],
     precipProb: item["hourly"]["precipitation_probability"][index],
-    windKph: item["hourly"]["wind_speed_10m"][index],
-    windGustKph: item["hourly"]["wind_gusts_10m"][index],
+    windKmh: item["hourly"]["wind_speed_10m"][index],
+    windGustKmh: item["hourly"]["wind_gusts_10m"][index],
     windDirA: item["hourly"]["wind_direction_10m"][index],
     uv: item["hourly"]["uv_index"][index].round(),
   );

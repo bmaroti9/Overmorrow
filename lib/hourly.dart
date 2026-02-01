@@ -347,7 +347,7 @@ class HourlyWind extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('${unitConversion(hour.windKph, windUnit, decimals: 1)}',
+            Text('${unitConversion(hour.windKmh, windUnit, decimals: 1)}',
               style: TextStyle(color: Theme.of(context).colorScheme.primary,
                   fontSize: 18, fontWeight: FontWeight.w600, height: 1.1),),
             Text(windUnit, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 10,
@@ -369,11 +369,11 @@ class HourlyWind extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.only(left: 2),
                 child: Text(
-                  hour.windGustKph != null ? "${unitConversion(hour.windGustKph!, windUnit, decimals: 0)}" : "--",
+                  hour.windGustKmh != null ? "${unitConversion(hour.windGustKmh!, windUnit, decimals: 0)}" : "--",
                   style: TextStyle(color: Theme.of(context).colorScheme.tertiary,
                       fontSize: 14, fontWeight: FontWeight.w600, height: 1.2),)
             ),
-            if (hour.windGustKph != null) Text(windUnit, style: TextStyle(color: Theme.of(context).colorScheme.tertiary,
+            if (hour.windGustKmh != null) Text(windUnit, style: TextStyle(color: Theme.of(context).colorScheme.tertiary,
                 fontSize: 9, fontWeight: FontWeight.w600),)
           ],
         ),
