@@ -287,6 +287,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get about => 'Névjegy';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'színtéma, kép forrása';
 
   @override
@@ -300,6 +303,9 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'erről az app-ról';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'most';
@@ -521,4 +527,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

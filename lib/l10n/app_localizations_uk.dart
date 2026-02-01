@@ -286,6 +286,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get about => 'Про застосунок';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'колірна тема, джерело зображення';
 
   @override
@@ -299,6 +302,9 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'Про застосунок';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'Зараз';
@@ -520,4 +526,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

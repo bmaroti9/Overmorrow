@@ -25,6 +25,55 @@ import 'package:overmorrow/pages/settings_pages/settings_screens.dart';
 import '../../../l10n/app_localizations.dart';
 import 'about_page.dart';
 
+class MainSettingEntry extends StatelessWidget {
+  final String title;
+  final String desc;
+  final IconData icon;
+  final Widget? pushTo;
+
+  const MainSettingEntry({super.key, required this.title, required this.desc, required this.icon, this.pushTo});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 25, top: 5, bottom: 5),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          HapticFeedback.selectionClick();
+          if (pushTo != null) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => pushTo!)
+            );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(top: 13, bottom: 13),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              circleBorderIcon(icon, context),
+              const SizedBox(width: 20,),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: const TextStyle(fontSize: 20, height: 1.2),),
+                    Text(desc, style: TextStyle(color: Theme.of(context).colorScheme.outline,
+                        fontSize: 15, height: 1.2),)
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 Widget dropdown(Color bgcolor, String name, Function updatePage, String unit, settings, textcolor,
     Color primary, rawName) {
   List<String> Items = settingSwitches[rawName] ?? ['˚C', '˚F'];
@@ -273,6 +322,12 @@ class NewSettings extends StatelessWidget {
               desc: AppLocalizations.of(context)!.generalSettingDesc,
               icon: Icons.tune,
               pushTo: const GeneralSettingsPage(),
+            ),
+            MainSettingEntry(
+              title: AppLocalizations.of(context)!.backgroundUpdates,
+              desc: AppLocalizations.of(context)!.backgroundUpdatesSettingsDesc,
+              icon: Icons.sync,
+              pushTo: const BackgroundUpdatesPage(),
             ),
             MainSettingEntry(
               title: AppLocalizations.of(context)!.language,

@@ -165,6 +165,7 @@
   "@units": {},
   "about": "About",
   "@about": {},
+  "backgroundUpdates": "Background updates",
   "appearanceSettingDesc": "color theme, image source",
   "@appearanceSettingDesc": {},
   "generalSettingDesc": "time mode, font size",
@@ -174,6 +175,7 @@
   "unitsSettingdesc": "the units used in the app",
   "@unitsSettingdesc": {},
   "aboutSettingsDesc": "about this app",
+  "backgroundUpdatesSettingsDesc": "widget updates, notifications",
   "now": "now",
   "@now": {},
   "hr": "hr",
@@ -330,5 +332,6 @@
   "severe": "severe",
   "low": "low",
   "high": "high",
-  "liveRadar": "live radar"
+  "liveRadar": "live radar",
+  "ongoingNotification": "ongoing notification"
 }

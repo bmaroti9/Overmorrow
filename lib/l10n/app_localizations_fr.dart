@@ -289,6 +289,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get about => 'À propos de';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'thème de couleur, source d\'image';
 
   @override
@@ -302,6 +305,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'À propos de cette application';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'maintenant';
@@ -523,4 +529,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

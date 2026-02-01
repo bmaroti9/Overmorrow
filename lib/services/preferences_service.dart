@@ -226,6 +226,7 @@ class SettingsProvider with ChangeNotifier {
   String _dateFormat = "mm/dd";
 
   bool _radarHapticsOn = true;
+  bool _ongoingNotificationOn = false;
 
   String _searchProvider = "weatherapi";
 
@@ -251,6 +252,7 @@ class SettingsProvider with ChangeNotifier {
   String get getDateFormat => _dateFormat;
 
   bool get getRadarHapticsOn => _radarHapticsOn;
+  bool get getOngoingNotificationOn => _ongoingNotificationOn;
 
   String get getSearchProvider => _searchProvider;
 
@@ -289,7 +291,9 @@ class SettingsProvider with ChangeNotifier {
     _precipUnit = PreferenceUtils.getString("Precipitation", "mm");
 
     _timeMode = PreferenceUtils.getString("Time mode", "12 hour");
-    _radarHapticsOn = PreferenceUtils.getBool("RadarHapticOn", true);
+
+    _radarHapticsOn = PreferenceUtils.getBool("Radar haptics", true);
+    _ongoingNotificationOn = PreferenceUtils.getBool("Ongoing notification", false);
 
     _imageSource = PreferenceUtils.getString("Image source", "network");
 
@@ -364,6 +368,12 @@ class SettingsProvider with ChangeNotifier {
   void setRadarHaptics(bool to) {
     PreferenceUtils.setBool("Radar haptics", to);
     _radarHapticsOn = to;
+    notifyListeners();
+  }
+
+  void setOngoingNotification(bool to) {
+    PreferenceUtils.setBool("Ongoing notification", to);
+    _ongoingNotificationOn = to;
     notifyListeners();
   }
 

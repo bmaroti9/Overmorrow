@@ -285,6 +285,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get about => 'Hakkında';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'renk teması, görüntü kaynağı';
 
   @override
@@ -298,6 +301,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'bu uygulama hakkında';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'şimdi';
@@ -519,4 +525,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

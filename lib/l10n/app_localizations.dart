@@ -690,6 +690,12 @@ abstract class AppLocalizations {
   /// **'About'**
   String get about;
 
+  /// No description provided for @backgroundUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Background updates'**
+  String get backgroundUpdates;
+
   /// No description provided for @appearanceSettingDesc.
   ///
   /// In en, this message translates to:
@@ -719,6 +725,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'about this app'**
   String get aboutSettingsDesc;
+
+  /// No description provided for @backgroundUpdatesSettingsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'widget updates, notifications'**
+  String get backgroundUpdatesSettingsDesc;
 
   /// No description provided for @now.
   ///
@@ -1061,6 +1073,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'live radar'**
   String get liveRadar;
+
+  /// No description provided for @ongoingNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'ongoing notification'**
+  String get ongoingNotification;
 }
 
 class _AppLocalizationsDelegate

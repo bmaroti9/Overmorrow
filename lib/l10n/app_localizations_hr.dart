@@ -285,6 +285,9 @@ class AppLocalizationsHr extends AppLocalizations {
   String get about => 'O aplikaciji';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'tema boja, izvor slike';
 
   @override
@@ -298,6 +301,9 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'o ovoj aplikaciji';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'sada';
@@ -519,4 +525,7 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

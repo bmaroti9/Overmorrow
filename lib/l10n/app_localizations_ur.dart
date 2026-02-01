@@ -283,6 +283,9 @@ class AppLocalizationsUr extends AppLocalizations {
   String get about => 'متعلقات';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'رنگت، تصویری ماخذ';
 
   @override
@@ -296,6 +299,9 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'اس ایپ کے متعلق';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'ابھی';
@@ -517,4 +523,7 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

@@ -286,6 +286,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get about => 'Despre';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'temă culori, sursă imagine';
 
   @override
@@ -299,6 +302,9 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'despre aplicație';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'acum';
@@ -520,4 +526,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

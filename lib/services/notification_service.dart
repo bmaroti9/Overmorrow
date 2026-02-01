@@ -41,7 +41,15 @@ class NotificationService {
     const androidSettings = AndroidInitializationSettings('@drawable/weather_partly_cloudy');
     const settings = InitializationSettings(android: androidSettings);
 
-    await _plugin.initialize(settings);
+    await _plugin.initialize(
+      settings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) {
+        final String? payload = response.payload;
+        if (payload != null) {
+          print('Notification tapped with payload: $payload');
+        }
+      },
+    );
 
     await _requestPermissions();
   }
@@ -82,6 +90,7 @@ class NotificationService {
       '${data.temp}° ${data.condition}',
       data.place,
       NotificationDetails(android: androidNotificationDetails,),
+      payload: "CurrentLocation",
     );
   }
 

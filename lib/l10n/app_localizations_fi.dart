@@ -285,6 +285,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get about => 'Tietoja';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'väriteema, kuvalähde';
 
   @override
@@ -298,6 +301,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'tietoja sovelluksesta';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'nyt';
@@ -519,4 +525,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

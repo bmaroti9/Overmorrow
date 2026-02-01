@@ -285,6 +285,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get about => 'Info';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'motyw kolorystyczny, źródło obrazu';
 
   @override
@@ -298,6 +301,9 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'o tej aplikacji';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'teraz';
@@ -519,4 +525,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }
