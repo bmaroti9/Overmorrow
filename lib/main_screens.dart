@@ -193,12 +193,14 @@ class PhoneLayout extends StatelessWidget {
 
           Circles(data: data),
 
+          /*
           IconButton(
               onPressed: () {
                 NotificationService().showSimpleNotification();
               },
               icon: Icon(Icons.notification_add_outlined)
           ),
+           */
 
           Column(
             children: orderedWidgets.map((widget) {

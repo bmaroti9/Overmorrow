@@ -217,10 +217,10 @@ class AppLocalizationsBg extends AppLocalizations {
   String get uvLowercase => 'uv индекс';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'температура';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'налягане';
 
   @override
   String get goodAqiDesc =>
@@ -527,7 +527,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get high => 'високо';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'радар на живо';
 
   @override
   String get ongoingNotification => 'ongoing notification';

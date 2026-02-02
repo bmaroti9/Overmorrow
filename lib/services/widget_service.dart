@@ -156,10 +156,9 @@ void myCallbackDispatcher() {
 
           //--------------------NOTIFICATIONS--------------------
 
-          LightCurrentWeatherData data = await LightCurrentWeatherData
-              .getLightCurrentWeatherData("Miami", "25.76, -80.19", "open-meteo", prefs);
-
-          NotificationService().showOngoingNotification(data);
+          if (prefs.getBool("Ongoing notification") ?? false) {
+            NotificationService().updateOngoingNotification(prefs);
+          }
 
           //--------------------WIDGETS--------------------------
 

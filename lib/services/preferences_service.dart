@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'package:overmorrow/services/notification_service.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
@@ -374,6 +375,13 @@ class SettingsProvider with ChangeNotifier {
   void setOngoingNotification(bool to) {
     PreferenceUtils.setBool("Ongoing notification", to);
     _ongoingNotificationOn = to;
+
+    if (to == true) {
+      NotificationService().updateOngoingNotification(PreferenceUtils.instance);
+    } else {
+      NotificationService().killOngoingNotification();
+    }
+
     notifyListeners();
   }
 

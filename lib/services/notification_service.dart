@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:overmorrow/decoders/weather_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../weather_refact.dart';
 
@@ -69,6 +70,17 @@ class NotificationService {
       'message',
       details,
     );
+  }
+
+  Future<void> updateOngoingNotification(SharedPreferences prefs) async {
+    LightCurrentWeatherData data = await LightCurrentWeatherData
+        .getLightCurrentWeatherData("Miami", "25.76, -80.19", "open-meteo", prefs);
+
+    NotificationService().showOngoingNotification(data);
+  }
+
+  void killOngoingNotification() {
+    _plugin.cancel(1);
   }
 
   Future<void> showOngoingNotification(LightCurrentWeatherData data) async {

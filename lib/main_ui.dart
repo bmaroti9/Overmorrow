@@ -199,7 +199,6 @@ class _SmoothTempTransitionState extends State<SmoothTempTransition> with Automa
   }
 }
 
-
 class Circles extends StatelessWidget {
 
   final WeatherData data;

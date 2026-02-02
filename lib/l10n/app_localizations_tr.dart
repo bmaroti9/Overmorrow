@@ -215,10 +215,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'sıcaklık';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'basınç';
 
   @override
   String get goodAqiDesc => 'Hava kalitesi mükemmel; sağlık riski yok.';
@@ -242,8 +242,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Acil durum koşulları; herkes için ciddi sağlık etkileri.';
 
   @override
-  String get photoByXOnUnsplash =>
-      'Fotoğraf, x, tarafından ,Unsplash , üzerinden';
+  String get photoByXOnUnsplash => ',Unsplash,\'ta ,x, tarafından fotoğraf';
 
   @override
   String get sourceCodeLowercase => 'kaynak kodu';
@@ -524,7 +523,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get high => 'yüksek';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'canlı radar';
 
   @override
   String get ongoingNotification => 'ongoing notification';

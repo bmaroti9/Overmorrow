@@ -213,10 +213,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get uvLowercase => '紫外线';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => '气';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => '气压';
 
   @override
   String get goodAqiDesc => '空气质量极佳；无健康风险。';
@@ -518,7 +518,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get high => '高';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => '实时雷达图';
 
   @override
   String get ongoingNotification => 'ongoing notification';
