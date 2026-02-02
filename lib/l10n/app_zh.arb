@@ -237,5 +237,8 @@
     "high": "高",
     "tempLowercase": "气",
     "pressureLowercase": "气压",
-    "liveRadar": "实时雷达图"
+    "liveRadar": "实时雷达图",
+    "backgroundUpdates": "后台更新",
+    "backgroundUpdatesSettingsDesc": "小部件更新、通知",
+    "ongoingNotification": "持续通知"
 }
