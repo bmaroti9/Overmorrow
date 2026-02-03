@@ -236,5 +236,8 @@
     "high": "yüksek",
     "tempLowercase": "sıcaklık",
     "pressureLowercase": "basınç",
-    "liveRadar": "canlı radar"
+    "liveRadar": "canlı radar",
+    "backgroundUpdates": "Arkaplan güncellemeleri",
+    "backgroundUpdatesSettingsDesc": "widget güncellemeleri, bildirimler",
+    "ongoingNotification": "sürekli bildirim"
 }
