@@ -238,5 +238,8 @@
     "high": "високо",
     "tempLowercase": "температура",
     "pressureLowercase": "налягане",
-    "liveRadar": "радар на живо"
+    "liveRadar": "радар на живо",
+    "backgroundUpdates": "Актуализации на фона",
+    "backgroundUpdatesSettingsDesc": "актуализации на джаджи, известия",
+    "ongoingNotification": "текущо известие"
 }
