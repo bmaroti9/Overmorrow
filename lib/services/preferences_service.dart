@@ -399,6 +399,11 @@ class SettingsProvider with ChangeNotifier {
     PreferenceUtils.setString("Ongoing latLon", latLon);
     _ongoingNotificationPlace = place;
     _ongoingNotificationLatLon = latLon;
+
+    if (_ongoingNotificationOn) {
+      NotificationService().updateOngoingNotification(PreferenceUtils.instance);
+    }
+
     notifyListeners();
   }
 

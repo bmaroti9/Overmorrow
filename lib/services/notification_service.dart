@@ -78,10 +78,15 @@ class NotificationService {
   }
 
   Future<void> updateOngoingNotification(SharedPreferences prefs) async {
-    LightCurrentWeatherData data = await LightCurrentWeatherData
-        .getLightCurrentWeatherData("Miami", "25.76, -80.19", "open-meteo", prefs);
+    String location = prefs.getString("Ongoing place") ?? "unknown";
+    String latLon = prefs.getString("Ongoing latLon") ?? "unknown";
 
-    NotificationService().showOngoingNotification(data);
+    if (location != "unknown" && latLon != "unknown") {
+      LightCurrentWeatherData data = await LightCurrentWeatherData
+          .getLightCurrentWeatherData(location, latLon, "open-meteo", prefs);
+
+      NotificationService().showOngoingNotification(data);
+    }
   }
 
   void killOngoingNotification() {
