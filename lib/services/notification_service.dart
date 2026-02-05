@@ -61,6 +61,11 @@ class NotificationService {
         ?.requestNotificationsPermission();
   }
 
+  Future<NotificationAppLaunchDetails?> getNotificationLaunchDetails() async {
+    final NotificationAppLaunchDetails? launchDetails = await _plugin.getNotificationAppLaunchDetails();
+    return launchDetails;
+  }
+
   Future<void> showSimpleNotification() async {
     const details = NotificationDetails(android: androidDetails);
 
@@ -84,6 +89,8 @@ class NotificationService {
   }
 
   Future<void> showOngoingNotification(LightCurrentWeatherData data) async {
+
+    print("SHOWONGOING");
 
     AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
       'weather_ongoing',

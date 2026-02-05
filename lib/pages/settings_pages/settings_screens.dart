@@ -16,9 +16,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/pages/settings_pages/settings_page.dart';
@@ -409,6 +412,9 @@ class BackgroundUpdatesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final ifnot = ["{\n        \"id\": 2651922,\n        \"name\": \"Nashville\",\n        \"region\": \"Tennessee\",\n        \"country\": \"United States of America\",\n        \"lat\": 36.17,\n        \"lon\": -86.78,\n        \"url\": \"nashville-tennessee-united-states-of-america\"\n    }"];
+    final favorites = PreferenceUtils.getStringList('favorites', ifnot);
+
     return Material(
       color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
@@ -446,6 +452,51 @@ class BackgroundUpdatesPage extends StatelessWidget {
                         selected: context.select((SettingsProvider p) => p.getOngoingNotificationOn),
                         update: context.read<SettingsProvider>().setOngoingNotification,
                       ),
+
+                      Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Column(
+                          children: List.generate(favorites.length, (index) {
+                            var split = json.decode(favorites[index]);
+                            String name = split["name"];
+
+                            bool isSelected = context.select((SettingsProvider p) => p.getOngoingNotificationPlace) == name;
+
+                            return GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                HapticFeedback.lightImpact();
+                                context.read<SettingsProvider>().setOngoingNotificationPlaceAndLatLon(name, '${split["lat"]}, ${split["lon"]}');
+                              },
+                              child: Container(
+                                decoration: isSelected ? BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Theme.of(context).colorScheme.tertiaryContainer
+                                ) : const BoxDecoration(),
+                                padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(name, style: const TextStyle(
+                                        fontSize: 16, height: 1.2),),
+                                    ),
+                                    if (isSelected) Icon(
+                                      Icons.check,
+                                      color: Theme.of(context).colorScheme.tertiary,
+                                      size: 17,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          })
+                        ),
+                      )
                     ],
                   )
                 ),

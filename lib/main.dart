@@ -23,6 +23,7 @@ import 'package:dynamic_system_colors/dynamic_system_colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_widget/home_widget.dart';
@@ -240,27 +241,31 @@ class MyHomePageState extends State<MyHomePage> {
     String latLon = context.read<SettingsProvider>().getLatLon;
     String location = context.read<SettingsProvider>().getLocation;
 
-    if (!kIsWeb) {
-      if (Platform.isAndroid) {
-        Uri? appLaunchUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
+    if (!kIsWeb && Platform.isAndroid) {
+      Uri? appLaunchUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
 
-        if (appLaunchUri != null) {
-          if (appLaunchUri.host == "opened" && appLaunchUri.queryParameters.containsKey("location")
-              && appLaunchUri.queryParameters.containsKey("latlon")) {
+      if (appLaunchUri != null && appLaunchUri.host == "opened" && appLaunchUri.queryParameters.containsKey("location")
+          && appLaunchUri.queryParameters.containsKey("latlon")) {
 
-            if (appLaunchUri.queryParameters["location"] != null && appLaunchUri.queryParameters["latlon"] != null) {
+        if (appLaunchUri.queryParameters["location"] != null && appLaunchUri.queryParameters["latlon"] != null) {
 
-              if (appLaunchUri.queryParameters["location"] == "CurrentLocation") {
-                location = PreferenceUtils.getString('LastKnownPositionName', 'unknown');
-                latLon = PreferenceUtils.getString('LastKnownPositionCord', 'unknown');
-              }
-              else {
-                location = appLaunchUri.queryParameters["location"]!;
-                latLon = appLaunchUri.queryParameters["latlon"]!;
-              }
-            }
+          if (appLaunchUri.queryParameters["location"] == "CurrentLocation") {
+            location = PreferenceUtils.getString('LastKnownPositionName', 'unknown');
+            latLon = PreferenceUtils.getString('LastKnownPositionCord', 'unknown');
+          }
+          else {
+            location = appLaunchUri.queryParameters["location"]!;
+            latLon = appLaunchUri.queryParameters["latlon"]!;
           }
         }
+      }
+
+      NotificationAppLaunchDetails? launchDetails = await NotificationService().getNotificationLaunchDetails();
+
+      if (launchDetails?.didNotificationLaunchApp ?? false) {
+        final String? payload = launchDetails!.notificationResponse?.payload;
+        location = PreferenceUtils.getString('LastKnownPositionName', 'unknown');
+        latLon = PreferenceUtils.getString('LastKnownPositionCord', 'unknown');
       }
     }
 

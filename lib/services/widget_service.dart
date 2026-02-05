@@ -157,7 +157,7 @@ void myCallbackDispatcher() {
           //--------------------NOTIFICATIONS--------------------
 
           if (prefs.getBool("Ongoing notification") ?? false) {
-            NotificationService().updateOngoingNotification(prefs);
+            await NotificationService().updateOngoingNotification(prefs);
           }
 
           //--------------------WIDGETS--------------------------

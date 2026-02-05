@@ -227,7 +227,6 @@ class SettingsProvider with ChangeNotifier {
   String _dateFormat = "mm/dd";
 
   bool _radarHapticsOn = true;
-  bool _ongoingNotificationOn = false;
 
   String _searchProvider = "weatherapi";
 
@@ -243,6 +242,10 @@ class SettingsProvider with ChangeNotifier {
   String _location = "New York";
   String _latLon = "40.7128, -74.0060";
 
+  bool _ongoingNotificationOn = false;
+  String _ongoingNotificationPlace = "unknown";
+  String _ongoingNotificationLatLon = "unknown";
+
   String get getWeatherProvider => _weatherProvider;
 
   String get getTempUnit => _tempUnit;
@@ -253,7 +256,6 @@ class SettingsProvider with ChangeNotifier {
   String get getDateFormat => _dateFormat;
 
   bool get getRadarHapticsOn => _radarHapticsOn;
-  bool get getOngoingNotificationOn => _ongoingNotificationOn;
 
   String get getSearchProvider => _searchProvider;
 
@@ -268,6 +270,10 @@ class SettingsProvider with ChangeNotifier {
 
   String get getLocation => _location;
   String get getLatLon => _latLon;
+
+  bool get getOngoingNotificationOn => _ongoingNotificationOn;
+  String get getOngoingNotificationPlace => _ongoingNotificationPlace;
+  String get getOngoingNotificationLatLon => _ongoingNotificationLatLon;
 
   SettingsProvider() {
     _load();
@@ -294,7 +300,6 @@ class SettingsProvider with ChangeNotifier {
     _timeMode = PreferenceUtils.getString("Time mode", "12 hour");
 
     _radarHapticsOn = PreferenceUtils.getBool("Radar haptics", true);
-    _ongoingNotificationOn = PreferenceUtils.getBool("Ongoing notification", false);
 
     _imageSource = PreferenceUtils.getString("Image source", "network");
 
@@ -306,6 +311,10 @@ class SettingsProvider with ChangeNotifier {
 
     _location = PreferenceUtils.getString("LastPlaceN", "New York");
     _latLon = PreferenceUtils.getString("LastCord", "40.7128, -74.0060");
+
+    _ongoingNotificationOn = PreferenceUtils.getBool("Ongoing notification", false);
+    _ongoingNotificationPlace = PreferenceUtils.getString("Ongoing place", "unknown");
+    _ongoingNotificationLatLon = PreferenceUtils.getString("Ongoing latLon", "unknown");
   }
 
   void _loadLocale() {
@@ -382,6 +391,14 @@ class SettingsProvider with ChangeNotifier {
       NotificationService().killOngoingNotification();
     }
 
+    notifyListeners();
+  }
+
+  void setOngoingNotificationPlaceAndLatLon(String place, String latLon) {
+    PreferenceUtils.setString("Ongoing place", place);
+    PreferenceUtils.setString("Ongoing latLon", latLon);
+    _ongoingNotificationPlace = place;
+    _ongoingNotificationLatLon = latLon;
     notifyListeners();
   }
 

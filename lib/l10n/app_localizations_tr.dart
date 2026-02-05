@@ -284,7 +284,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get about => 'Hakkında';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'Arkaplan güncellemeleri';
 
   @override
   String get appearanceSettingDesc => 'renk teması, görüntü kaynağı';
@@ -302,7 +302,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get aboutSettingsDesc => 'bu uygulama hakkında';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc =>
+      'widget güncellemeleri, bildirimler';
 
   @override
   String get now => 'şimdi';
@@ -526,5 +527,5 @@ class AppLocalizationsTr extends AppLocalizations {
   String get liveRadar => 'canlı radar';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'sürekli bildirim';
 }

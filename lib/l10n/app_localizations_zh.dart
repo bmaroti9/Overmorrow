@@ -279,7 +279,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get about => '关于';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => '后台更新';
 
   @override
   String get appearanceSettingDesc => '颜色主题, 图片来源';
@@ -297,7 +297,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aboutSettingsDesc => '关于此 app';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc => '小部件更新、通知';
 
   @override
   String get now => '现在';
@@ -521,7 +521,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get liveRadar => '实时雷达图';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => '持续通知';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).

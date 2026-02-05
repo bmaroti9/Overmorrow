@@ -24,6 +24,7 @@ import 'app_localizations_pl.dart';
 import 'app_localizations_pt.dart';
 import 'app_localizations_ro.dart';
 import 'app_localizations_ru.dart';
+import 'app_localizations_sl.dart';
 import 'app_localizations_sr.dart';
 import 'app_localizations_sw.dart';
 import 'app_localizations_ta.dart';
@@ -139,6 +140,7 @@ abstract class AppLocalizations {
     Locale('pt', 'BR'),
     Locale('ro'),
     Locale('ru'),
+    Locale('sl'),
     Locale('sr'),
     Locale('sw'),
     Locale('ta'),
@@ -1111,6 +1113,7 @@ class _AppLocalizationsDelegate
         'pt',
         'ro',
         'ru',
+        'sl',
         'sr',
         'sw',
         'ta',
@@ -1190,6 +1193,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsRo();
     case 'ru':
       return AppLocalizationsRu();
+    case 'sl':
+      return AppLocalizationsSl();
     case 'sr':
       return AppLocalizationsSr();
     case 'sw':
