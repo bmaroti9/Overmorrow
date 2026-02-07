@@ -85,7 +85,6 @@ Future<List<dynamic>> oMRequestData(double lat, double lng, String place) async 
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
 
-
   //var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
   var oMFile = await XCustomCacheManager.fetchData(oMUrl.toString(), "$place, open-meteo");
 

@@ -138,7 +138,7 @@ class _TempAndConditionTextState extends State<TempAndConditionText> {
           target: unitConversion(widget.data.current.tempC,
           context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
           color: colorsOnImage?.colorPop ?? Theme.of(context).colorScheme.tertiaryFixedDim,
-          fontSize: 77,
+          fontSize: 80,
         ),
         Text(
           translateCondition(widget.data.current.condition,

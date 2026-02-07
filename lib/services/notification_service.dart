@@ -81,6 +81,11 @@ class NotificationService {
     String location = prefs.getString("Ongoing place") ?? "unknown";
     String latLon = prefs.getString("Ongoing latLon") ?? "unknown";
 
+    if (location == "Current Location") {
+      location = prefs.getString('LastKnownPositionName') ?? 'unknown';
+      latLon = prefs.getString('LastKnownPositionCord') ?? 'unknown';
+    }
+
     if (location != "unknown" && latLon != "unknown") {
       LightCurrentWeatherData data = await LightCurrentWeatherData
           .getLightCurrentWeatherData(location, latLon, "open-meteo", prefs);
@@ -106,7 +111,8 @@ class NotificationService {
       autoCancel: false,
       onlyAlertOnce: true,
       showWhen: false,
-      icon: weatherIconResMap[data.condition] ?? "@drawable/weather_partly_cloudy"
+      icon: weatherIconResMap[data.condition] ?? "@drawable/weather_partly_cloudy",
+      channelShowBadge: false,
     );
 
     await _plugin.show(
