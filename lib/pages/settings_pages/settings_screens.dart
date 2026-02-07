@@ -440,6 +440,7 @@ class BackgroundUpdatesPage extends StatelessWidget {
               padding: const EdgeInsets.only(left: 30, right: 30),
               child: AnimationLimiter(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: AnimationConfiguration.toStaggeredList(
                     duration: const Duration(milliseconds: 500),
                     childAnimationBuilder: (widget) => SlideAnimation(
@@ -534,6 +535,34 @@ class BackgroundUpdatesPage extends StatelessWidget {
                             ),
                           ],
                         ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 4),
+                        child: Text(AppLocalizations.of(context)!.weatherProvderLowercase),
+                      ),
+
+                      SegmentedButton(
+                        multiSelectionEnabled: false,
+                        segments: const <ButtonSegment>[
+                          ButtonSegment(
+                            value: "open-meteo",
+                            label: Text('open-meteo'),
+                          ),
+                          ButtonSegment(
+                            value: "weatherapi",
+                            label: Text('weatherapi'),
+                          ),
+                          ButtonSegment(
+                            value: "met-norway",
+                            label: Text('met-norway'),
+                          ),
+                        ],
+                        selected: {context.select((SettingsProvider p) => p.getOngoingNotificationProvider)},
+                        onSelectionChanged: (newSelection) {
+                          HapticFeedback.lightImpact();
+                          context.read<SettingsProvider>().setOngoingNotificationProvider(newSelection.first);
+                        },
                       )
                     ],
                   )

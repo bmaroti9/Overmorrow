@@ -70,6 +70,7 @@ class NotificationService {
 
           permissionGranted = await androidFlutterLocalNotificationsPlugin.areNotificationsEnabled();
           if (permissionGranted == true) {
+            updateOngoingNotification(PreferenceUtils.instance);
             return true;
           }
           return false;
@@ -101,6 +102,7 @@ class NotificationService {
   Future<void> updateOngoingNotification(SharedPreferences prefs) async {
     String location = prefs.getString("Ongoing place") ?? "unknown";
     String latLon = prefs.getString("Ongoing latLon") ?? "unknown";
+    String provider = prefs.getString("Ongoing provider") ?? "open-meteo";
 
     if (location == "Current Location") {
       location = prefs.getString('LastKnownPositionName') ?? 'unknown';
@@ -109,7 +111,7 @@ class NotificationService {
 
     if (location != "unknown" && latLon != "unknown") {
       LightCurrentWeatherData data = await LightCurrentWeatherData
-          .getLightCurrentWeatherData(location, latLon, "open-meteo", prefs);
+          .getLightCurrentWeatherData(location, latLon, provider, prefs);
 
       NotificationService().showOngoingNotification(data);
     }

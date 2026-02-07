@@ -245,6 +245,7 @@ class SettingsProvider with ChangeNotifier {
   bool _ongoingNotificationOn = false;
   String _ongoingNotificationPlace = "unknown";
   String _ongoingNotificationLatLon = "unknown";
+  String _ongoingNotificationProvider = "open-meteo";
 
   String get getWeatherProvider => _weatherProvider;
 
@@ -274,6 +275,7 @@ class SettingsProvider with ChangeNotifier {
   bool get getOngoingNotificationOn => _ongoingNotificationOn;
   String get getOngoingNotificationPlace => _ongoingNotificationPlace;
   String get getOngoingNotificationLatLon => _ongoingNotificationLatLon;
+  String get getOngoingNotificationProvider => _ongoingNotificationProvider;
 
   SettingsProvider() {
     _load();
@@ -315,6 +317,7 @@ class SettingsProvider with ChangeNotifier {
     _ongoingNotificationOn = PreferenceUtils.getBool("Ongoing notification", false);
     _ongoingNotificationPlace = PreferenceUtils.getString("Ongoing place", "unknown");
     _ongoingNotificationLatLon = PreferenceUtils.getString("Ongoing latLon", "unknown");
+    _ongoingNotificationProvider = PreferenceUtils.getString("Ongoing provider", "open-meteo");
   }
 
   void _loadLocale() {
@@ -395,6 +398,17 @@ class SettingsProvider with ChangeNotifier {
     PreferenceUtils.setString("Ongoing latLon", latLon);
     _ongoingNotificationPlace = place;
     _ongoingNotificationLatLon = latLon;
+
+    if (_ongoingNotificationOn) {
+      NotificationService().updateOngoingNotification(PreferenceUtils.instance);
+    }
+
+    notifyListeners();
+  }
+
+  void setOngoingNotificationProvider(String to) {
+    PreferenceUtils.setString("Ongoing provider", to);
+    _ongoingNotificationProvider = to;
 
     if (_ongoingNotificationOn) {
       NotificationService().updateOngoingNotification(PreferenceUtils.instance);
