@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dynamic_system_colors/dynamic_system_colors.dart';
@@ -264,8 +265,17 @@ class MyHomePageState extends State<MyHomePage> {
 
       if (launchDetails?.didNotificationLaunchApp ?? false) {
         final String? payload = launchDetails!.notificationResponse?.payload;
-        location = PreferenceUtils.getString('LastKnownPositionName', 'unknown');
-        latLon = PreferenceUtils.getString('LastKnownPositionCord', 'unknown');
+        if (payload != null) {
+          Map<String, dynamic> data = jsonDecode(payload);
+          if (data["location"] == "Current Location") {
+            location = PreferenceUtils.getString('LastKnownPositionName', 'unknown');
+            latLon = PreferenceUtils.getString('LastKnownPositionCord', 'unknown');
+          }
+          else {
+            location = data["location"]!;
+            latLon = data["latLon"]!;
+          }
+        }
       }
     }
 

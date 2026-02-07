@@ -17,6 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 
+import 'dart:convert';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:overmorrow/decoders/weather_data.dart';
 import 'package:overmorrow/services/preferences_service.dart';
@@ -113,7 +115,7 @@ class NotificationService {
       LightCurrentWeatherData data = await LightCurrentWeatherData
           .getLightCurrentWeatherData(location, latLon, provider, prefs);
 
-      NotificationService().showOngoingNotification(data);
+      NotificationService().showOngoingNotification(data, location, latLon);
     }
   }
 
@@ -121,7 +123,7 @@ class NotificationService {
     _plugin.cancel(1);
   }
 
-  Future<void> showOngoingNotification(LightCurrentWeatherData data) async {
+  Future<void> showOngoingNotification(LightCurrentWeatherData data, String location, String latLon) async {
 
     print("SHOWONGOING");
 
@@ -138,12 +140,17 @@ class NotificationService {
       channelShowBadge: false,
     );
 
+    Map<String, String> payloadData = {
+      'location': location,
+      'latLon' : latLon
+    };
+
     await _plugin.show(
       1,
       '${data.temp}° ${data.condition}',
       data.place,
       NotificationDetails(android: androidNotificationDetails,),
-      payload: "CurrentLocation",
+      payload: jsonEncode(payloadData),
     );
   }
 
