@@ -381,15 +381,11 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setOngoingNotification(bool to) {
+  Future<void> setOngoingNotification(bool to) async {
+    to = await NotificationService().handleNotificationToggle(to);
+
     PreferenceUtils.setBool("Ongoing notification", to);
     _ongoingNotificationOn = to;
-
-    if (to == true) {
-      NotificationService().updateOngoingNotification(PreferenceUtils.instance);
-    } else {
-      NotificationService().killOngoingNotification();
-    }
 
     notifyListeners();
   }

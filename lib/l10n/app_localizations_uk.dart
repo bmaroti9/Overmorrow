@@ -216,10 +216,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get uvLowercase => 'УФ';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'Температура';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'Тиск';
 
   @override
   String get goodAqiDesc =>
@@ -286,7 +286,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get about => 'Про застосунок';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'Оновлення у фоні';
 
   @override
   String get appearanceSettingDesc => 'колірна тема, джерело зображення';
@@ -304,7 +304,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get aboutSettingsDesc => 'Про застосунок';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc => 'Оновлення віджета, сповіщення';
 
   @override
   String get now => 'Зараз';
@@ -525,8 +525,8 @@ class AppLocalizationsUk extends AppLocalizations {
   String get high => 'Високо';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'Радар наживо';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'Поточне сповіщення';
 }

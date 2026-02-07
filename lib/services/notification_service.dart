@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:overmorrow/decoders/weather_data.dart';
+import 'package:overmorrow/services/preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../weather_refact.dart';
@@ -39,26 +40,46 @@ class NotificationService {
   );
 
   Future<void> init() async {
-    const androidSettings = AndroidInitializationSettings('@drawable/weather_partly_cloudy');
-    const settings = InitializationSettings(android: androidSettings);
+    if (PreferenceUtils.getBool("Ongoing notification", false)) {
+      const androidSettings = AndroidInitializationSettings('@drawable/weather_partly_cloudy');
+        const settings = InitializationSettings(android: androidSettings);
 
-    await _plugin.initialize(
-      settings,
-      onDidReceiveNotificationResponse: (NotificationResponse response) {
-        final String? payload = response.payload;
-        if (payload != null) {
-          print('Notification tapped with payload: $payload');
-        }
-      },
-    );
-
-    await _requestPermissions();
+        await _plugin.initialize(
+          settings,
+          onDidReceiveNotificationResponse: (NotificationResponse response) {
+          final String? payload = response.payload;
+          if (payload != null) {
+            print('Notification tapped with payload: $payload');
+          }
+        },
+      );
+    }
   }
 
-  Future<void> _requestPermissions() async {
-    await _plugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestNotificationsPermission();
+  Future<bool> handleNotificationToggle(bool to) async {
+    AndroidFlutterLocalNotificationsPlugin? androidFlutterLocalNotificationsPlugin = _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    if (androidFlutterLocalNotificationsPlugin != null) {
+      if (to == true) {
+        bool? permissionGranted = await androidFlutterLocalNotificationsPlugin.areNotificationsEnabled();
+        if (permissionGranted == true) {
+          updateOngoingNotification(PreferenceUtils.instance);
+          return true;
+        }
+        else {
+          await androidFlutterLocalNotificationsPlugin.requestNotificationsPermission();
+
+          permissionGranted = await androidFlutterLocalNotificationsPlugin.areNotificationsEnabled();
+          if (permissionGranted == true) {
+            return true;
+          }
+          return false;
+        }
+      } else {
+        killOngoingNotification();
+        return false;
+      }
+    }
+    return false;
   }
 
   Future<NotificationAppLaunchDetails?> getNotificationLaunchDetails() async {
