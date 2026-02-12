@@ -253,7 +253,7 @@ class TabletLayout extends StatelessWidget {
                     },
                     headerData: HeaderData(
                         blurContent: false,
-                        headerHeight: min(currentHeight * 0.49, 500),
+                        headerHeight: min(currentHeight * 0.43, 500),
                         header: FadingImageWidget(
                           image: imageService?.image,
                         ),
