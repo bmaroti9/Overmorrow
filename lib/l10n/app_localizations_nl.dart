@@ -215,10 +215,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get uvLowercase => 'UV';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'Temperatuur';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'Druk';
 
   @override
   String get goodAqiDesc =>
@@ -286,7 +286,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get about => 'Over';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'Achtergrond­updates';
 
   @override
   String get appearanceSettingDesc => 'Kleur­thema, afbeeldings­bron';
@@ -304,7 +304,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get aboutSettingsDesc => 'Over deze app';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc => 'Widget-updates, meldingen';
 
   @override
   String get now => 'Nu';
@@ -525,8 +525,8 @@ class AppLocalizationsNl extends AppLocalizations {
   String get high => 'Hoog';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'Live-radar';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'Doorlopende melding';
 }

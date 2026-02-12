@@ -67,12 +67,12 @@
 ### Phone
 
 <p align="center" width="100%">
-  <img src="Screenshots/overmorrow_pixel1.png" width="30%">
-  <img src="Screenshots/overmorrow_pixel2.png" width="30%">
-  <img src="Screenshots/overmorrow_pixel3.png" width="30%">
-  <img src="Screenshots/overmorrow_pixel4.png" width="30%">
-  <img src="Screenshots/overmorrow_pixel5.png" width="30%">
-  <img src="Screenshots/overmorrow_pixel6.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_1.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_2.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_3.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_4.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_5.png" width="30%">
+  <img src="Screenshots/overmorrow_brown_6.png" width="30%">
 </p>
 
 
