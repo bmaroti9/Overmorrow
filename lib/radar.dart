@@ -463,6 +463,14 @@ class _RadarBigState extends State<RadarBig> {
       mode = brightness == Brightness.dark ? "dark" : "light";
     }
 
+    Map<String, String> layerLocalizations = {
+      "live radar": AppLocalizations.of(context)!.liveRadar,
+      "precip": AppLocalizations.of(context)!.precipLowercase,
+      "temp": AppLocalizations.of(context)!.tempLowercase,
+      "wind": AppLocalizations.of(context)!.windLowercase,
+      "pressure": AppLocalizations.of(context)!.pressureLowercase,
+    };
+
     Map<String, String> radarLowText = {
       "live radar": AppLocalizations.of(context)!.light,
       "precip": AppLocalizations.of(context)!.light,
@@ -706,7 +714,7 @@ class _RadarBigState extends State<RadarBig> {
                         return Center(
                           child: Padding(
                               padding: const EdgeInsets.all(10),
-                              child: Text(item, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer,
+                              child: Text(layerLocalizations[item] ?? "--", style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer,
                                   fontSize: 17),)
                           ),
                         );
@@ -721,7 +729,7 @@ class _RadarBigState extends State<RadarBig> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(item, style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer,
+                              Text(layerLocalizations[item] ?? "--", style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer,
                                   fontSize: 17),),
                               const SizedBox(width: 5,),
                               if (selectedLayer == item) const Icon(Icons.check, size: 20,)

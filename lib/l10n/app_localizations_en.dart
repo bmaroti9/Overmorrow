@@ -214,6 +214,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc => 'Air quality is excellent; no health risk.';
 
   @override
@@ -278,6 +284,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get about => 'About';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'color theme, image source';
 
   @override
@@ -291,6 +300,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'about this app';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'now';
@@ -509,4 +521,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

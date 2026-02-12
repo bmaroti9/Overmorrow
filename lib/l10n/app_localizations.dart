@@ -24,6 +24,7 @@ import 'app_localizations_pl.dart';
 import 'app_localizations_pt.dart';
 import 'app_localizations_ro.dart';
 import 'app_localizations_ru.dart';
+import 'app_localizations_sl.dart';
 import 'app_localizations_sr.dart';
 import 'app_localizations_sw.dart';
 import 'app_localizations_ta.dart';
@@ -139,6 +140,7 @@ abstract class AppLocalizations {
     Locale('pt', 'BR'),
     Locale('ro'),
     Locale('ru'),
+    Locale('sl'),
     Locale('sr'),
     Locale('sw'),
     Locale('ta'),
@@ -558,6 +560,18 @@ abstract class AppLocalizations {
   /// **'uv'**
   String get uvLowercase;
 
+  /// No description provided for @tempLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'temp'**
+  String get tempLowercase;
+
+  /// No description provided for @pressureLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'pressure'**
+  String get pressureLowercase;
+
   /// No description provided for @goodAqiDesc.
   ///
   /// In en, this message translates to:
@@ -678,6 +692,12 @@ abstract class AppLocalizations {
   /// **'About'**
   String get about;
 
+  /// No description provided for @backgroundUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Background updates'**
+  String get backgroundUpdates;
+
   /// No description provided for @appearanceSettingDesc.
   ///
   /// In en, this message translates to:
@@ -707,6 +727,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'about this app'**
   String get aboutSettingsDesc;
+
+  /// No description provided for @backgroundUpdatesSettingsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'widget updates, notifications'**
+  String get backgroundUpdatesSettingsDesc;
 
   /// No description provided for @now.
   ///
@@ -1043,6 +1069,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'high'**
   String get high;
+
+  /// No description provided for @liveRadar.
+  ///
+  /// In en, this message translates to:
+  /// **'live radar'**
+  String get liveRadar;
+
+  /// No description provided for @ongoingNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'ongoing notification'**
+  String get ongoingNotification;
 }
 
 class _AppLocalizationsDelegate
@@ -1075,6 +1113,7 @@ class _AppLocalizationsDelegate
         'pt',
         'ro',
         'ru',
+        'sl',
         'sr',
         'sw',
         'ta',
@@ -1154,6 +1193,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsRo();
     case 'ru':
       return AppLocalizationsRu();
+    case 'sl':
+      return AppLocalizationsSl();
     case 'sr':
       return AppLocalizationsSr();
     case 'sw':

@@ -10,4 +10,6 @@
     <string name="hourly_forecast_widget_description">Current condition and temp with 6 hourly forecast</string>
     <string name="one_hourly_widget_name">1 Hourly Forecast</string>
     <string name="one_hourly_widget_description">Current condition and temp with 1 hourly forecast</string>
+    <string name="uv_widget_name">UV widget</string>
+    <string name="uv_widget_description">Shows the current UV</string>
 </resources>

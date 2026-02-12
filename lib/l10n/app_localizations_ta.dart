@@ -215,6 +215,12 @@ class AppLocalizationsTa extends AppLocalizations {
   String get uvLowercase => 'யு.வி.';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc => 'காற்றின் தகுதி சிறந்தது; சுகாதார இடர் இல்லை.';
 
   @override
@@ -279,6 +285,9 @@ class AppLocalizationsTa extends AppLocalizations {
   String get about => 'பற்றி';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'வண்ண கருப்பொருள், பட மூல';
 
   @override
@@ -292,6 +301,9 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'இந்த பயன்பாடு பற்றி';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'இப்போது';
@@ -511,4 +523,10 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

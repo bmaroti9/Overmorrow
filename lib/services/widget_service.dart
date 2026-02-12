@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:flutter/foundation.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:overmorrow/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -29,6 +30,7 @@ const updateWeatherDataKey = "com.marotidev.overmorrow.updateWeatherData";
 const currentWidgetReceiver = 'com.marotidev.overmorrow.receivers.CurrentWidgetReceiver';
 const dateCurrentWidgetReceiver = 'com.marotidev.overmorrow.receivers.DateCurrentWidgetReceiver';
 const windWidgetReceiver = 'com.marotidev.overmorrow.receivers.WindWidgetReceiver';
+const uvWidgetReceiver = 'com.marotidev.overmorrow.receivers.UvWidgetReceiver';
 const forecastWidgetReceiver = 'com.marotidev.overmorrow.receivers.ForecastWidgetReceiver';
 const oneHourlyWidgetReceiver = 'com.marotidev.overmorrow.receivers.OneHourlyWidgetReceiver';
 
@@ -76,6 +78,10 @@ class WidgetService {
     await saveData("wind.windUnit.$widgetId", data.windUnit);
   }
 
+  static Future<void> syncUvDataToWidget(LightUvData data, int widgetId) async {
+    await saveData("uv.uv.$widgetId", data.uv);
+  }
+
   static Future<void> syncHourlyForecastDataToWidget(LightHourlyForecastData data, int widgetId) async {
     await saveData("hourlyForecast.currentTemp.$widgetId", data.currentTemp);
     await saveData("hourlyForecast.currentCondition.$widgetId", data.currentCondition);
@@ -117,6 +123,10 @@ class WidgetService {
       androidName: 'OneHourlyWidget',
       qualifiedAndroidName: oneHourlyWidgetReceiver,
     );
+    HomeWidget.updateWidget(
+      androidName: 'UvWidget',
+      qualifiedAndroidName: uvWidgetReceiver,
+    );
   }
 }
 
@@ -143,6 +153,14 @@ void myCallbackDispatcher() {
 
         try {
           print("HEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE");
+
+          //--------------------NOTIFICATIONS--------------------
+
+          if (prefs.getBool("Ongoing notification") ?? false) {
+            await NotificationService().updateOngoingNotification(prefs);
+          }
+
+          //--------------------WIDGETS--------------------------
 
           final List<HomeWidgetInfo> installedWidgets = await HomeWidget.getInstalledWidgets();
 
@@ -198,6 +216,11 @@ void myCallbackDispatcher() {
                   .getLightForecastData(placeName, latLon, widgetProvider, prefs);
 
               await WidgetService.syncHourlyForecastDataToWidget(data, widgetId);
+            } else if (widgetClassName == uvWidgetReceiver) {
+
+              LightUvData data = await LightUvData.getLightUvData(placeName, latLon, widgetProvider, prefs);
+
+              await WidgetService.syncUvDataToWidget(data, widgetId);
             }
 
           }

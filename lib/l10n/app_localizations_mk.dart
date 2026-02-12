@@ -214,6 +214,12 @@ class AppLocalizationsMk extends AppLocalizations {
   String get uvLowercase => 'ув';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc =>
       'Квалитетот на воздухот е одличен; нема ризик по здравјето.';
 
@@ -278,6 +284,9 @@ class AppLocalizationsMk extends AppLocalizations {
   String get about => 'Повеќе за нас';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'тема на бојата, извор на сликата';
 
   @override
@@ -291,6 +300,9 @@ class AppLocalizationsMk extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'повеќе за апликацијава';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'моментално';
@@ -509,4 +521,10 @@ class AppLocalizationsMk extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

@@ -217,6 +217,12 @@ class AppLocalizationsBg extends AppLocalizations {
   String get uvLowercase => 'uv индекс';
 
   @override
+  String get tempLowercase => 'температура';
+
+  @override
+  String get pressureLowercase => 'налягане';
+
+  @override
   String get goodAqiDesc =>
       'Качеството на въздуха е отлично; няма риск за здравето.';
 
@@ -282,6 +288,9 @@ class AppLocalizationsBg extends AppLocalizations {
   String get about => 'Относно';
 
   @override
+  String get backgroundUpdates => 'Актуализации на фона';
+
+  @override
   String get appearanceSettingDesc => 'цветна тема, източник на изображения';
 
   @override
@@ -295,6 +304,10 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'относно това приложение';
+
+  @override
+  String get backgroundUpdatesSettingsDesc =>
+      'актуализации на джаджи, известия';
 
   @override
   String get now => 'сега';
@@ -513,4 +526,10 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get high => 'високо';
+
+  @override
+  String get liveRadar => 'радар на живо';
+
+  @override
+  String get ongoingNotification => 'текущо известие';
 }

@@ -419,7 +419,7 @@ class DailyExpanded extends StatelessWidget {
                 ),
                 dayStat(
                   Icons.air,
-                  unitConversion(day.windKph, context.select((SettingsProvider p) => p.getWindUnit), decimals: 1),
+                  unitConversion(day.windKmh, context.select((SettingsProvider p) => p.getWindUnit), decimals: 1),
                   context.select((SettingsProvider p) => p.getWindUnit),
                   context,
                   windDir: day.windDirA

@@ -215,6 +215,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
+  String get tempLowercase => 'sıcaklık';
+
+  @override
+  String get pressureLowercase => 'basınç';
+
+  @override
   String get goodAqiDesc => 'Hava kalitesi mükemmel; sağlık riski yok.';
 
   @override
@@ -236,8 +242,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Acil durum koşulları; herkes için ciddi sağlık etkileri.';
 
   @override
-  String get photoByXOnUnsplash =>
-      'Fotoğraf, x, tarafından ,Unsplash , üzerinden';
+  String get photoByXOnUnsplash => ',Unsplash,\'ta ,x, tarafından fotoğraf';
 
   @override
   String get sourceCodeLowercase => 'kaynak kodu';
@@ -279,6 +284,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get about => 'Hakkında';
 
   @override
+  String get backgroundUpdates => 'Arkaplan güncellemeleri';
+
+  @override
   String get appearanceSettingDesc => 'renk teması, görüntü kaynağı';
 
   @override
@@ -292,6 +300,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'bu uygulama hakkında';
+
+  @override
+  String get backgroundUpdatesSettingsDesc =>
+      'widget güncellemeleri, bildirimler';
 
   @override
   String get now => 'şimdi';
@@ -510,4 +522,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get high => 'yüksek';
+
+  @override
+  String get liveRadar => 'canlı radar';
+
+  @override
+  String get ongoingNotification => 'sürekli bildirim';
 }

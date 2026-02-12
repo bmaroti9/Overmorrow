@@ -213,6 +213,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get uvLowercase => '紫外线';
 
   @override
+  String get tempLowercase => '气';
+
+  @override
+  String get pressureLowercase => '气压';
+
+  @override
   String get goodAqiDesc => '空气质量极佳；无健康风险。';
 
   @override
@@ -273,6 +279,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get about => '关于';
 
   @override
+  String get backgroundUpdates => '后台更新';
+
+  @override
   String get appearanceSettingDesc => '颜色主题, 图片来源';
 
   @override
@@ -286,6 +295,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => '关于此 app';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => '小部件更新、通知';
 
   @override
   String get now => '现在';
@@ -504,6 +516,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get high => '高';
+
+  @override
+  String get liveRadar => '实时雷达图';
+
+  @override
+  String get ongoingNotification => '持续通知';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).

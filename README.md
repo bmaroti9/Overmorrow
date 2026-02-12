@@ -73,8 +73,6 @@
   <img src="Screenshots/overmorrow_brown_4.png" width="30%">
   <img src="Screenshots/overmorrow_brown_5.png" width="30%">
   <img src="Screenshots/overmorrow_brown_6.png" width="30%">
-  <img src="Screenshots/overmorrow_brown_7.png" width="30%">
-  <img src="Screenshots/overmorrow_brown_8.png" width="30%">
 </p>
 
 

@@ -16,6 +16,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -31,55 +33,6 @@ Future<void> _launchUrl(String url) async {
   final Uri _url = Uri.parse(url);
   if (!await launchUrl(_url)) {
     throw Exception('Could not launch $_url');
-  }
-}
-
-class MainSettingEntry extends StatelessWidget {
-  final String title;
-  final String desc;
-  final IconData icon;
-  final Widget? pushTo;
-
-  const MainSettingEntry({super.key, required this.title, required this.desc, required this.icon, this.pushTo});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 25, right: 25, top: 5, bottom: 5),
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          HapticFeedback.selectionClick();
-          if (pushTo != null) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => pushTo!)
-            );
-          }
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(top: 13, bottom: 13),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              circleBorderIcon(icon, context),
-              const SizedBox(width: 20,),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: const TextStyle(fontSize: 21, height: 1.2),),
-                    Text(desc, style: TextStyle(color: Theme.of(context).colorScheme.outline,
-                        fontSize: 15, height: 1.2),)
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }
 
@@ -328,13 +281,6 @@ class UnitsPage extends StatelessWidget {
                         selected: context.select((SettingsProvider p) => p.getWindUnit),
                         update: context.read<SettingsProvider>().setWindUnit,
                       ),
-
-                      /*
-                      settingEntry(Icons.device_thermostat, localizations.temperature, copySettings, palette, updatePage, 'Temperature', context),
-                      settingEntry(Icons.water_drop_outlined, localizations.precipitaion, copySettings, palette, updatePage, 'Precipitation', context),
-                      settingEntry(Icons.air, localizations.windCapital, copySettings, palette, updatePage, 'Wind', context),
-
-                       */
                     ],
                   )
                 ),
@@ -446,15 +392,178 @@ class GeneralSettingsPage extends StatelessWidget {
                           ],
                         ),
                       ),
+                    ],
+                  )
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-                      /*
-                      settingEntry(Icons.access_time_outlined, localizations.timeMode, copySettings, palette, updatePage, 'Time mode', context),
-                      settingEntry(Icons.date_range, localizations.dateFormat, copySettings, palette, updatePage, 'Date format', context),
-                      settingEntry(Icons.format_size, localizations.fontSize, copySettings, palette, updatePage, 'Font size', context),
-                      settingEntry(Icons.manage_search_outlined, localizations.searchProvider, copySettings, palette, updatePage, 'Search provider', context),
-                      settingEntry(Icons.vibration_rounded, localizations.radarHaptics, copySettings, palette, updatePage, 'Radar haptics', context),
 
-                       */
+class BackgroundUpdatesPage extends StatelessWidget {
+  const BackgroundUpdatesPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+
+    final ifnot = ["{\n        \"id\": 2651922,\n        \"name\": \"Nashville\",\n        \"region\": \"Tennessee\",\n        \"country\": \"United States of America\",\n        \"lat\": 36.17,\n        \"lon\": -86.78,\n        \"url\": \"nashville-tennessee-united-states-of-america\"\n    }"];
+    final favorites = PreferenceUtils.getStringList('favorites', ifnot);
+
+    final currentLocationName = PreferenceUtils.getString("LastKnownPositionName", "unknown");
+    final currentLocationLatLon = PreferenceUtils.getString("LastKnownPositionCord", "unknown");
+    bool isCurrentSelected = context.select((SettingsProvider p) => p.getOngoingNotificationPlace) == "Current Location";
+
+    return Material(
+      color: Theme.of(context).colorScheme.surface,
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            leading:
+            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(context);
+                }),
+            title: Text(AppLocalizations.of(context)!.backgroundUpdates,
+              style: const TextStyle(fontSize: 30),),
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            pinned: false,
+          ),
+
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: AnimationLimiter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: AnimationConfiguration.toStaggeredList(
+                    duration: const Duration(milliseconds: 500),
+                    childAnimationBuilder: (widget) => SlideAnimation(
+                      horizontalOffset: 80.0,
+                      child: FadeInAnimation(
+                        child: widget,
+                      ),
+                    ),
+                    children: [
+                      SwitchSettingEntry(
+                        icon: Icons.published_with_changes,
+                        text: AppLocalizations.of(context)!.ongoingNotification,
+                        selected: context.select((SettingsProvider p) => p.getOngoingNotificationOn),
+                        update: context.read<SettingsProvider>().setOngoingNotification,
+                      ),
+
+                      Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                if (currentLocationName != "unknown" && currentLocationLatLon != "unknown") {
+                                  HapticFeedback.lightImpact();
+                                  context.read<SettingsProvider>().setOngoingNotificationPlaceAndLatLon("Current Location", currentLocationLatLon);
+                                }
+                              },
+                              child: Container(
+                                decoration: (isCurrentSelected) ? BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Theme.of(context).colorScheme.tertiaryContainer
+                                ) : const BoxDecoration(),
+                                padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text("Current Location ($currentLocationName)", style: const TextStyle(
+                                          fontSize: 16, height: 1.2),),
+                                    ),
+                                    if (isCurrentSelected) Icon(
+                                      Icons.check,
+                                      color: Theme.of(context).colorScheme.tertiary,
+                                      size: 17,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            
+                            Column(
+                              children: List.generate(favorites.length, (index) {
+                                var split = json.decode(favorites[index]);
+                                String name = split["name"];
+                            
+                                bool isSelected = context.select((SettingsProvider p) => p.getOngoingNotificationPlace) == name;
+                            
+                                return GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  onTap: () {
+                                    HapticFeedback.lightImpact();
+                                    context.read<SettingsProvider>().setOngoingNotificationPlaceAndLatLon(name, '${split["lat"]}, ${split["lon"]}');
+                                  },
+                                  child: Container(
+                                    decoration: isSelected ? BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Theme.of(context).colorScheme.tertiaryContainer
+                                    ) : const BoxDecoration(),
+                                    padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(name, style: const TextStyle(
+                                            fontSize: 16, height: 1.2),),
+                                        ),
+                                        if (isSelected) Icon(
+                                          Icons.check,
+                                          color: Theme.of(context).colorScheme.tertiary,
+                                          size: 17,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              })
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 4),
+                        child: Text(AppLocalizations.of(context)!.weatherProvderLowercase),
+                      ),
+
+                      SegmentedButton(
+                        multiSelectionEnabled: false,
+                        segments: const <ButtonSegment>[
+                          ButtonSegment(
+                            value: "open-meteo",
+                            label: Text('open-meteo'),
+                          ),
+                          ButtonSegment(
+                            value: "weatherapi",
+                            label: Text('weatherapi'),
+                          ),
+                          ButtonSegment(
+                            value: "met-norway",
+                            label: Text('met-norway'),
+                          ),
+                        ],
+                        selected: {context.select((SettingsProvider p) => p.getOngoingNotificationProvider)},
+                        onSelectionChanged: (newSelection) {
+                          HapticFeedback.lightImpact();
+                          context.read<SettingsProvider>().setOngoingNotificationProvider(newSelection.first);
+                        },
+                      )
                     ],
                   )
                 ),

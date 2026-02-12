@@ -215,6 +215,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc => 'A qualidade do ar é excelente; sem risco à saúde.';
 
   @override
@@ -279,6 +285,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get about => 'Sobre';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'tema de cor, fonte de imagem';
 
   @override
@@ -292,6 +301,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'sobre o aplicativo';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'agora';
@@ -510,6 +522,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).

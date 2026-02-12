@@ -9,7 +9,7 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
-  String get feelsLike => 'Ощущается';
+  String get feelsLike => 'Ощущается как';
 
   @override
   String get precipCapital => 'Осадки.';
@@ -217,6 +217,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get uvLowercase => 'уф';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc =>
       'Качество воздуха отличное; угрозы для здоровья нет.';
 
@@ -282,6 +288,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get about => 'О программе';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'цветовая тема, источник изображения';
 
   @override
@@ -295,6 +304,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'о приложении';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'сейчас';
@@ -513,4 +525,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

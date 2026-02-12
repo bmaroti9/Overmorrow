@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'package:overmorrow/services/notification_service.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,7 @@ Map<String, List<String>> settingSwitches = {
   ],
   'Temperature': ['˚C', '˚F'],
   'Precipitation': ['mm', 'in'],
-  'Wind': ['m/s', 'kph', 'mph', 'kn'],
+  'Wind': ['m/s', 'km/h', 'mph', 'kn'],
 
   'Time mode': ['12 hour', '24 hour'],
   'Date format': ['mm/dd', 'dd/mm'],
@@ -241,6 +242,11 @@ class SettingsProvider with ChangeNotifier {
   String _location = "New York";
   String _latLon = "40.7128, -74.0060";
 
+  bool _ongoingNotificationOn = false;
+  String _ongoingNotificationPlace = "unknown";
+  String _ongoingNotificationLatLon = "unknown";
+  String _ongoingNotificationProvider = "open-meteo";
+
   String get getWeatherProvider => _weatherProvider;
 
   String get getTempUnit => _tempUnit;
@@ -266,6 +272,11 @@ class SettingsProvider with ChangeNotifier {
   String get getLocation => _location;
   String get getLatLon => _latLon;
 
+  bool get getOngoingNotificationOn => _ongoingNotificationOn;
+  String get getOngoingNotificationPlace => _ongoingNotificationPlace;
+  String get getOngoingNotificationLatLon => _ongoingNotificationLatLon;
+  String get getOngoingNotificationProvider => _ongoingNotificationProvider;
+
   SettingsProvider() {
     _load();
     _loadLocale();
@@ -278,10 +289,19 @@ class SettingsProvider with ChangeNotifier {
 
     _tempUnit = PreferenceUtils.getString("Temperature", "˚C");
     _windUnit = PreferenceUtils.getString("Wind", "m/s");
+
+    //I'm migrating kph to km/h because it was confusing to a lot of people
+    //this should be removed after next release
+    if (_windUnit == "kph") {
+      PreferenceUtils.setString("Wind", "km/h");
+      _windUnit = "km/h";
+    }
+
     _precipUnit = PreferenceUtils.getString("Precipitation", "mm");
 
     _timeMode = PreferenceUtils.getString("Time mode", "12 hour");
-    _radarHapticsOn = PreferenceUtils.getBool("RadarHapticOn", true);
+
+    _radarHapticsOn = PreferenceUtils.getBool("Radar haptics", true);
 
     _imageSource = PreferenceUtils.getString("Image source", "network");
 
@@ -293,6 +313,11 @@ class SettingsProvider with ChangeNotifier {
 
     _location = PreferenceUtils.getString("LastPlaceN", "New York");
     _latLon = PreferenceUtils.getString("LastCord", "40.7128, -74.0060");
+
+    _ongoingNotificationOn = PreferenceUtils.getBool("Ongoing notification", false);
+    _ongoingNotificationPlace = PreferenceUtils.getString("Ongoing place", "unknown");
+    _ongoingNotificationLatLon = PreferenceUtils.getString("Ongoing latLon", "unknown");
+    _ongoingNotificationProvider = PreferenceUtils.getString("Ongoing provider", "open-meteo");
   }
 
   void _loadLocale() {
@@ -356,6 +381,39 @@ class SettingsProvider with ChangeNotifier {
   void setRadarHaptics(bool to) {
     PreferenceUtils.setBool("Radar haptics", to);
     _radarHapticsOn = to;
+    notifyListeners();
+  }
+
+  Future<void> setOngoingNotification(bool to) async {
+    to = await NotificationService().handleNotificationToggle(to);
+
+    PreferenceUtils.setBool("Ongoing notification", to);
+    _ongoingNotificationOn = to;
+
+    notifyListeners();
+  }
+
+  void setOngoingNotificationPlaceAndLatLon(String place, String latLon) {
+    PreferenceUtils.setString("Ongoing place", place);
+    PreferenceUtils.setString("Ongoing latLon", latLon);
+    _ongoingNotificationPlace = place;
+    _ongoingNotificationLatLon = latLon;
+
+    if (_ongoingNotificationOn) {
+      NotificationService().updateOngoingNotification(PreferenceUtils.instance);
+    }
+
+    notifyListeners();
+  }
+
+  void setOngoingNotificationProvider(String to) {
+    PreferenceUtils.setString("Ongoing provider", to);
+    _ongoingNotificationProvider = to;
+
+    if (_ongoingNotificationOn) {
+      NotificationService().updateOngoingNotification(PreferenceUtils.instance);
+    }
+
     notifyListeners();
   }
 

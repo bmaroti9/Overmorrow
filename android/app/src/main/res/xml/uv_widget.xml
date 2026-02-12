@@ -1,0 +1,14 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialLayout="@layout/glance_default_loading_layout"
+    android:minWidth="20dp"
+    android:minHeight="20dp"
+    android:maxResizeHeight="200dp"
+    android:maxResizeWidth="200dp"
+    android:resizeMode="horizontal|vertical"
+    android:previewImage="@drawable/preview_uv_widget"
+    android:widgetFeatures="reconfigurable"
+    android:configure="com.marotidev.overmorrow.configurators.CurrentWidgetConfigurationActivity"
+    android:description="@string/uv_widget_description"
+    android:label="@string/uv_widget_name"
+    android:updatePeriodMillis="3600000">
+</appwidget-provider>

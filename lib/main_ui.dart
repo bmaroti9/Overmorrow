@@ -50,40 +50,6 @@ Future<void> _launchUrl(String url) async {
   }
 }
 
-class WeatherPage extends StatelessWidget {
-  final data;
-  final updateLocation;
-
-  WeatherPage({super.key, required this.data,
-        required this.updateLocation});
-
-  void openDrawer(BuildContext context) {
-    Scaffold.of(context).openDrawer();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    //FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
-    //Size size = view.physicalSize / view.devicePixelRatio;
-
-    /*
-    if (size.width > 950) {
-      return TabletLayout(
-        data: data, updateLocation: updateLocation,
-        key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
-    }
-
-     */
-
-    //return SearchHeroDemo();
-
-    return Container();
-    //return NewMain(data: data, updateLocation: updateLocation, context: context,
-    //    key: Key("${data.place}, ${data.provider} ${data.updatedTime}"),);
-  }
-}
-
 
 class LoadingIndicator extends StatelessWidget {
   final bool isLoading;
@@ -172,7 +138,7 @@ class _TempAndConditionTextState extends State<TempAndConditionText> {
           target: unitConversion(widget.data.current.tempC,
           context.select((SettingsProvider p) => p.getTempUnit), decimals: 1) * 1.0,
           color: colorsOnImage?.colorPop ?? Theme.of(context).colorScheme.tertiaryFixedDim,
-          fontSize: 77,
+          fontSize: 80,
         ),
         Text(
           translateCondition(widget.data.current.condition,
@@ -233,7 +199,6 @@ class _SmoothTempTransitionState extends State<SmoothTempTransition> with Automa
   }
 }
 
-
 class Circles extends StatelessWidget {
 
   final WeatherData data;
@@ -267,7 +232,7 @@ class Circles extends StatelessWidget {
                 dir: -1,
               ),
               DescriptionCircle(
-                text: '${unitConversion(data.current.windKph,
+                text: '${unitConversion(data.current.windKmh,
                     context.select((SettingsProvider p) => p.getWindUnit), decimals: 0)}',
                 undercaption: AppLocalizations.of(context)!.windCapital,
                 extra: context.select((SettingsProvider p) => p.getWindUnit),

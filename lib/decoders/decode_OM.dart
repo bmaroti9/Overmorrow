@@ -85,7 +85,6 @@ Future<List<dynamic>> oMRequestData(double lat, double lng, String place) async 
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
 
-
   //var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
   var oMFile = await XCustomCacheManager.fetchData(oMUrl.toString(), "$place, open-meteo");
 
@@ -138,7 +137,7 @@ WeatherCurrent oMWeatherCurrentFromJson(item, WeatherSunStatus sunstatus, DateTi
     uv: item["daily"]["uv_index_max"][dayDif].round(),
     feelsLikeC: item["current"]["apparent_temperature"],
     precipMm: item["daily"]["precipitation_sum"][dayDif],
-    windKph: item["hourly"]["wind_speed_10m"][start],
+    windKmh: item["hourly"]["wind_speed_10m"][start],
     humidity: item["current"]["relative_humidity_2m"],
     tempC: isonline ? item["current"]["temperature_2m"] : item["hourly"]["temperature_2m"][start],
     windDirA: item["hourly"]["wind_direction_10m"][start],
@@ -159,7 +158,7 @@ WeatherDay oMWeatherDayFromJson(item, index, WeatherSunStatus sunStatus, approxi
 
     uv: item["daily"]["uv_index_max"][index].round(),
 
-    windKph: item["daily"]["wind_speed_10m_max"][index],
+    windKmh: item["daily"]["wind_speed_10m_max"][index],
     windDirA: item["daily"]["wind_direction_10m_dominant"][index],
 
     hourly: oMBuildWeatherHourList(index, item, sunStatus, approximateLocal),
@@ -193,8 +192,8 @@ WeatherHour oMWeatherHourFromJson(item, index, WeatherSunStatus sunStatus) {
     condition: condition,
     precipMm: item["hourly"]["precipitation"][index],
     precipProb: item["hourly"]["precipitation_probability"][index],
-    windKph: item["hourly"]["wind_speed_10m"][index],
-    windGustKph: item["hourly"]["wind_gusts_10m"][index],
+    windKmh: item["hourly"]["wind_speed_10m"][index],
+    windGustKmh: item["hourly"]["wind_gusts_10m"][index],
     windDirA: item["hourly"]["wind_direction_10m"][index],
     uv: item["hourly"]["uv_index"][index].round(),
   );
@@ -742,6 +741,24 @@ Future<LightWindData> omGetLightWindData(lat, lon, SharedPreferences prefs) asyn
       windDirAngle: item["current"]["wind_direction_10m"],
       windSpeed: unitConversion(item["current"]["wind_speed_10m"], prefs.getString("Wind") ?? "m/s").round(),
       windUnit: prefs.getString("Wind") ?? "m/s"
+  );
+}
+
+Future<LightUvData> omGetLightUvData(lat, lon, SharedPreferences prefs) async {
+  final oMParams = {
+    "latitude": lat.toString(),
+    "longitude": lon.toString(),
+    "hourly" : ["uv_index"],
+    "forecast_hours" : "1",
+  };
+
+  final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
+  final response = (await http.get(oMUrl)).body;
+
+  final item = jsonDecode(response);
+
+  return LightUvData(
+      uv: item["hourly"]["uv_index"][0].round()
   );
 }
 

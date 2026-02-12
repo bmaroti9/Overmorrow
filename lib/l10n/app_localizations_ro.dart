@@ -214,6 +214,12 @@ class AppLocalizationsRo extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc =>
       'Calitatea aerului este excelentă; niciun risc de sănătate.';
 
@@ -280,6 +286,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get about => 'Despre';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'temă culori, sursă imagine';
 
   @override
@@ -293,6 +302,9 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'despre aplicație';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'acum';
@@ -511,4 +523,10 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

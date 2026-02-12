@@ -215,6 +215,12 @@ class AppLocalizationsSw extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc => 'Ubora wa hewa ni bora; hakuna hatari kwa afya.';
 
   @override
@@ -278,6 +284,9 @@ class AppLocalizationsSw extends AppLocalizations {
   String get about => 'Kuhusu';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'mandhari ya angi, chanzo cha picha';
 
   @override
@@ -291,6 +300,9 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'kuhusi hii programu';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'sasa hivi';
@@ -509,4 +521,10 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

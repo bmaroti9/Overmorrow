@@ -133,7 +133,7 @@ WeatherCurrent metNWeatherCurrentFromJson(item, ) {
     precipMm: it["next_1_hours"]["details"]["precipitation_amount"],
     tempC: it["instant"]["details"]["air_temperature"],
     humidity: it["instant"]["details"]["relative_humidity"].round(),
-    windKph: it["instant"]["details"]["wind_speed"] * 3.6,
+    windKmh: it["instant"]["details"]["wind_speed"] * 3.6,
     uv: it["instant"]["details"]["ultraviolet_index_clear_sky"].round(),
     feelsLikeC: metNcalculateFeelsLike(it["instant"]["details"]["air_temperature"],
         it["instant"]["details"]["relative_humidity"], it["instant"]["details"]["wind_speed"] * 3.6),
@@ -161,7 +161,7 @@ WeatherDay metNWeatherDayFromJson(item, start, end, index, hourDif) {
   for (int n = start; n < end; n++) {
     WeatherHour hour = metNWeatherHourFromJson(item["properties"]["timeseries"][n], hourDif);
     rawTemps.add(hour.tempC);
-    windspeeds.add(hour.windKph);
+    windspeeds.add(hour.windKmh);
     winddirs.add(hour.windDirA);
 
     precip.add(hour.precipMm);
@@ -189,7 +189,7 @@ WeatherDay metNWeatherDayFromJson(item, start, end, index, hourDif) {
       minTempC: rawTemps.reduce(min),
       maxTempC:  rawTemps.reduce(max),
       hourly: hours,
-      windKph: (windspeeds.reduce((a, b) => a + b) / windspeeds.length),
+      windKmh: (windspeeds.reduce((a, b) => a + b) / windspeeds.length),
       date: DateTime.parse(item["properties"]["timeseries"][start]["time"]).add(Duration(hours: -hourDif)),
       condition: weather_names[BIndex],
       windDirA: (winddirs.whereType<int>().reduce((a, b) => a + b) / winddirs.whereType<int>().length).round(),
@@ -201,13 +201,13 @@ WeatherHour metNWeatherHourFromJson(item, hourDif) {
   var nextHours = item["data"]["next_1_hours"] ?? item["data"]["next_6_hours"];
 
   return WeatherHour(
-    windGustKph: null,
+    windGustKmh: null,
     condition: metNTextCorrection(nextHours["summary"]["symbol_code"]),
     tempC: item["data"]["instant"]["details"]["air_temperature"],
     precipMm: nextHours["details"]["precipitation_amount"],
     precipProb: nextHours["details"]["probability_of_precipitation"]?.round(),
     time: DateTime.parse(item["time"]).add(Duration(hours: -hourDif)),
-    windKph: item["data"]["instant"]["details"]["wind_speed"] * 3.6,
+    windKmh: item["data"]["instant"]["details"]["wind_speed"] * 3.6,
     windDirA: item["data"]["instant"]["details"]["wind_from_direction"]?.round(),
     uv: item["data"]["instant"]["details"]["ultraviolet_index_clear_sky"]?.round(),
   );
@@ -409,8 +409,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, placeName) async {
   );
 }
 
-
-Future<dynamic> metNGetLightResponse(lat, lon) async {
+Future<dynamic> metNGetLightResponse(lat, lon, {bool isCompact = true}) async {
   final params = {
     "lat" : lat.toString(),
     "lon" : lon.toString(),
@@ -420,8 +419,7 @@ Future<dynamic> metNGetLightResponse(lat, lon) async {
   final headers = {
     "User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"
   };
-  final url = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/compact', params);
-
+  final url = Uri.https("api.met.no", 'weatherapi/locationforecast/2.0/${isCompact ? "compact" : "complete"}', params);
 
   final response = (await http.get(url, headers: headers)).body;
 
@@ -454,6 +452,13 @@ Future<LightWindData> metNGetLightWindData(lat, lon, SharedPreferences prefs) as
   );
 }
 
+Future<LightUvData> metNGetLightUvData(lat, lon, SharedPreferences prefs) async {
+  final item = await metNGetLightResponse(lat, lon, isCompact: false);
+
+  return LightUvData(
+      uv: item["properties"]["timeseries"][0]["data"]["instant"]["details"]["ultraviolet_index_clear_sky"].round(),
+  );
+}
 
 Future<LightHourlyForecastData> metNGetLightHourlyData(placeName, lat, lon, SharedPreferences prefs) async {
   final item = await metNGetLightResponse(lat, lon);

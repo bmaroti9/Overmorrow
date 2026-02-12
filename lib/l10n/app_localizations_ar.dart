@@ -213,6 +213,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get uvLowercase => 'الأشعة فوق البنفسجية';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc => 'جودة الهواء ممتازة، لا توجد مخاطر صحية.';
 
   @override
@@ -274,6 +280,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get about => 'حول التطبيق';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'سمة الألوان، مصدر الصور';
 
   @override
@@ -287,6 +296,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'حول هذا التطبيق';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'الآن';
@@ -505,4 +517,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get high => 'مرتفع';
+
+  @override
+  String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }

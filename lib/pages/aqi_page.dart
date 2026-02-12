@@ -348,7 +348,6 @@ class OneRowLayout extends StatelessWidget {
         )
     );
   }
-  
 }
 
 

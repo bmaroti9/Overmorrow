@@ -3,41 +3,53 @@ package com.marotidev.overmorrow.widgets
 import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
 import android.content.Context
+import android.widget.RemoteViews
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.LocalSize
 import androidx.glance.action.clickable
+import androidx.glance.appwidget.AndroidRemoteViews
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.glance.appwidget.SizeMode
+import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
+import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.ContentScale
+import androidx.glance.layout.Row
+import androidx.glance.layout.fillMaxHeight
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
+import androidx.glance.layout.wrapContentSize
+import androidx.glance.layout.wrapContentWidth
 import androidx.glance.state.GlanceStateDefinition
+import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
 import es.antonborri.home_widget.actionStartActivity
-import com.marotidev.overmorrow.services.getIconForCondition
-import androidx.core.net.toUri
-import androidx.glance.LocalSize
-import androidx.glance.appwidget.SizeMode
 import com.marotidev.overmorrow.services.getBackColor
 import com.marotidev.overmorrow.services.getFrontColor
+import com.marotidev.overmorrow.services.getOnFrontColor
 
-class CurrentWidget : GlanceAppWidget() {
+
+class UvWidget : GlanceAppWidget() {
 
     override val sizeMode = SizeMode.Exact
 
@@ -56,24 +68,25 @@ class CurrentWidget : GlanceAppWidget() {
 
         val prefs = currentState.preferences
 
-        val temp = prefs.getInt("current.temp.$appWidgetId", 0)
-        val condition = prefs.getString("current.condition.$appWidgetId", "N/A") ?: "?"
+        val uv = prefs.getInt("uv.uv.$appWidgetId", 0)
 
         val location = prefs.getString("widget.location.$appWidgetId", "--") ?: "?"
         val latLon = prefs.getString("widget.latLon.$appWidgetId", "--") ?: "?"
+
         val backColorString = prefs.getString("widget.backColor.$appWidgetId", "secondary container") ?: "secondary container"
         val frontColorString = prefs.getString("widget.frontColor.$appWidgetId", "primary") ?: "primary"
 
         val backColor = getBackColor(backColorString)
         val frontColor = getFrontColor(frontColorString)
-
-        val iconResId = getIconForCondition(condition)
+        val isFrontTransparent = frontColorString == "transparent"
+        val onFrontColor = getOnFrontColor(frontColorString)
 
         val size = LocalSize.current
         val minSize = min(size.width, size.height).value
 
-        Box (
-            modifier = GlanceModifier.fillMaxSize()
+        Box(
+            modifier = GlanceModifier
+                .fillMaxSize()
                 .clickable(
                     onClick = actionStartActivity<MainActivity>(
                         context,
@@ -82,34 +95,35 @@ class CurrentWidget : GlanceAppWidget() {
                 ),
             contentAlignment = Alignment.Center
         ) {
-
             if (backColorString != "transparent") {
                 Image(
-                    provider = ImageProvider(R.drawable.shapes_custom_pill_shape),
+                    provider = ImageProvider(R.drawable.shapes_circle),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(backColor),
                     contentScale = ContentScale.Fit,
                 )
             }
 
-            Text(
-                text = "$temp°",
-                style = TextStyle(
-                    color = frontColor,
-                    (minSize * 0.31f).sp
-                ),
-                modifier = GlanceModifier.padding(start = (minSize * 0.30f).dp, bottom = (minSize * 0.30f).dp)
-            )
+            if (!isFrontTransparent) {
+                Image(
+                    provider = ImageProvider(R.drawable.shapes_soft_boom),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(frontColor),
+                    contentScale = ContentScale.Fit,
+                    modifier = GlanceModifier.padding((minSize * 0.1f).dp)
+                )
+            }
 
-            Image(
-                provider = ImageProvider(iconResId),
-                contentDescription = "Weather Icon",
-                colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
-                modifier = GlanceModifier
-                    .size((minSize * 0.74f).dp)
-                    .padding(top = (minSize * 0.30f).dp, end = (minSize * 0.30f).dp)
+            Text(
+                "$uv",
+                style = TextStyle(
+                    color = onFrontColor,
+                    fontSize = (minSize * 0.25f).sp,
+                ),
             )
 
         }
+
     }
+
 }

@@ -68,6 +68,24 @@ Map<String, String> weatherIconPathMap = {
 };
 
 
+Map<String, String> weatherIconResMap = {
+  'Clear Night': "@drawable/weather_clear_night",
+  'Partly Cloudy': "@drawable/weather_partly_cloudy",
+  'Clear Sky': "@drawable/weather_clear_sky",
+  'Overcast': "@drawable/weather_cloudy",
+  'Haze': "@drawable/weather_haze",
+  'Rain': "@drawable/weather_rain",
+  'Sleet': "@drawable/weather_sleet",
+  'Drizzle': "@drawable/weather_drizzle",
+  'Thunderstorm': "@drawable/weather_thunderstorm",
+  'Heavy Snow': "@drawable/weather_heavy_snow",
+  'Fog': "@drawable/weather_fog",
+  'Snow': "@drawable/weather_snow",
+  'Heavy Rain': "@drawable/weather_heavy_rain",
+  'Cloudy Night' : "@drawable/weather_cloudy_night",
+};
+
+
 //each condition has a separate unsplash collection where i selected the best images i could find
 //this map links the weather conditions to the collection's id
 Map<String, String> conditionToCollection = {
@@ -370,7 +388,7 @@ Map<String, List<double>> conversionTable = {
   '˚F': [32, 1.8],
   'mm': [0, 1],
   'in': [0, 0.0393701],
-  'kph': [0, 1],
+  'km/h': [0, 1],
   'm/s': [0, 0.277778],
   'mph': [0, 0.621371],
   'kn' : [0, 0.539957],

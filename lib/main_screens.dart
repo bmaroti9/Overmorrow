@@ -25,6 +25,7 @@ import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/services/image_service.dart';
+import 'package:overmorrow/services/notification_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:provider/provider.dart';
@@ -192,6 +193,15 @@ class PhoneLayout extends StatelessWidget {
 
           Circles(data: data),
 
+          /*
+          IconButton(
+              onPressed: () {
+                NotificationService().showSimpleNotification();
+              },
+              icon: Icon(Icons.notification_add_outlined)
+          ),
+           */
+
           Column(
             children: orderedWidgets.map((widget) {
               return widget;
@@ -243,7 +253,7 @@ class TabletLayout extends StatelessWidget {
                     },
                     headerData: HeaderData(
                         blurContent: false,
-                        headerHeight: min(currentHeight * 0.49, 500),
+                        headerHeight: min(currentHeight * 0.43, 500),
                         header: FadingImageWidget(
                           image: imageService?.image,
                         ),

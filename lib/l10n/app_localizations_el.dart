@@ -216,6 +216,12 @@ class AppLocalizationsEl extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
   String get goodAqiDesc =>
       'Η ποιότητα του αέρα είναι εξαιρετική. Δεν υπάρχει κίνδυνος για την υγεία.';
 
@@ -281,6 +287,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get about => 'Σχετικά με';
 
   @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
   String get appearanceSettingDesc => 'θέμα χρωμάτων, πηγή εικόνας';
 
   @override
@@ -295,6 +304,9 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get aboutSettingsDesc => 'about this app';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
   String get now => 'τώρα';
@@ -513,4 +525,10 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
 }
