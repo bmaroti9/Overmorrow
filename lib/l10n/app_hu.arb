@@ -108,7 +108,7 @@
     "unitedStatesAqi": "usa aqi",
     "offline": "offline",
     "precipitaion": "Csapadék",
-    "helpTranslate": "segíts fodítani",
+    "helpTranslate": "segíts fordítani",
     "rainInHalfHour": "eső fél óra múlva",
     "@rainInHalfHour": {
         "description": "rain in the next half an hour"
