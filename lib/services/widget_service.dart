@@ -98,6 +98,18 @@ class WidgetService {
     await saveData("widget.place.$widgetId", data.place);
   }
 
+  static Future<void> logUpdateTime() async {
+    List<dynamic>? timeLog = await HomeWidget.getWidgetData("widget.backgroundTimeLog", defaultValue: []);
+    if (timeLog != null) {
+      String timeString = DateTime.now().toString();
+      timeLog.add(timeString);
+      if (timeLog.length > 24) {
+        timeLog.removeAt(0);
+      }
+    }
+    await saveData("widget.backgroundTimeLog", timeLog);
+  }
+
   static Future<void> saveBackgroundTaskState(String state) async {
     await saveData("widget.backgroundUpdateState", state);
   }
@@ -165,7 +177,14 @@ void myCallbackDispatcher() {
           final List<HomeWidgetInfo> installedWidgets = await HomeWidget.getInstalledWidgets();
 
           if (installedWidgets.isEmpty) {
-            print("no widgets installed, skipping update");
+            if (prefs.getBool("Ongoing notification") ?? false) {
+              WidgetService.saveBackgroundTaskState("WORKER RESULT SUCCESS AT ${DateTime.now()} \nONGOING NOTIFICATION");
+              WidgetService.logUpdateTime();
+            }
+            else {
+              print("no widgets installed, skipping update");
+              WidgetService.saveBackgroundTaskState("WORKER RESULT SUCCESS AT ${DateTime.now()} \nNO WIDGETS INSTALLED");
+            }
             return Future.value(true);
           }
 
@@ -239,6 +258,7 @@ void myCallbackDispatcher() {
     }
 
     WidgetService.saveBackgroundTaskState("WORKER RESULT SUCCESS AT ${DateTime.now()}");
+    WidgetService.logUpdateTime();
     return Future.value(true);
   });
 }

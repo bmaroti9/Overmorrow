@@ -43,15 +43,9 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  String widgetBackgroundState = "--";
 
   String version = "--";
   String buildNumber = "--";
-
-  //this is all for debugging the background worker
-  Future<void> getWidgetBackgroundState() async {
-    widgetBackgroundState = (await HomeWidget.getWidgetData<String>("widget.backgroundUpdateState", defaultValue: "unknown")) ?? "unknown";
-  }
 
   @override
   void initState() {
@@ -61,9 +55,6 @@ class _AboutPageState extends State<AboutPage> {
         version = info.version;
         buildNumber = info.buildNumber;
       });
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      getWidgetBackgroundState();
     });
   }
 
@@ -305,48 +296,8 @@ class _AboutPageState extends State<AboutPage> {
                           ],
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) {
+                      const SizedBox(height: 100,)
 
-                                return AlertDialog(
-                                  backgroundColor: Theme.of(context).colorScheme.surface,
-                                  content: StatefulBuilder(
-                                    builder: (BuildContext context, StateSetter setState) {
-                                      return Column(
-                                        children: [
-                                          Icon(Icons.bug_report_outlined, color: Theme.of(context).colorScheme.tertiary),
-                                          const SizedBox(height: 40,),
-                                          Text(widgetBackgroundState,
-                                              style: const TextStyle(fontSize: 18)),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                );
-                              }
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.tertiaryContainer,
-                            borderRadius: BorderRadius.circular(50)
-                          ),
-                          margin: const EdgeInsets.only(top: 40, bottom: 100),
-                          padding: const EdgeInsets.all(14),
-                          child: const Row(
-                            children: [
-                              Text("worker logs",
-                                  style: TextStyle(fontSize: 18)),
-                              Spacer(),
-                              Icon(Icons.open_in_new, size: 18,),
-                            ],
-                          ),
-                        ),
-                      ),
                     ],
                   )
                 ),

@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/services/color_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/pages/settings_pages/settings_page.dart';
@@ -404,9 +405,31 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 }
 
+class BackgroundUpdatesPage extends StatefulWidget {
 
-class BackgroundUpdatesPage extends StatelessWidget {
-  const BackgroundUpdatesPage({super.key});
+  const BackgroundUpdatesPage({Key? key}) : super(key: key);
+
+  @override
+  _BackgroundUpdatesPageState createState() =>
+      _BackgroundUpdatesPageState();
+}
+
+class _BackgroundUpdatesPageState extends State<BackgroundUpdatesPage> {
+
+  String widgetBackgroundState = "--";
+
+  //this is all for debugging the background worker
+  Future<void> getWidgetBackgroundState() async {
+    widgetBackgroundState = (await HomeWidget.getWidgetData<String>("widget.backgroundUpdateState", defaultValue: "unknown")) ?? "unknown";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      getWidgetBackgroundState();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -563,7 +586,50 @@ class BackgroundUpdatesPage extends StatelessWidget {
                           HapticFeedback.lightImpact();
                           context.read<SettingsProvider>().setOngoingNotificationProvider(newSelection.first);
                         },
-                      )
+                      ),
+
+                      GestureDetector(
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+                          showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) {
+
+                                return AlertDialog(
+                                  backgroundColor: Theme.of(context).colorScheme.surface,
+                                  content: StatefulBuilder(
+                                    builder: (BuildContext context, StateSetter setState) {
+                                      return Column(
+                                        children: [
+                                          Icon(Icons.bug_report_outlined, color: Theme.of(context).colorScheme.tertiary),
+                                          const SizedBox(height: 40,),
+                                          Text(widgetBackgroundState,
+                                              style: const TextStyle(fontSize: 18)),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                );
+                              }
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.tertiaryContainer,
+                              borderRadius: BorderRadius.circular(50)
+                          ),
+                          margin: const EdgeInsets.only(top: 40, bottom: 100),
+                          padding: const EdgeInsets.all(14),
+                          child: const Row(
+                            children: [
+                              Text("worker logs",
+                                  style: TextStyle(fontSize: 18)),
+                              Spacer(),
+                              Icon(Icons.open_in_new, size: 18,),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   )
                 ),
