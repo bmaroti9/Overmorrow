@@ -9,13 +9,13 @@ class AppLocalizationsPl extends AppLocalizations {
   AppLocalizationsPl([String locale = 'pl']) : super(locale);
 
   @override
-  String get feelsLike => 'Odczuwaln.';
+  String get feelsLike => 'Odczuwalna';
 
   @override
-  String get precipCapital => 'Opady';
+  String get precipCapital => 'Opady.';
 
   @override
-  String get humidity => 'Wilgot.';
+  String get humidity => 'Wilgotność';
 
   @override
   String get windCapital => 'Wiatr';
@@ -42,7 +42,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get temperature => 'Temperatura';
 
   @override
-  String get precipitaion => 'Opady';
+  String get precipitaion => 'Opady atmosferyczne';
 
   @override
   String get rain => 'Deszcz';
@@ -57,7 +57,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get clearSky => 'Bezchmurnie';
 
   @override
-  String get overcast => 'Zachmurzenie';
+  String get overcast => 'Pochmurno';
 
   @override
   String get haze => 'Mglisto';
@@ -218,7 +218,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get tempLowercase => 'temp';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'ciśnienie';
 
   @override
   String get goodAqiDesc =>
@@ -285,7 +285,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get about => 'Info';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'Aktualizacja w tle';
 
   @override
   String get appearanceSettingDesc => 'motyw kolorystyczny, źródło obrazu';
@@ -303,7 +303,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get aboutSettingsDesc => 'o tej aplikacji';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc =>
+      'aktualizacje widżetów, powiadomienia';
 
   @override
   String get now => 'teraz';
@@ -512,10 +513,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get hot => 'ciepło';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'spokojny';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'silny';
 
   @override
   String get low => 'low';
@@ -524,8 +525,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get high => 'high';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'radar na żywo';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'bieżące powiadomienie';
 }

@@ -24,6 +24,7 @@ import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/pages/settings_pages/settings_screens.dart';
 import '../../../l10n/app_localizations.dart';
 import 'about_page.dart';
+import 'bg_updates_page.dart';
 
 class MainSettingEntry extends StatelessWidget {
   final String title;

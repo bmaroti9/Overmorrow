@@ -60,7 +60,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get overcast => 'Borult';
 
   @override
-  String get haze => 'Köd';
+  String get haze => 'Párás';
 
   @override
   String get sleet => 'Hószitálás';
@@ -100,7 +100,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get locationServicesAreDisabled =>
-      'A helymeghatározás ki van kapcsolva';
+      'a helymeghatározás ki van kapcsolva.';
 
   @override
   String get locationPermissionIsDenied =>
@@ -120,7 +120,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get favoritesLowercase => 'kedvencek';
 
   @override
-  String get failedToAccessGps => 'Nem sikerült csatlakozni a GPS-hez';
+  String get failedToAccessGps => 'nem sikerült csatlakozni a gps-hez';
 
   @override
   String get search => 'Keresés...';
@@ -207,7 +207,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get sumLowercase => 'öszz';
 
   @override
-  String get precipLowercase => 'csapad.';
+  String get precipLowercase => 'csapadék';
 
   @override
   String get windLowercase => 'szél';
@@ -216,10 +216,10 @@ class AppLocalizationsHu extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'hőm.';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'nyomás';
 
   @override
   String get goodAqiDesc =>
@@ -287,7 +287,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get about => 'Névjegy';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'Háttérben futó frissítések';
 
   @override
   String get appearanceSettingDesc => 'színtéma, kép forrása';
@@ -305,7 +305,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get aboutSettingsDesc => 'erről az app-ról';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc => 'widget-frissítések, értesítések';
 
   @override
   String get now => 'most';
@@ -368,7 +368,7 @@ class AppLocalizationsHu extends AppLocalizations {
   String get offline => 'offline';
 
   @override
-  String get helpTranslate => 'segíts fodítani';
+  String get helpTranslate => 'segíts fordítani';
 
   @override
   String get extremelyClear => 'extrém tiszta';
@@ -508,26 +508,26 @@ class AppLocalizationsHu extends AppLocalizations {
   String get showLess => 'Mutas kevesebbet';
 
   @override
-  String get cold => 'cold';
+  String get cold => 'hideg';
 
   @override
-  String get hot => 'hot';
+  String get hot => 'meleg';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'nyugodt';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'heves';
 
   @override
-  String get low => 'low';
+  String get low => 'alacsony';
 
   @override
-  String get high => 'high';
+  String get high => 'magas';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'élő radar';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'futó értesítés';
 }

@@ -27,13 +27,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settings => 'Setări';
 
   @override
-  String get today => 'astăzi';
+  String get today => 'Astăzi';
 
   @override
-  String get tomorrowLowercase => 'mâine';
+  String get tomorrowLowercase => 'Mâine';
 
   @override
-  String get overmorrowLowercase => 'poimâine';
+  String get overmorrowLowercase => 'Poimâine';
 
   @override
   String get language => 'Limbă';
@@ -42,19 +42,19 @@ class AppLocalizationsRo extends AppLocalizations {
   String get temperature => 'Temperatură';
 
   @override
-  String get precipitaion => 'Precipitație';
+  String get precipitaion => 'Precipitații';
 
   @override
   String get rain => 'Ploaie';
 
   @override
-  String get clearNight => 'Noapte Senină';
+  String get clearNight => 'Noapte senină';
 
   @override
-  String get partlyCloudy => 'Parțial Înnorat';
+  String get partlyCloudy => 'Parțial înnorat';
 
   @override
-  String get clearSky => 'Cer Senin';
+  String get clearSky => 'Cer senin';
 
   @override
   String get overcast => 'Înnorat';
@@ -81,10 +81,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get snow => 'Zăpadă';
 
   @override
-  String get heavyRain => 'Ploaie Abundentă';
+  String get heavyRain => 'Ploaie puternică';
 
   @override
-  String get cloudyNight => 'Noapte Înnorată';
+  String get cloudyNight => 'Noapte înnorată';
 
   @override
   String get weakOrNoWifiConnection => 'Wifi slab sau lipsă';
@@ -99,17 +99,19 @@ class AppLocalizationsRo extends AppLocalizations {
   String get unableToLocateDevice => 'Nu se poate localiza dispozitivul';
 
   @override
-  String get locationServicesAreDisabled => 'locația este dezactivată.';
+  String get locationServicesAreDisabled => 'Localizarea este dezactivată.';
 
   @override
-  String get locationPermissionIsDenied => 'permisiunea locației este respinsă';
+  String get locationPermissionIsDenied =>
+      'permisiunea accesului la locație este respinsă';
 
   @override
   String get locationPermissionDeniedForever =>
-      'permisiunea locației este respinsă pentru totdeauna';
+      'permisiunea accesului la locație este respinsă pentru totdeauna';
 
   @override
-  String get grantLocationPermission => 'oferiți permisiunea locației';
+  String get grantLocationPermission =>
+      'Oferă permisiunea accesului la locație';
 
   @override
   String get currentLocation => 'locație actuală';
@@ -118,7 +120,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get favoritesLowercase => 'favorite';
 
   @override
-  String get failedToAccessGps => 'nu s-a putut accesa gps-ul';
+  String get failedToAccessGps => 'nu s-a putut accesa GPS-ul';
 
   @override
   String get search => 'Căutare...';
@@ -127,7 +129,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get sunriseSunset => 'răsărit/apus';
 
   @override
-  String get airQuality => 'Calitatea Aerului';
+  String get airQuality => 'Calitatea aerului';
 
   @override
   String get airQualityLowercase => 'calitatea aerului';
@@ -142,7 +144,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get moderate => 'moderată';
 
   @override
-  String get poor => 'slabă';
+  String get poor => 'rea';
 
   @override
   String get veryPoor => 'deplorabilă';
@@ -157,10 +159,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get colorMode => 'Mod culoare';
 
   @override
-  String get weatherProvderLowercase => 'Distribuitor vreme';
+  String get weatherProvderLowercase => 'Furnizor date meteo';
 
   @override
-  String get timeMode => 'Mod timp';
+  String get timeMode => 'Formatul timpului';
 
   @override
   String get mon => 'Lu';
@@ -190,7 +192,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get dailyLowercase => 'zilnic';
 
   @override
-  String get searchProvider => 'Căutare distribuitor';
+  String get searchProvider => 'Furnizor căutare';
 
   @override
   String get updatedJustNow => 'actualizat, chiar acum';
@@ -205,7 +207,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get sumLowercase => 'pe scurt';
 
   @override
-  String get precipLowercase => 'precip';
+  String get precipLowercase => 'precipitații';
 
   @override
   String get windLowercase => 'vânt';
@@ -214,18 +216,18 @@ class AppLocalizationsRo extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'temperatură';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'presiune';
 
   @override
   String get goodAqiDesc =>
-      'Calitatea aerului este excelentă; niciun risc de sănătate.';
+      'Calitatea aerului este excelentă, niciun risc de sănătate.';
 
   @override
   String get fairAqiDesc =>
-      'Calitatea aerului este acceptabil; risc mic pentru persoanele sensibile.';
+      'Calitatea aerului este acceptabilă, risc minim pentru persoanele sensibile.';
 
   @override
   String get moderateAqiDesc =>
@@ -233,7 +235,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get poorAqiDesc =>
-      'Efecte dăunătoare sănătății posibile pentru toți. Risc crescut pentru grupurile cu sensibilități.';
+      'Efecte asupra sănătății posibile pentru toată lumea, grave pentru grupurile sensibile.';
 
   @override
   String get veryPoorAqiDesc =>
@@ -241,7 +243,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get unhealthyAqiDesc =>
-      'Condiții de urgență; Efecte foarte grav dăunătoare sănătății pentru toți.';
+      'Condiții de urgență, efecte foarte grav dăunătoare sănătății pentru toți.';
 
   @override
   String get photoByXOnUnsplash => 'Poză, de ,x, pe ,Unsplash';
@@ -253,7 +255,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssueLowercase => 'raportați o problemă';
+  String get reportAnIssueLowercase => 'raportează o problemă';
 
   @override
   String get donateLowercase => 'donează';
@@ -262,13 +264,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get versionUppercase => 'Versiune';
 
   @override
-  String get apiAndServices => 'API-uri & Servicii';
+  String get apiAndServices => 'API-uri și Servicii';
 
   @override
   String get licenseUppercase => 'Licență';
 
   @override
-  String get weatherDataLowercase => 'date meteorologice';
+  String get weatherDataLowercase => 'date meteo';
 
   @override
   String get imagesLowercase => 'imagini';
@@ -286,10 +288,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get about => 'Despre';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'Actualizări în fundal';
 
   @override
-  String get appearanceSettingDesc => 'temă culori, sursă imagine';
+  String get appearanceSettingDesc => 'temă, sursă imagine';
 
   @override
   String get generalSettingDesc => 'mod timp, dimensiunea fontului';
@@ -298,25 +300,25 @@ class AppLocalizationsRo extends AppLocalizations {
   String get languageSettingDesc => 'limba folosită';
 
   @override
-  String get unitsSettingdesc => 'unitățile folosire in aplicație';
+  String get unitsSettingdesc => 'unitățile folosite în aplicație';
 
   @override
   String get aboutSettingsDesc => 'despre aplicație';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc => 'actualizări widget, notificări';
 
   @override
   String get now => 'acum';
 
   @override
-  String get hr => 'oră';
+  String get hr => 'h';
 
   @override
   String get layout => 'Structură';
 
   @override
-  String get layoutSettingDesc => 'ordine widget, customizare';
+  String get layoutSettingDesc => 'ordine widget-uri, personalizare';
 
   @override
   String get thirtyMinutes => '30m';
@@ -361,13 +363,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get europeanAqi => 'AQI european';
 
   @override
-  String get unitedStatesAqi => 'AQI statele unite';
+  String get unitedStatesAqi => 'AQI SUA';
 
   @override
-  String get offline => 'offline';
+  String get offline => 'off-line';
 
   @override
-  String get helpTranslate => 'ajută la traduceri';
+  String get helpTranslate => 'ajută la traducere';
 
   @override
   String get extremelyClear => 'extrem de senin';
@@ -391,10 +393,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get extremelyHazy => 'extrem de încețoșat';
 
   @override
-  String get poweredByOpenMeteo => 'distribuit de open-meteo';
+  String get poweredByOpenMeteo => 'bazat pe open-meteo';
 
   @override
-  String get rainInHalfHour => 'va ploua in următoarea jumătate de oră';
+  String get rainInHalfHour => 'va ploua în următoarea jumătate de oră';
 
   @override
   String rainInMinutes(int minutes) {
@@ -408,7 +410,7 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get rainInOneHour => 'va ploua in următoarea oră';
+  String get rainInOneHour => 'va ploua în următoarea oră';
 
   @override
   String rainInHours(int hours) {
@@ -474,7 +476,7 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get radarHaptics => 'Haptic feedback radar';
+  String get radarHaptics => 'Vibrații radar';
 
   @override
   String get alertsCapital => 'Alerte';
@@ -486,7 +488,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get severity => 'severitate';
 
   @override
-  String get certainty => 'încredere';
+  String get certainty => 'certitudine';
 
   @override
   String get urgency => 'urgență';
@@ -495,10 +497,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get areas => 'zone';
 
   @override
-  String get light => 'ușor';
+  String get light => 'slabe';
 
   @override
-  String get heavy => 'puternic';
+  String get heavy => 'puternice';
 
   @override
   String get showMore => 'arată mai mult';
@@ -507,26 +509,26 @@ class AppLocalizationsRo extends AppLocalizations {
   String get showLess => 'arată mai puțin';
 
   @override
-  String get cold => 'cold';
+  String get cold => 'rece';
 
   @override
-  String get hot => 'hot';
+  String get hot => 'fierbinte';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'liniștit';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'sever';
 
   @override
-  String get low => 'low';
+  String get low => 'scăzut';
 
   @override
-  String get high => 'high';
+  String get high => 'ridicat';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'radar live';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'notificare în curs';
 }
