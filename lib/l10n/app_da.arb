@@ -1,1 +1,232 @@
-{}
+{
+    "feelsLike": "Føles som",
+    "precipCapital": "Nedbør",
+    "humidity": "Fugtighed",
+    "windCapital": "Vind",
+    "uvCapital": "UV",
+    "settings": "Indstillinger",
+    "today": "I dag",
+    "tomorrowLowercase": "I morgen",
+    "overmorrowLowercase": "Overmorgen",
+    "language": "Sprog",
+    "temperature": "Temperatur",
+    "precipitaion": "Nedbør",
+    "rain": "Regn",
+    "clearNight": "Klar nat",
+    "partlyCloudy": "Delvist skyet",
+    "clearSky": "Klar himmel",
+    "overcast": "Overskyet",
+    "haze": "Dis",
+    "sleet": "Slud",
+    "drizzle": "Støvregn",
+    "thunderstorm": "Tordenvejr",
+    "heavySnow": "Tung sne",
+    "fog": "Tåge",
+    "snow": "Sne",
+    "heavyRain": "Kraftig regn",
+    "cloudyNight": "Overskyet nat",
+    "weakOrNoWifiConnection": "Svagt eller ingen wifi forbindelse",
+    "notConnectedToTheInternet": "Ikke forbundet til internettet",
+    "placeNotFound": "Sted ikke fundet",
+    "unableToLocateDevice": "Enheden kunne ikke lokaliseres",
+    "locationServicesAreDisabled": "Placeringstjenester er deaktiveret",
+    "locationPermissionIsDenied": "Placeringstilladelse er nægtet",
+    "locationPermissionDeniedForever": "Placeringstilladelse nægtet for altid",
+    "grantLocationPermission": "giv tilladelse til placering",
+    "currentLocation": "nuværende placering",
+    "favoritesLowercase": "favoritter",
+    "failedToAccessGps": "kunne ikke få adgang til GPS'en",
+    "search": "Søg...",
+    "sunriseSunset": "Solopgang/Solnedgang",
+    "airQuality": "Luft kvalitet",
+    "airQualityLowercase": "luft kvalitet",
+    "good": "God",
+    "fair": "retfærdig",
+    "moderate": "moderat",
+    "poor": "dårlig",
+    "veryPoor": "meget dårlig",
+    "unhealthy": "usund",
+    "radar": "radar",
+    "colorMode": "Farvetilstand",
+    "weatherProvderLowercase": "vejrudbyder",
+    "timeMode": "Tidstilstand",
+    "mon": "Man",
+    "tue": "Tir",
+    "wed": "Ons",
+    "thu": "Tor",
+    "fri": "Fre",
+    "sat": "Lør",
+    "sun": "Søn",
+    "fontSize": "Skriftstørrelse",
+    "dailyLowercase": "daglig",
+    "searchProvider": "Søgeudbyder",
+    "updatedJustNow": "opdateret, lige nu",
+    "colorSource": "Farvekilde",
+    "imageSource": "Billedkilde",
+    "sumLowercase": "oversigt",
+    "@sumLowercase": {
+        "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+    },
+    "precipLowercase": "særlig",
+    "windLowercase": "vind",
+    "uvLowercase": "uv",
+    "tempLowercase": "temperatur",
+    "pressureLowercase": "tryk",
+    "goodAqiDesc": "Luftkvaliteten er fremragende; ingen sundhedsrisiko.",
+    "fairAqiDesc": "Acceptabel luftkvalitet; lille risiko for følsomme personer.",
+    "moderateAqiDesc": "Følsomme personer kan opleve milde bivirkninger.",
+    "poorAqiDesc": "Sundhedseffekter mulige for alle, alvorlige for følsomme grupper.",
+    "veryPoorAqiDesc": "Alvorlige helbredseffekter for alle.",
+    "unhealthyAqiDesc": "Nødsituationer; alvorlige helbredseffekter for alle.",
+    "photoByXOnUnsplash": "Foto af ,x, på ,Unsplash",
+    "sourceCodeLowercase": "kildekode",
+    "emailLowercase": "email",
+    "reportAnIssueLowercase": "rapporter et problem",
+    "donateLowercase": "doner",
+    "versionUppercase": "Version",
+    "apiAndServices": "API'er og tjenester",
+    "licenseUppercase": "Licens",
+    "weatherDataLowercase": "vejr data",
+    "imagesLowercase": "billeder",
+    "appearance": "Udseende",
+    "general": "Generel",
+    "units": "Enheder",
+    "about": "Om",
+    "backgroundUpdates": "Baggrundsopdateringer",
+    "appearanceSettingDesc": "farvetema, billedkilde",
+    "generalSettingDesc": "tidstilstand, skriftstørrelse",
+    "languageSettingDesc": "det anvendte sprog",
+    "unitsSettingdesc": "de enheder, der bruges i appen",
+    "aboutSettingsDesc": "om denne app",
+    "backgroundUpdatesSettingsDesc": "widgetopdateringer, notifikationer",
+    "now": "nu",
+    "hr": "time",
+    "layout": "Layout",
+    "layoutSettingDesc": "widget-rækkefølge, tilpasning",
+    "thirtyMinutes": "30min",
+    "mainPollutant": "det primære forurenende stof",
+    "alderPollen": "Alder Pollen",
+    "birchPollen": "Birkepollen",
+    "grassPollen": "Græspollen",
+    "mugwortPollen": "Bynkepollen",
+    "olivePollen": "Olivenpollen",
+    "ragweedPollen": "Ambrosiepollen",
+    "dailyAqi": "daglig AQI",
+    "dateFormat": "Dato format",
+    "d": "d",
+    "@d": {
+        "description": "short for day"
+    },
+    "aerosolOpticalDepth": "aerosol optisk dybde",
+    "dust": "støv",
+    "europeanAqi": "europæisk aqi",
+    "unitedStatesAqi": "USA AQI",
+    "offline": "offline",
+    "helpTranslate": "hjælp med at oversætte",
+    "extremelyClear": "ekstremt klar",
+    "veryClear": "meget klar",
+    "clear": "klart",
+    "slightlyHazy": "let diset",
+    "hazy": "diset",
+    "veryHazy": "meget diset",
+    "extremelyHazy": "ekstremt diset",
+    "poweredByOpenMeteo": "drevet af open meteor",
+    "@poweredByOpenMeteo": {
+        "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+    },
+    "rainInHalfHour": "regn indenfor den næste halve time",
+    "@rainInHalfHour": {
+        "description": "rain in the next half an hour"
+    },
+    "rainInMinutes": "regn indenfor de næste X minutter",
+    "@rainInMinutes": {
+        "description": "rain in the next X minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "rainInOneHour": "regn indenfor den næste time",
+    "@rainInOneHour": {
+        "description": "rain in the next hour"
+    },
+    "rainInHours": "regn indenfor de næste X timer",
+    "@rainInHours": {
+        "description": "rain in the next X hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "rainExpectedInMinutes": "regn forventes inden for de næste X minutter",
+    "@rainExpectedInMinutes": {
+        "description": "rain expected in the next X minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "rainExpectedInOneHour": "regn forventes i den næste time",
+    "@rainExpectedInOneHour": {
+        "description": "rain expected in the next hour"
+    },
+    "rainExpectedInHours": "regn forventes i de næste X timer",
+    "@rainExpectedInHours": {
+        "description": "rain expected in the next X hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXMinutesAgo": "opdateret for {minutes} min siden",
+    "updatedXHoursAgo": "opdateret for x timer siden",
+    "@updatedXHoursAgo": {
+        "description": "updated x hours ago",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXDaysAgo": "opdateret for {dage, flertal, =1 {1 dag} andre {{dage} dage}} siden",
+    "@updatedXDaysAgo": {
+        "description": "updated x days ago",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "radarHaptics": "Radarhaptik",
+    "@radarHaptics": {
+        "description": "setting for enabling or disabling haptic feedback for the radar"
+    },
+    "alertsCapital": "Alarmer",
+    "alertsLowercase": "advarsler",
+    "severity": "sværhedsgrad",
+    "certainty": "sikkerhed",
+    "urgency": "hastende",
+    "areas": "områder",
+    "light": "let nedbør",
+    "@light": {
+        "description": "light precipitation"
+    },
+    "heavy": "kraftig nedbør",
+    "@heavy": {
+        "description": "heavy precipitation"
+    },
+    "showMore": "Vis mere",
+    "showLess": "Vis mindre",
+    "cold": "kold",
+    "hot": "varm",
+    "calm": "rolig",
+    "severe": "alvorlig",
+    "low": "lav",
+    "high": "høj",
+    "liveRadar": "live-radar",
+    "ongoingNotification": "løbende underretning"
+}
