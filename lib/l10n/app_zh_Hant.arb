@@ -114,8 +114,8 @@
     },
     "aerosolOpticalDepth": "氣溶膠光學深度",
     "dust": "灰塵",
-    "europeanAqi": "歐盟aqi",
-    "unitedStatesAqi": "美國aqi",
+    "europeanAqi": "歐洲空氣品質指標",
+    "unitedStatesAqi": "美國空氣品質指標",
     "offline": "離綫",
     "helpTranslate": "幫忙翻譯",
     "extremelyClear": "極其清晰",
@@ -222,5 +222,11 @@
     "calm": "晴朗無風",
     "severe": "惡劣",
     "low": "低",
-    "high": "高"
+    "high": "高",
+    "tempLowercase": "溫度",
+    "pressureLowercase": "壓力",
+    "backgroundUpdates": "背景更新",
+    "backgroundUpdatesSettingsDesc": "桌面物件與通知",
+    "liveRadar": "雷達回波圖",
+    "ongoingNotification": "背景常駐通知"
 }
