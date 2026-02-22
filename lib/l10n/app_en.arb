@@ -1,337 +1,233 @@
 {
-  "@@locale": "en",
-  "feelsLike": "Feels like",
-  "@feelsLike": {},
-  "precipCapital": "Precip.",
-  "@precipCapital": {},
-  "humidity": "Humidity",
-  "@humidity": {},
-  "windCapital": "Wind",
-  "@windCapital": {},
-  "uvCapital": "UV",
-  "@uvCapital": {},
-  "settings": "Settings",
-  "@settings": {},
-  "today": "Today",
-  "@today": {},
-  "tomorrowLowercase": "tomorrow",
-  "overmorrowLowercase": "Overmorrow",
-  "language": "Language",
-  "@language": {},
-  "temperature": "Temperature",
-  "@temperature": {},
-  "precipitaion": "Precipitation",
-  "@precipitaion": {},
-  "rain": "Rain",
-  "@rain": {},
-  "clearNight": "Clear Night",
-  "@clearNight": {},
-  "partlyCloudy": "Partly Cloudy",
-  "@partlyCloudy": {},
-  "clearSky": "Clear Sky",
-  "@clearSky": {},
-  "overcast": "Overcast",
-  "@overcast": {},
-  "haze": "Haze",
-  "@haze": {},
-  "sleet": "Sleet",
-  "@sleet": {},
-  "drizzle": "Drizzle",
-  "@drizzle": {},
-  "thunderstorm": "Thunderstorm",
-  "@thunderstorm": {},
-  "heavySnow": "Heavy Snow",
-  "@heavySnow": {},
-  "fog": "Fog",
-  "@fog": {},
-  "snow": "Snow",
-  "@snow": {},
-  "heavyRain": "Heavy Rain",
-  "@heavyRain": {},
-  "cloudyNight": "Cloudy Night",
-  "@cloudyNight": {},
-  "weakOrNoWifiConnection": "Weak or no wifi connection",
-  "@weakOrNoWifiConnection": {},
-  "notConnectedToTheInternet": "Not connected to the internet",
-  "@notConnectedToTheInternet": {},
-  "placeNotFound": "Place not found",
-  "@placeNotFound": {},
-  "unableToLocateDevice": "Unable to locate device",
-  "@unableToLocateDevice": {},
-  "locationServicesAreDisabled": "location services are disabled.",
-  "@locationServicesAreDisabled": {},
-  "locationPermissionIsDenied": "location permission is denied",
-  "@locationPermissionIsDenied": {},
-  "locationPermissionDeniedForever": "location permission denied forever",
-  "@locationPermissionDeniedForever": {},
-  "grantLocationPermission": "grant location permission",
-  "currentLocation": "current location",
-  "favoritesLowercase": "favorites",
-  "failedToAccessGps": "failed to access gps",
-  "@failedToAccessGps": {},
-  "search": "Search...",
-  "@search": {},
-  "sunriseSunset": "sunrise/sunset",
-  "@sunriseSunset": {},
-  "airQuality": "Air Quality",
-  "@airQuality": {},
-  "airQualityLowercase": "air quality",
-  "@airQualityLowercase": {},
-  "good": "good",
-  "@good": {},
-  "fair": "fair",
-  "@fair": {},
-  "moderate": "moderate",
-  "@moderate": {},
-  "poor": "poor",
-  "@poor": {},
-  "veryPoor": "very poor",
-  "@veryPoor": {},
-  "unhealthy": "unhealthy",
-  "@unhealthy": {},
-  "radar": "radar",
-  "@radar": {},
-  "colorMode": "Color mode",
-  "@colorMode": {},
-  "weatherProvderLowercase": "weather provider",
-  "@weatherProviderLowercase": {},
-  "timeMode": "Time mode",
-  "@timeMode": {},
-  "mon": "Mon",
-  "@mon": {},
-  "tue": "Tue",
-  "@tue": {},
-  "wed": "Wed",
-  "@wed": {},
-  "thu": "Thu",
-  "@thu": {},
-  "fri": "Fri",
-  "@fri": {},
-  "sat": "Sat",
-  "@sat": {},
-  "sun": "Sun",
-  "@sun": {},
-  "fontSize": "Font size",
-  "@fontSize": {},
-  "dailyLowercase": "daily",
-  "searchProvider": "Search provider",
-  "@searchProvider": {},
-  "updatedJustNow": "updated, just now",
-  "@updatedJustNow": {},
-  "colorSource": "Color source",
-  "@colorSource": {},
-  "imageSource": "Image source",
-  "@imageSource": {},
-  "sumLowercase": "sum",
-  "@sumLowercase" : {
-    "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
-  },
-  "precipLowercase": "precip",
-  "@precipLowercase": {},
-  "windLowercase": "wind",
-  "@windLowercase": {},
-  "uvLowercase": "uv",
-  "@uvLowercase": {},
-  "tempLowercase": "temp",
-  "pressureLowercase": "pressure",
-  "goodAqiDesc": "Air quality is excellent; no health risk.",
-  "@goodAqiDesc": {},
-  "fairAqiDesc": "Acceptable air quality; minor risk for sensitive people.",
-  "@fairAqiDesc": {},
-  "moderateAqiDesc": "Sensitive individuals may experience mild effects.",
-  "@moderateAqiDesc": {},
-  "poorAqiDesc": "Health effects possible for everyone, serious for sensitive groups.",
-  "@poorAqiDesc": {},
-  "veryPoorAqiDesc": "Serious health effects for everyone.",
-  "@veryPoorAqiDesc": {},
-  "unhealthyAqiDesc": "Emergency conditions; severe health effects for all.",
-  "@unhealthyAqiDesc": {},
-  "photoByXOnUnsplash": "Photo, by ,x, on ,Unsplash",
-  "@photoByXOnUnsplash": {},
-  "sourceCodeLowercase": "source code",
-  "emailLowercase": "email",
-  "reportAnIssueLowercase": "report an issue",
-  "donateLowercase": "donate",
-  "versionUppercase": "Version",
-  "apiAndServices": "APIs & Services",
-  "licenseUppercase": "License",
-  "weatherDataLowercase": "weather data",
-  "imagesLowercase": "images",
-  "appearance": "Appearance",
-  "@appearance": {},
-  "general": "General",
-  "@general": {},
-  "units": "Units",
-  "@units": {},
-  "about": "About",
-  "@about": {},
-  "backgroundUpdates": "Background updates",
-  "appearanceSettingDesc": "color theme, image source",
-  "@appearanceSettingDesc": {},
-  "generalSettingDesc": "time mode, font size",
-  "@generalSettingDesc": {},
-  "languageSettingDesc": "the language used",
-  "@languageSettingDesc": {},
-  "unitsSettingdesc": "the units used in the app",
-  "@unitsSettingdesc": {},
-  "aboutSettingsDesc": "about this app",
-  "backgroundUpdatesSettingsDesc": "widget updates, notifications",
-  "now": "now",
-  "@now": {},
-  "hr": "hr",
-  "@hr": {},
-  "layout": "Layout",
-  "@layout": {},
-  "layoutSettingDesc": "widget order, customization",
-  "@layoutSettingDesc": {},
-  "thirtyMinutes": "30m",
-  "@thirtyMinutes": {},
-  "mainPollutant": "main pollutant",
-  "@mainPollutant": {},
-  "alderPollen": "Alder Pollen",
-  "@alderPollen": {},
-  "birchPollen": "Birch Pollen",
-  "@birchPollen": {},
-  "grassPollen": "Grass Pollen",
-  "@grassPollen": {},
-  "mugwortPollen": "Mugwort Pollen",
-  "@mugwortPollen": {},
-  "olivePollen": "Olive Pollen",
-  "@olivePollen": {},
-  "ragweedPollen": "Ragweed Pollen",
-  "@ragweedPollen": {},
-  "dailyAqi": "daily AQI",
-  "@dailyAqi": {},
-  "dateFormat": "Date format",
-  "@dateFormat": {},
-  "d": "d",
-  "@d": {
-    "description": "short for day"
-  },
-  "aerosolOpticalDepth": "aerosol optical depth",
-  "@aerosolOpticalDepth": {},
-  "dust": "dust",
-  "@dust": {},
-  "europeanAqi": "european aqi",
-  "@europeanAqi": {},
-  "unitedStatesAqi": "united states aqi",
-  "@unitedStatesAqi": {},
-  "offline": "offline",
-  "@offline": {},
-  "helpTranslate": "help translate",
-  "@helpTranslate": {},
-  "extremelyClear": "extremely clear",
-  "@extremelyClear": {},
-  "veryClear": "very clear",
-  "@veryClear": {},
-  "clear": "clear",
-  "@clear": {},
-  "slightlyHazy": "slightly hazy",
-  "@slightlyHazy": {},
-  "hazy": "hazy",
-  "@hazy": {},
-  "veryHazy": "very hazy",
-  "@veryHazy": {},
-  "extremelyHazy": "extremely hazy",
-  "@extremelyHazy": {},
-  "poweredByOpenMeteo": "powered by open-meteo",
-  "@poweredByOpenMeteo": {
-    "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
-  },
-  "rainInHalfHour": "rain in the next half an hour",
-  "@rainInHalfHour": {
-    "description": "rain in the next half an hour"
-  },
-  "rainInMinutes": "rain in the next {minutes, plural, =1 {minute} other {{minutes} minutes}}",
-  "@rainInMinutes": {
-    "description": "rain in the next X minutes",
-    "placeholders": {
-      "minutes": {
-        "type": "int"
-      }
-    }
-  },
-  "rainInOneHour": "rain in the next hour",
-  "@rainInOneHour": {
-    "description": "rain in the next hour"
-  },
-  "rainInHours": "rain in the next {hours, plural, =1 {hour} other {{hours} hours}}",
-  "@rainInHours": {
-    "description": "rain in the next X hours",
-    "placeholders": {
-      "hours": {
-        "type": "int"
-      }
-    }
-  },
-  "rainExpectedInMinutes": "rain expected in {minutes, plural, =1 {minute} other {{minutes} minutes}}",
-  "@rainExpectedInMinutes": {
-    "description": "rain expected in the next X minutes",
-    "placeholders": {
-      "minutes": {
-        "type": "int"
-      }
-    }
-  },
-  "rainExpectedInOneHour": "rain expected in an hour",
-  "@rainExpectedInOneHour": {
-    "description": "rain expected in the next hour"
-  },
-  "rainExpectedInHours": "rain expected in {hours, plural, =1 {hour} other {{hours} hours}}",
-  "@rainExpectedInHours": {
-    "description": "rain expected in the next X hours",
-    "placeholders": {
-      "hours": {
-        "type": "int"
-      }
-    }
-  },
-  "updatedXMinutesAgo": "updated, {minutes} min ago",
-  "@updatedXMinutesAgo": {},
-  "updatedXHoursAgo": "updated, {hours, plural, =1 {1 hour} other {{hours} hours}} ago",
-  "@updatedXHoursAgo": {
-    "description": "updated x hours ago",
-    "placeholders": {
-      "hours": {
-        "type": "int"
-      }
-    }
-  },
-  "updatedXDaysAgo": "updated, {days, plural, =1 {1 day} other {{days} days}} ago",
-  "@updatedXDaysAgo": {
-    "description": "updated x days ago",
-    "placeholders": {
-      "days": {
-        "type": "int"
-      }
-    }
-  },
-  "radarHaptics": "Radar haptics",
-  "@radarHaptics": {
-    "description": "setting for enabling or disabling haptic feedback for the radar"
-  },
-  "alertsCapital": "Alerts",
-  "alertsLowercase": "alerts",
-  "severity": "severity",
-  "certainty": "certainty",
-  "urgency": "urgency",
-  "areas": "areas",
-  "light": "light",
-  "@light": {
-    "description": "light precipitation"
-  },
-  "heavy": "heavy",
-  "@heavy": {
-    "description": "heavy precipitation"
-  },
-  "showMore": "show more",
-  "showLess": "show less",
-  "cold": "cold",
-  "hot": "hot",
-  "calm": "calm",
-  "severe": "severe",
-  "low": "low",
-  "high": "high",
-  "liveRadar": "live radar",
-  "ongoingNotification": "ongoing notification"
+    "@@locale": "en",
+    "feelsLike": "Feels like",
+    "precipCapital": "Precip.",
+    "humidity": "Humidity",
+    "windCapital": "Wind",
+    "uvCapital": "UV",
+    "settings": "Settings",
+    "today": "Today",
+    "tomorrowLowercase": "tomorrow",
+    "overmorrowLowercase": "Overmorrow",
+    "language": "Language",
+    "temperature": "Temperature",
+    "precipitaion": "Precipitation",
+    "rain": "Rain",
+    "clearNight": "Clear Night",
+    "partlyCloudy": "Partly Cloudy",
+    "clearSky": "Clear Sky",
+    "overcast": "Overcast",
+    "haze": "Haze",
+    "sleet": "Sleet",
+    "drizzle": "Drizzle",
+    "thunderstorm": "Thunderstorm",
+    "heavySnow": "Heavy Snow",
+    "fog": "Fog",
+    "snow": "Snow",
+    "heavyRain": "Heavy Rain",
+    "cloudyNight": "Cloudy Night",
+    "weakOrNoWifiConnection": "Weak or no wifi connection",
+    "notConnectedToTheInternet": "Not connected to the internet",
+    "placeNotFound": "Place not found",
+    "unableToLocateDevice": "Unable to locate device",
+    "locationServicesAreDisabled": "location services are disabled.",
+    "locationPermissionIsDenied": "location permission is denied",
+    "locationPermissionDeniedForever": "location permission denied forever",
+    "grantLocationPermission": "grant location permission",
+    "currentLocation": "current location",
+    "favoritesLowercase": "favorites",
+    "failedToAccessGps": "failed to access gps",
+    "search": "Search...",
+    "sunriseSunset": "sunrise/sunset",
+    "airQuality": "Air Quality",
+    "airQualityLowercase": "air quality",
+    "good": "good",
+    "fair": "fair",
+    "moderate": "moderate",
+    "poor": "poor",
+    "veryPoor": "very poor",
+    "unhealthy": "unhealthy",
+    "radar": "radar",
+    "colorMode": "Color mode",
+    "weatherProvderLowercase": "weather provider",
+    "timeMode": "Time mode",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun",
+    "fontSize": "Font size",
+    "dailyLowercase": "daily",
+    "searchProvider": "Search provider",
+    "updatedJustNow": "updated, just now",
+    "colorSource": "Color source",
+    "imageSource": "Image source",
+    "sumLowercase": "sum",
+    "@sumLowercase": {
+        "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+    },
+    "precipLowercase": "precip",
+    "windLowercase": "wind",
+    "uvLowercase": "uv",
+    "tempLowercase": "temp",
+    "pressureLowercase": "pressure",
+    "goodAqiDesc": "Air quality is excellent; no health risk.",
+    "fairAqiDesc": "Acceptable air quality; minor risk for sensitive people.",
+    "moderateAqiDesc": "Sensitive individuals may experience mild effects.",
+    "poorAqiDesc": "Health effects possible for everyone, serious for sensitive groups.",
+    "veryPoorAqiDesc": "Serious health effects for everyone.",
+    "unhealthyAqiDesc": "Emergency conditions; severe health effects for all.",
+    "photoByXOnUnsplash": "Photo, by ,x, on ,Unsplash",
+    "sourceCodeLowercase": "source code",
+    "emailLowercase": "email",
+    "reportAnIssueLowercase": "report an issue",
+    "donateLowercase": "donate",
+    "versionUppercase": "Version",
+    "apiAndServices": "APIs & Services",
+    "licenseUppercase": "License",
+    "weatherDataLowercase": "weather data",
+    "imagesLowercase": "images",
+    "appearance": "Appearance",
+    "general": "General",
+    "units": "Units",
+    "about": "About",
+    "backgroundUpdates": "Background updates",
+    "appearanceSettingDesc": "color theme, image source",
+    "generalSettingDesc": "time mode, font size",
+    "languageSettingDesc": "the language used",
+    "unitsSettingdesc": "the units used in the app",
+    "aboutSettingsDesc": "about this app",
+    "backgroundUpdatesSettingsDesc": "widget updates, notifications",
+    "now": "now",
+    "hr": "hr",
+    "layout": "Layout",
+    "layoutSettingDesc": "widget order, customization",
+    "thirtyMinutes": "30m",
+    "mainPollutant": "main pollutant",
+    "alderPollen": "Alder Pollen",
+    "birchPollen": "Birch Pollen",
+    "grassPollen": "Grass Pollen",
+    "mugwortPollen": "Mugwort Pollen",
+    "olivePollen": "Olive Pollen",
+    "ragweedPollen": "Ragweed Pollen",
+    "dailyAqi": "daily AQI",
+    "dateFormat": "Date format",
+    "d": "d",
+    "@d": {
+        "description": "short for day"
+    },
+    "aerosolOpticalDepth": "aerosol optical depth",
+    "dust": "dust",
+    "europeanAqi": "europæisk aqi",
+    "unitedStatesAqi": "USA AQI",
+    "offline": "offline",
+    "helpTranslate": "help translate",
+    "extremelyClear": "extremely clear",
+    "veryClear": "very clear",
+    "clear": "clear",
+    "slightlyHazy": "slightly hazy",
+    "hazy": "hazy",
+    "veryHazy": "very hazy",
+    "extremelyHazy": "extremely hazy",
+    "poweredByOpenMeteo": "powered by open-meteo",
+    "@poweredByOpenMeteo": {
+        "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+    },
+    "rainInHalfHour": "rain in the next half an hour",
+    "@rainInHalfHour": {
+        "description": "rain in the next half an hour"
+    },
+    "rainInMinutes": "rain in the next {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+    "@rainInMinutes": {
+        "description": "rain in the next X minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "rainInOneHour": "rain in the next hour",
+    "@rainInOneHour": {
+        "description": "rain in the next hour"
+    },
+    "rainInHours": "rain in the next {hours, plural, =1 {hour} other {{hours} hours}}",
+    "@rainInHours": {
+        "description": "rain in the next X hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "rainExpectedInMinutes": "rain expected in {minutes, plural, =1 {minute} other {{minutes} minutes}}",
+    "@rainExpectedInMinutes": {
+        "description": "rain expected in the next X minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "rainExpectedInOneHour": "rain expected in an hour",
+    "@rainExpectedInOneHour": {
+        "description": "rain expected in the next hour"
+    },
+    "rainExpectedInHours": "rain expected in {hours, plural, =1 {hour} other {{hours} hours}}",
+    "@rainExpectedInHours": {
+        "description": "rain expected in the next X hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXMinutesAgo": "updated, {minutes} min ago",
+    "updatedXHoursAgo": "updated, {hours, plural, =1 {1 hour} other {{hours} hours}} ago",
+    "@updatedXHoursAgo": {
+        "description": "updated x hours ago",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXDaysAgo": "updated, {days, plural, =1 {1 day} other {{days} days}} ago",
+    "@updatedXDaysAgo": {
+        "description": "updated x days ago",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "radarHaptics": "Radar haptics",
+    "@radarHaptics": {
+        "description": "setting for enabling or disabling haptic feedback for the radar"
+    },
+    "alertsCapital": "Alerts",
+    "alertsLowercase": "alerts",
+    "severity": "severity",
+    "certainty": "certainty",
+    "urgency": "urgency",
+    "areas": "areas",
+    "light": "light",
+    "@light": {
+        "description": "light precipitation"
+    },
+    "heavy": "heavy",
+    "@heavy": {
+        "description": "heavy precipitation"
+    },
+    "showMore": "show more",
+    "showLess": "show less",
+    "cold": "cold",
+    "hot": "hot",
+    "calm": "calm",
+    "severe": "severe",
+    "low": "low",
+    "high": "high",
+    "liveRadar": "live radar",
+    "ongoingNotification": "ongoing notification"
 }
