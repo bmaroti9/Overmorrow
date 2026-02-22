@@ -192,7 +192,7 @@
             }
         }
     },
-    "updatedXDaysAgo": "opdateret for {dage, flertal, =1 {1 dag} andre {{dage} dage}} siden",
+    "updatedXDaysAgo": "opdateret for {days, plural, =1 {1 dag} other {{days} dage}} siden",
     "@updatedXDaysAgo": {
         "description": "updated x days ago",
         "placeholders": {

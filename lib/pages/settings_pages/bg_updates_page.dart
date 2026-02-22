@@ -246,25 +246,33 @@ class _BackgroundUpdatesPageState extends State<BackgroundUpdatesPage> {
                                     onTap: () {
                                       HapticFeedback.lightImpact();
                                       showDialog<String>(
-                                          context: context,
-                                          builder: (BuildContext context) {
-
-                                            return AlertDialog(
-                                              backgroundColor: Theme.of(context).colorScheme.surface,
-                                              content: StatefulBuilder(
-                                                builder: (BuildContext context, StateSetter setState) {
-                                                  return Column(
-                                                    children: [
-                                                      Icon(Icons.bug_report_outlined, color: Theme.of(context).colorScheme.tertiary),
-                                                      const SizedBox(height: 40,),
-                                                      Text(widgetBackgroundState,
-                                                          style: const TextStyle(fontSize: 18)),
-                                                    ],
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          }
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor: Theme.of(context).colorScheme.surface,
+                                            content: StatefulBuilder(
+                                              builder: (BuildContext context, StateSetter setState) {
+                                                return Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Theme.of(context).colorScheme.tertiaryContainer,
+                                                        borderRadius: BorderRadius.circular(20),
+                                                      ),
+                                                      padding: const EdgeInsets.all(6),
+                                                      margin: const EdgeInsets.only(top: 10),
+                                                      child: Icon(Icons.bug_report_outlined, size: 19, color: Theme.of(context).colorScheme.tertiary)
+                                                    ),
+                                                    const SizedBox(height: 20,),
+                                                    Text(widgetBackgroundState,
+                                                        style: const TextStyle(fontSize: 16)),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        }
                                       );
                                     },
                                     child: Container(

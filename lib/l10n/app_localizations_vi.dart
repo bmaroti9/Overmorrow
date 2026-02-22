@@ -356,10 +356,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get dust => 'dust';
 
   @override
-  String get europeanAqi => 'european aqi';
+  String get europeanAqi => 'europæisk aqi';
 
   @override
-  String get unitedStatesAqi => 'united states aqi';
+  String get unitedStatesAqi => 'USA AQI';
 
   @override
   String get offline => 'offline';

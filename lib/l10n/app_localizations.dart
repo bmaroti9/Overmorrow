@@ -7,6 +7,7 @@ import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_ar.dart';
 import 'app_localizations_bg.dart';
+import 'app_localizations_da.dart';
 import 'app_localizations_de.dart';
 import 'app_localizations_el.dart';
 import 'app_localizations_en.dart';
@@ -24,6 +25,7 @@ import 'app_localizations_pl.dart';
 import 'app_localizations_pt.dart';
 import 'app_localizations_ro.dart';
 import 'app_localizations_ru.dart';
+import 'app_localizations_sk.dart';
 import 'app_localizations_sl.dart';
 import 'app_localizations_sr.dart';
 import 'app_localizations_sw.dart';
@@ -122,6 +124,7 @@ abstract class AppLocalizations {
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
     Locale('bg'),
+    Locale('da'),
     Locale('de'),
     Locale('el'),
     Locale('en'),
@@ -140,6 +143,7 @@ abstract class AppLocalizations {
     Locale('pt', 'BR'),
     Locale('ro'),
     Locale('ru'),
+    Locale('sk'),
     Locale('sl'),
     Locale('sr'),
     Locale('sw'),
@@ -839,13 +843,13 @@ abstract class AppLocalizations {
   /// No description provided for @europeanAqi.
   ///
   /// In en, this message translates to:
-  /// **'european aqi'**
+  /// **'europæisk aqi'**
   String get europeanAqi;
 
   /// No description provided for @unitedStatesAqi.
   ///
   /// In en, this message translates to:
-  /// **'united states aqi'**
+  /// **'USA AQI'**
   String get unitedStatesAqi;
 
   /// No description provided for @offline.
@@ -1096,6 +1100,7 @@ class _AppLocalizationsDelegate
   bool isSupported(Locale locale) => <String>[
         'ar',
         'bg',
+        'da',
         'de',
         'el',
         'en',
@@ -1113,6 +1118,7 @@ class _AppLocalizationsDelegate
         'pt',
         'ro',
         'ru',
+        'sk',
         'sl',
         'sr',
         'sw',
@@ -1159,6 +1165,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsAr();
     case 'bg':
       return AppLocalizationsBg();
+    case 'da':
+      return AppLocalizationsDa();
     case 'de':
       return AppLocalizationsDe();
     case 'el':
@@ -1193,6 +1201,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsRo();
     case 'ru':
       return AppLocalizationsRu();
+    case 'sk':
+      return AppLocalizationsSk();
     case 'sl':
       return AppLocalizationsSl();
     case 'sr':

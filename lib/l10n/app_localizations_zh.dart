@@ -733,6 +733,12 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get uvLowercase => '紫外線';
 
   @override
+  String get tempLowercase => '溫度';
+
+  @override
+  String get pressureLowercase => '壓力';
+
+  @override
   String get goodAqiDesc => '空氣品質極佳；無健康風險。';
 
   @override
@@ -793,6 +799,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get about => '關於';
 
   @override
+  String get backgroundUpdates => '背景更新';
+
+  @override
   String get appearanceSettingDesc => '顏色主題, 圖片來源';
 
   @override
@@ -806,6 +815,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get aboutSettingsDesc => '關於此應用程式';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => '桌面物件與通知';
 
   @override
   String get now => '現在';
@@ -859,10 +871,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get dust => '灰塵';
 
   @override
-  String get europeanAqi => '歐盟aqi';
+  String get europeanAqi => '歐洲空氣品質指標';
 
   @override
-  String get unitedStatesAqi => '美國aqi';
+  String get unitedStatesAqi => '美國空氣品質指標';
 
   @override
   String get offline => '離綫';
@@ -1024,4 +1036,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get high => '高';
+
+  @override
+  String get liveRadar => '雷達回波圖';
+
+  @override
+  String get ongoingNotification => '背景常駐通知';
 }
