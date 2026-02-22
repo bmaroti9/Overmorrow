@@ -37,7 +37,7 @@ dependencies:
   latlong2: ^0.9.1
 
   geolocator: ^13.0.4
-  geocoding: ^3.0.0
+  geocoding: ^4.0.0
 
   #i also used this version in the build.gradle for some plugins
   home_widget: ^0.8.0

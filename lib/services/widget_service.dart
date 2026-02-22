@@ -104,7 +104,7 @@ class WidgetService {
 
     String timeString = DateTime.now().toString();
     timeLog.add(timeString);
-    if (timeLog.length > 24) {
+    if (timeLog.length > 30) {
       timeLog.removeAt(0);
     }
 

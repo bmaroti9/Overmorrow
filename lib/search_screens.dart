@@ -343,9 +343,10 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
       Placemark place = placemarks[0];
 
       setState(() {
-        placeName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? "";
+        placeName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? place.name ??
+            "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
         country = place.isoCountryCode ?? place.country ?? "";
-        region = place.administrativeArea ?? place.subAdministrativeArea ?? "";
+        region = place.administrativeArea ?? place.subAdministrativeArea ?? place.subLocality ?? "";
         placeLatLon = "${position.latitude}, ${position.longitude}";
 
         locationState = "enabled";

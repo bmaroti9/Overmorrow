@@ -25,8 +25,16 @@ import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/pages/settings_pages/settings_page.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../l10n/app_localizations.dart';
+
+Future<void> _launchUrl(String url) async {
+  final Uri _url = Uri.parse(url);
+  if (!await launchUrl(_url)) {
+    throw Exception('Could not launch $_url');
+  }
+}
 
 class TimeLinePainter extends CustomPainter {
   final List<double> percentages; // Values between 0.0 and 1.0
@@ -75,6 +83,7 @@ class BackgroundUpdatesPage extends StatefulWidget {
 class _BackgroundUpdatesPageState extends State<BackgroundUpdatesPage> {
 
   String widgetBackgroundState = "--";
+  bool updateLogEnabled = false;
   List<DateTime> updateTimes = [];
   List<double> updateLines = [];
 
@@ -90,9 +99,14 @@ class _BackgroundUpdatesPageState extends State<BackgroundUpdatesPage> {
 
     for (int i = 0; i < timestamps.length; i++) {
       DateTime time = DateTime.parse(timestamps[i]);
-      updateTimes.add(time);
       double percent = 1.0 - (now.difference(time).inMinutes / 1440);
-      updateLines.add(percent);
+      if (percent > 0) {
+        updateTimes.add(time);
+        updateLines.add(percent);
+      }
+      else {
+        updateLogEnabled = true;
+      }
     }
   }
 
@@ -149,35 +163,32 @@ class _BackgroundUpdatesPageState extends State<BackgroundUpdatesPage> {
                         ),
                       ),
                       children: [
-
                         Container(
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primaryContainer,
+                            color: Theme.of(context).colorScheme.surfaceContainer,
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          padding: const EdgeInsets.all(14),
+                          padding: const EdgeInsets.all(16),
                           child: Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 4, left: 4, bottom: 10),
+                                padding: const EdgeInsets.only(left: 4, bottom: 10, right: 4, top: 4),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text("${updateLines.length}", style: TextStyle(color: Theme.of(context).colorScheme.primary,
                                         fontSize: 36, fontWeight: FontWeight.w600, height: 1.1),),
-                                    Text("/24", style: TextStyle(color: Theme.of(context).colorScheme.secondary,
-                                        fontSize: 20, fontWeight: FontWeight.w600),),
                                     Padding(
                                       padding: const EdgeInsets.only(bottom: 1, left: 5),
-                                      child: Text("updates complete", style: TextStyle(color: Theme.of(context).colorScheme.outline,
-                                        fontWeight: FontWeight.w600, fontSize: 16),),
+                                      child: Text("updates in the last 24 hours", style: TextStyle(color: Theme.of(context).colorScheme.onSurface,
+                                        fontSize: 16),),
                                     ),
                                   ],
                                 ),
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.primary,
+                                  color: Theme.of(context).colorScheme.primaryContainer,
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 height: 35,
@@ -186,33 +197,99 @@ class _BackgroundUpdatesPageState extends State<BackgroundUpdatesPage> {
                                 child: CustomPaint(
                                   painter: TimeLinePainter(
                                     percentages: updateLines,
-                                    pointColor: Theme.of(context).colorScheme.onPrimary,
+                                    pointColor: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 3, right: 3, top: 8),
+                                padding: const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 10),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('24${AppLocalizations.of(context)!.hr}',
-                                      style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 13),),
+                                      style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 13),),
                                     Text('18${AppLocalizations.of(context)!.hr}',
-                                      style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 13),),
+                                      style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 13),),
                                     Text('12${AppLocalizations.of(context)!.hr}',
-                                      style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 13),),
+                                      style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 13),),
                                     Text('6${AppLocalizations.of(context)!.hr}',
-                                      style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 13),),
+                                      style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 13),),
                                     Text(AppLocalizations.of(context)!.now,
-                                      style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 13),),
+                                      style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 13),),
                                   ],
                                 ),
-                              )
+                              ),
+
+                              Row(
+                                children: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "learn more:",
+                                        style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 14),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          HapticFeedback.lightImpact();
+                                          _launchUrl("https://dontkillmyapp.com/");
+                                        },
+                                        child: Text("dontkillmyapp.com",
+                                          style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 14,
+                                            decoration: TextDecoration.underline,),),
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  GestureDetector(
+                                    onTap: () {
+                                      HapticFeedback.lightImpact();
+                                      showDialog<String>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+
+                                            return AlertDialog(
+                                              backgroundColor: Theme.of(context).colorScheme.surface,
+                                              content: StatefulBuilder(
+                                                builder: (BuildContext context, StateSetter setState) {
+                                                  return Column(
+                                                    children: [
+                                                      Icon(Icons.bug_report_outlined, color: Theme.of(context).colorScheme.tertiary),
+                                                      const SizedBox(height: 40,),
+                                                      Text(widgetBackgroundState,
+                                                          style: const TextStyle(fontSize: 18)),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          }
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context).colorScheme.tertiaryContainer,
+                                          borderRadius: BorderRadius.circular(50)
+                                      ),
+                                      padding: const EdgeInsets.all(10),
+                                      child: const Row(
+                                        children: [
+                                          Text("worker logs",
+                                              style: TextStyle(fontSize: 16)),
+                                          const SizedBox(width: 10,),
+                                          Icon(Icons.open_in_new, size: 17,),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
 
-                        const SizedBox(height: 20,),
+                        const SizedBox(height: 30,),
 
                         SwitchSettingEntry(
                           icon: Icons.published_with_changes,
@@ -222,7 +299,7 @@ class _BackgroundUpdatesPageState extends State<BackgroundUpdatesPage> {
                         ),
 
                         Container(
-                          margin: const EdgeInsets.only(top: 20),
+                          margin: const EdgeInsets.only(top: 10),
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.surfaceContainer,
@@ -327,49 +404,6 @@ class _BackgroundUpdatesPageState extends State<BackgroundUpdatesPage> {
                             HapticFeedback.lightImpact();
                             context.read<SettingsProvider>().setOngoingNotificationProvider(newSelection.first);
                           },
-                        ),
-
-                        GestureDetector(
-                          onTap: () {
-                            HapticFeedback.lightImpact();
-                            showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) {
-
-                                  return AlertDialog(
-                                    backgroundColor: Theme.of(context).colorScheme.surface,
-                                    content: StatefulBuilder(
-                                      builder: (BuildContext context, StateSetter setState) {
-                                        return Column(
-                                          children: [
-                                            Icon(Icons.bug_report_outlined, color: Theme.of(context).colorScheme.tertiary),
-                                            const SizedBox(height: 40,),
-                                            Text(widgetBackgroundState,
-                                                style: const TextStyle(fontSize: 18)),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  );
-                                }
-                            );
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.tertiaryContainer,
-                                borderRadius: BorderRadius.circular(50)
-                            ),
-                            margin: const EdgeInsets.only(top: 40, bottom: 100),
-                            padding: const EdgeInsets.all(14),
-                            child: const Row(
-                              children: [
-                                Text("worker logs",
-                                    style: TextStyle(fontSize: 18)),
-                                Spacer(),
-                                Icon(Icons.open_in_new, size: 18,),
-                              ],
-                            ),
-                          ),
                         ),
                       ],
                     )
