@@ -121,6 +121,12 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> {
 
   _HourlyBottomSheetState({required this.hours, required this.index});
 
+  void changeIndex(int by) {
+    setState(() {
+      index = max(0, min(hours.length - 1, index + by));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -152,7 +158,7 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> {
                     children: [
                       IconButton.outlined(
                           onPressed: () {
-
+                            changeIndex(-1);
                           },
                           icon: Icon(Icons.keyboard_arrow_left_outlined, color: Theme.of(context).colorScheme.onSurface,)
                       ),
@@ -175,7 +181,7 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> {
                       ),
                       IconButton.outlined(
                           onPressed: () {
-
+                            changeIndex(1);
                           },
                           icon: Icon(Icons.keyboard_arrow_right_outlined, color: Theme.of(context).colorScheme.onSurface,)
                       ),
@@ -209,9 +215,6 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> {
                     ),
                   ),
                 )
-
-
-
 
               ],
             ),

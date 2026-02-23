@@ -128,7 +128,7 @@ Widget hourBoxes(List<WeatherHour> hours, _value, elevated, context, String date
               child: Row(
                 children: [
                   if (hour.time.hour == 1 && index != 0) dividerWidget(getDayName(hour.time, context, dateFormat), context),
-                  hourlyDataBuilder(hour, elevated, childWidgets[_value], context),
+                  hourlyDataBuilder(hours, index, elevated, childWidgets[_value], context),
                 ],
               )
             ),
@@ -139,7 +139,7 @@ Widget hourBoxes(List<WeatherHour> hours, _value, elevated, context, String date
   );
 }
 
-Widget hourlyDataBuilder(WeatherHour hour, elevated, childWidget, context) {
+Widget hourlyDataBuilder(List<WeatherHour> hours, int index, elevated, childWidget, context) {
   return Padding(
     padding: const EdgeInsets.all(3),
     child: AnimatedSwitcher(
@@ -155,18 +155,16 @@ Widget hourlyDataBuilder(WeatherHour hour, elevated, childWidget, context) {
             position: offsetAnimation,
             child: GestureDetector(
               onTap: () {
-                /*
+
                 HapticFeedback.lightImpact();
                 showModalBottomSheet<void>(
                   context: context,
                   isScrollControlled: true,
                   enableDrag: true,
                   builder: (BuildContext context) {
-                    return HourlyBottomSheet(hour: hour);
+                    return HourlyBottomSheet(hours: hours, initialIndex: index,);
                   },
                 );
-
-                 */
 
               },
               child: Container(
