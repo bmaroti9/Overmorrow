@@ -182,7 +182,7 @@ class WeatherData {
   final bool isOnline;
 
   final List<WeatherDay> days;
-  final List<dynamic> hourly72;
+  final List<WeatherHour> hourly72;
   final WeatherCurrent current;
   final WeatherAqi aqi;
   final WeatherSunStatus sunStatus;

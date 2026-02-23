@@ -119,7 +119,7 @@ String getDayName(DateTime day, BuildContext context, String dateFormat) {
 }
 
 num unitConversion(double value, String unit, {decimals = 2}) {
-  List<double> p = conversionTable[unit] ?? [0, 0];
+  List<double> p = conversionTable[unit] ?? [1, 0];
   double a = p[0] + value * p[1];
   if (decimals == 0) {
     return a.round();

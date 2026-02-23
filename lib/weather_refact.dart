@@ -389,6 +389,7 @@ Map<String, List<double>> conversionTable = {
   'mm': [0, 1],
   'in': [0, 0.0393701],
   'km/h': [0, 1],
+  'kph': [0, 1], //just in case it doesn't break if updating from a really old version
   'm/s': [0, 0.277778],
   'mph': [0, 0.621371],
   'kn' : [0, 0.539957],

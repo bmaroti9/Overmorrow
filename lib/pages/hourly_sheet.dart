@@ -104,13 +104,27 @@ class SquigglyCirclePainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-class HourlyBottomSheet extends StatelessWidget {
-  final WeatherHour hour;
 
-  const HourlyBottomSheet({super.key, required this.hour});
+class HourlyBottomSheet extends StatefulWidget {
+  final int initialIndex;
+  final List<dynamic> hours;
+
+  HourlyBottomSheet({Key? key, required this.initialIndex, required this.hours}) : super(key: key);
+
+  @override
+  _HourlyBottomSheetState createState() => _HourlyBottomSheetState(hours: hours, index: initialIndex);
+}
+
+class _HourlyBottomSheetState extends State<HourlyBottomSheet> {
+  final List<dynamic> hours;
+  int index;
+
+  _HourlyBottomSheetState({required this.hours, required this.index});
 
   @override
   Widget build(BuildContext context) {
+
+    WeatherHour hour = hours[index];
 
     return DraggableScrollableSheet(
       snap: true,
@@ -201,22 +215,6 @@ class HourlyBottomSheet extends StatelessWidget {
 
               ],
             ),
-          ),
-        );
-
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: ListView.builder(
-            controller: scrollController,
-            itemCount: 50,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text('Item $index'),
-              );
-            },
           ),
         );
       },

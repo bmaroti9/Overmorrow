@@ -372,7 +372,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, placeName) async {
   wapi_body["forecast"]["forecastday"] = wapi_body["forecast"]["forecastday"].sublist(dayDif);
 
   List<WeatherDay> days = [];
-  List<dynamic> hourly72 = [];
+  List<WeatherHour> hourly72 = [];
 
   for (int n = 0; n < wapi_body["forecast"]["forecastday"].length; n++) {
     WeatherDay day = wapiWeatherDayFromJson(
@@ -380,9 +380,6 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, placeName) async {
     days.add(day);
 
     if (hourly72.length < 72) {
-      if (n != 0) {
-        hourly72.add(day.date);
-      }
       for (int z = 0; z < day.hourly.length; z++) {
         if (hourly72.length < 72) {
           hourly72.add(day.hourly[z]);

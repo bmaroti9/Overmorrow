@@ -649,15 +649,12 @@ Future<WeatherData> oMGetWeatherData(lat, lng, place) async {
   WeatherSunStatus sunstatus = oMWeatherSunStatusFromJson(oMBody);
 
   List<WeatherDay> days = [];
-  List<dynamic> hourly72 = [];
+  List<WeatherHour> hourly72 = [];
 
   for (int n = 0; n < oMBody["daily"]["weather_code"].length; n++) {
     WeatherDay day = oMWeatherDayFromJson(oMBody, n, sunstatus, approximateLocal, dayDif);
     days.add(day);
     if (hourly72.length < 72) {
-      if (n != 0) {
-        hourly72.add(day.date);
-      }
       for (int z = 0; z < day.hourly.length; z++) {
         if (hourly72.length < 72) {
           hourly72.add(day.hourly[z]);

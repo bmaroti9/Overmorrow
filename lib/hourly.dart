@@ -103,26 +103,14 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
   }
 }
 
-Widget hourBoxes(hours, _value, elevated, context, String dateFormat) {
+Widget hourBoxes(List<WeatherHour> hours, _value, elevated, context, String dateFormat) {
 
   return AnimationLimiter(
     child: ListView.builder(
       itemCount: hours.length,
       scrollDirection: Axis.horizontal,
       itemBuilder: (BuildContext context, int index) {
-        var hour = hours[index];
-        if (hour is DateTime) {
-          return AnimationConfiguration.staggeredList(
-            position: index,
-            duration: const Duration(milliseconds: 500),
-            child: SlideAnimation(
-              horizontalOffset: 100.0,
-              child: FadeInAnimation(
-                child: dividerWidget(getDayName(hour, context, dateFormat), context)
-              ),
-            ),
-          );
-        }
+        WeatherHour hour = hours[index];
 
         List<Widget> childWidgets = [
           HourlySum(hour: hour),
@@ -137,7 +125,12 @@ Widget hourBoxes(hours, _value, elevated, context, String dateFormat) {
           child: SlideAnimation(
             horizontalOffset: 100.0,
             child: FadeInAnimation(
-              child: hourlyDataBuilder(hour, elevated, childWidgets[_value], context)
+              child: Row(
+                children: [
+                  if (hour.time.hour == 1 && index != 0) dividerWidget(getDayName(hour.time, context, dateFormat), context),
+                  hourlyDataBuilder(hour, elevated, childWidgets[_value], context),
+                ],
+              )
             ),
           ),
         );
@@ -146,7 +139,7 @@ Widget hourBoxes(hours, _value, elevated, context, String dateFormat) {
   );
 }
 
-Widget hourlyDataBuilder(hour, elevated, childWidget, context) {
+Widget hourlyDataBuilder(WeatherHour hour, elevated, childWidget, context) {
   return Padding(
     padding: const EdgeInsets.all(3),
     child: AnimatedSwitcher(
@@ -162,7 +155,7 @@ Widget hourlyDataBuilder(hour, elevated, childWidget, context) {
             position: offsetAnimation,
             child: GestureDetector(
               onTap: () {
-
+                /*
                 HapticFeedback.lightImpact();
                 showModalBottomSheet<void>(
                   context: context,
@@ -172,6 +165,8 @@ Widget hourlyDataBuilder(hour, elevated, childWidget, context) {
                     return HourlyBottomSheet(hour: hour);
                   },
                 );
+
+                 */
 
               },
               child: Container(
