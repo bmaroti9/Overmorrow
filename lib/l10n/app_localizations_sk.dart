@@ -9,7 +9,7 @@ class AppLocalizationsSk extends AppLocalizations {
   AppLocalizationsSk([String locale = 'sk']) : super(locale);
 
   @override
-  String get feelsLike => 'Feels like';
+  String get feelsLike => 'Pocitovo';
 
   @override
   String get precipCapital => 'Precip.';

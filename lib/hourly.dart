@@ -127,7 +127,7 @@ Widget hourBoxes(List<WeatherHour> hours, _value, elevated, context, String date
             child: FadeInAnimation(
               child: Row(
                 children: [
-                  if (hour.time.hour == 1 && index != 0) dividerWidget(getDayName(hour.time, context, dateFormat), context),
+                  if (!elevated && hour.time.hour == 1 && index != 0) dividerWidget(getDayName(hour.time, context, dateFormat), context),
                   hourlyDataBuilder(hours, index, elevated, childWidgets[_value], context),
                 ],
               )

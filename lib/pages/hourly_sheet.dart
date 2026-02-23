@@ -33,8 +33,10 @@ class SquigglyCirclePainter extends CustomPainter {
 
   final Color lineColor;
   final Color circleColor;
+  final List<WeatherHour> hours;
+  final int index;
 
-  SquigglyCirclePainter(this.lineColor, this.circleColor);
+  SquigglyCirclePainter(this.lineColor, this.circleColor, this.hours, this.index);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -51,18 +53,19 @@ class SquigglyCirclePainter extends CustomPainter {
 
     final Path path = Path();
     const double pointRadius = 5.0;
-    final List<int> values = [13, 17, 19, 19, 18, 14, 12, 11, 8];
+
+    const int span = 5;
 
     final double centerX = size.width / 2;
-    const int w = 130;
+    final double w = size.width * 0.48;
 
     final List<Offset> points = [];
 
-    for (int i = 0; i < values.length; i++) {
-      double closeness = (i + 0.5 - (values.length / 2)) / (values.length / 2);
-      closeness = sqrt(closeness.abs()) * closeness.sign;
+    for (int i = max(0, index - span); i < min(hours.length, index + span); i++) {
+      double closeness = (i - index) / span;
+      closeness = pow(closeness.abs(), 0.7) * closeness.sign;
       double x = centerX + closeness * w;
-      double y = size.height - values[i] * 5.0;
+      double y = size.height - hours[i].tempC * 5.0;
       points.add(Offset(x, y));
     }
 
@@ -107,7 +110,7 @@ class SquigglyCirclePainter extends CustomPainter {
 
 class HourlyBottomSheet extends StatefulWidget {
   final int initialIndex;
-  final List<dynamic> hours;
+  final List<WeatherHour> hours;
 
   HourlyBottomSheet({Key? key, required this.initialIndex, required this.hours}) : super(key: key);
 
@@ -116,7 +119,7 @@ class HourlyBottomSheet extends StatefulWidget {
 }
 
 class _HourlyBottomSheetState extends State<HourlyBottomSheet> {
-  final List<dynamic> hours;
+  final List<WeatherHour> hours;
   int index;
 
   _HourlyBottomSheetState({required this.hours, required this.index});
@@ -157,10 +160,10 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton.outlined(
-                          onPressed: () {
-                            changeIndex(-1);
-                          },
-                          icon: Icon(Icons.keyboard_arrow_left_outlined, color: Theme.of(context).colorScheme.onSurface,)
+                        onPressed: () {
+                          changeIndex(-1);
+                        },
+                        icon: Icon(Icons.keyboard_arrow_left_outlined, color: Theme.of(context).colorScheme.onSurface,),
                       ),
                       Stack(
                         alignment: Alignment.center,
@@ -195,7 +198,7 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> {
 
                 CustomPaint(
                   painter: SquigglyCirclePainter(Theme.of(context).colorScheme.tertiaryContainer,
-                      Theme.of(context).colorScheme.tertiary),
+                      Theme.of(context).colorScheme.tertiary, hours, index),
                   child: SizedBox(
                     height: 200,
                     width: 300,
