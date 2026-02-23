@@ -29,19 +29,37 @@ import '../services/preferences_service.dart';
 import '../weather_refact.dart';
 
 
-class SquigglyCirclePainter extends CustomPainter {
+double transformToConcentrated(double delta, int span) {
+  double absDelta = delta.abs();
+  double fisheye = pow(absDelta, 0.75).toDouble();
+  double exitBoost = pow((absDelta - 0.8) / span, 8).toDouble() * span;
+  double result = fisheye + exitBoost;
+  return result * delta.sign;
+}
 
+class CustomTempChartPainter extends CustomPainter {
   final Color lineColor;
   final Color circleColor;
   final List<WeatherHour> hours;
-  final int index;
 
-  SquigglyCirclePainter(this.lineColor, this.circleColor, this.hours, this.index);
+  final double maxTemp;
+  final double minTemp;
+
+  final double index;
+
+  CustomTempChartPainter({
+    required this.lineColor,
+    required this.circleColor,
+    required this.hours,
+    required this.index,
+    required this.maxTemp,
+    required this.minTemp,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
     final Paint linePaint = Paint()
-      ..color = lineColor // Assuming lineColor is defined in your class
+      ..color = lineColor
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 3;
@@ -53,19 +71,24 @@ class SquigglyCirclePainter extends CustomPainter {
 
     final Path path = Path();
     const double pointRadius = 5.0;
-
     const int span = 5;
 
     final double centerX = size.width / 2;
-    final double w = size.width * 0.48;
+    final double w = size.width * 0.13;
 
     final List<Offset> points = [];
 
-    for (int i = max(0, index - span); i < min(hours.length, index + span); i++) {
-      double closeness = (i - index) / span;
-      closeness = pow(closeness.abs(), 0.7) * closeness.sign;
+    final int startI = (index - span - 1).floor().clamp(0, hours.length - 1);
+    final int endI = (index + span + 3).floor().clamp(0, hours.length);
+
+    for (int i = startI; i < endI; i++) {
+      double closeness = transformToConcentrated(i - index, span);
+
       double x = centerX + closeness * w;
-      double y = size.height - hours[i].tempC * 5.0;
+
+      double normalizedTemp = (hours[i].tempC - minTemp) / (maxTemp - minTemp);
+
+      double y = (1 - normalizedTemp) * size.height;
       points.add(Offset(x, y));
     }
 
@@ -104,7 +127,9 @@ class SquigglyCirclePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomTempChartPainter oldDelegate) {
+    return oldDelegate.index != index || oldDelegate.hours != hours;
+  }
 }
 
 
@@ -122,7 +147,19 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> {
   final List<WeatherHour> hours;
   int index;
 
+  double minTemp = 100;
+  double maxTemp = -100;
+
   _HourlyBottomSheetState({required this.hours, required this.index});
+
+  @override
+  void initState() {
+    super.initState();
+    for (WeatherHour hour in hours) {
+      minTemp = min(minTemp, hour.tempC);
+      maxTemp = max(maxTemp, hour.tempC);
+    }
+  }
 
   void changeIndex(int by) {
     setState(() {
@@ -195,9 +232,30 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> {
                 Text(conditionTranslation(hour.condition, AppLocalizations.of(context)!) ?? "Clear Sky",
                   style: const TextStyle(fontSize: 20),),
 
+                const SizedBox(height: 50,),
 
+                TweenAnimationBuilder<double>(
+                  tween: Tween<double>(end: index.toDouble()),
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, animatedValue, child) {
+                    return CustomPaint(
+                      size: const Size(double.infinity, 150),
+                      painter: CustomTempChartPainter(
+                        lineColor: Theme.of(context).colorScheme.tertiaryContainer,
+                        circleColor: Theme.of(context).colorScheme.tertiary,
+                        hours: hours,
+                        index: animatedValue,
+                        minTemp: minTemp,
+                        maxTemp: maxTemp,
+                      ),
+                    );
+                  },
+                )
+
+                /*
                 CustomPaint(
-                  painter: SquigglyCirclePainter(Theme.of(context).colorScheme.tertiaryContainer,
+                  painter: CustomTempChartPainter(Theme.of(context).colorScheme.tertiaryContainer,
                       Theme.of(context).colorScheme.tertiary, hours, index),
                   child: SizedBox(
                     height: 200,
@@ -218,6 +276,8 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> {
                     ),
                   ),
                 )
+
+                 */
 
               ],
             ),
