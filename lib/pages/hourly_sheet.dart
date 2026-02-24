@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:math';
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -35,10 +36,25 @@ import '../weather_refact.dart';
 
 double transformToConcentrated(double delta, int span) {
   double absDelta = delta.abs();
-  double fisheye = pow(absDelta, 0.8).toDouble();
-  double exitBoost = pow((absDelta - 0.4) / span, 20).toDouble() * span;
+  double fisheye = pow(absDelta, 0.85).toDouble();
+  double exitBoost = pow((absDelta - 0.25) / span, 20).toDouble() * span;
   double result = fisheye + exitBoost;
   return result * delta.sign;
+}
+
+double interpolateWindDir(List<WeatherHour> hours, double index) {
+  int lower = index.floor().clamp(0, hours.length - 1);
+  int upper = index.ceil().clamp(0, hours.length - 1);
+  double t = index - lower;
+
+  int a = hours[lower].windDirA ?? 0;
+  int b = hours[upper].windDirA ?? 0;
+
+  if ((a - b).abs() <= 180) {
+    return lerpDouble(a, b, t) ?? 0;
+  } else {
+    return lerpDouble(a - 360, b, t) ?? 0;
+  }
 }
 
 class CustomTempChartPainter extends CustomPainter {
@@ -75,7 +91,7 @@ class CustomTempChartPainter extends CustomPainter {
     double yLow = getHeightFromTemp(hours[lower].tempC, size);
     double yHigh = getHeightFromTemp(hours[upper].tempC, size);
 
-    return yLow + (yHigh - yLow) * t; // Linear interpolation
+    return yLow + (yHigh - yLow) * t;
   }
 
   @override
@@ -101,7 +117,7 @@ class CustomTempChartPainter extends CustomPainter {
     const int span = 6;
 
     final double centerX = size.width / 2;
-    final double w = size.width * 0.10;
+    final double w = size.width * 0.082;
 
     final List<Offset> points = [];
 
@@ -116,7 +132,7 @@ class CustomTempChartPainter extends CustomPainter {
       double y = getHeightFromTemp(hours[i].tempC, size);
       points.add(Offset(x, y));
 
-      if (i % 6 == 0) {
+      if (hours[i].time.hour % 6 == 0) {
         final timePainter = TextPainter(
           text: TextSpan(
             text: "${hours[i].time.hour}",
@@ -285,6 +301,7 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
               child: Column(
                 children: [
 
+
                   Padding(
                     padding: const EdgeInsets.only(top: 40),
                     child: Text(convertTime(hour.time, context)),
@@ -330,6 +347,8 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
 
                   Text(conditionTranslation(hour.condition, AppLocalizations.of(context)!) ?? "Clear Sky",
                     style: const TextStyle(fontSize: 20),),
+
+
 
                   const SizedBox(height: 70,),
 
@@ -377,6 +396,87 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
                       ),
                     ),
                   ),
+
+                  const SizedBox(height: 80,),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surfaceContainer,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            padding: const EdgeInsets.all(20),
+                            child: Stack(
+                              children: [
+                                Transform.rotate(
+                                  angle: interpolateWindDir(hours, index) / 180 * math.pi,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 25),
+                                    child: SvgPicture.asset(
+                                      "assets/m3shapes/arrow.svg",
+                                      colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.surfaceContainerHighest, BlendMode.srcIn),
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                    ),
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(Icons.air, size: 20,),
+                                          Text(AppLocalizations.of(context)!.windCapital, style: const TextStyle(fontSize: 15),)
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                              '${unitConversion(hours[index.round()].windKmh,
+                                              context.select((SettingsProvider p) => p.getWindUnit), decimals: 0)}',
+                                            style: TextStyle(fontSize: 40, height: 1.12, color: Theme.of(context).colorScheme.primary),
+                                          ),
+                                          const SizedBox(width: 3),
+                                          Text(context.select((SettingsProvider p) => p.getWindUnit), style: const TextStyle(fontSize: 20),),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Center(child: Text("${hours[index.round()].windDirA}°")),
+                                    )
+                                  ]
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20,),
+                      Expanded(
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surfaceContainer,
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          )
+                        ),
+                      ),
+                    ],
+                  )
 
                 ],
               ),
