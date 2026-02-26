@@ -67,7 +67,7 @@
     "@sumLowercase": {
         "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
     },
-    "precipLowercase": "precip",
+    "precipLowercase": "precipitação",
     "windLowercase": "vento",
     "uvLowercase": "uv",
     "goodAqiDesc": "Qualidade do ar excelente; sem risco à saúde.",
@@ -115,8 +115,8 @@
     },
     "aerosolOpticalDepth": "profundidade óptica de aerossóis",
     "dust": "poeira",
-    "europeanAqi": "aqi europeu",
-    "unitedStatesAqi": "aqi estadunidense",
+    "europeanAqi": "europa aqi",
+    "unitedStatesAqi": "aqi estados Unidos",
     "offline": "off-line",
     "helpTranslate": "ajude a traduzir",
     "extremelyClear": "extremamente limpo",
@@ -216,5 +216,17 @@
         "description": "heavy precipitation"
     },
     "showMore": "mostrar mais",
-    "showLess": "mostrar menos"
+    "showLess": "mostrar menos",
+    "tempLowercase": "temperatura",
+    "pressureLowercase": "Pressão",
+    "backgroundUpdates": "Atualizações em segundo plano",
+    "backgroundUpdatesSettingsDesc": "Atualizações de widgets, notificações",
+    "cold": "Frio",
+    "hot": "Quente",
+    "calm": "Calmo",
+    "severe": "forte",
+    "low": "baixo",
+    "high": "Alto",
+    "liveRadar": "Radar ao vivo",
+    "ongoingNotification": "notificação contínua"
 }
