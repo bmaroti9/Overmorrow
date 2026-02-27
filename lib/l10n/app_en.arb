@@ -229,5 +229,13 @@
     "low": "low",
     "high": "high",
     "liveRadar": "live radar",
-    "ongoingNotification": "ongoing notification"
+    "ongoingNotification": "ongoing notification",
+    "north": "N",
+    "northEast": "NE",
+    "east": "E",
+    "southEast": "SE",
+    "south": "S",
+    "southWest": "SW",
+    "west": "W",
+    "northWest": "NW"
 }

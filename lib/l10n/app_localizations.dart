@@ -1085,6 +1085,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ongoing notification'**
   String get ongoingNotification;
+
+  /// No description provided for @north.
+  ///
+  /// In en, this message translates to:
+  /// **'N'**
+  String get north;
+
+  /// No description provided for @northEast.
+  ///
+  /// In en, this message translates to:
+  /// **'NE'**
+  String get northEast;
+
+  /// No description provided for @east.
+  ///
+  /// In en, this message translates to:
+  /// **'E'**
+  String get east;
+
+  /// No description provided for @southEast.
+  ///
+  /// In en, this message translates to:
+  /// **'SE'**
+  String get southEast;
+
+  /// No description provided for @south.
+  ///
+  /// In en, this message translates to:
+  /// **'S'**
+  String get south;
+
+  /// No description provided for @southWest.
+  ///
+  /// In en, this message translates to:
+  /// **'SW'**
+  String get southWest;
+
+  /// No description provided for @west.
+  ///
+  /// In en, this message translates to:
+  /// **'W'**
+  String get west;
+
+  /// No description provided for @northWest.
+  ///
+  /// In en, this message translates to:
+  /// **'NW'**
+  String get northWest;
 }
 
 class _AppLocalizationsDelegate

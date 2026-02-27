@@ -68,6 +68,23 @@ double interpolatePrecipProb(List<WeatherHour> hours, double index) {
   return lerpDouble(a, b, t) ?? 0;
 }
 
+String localizeWindDir(AppLocalizations localizations, int? windDirA) {
+  if (windDirA == null) return "--";
+  final List<String> directions = [
+    localizations.north,
+    localizations.northEast,
+    localizations.east,
+    localizations.southEast,
+    localizations.south,
+    localizations.southWest,
+    localizations.west,
+    localizations.northWest,
+  ];
+
+  int index = ((windDirA + 22.5) / 45).floor() % 8;
+  return directions[index];
+}
+
 class CustomTempChartPainter extends CustomPainter {
   final Color chipColor;
   final List<WeatherHour> hours;
@@ -309,203 +326,168 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
             controller: scrollController,
-            child: SafeArea(
-              child: Column(
-                children: [
+            child: Column(
+              children: [
 
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40),
-                    child: Text(convertTime(hour.time, context)),
-                  ),
+                /*
+                Padding(
+                  padding: const EdgeInsets.only(top: 40),
+                  child: Text(convertTime(hour.time, context)),
+                ),
 
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40, bottom: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton.outlined(
-                          onPressed: () {
-                            changeIndex(-1);
-                          },
-                          icon: Icon(Icons.keyboard_arrow_left_outlined, color: Theme.of(context).colorScheme.onSurface,),
-                        ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              "assets/m3shapes/4_sided_cookie.svg",
-                              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondaryContainer, BlendMode.srcIn),
-                              width: 155,
-                              height: 155,
-                            ),
-                            SvgPicture.asset(
-                              weatherIconPathMap[hour.condition] ?? "assets/weather_icons/clear_sky.svg",
-                              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
-                              width: 75,
-                              height: 75,
-                            )
-                          ],
-                        ),
-                        IconButton.outlined(
-                            onPressed: () {
-                              changeIndex(1);
-                            },
-                            icon: Icon(Icons.keyboard_arrow_right_outlined, color: Theme.of(context).colorScheme.onSurface,)
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  Text(conditionTranslation(hour.condition, AppLocalizations.of(context)!) ?? "Clear Sky",
-                    style: const TextStyle(fontSize: 20),),
-
-                  const SizedBox(height: 70,),
-
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onHorizontalDragUpdate: (details) {
-                      _controller.stop();
-                      _controller.value = (_controller.value - details.primaryDelta! / _dragSensitivity)
-                          .clamp(0.0, hours.length - 1.0);
-                    },
-                    onHorizontalDragEnd: (details) {
-                      final double velocity = -details.primaryVelocity! / _dragSensitivity;
-                      final simulation = FrictionSimulation(0.135, _controller.value, velocity,
-                          tolerance: const Tolerance(velocity: 0.2, distance: 0.01));
-
-                      _controller.animateWith(simulation).then((_) {
-                        _controller.animateTo(
-                            _controller.value.roundToDouble(),
-                            duration: const Duration(milliseconds: 250),
-                            curve: Curves.easeOut
-                        );
-                      });
-                    },
-                    child: CustomPaint(
-                      size: const Size(double.infinity, 170),
-                      painter: CustomTempChartPainter(
-                        context: context,
-                        chipColor: Theme.of(context).colorScheme.inverseSurface,
-                        hours: hours,
-                        index: index,
-                        minTemp: minTemp,
-                        maxTemp: maxTemp,
-                        textPainter: TextPainter(
-                          text: TextSpan(
-                            text: "${unitConversion(hour.tempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onInverseSurface,
-                              fontSize: 17,
-                              fontFamily: GoogleFonts.outfit().fontFamily,
-                              fontWeight: FontWeight.bold,
-                            ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 40, bottom: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton.outlined(
+                        onPressed: () {
+                          changeIndex(-1);
+                        },
+                        icon: Icon(Icons.keyboard_arrow_left_outlined, color: Theme.of(context).colorScheme.onSurface,),
+                      ),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/m3shapes/4_sided_cookie.svg",
+                            colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondaryContainer, BlendMode.srcIn),
+                            width: 155,
+                            height: 155,
                           ),
-                          textDirection: TextDirection.ltr,
-                        )..layout()
+                          SvgPicture.asset(
+                            weatherIconPathMap[hour.condition] ?? "assets/weather_icons/clear_sky.svg",
+                            colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+                            width: 75,
+                            height: 75,
+                          )
+                        ],
+                      ),
+                      IconButton.outlined(
+                          onPressed: () {
+                            changeIndex(1);
+                          },
+                          icon: Icon(Icons.keyboard_arrow_right_outlined, color: Theme.of(context).colorScheme.onSurface,)
+                      ),
+                    ],
+                  ),
+                ),
+
+                Text(conditionTranslation(hour.condition, AppLocalizations.of(context)!) ?? "Clear Sky",
+                  style: const TextStyle(fontSize: 20),),
+
+                 */
+
+                const SizedBox(height: 70,),
+
+                const SizedBox(height: 80,),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surfaceContainer,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          padding: const EdgeInsets.all(20),
+                          child: Stack(
+                            children: [
+                              Transform.rotate(
+                                angle: interpolateWindDir(hours, index) / 180 * math.pi,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 25),
+                                  child: SvgPicture.asset(
+                                    "assets/m3shapes/arrow.svg",
+                                    colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondaryContainer, BlendMode.srcIn),
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(Icons.air, size: 20,),
+                                        const SizedBox(width: 3,),
+                                        Text(AppLocalizations.of(context)!.windCapital, style: const TextStyle(fontSize: 15),)
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                            '${unitConversion(hour.windKmh,
+                                            context.select((SettingsProvider p) => p.getWindUnit), decimals: 0)}',
+                                          style: TextStyle(fontSize: 40, height: 1.12, color: Theme.of(context).colorScheme.primary),
+                                        ),
+                                        const SizedBox(width: 3),
+                                        Text(context.select((SettingsProvider p) => p.getWindUnit), style: const TextStyle(fontSize: 20),),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Center(
+                                      child: Text(
+                                        localizeWindDir(AppLocalizations.of(context)!, hour.windDirA),
+                                        style: const TextStyle(fontSize: 15),
+                                      )
+                                    ),
+                                  )
+                                ]
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-
-                  const SizedBox(height: 80,),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surfaceContainer,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            padding: const EdgeInsets.all(20),
+                    const SizedBox(width: 20,),
+                    Expanded(
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surfaceContainer,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30),
                             child: Stack(
                               children: [
-                                Transform.rotate(
-                                  angle: interpolateWindDir(hours, index) / 180 * math.pi,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 25),
-                                    child: SvgPicture.asset(
-                                      "assets/m3shapes/arrow.svg",
-                                      colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.surfaceContainerHighest, BlendMode.srcIn),
-                                      width: double.infinity,
-                                      height: double.infinity,
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: FractionallySizedBox(
+                                    heightFactor: precipProb,
+                                    child: Container(
+                                      color: Theme.of(context).colorScheme.tertiaryContainer,
                                     ),
                                   ),
                                 ),
-                                Column(
+                                Row(
                                   children: [
                                     Expanded(
-                                      flex: 2,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          const Icon(Icons.air, size: 20,),
-                                          Text(AppLocalizations.of(context)!.windCapital, style: const TextStyle(fontSize: 15),)
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                              '${unitConversion(hour.windKmh,
-                                              context.select((SettingsProvider p) => p.getWindUnit), decimals: 0)}',
-                                            style: TextStyle(fontSize: 40, height: 1.12, color: Theme.of(context).colorScheme.primary),
-                                          ),
-                                          const SizedBox(width: 3),
-                                          Text(context.select((SettingsProvider p) => p.getWindUnit), style: const TextStyle(fontSize: 20),),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: Center(child: Text("${hour.windDirA}°")),
-                                    )
-                                  ]
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 20,),
-                      Expanded(
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surfaceContainer,
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(30),
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: FractionallySizedBox(
-                                      heightFactor: precipProb,
-                                      child: Container(
-                                        color: Theme.of(context).colorScheme.tertiaryContainer,
-                                      ),
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Padding(
+                                      child: Padding(
                                         padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 const Icon(Icons.water_drop_outlined, size: 19,),
-                                                Text(AppLocalizations.of(context)!.precipCapital, style: const TextStyle(fontSize: 15),)
+                                                const SizedBox(width: 3,),
+                                                Expanded(child: Text(AppLocalizations.of(context)!.precipCapital, style: const TextStyle(fontSize: 15),))
                                               ],
                                             ),
                                             const Spacer(),
@@ -524,63 +506,190 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
                                           ],
                                         ),
                                       ),
-                                      const Spacer(),
-                                      LayoutBuilder(
-                                        builder: (context, constraints) {
-                                          const double approxTextHeight = 20;
-                                          return Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                bottom: (constraints.maxHeight * precipProb - approxTextHeight / 2)
-                                                    .clamp(20 - approxTextHeight / 2, constraints.maxHeight - 16 - approxTextHeight / 2)
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    "${hour.precipProb}%",
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Theme.of(context).colorScheme.onSurface,
-                                                      fontSize: 13,
-                                                    ),
-                                                  ),
-                                                  const Icon(Icons.arrow_right_outlined, size: 20,)
-                                                ],
-                                              ),
+                                    ),
+                                    LayoutBuilder(
+                                      builder: (context, constraints) {
+                                        const double approxTextHeight = 20;
+                                        return Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: (constraints.maxHeight * precipProb - approxTextHeight / 2)
+                                                  .clamp(20 - approxTextHeight / 2, constraints.maxHeight - 16 - approxTextHeight / 2)
                                             ),
-                                          );
-                                        }
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "${hour.precipProb}%",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context).colorScheme.onSurface,
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                                const Icon(Icons.arrow_right_outlined, size: 20,)
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }
 
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 16, bottom: 20, top: 20),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: List.generate(6, (int index) {
+                                          return Container(
+                                            width: 5,
+                                            height: 1,
+                                            margin: const EdgeInsets.only(left: 6),
+                                            color: Theme.of(context).colorScheme.onSurface,
+                                          );
+                                        }),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 16, bottom: 20, top: 20),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: List.generate(6, (int index) {
-                                            return Container(
-                                              width: 5,
-                                              height: 1,
-                                              margin: const EdgeInsets.only(left: 6),
-                                              color: Theme.of(context).colorScheme.onSurface,
-                                            );
-                                          }),
-                                        ),
-                                      )
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20,),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Stack(
+                          children: [
+                            SvgPicture.asset(
+                              "assets/m3shapes/12_sided_cookie.svg",
+                              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.surfaceContainer, BlendMode.srcIn),
+                              width: double.infinity,
+                              height: double.infinity,
+                            ),
+
+                            ...List.generate(5, (i) {
+                              double angle = (5 - i) / 12 * 2 * pi;
+
+                              return Align(
+                                alignment: Alignment(cos(angle) * 0.85, sin(angle) * 0.85),
+                                child: Container(
+                                  width: 12,
+                                  height: 12,
+                                  decoration: BoxDecoration(
+                                    color: i == hour.uv ? Theme.of(context).colorScheme.primary
+                                      : Theme.of(context).colorScheme.primaryContainer,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              );
+                            }),
+
+                            Column(
+                              children: [
+                                Expanded(
+                                  flex: 4,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.wb_sunny_outlined, size: 20,),
+                                      const SizedBox(width: 3,),
+                                      Text(AppLocalizations.of(context)!.uvCapital, style: const TextStyle(fontSize: 15),)
                                     ],
                                   ),
-                                ],
-                              ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Text(
+                                    hour.uv?.toString() ?? "--",
+                                    style: TextStyle(fontSize: 40, height: 1.12, color: Theme.of(context).colorScheme.primary),
+                                  ),
+                                ),
+                                const Expanded(
+                                  flex: 4,
+                                  child: Text(
+                                    "low",
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                )
+                              ]
+                            )
+                          ],
+                        )
+                      ),
+                    ),
+                    const SizedBox(width: 20,),
+                    Expanded(
+                      child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surfaceContainer,
+                              borderRadius: BorderRadius.circular(30),
                             ),
                           )
-                        ),
                       ),
-                    ],
-                  )
+                    ),
+                  ],
+                ),
 
-                ],
-              ),
+                const SizedBox(height: 100,),
+
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onHorizontalDragUpdate: (details) {
+                    _controller.stop();
+                    _controller.value = (_controller.value - details.primaryDelta! / _dragSensitivity)
+                        .clamp(0.0, hours.length - 1.0);
+                  },
+                  onHorizontalDragEnd: (details) {
+                    final double velocity = -details.primaryVelocity! / _dragSensitivity;
+                    final simulation = FrictionSimulation(0.135, _controller.value, velocity,
+                        tolerance: const Tolerance(velocity: 0.2, distance: 0.01));
+
+                    _controller.animateWith(simulation).then((_) {
+                      _controller.animateTo(
+                          _controller.value.roundToDouble(),
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.easeOut
+                      );
+                    });
+                  },
+                  child: CustomPaint(
+                    size: const Size(double.infinity, 170),
+                    painter: CustomTempChartPainter(
+                      context: context,
+                      chipColor: Theme.of(context).colorScheme.inverseSurface,
+                      hours: hours,
+                      index: index,
+                      minTemp: minTemp,
+                      maxTemp: maxTemp,
+                      textPainter: TextPainter(
+                        text: TextSpan(
+                          text: "${unitConversion(hour.tempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onInverseSurface,
+                            fontSize: 17,
+                            fontFamily: GoogleFonts.outfit().fontFamily,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        textDirection: TextDirection.ltr,
+                      )..layout()
+                    ),
+                  ),
+                ),
+
+              ],
             ),
           ),
         );

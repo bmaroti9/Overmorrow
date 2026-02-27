@@ -529,4 +529,28 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get ongoingNotification => 'ongoing notification';
+
+  @override
+  String get north => 'N';
+
+  @override
+  String get northEast => 'NE';
+
+  @override
+  String get east => 'E';
+
+  @override
+  String get southEast => 'SE';
+
+  @override
+  String get south => 'S';
+
+  @override
+  String get southWest => 'SW';
+
+  @override
+  String get west => 'W';
+
+  @override
+  String get northWest => 'NW';
 }
