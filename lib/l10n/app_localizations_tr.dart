@@ -360,7 +360,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get europeanAqi => 'avrupa aqi';
 
   @override
-  String get unitedStatesAqi => 'bi̇rleşi̇k devletler aqi';
+  String get unitedStatesAqi => 'ABD AQI';
 
   @override
   String get offline => 'çevrimdışı';

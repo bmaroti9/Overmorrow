@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -120,7 +120,7 @@ class _PrecipitationPageState extends State<PrecipitationPage> {
                   );
                 }
 
-                final OMExtendedAqi extendedAqi = snapshot.data!;
+                //final OMExtendedAqi extendedAqi = snapshot.data!;
 
                 return Container();
                 /*

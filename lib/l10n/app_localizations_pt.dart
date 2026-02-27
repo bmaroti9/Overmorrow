@@ -732,13 +732,19 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get sumLowercase => 'resumo';
 
   @override
-  String get precipLowercase => 'precip';
+  String get precipLowercase => 'precipitação';
 
   @override
   String get windLowercase => 'vento';
 
   @override
   String get uvLowercase => 'uv';
+
+  @override
+  String get tempLowercase => 'temperatura';
+
+  @override
+  String get pressureLowercase => 'Pressão';
 
   @override
   String get goodAqiDesc => 'Qualidade do ar excelente; sem risco à saúde.';
@@ -804,6 +810,9 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get about => 'Sobre';
 
   @override
+  String get backgroundUpdates => 'Atualizações em segundo plano';
+
+  @override
   String get appearanceSettingDesc => 'cor do tema, fonte de imagem';
 
   @override
@@ -817,6 +826,10 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get aboutSettingsDesc => 'sobre este aplicativo';
+
+  @override
+  String get backgroundUpdatesSettingsDesc =>
+      'Atualizações de widgets, notificações';
 
   @override
   String get now => 'agora';
@@ -870,10 +883,10 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get dust => 'poeira';
 
   @override
-  String get europeanAqi => 'aqi europeu';
+  String get europeanAqi => 'europa aqi';
 
   @override
-  String get unitedStatesAqi => 'aqi estadunidense';
+  String get unitedStatesAqi => 'aqi estados Unidos';
 
   @override
   String get offline => 'off-line';
@@ -1017,4 +1030,28 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get showLess => 'mostrar menos';
+
+  @override
+  String get cold => 'Frio';
+
+  @override
+  String get hot => 'Quente';
+
+  @override
+  String get calm => 'Calmo';
+
+  @override
+  String get severe => 'forte';
+
+  @override
+  String get low => 'baixo';
+
+  @override
+  String get high => 'Alto';
+
+  @override
+  String get liveRadar => 'Radar ao vivo';
+
+  @override
+  String get ongoingNotification => 'notificação contínua';
 }

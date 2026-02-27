@@ -361,10 +361,10 @@ class AppLocalizationsBg extends AppLocalizations {
   String get dust => 'прах';
 
   @override
-  String get europeanAqi => 'европейски aqi';
+  String get europeanAqi => 'Индекс на качеството на въздуха в Европа';
 
   @override
-  String get unitedStatesAqi => 'съединени щати aqi';
+  String get unitedStatesAqi => 'Индекс на качеството на въздуха в САЩ';
 
   @override
   String get offline => 'офлайн';

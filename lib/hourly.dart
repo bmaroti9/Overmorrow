@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
             padding: const EdgeInsets.only(top: 20, bottom: 0, left: 5),
             child: Wrap(
               spacing: 5.0,
-              children: List<Widget>.generate(4, (int index) {
+              children: List.generate(4, (int index) {
                   return ChoiceChip(
                     elevation: 0.0,
                     side: BorderSide(
@@ -94,7 +94,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
                     },
                   );
                 },
-              ).toList(),
+              ),
             ),
           ),
         ],

@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -53,8 +53,19 @@ double interpolateWindDir(List<WeatherHour> hours, double index) {
   if ((a - b).abs() <= 180) {
     return lerpDouble(a, b, t) ?? 0;
   } else {
-    return lerpDouble(a - 360, b, t) ?? 0;
+    return lerpDouble(a + (b - a).sign * 360, b, t) ?? 0;
   }
+}
+
+double interpolatePrecipProb(List<WeatherHour> hours, double index) {
+  int lower = index.floor().clamp(0, hours.length - 1);
+  int upper = index.ceil().clamp(0, hours.length - 1);
+  double t = index - lower;
+
+  int a = hours[lower].precipProb ?? 0;
+  int b = hours[upper].precipProb ?? 0;
+
+  return lerpDouble(a, b, t) ?? 0;
 }
 
 class CustomTempChartPainter extends CustomPainter {
@@ -283,7 +294,8 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
   @override
   Widget build(BuildContext context) {
 
-    WeatherHour hour = hours[index.toInt()];
+    WeatherHour hour = hours[index.round()];
+    double precipProb = interpolatePrecipProb(hours, index) / 100;
 
     return DraggableScrollableSheet(
       snap: true,
@@ -300,7 +312,6 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
             child: SafeArea(
               child: Column(
                 children: [
-
 
                   Padding(
                     padding: const EdgeInsets.only(top: 40),
@@ -348,8 +359,6 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
                   Text(conditionTranslation(hour.condition, AppLocalizations.of(context)!) ?? "Clear Sky",
                     style: const TextStyle(fontSize: 20),),
 
-
-
                   const SizedBox(height: 70,),
 
                   GestureDetector(
@@ -383,7 +392,7 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
                         maxTemp: maxTemp,
                         textPainter: TextPainter(
                           text: TextSpan(
-                            text: "${unitConversion(hours[index.round()].tempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
+                            text: "${unitConversion(hour.tempC, context.select((SettingsProvider p) => p.getTempUnit), decimals: 0)}°",
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onInverseSurface,
                               fontSize: 17,
@@ -443,7 +452,7 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           Text(
-                                              '${unitConversion(hours[index.round()].windKmh,
+                                              '${unitConversion(hour.windKmh,
                                               context.select((SettingsProvider p) => p.getWindUnit), decimals: 0)}',
                                             style: TextStyle(fontSize: 40, height: 1.12, color: Theme.of(context).colorScheme.primary),
                                           ),
@@ -454,7 +463,7 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
                                     ),
                                     Expanded(
                                       flex: 3,
-                                      child: Center(child: Text("${hours[index.round()].windDirA}°")),
+                                      child: Center(child: Text("${hour.windDirA}°")),
                                     )
                                   ]
                                 )
@@ -471,6 +480,98 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.surfaceContainer,
                               borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: Stack(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: FractionallySizedBox(
+                                      heightFactor: precipProb,
+                                      child: Container(
+                                        color: Theme.of(context).colorScheme.tertiaryContainer,
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                const Icon(Icons.water_drop_outlined, size: 19,),
+                                                Text(AppLocalizations.of(context)!.precipCapital, style: const TextStyle(fontSize: 15),)
+                                              ],
+                                            ),
+                                            const Spacer(),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  '${unitConversion(hour.precipMm,
+                                                      context.select((SettingsProvider p) => p.getPrecipUnit), decimals: 1)}',
+                                                  style: TextStyle(fontSize: 40, height: 1.0, color: Theme.of(context).colorScheme.tertiary),
+                                                ),
+                                                Text(context.select((SettingsProvider p) => p.getPrecipUnit),
+                                                  style: const TextStyle(fontSize: 20, height: 1.0),),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      LayoutBuilder(
+                                        builder: (context, constraints) {
+                                          const double approxTextHeight = 20;
+                                          return Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                bottom: (constraints.maxHeight * precipProb - approxTextHeight / 2)
+                                                    .clamp(20 - approxTextHeight / 2, constraints.maxHeight - 16 - approxTextHeight / 2)
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "${hour.precipProb}%",
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Theme.of(context).colorScheme.onSurface,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                  const Icon(Icons.arrow_right_outlined, size: 20,)
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        }
+
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 16, bottom: 20, top: 20),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: List.generate(6, (int index) {
+                                            return Container(
+                                              width: 5,
+                                              height: 1,
+                                              margin: const EdgeInsets.only(left: 6),
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                            );
+                                          }),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           )
                         ),

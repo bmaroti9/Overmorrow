@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ import 'package:overmorrow/daily.dart';
 import 'package:overmorrow/radar.dart';
 import 'package:overmorrow/search_screens.dart';
 import 'package:overmorrow/services/image_service.dart';
-import 'package:overmorrow/services/notification_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:provider/provider.dart';
