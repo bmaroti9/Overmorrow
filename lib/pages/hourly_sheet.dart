@@ -22,6 +22,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,7 +37,7 @@ import '../weather_refact.dart';
 
 double transformToConcentrated(double delta, int span) {
   double absDelta = delta.abs();
-  double fisheye = pow(absDelta, 0.85).toDouble();
+  double fisheye = pow(absDelta, 0.9).toDouble();
   double exitBoost = pow((absDelta - 0.25) / span, 20).toDouble() * span;
   double result = fisheye + exitBoost;
   return result * delta.sign;
@@ -145,7 +146,7 @@ class CustomTempChartPainter extends CustomPainter {
     const int span = 6;
 
     final double centerX = size.width / 2;
-    final double w = size.width * 0.082;
+    final double w = size.width * 0.08;
 
     final List<Offset> points = [];
 
@@ -262,6 +263,15 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
 
   late AnimationController _controller;
   int _lastHapticIndex = -1;
+  
+  static const List<Color> uvLightPrimaryContainerColors =
+      [Color(0xffc9eea7), Color(0xfff8e287), Color(0xffffdbc8), Color(0xffffdad4), Color(0xffffd7f5)];
+  static const List<Color> uvLightPrimaryColors =
+      [Color(0xff48672f), Color(0xff6d5e0f), Color(0xff8c4f27), Color(0xff904b40), Color(0xff804d79)];
+  static const List<Color> uvDarkPrimaryContainerColors =
+      [Color(0xff314e19), Color(0xff534600), Color(0xff6f3810), Color(0xff73342a), Color(0xff653660)];
+  static const List<Color> uvDarkPrimaryColors =
+      [Color(0xffaed18d), Color(0xffdbc66f), Color(0xffffb68c), Color(0xffffb4a8), Color(0xfff1b3e6)];
 
   @override
   void initState() {
@@ -313,6 +323,16 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
 
     WeatherHour hour = hours[index.round()];
     double precipProb = interpolatePrecipProb(hours, index) / 100;
+
+    String mode = context.watch<ThemeProvider>().getBrightness;
+
+    if (mode == "auto") {
+      var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+      mode = brightness == Brightness.dark ? "dark" : "light";
+    }
+
+    final List<Color> uvSelectedColors = mode == "light" ? uvLightPrimaryColors : uvDarkPrimaryColors;
+    final List<Color> uvUnSelectedColors = mode == "light" ? uvLightPrimaryContainerColors : uvDarkPrimaryContainerColors;
 
     return DraggableScrollableSheet(
       snap: true,
@@ -380,7 +400,7 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
 
                 const SizedBox(height: 70,),
 
-                const SizedBox(height: 80,),
+                //const SizedBox(height: 80,),
 
                 Row(
                   children: [
@@ -579,15 +599,15 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
 
                             ...List.generate(5, (i) {
                               double angle = (5 - i) / 12 * 2 * pi;
+                              bool selected = i == hour.uv;
 
                               return Align(
                                 alignment: Alignment(cos(angle) * 0.85, sin(angle) * 0.85),
                                 child: Container(
-                                  width: 12,
-                                  height: 12,
+                                  width: selected ? 16 : 13,
+                                  height: selected ? 16 : 13,
                                   decoration: BoxDecoration(
-                                    color: i == hour.uv ? Theme.of(context).colorScheme.primary
-                                      : Theme.of(context).colorScheme.primaryContainer,
+                                    color: selected ? uvSelectedColors[i] : uvUnSelectedColors[i],
                                     shape: BoxShape.circle,
                                   ),
                                 ),
