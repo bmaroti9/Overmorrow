@@ -118,8 +118,8 @@
     "thirtyMinutes": "30 மீ",
     "mainPollutant": "முதன்மையான மாசுபடுத்தும்",
     "mugwortPollen": "முக்வார்ட் மகரந்தம்",
-    "europeanAqi": "ஐரோப்பிய AQI",
-    "unitedStatesAqi": "ஒன்றுபட்டது ச்டேட்ச் AQI",
+    "europeanAqi": "ஐரோப்பிய அக்கி",
+    "unitedStatesAqi": "USA AQI",
     "offline": "இணையமில்லாமல்",
     "showMore": "மேலும் காட்டு",
     "rainInHalfHour": "அடுத்த அரை மணி நேரத்தில் மழை",
@@ -228,5 +228,25 @@
     "@heavy": {
         "description": "heavy precipitation"
     },
-    "alertsCapital": "விழிப்பூட்டல்கள்"
+    "alertsCapital": "விழிப்பூட்டல்கள்",
+    "tempLowercase": "வெப்பநிலை",
+    "pressureLowercase": "அழுத்தம்",
+    "backgroundUpdates": "பின்னணி புதுப்பிப்புகள்",
+    "backgroundUpdatesSettingsDesc": "விட்செட் புதுப்பிப்புகள், அறிவிப்புகள்",
+    "cold": "குளிர்",
+    "hot": "சூடான",
+    "calm": "அமைதியான",
+    "severe": "கடுமையான",
+    "low": "குறைந்த",
+    "high": "உயர்",
+    "liveRadar": "நேரடி ரேடார்",
+    "ongoingNotification": "நடப்பு அறிவிப்பு",
+    "north": "என்",
+    "northEast": "எண்",
+    "east": "இ",
+    "southEast": "SE",
+    "south": "எச்",
+    "southWest": "SW",
+    "west": "டபிள்யூ",
+    "northWest": "NW"
 }
