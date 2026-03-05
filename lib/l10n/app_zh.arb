@@ -240,5 +240,13 @@
     "liveRadar": "实时雷达图",
     "backgroundUpdates": "后台更新",
     "backgroundUpdatesSettingsDesc": "小部件更新、通知",
-    "ongoingNotification": "持续通知"
+    "ongoingNotification": "持续通知",
+    "north": "北",
+    "northEast": "东北",
+    "east": "东",
+    "southEast": "东南",
+    "south": "南",
+    "southWest": "西南",
+    "west": "西",
+    "northWest": "西北"
 }

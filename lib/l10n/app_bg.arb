@@ -241,5 +241,13 @@
     "liveRadar": "радар на живо",
     "backgroundUpdates": "Актуализации на фона",
     "backgroundUpdatesSettingsDesc": "актуализации на джаджи, известия",
-    "ongoingNotification": "текущо известие"
+    "ongoingNotification": "текущо известие",
+    "north": "С",
+    "northEast": "СИ",
+    "east": "И",
+    "southEast": "ЮИ",
+    "south": "Ю",
+    "southWest": "ЮЗ",
+    "west": "З",
+    "northWest": "СЗ"
 }
