@@ -32,15 +32,12 @@ import 'package:provider/provider.dart';
 import '../../l10n/app_localizations.dart';
 
 import '../services/preferences_service.dart';
-import '../weather_refact.dart';
 
 
 double transformToConcentrated(double delta, int span) {
   double absDelta = delta.abs();
-  double fisheye = pow(absDelta, 0.9).toDouble();
   double exitBoost = pow((absDelta - 0.25) / span, 20).toDouble() * span;
-  double result = fisheye + exitBoost;
-  return result * delta.sign;
+  return (exitBoost + absDelta) * delta.sign;
 }
 
 double interpolateWindDir(List<WeatherHour> hours, double index) {
@@ -126,7 +123,7 @@ class CustomTempChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint linePaint = Paint()
-      ..color = Theme.of(context).colorScheme.tertiaryContainer
+      ..color = Theme.of(context).colorScheme.primaryContainer
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 3;
@@ -137,7 +134,7 @@ class CustomTempChartPainter extends CustomPainter {
       ..strokeWidth = 1.4;
 
     final Paint circlePaint = Paint()
-      ..color = Theme.of(context).colorScheme.tertiary
+      ..color = Theme.of(context).colorScheme.primary
       ..strokeWidth = 3
       ..style = PaintingStyle.stroke;
 
@@ -146,7 +143,7 @@ class CustomTempChartPainter extends CustomPainter {
     const int span = 6;
 
     final double centerX = size.width / 2;
-    final double w = size.width * 0.08;
+    final double w = size.width * 0.072;
 
     final List<Offset> points = [];
 
@@ -263,7 +260,7 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
 
   late AnimationController _controller;
   int _lastHapticIndex = -1;
-  
+
   static const List<Color> uvLightPrimaryContainerColors =
       [Color(0xffc9eea7), Color(0xfff8e287), Color(0xffffdbc8), Color(0xffffdad4), Color(0xffffd7f5)];
   static const List<Color> uvLightPrimaryColors =
@@ -409,13 +406,13 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
                         aspectRatio: 1,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surfaceContainer,
+                            color: Theme.of(context).colorScheme.surface,
                             borderRadius: BorderRadius.circular(100),
                           ),
                           padding: const EdgeInsets.all(20),
                           child: Stack(
                             children: [
-                              Transform.rotate(
+                              if (hour.windDirA != null) Transform.rotate(
                                 angle: interpolateWindDir(hours, index) / 180 * math.pi,
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 25),
@@ -478,7 +475,7 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
                         aspectRatio: 1,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surfaceContainer,
+                            color: Theme.of(context).colorScheme.surface,
                             borderRadius: BorderRadius.circular(30),
                           ),
                           child: ClipRRect(
@@ -592,7 +589,7 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
                           children: [
                             SvgPicture.asset(
                               "assets/m3shapes/12_sided_cookie.svg",
-                              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.surfaceContainer, BlendMode.srcIn),
+                              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.surface, BlendMode.srcIn),
                               width: double.infinity,
                               height: double.infinity,
                             ),
@@ -650,13 +647,13 @@ class _HourlyBottomSheetState extends State<HourlyBottomSheet> with SingleTicker
                     const SizedBox(width: 20,),
                     Expanded(
                       child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surfaceContainer,
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          )
+                        aspectRatio: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
+                            borderRadius: BorderRadius.circular(300),
+                          ),
+                        )
                       ),
                     ),
                   ],

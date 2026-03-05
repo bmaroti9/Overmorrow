@@ -64,6 +64,7 @@ dependencies:
 
   google_fonts: ^6.2.1
   workmanager: ^0.6.0
+  maplibre: ^0.3.4+1
 
 dev_dependencies:
   flutter_test:
@@ -99,6 +100,7 @@ flutter:
     - assets/icons/icon.png
     - assets/weather_icons/
     - assets/m3shapes/
+    - assets/map/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

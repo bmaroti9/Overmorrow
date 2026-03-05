@@ -31,6 +31,13 @@ int getColorFromHex(String hexColor) {
   return int.parse(hexColor, radix: 16);
 }
 
+String colorToHex(Color color, {bool leadingHashSign = true}) {
+  return '${leadingHashSign ? '#' : ''}'
+      '${(255 * color.r).toInt().toRadixString(16).padLeft(2, '0')}'
+      '${(255 * color.g).toInt().toRadixString(16).padLeft(2, '0')}'
+      '${(255 * color.b).toInt().toRadixString(16).padLeft(2, '0')}';
+}
+
 double difFromBackColor(Color front, Color back) {
   double l1 = front.computeLuminance();
   final l2 = back.computeLuminance();

@@ -24,6 +24,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:intl/intl.dart';
+import 'package:overmorrow/pages/radar_page.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:latlong2/latlong.dart';
@@ -223,7 +224,8 @@ class _RadarSmallState extends State<RadarSmall> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) =>
-                                    RadarBig(data: widget.data, radarHapticsOn: widget.radarHapticsOn,)),
+                                    //RadarBig(data: widget.data, radarHapticsOn: widget.radarHapticsOn,)),
+                                    ThemedMapLibreMap())
                               );
                             },
                             child: Icon(Icons.open_in_full,
