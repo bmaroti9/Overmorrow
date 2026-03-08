@@ -228,5 +228,13 @@
     "backgroundUpdates": "背景更新",
     "backgroundUpdatesSettingsDesc": "桌面物件與通知",
     "liveRadar": "雷達回波圖",
-    "ongoingNotification": "背景常駐通知"
+    "ongoingNotification": "背景常駐通知",
+    "north": "北",
+    "northEast": "東北",
+    "east": "東",
+    "southEast": "東南",
+    "south": "南",
+    "southWest": "西南",
+    "west": "西",
+    "northWest": "西北"
 }
