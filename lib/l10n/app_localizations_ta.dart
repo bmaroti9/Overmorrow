@@ -215,10 +215,10 @@ class AppLocalizationsTa extends AppLocalizations {
   String get uvLowercase => 'யு.வி.';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'வெப்பநிலை';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'அழுத்தம்';
 
   @override
   String get goodAqiDesc => 'காற்றின் தகுதி சிறந்தது; சுகாதார இடர் இல்லை.';
@@ -285,7 +285,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get about => 'பற்றி';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'பின்னணி புதுப்பிப்புகள்';
 
   @override
   String get appearanceSettingDesc => 'வண்ண கருப்பொருள், பட மூல';
@@ -303,7 +303,8 @@ class AppLocalizationsTa extends AppLocalizations {
   String get aboutSettingsDesc => 'இந்த பயன்பாடு பற்றி';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc =>
+      'விட்செட் புதுப்பிப்புகள், அறிவிப்புகள்';
 
   @override
   String get now => 'இப்போது';
@@ -357,10 +358,10 @@ class AppLocalizationsTa extends AppLocalizations {
   String get dust => 'தூசு';
 
   @override
-  String get europeanAqi => 'ஐரோப்பிய AQI';
+  String get europeanAqi => 'ஐரோப்பிய அக்கி';
 
   @override
-  String get unitedStatesAqi => 'ஒன்றுபட்டது ச்டேட்ச் AQI';
+  String get unitedStatesAqi => 'USA AQI';
 
   @override
   String get offline => 'இணையமில்லாமல்';
@@ -507,49 +508,49 @@ class AppLocalizationsTa extends AppLocalizations {
   String get showLess => 'குறைவாகக் காட்டு';
 
   @override
-  String get cold => 'cold';
+  String get cold => 'குளிர்';
 
   @override
-  String get hot => 'hot';
+  String get hot => 'சூடான';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'அமைதியான';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'கடுமையான';
 
   @override
-  String get low => 'low';
+  String get low => 'குறைந்த';
 
   @override
-  String get high => 'high';
+  String get high => 'உயர்';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'நேரடி ரேடார்';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'நடப்பு அறிவிப்பு';
 
   @override
-  String get north => 'N';
+  String get north => 'என்';
 
   @override
-  String get northEast => 'NE';
+  String get northEast => 'எண்';
 
   @override
-  String get east => 'E';
+  String get east => 'இ';
 
   @override
   String get southEast => 'SE';
 
   @override
-  String get south => 'S';
+  String get south => 'எச்';
 
   @override
   String get southWest => 'SW';
 
   @override
-  String get west => 'W';
+  String get west => 'டபிள்யூ';
 
   @override
   String get northWest => 'NW';

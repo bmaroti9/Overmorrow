@@ -534,26 +534,26 @@ class AppLocalizationsBg extends AppLocalizations {
   String get ongoingNotification => 'текущо известие';
 
   @override
-  String get north => 'N';
+  String get north => 'С';
 
   @override
-  String get northEast => 'NE';
+  String get northEast => 'СИ';
 
   @override
-  String get east => 'E';
+  String get east => 'И';
 
   @override
-  String get southEast => 'SE';
+  String get southEast => 'ЮИ';
 
   @override
-  String get south => 'S';
+  String get south => 'Ю';
 
   @override
-  String get southWest => 'SW';
+  String get southWest => 'ЮЗ';
 
   @override
-  String get west => 'W';
+  String get west => 'З';
 
   @override
-  String get northWest => 'NW';
+  String get northWest => 'СЗ';
 }

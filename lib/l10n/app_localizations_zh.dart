@@ -524,28 +524,28 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ongoingNotification => '持续通知';
 
   @override
-  String get north => 'N';
+  String get north => '北';
 
   @override
-  String get northEast => 'NE';
+  String get northEast => '东北';
 
   @override
-  String get east => 'E';
+  String get east => '东';
 
   @override
-  String get southEast => 'SE';
+  String get southEast => '东南';
 
   @override
-  String get south => 'S';
+  String get south => '南';
 
   @override
-  String get southWest => 'SW';
+  String get southWest => '西南';
 
   @override
-  String get west => 'W';
+  String get west => '西';
 
   @override
-  String get northWest => 'NW';
+  String get northWest => '西北';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -1066,4 +1066,28 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get ongoingNotification => '背景常駐通知';
+
+  @override
+  String get north => '北';
+
+  @override
+  String get northEast => '東北';
+
+  @override
+  String get east => '東';
+
+  @override
+  String get southEast => '東南';
+
+  @override
+  String get south => '南';
+
+  @override
+  String get southWest => '西南';
+
+  @override
+  String get west => '西';
+
+  @override
+  String get northWest => '西北';
 }

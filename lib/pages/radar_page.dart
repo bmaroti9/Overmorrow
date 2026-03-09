@@ -40,7 +40,7 @@ class _ThemedMapLibreMapState extends State<ThemedMapLibreMap> {
 
       switch (layerId) {
         case 'background' : layer['paint']['background-color'] = surfaceHex;
-        case 'water' : layer['paint']['fill-color'] = surfaceContainerHex;
+        case 'water' : layer['paint']['fill-color'] = secondaryContainerHex;
 
         case 'water-intermittent' : layer['paint']['fill-color'] = surfaceContainerHex;
         case 'waterway-river' : layer['paint']['line-color'] = secondaryContainerHex;
