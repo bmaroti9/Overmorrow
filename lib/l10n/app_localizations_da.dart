@@ -244,7 +244,7 @@ class AppLocalizationsDa extends AppLocalizations {
       'Nødsituationer; alvorlige helbredseffekter for alle.';
 
   @override
-  String get photoByXOnUnsplash => 'Foto af ,x, på ,Unsplash';
+  String get photoByXOnUnsplash => 'Foto, af ,x, på ,Unsplash';
 
   @override
   String get sourceCodeLowercase => 'kildekode';

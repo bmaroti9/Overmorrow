@@ -530,26 +530,26 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ongoingNotification => 'sürekli bildirim';
 
   @override
-  String get north => 'N';
+  String get north => 'K';
 
   @override
-  String get northEast => 'NE';
+  String get northEast => 'KD';
 
   @override
-  String get east => 'E';
+  String get east => 'D';
 
   @override
-  String get southEast => 'SE';
+  String get southEast => 'GD';
 
   @override
-  String get south => 'S';
+  String get south => 'G';
 
   @override
-  String get southWest => 'SW';
+  String get southWest => 'GB';
 
   @override
-  String get west => 'W';
+  String get west => 'B';
 
   @override
-  String get northWest => 'NW';
+  String get northWest => 'KB';
 }
