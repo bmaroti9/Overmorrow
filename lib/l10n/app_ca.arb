@@ -1,1 +1,240 @@
-{}
+{
+    "feelsLike": "Sensació tèrmica",
+    "precipCapital": "Precip.",
+    "humidity": "Humitat",
+    "windCapital": "Vent",
+    "uvCapital": "UV",
+    "settings": "Configuració",
+    "today": "Avui",
+    "tomorrowLowercase": "demà",
+    "overmorrowLowercase": "Demà passat",
+    "language": "Idioma",
+    "temperature": "Temperatura",
+    "precipitaion": "Precipitació",
+    "rain": "Pluja",
+    "clearNight": "Nit clara",
+    "partlyCloudy": "Parcialment ennuvolat",
+    "clearSky": "Cel clar",
+    "overcast": "Cobert",
+    "haze": "Calitja",
+    "sleet": "Aiguaneu",
+    "drizzle": "Plugim",
+    "thunderstorm": "Tempesta",
+    "heavySnow": "Neu forta",
+    "fog": "Boira",
+    "snow": "Neu",
+    "heavyRain": "Pluja forta",
+    "cloudyNight": "Nit ennuvolada",
+    "weakOrNoWifiConnection": "Connexió wifi feble o inexistent",
+    "notConnectedToTheInternet": "Sense connexió a Internet",
+    "placeNotFound": "Lloc no trobat",
+    "unableToLocateDevice": "No s'ha pogut localitzar el dispositiu",
+    "locationServicesAreDisabled": "els serveis de localització estan desactivats.",
+    "locationPermissionIsDenied": "el permís de localització ha estat denegat",
+    "locationPermissionDeniedForever": "permís de localització denegat permanentment",
+    "grantLocationPermission": "concedeix permís de localització",
+    "currentLocation": "ubicació actual",
+    "favoritesLowercase": "preferits",
+    "failedToAccessGps": "error en accedir al GPS",
+    "search": "Cerca...",
+    "sunriseSunset": "sortida/posta de sol",
+    "airQuality": "Qualitat de l'aire",
+    "airQualityLowercase": "qualitat de l'aire",
+    "good": "bona",
+    "fair": "acceptable",
+    "moderate": "moderada",
+    "poor": "pobra",
+    "veryPoor": "molt pobra",
+    "unhealthy": "perjudicial",
+    "radar": "radar",
+    "colorMode": "Mode de color",
+    "weatherProvderLowercase": "proveïdor meteorològic",
+    "timeMode": "Format d'hora",
+    "mon": "Dl",
+    "tue": "Dt",
+    "wed": "Dc",
+    "thu": "Dj",
+    "fri": "Dv",
+    "sat": "Ds",
+    "sun": "Dg",
+    "fontSize": "Mida de la lletra",
+    "dailyLowercase": "diari",
+    "searchProvider": "Proveïdor de cerca",
+    "updatedJustNow": "actualitzat, ara mateix",
+    "colorSource": "Font de color",
+    "imageSource": "Font de la imatge",
+    "sumLowercase": "suma",
+    "@sumLowercase": {
+        "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+    },
+    "precipLowercase": "precip",
+    "windLowercase": "vent",
+    "uvLowercase": "uv",
+    "tempLowercase": "temp",
+    "pressureLowercase": "pressió",
+    "goodAqiDesc": "La qualitat de l'aire és excel·lent; sense risc per a la salut.",
+    "fairAqiDesc": "Qualitat de l'aire acceptable; risc menor per a persones sensibles.",
+    "moderateAqiDesc": "Les persones sensibles poden experimentar efectes lleus.",
+    "poorAqiDesc": "Efectes sobre la salut possibles per a tothom, greus per als grups sensibles.",
+    "veryPoorAqiDesc": "Efectes greus sobre la salut per a tothom.",
+    "unhealthyAqiDesc": "Condicions d'emergència; efectes greus sobre la salut per a tothom.",
+    "photoByXOnUnsplash": "Foto de ,x, a ,Unsplash",
+    "sourceCodeLowercase": "codi font",
+    "emailLowercase": "correu electrònic",
+    "reportAnIssueLowercase": "informa d'un problema",
+    "donateLowercase": "dona",
+    "versionUppercase": "Versió",
+    "apiAndServices": "APIs i serveis",
+    "licenseUppercase": "Llicència",
+    "weatherDataLowercase": "dades meteorològiques",
+    "imagesLowercase": "imatges",
+    "appearance": "Aparença",
+    "general": "General",
+    "units": "Unitats",
+    "about": "Quant a",
+    "backgroundUpdates": "Actualitzacions en segon pla",
+    "appearanceSettingDesc": "tema de color, font de la imatge",
+    "generalSettingDesc": "format d'hora, mida de la lletra",
+    "languageSettingDesc": "l'idioma utilitzat",
+    "unitsSettingdesc": "les unitats utilitzades a l'aplicació",
+    "aboutSettingsDesc": "sobre aquesta aplicació",
+    "backgroundUpdatesSettingsDesc": "actualitzacions del giny, notificacions",
+    "now": "ara",
+    "hr": "h",
+    "layout": "Disposició",
+    "layoutSettingDesc": "ordre del giny, personalització",
+    "thirtyMinutes": "30m",
+    "mainPollutant": "contaminant principal",
+    "alderPollen": "Pol·len de vern",
+    "birchPollen": "Pol·len de bedoll",
+    "grassPollen": "Pol·len de gramínies",
+    "mugwortPollen": "Pol·len d'artemisa",
+    "olivePollen": "Pol·len d'olivera",
+    "ragweedPollen": "Pol·len d'ambrosia",
+    "dailyAqi": "ICA diari",
+    "dateFormat": "Format de data",
+    "d": "d",
+    "@d": {
+        "description": "short for day"
+    },
+    "aerosolOpticalDepth": "profunditat òptica dels aerosols",
+    "dust": "pols",
+    "europeanAqi": "ICA europeu",
+    "unitedStatesAqi": "ICA EUA",
+    "offline": "fora de línia",
+    "helpTranslate": "ajuda a traduir",
+    "extremelyClear": "extremadament clar",
+    "veryClear": "molt clar",
+    "clear": "clar",
+    "slightlyHazy": "lleugerament calitjós",
+    "hazy": "calitjós",
+    "veryHazy": "molt calitjós",
+    "extremelyHazy": "extremadament calitjós",
+    "poweredByOpenMeteo": "amb tecnologia d'open-meteo",
+    "@poweredByOpenMeteo": {
+        "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+    },
+    "rainInHalfHour": "pluja en la propera mitja hora",
+    "@rainInHalfHour": {
+        "description": "rain in the next half an hour"
+    },
+    "rainInMinutes": "pluja en els propers {minutes, plural, =1 {minut} other {{minutes} minuts}}",
+    "@rainInMinutes": {
+        "description": "rain in the next X minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "rainInOneHour": "pluja en la propera hora",
+    "@rainInOneHour": {
+        "description": "rain in the next hour"
+    },
+    "rainInHours": "pluja en les properes {hours, plural, =1 {hora} other {{hours} hores}}",
+    "@rainInHours": {
+        "description": "rain in the next X hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "rainExpectedInMinutes": "s'espera pluja d'aquí a {minutes, plural, =1 {minut} other {{minutes} minuts}}",
+    "@rainExpectedInMinutes": {
+        "description": "rain expected in the next X minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "rainExpectedInOneHour": "s'espera pluja d'aquí a una hora",
+    "@rainExpectedInOneHour": {
+        "description": "rain expected in the next hour"
+    },
+    "rainExpectedInHours": "s'espera pluja d'aquí a {hours, plural, =1 {hora} other {{hours} hores}}",
+    "@rainExpectedInHours": {
+        "description": "rain expected in the next X hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXMinutesAgo": "actualitzat, fa {minutes} min",
+    "updatedXHoursAgo": "actualitzat, fa {hours, plural, =1 {1 hora} other {{hours} hores}}",
+    "@updatedXHoursAgo": {
+        "description": "updated x hours ago",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXDaysAgo": "actualitzat, fa {days, plural, =1 {1 dia} other {{days} dies}}",
+    "@updatedXDaysAgo": {
+        "description": "updated x days ago",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "radarHaptics": "Vibració del radar",
+    "@radarHaptics": {
+        "description": "setting for enabling or disabling haptic feedback for the radar"
+    },
+    "alertsCapital": "Alertes",
+    "alertsLowercase": "alertes",
+    "severity": "gravetat",
+    "certainty": "certesa",
+    "urgency": "urgència",
+    "areas": "àrees",
+    "light": "lleu",
+    "@light": {
+        "description": "light precipitation"
+    },
+    "heavy": "forta",
+    "@heavy": {
+        "description": "heavy precipitation"
+    },
+    "showMore": "mostra'n més",
+    "showLess": "mostra'n menys",
+    "cold": "fred",
+    "hot": "calor",
+    "calm": "calma",
+    "severe": "greu",
+    "low": "baixa",
+    "high": "alta",
+    "liveRadar": "radar en viu",
+    "ongoingNotification": "notificació permanent",
+    "north": "N",
+    "northEast": "NE",
+    "east": "E",
+    "southEast": "SE",
+    "south": "S",
+    "southWest": "SO",
+    "west": "O",
+    "northWest": "NO"
+}
