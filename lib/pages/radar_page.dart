@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:maplibre/maplibre.dart';
+import 'package:maplibre_gl/maplibre_gl.dart';
 
 import '../services/color_service.dart';
 
@@ -69,11 +69,25 @@ class _ThemedMapLibreMapState extends State<ThemedMapLibreMap> {
 
   @override
   Widget build(BuildContext context) {
-
+    // Show a loading indicator until the JSON is parsed and modified
     if (_dynamicStyleString == null) {
       return const Center(child: CircularProgressIndicator());
     }
 
+    return MapLibreMap(
+      // MapLibre can accept a raw JSON string instead of an asset path!
+      styleString: _dynamicStyleString!,
+      initialCameraPosition: const CameraPosition(
+        target: LatLng(45.4385, 12.338),
+        zoom: 12.0,
+      ),
+      onMapCreated: (MapLibreMapController controller) {
+        // Your controller logic here
+      },
+    );
+  }
+
+    /*
     return MapLibreMap(
       options: MapOptions(
         initStyle: _dynamicStyleString!,
@@ -83,4 +97,5 @@ class _ThemedMapLibreMapState extends State<ThemedMapLibreMap> {
       )
     );
   }
+     */
 }

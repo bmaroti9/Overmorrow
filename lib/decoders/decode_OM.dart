@@ -85,8 +85,8 @@ Future<List<dynamic>> oMRequestData(double lat, double lng, String place) async 
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
 
-  //var oMFile = await cacheManager2.getSingleFile(oMUrl.toString(), key: "$real_loc, open-meteo").timeout(const Duration(seconds: 6));
-  var oMFile = await XCustomCacheManager.fetchData(oMUrl.toString(), "$place, open-meteo");
+  var oMFile = await XCustomCacheManager.fetchData(oMUrl.toString(), "$place, open-meteo",
+      headers: {"User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"});
 
   var oMResponse = await oMFile[0].readAsString();
   final oMData = jsonDecode(oMResponse);
@@ -704,7 +704,7 @@ Future<LightCurrentWeatherData> omGetLightCurrentData(placeName, lat, lon, Share
   };
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
-  final response = (await http.get(oMUrl)).body;
+  final response = (await http.get(oMUrl, headers: {"User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"})).body;
 
   final item = jsonDecode(response);
 
@@ -730,7 +730,7 @@ Future<LightWindData> omGetLightWindData(lat, lon, SharedPreferences prefs) asyn
   };
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
-  final response = (await http.get(oMUrl)).body;
+  final response = (await http.get(oMUrl, headers: {"User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"})).body;
 
   final item = jsonDecode(response);
 
@@ -750,7 +750,7 @@ Future<LightUvData> omGetLightUvData(lat, lon, SharedPreferences prefs) async {
   };
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
-  final response = (await http.get(oMUrl)).body;
+  final response = (await http.get(oMUrl, headers: {"User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"})).body;
 
   final item = jsonDecode(response);
 
@@ -772,7 +772,7 @@ Future<LightHourlyForecastData> omGetHourlyForecast(placeName, lat, lon, SharedP
 
   final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
 
-  final response = (await http.get(oMUrl)).body;
+  final response = (await http.get(oMUrl, headers: {"User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"})).body;
 
   final item = jsonDecode(response);
 

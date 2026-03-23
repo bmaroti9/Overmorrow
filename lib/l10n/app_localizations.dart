@@ -7,6 +7,7 @@ import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_ar.dart';
 import 'app_localizations_bg.dart';
+import 'app_localizations_ca.dart';
 import 'app_localizations_da.dart';
 import 'app_localizations_de.dart';
 import 'app_localizations_el.dart';
@@ -26,7 +27,6 @@ import 'app_localizations_pl.dart';
 import 'app_localizations_pt.dart';
 import 'app_localizations_ro.dart';
 import 'app_localizations_ru.dart';
-import 'app_localizations_sk.dart';
 import 'app_localizations_sl.dart';
 import 'app_localizations_sr.dart';
 import 'app_localizations_sw.dart';
@@ -125,6 +125,7 @@ abstract class AppLocalizations {
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
     Locale('bg'),
+    Locale('ca'),
     Locale('da'),
     Locale('de'),
     Locale('el'),
@@ -145,7 +146,6 @@ abstract class AppLocalizations {
     Locale('pt', 'BR'),
     Locale('ro'),
     Locale('ru'),
-    Locale('sk'),
     Locale('sl'),
     Locale('sr'),
     Locale('sw'),
@@ -1150,6 +1150,7 @@ class _AppLocalizationsDelegate
   bool isSupported(Locale locale) => <String>[
         'ar',
         'bg',
+        'ca',
         'da',
         'de',
         'el',
@@ -1169,7 +1170,6 @@ class _AppLocalizationsDelegate
         'pt',
         'ro',
         'ru',
-        'sk',
         'sl',
         'sr',
         'sw',
@@ -1216,6 +1216,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsAr();
     case 'bg':
       return AppLocalizationsBg();
+    case 'ca':
+      return AppLocalizationsCa();
     case 'da':
       return AppLocalizationsDa();
     case 'de':
@@ -1254,8 +1256,6 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsRo();
     case 'ru':
       return AppLocalizationsRu();
-    case 'sk':
-      return AppLocalizationsSk();
     case 'sl':
       return AppLocalizationsSl();
     case 'sr':

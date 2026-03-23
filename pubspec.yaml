@@ -64,7 +64,7 @@ dependencies:
 
   google_fonts: ^6.2.1
   workmanager: ^0.6.0
-  maplibre: ^0.3.4+1
+  maplibre_gl: ^0.25.0
 
 dev_dependencies:
   flutter_test:
