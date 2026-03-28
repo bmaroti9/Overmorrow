@@ -39,8 +39,6 @@ import es.antonborri.home_widget.actionStartActivity
 import com.marotidev.overmorrow.services.getBackColor
 import com.marotidev.overmorrow.services.getFrontColor
 import com.marotidev.overmorrow.services.getIconForCondition
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class OneHourlyWidget : GlanceAppWidget() {
 
@@ -74,8 +72,6 @@ class OneHourlyWidget : GlanceAppWidget() {
 
         val backColor = getBackColor(backColorString)
         val frontColor = getFrontColor(frontColorString)
-
-        val timeMode = prefs.getString("Time mode", "12 hour") ?: "12 hour"
 
         val tempList: List<Int> = try {
             hourlyTempList.let { gson.fromJson(it, hourlyTempType) } ?: emptyList()
@@ -193,7 +189,7 @@ class OneHourlyWidget : GlanceAppWidget() {
                                 .size(28.dp, 28.dp)
                         )
                         Text(
-                            text = formatHourLabel(item, timeMode),
+                            text = item,
                             style = TextStyle(
                                 color = GlanceTheme.colors.outline,
                                 fontSize = 14.sp,
@@ -207,21 +203,5 @@ class OneHourlyWidget : GlanceAppWidget() {
 
         }
 
-    }
-}
-
-private fun formatHourLabel(rawLabel: String, timeMode: String): String {
-    val hourStr = rawLabel.removeSuffix("h")
-    val hour = hourStr.toIntOrNull() ?: return rawLabel
-    return if (timeMode == "12 hour") {
-        val amPm = if (hour < 12) "am" else "pm"
-        val hour12 = when {
-            hour == 0 -> 12
-            hour > 12 -> hour - 12
-            else -> hour
-        }
-        "$hour12$amPm"
-    } else {
-        "${hour}h"
     }
 }

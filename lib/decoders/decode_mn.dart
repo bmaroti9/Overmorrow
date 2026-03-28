@@ -20,6 +20,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -470,6 +471,7 @@ Future<LightHourlyForecastData> metNGetLightHourlyData(placeName, lat, lon, Shar
   DateTime now = DateTime.now();
 
   final String tempUnit = prefs.getString("Temperature") ?? "˚C";
+  final String timeMode = prefs.getString("Time mode") ?? "12 hour";
 
   for (int i = 0; i < min(item["properties"]["timeseries"].length, 23); i++) {
     final hour = item["properties"]["timeseries"][i];
@@ -481,7 +483,7 @@ Future<LightHourlyForecastData> metNGetLightHourlyData(placeName, lat, lon, Shar
           hour["data"]["next_1_hours"]["summary"]["symbol_code"]));
       hourly6Temps.add(unitConversion(
           hour["data"]["instant"]["details"]["air_temperature"],tempUnit).round(),);
-      hourly6Names.add("${d.hour}h");
+      hourly6Names.add(formatHourByTimeMode(d, timeMode));
     }
 
     if (i < 4) {
@@ -489,7 +491,7 @@ Future<LightHourlyForecastData> metNGetLightHourlyData(placeName, lat, lon, Shar
           hour["data"]["next_1_hours"]["summary"]["symbol_code"]));
       hourly1Temps.add(unitConversion(
           hour["data"]["instant"]["details"]["air_temperature"],tempUnit).round(),);
-      hourly1Names.add("${d.hour}h");
+      hourly1Names.add(formatHourByTimeMode(d, timeMode));
     }
   }
 

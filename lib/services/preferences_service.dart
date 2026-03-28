@@ -16,11 +16,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'package:flutter/material.dart';
 import 'package:overmorrow/services/notification_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
 
 import 'color_service.dart';
 
@@ -375,7 +375,7 @@ class SettingsProvider with ChangeNotifier {
     PreferenceUtils.setString("Time mode", to);
     _timeMode = to;
     notifyListeners();
-    WidgetService.saveData("Time mode", to).then((_) => WidgetService.reloadWidgets());
+    WidgetService.updateWidgetTimeFormat(to).then((_) => WidgetService.reloadWidgets());
   }
 
   void setDateFormat(String to) {

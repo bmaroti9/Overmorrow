@@ -22,6 +22,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/caching_service.dart';
@@ -790,6 +791,7 @@ Future<LightHourlyForecastData> omGetHourlyForecast(placeName, lat, lon, SharedP
   List<String> hourly1Names = [];
 
   final String tempUnit = prefs.getString("Temperature") ?? "˚C";
+  final String timeMode = prefs.getString("Time mode") ?? "12 hour";
 
   for (int i = 0; i < item["hourly"]["temperature_2m"].length; i++) {
     DateTime there = DateTime.parse(item["hourly"]["time"][i]);
@@ -797,13 +799,13 @@ Future<LightHourlyForecastData> omGetHourlyForecast(placeName, lat, lon, SharedP
     if (d.hour % 6 == 0) {
       hourly6Conditions.add(oMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, there));
       hourly6Temps.add(unitConversion(item["hourly"]["temperature_2m"][i],tempUnit).round());
-      hourly6Names.add("${d.hour}h");
+      hourly6Names.add(formatHourByTimeMode(d, timeMode));
     }
 
     if (d.difference(now).inHours >= 0 && d.difference(now).inHours < 3) {
       hourly1Conditions.add(oMCurrentTextCorrection(item["hourly"]["weather_code"][i], sunStatus, there));
       hourly1Temps.add(unitConversion(item["hourly"]["temperature_2m"][i],tempUnit).round());
-      hourly1Names.add("${d.hour}h");
+      hourly1Names.add(formatHourByTimeMode(d, timeMode));
     }
   }
 
