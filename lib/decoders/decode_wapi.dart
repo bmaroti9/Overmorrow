@@ -487,6 +487,7 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(placeName, lat, lon, Shar
   DateTime now = DateTime.now();
 
   final String tempUnit = prefs.getString("Temperature") ?? "˚C";
+  final String timeMode = prefs.getString("Time mode") ?? "12 hour";
 
   for (int i = 0; i < item["forecast"]["forecastday"][0]["hour"].length; i++) {
     final hour = item["forecast"]["forecastday"][0]["hour"][i];
@@ -496,13 +497,13 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(placeName, lat, lon, Shar
     if (d.hour % 6 == 0) {
       hourly6Conditions.add(wapiTextCorrection(hour["condition"]["code"], hour["is_day"]));
       hourly6Temps.add(unitConversion(hour["temp_c"], tempUnit).round());
-      hourly6Names.add("${d.hour}h");
+      hourly6Names.add(formatHourByTimeMode(d, timeMode));
     }
 
     if (d.difference(now).inHours >= 0 && d.difference(now).inHours < 3) {
       hourly1Conditions.add(wapiTextCorrection(hour["condition"]["code"], hour["is_day"]));
       hourly1Temps.add(unitConversion(hour["temp_c"], tempUnit).round());
-      hourly1Names.add("${d.hour}h");
+      hourly1Names.add(formatHourByTimeMode(d, timeMode));
     }
   }
 

@@ -16,14 +16,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:overmorrow/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
 import '../decoders/weather_data.dart';
 import '../main_ui.dart';
+import 'weather_service.dart';
 
 const updateWeatherDataKey = "com.marotidev.overmorrow.updateWeatherData";
 
@@ -114,6 +117,35 @@ class WidgetService {
 
   static Future<void> saveBackgroundTaskState(String state) async {
     await saveData("widget.backgroundUpdateState", state);
+  }
+
+  static int _getHourFromLabel(String label) {
+    if (label.endsWith('h')) {
+      return int.tryParse(label.substring(0, label.length - 1)) ?? 0;
+    }
+    try {
+      return DateFormat('ha').parse(label.toUpperCase()).hour;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  static Future<void> updateWidgetTimeFormat(String timeMode) async {
+    final installedWidgets = await HomeWidget.getInstalledWidgets();
+    for (final widgetInfo in installedWidgets.where((w) =>
+        w.androidClassName == forecastWidgetReceiver ||
+        w.androidClassName == oneHourlyWidgetReceiver)) {
+      final id = widgetInfo.androidWidgetId!;
+      for (final prefix in ['hourly6', 'hourly1']) {
+        final key = 'hourlyForecast.${prefix}Names.$id';
+        final stored = await HomeWidget.getWidgetData<String>(key);
+        if (stored == null) continue;
+        final formattedLabels = (jsonDecode(stored) as List).cast<String>()
+            .map((label) => formatHourByTimeMode(DateTime(0, 1, 1, _getHourFromLabel(label)), timeMode))
+            .toList();
+        await saveData(key, jsonEncode(formattedLabels));
+      }
+    }
   }
 
   static Future<void> reloadWidgets() async {

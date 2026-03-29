@@ -69,6 +69,13 @@ String convertToShortTime(DateTime time, BuildContext context) {
   return DateFormat('H:mm').format(time);
 }
 
+String formatHourByTimeMode(DateTime time, String timeMode) {
+  if (timeMode == "12 hour") {
+    return DateFormat('ha').format(time).toLowerCase();
+  }
+  return "${time.hour}h";
+}
+
 String convertToWeekDayTime(DateTime? time, context) {
   if (time != null) {
     String weekName = getWeekName(time.weekday - 1, context);
@@ -126,6 +133,7 @@ num unitConversion(double value, String unit, {decimals = 2}) {
   }
   return double.parse(a.toStringAsFixed(decimals));
 }
+
 
 String aqiDescLocalization(index, localizations) {
   return [
