@@ -36,6 +36,7 @@ const windWidgetReceiver = 'com.marotidev.overmorrow.receivers.WindWidgetReceive
 const uvWidgetReceiver = 'com.marotidev.overmorrow.receivers.UvWidgetReceiver';
 const forecastWidgetReceiver = 'com.marotidev.overmorrow.receivers.ForecastWidgetReceiver';
 const oneHourlyWidgetReceiver = 'com.marotidev.overmorrow.receivers.OneHourlyWidgetReceiver';
+const dailyForecastWidgetReceiver = 'com.marotidev.overmorrow.receivers.DailyForecastWidgetReceiver';
 
 void initializeWidgetServices() {
   Workmanager().initialize(
@@ -83,6 +84,40 @@ class WidgetService {
 
   static Future<void> syncUvDataToWidget(LightUvData data, int widgetId) async {
     await saveData("uv.uv.$widgetId", data.uv);
+  }
+
+  static const List<String> _shakespeareQuotes = [
+    "To be, or not to be, that is the question.",
+    "All the world's a stage, and all the men and women merely players.",
+    "What's in a name? That which we call a rose by any other name would smell as sweet.",
+    "We know what we are, but know not what we may be.",
+    "The course of true love never did run smooth.",
+    "This above all: to thine own self be true.",
+    "brevity is the soul of wit.",
+    "All that glitters is not gold.",
+    "Good night, good night! Parting is such sweet sorrow.",
+    "If music be the food of love, play on.",
+    "Cowards die many times before their deaths; the valiant never taste of death but once.",
+    "There is nothing either good or bad, but thinking makes it so.",
+    "We are such stuff as dreams are made on.",
+  ];
+
+  static Future<void> syncDailyForecastDataToWidget(LightDailyForecastData data, int widgetId) async {
+    print("DEBUG: syncDailyForecastDataToWidget called with widgetId=$widgetId, place=${data.place}");
+    final String preview = data.dailyHighTemps.length > 50 ? data.dailyHighTemps.substring(0, 50) + "..." : data.dailyHighTemps;
+    print("DEBUG: dailyHighTemps=$preview");
+    await saveData("dailyForecast.place.$widgetId", data.place);
+    await saveData("dailyForecast.currentTemp.$widgetId", data.currentTemp);
+    await saveData("dailyForecast.dailyHighTemps.$widgetId", data.dailyHighTemps);
+    await saveData("dailyForecast.dailyLowTemps.$widgetId", data.dailyLowTemps);
+    await saveData("dailyForecast.dailyConditions.$widgetId", data.dailyConditions);
+    await saveData("dailyForecast.dailyNames.$widgetId", data.dailyNames);
+    await saveData("dailyForecast.dailyPrecipProbs.$widgetId", data.dailyPrecipProbs);
+    await saveData("widget.place.$widgetId", data.place);
+    // Rotate Shakespeare quote on each update
+    final quoteIndex = (widgetId + DateTime.now().day) % _shakespeareQuotes.length;
+    await saveData("widget.quote.$widgetId", _shakespeareQuotes[quoteIndex]);
+    print("DEBUG: syncDailyForecastDataToWidget completed");
   }
 
   static Future<void> syncHourlyForecastDataToWidget(LightHourlyForecastData data, int widgetId) async {
@@ -173,6 +208,10 @@ class WidgetService {
       androidName: 'UvWidget',
       qualifiedAndroidName: uvWidgetReceiver,
     );
+    HomeWidget.updateWidget(
+      androidName: 'DailyForecastWidget',
+      qualifiedAndroidName: dailyForecastWidgetReceiver,
+    );
   }
 }
 
@@ -226,6 +265,7 @@ void myCallbackDispatcher() {
             final int widgetId = widgetInfo.androidWidgetId!;
             final String widgetClassName = widgetInfo.androidClassName!;
             print(("classname", widgetClassName));
+            print("DEBUG: Processing widget with ID=$widgetId, className=$widgetClassName");
 
             final String locationKey = "widget.location.$widgetId";
             final String latLonKey = "widget.latLon.$widgetId";
@@ -274,6 +314,13 @@ void myCallbackDispatcher() {
               LightUvData data = await LightUvData.getLightUvData(placeName, latLon, widgetProvider, prefs);
 
               await WidgetService.syncUvDataToWidget(data, widgetId);
+            } else if (widgetClassName == dailyForecastWidgetReceiver) {
+              print("DEBUG: Matched dailyForecastWidgetReceiver for widgetId=$widgetId");
+
+              LightDailyForecastData data = await LightDailyForecastData
+                  .getLightDailyData(placeName, latLon, widgetProvider, prefs);
+
+              await WidgetService.syncDailyForecastDataToWidget(data, widgetId);
             }
 
           }

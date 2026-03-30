@@ -823,3 +823,62 @@ Future<LightHourlyForecastData> omGetHourlyForecast(placeName, lat, lon, SharedP
       hourly1Temps: jsonEncode(hourly1Temps),
   );
 }
+
+Future<LightDailyForecastData> omGetLightDailyData(placeName, lat, lon, SharedPreferences prefs) async {
+  final String tempUnit = prefs.getString("Temperature") ?? "˚C";
+
+  final oMParams = {
+    "latitude": lat.toString(),
+    "longitude": lon.toString(),
+    "current": ["temperature_2m", "weather_code"],
+    "daily": [
+      "weather_code",
+      "temperature_2m_max",
+      "temperature_2m_min",
+      "precipitation_probability_max",
+    ],
+    "timezone": "auto",
+    "forecast_days": "7",
+  };
+
+  final oMUrl = Uri.https("api.open-meteo.com", 'v1/forecast', oMParams);
+  final response = (await http.get(oMUrl, headers: {"User-Agent": "Overmorrow weather (com.marotidev.overmorrow)"})).body;
+  final item = jsonDecode(response);
+
+  final int currentTemp = unitConversion(item["current"]["temperature_2m"], tempUnit).round();
+  final int dayCount = (item["daily"]["time"] as List).length;
+
+  final List<int> highTemps = [];
+  final List<int> lowTemps = [];
+  final List<String> conditions = [];
+  final List<String> names = [];
+  final List<int> precipProbs = [];
+
+  for (int i = 0; i < dayCount; i++) {
+    highTemps.add(unitConversion(item["daily"]["temperature_2m_max"][i], tempUnit).round());
+    lowTemps.add(unitConversion(item["daily"]["temperature_2m_min"][i], tempUnit).round());
+
+    // daily weather_code has no sun status, use a simplified correction
+    final int code = item["daily"]["weather_code"][i];
+    final DateTime date = DateTime.parse(item["daily"]["time"][i]);
+    // Treat daily as daytime for icon purposes
+    final WeatherSunStatus fakeSun = WeatherSunStatus(
+      sunrise: DateTime(date.year, date.month, date.day, 6),
+      sunset: DateTime(date.year, date.month, date.day, 20),
+      sunstatus: 0.5,
+    );
+    conditions.add(oMCurrentTextCorrection(code, fakeSun, DateTime(date.year, date.month, date.day, 12)));
+    names.add(DateFormat('EEE').format(date));
+    precipProbs.add((item["daily"]["precipitation_probability_max"][i] ?? 0).round());
+  }
+
+  return LightDailyForecastData(
+    place: placeName,
+    currentTemp: currentTemp,
+    dailyHighTemps: jsonEncode(highTemps),
+    dailyLowTemps: jsonEncode(lowTemps),
+    dailyConditions: jsonEncode(conditions),
+    dailyNames: jsonEncode(names),
+    dailyPrecipProbs: jsonEncode(precipProbs),
+  );
+}
