@@ -44,15 +44,14 @@ import com.marotidev.overmorrow.R
 import com.marotidev.overmorrow.services.getBackColor
 import com.marotidev.overmorrow.services.getFrontColor
 import com.marotidev.overmorrow.services.getIconForCondition
-import com.marotidev.overmorrow.services.getOnFrontColor
 import es.antonborri.home_widget.actionStartActivity
 import java.lang.reflect.Type
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 
-private val dfGson2 = Gson()
-private val dfIntListType2: Type    = object : TypeToken<List<Int>>() {}.type
-private val dfStrListType2: Type    = object : TypeToken<List<String>>() {}.type
+private val dfGson = Gson()
+private val dfIntListType: Type    = object : TypeToken<List<Int>>() {}.type
+private val dfStrListType: Type    = object : TypeToken<List<String>>() {}.type
 
 /** Each grid cell is ~56dp on MDPI; used to convert widget dp size → col count. */
 private const val CELL_DP = 56f
@@ -60,12 +59,16 @@ private const val CELL_DP = 56f
 /** Max forecast days to ever display (today + 6 upcoming = 7). */
 private const val MAX_DAYS = 7
 
-// Layout dp budgets (measured from actual rendered widget)
+// Layout dp budgets — calibrated from HeaderRow + DayCard composable structure
+// HeaderRow: max(leftCol, rightCol) where:
+//   left  = icon(50) + gap(3) + temp(28) + hi/lo(18) = ~99dp
+//   right = date(16) + gap(2) + location(16) + gap(6) + day-cols(~45) = ~85dp
+//   → max ≈ 100dp (rows render side-by-side, not stacked)
 private const val DP_PAD     = 20f   // top+bottom outer padding (10+10)
-private const val DP_HEADER  = 150f  // HeaderRow height (icon 50 + temps + location + day-cols ≈ 150)
-private const val DP_CARD    =  60f  // DayCard height (padding + content)
-private const val DP_SPACER  =   6f  // avg gap between cards (first=8, rest=5)
-private const val DP_QUOTE   =  28f  // quote text + spacer above it
+private const val DP_HEADER  = 110f  // HeaderRow measured height
+private const val DP_CARD    =  60f  // DayCard: padding(10+10) + label(20) + icon(30) = ~60dp
+private const val DP_SPACER  =   6f  // avg gap between cards (first=8dp, rest=5dp → avg 6dp)
+private const val DP_QUOTE   =  28f  // quote text (14sp ≈ 18dp) + top spacer (6dp) + padding(4dp)
 
 // ── Data Models ────────────────────────────────────────────────────────────────
 
@@ -111,19 +114,16 @@ private data class DayCardColors(val bg: ColorProvider, val fg: ColorProvider)
  *
  * Layout strategy (Glance/RemoteViews constraints):
  *   - SizeMode.Exact gives us the rendered dp size via LocalSize.
- *   - Grid cells: cols = width/56, rows = height/56.
- *   - Quote is rendered as the FIRST child in the Column → it can never be
- *     pushed out of frame by content below it.
- *   - A single `defaultWeight()` Spacer at the bottom absorbs leftover space.
- *   - Day cards rendered via loop over DayEntry list — no more showDay0..showDay6.
+ *   - Glance is built on RemoteViews; `defaultWeight()` fills ALL remaining space.
+ *     Any child placed AFTER defaultWeight is rendered at 0px height and clipped.
+ *   - Quote must therefore be placed BEFORE the defaultWeight Spacer.
+ *   - visibleCards is budget-calculated so cards + quote fit without overflow.
  *
- * Visible card count (wide layout):
- *   rows <= 2  → 0 cards  (header only)
- *   rows == 3  → 1 card   (today)
- *   rows == 4  → 2 cards  (+ tomorrow)
- *   …
- *   rows >= 9  → 7 cards  (today … day+6)
- *   Quote shown when rows >= 2 and quote non-empty.
+ * Wide layout card count formula:
+ *   budget  = height - DP_PAD - DP_HEADER
+ *   maxCards = floor(budget / (DP_CARD + DP_SPACER))   [capped at MAX_DAYS, data.size]
+ *   cardsUsed = maxCards * (DP_CARD + DP_SPACER) - DP_SPACER   [last spacer not needed]
+ *   showQuote = hasQuote && (budget - cardsUsed) >= DP_QUOTE
  */
 class DailyForecastWidget : GlanceAppWidget() {
 
@@ -145,13 +145,13 @@ class DailyForecastWidget : GlanceAppWidget() {
         fun str(key: String, default: String = "") = p.getString("$key.$id", default) ?: default
         fun int(key: String, default: Int = 0)    = p.getInt("$key.$id", default)
         fun <T> json(raw: String, type: Type): List<T> =
-            try { dfGson2.fromJson<List<T>>(raw, type) ?: emptyList() } catch (_: Exception) { emptyList() }
+            try { dfGson.fromJson<List<T>>(raw, type) ?: emptyList() } catch (_: Exception) { emptyList() }
 
-        val highs:  List<Int>    = json(str("dailyForecast.dailyHighTemps",   "[]"), dfIntListType2)
-        val lows:   List<Int>    = json(str("dailyForecast.dailyLowTemps",    "[]"), dfIntListType2)
-        val conds:  List<String> = json(str("dailyForecast.dailyConditions",  "[]"), dfStrListType2)
-        val names:  List<String> = json(str("dailyForecast.dailyNames",       "[]"), dfStrListType2)
-        val precip: List<Int>    = json(str("dailyForecast.dailyPrecipProbs", "[]"), dfIntListType2)
+        val highs:  List<Int>    = json(str("dailyForecast.dailyHighTemps",   "[]"), dfIntListType)
+        val lows:   List<Int>    = json(str("dailyForecast.dailyLowTemps",    "[]"), dfIntListType)
+        val conds:  List<String> = json(str("dailyForecast.dailyConditions",  "[]"), dfStrListType)
+        val names:  List<String> = json(str("dailyForecast.dailyNames",       "[]"), dfStrListType)
+        val precip: List<Int>    = json(str("dailyForecast.dailyPrecipProbs", "[]"), dfIntListType)
 
         val count = minOf(names.size, highs.size, lows.size, MAX_DAYS)
         val days = (0 until count).map { i ->
@@ -230,10 +230,10 @@ class DailyForecastWidget : GlanceAppWidget() {
         val frontColor   = getFrontColor(data.frontColorStr)
         val cardTiers    = buildCardTiers(data.frontColorStr)
 
-        val size   = LocalSize.current
-        val heightDp = size.height.value
-        val cols = (size.width.value / CELL_DP).toInt().coerceIn(1, 8)
-        val rows = (heightDp         / CELL_DP).toInt().coerceIn(1, 12)
+        val size      = LocalSize.current
+        val heightDp  = size.height.value
+        val cols      = (size.width.value / CELL_DP).toInt().coerceIn(1, 8)
+        val rows      = (heightDp         / CELL_DP).toInt().coerceIn(1, 12)
 
         // How many day-columns to show in the header strip (wide only)
         val headerDayCols = (cols - 3).coerceIn(0, 6)
@@ -241,16 +241,20 @@ class DailyForecastWidget : GlanceAppWidget() {
 
         val hasQuote = data.quote.isNotEmpty()
 
-        // Budget-based card count: space allows cards first, quote is squeezed in if possible.
-        // visibleCards = min((availableHeight - headerHeight) / cardHeight, MAX_DAYS, dataSize)
-        val budgetForCards = heightDp - DP_PAD - DP_HEADER
-        val visibleCards   = (budgetForCards / (DP_CARD + DP_SPACER))
-            .toInt().coerceIn(0, minOf(MAX_DAYS, data.days.size))
-        // Only show quote if after rendering cards there's still 28dp of height left.
-        // This ensures quote never breaks the layout.
-        val cardsHeight = (visibleCards * (DP_CARD + DP_SPACER)) - DP_SPACER + DP_HEADER
-        val remainingHeight = heightDp - cardsHeight
-        val showQuote = hasQuote && remainingHeight >= DP_QUOTE
+        // ── Wide layout budget calculation ────────────────────────────────────
+        // Step 1: how much space is left after header + padding?
+        val budget     = heightDp - DP_PAD - DP_HEADER
+        // Step 2: how many cards fit? (last card has no trailing spacer)
+        val maxCards   = (budget / (DP_CARD + DP_SPACER)).toInt()
+        val visibleCards = minOf(maxCards, MAX_DAYS, data.days.size).coerceAtLeast(0)
+        // Step 3: does quote fit in the remaining vertical space?
+        val cardsUsed  = if (visibleCards > 0) visibleCards * (DP_CARD + DP_SPACER) - DP_SPACER else 0f
+        val showQuote  = hasQuote && (budget - cardsUsed) >= DP_QUOTE
+
+        // ── Compact layout: show quote if there's any bottom space ────────────
+        val compactBudget   = heightDp - DP_PAD
+        val compactUsed     = 80f  // approximate compact content height (icon + temp)
+        val showQuoteCompact = hasQuote && (compactBudget - compactUsed) >= DP_QUOTE
 
         val clickAction = actionStartActivity<MainActivity>(
             context,
@@ -259,7 +263,7 @@ class DailyForecastWidget : GlanceAppWidget() {
 
         val isCompact = cols < 4
         if (isCompact) {
-            CompactLayout(data, frontColor, backColor, rows, headerDayCols, showQuote, clickAction)
+            CompactLayout(data, frontColor, backColor, rows, headerDayCols, showQuoteCompact, clickAction)
         } else {
             WideLayout(data, frontColor, backColor, cardTiers, visibleCards, showQuote, headerDayCols, clickAction)
         }
@@ -297,12 +301,13 @@ class DailyForecastWidget : GlanceAppWidget() {
                 )
             }
 
-            // defaultWeight pushes quote to bottom-left; quote is always BEFORE container end
-            Spacer(modifier = GlanceModifier.defaultWeight())
+            // Quote placed BEFORE defaultWeight — critical for Glance/RemoteViews:
+            // defaultWeight fills all remaining space; anything after it is clipped to 0px.
             if (showQuote) {
-                Spacer(modifier = GlanceModifier.size(4.dp))
+                Spacer(modifier = GlanceModifier.size(6.dp))
                 QuoteText(data.quote, fontSize = 11)
             }
+            Spacer(modifier = GlanceModifier.defaultWeight())
         }
     }
 
@@ -347,12 +352,12 @@ class DailyForecastWidget : GlanceAppWidget() {
                 }
             }
 
-            // defaultWeight absorbs middle space; quote is last and safe before container end
-            Spacer(modifier = GlanceModifier.defaultWeight())
+            // Same rule as WideLayout: quote before defaultWeight, never after.
             if (showQuote) {
                 Spacer(modifier = GlanceModifier.size(4.dp))
                 QuoteText(data.quote, fontSize = 10)
             }
+            Spacer(modifier = GlanceModifier.defaultWeight())
         }
     }
 
