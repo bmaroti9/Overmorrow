@@ -39,7 +39,7 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   final params = {
     'key': wapi_Key,
     'q': latlong,
-    'days': '3',
+    'days': '7',
     'aqi': 'yes',
     'alerts': 'yes',
   };

@@ -62,9 +62,9 @@ private const val MAX_DAYS = 7
 
 // Layout dp budgets (measured from actual rendered widget)
 private const val DP_PAD     = 20f   // top+bottom outer padding (10+10)
-private const val DP_HEADER  = 120f  // HeaderRow height
+private const val DP_HEADER  = 150f  // HeaderRow height (icon 50 + temps + location + day-cols ≈ 150)
 private const val DP_CARD    =  60f  // DayCard height (padding + content)
-private const val DP_SPACER  =   8f  // gap before first card; ~5dp for rest → avg 6
+private const val DP_SPACER  =   6f  // avg gap between cards (first=8, rest=5)
 private const val DP_QUOTE   =  28f  // quote text + spacer above it
 
 // ── Data Models ────────────────────────────────────────────────────────────────
