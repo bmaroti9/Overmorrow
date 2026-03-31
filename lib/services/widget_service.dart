@@ -63,7 +63,6 @@ class WidgetService {
 
   static Future<void> saveData(String id, value) async {
     await HomeWidget.saveWidgetData(id, value);
-    print(("Saved", id, value));
   }
 
   static Future<void> syncCurrentDataToWidget(LightCurrentWeatherData data, int widgetId) async {
@@ -103,9 +102,6 @@ class WidgetService {
   ];
 
   static Future<void> syncDailyForecastDataToWidget(LightDailyForecastData data, int widgetId) async {
-    print("DEBUG: syncDailyForecastDataToWidget called with widgetId=$widgetId, place=${data.place}");
-    final String preview = data.dailyHighTemps.length > 50 ? data.dailyHighTemps.substring(0, 50) + "..." : data.dailyHighTemps;
-    print("DEBUG: dailyHighTemps=$preview");
     await saveData("dailyForecast.place.$widgetId", data.place);
     await saveData("dailyForecast.currentTemp.$widgetId", data.currentTemp);
     await saveData("dailyForecast.dailyHighTemps.$widgetId", data.dailyHighTemps);
@@ -114,10 +110,12 @@ class WidgetService {
     await saveData("dailyForecast.dailyNames.$widgetId", data.dailyNames);
     await saveData("dailyForecast.dailyPrecipProbs.$widgetId", data.dailyPrecipProbs);
     await saveData("widget.place.$widgetId", data.place);
+    // Today's date label e.g. "Tue, Mar 31"
+    final todayLabel = DateFormat('EEE, MMM d').format(DateTime.now());
+    await saveData("dailyForecast.todayDate.$widgetId", todayLabel);
     // Rotate Shakespeare quote on each update
     final quoteIndex = (widgetId + DateTime.now().day) % _shakespeareQuotes.length;
     await saveData("widget.quote.$widgetId", _shakespeareQuotes[quoteIndex]);
-    print("DEBUG: syncDailyForecastDataToWidget completed");
   }
 
   static Future<void> syncHourlyForecastDataToWidget(LightHourlyForecastData data, int widgetId) async {
@@ -315,8 +313,6 @@ void myCallbackDispatcher() {
 
               await WidgetService.syncUvDataToWidget(data, widgetId);
             } else if (widgetClassName == dailyForecastWidgetReceiver) {
-              print("DEBUG: Matched dailyForecastWidgetReceiver for widgetId=$widgetId");
-
               LightDailyForecastData data = await LightDailyForecastData
                   .getLightDailyData(placeName, latLon, widgetProvider, prefs);
 
