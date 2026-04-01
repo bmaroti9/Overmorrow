@@ -192,13 +192,18 @@ class DailyForecastWidget : GlanceAppWidget() {
         // No dp budget estimation — use grid rows to decide content amount.
         // Header ~2 rows, each card ~1 row, quote ~0.5 row.
         // This matches how other widgets in the project work (ForecastWidget etc.)
-        val isCompact = cols < 4 || rows < 3
+        val isCompact = cols < 4 || rows < 4
         if (isCompact) {
             val dayCols = (cols - 1).coerceIn(0, 3).coerceAtMost(futureDays)
             CompactLayout(data, frontColor, backColor, rows, dayCols, hasQuote, clickAction)
         } else {
-            // rows: 3→0 cards, 4→1, 5→2, 6→3, 7→4, 8→5, 9+→6
-            val maxCards = (rows - 3).coerceIn(0, MAX_DAYS - 1)
+            // Card count: use actual dp height with conservative header/quote estimate
+            // Header ~110dp (icon+temp+hilo+daycol), quote ~24dp, padding 20dp, gap 6dp
+            // This is intentionally conservative — better to show fewer cards than clip
+            val reservedDp = 110f + (if (hasQuote) 28f else 0f) + 20f + 6f  // ~164dp with quote
+            val cardSlotDp = 56f  // card(~40dp content + 10dp pad) + gap(4dp) ≈ 56dp
+            val maxCards = ((size.height.value - reservedDp) / cardSlotDp).toInt()
+                .coerceIn(0, MAX_DAYS - 1)
             val visibleCards = minOf(maxCards, futureDays)
             // DayColumns in header: show days not covered by cards
             val headerStart = visibleCards + 1
@@ -234,8 +239,9 @@ class DailyForecastWidget : GlanceAppWidget() {
             // Header: wrapContent — Glance determines actual height
             HeaderRow(frontColor, data, headerDayCols, headerStartIndex)
 
-            // Cards: fill remaining space between header and quote
-            // Like ForecastWidget, use fillMaxWidth + defaultWeight to let Glance allocate
+            // Cards + Quote: fill remaining space
+            // Quote MUST be inside defaultWeight — Glance/RemoteViews clips
+            // anything placed after a defaultWeight sibling to 0px.
             Column(
                 modifier = GlanceModifier.fillMaxWidth().defaultWeight(),
                 verticalAlignment = Alignment.Vertical.Top,
@@ -244,12 +250,14 @@ class DailyForecastWidget : GlanceAppWidget() {
                     Spacer(modifier = GlanceModifier.size(if (i == 0) 6.dp else CARD_GAP))
                     DayCard(frontColor, onFrontColor, day)
                 }
-            }
 
-            // Quote: wrapContent at bottom, always visible when available
-            if (showQuote) {
-                Spacer(modifier = GlanceModifier.size(4.dp))
-                QuoteText(data.quote, fontSize = 11)
+                // Push quote to bottom of remaining space
+                Spacer(modifier = GlanceModifier.defaultWeight())
+
+                if (showQuote) {
+                    Spacer(modifier = GlanceModifier.size(4.dp))
+                    QuoteText(data.quote, fontSize = 11)
+                }
             }
         }
     }
@@ -278,7 +286,7 @@ class DailyForecastWidget : GlanceAppWidget() {
                 modifier = GlanceModifier.fillMaxWidth().defaultWeight(),
                 verticalAlignment = Alignment.Vertical.CenterVertically,
             ) {
-                CompactLeftPanel(data, frontColor, rows)
+                CompactLeftPanel(data, frontColor, rows, showQuote)
 
                 Spacer(modifier = GlanceModifier.defaultWeight())
 
@@ -292,11 +300,6 @@ class DailyForecastWidget : GlanceAppWidget() {
                         DayColumn(frontColor, data.days, i)
                     }
                 }
-            }
-
-            if (showQuote) {
-                Spacer(modifier = GlanceModifier.size(4.dp))
-                QuoteText(data.quote, fontSize = 10)
             }
         }
     }
@@ -372,7 +375,7 @@ class DailyForecastWidget : GlanceAppWidget() {
     }
 
     @Composable
-    private fun CompactLeftPanel(data: DailyForecastData, frontColor: ColorProvider, rows: Int) {
+    private fun CompactLeftPanel(data: DailyForecastData, frontColor: ColorProvider, rows: Int, showQuote: Boolean) {
         val today = data.days.firstOrNull()
         Column(
             modifier = GlanceModifier.wrapContentWidth(),
