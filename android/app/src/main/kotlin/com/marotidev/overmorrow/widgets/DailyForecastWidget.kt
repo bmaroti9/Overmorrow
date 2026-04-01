@@ -43,6 +43,7 @@ import com.marotidev.overmorrow.MainActivity
 import com.marotidev.overmorrow.R
 import com.marotidev.overmorrow.services.getBackColor
 import com.marotidev.overmorrow.services.getFrontColor
+import com.marotidev.overmorrow.services.getOnFrontColor
 import com.marotidev.overmorrow.services.getIconForCondition
 import es.antonborri.home_widget.actionStartActivity
 import java.lang.reflect.Type
@@ -59,16 +60,14 @@ private const val CELL_DP = 56f
 /** Max forecast days to ever display (today + 6 upcoming = 7). */
 private const val MAX_DAYS = 7
 
-// Layout dp budgets — calibrated from HeaderRow + DayCard composable structure
-// HeaderRow: max(leftCol, rightCol) where:
-//   left  = icon(50) + gap(3) + temp(28) + hi/lo(18) = ~99dp
-//   right = date(16) + gap(2) + location(16) + gap(6) + day-cols(~45) = ~85dp
-//   → max ≈ 100dp (rows render side-by-side, not stacked)
-private const val DP_PAD     = 20f   // top+bottom outer padding (10+10)
-private const val DP_HEADER  = 110f  // HeaderRow measured height
-private const val DP_CARD    =  60f  // DayCard: padding(10+10) + label(20) + icon(30) = ~60dp
-private const val DP_SPACER  =   6f  // avg gap between cards (first=8dp, rest=5dp → avg 6dp)
-private const val DP_QUOTE   =  28f  // quote text (14sp ≈ 18dp) + top spacer (6dp) + padding(4dp)
+// Layout constants (Dp) — used for both budget calculation and rendering
+private val OUTER_V_PAD   = 10.dp
+private val OUTER_H_PAD   = 12.dp
+private val QUOTE_H       = 26.dp   // quote row height
+private val QUOTE_GAP     = 6.dp
+private val CARD_H        = 52.dp   // fixed DayCard height
+private val CARD_GAP      = 4.dp
+private val FIRST_GAP     = 6.dp    // gap before first card
 
 // ── Data Models ────────────────────────────────────────────────────────────────
 
@@ -82,7 +81,10 @@ private data class ForecastDay(
     val hi: Int,
     val lo: Int,
     val precipPct: Int,      // 0 if unknown/zero
-)
+) {
+    val displayCondition: String
+        get() = condition.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }
+}
 
 /**
  * All daily forecast widget data parsed from SharedPreferences.
@@ -101,12 +103,6 @@ private data class DailyForecastData(
     val days: List<ForecastDay>,
 )
 
-/**
- * Color pair (background + foreground) for a card tier.
- * Tiers progress from most-prominent (today) to least-prominent (day+6).
- */
-private data class DayCardColors(val bg: ColorProvider, val fg: ColorProvider)
-
 // ── Widget ─────────────────────────────────────────────────────────────────────
 
 /**
@@ -117,13 +113,9 @@ private data class DayCardColors(val bg: ColorProvider, val fg: ColorProvider)
  *   - Glance is built on RemoteViews; `defaultWeight()` fills ALL remaining space.
  *     Any child placed AFTER defaultWeight is rendered at 0px height and clipped.
  *   - Quote must therefore be placed BEFORE the defaultWeight Spacer.
- *   - visibleCards is budget-calculated so cards + quote fit without overflow.
- *
- * Wide layout card count formula:
- *   budget  = height - DP_PAD - DP_HEADER
- *   maxCards = floor(budget / (DP_CARD + DP_SPACER))   [capped at MAX_DAYS, data.size]
- *   cardsUsed = maxCards * (DP_CARD + DP_SPACER) - DP_SPACER   [last spacer not needed]
- *   showQuote = hasQuote && (budget - cardsUsed) >= DP_QUOTE
+ *   - Quote space is reserved first; remaining budget is divided among cards.
+ *   - Card height is clamped between MIN_CARD and MAX_CARD; cards are dropped
+ *     one at a time until they fit.
  */
 class DailyForecastWidget : GlanceAppWidget() {
 
@@ -133,8 +125,9 @@ class DailyForecastWidget : GlanceAppWidget() {
         get() = HomeWidgetGlanceStateDefinition()
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
+        val fontScale = context.resources.configuration.fontScale
         val appWidgetId = GlanceAppWidgetManager(context).getAppWidgetId(id)
-        provideContent { GlanceContent(context, currentState(), appWidgetId) }
+        provideContent { GlanceContent(context, currentState(), appWidgetId, fontScale) }
     }
 
     // ── Data parsing ──────────────────────────────────────────────────────────
@@ -156,6 +149,8 @@ class DailyForecastWidget : GlanceAppWidget() {
         val count = minOf(names.size, highs.size, lows.size, MAX_DAYS)
         val days = (0 until count).map { i ->
             ForecastDay(
+                // TODO: read translated "Today"/"Tomorrow" from Flutter-side SharedPreferences
+                //  (e.g. widget.todayLabel / widget.tomorrowLabel) so these can be managed by l10n
                 label     = when (i) { 0 -> "Today"; 1 -> "Tomorrow"; else -> names[i] },
                 condition = conds.getOrElse(i) { "" },
                 hi        = highs[i],
@@ -177,95 +172,86 @@ class DailyForecastWidget : GlanceAppWidget() {
         )
     }
 
-    // ── Theme helpers ─────────────────────────────────────────────────────────
-
-    /**
-     * Returns card color tiers in order from most-prominent (index 0 = today)
-     * to least-prominent (index 6 = day+6).  Always 7 entries regardless of data.
-     */
-    @Composable
-    private fun buildCardTiers(frontColorStr: String): List<DayCardColors> {
-        val tier1 = DayCardColors(
-            bg = when (frontColorStr) {
-                "secondary" -> GlanceTheme.colors.secondary
-                "tertiary"  -> GlanceTheme.colors.tertiary
-                else        -> GlanceTheme.colors.primary
-            },
-            fg = when (frontColorStr) {
-                "secondary" -> GlanceTheme.colors.onSecondary
-                "tertiary"  -> GlanceTheme.colors.onTertiary
-                else        -> GlanceTheme.colors.onPrimary
-            },
-        )
-        val tier2 = DayCardColors(
-            bg = when (frontColorStr) {
-                "secondary" -> GlanceTheme.colors.secondaryContainer
-                "tertiary"  -> GlanceTheme.colors.tertiaryContainer
-                else        -> GlanceTheme.colors.primaryContainer
-            },
-            fg = when (frontColorStr) {
-                "secondary" -> GlanceTheme.colors.onSecondaryContainer
-                "tertiary"  -> GlanceTheme.colors.onTertiaryContainer
-                else        -> GlanceTheme.colors.onPrimaryContainer
-            },
-        )
-        return listOf(
-            tier1,                                                                           // 0 Today
-            tier2,                                                                           // 1 Tomorrow
-            DayCardColors(GlanceTheme.colors.surfaceVariant,      GlanceTheme.colors.onSurface),            // 2
-            DayCardColors(GlanceTheme.colors.tertiaryContainer,   GlanceTheme.colors.onTertiaryContainer),  // 3
-            DayCardColors(GlanceTheme.colors.secondaryContainer,  GlanceTheme.colors.onSecondaryContainer), // 4
-            DayCardColors(GlanceTheme.colors.inverseSurface,      GlanceTheme.colors.inverseOnSurface),     // 5
-            DayCardColors(GlanceTheme.colors.primaryContainer,    GlanceTheme.colors.onPrimaryContainer),   // 6
-        )
-    }
-
     // ── Entry point ───────────────────────────────────────────────────────────
 
     @Composable
-    private fun GlanceContent(context: Context, state: HomeWidgetGlanceState, appWidgetId: Int) {
+    private fun GlanceContent(context: Context, state: HomeWidgetGlanceState, appWidgetId: Int, fontScale: Float) {
         val data = parseWidgetData(state, appWidgetId)
 
         val backColor    = getBackColor(data.backColorStr)
         val frontColor   = getFrontColor(data.frontColorStr)
-        val cardTiers    = buildCardTiers(data.frontColorStr)
+        val onFrontColor = getOnFrontColor(data.frontColorStr)
 
         val size      = LocalSize.current
         val heightDp  = size.height.value
         val cols      = (size.width.value / CELL_DP).toInt().coerceIn(1, 8)
         val rows      = (heightDp         / CELL_DP).toInt().coerceIn(1, 12)
 
-        // How many day-columns to show in the header strip (wide only)
-        val headerDayCols = (cols - 3).coerceIn(0, 6)
-            .coerceAtMost((data.days.size - 1).coerceAtLeast(0))
-
         val hasQuote = data.quote.isNotEmpty()
+        val futureDays = (data.days.size - 1).coerceAtLeast(0)
 
-        // ── Wide layout budget calculation ────────────────────────────────────
-        // Step 1: how much space is left after header + padding?
-        val budget     = heightDp - DP_PAD - DP_HEADER
-        // Step 2: how many cards fit? (last card has no trailing spacer)
-        val maxCards   = (budget / (DP_CARD + DP_SPACER)).toInt()
-        val visibleCards = minOf(maxCards, MAX_DAYS, data.days.size).coerceAtLeast(0)
-        // Step 3: does quote fit in the remaining vertical space?
-        val cardsUsed  = if (visibleCards > 0) visibleCards * (DP_CARD + DP_SPACER) - DP_SPACER else 0f
-        val showQuote  = hasQuote && (budget - cardsUsed) >= DP_QUOTE
+        // ── Wide layout budget calculation (fontScale-aware) ──────────────────
+        // Header height: icon(50) + spacer(4) + temp(28*fs) + hilo(12*fs)
+        val headerBaseF = 54f + 40f * fontScale
+        // DayCol adds: spacer(6) + label(12*fs) + spacer(3) + icon(24) + spacer(2) + hi(13*fs) + lo(11*fs) + margin
+        val dayColExtraF = 39f + 40f * fontScale
+
+        val maxHeaderDayCols = (cols - 3).coerceIn(0, 6)
+            .coerceAtMost(futureDays)
+
+        // Try with and without header DayColumns
+        val outerPadF = OUTER_V_PAD.value * 2
+        val quoteTotalF = if (hasQuote) QUOTE_H.value + QUOTE_GAP.value else 0f
+        val cardHF = CARD_H.value
+        val cardGapF = CARD_GAP.value
+        val firstGapF = FIRST_GAP.value
+
+        val baseBudgetF = heightDp - outerPadF - headerBaseF - quoteTotalF
+        val tallBudgetF = heightDp - outerPadF - (headerBaseF + dayColExtraF) - quoteTotalF
+
+        val canFitCardWithDayCol = tallBudgetF >= firstGapF + cardHF
+        val useHeaderDayCols: Int
+        val availableF: Float
+        if (canFitCardWithDayCol && maxHeaderDayCols > 0) {
+            useHeaderDayCols = maxHeaderDayCols
+            availableF = tallBudgetF
+        } else {
+            useHeaderDayCols = 0
+            availableF = baseBudgetF
+        }
+
+        var visibleCards = futureDays.coerceAtMost(MAX_DAYS - 1)
+        while (visibleCards > 0) {
+            val needed = firstGapF + cardHF * visibleCards + cardGapF * (visibleCards - 1).coerceAtLeast(0)
+            if (needed <= availableF) break
+            visibleCards--
+        }
+        val showQuote = hasQuote
 
         // ── Compact layout: show quote if there's any bottom space ────────────
-        val compactBudget   = heightDp - DP_PAD
+        val compactBudget   = heightDp - outerPadF
         val compactUsed     = 80f  // approximate compact content height (icon + temp)
-        val showQuoteCompact = hasQuote && (compactBudget - compactUsed) >= DP_QUOTE
+        val showQuoteCompact = hasQuote && (compactBudget - compactUsed) >= QUOTE_H.value
 
         val clickAction = actionStartActivity<MainActivity>(
             context,
             "overmorrrow://opened?location=${data.location}&latlon=${data.latLon}".toUri()
         )
 
-        val isCompact = cols < 4
+        val isCompact = cols < 4 || rows < 3
         if (isCompact) {
-            CompactLayout(data, frontColor, backColor, rows, headerDayCols, showQuoteCompact, clickAction)
+            // Compact: left panel takes ~2 cols, remaining cols can hold DayColumns
+            val compactDayCols = (cols - 1).coerceIn(0, 3)
+                .coerceAtMost((data.days.size - 1).coerceAtLeast(0))
+            CompactLayout(data, frontColor, backColor, rows, compactDayCols, showQuoteCompact, clickAction)
         } else {
-            WideLayout(data, frontColor, backColor, cardTiers, visibleCards, showQuote, headerDayCols, clickAction)
+            // Wide: header shows today, DayCards show day[1..visibleCards],
+            // DayColumns show remaining days after visibleCards
+            val headerStart = visibleCards + 1
+            val wideHeaderDayCols = useHeaderDayCols.coerceAtMost(
+                (data.days.size - headerStart).coerceAtLeast(0)
+            )
+            WideLayout(data, frontColor, backColor, onFrontColor, visibleCards, showQuote, wideHeaderDayCols, headerStart, clickAction)
         }
     }
 
@@ -276,35 +262,34 @@ class DailyForecastWidget : GlanceAppWidget() {
         data: DailyForecastData,
         frontColor: ColorProvider,
         backColor: ColorProvider,
-        cardTiers: List<DayCardColors>,
+        onFrontColor: ColorProvider,
         visibleCards: Int,
         showQuote: Boolean,
         headerDayCols: Int,
+        headerStartIndex: Int,
         clickAction: androidx.glance.action.Action,
     ) {
         Column(
             modifier = GlanceModifier
                 .fillMaxSize()
                 .background(backColor)
-                .padding(horizontal = 12.dp, vertical = 10.dp)
+                .padding(horizontal = OUTER_H_PAD, vertical = OUTER_V_PAD)
                 .cornerRadius(24.dp)
                 .clickable(onClick = clickAction),
         ) {
-            HeaderRow(frontColor, data, headerDayCols)
+            // Header shows today + DayColumns for days not covered by DayCards
+            HeaderRow(frontColor, data, headerDayCols, headerStartIndex)
 
-            // Loop: space allows exactly visibleCards cards (budget-calculated in GlanceContent)
-            data.days.take(visibleCards).forEachIndexed { i, day ->
-                Spacer(modifier = GlanceModifier.size(if (i == 0) 8.dp else 5.dp))
-                DayCard(
-                    colors = cardTiers.getOrElse(i) { cardTiers.last() },
-                    day    = day,
-                )
+            // DayCards start from day[1] (today is already in header)
+            data.days.drop(1).take(visibleCards).forEachIndexed { i, day ->
+                Spacer(modifier = GlanceModifier.size(if (i == 0) FIRST_GAP else CARD_GAP))
+                DayCard(frontColor, onFrontColor, day)
             }
 
             // Quote placed BEFORE defaultWeight — critical for Glance/RemoteViews:
             // defaultWeight fills all remaining space; anything after it is clipped to 0px.
             if (showQuote) {
-                Spacer(modifier = GlanceModifier.size(6.dp))
+                Spacer(modifier = GlanceModifier.size(QUOTE_GAP))
                 QuoteText(data.quote, fontSize = 11)
             }
             Spacer(modifier = GlanceModifier.defaultWeight())
@@ -377,6 +362,7 @@ class DailyForecastWidget : GlanceAppWidget() {
         frontColor: ColorProvider,
         data: DailyForecastData,
         headerDayCols: Int,
+        startIndex: Int = 1,
     ) {
         Row(
             modifier = GlanceModifier.fillMaxWidth().wrapContentHeight(),
@@ -393,15 +379,10 @@ class DailyForecastWidget : GlanceAppWidget() {
                         modifier    = GlanceModifier.size(50.dp),
                     )
                 }
-                Spacer(modifier = GlanceModifier.size(3.dp))
-                if (data.currentTemp != 0) {
-                    Text("${data.currentTemp}°", style = TextStyle(color = frontColor, fontSize = 24.sp, fontWeight = FontWeight.Bold))
-                    val hi = today?.hi ?: 0; val lo = today?.lo ?: 0
-                    Text("$hi° / $lo°", style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 12.sp))
-                } else {
-                    val hi = today?.hi ?: 0; val lo = today?.lo ?: 0
-                    Text("$hi° / $lo°", style = TextStyle(color = frontColor, fontSize = 20.sp, fontWeight = FontWeight.Bold))
-                }
+                Spacer(modifier = GlanceModifier.size(4.dp))
+                Text("${data.currentTemp}°", style = TextStyle(color = frontColor, fontSize = 28.sp, fontWeight = FontWeight.Bold))
+                val hi = today?.hi ?: 0; val lo = today?.lo ?: 0
+                Text("$hi° / $lo°", style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 12.sp))
             }
 
             Spacer(modifier = GlanceModifier.defaultWeight())
@@ -424,10 +405,10 @@ class DailyForecastWidget : GlanceAppWidget() {
                 if (headerDayCols > 0) {
                     Spacer(modifier = GlanceModifier.size(6.dp))
                     Row(verticalAlignment = Alignment.Vertical.CenterVertically) {
-                        val safeCount = minOf(headerDayCols, (data.days.size - 1).coerceAtLeast(0))
-                        for (i in 1..safeCount) {
-                            if (i > 1) Spacer(modifier = GlanceModifier.size(10.dp))
-                            DayColumn(frontColor, data.days, i)
+                        val safeCount = minOf(headerDayCols, (data.days.size - startIndex).coerceAtLeast(0))
+                        for (i in 0 until safeCount) {
+                            if (i > 0) Spacer(modifier = GlanceModifier.size(10.dp))
+                            DayColumn(frontColor, data.days, startIndex + i)
                         }
                     }
                 }
@@ -452,31 +433,10 @@ class DailyForecastWidget : GlanceAppWidget() {
                 )
             }
             Spacer(modifier = GlanceModifier.size(4.dp))
-            if (data.currentTemp != 0) {
-                Text("${data.currentTemp}°", style = TextStyle(color = frontColor, fontSize = 20.sp, fontWeight = FontWeight.Bold))
-                Text("${today?.hi ?: 0}° / ${today?.lo ?: 0}°", style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 11.sp))
-            } else {
-                Text("${today?.hi ?: 0}° / ${today?.lo ?: 0}°", style = TextStyle(color = frontColor, fontSize = 17.sp, fontWeight = FontWeight.Bold))
-            }
-            val condText = today?.condition?.replace("_", " ")?.lowercase()?.replaceFirstChar { it.uppercase() } ?: ""
-            if (condText.isNotEmpty()) {
-                Spacer(modifier = GlanceModifier.size(2.dp))
-                Text(condText, style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 10.sp))
-            }
-            if ((today?.precipPct ?: 0) > 0) {
-                Text(
-                    "${today!!.precipPct}%",
-                    style = TextStyle(
-                        color    = if (today.precipPct >= 60) GlanceTheme.colors.error else GlanceTheme.colors.outline,
-                        fontSize = 10.sp,
-                    )
-                )
-            }
-            Spacer(modifier = GlanceModifier.size(3.dp))
-            if (data.todayDate.isNotEmpty()) {
-                Text(data.todayDate, style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 10.sp))
-                Spacer(modifier = GlanceModifier.size(1.dp))
-            }
+            Text("${data.currentTemp}°", style = TextStyle(color = frontColor, fontSize = 20.sp, fontWeight = FontWeight.Bold))
+            Text("${today?.hi ?: 0}° / ${today?.lo ?: 0}°", style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 11.sp))
+            // Always show place name so user knows which city
+            Spacer(modifier = GlanceModifier.size(2.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
                     provider    = ImageProvider(R.drawable.icon_location),
@@ -485,6 +445,27 @@ class DailyForecastWidget : GlanceAppWidget() {
                     modifier    = GlanceModifier.size(11.dp).padding(end = 2.dp),
                 )
                 Text(data.placeName, style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 10.sp))
+            }
+            // Only show condition, precip, date when there's enough vertical space
+            if (rows >= 3) {
+                val condText = today?.displayCondition ?: ""
+                if (condText.isNotEmpty()) {
+                    Spacer(modifier = GlanceModifier.size(2.dp))
+                    Text(condText, style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 10.sp))
+                }
+                if ((today?.precipPct ?: 0) > 0) {
+                    Text(
+                        "${today!!.precipPct}%",
+                        style = TextStyle(
+                            color    = if (today.precipPct >= 60) GlanceTheme.colors.error else GlanceTheme.colors.outline,
+                            fontSize = 10.sp,
+                        )
+                    )
+                }
+                Spacer(modifier = GlanceModifier.size(3.dp))
+                if (data.todayDate.isNotEmpty()) {
+                    Text(data.todayDate, style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 10.sp))
+                }
             }
         }
     }
@@ -522,42 +503,42 @@ class DailyForecastWidget : GlanceAppWidget() {
 
     /**
      * Full-width horizontal day card shown in wide layout rows.
-     * All tiers identical in structure — only [colors] differ.
+     * Background uses [frontColor], text/icons use [onFrontColor].
      */
     @Composable
-    private fun DayCard(colors: DayCardColors, day: ForecastDay) {
-        val condText = day.condition.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }
+    private fun DayCard(frontColor: ColorProvider, onFrontColor: ColorProvider, day: ForecastDay) {
+        val condText = day.displayCondition
         Row(
             modifier = GlanceModifier
                 .fillMaxWidth()
-                .background(colors.bg)
+                .background(frontColor)
                 .cornerRadius(14.dp)
                 .padding(horizontal = 16.dp, vertical = 10.dp),
             verticalAlignment = Alignment.Vertical.CenterVertically,
         ) {
             Column(modifier = GlanceModifier.wrapContentWidth(), horizontalAlignment = Alignment.Horizontal.Start) {
-                Text(day.label, style = TextStyle(color = colors.fg, fontSize = 15.sp, fontWeight = FontWeight.Bold))
+                Text(day.label, style = TextStyle(color = onFrontColor, fontSize = 15.sp, fontWeight = FontWeight.Bold))
                 Spacer(modifier = GlanceModifier.size(1.dp))
-                Text(condText, style = TextStyle(color = colors.fg, fontSize = 11.sp))
+                Text(condText, style = TextStyle(color = onFrontColor, fontSize = 11.sp))
             }
             Spacer(modifier = GlanceModifier.defaultWeight())
             Image(
                 provider    = ImageProvider(getIconForCondition(day.condition)),
                 contentDescription = day.label,
-                colorFilter = ColorFilter.tint(colors.fg),
+                colorFilter = ColorFilter.tint(onFrontColor),
                 modifier    = GlanceModifier.size(30.dp),
             )
             Spacer(modifier = GlanceModifier.defaultWeight())
             Column(horizontalAlignment = Alignment.Horizontal.CenterHorizontally) {
-                Text("${day.hi}°", style = TextStyle(color = colors.fg, fontSize = 19.sp, fontWeight = FontWeight.Bold))
-                Text("${day.lo}°", style = TextStyle(color = colors.fg, fontSize = 13.sp))
+                Text("${day.hi}°", style = TextStyle(color = onFrontColor, fontSize = 19.sp, fontWeight = FontWeight.Bold))
+                Text("${day.lo}°", style = TextStyle(color = onFrontColor, fontSize = 13.sp))
             }
             if (day.precipPct > 0) {
                 Spacer(modifier = GlanceModifier.size(10.dp))
                 Text(
                     "${day.precipPct}%",
                     style = TextStyle(
-                        color    = if (day.precipPct >= 60) GlanceTheme.colors.error else colors.fg,
+                        color    = if (day.precipPct >= 60) GlanceTheme.colors.error else onFrontColor,
                         fontSize = 12.sp,
                     )
                 )

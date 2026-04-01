@@ -85,6 +85,7 @@ class WidgetService {
     await saveData("uv.uv.$widgetId", data.uv);
   }
 
+  // TODO: migrate quotes to l10n system so they can be translated per locale
   static const List<String> _shakespeareQuotes = [
     "To be, or not to be, that is the question.",
     "All the world's a stage, and all the men and women merely players.",
@@ -102,7 +103,6 @@ class WidgetService {
   ];
 
   static Future<void> syncDailyForecastDataToWidget(LightDailyForecastData data, int widgetId) async {
-    await saveData("dailyForecast.place.$widgetId", data.place);
     await saveData("dailyForecast.currentTemp.$widgetId", data.currentTemp);
     await saveData("dailyForecast.dailyHighTemps.$widgetId", data.dailyHighTemps);
     await saveData("dailyForecast.dailyLowTemps.$widgetId", data.dailyLowTemps);

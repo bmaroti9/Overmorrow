@@ -580,6 +580,8 @@ Future<LightDailyForecastData> metNGetLightDailyData(placeName, lat, lon, Shared
     final DateTime date = DateTime.parse(entry.key);
     names.add(DateFormat('EEE').format(date));
 
+    // Estimated: met-norway API does not provide daily precipitation probability,
+    // so we approximate it as the percentage of hours with precipitation > 0.1mm.
     final int precipProb = hours.isEmpty ? 0 : ((rainHours / hours.length) * 100).round();
     precipProbs.add(precipProb);
   }

@@ -526,7 +526,7 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(placeName, lat, lon, Shar
 Future<LightDailyForecastData> wapiGetLightDailyData(placeName, lat, lon, SharedPreferences prefs) async {
   final String tempUnit = prefs.getString("Temperature") ?? "˚C";
 
-  // WeatherAPI free tier supports up to 7 days
+  // WeatherAPI free tier returns up to 3 days; paid plans support up to 14 days
   final params = {
     'key': wapi_Key,
     'q': "$lat, $lon",
