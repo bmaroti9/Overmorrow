@@ -197,13 +197,9 @@ class DailyForecastWidget : GlanceAppWidget() {
             val dayCols = (cols - 1).coerceIn(0, 3).coerceAtMost(futureDays)
             CompactLayout(data, frontColor, backColor, rows, dayCols, hasQuote, clickAction)
         } else {
-            // Card count: use actual dp height with conservative header/quote estimate
-            // Header ~110dp (icon+temp+hilo+daycol), quote ~24dp, padding 20dp, gap 6dp
-            // This is intentionally conservative — better to show fewer cards than clip
-            val reservedDp = 110f + (if (hasQuote) 28f else 0f) + 20f + 6f  // ~164dp with quote
-            val cardSlotDp = 56f  // card(~40dp content + 10dp pad) + gap(4dp) ≈ 56dp
-            val maxCards = ((size.height.value - reservedDp) / cardSlotDp).toInt()
-                .coerceIn(0, MAX_DAYS - 1)
+            // Card count: each card gets equal share of remaining space via defaultWeight
+            // Header ~2 rows, quote ~0.5 row — cards fill the rest, no truncation possible
+            val maxCards = (rows - 3).coerceIn(0, MAX_DAYS - 1)
             val visibleCards = minOf(maxCards, futureDays)
             // DayColumns in header: show days not covered by cards
             val headerStart = visibleCards + 1
@@ -239,25 +235,22 @@ class DailyForecastWidget : GlanceAppWidget() {
             // Header: wrapContent — Glance determines actual height
             HeaderRow(frontColor, data, headerDayCols, headerStartIndex)
 
-            // Cards + Quote: fill remaining space
-            // Quote MUST be inside defaultWeight — Glance/RemoteViews clips
-            // anything placed after a defaultWeight sibling to 0px.
+            // Cards fill remaining space between header and quote.
+            // Each card uses defaultWeight to equally share the available space — no truncation, no gaps.
             Column(
                 modifier = GlanceModifier.fillMaxWidth().defaultWeight(),
-                verticalAlignment = Alignment.Vertical.Top,
+                verticalAlignment = Alignment.Vertical.CenterVertically,
             ) {
                 data.days.drop(1).take(visibleCards).forEachIndexed { i, day ->
-                    Spacer(modifier = GlanceModifier.size(if (i == 0) 6.dp else CARD_GAP))
-                    DayCard(frontColor, onFrontColor, day)
+                    if (i > 0) Spacer(modifier = GlanceModifier.size(CARD_GAP))
+                    DayCard(frontColor, onFrontColor, day, modifier = GlanceModifier.fillMaxWidth().defaultWeight())
                 }
+            }
 
-                // Push quote to bottom of remaining space
-                Spacer(modifier = GlanceModifier.defaultWeight())
-
-                if (showQuote) {
-                    Spacer(modifier = GlanceModifier.size(4.dp))
-                    QuoteText(data.quote, fontSize = 11)
-                }
+            // Quote at bottom — wrapContent, measured before defaultWeight, never clipped
+            if (showQuote) {
+                Spacer(modifier = GlanceModifier.size(4.dp))
+                QuoteText(data.quote, fontSize = 11)
             }
         }
     }
@@ -464,14 +457,13 @@ class DailyForecastWidget : GlanceAppWidget() {
      * Background uses [frontColor], text/icons use [onFrontColor].
      */
     @Composable
-    private fun DayCard(frontColor: ColorProvider, onFrontColor: ColorProvider, day: ForecastDay) {
+    private fun DayCard(frontColor: ColorProvider, onFrontColor: ColorProvider, day: ForecastDay, modifier: GlanceModifier = GlanceModifier) {
         val condText = day.displayCondition
         Row(
-            modifier = GlanceModifier
-                .fillMaxWidth()
+            modifier = modifier
                 .background(frontColor)
                 .cornerRadius(14.dp)
-                .padding(horizontal = 16.dp, vertical = 10.dp),
+                .padding(horizontal = 16.dp, vertical = 6.dp),
             verticalAlignment = Alignment.Vertical.CenterVertically,
         ) {
             Column(modifier = GlanceModifier.wrapContentWidth(), horizontalAlignment = Alignment.Horizontal.Start) {
