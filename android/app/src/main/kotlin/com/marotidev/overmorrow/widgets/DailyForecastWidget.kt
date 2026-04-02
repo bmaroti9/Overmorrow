@@ -77,10 +77,8 @@ private data class ForecastDay(
     val hi: Int,
     val lo: Int,
     val precipPct: Int,      // 0 if unknown/zero
-) {
-    val displayCondition: String
-        get() = condition.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }
-}
+    val displayCondition: String = condition.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() },
+)
 
 /**
  * All daily forecast widget data parsed from SharedPreferences.
@@ -144,8 +142,7 @@ class DailyForecastWidget : GlanceAppWidget() {
         val count = minOf(names.size, highs.size, lows.size, MAX_DAYS)
         val days = (0 until count).map { i ->
             ForecastDay(
-                // TODO: read translated "Today"/"Tomorrow" from Flutter-side SharedPreferences
-                label     = when (i) { 0 -> "Today"; 1 -> "Tomorrow"; else -> names[i] },
+                label     = names.getOrElse(i) { "" },
                 condition = conds.getOrElse(i) { "" },
                 hi        = highs[i],
                 lo        = lows[i],

@@ -17,10 +17,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:overmorrow/l10n/app_localizations.dart';
 import 'package:overmorrow/services/notification_service.dart';
+import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -102,18 +105,25 @@ class WidgetService {
     "We are such stuff as dreams are made on.",
   ];
 
-  static Future<void> syncDailyForecastDataToWidget(LightDailyForecastData data, int widgetId) async {
+  static Future<void> syncDailyForecastDataToWidget(LightDailyForecastData data, int widgetId, SharedPreferences prefs) async {
     await saveData("dailyForecast.currentTemp.$widgetId", data.currentTemp);
     await saveData("dailyForecast.dailyHighTemps.$widgetId", data.dailyHighTemps);
     await saveData("dailyForecast.dailyLowTemps.$widgetId", data.dailyLowTemps);
     await saveData("dailyForecast.dailyConditions.$widgetId", data.dailyConditions);
-    await saveData("dailyForecast.dailyNames.$widgetId", data.dailyNames);
+
+    // Replace index 0/1 names with translated "Today"/"Tomorrow"
+    final localeName = prefs.getString("Language") ?? "English";
+    final locale = languageNameToLocale[localeName] ?? const Locale("en");
+    final l10n = lookupAppLocalizations(locale);
+    final List<String> rawNames = (jsonDecode(data.dailyNames) as List).cast<String>();
+    if (rawNames.isNotEmpty) rawNames[0] = l10n.today;
+    if (rawNames.length > 1) rawNames[1] = l10n.tomorrowLowercase.replaceFirstMapped(RegExp(r'^.'), (m) => m[0]!.toUpperCase());
+    await saveData("dailyForecast.dailyNames.$widgetId", jsonEncode(rawNames));
+
     await saveData("dailyForecast.dailyPrecipProbs.$widgetId", data.dailyPrecipProbs);
     await saveData("widget.place.$widgetId", data.place);
-    // Today's date label e.g. "Tue, Mar 31"
     final todayLabel = DateFormat('EEE, MMM d').format(DateTime.now());
     await saveData("dailyForecast.todayDate.$widgetId", todayLabel);
-    // Rotate Shakespeare quote on each update
     final quoteIndex = (widgetId + DateTime.now().day) % _shakespeareQuotes.length;
     await saveData("widget.quote.$widgetId", _shakespeareQuotes[quoteIndex]);
   }
@@ -263,7 +273,6 @@ void myCallbackDispatcher() {
             final int widgetId = widgetInfo.androidWidgetId!;
             final String widgetClassName = widgetInfo.androidClassName!;
             print(("classname", widgetClassName));
-            print("DEBUG: Processing widget with ID=$widgetId, className=$widgetClassName");
 
             final String locationKey = "widget.location.$widgetId";
             final String latLonKey = "widget.latLon.$widgetId";
@@ -316,7 +325,7 @@ void myCallbackDispatcher() {
               LightDailyForecastData data = await LightDailyForecastData
                   .getLightDailyData(placeName, latLon, widgetProvider, prefs);
 
-              await WidgetService.syncDailyForecastDataToWidget(data, widgetId);
+              await WidgetService.syncDailyForecastDataToWidget(data, widgetId, prefs);
             }
 
           }
