@@ -228,5 +228,13 @@
     "low": "scăzut",
     "high": "ridicat",
     "liveRadar": "radar live",
-    "ongoingNotification": "notificare în curs"
+    "ongoingNotification": "notificare în curs",
+    "north": "N",
+    "northEast": "NE",
+    "east": "E",
+    "southEast": "SE",
+    "south": "S",
+    "southWest": "SV",
+    "west": "V",
+    "northWest": "NV"
 }
