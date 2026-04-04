@@ -230,5 +230,19 @@
     "heavy": "fuerte",
     "@heavy": {
         "description": "heavy precipitation"
-    }
+    },
+    "pressureLowercase": "presión",
+    "backgroundUpdates": "Actualizaciones en segundo plano",
+    "backgroundUpdatesSettingsDesc": "actualizaciones de widget, notificaciones",
+    "cold": "frio",
+    "hot": "caliente",
+    "southWest": "SO",
+    "west": "O",
+    "northWest": "NO",
+    "calm": "tranquilo",
+    "severe": "severo",
+    "low": "bajo",
+    "high": "alto",
+    "liveRadar": "radar en vivo",
+    "ongoingNotification": "notificación en curso"
 }
