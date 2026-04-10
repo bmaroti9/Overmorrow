@@ -1,1 +1,240 @@
-{}
+{
+    "feelsLike": "Pocitovo",
+    "precipCapital": "Zrážky",
+    "humidity": "Vlhkosť",
+    "windCapital": "Vietor",
+    "uvCapital": "UV",
+    "settings": "Nastavenia",
+    "today": "Dnes",
+    "tomorrowLowercase": "zajtra",
+    "overmorrowLowercase": "Pozajtra",
+    "language": "Jazyk",
+    "temperature": "Teplota",
+    "precipitaion": "Zrážky",
+    "rain": "Dážď",
+    "clearNight": "Jasná noc",
+    "partlyCloudy": "Čiastočne zamračené",
+    "clearSky": "Jasná obloha",
+    "overcast": "Zamračené",
+    "haze": "Opar",
+    "drizzle": "Mrholenie",
+    "thunderstorm": "Búrka",
+    "heavySnow": "Silné sneženie",
+    "fog": "Hmla",
+    "snow": "Sneh",
+    "heavyRain": "Silný dážď",
+    "cloudyNight": "Oblačná noc",
+    "weakOrNoWifiConnection": "Slabé alebo žiadne wifi pripojenie",
+    "notConnectedToTheInternet": "Bez pripojenia na internet",
+    "placeNotFound": "Miesto nebolo nájdené",
+    "unableToLocateDevice": "Nedá sa zistiť poloha zariadenia",
+    "locationServicesAreDisabled": "služby polohy sú vypnuté.",
+    "locationPermissionIsDenied": "povolenie polohy je odmietnuté",
+    "locationPermissionDeniedForever": "povolenie polohy je odmietnuté navždy",
+    "currentLocation": "súčasná poloha",
+    "favoritesLowercase": "obľúbené",
+    "failedToAccessGps": "zlyhanie prístupu k gps",
+    "search": "Hľadať...",
+    "sunriseSunset": "východ slnka / západ slnka",
+    "airQuality": "Kvalita ovzdušia",
+    "airQualityLowercase": "kvalita ovzdušia",
+    "good": "dobré",
+    "fair": "mierne",
+    "moderate": "stredné",
+    "poor": "zlé",
+    "weatherProvderLowercase": "poskytovateľ počasia",
+    "unhealthy": "nezdravé",
+    "radar": "radar",
+    "mon": "Pon",
+    "tue": "Uto",
+    "wed": "Str",
+    "thu": "Štv",
+    "fri": "Pia",
+    "sat": "Sob",
+    "sun": "Ned",
+    "fontSize": "Veľkosť písma",
+    "dailyLowercase": "denné",
+    "searchProvider": "Poskytovateľ hľadania",
+    "updatedJustNow": "aktualizované, teraz",
+    "colorSource": "Zdroj farby",
+    "imageSource": "Zdroj obrázkov",
+    "precipLowercase": "zrážky",
+    "windLowercase": "vietor",
+    "uvLowercase": "uv",
+    "tempLowercase": "teplota",
+    "pressureLowercase": "tlak",
+    "goodAqiDesc": "Kvalita vzduchu je výborná, žiadne zdravotné riziko.",
+    "photoByXOnUnsplash": "Fotografia, od ,x, na ,Unsplash",
+    "sourceCodeLowercase": "zdrojový kód",
+    "emailLowercase": "email",
+    "reportAnIssueLowercase": "nahlásiť problém",
+    "donateLowercase": "podporiť",
+    "versionUppercase": "Verzia",
+    "apiAndServices": "API & Služby",
+    "licenseUppercase": "Licencia",
+    "imagesLowercase": "obrázky",
+    "grantLocationPermission": "povoliť prístup k polohe",
+    "veryPoor": "veľmi zlé",
+    "colorMode": "Farebný mód",
+    "timeMode": "Časový režim",
+    "sumLowercase": "zhrn.",
+    "@sumLowercase": {
+        "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+    },
+    "fairAqiDesc": "Akceptovateľná kvalita vzduchu, malé riziko pre citlivé osoby.",
+    "moderateAqiDesc": "Citlivé osoby môžu pociťovať mierne účinky.",
+    "poorAqiDesc": "Zdravotné účinky sú možné u každého, vážnejšie u citlivých skupín.",
+    "veryPoorAqiDesc": "Vážne zdravotné účinky u každého.",
+    "unhealthyAqiDesc": "Núdzové podmienky, závažné zdravotné účinky u všetkých osôb.",
+    "weatherDataLowercase": "údaje o počasí",
+    "appearance": "Vzhľad",
+    "general": "Všeobecné",
+    "units": "Jednotky",
+    "about": "O aplikácií",
+    "backgroundUpdates": "Aktualizácie v pozadí",
+    "appearanceSettingDesc": "farebná téma, zdroj obrázka",
+    "generalSettingDesc": "časový režim, veľkosť písma",
+    "languageSettingDesc": "používaný jazyk",
+    "unitsSettingdesc": "jednotky používané v aplikácii",
+    "aboutSettingsDesc": "o tejto aplikácii",
+    "backgroundUpdatesSettingsDesc": "aktualizácie widgetu, upozornenia",
+    "now": "teraz",
+    "hr": "h",
+    "layout": "Rozloženie",
+    "layoutSettingDesc": "poradie widgetov, prispôsobenie",
+    "thirtyMinutes": "30 min",
+    "mainPollutant": "hlavná znečisťujúca látka",
+    "alderPollen": "Peľ jelše",
+    "birchPollen": "Peľ brezy",
+    "grassPollen": "Peľ tráv",
+    "mugwortPollen": "Peľ paliny",
+    "olivePollen": "Peľ olivy",
+    "ragweedPollen": "Peľ ambrózie",
+    "dailyAqi": "denné AQI",
+    "dateFormat": "Formát dátumu",
+    "d": "d",
+    "@d": {
+        "description": "short for day"
+    },
+    "aerosolOpticalDepth": "optická hrúbka aerosólov",
+    "dust": "prach",
+    "europeanAqi": "európske aqi",
+    "unitedStatesAqi": "USA AQI",
+    "offline": "offline",
+    "helpTranslate": "pomôž preložiť",
+    "slightlyHazy": "mierne oparno",
+    "hazy": "oparno",
+    "veryHazy": "veľmi oparno",
+    "extremelyHazy": "extrémne oparno",
+    "poweredByOpenMeteo": "poháňané službou open‑meteo",
+    "@poweredByOpenMeteo": {
+        "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+    },
+    "showMore": "zobraziť viac",
+    "showLess": "zobraziť menej",
+    "cold": "zima",
+    "hot": "teplo",
+    "calm": "pokoj",
+    "low": "nízko",
+    "high": "vysoko",
+    "liveRadar": "radar naživo",
+    "north": "S",
+    "northEast": "SV",
+    "east": "V",
+    "southEast": "JV",
+    "south": "J",
+    "southWest": "JZ",
+    "west": "Z",
+    "northWest": "SZ",
+    "ongoingNotification": "prebiehajúce upozornenie",
+    "severe": "vážne",
+    "heavy": "tažké",
+    "@heavy": {
+        "description": "heavy precipitation"
+    },
+    "alertsCapital": "Hlásenia",
+    "alertsLowercase": "hlásenia",
+    "severity": "vážnosť",
+    "certainty": "istota",
+    "urgency": "naliehavosť",
+    "areas": "územia",
+    "light": "ľahké",
+    "@light": {
+        "description": "light precipitation"
+    },
+    "radarHaptics": "Haptická odozva radaru",
+    "@radarHaptics": {
+        "description": "setting for enabling or disabling haptic feedback for the radar"
+    },
+    "rainInHalfHour": "dážď v nasledujúcej polhodine",
+    "@rainInHalfHour": {
+        "description": "rain in the next half an hour"
+    },
+    "rainInMinutes": "dážď v nasledujúcej {minutes, plural, =1 {minúte} other {{minutes} minútach}}",
+    "@rainInMinutes": {
+        "description": "rain in the next X minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "rainInOneHour": "dážď v nasledujúcej hodine",
+    "@rainInOneHour": {
+        "description": "rain in the next hour"
+    },
+    "extremelyClear": "extrémne čisto",
+    "veryClear": "veľmi čisto",
+    "clear": "čisto",
+    "rainInHours": "dážď v nasledujúcej {hours, plural, =1 {hodine} other {{hours} hodinách}}",
+    "@rainInHours": {
+        "description": "rain in the next X hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "rainExpectedInMinutes": "očakáva sa dážď o {minutes, plural, =1 {minútu} other {{minutes} minút}}",
+    "@rainExpectedInMinutes": {
+        "description": "rain expected in the next X minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "rainExpectedInOneHour": "očakáva sa dážď o hodinu",
+    "@rainExpectedInOneHour": {
+        "description": "rain expected in the next hour"
+    },
+    "rainExpectedInHours": "očakáva sa dážď o {hours, plural, =1 {hodinu} other {{hours} hodín}}",
+    "@rainExpectedInHours": {
+        "description": "rain expected in the next X hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXMinutesAgo": "aktualizované pred {minutes} min",
+    "updatedXHoursAgo": "aktualizované pred {hours, plural, =1 {1 hodinou} other {{hours} hodinami}}",
+    "@updatedXHoursAgo": {
+        "description": "updated x hours ago",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXDaysAgo": "aktualizované pred {days, plural, =1 {1 dňom} other {{days} dňami}}",
+    "@updatedXDaysAgo": {
+        "description": "updated x days ago",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "sleet": "Poľadovica"
+}
