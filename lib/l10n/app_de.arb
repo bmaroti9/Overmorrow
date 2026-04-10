@@ -231,5 +231,13 @@
     "@light": {
         "description": "light precipitation"
     },
-    "alertsLowercase": "Warnungen"
+    "alertsLowercase": "Warnungen",
+    "north": "N",
+    "northEast": "NO",
+    "east": "O",
+    "southEast": "SO",
+    "south": "S",
+    "southWest": "SW",
+    "west": "W",
+    "northWest": "NW"
 }
