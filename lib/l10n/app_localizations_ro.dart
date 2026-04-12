@@ -548,11 +548,11 @@ class AppLocalizationsRo extends AppLocalizations {
   String get south => 'S';
 
   @override
-  String get southWest => 'SW';
+  String get southWest => 'SV';
 
   @override
-  String get west => 'W';
+  String get west => 'V';
 
   @override
-  String get northWest => 'NW';
+  String get northWest => 'NV';
 }

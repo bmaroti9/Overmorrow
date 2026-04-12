@@ -99,8 +99,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get unableToLocateDevice => 'Impossibile localizzare il dispositivo';
 
   @override
-  String get locationServicesAreDisabled =>
-      'I servizi di localizzazione sono disattivati.';
+  String get locationServicesAreDisabled => 'localizzazione disattivata.';
 
   @override
   String get locationPermissionIsDenied => 'Permesso di posizione negato';
@@ -119,7 +118,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get favoritesLowercase => 'preferiti';
 
   @override
-  String get failedToAccessGps => 'Impossibile accedere al GPS';
+  String get failedToAccessGps => 'impossibile accedere al gps';
 
   @override
   String get search => 'Cerca...';
@@ -215,10 +214,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'Temp';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'pressione';
 
   @override
   String get goodAqiDesc =>
@@ -286,7 +285,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get about => 'Informazioni';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'Aggiornamenti in background';
 
   @override
   String get appearanceSettingDesc => 'tema colore, sorgente immagine';
@@ -305,7 +304,8 @@ class AppLocalizationsIt extends AppLocalizations {
   String get aboutSettingsDesc => 'informazioni su questa app';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc =>
+      'Aggiornamenti del widget, notifiche';
 
   @override
   String get now => 'ora';
@@ -508,28 +508,28 @@ class AppLocalizationsIt extends AppLocalizations {
   String get showLess => 'mostra meno';
 
   @override
-  String get cold => 'cold';
+  String get cold => 'freddo';
 
   @override
-  String get hot => 'hot';
+  String get hot => 'caldo';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'calmo';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'forte';
 
   @override
-  String get low => 'low';
+  String get low => 'basso';
 
   @override
-  String get high => 'high';
+  String get high => 'alto';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'radar in tempo reale';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'notifiche attuali';
 
   @override
   String get north => 'N';

@@ -519,10 +519,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get severe => 'silny';
 
   @override
-  String get low => 'low';
+  String get low => 'niski';
 
   @override
-  String get high => 'high';
+  String get high => 'wysoki';
 
   @override
   String get liveRadar => 'radar na żywo';

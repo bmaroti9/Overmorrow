@@ -52,6 +52,8 @@ Map<String, Locale> languageNameToLocale = {
   'Slovenščina': const Locale('sl'),
   'עברית': const Locale('he'),
   'Català': const Locale('ca'),
+  'Oʻzbekcha': const Locale('uz'),
+  'Slovenčina': const Locale('sk')
 };
 
 Map<String, String> weatherIconPathMap = {
@@ -390,6 +392,7 @@ Map<String, String> textBackground = {
 Map<String, List<double>> conversionTable = {
   '˚C': [0, 1],
   '˚F': [32, 1.8],
+  '°K': [273.15, 1],
   'mm': [0, 1],
   'in': [0, 0.0393701],
   'km/h': [0, 1],
