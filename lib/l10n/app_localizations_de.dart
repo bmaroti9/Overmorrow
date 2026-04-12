@@ -535,13 +535,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get north => 'N';
 
   @override
-  String get northEast => 'NE';
+  String get northEast => 'NO';
 
   @override
-  String get east => 'E';
+  String get east => 'O';
 
   @override
-  String get southEast => 'SE';
+  String get southEast => 'SO';
 
   @override
   String get south => 'S';

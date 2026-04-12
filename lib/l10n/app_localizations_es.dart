@@ -219,7 +219,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tempLowercase => 'temp';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'presión';
 
   @override
   String get goodAqiDesc =>
@@ -287,7 +287,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get about => 'Acerca de';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'Actualizaciones en segundo plano';
 
   @override
   String get appearanceSettingDesc => 'tema de color, fuente de imagen';
@@ -305,7 +305,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get aboutSettingsDesc => 'Sobre esta aplicación';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc =>
+      'actualizaciones de widget, notificaciones';
 
   @override
   String get now => 'ahora';
@@ -508,28 +509,28 @@ class AppLocalizationsEs extends AppLocalizations {
   String get showLess => 'mostrar menos';
 
   @override
-  String get cold => 'cold';
+  String get cold => 'frio';
 
   @override
-  String get hot => 'hot';
+  String get hot => 'caliente';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'tranquilo';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'severo';
 
   @override
-  String get low => 'low';
+  String get low => 'bajo';
 
   @override
-  String get high => 'high';
+  String get high => 'alto';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'radar en vivo';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'notificación en curso';
 
   @override
   String get north => 'N';
@@ -547,11 +548,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get south => 'S';
 
   @override
-  String get southWest => 'SW';
+  String get southWest => 'SO';
 
   @override
-  String get west => 'W';
+  String get west => 'O';
 
   @override
-  String get northWest => 'NW';
+  String get northWest => 'NO';
 }

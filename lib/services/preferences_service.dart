@@ -62,7 +62,7 @@ Map<String, List<String>> settingSwitches = {
     'Oʻzbekcha', //Uzbek
     'Slovenčina', //Slovak
   ],
-  'Temperature': ['˚C', '˚F', '°K'],
+  'Temperature': ['˚C', '˚F', 'K'],
   'Precipitation': ['mm', 'in'],
   'Wind': ['m/s', 'km/h', 'mph', 'kn'],
 
