@@ -512,3 +512,87 @@ Future<LightHourlyForecastData> metNGetLightHourlyData(placeName, lat, lon, Shar
     hourly1Temps: jsonEncode(hourly1Temps),
   );
 }
+
+Future<LightDailyForecastData> metNGetLightDailyData(placeName, lat, lon, SharedPreferences prefs) async {
+  final String tempUnit = prefs.getString("Temperature") ?? "˚C";
+
+  final item = await metNGetLightResponse(lat, lon);
+  final timeseries = item["properties"]["timeseries"] as List;
+
+  final int currentTemp = unitConversion(
+      timeseries[0]["data"]["instant"]["details"]["air_temperature"],
+      tempUnit).round();
+
+  // Group timeseries entries by local date
+  final Map<String, List<dynamic>> byDay = {};
+  for (final ts in timeseries) {
+    final DateTime dt = DateTime.parse(ts["time"]).toLocal();
+    final String key = "${dt.year}-${dt.month.toString().padLeft(2, '0')}-${dt.day.toString().padLeft(2, '0')}";
+    byDay.putIfAbsent(key, () => []).add(ts);
+  }
+
+  final List<int> highTemps = [];
+  final List<int> lowTemps = [];
+  final List<String> conditions = [];
+  final List<String> names = [];
+  final List<int> precipProbs = [];
+
+  for (final entry in byDay.entries.take(7)) {
+    final hours = entry.value;
+
+    double high = -999;
+    double low = 999;
+    int rainHours = 0;
+    String? dayCondition;
+
+    for (final ts in hours) {
+      final double temp = (ts["data"]["instant"]["details"]["air_temperature"] as num).toDouble();
+      if (temp > high) high = temp;
+      if (temp < low) low = temp;
+
+      // Use noon symbol as representative daily condition
+      final DateTime dt = DateTime.parse(ts["time"]).toLocal();
+      if (dt.hour == 12 && dayCondition == null) {
+        final next6 = ts["data"]["next_6_hours"]?["summary"]?["symbol_code"] as String?;
+        final next1 = ts["data"]["next_1_hours"]?["summary"]?["symbol_code"] as String?;
+        dayCondition = next6 ?? next1;
+      }
+
+      // Count hours with precipitation forecast
+      final precip = (ts["data"]["next_1_hours"]?["details"]?["precipitation_amount"] as num?)?.toDouble() ?? 0.0;
+      if (precip > 0.1) rainHours++;
+    }
+
+    // Fallback condition from first available entry
+    if (dayCondition == null && hours.isNotEmpty) {
+      final next6 = hours[0]["data"]["next_6_hours"]?["summary"]?["symbol_code"] as String?;
+      final next1 = hours[0]["data"]["next_1_hours"]?["summary"]?["symbol_code"] as String?;
+      dayCondition = next6 ?? next1;
+    }
+
+    if (high == -999) high = 0;
+    if (low == 999) low = 0;
+
+    highTemps.add(unitConversion(high, tempUnit).round());
+    lowTemps.add(unitConversion(low, tempUnit).round());
+    conditions.add(metNTextCorrection(dayCondition ?? "clearsky_day"));
+
+    final DateTime date = DateTime.parse(entry.key);
+    names.add(DateFormat('EEE').format(date));
+
+    // Estimated: met-norway API does not provide daily precipitation probability,
+    // so we approximate it as the percentage of hours with precipitation > 0.1mm.
+    final int precipProb = hours.isEmpty ? 0 : ((rainHours / hours.length) * 100).round();
+    precipProbs.add(precipProb);
+  }
+
+  return LightDailyForecastData(
+    place: placeName,
+    currentTemp: currentTemp,
+    dailyHighTemps: jsonEncode(highTemps),
+    dailyLowTemps: jsonEncode(lowTemps),
+    dailyConditions: jsonEncode(conditions),
+    dailyNames: jsonEncode(names),
+    dailyPrecipProbs: jsonEncode(precipProbs),
+  );
+}

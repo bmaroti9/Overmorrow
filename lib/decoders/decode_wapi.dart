@@ -522,3 +522,48 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(placeName, lat, lon, Shar
     hourly1Temps: jsonEncode(hourly1Temps),
   );
 }
+
+Future<LightDailyForecastData> wapiGetLightDailyData(placeName, lat, lon, SharedPreferences prefs) async {
+  final String tempUnit = prefs.getString("Temperature") ?? "˚C";
+
+  // WeatherAPI free tier returns up to 3 days; paid plans support up to 14 days
+  final params = {
+    'key': wapi_Key,
+    'q': "$lat, $lon",
+    'days': '7',
+    'aqi': 'no',
+    'alerts': 'no',
+  };
+  final url = Uri.https('api.weatherapi.com', 'v1/forecast.json', params);
+  final response = (await http.get(url)).body;
+  final item = jsonDecode(response);
+
+  final int currentTemp = unitConversion(item["current"]["temp_c"], tempUnit).round();
+  final forecastDays = item["forecast"]["forecastday"] as List;
+
+  final List<int> highTemps = [];
+  final List<int> lowTemps = [];
+  final List<String> conditions = [];
+  final List<String> names = [];
+  final List<int> precipProbs = [];
+
+  for (final day in forecastDays) {
+    highTemps.add(unitConversion(day["day"]["maxtemp_c"], tempUnit).round());
+    lowTemps.add(unitConversion(day["day"]["mintemp_c"], tempUnit).round());
+    // is_day=1 for daily daytime representative condition
+    conditions.add(wapiTextCorrection(day["day"]["condition"]["code"], 1));
+    final DateTime date = DateTime.parse(day["date"]);
+    names.add(DateFormat('EEE').format(date));
+    precipProbs.add((day["day"]["daily_chance_of_rain"] ?? 0).round());
+  }
+
+  return LightDailyForecastData(
+    place: placeName,
+    currentTemp: currentTemp,
+    dailyHighTemps: jsonEncode(highTemps),
+    dailyLowTemps: jsonEncode(lowTemps),
+    dailyConditions: jsonEncode(conditions),
+    dailyNames: jsonEncode(names),
+    dailyPrecipProbs: jsonEncode(precipProbs),
+  );
+}
