@@ -122,7 +122,7 @@ class WidgetService {
 
     await saveData("dailyForecast.dailyPrecipProbs.$widgetId", data.dailyPrecipProbs);
     await saveData("widget.place.$widgetId", data.place);
-    final todayLabel = DateFormat('EEE, MMM d').format(DateTime.now());
+    final todayLabel = DateFormat('EEE, MMM d', locale.languageCode).format(DateTime.now());
     await saveData("dailyForecast.todayDate.$widgetId", todayLabel);
     final quoteIndex = (widgetId + DateTime.now().day) % _shakespeareQuotes.length;
     await saveData("widget.quote.$widgetId", _shakespeareQuotes[quoteIndex]);

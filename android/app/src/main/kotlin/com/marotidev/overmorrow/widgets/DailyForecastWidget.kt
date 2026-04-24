@@ -64,9 +64,11 @@ private data class ForecastDay(
     val hi: Int,
     val lo: Int,
     val precipPct: Int,
-    val displayCondition: String =
-        condition.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() },
-)
+) {
+    val displayCondition: String by lazy {
+        condition.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }
+    }
+}
 
 private data class DailyForecastData(
     val placeName: String,
@@ -123,6 +125,8 @@ private object Spec {
 
     val outerPadV = 10.dp
     val outerPadH = 12.dp
+
+    const val highPrecipThreshold = 60
 }
 
 private const val MAX_DAYS = 7
@@ -157,7 +161,7 @@ class DailyForecastWidget : GlanceAppWidget() {
         val names:  List<String> = json(str("dailyForecast.dailyNames",       "[]"), dfStrListType)
         val precip: List<Int>    = json(str("dailyForecast.dailyPrecipProbs", "[]"), dfIntListType)
 
-        val count = minOf(names.size, highs.size, lows.size, MAX_DAYS)
+        val count = minOf(names.size, highs.size, lows.size, conds.size, precip.size, MAX_DAYS)
         val days = (0 until count).map { i ->
             ForecastDay(
                 label     = names.getOrElse(i) { "" },
@@ -242,7 +246,7 @@ class DailyForecastWidget : GlanceAppWidget() {
                     style = TextStyle(color = frontColor, fontSize = 24.sp, fontWeight = FontWeight.Bold),
                 )
                 Text(
-                    "${today?.hi ?: 0}° / ${today?.lo ?: 0}°",
+                    "${today?.hi ?: "—"}° / ${today?.lo ?: "—"}°",
                     style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 11.sp),
                 )
                 if (tier.showPlace) {
@@ -250,6 +254,7 @@ class DailyForecastWidget : GlanceAppWidget() {
                     Text(
                         data.placeName,
                         style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 10.sp),
+                        maxLines = 1,
                     )
                 }
             }
@@ -270,8 +275,8 @@ class DailyForecastWidget : GlanceAppWidget() {
             modifier = GlanceModifier
                 .fillMaxSize()
                 .background(backColor)
-                .padding(horizontal = 14.dp, vertical = 12.dp)
                 .cornerRadius(24.dp)
+                .padding(horizontal = 14.dp, vertical = 12.dp)
                 .clickable(onClick = clickAction),
         ) {
             val today = data.days.firstOrNull()
@@ -295,7 +300,7 @@ class DailyForecastWidget : GlanceAppWidget() {
                         style = TextStyle(color = frontColor, fontSize = 22.sp, fontWeight = FontWeight.Bold),
                     )
                     Text(
-                        "${today?.hi ?: 0}° / ${today?.lo ?: 0}°",
+                        "${today?.hi ?: "—"}° / ${today?.lo ?: "—"}°",
                         style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 11.sp),
                     )
                 }
@@ -305,7 +310,7 @@ class DailyForecastWidget : GlanceAppWidget() {
                     horizontalAlignment = Alignment.Horizontal.End,
                 ) {
                     if (data.todayDate.isNotEmpty()) {
-                        Text(data.todayDate, style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 10.sp))
+                        Text(data.todayDate, style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 10.sp), maxLines = 1)
                     }
                     LocationRow(tintColor = GlanceTheme.colors.outline, name = data.placeName, iconSize = 11.dp, fontSize = 10)
                 }
@@ -348,8 +353,8 @@ class DailyForecastWidget : GlanceAppWidget() {
             modifier = GlanceModifier
                 .fillMaxSize()
                 .background(backColor)
-                .padding(horizontal = Spec.outerPadH, vertical = Spec.outerPadV)
                 .cornerRadius(24.dp)
+                .padding(horizontal = Spec.outerPadH, vertical = Spec.outerPadV)
                 .clickable(onClick = clickAction),
         ) {
             HeaderRow(frontColor, data)
@@ -378,6 +383,7 @@ class DailyForecastWidget : GlanceAppWidget() {
             text  = "\"$quote\"",
             style = TextStyle(color = GlanceTheme.colors.outline, fontSize = fontSize.sp),
             modifier = GlanceModifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 2.dp),
+            maxLines = 2,
         )
     }
 
@@ -390,7 +396,7 @@ class DailyForecastWidget : GlanceAppWidget() {
                 colorFilter = ColorFilter.tint(tintColor),
                 modifier    = GlanceModifier.size(iconSize).padding(end = 2.dp),
             )
-            Text(name, style = TextStyle(color = tintColor, fontSize = fontSize.sp))
+            Text(name, style = TextStyle(color = tintColor, fontSize = fontSize.sp), maxLines = 1)
         }
     }
 
@@ -419,7 +425,7 @@ class DailyForecastWidget : GlanceAppWidget() {
                     style = TextStyle(color = frontColor, fontSize = 28.sp, fontWeight = FontWeight.Bold),
                 )
                 Text(
-                    "${today?.hi ?: 0}° / ${today?.lo ?: 0}°",
+                    "${today?.hi ?: "—"}° / ${today?.lo ?: "—"}°",
                     style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 12.sp),
                 )
             }
@@ -431,7 +437,7 @@ class DailyForecastWidget : GlanceAppWidget() {
                 horizontalAlignment = Alignment.Horizontal.End,
             ) {
                 if (data.todayDate.isNotEmpty()) {
-                    Text(data.todayDate, style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 11.sp))
+                    Text(data.todayDate, style = TextStyle(color = GlanceTheme.colors.outline, fontSize = 11.sp), maxLines = 1)
                     Spacer(modifier = GlanceModifier.size(2.dp))
                 }
                 LocationRow(tintColor = GlanceTheme.colors.outline, name = data.placeName, iconSize = 12.dp, fontSize = 12)
@@ -461,7 +467,7 @@ class DailyForecastWidget : GlanceAppWidget() {
                 Text(
                     "${day.precipPct}%",
                     style = TextStyle(
-                        color    = if (day.precipPct >= 60) GlanceTheme.colors.error else GlanceTheme.colors.outline,
+                        color    = if (day.precipPct >= Spec.highPrecipThreshold) GlanceTheme.colors.error else GlanceTheme.colors.outline,
                         fontSize = 10.sp,
                     ),
                 )
@@ -486,7 +492,7 @@ class DailyForecastWidget : GlanceAppWidget() {
             Column(modifier = GlanceModifier.wrapContentWidth(), horizontalAlignment = Alignment.Horizontal.Start) {
                 Text(day.label, style = TextStyle(color = onFrontColor, fontSize = 15.sp, fontWeight = FontWeight.Bold))
                 Spacer(modifier = GlanceModifier.size(1.dp))
-                Text(day.displayCondition, style = TextStyle(color = onFrontColor, fontSize = 11.sp))
+                Text(day.displayCondition, style = TextStyle(color = onFrontColor, fontSize = 11.sp), maxLines = 1)
             }
             Spacer(modifier = GlanceModifier.defaultWeight())
             Image(
@@ -505,7 +511,7 @@ class DailyForecastWidget : GlanceAppWidget() {
                 Text(
                     "${day.precipPct}%",
                     style = TextStyle(
-                        color    = if (day.precipPct >= 60) GlanceTheme.colors.error else onFrontColor,
+                        color    = if (day.precipPct >= Spec.highPrecipThreshold) GlanceTheme.colors.error else onFrontColor,
                         fontSize = 12.sp,
                     ),
                 )
