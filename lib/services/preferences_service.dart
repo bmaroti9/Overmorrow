@@ -25,7 +25,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'color_service.dart';
 
 Map<String, List<String>> settingSwitches = {
-  'Language' : [
+  'Language': [
     'English', //English
     'Español', //Spanish
     'Français', //French
@@ -65,22 +65,26 @@ Map<String, List<String>> settingSwitches = {
   'Temperature': ['˚C', '˚F', 'K'],
   'Precipitation': ['mm', 'in'],
   'Wind': ['m/s', 'km/h', 'mph', 'kn'],
-
   'Time mode': ['12 hour', '24 hour'],
   'Date format': ['mm/dd', 'dd/mm'],
-
   'Font size': ['normal', 'small', 'very small', 'big'],
-
-  'Color mode' : ['auto', 'light', 'dark'],
-
-  'Color source' : ['image', 'wallpaper', 'custom'],
-  'Image source' : ['network', 'asset'],
-  'Custom color': ['#c62828', '#ff80ab', '#7b1fa2', '#9575cd', '#3949ab', '#40c4ff',
-    '#4db6ac', '#4caf50', '#b2ff59', '#ffeb3b', '#ffab40',],
-
-  'Search provider' : ['weatherapi', 'open-meteo'],
-
-  'Layout' : ["sunstatus,rain indicator,hourly,alerts,radar,daily,air quality"],
+  'Color mode': ['auto', 'light', 'dark'],
+  'Color source': ['image', 'wallpaper', 'custom'],
+  'Image source': ['network', 'asset'],
+  'Custom color': [
+    '#c62828',
+    '#ff80ab',
+    '#7b1fa2',
+    '#9575cd',
+    '#3949ab',
+    '#40c4ff',
+    '#4db6ac',
+    '#4caf50',
+    '#b2ff59',
+    '#ffeb3b',
+    '#ffab40',
+  ],
+  'Layout': ["sunstatus,rain indicator,hourly,alerts,radar,daily,air quality"],
   'Radar haptics': ["on", "off"],
 };
 
@@ -160,9 +164,12 @@ class ThemeProvider with ChangeNotifier {
   void loadTheme() {
     _brightness = PreferenceUtils.getString("Color mode", "auto");
     switch (_brightness) {
-      case "light": _themeMode = ThemeMode.light;
-      case "dark": _themeMode = ThemeMode.dark;
-      case "auto": _themeMode = ThemeMode.system;
+      case "light":
+        _themeMode = ThemeMode.light;
+      case "dark":
+        _themeMode = ThemeMode.dark;
+      case "auto":
+        _themeMode = ThemeMode.system;
     }
   }
 
@@ -181,14 +188,21 @@ class ThemeProvider with ChangeNotifier {
   void setBrightness(String brightness) {
     PreferenceUtils.setString("Color mode", brightness);
     switch (brightness) {
-      case "light": _themeMode = ThemeMode.light; _brightness = brightness;
-      case "dark": _themeMode = ThemeMode.dark; _brightness = brightness;
-      case "auto": _themeMode = ThemeMode.system; _brightness = brightness;
+      case "light":
+        _themeMode = ThemeMode.light;
+        _brightness = brightness;
+      case "dark":
+        _themeMode = ThemeMode.dark;
+        _brightness = brightness;
+      case "auto":
+        _themeMode = ThemeMode.system;
+        _brightness = brightness;
     }
     notifyListeners();
   }
 
-  void changeColorSchemeToImageScheme(ColorScheme lightColorScheme, ColorScheme darkColorScheme) {
+  void changeColorSchemeToImageScheme(
+      ColorScheme lightColorScheme, ColorScheme darkColorScheme) {
     _colorSchemeLight = lightColorScheme;
     _colorSchemeDark = darkColorScheme;
     notifyListeners();
@@ -202,8 +216,7 @@ class ThemeProvider with ChangeNotifier {
       //null it so it falls back to the dynamic palettes
       _colorSchemeLight = null;
       _colorSchemeDark = null;
-    }
-    else if (_colorSource == "custom") {
+    } else if (_colorSource == "custom") {
       loadCustomColorScheme();
     }
     notifyListeners();
@@ -211,8 +224,10 @@ class ThemeProvider with ChangeNotifier {
 
   void updateCustomColorFromHex() {
     _themeSeedColor = Color(getColorFromHex(_themeSeedColorHex));
-    _colorSchemeLight = ColorScheme.fromSeed(seedColor: _themeSeedColor, brightness: Brightness.light);
-    _colorSchemeDark = ColorScheme.fromSeed(seedColor: _themeSeedColor, brightness: Brightness.dark);
+    _colorSchemeLight = ColorScheme.fromSeed(
+        seedColor: _themeSeedColor, brightness: Brightness.light);
+    _colorSchemeDark = ColorScheme.fromSeed(
+        seedColor: _themeSeedColor, brightness: Brightness.dark);
   }
 
   void setCustomColorScheme(String to) {
@@ -235,11 +250,17 @@ class SettingsProvider with ChangeNotifier {
 
   bool _radarHapticsOn = true;
 
-  String _searchProvider = "weatherapi";
-
   String _imageSource = "network";
 
-  List<String> _layout = ["sunstatus", "rain indicator" ,"hourly", "alerts" ,"radar", "daily", "air quality"];
+  List<String> _layout = [
+    "sunstatus",
+    "rain indicator",
+    "hourly",
+    "alerts",
+    "radar",
+    "daily",
+    "air quality"
+  ];
 
   double _textScale = 1.0;
 
@@ -264,8 +285,6 @@ class SettingsProvider with ChangeNotifier {
   String get getDateFormat => _dateFormat;
 
   bool get getRadarHapticsOn => _radarHapticsOn;
-
-  String get getSearchProvider => _searchProvider;
 
   String get getImageSource => _imageSource;
 
@@ -292,7 +311,8 @@ class SettingsProvider with ChangeNotifier {
   }
 
   void _load() {
-    _weatherProvider = PreferenceUtils.getString("Weather provider", "open-meteo");
+    _weatherProvider =
+        PreferenceUtils.getString("Weather provider", "open-meteo");
 
     _tempUnit = PreferenceUtils.getString("Temperature", "˚C");
     _windUnit = PreferenceUtils.getString("Wind", "m/s");
@@ -312,19 +332,29 @@ class SettingsProvider with ChangeNotifier {
 
     _imageSource = PreferenceUtils.getString("Image source", "network");
 
-    _searchProvider = PreferenceUtils.getString("Search provider", "weatherapi");
-
-    _layout = PreferenceUtils.getStringList("Layout order", ["sunstatus", "rain indicator" ,"hourly", "alerts" ,"radar", "daily", "air quality"]);
+    _layout = PreferenceUtils.getStringList("Layout order", [
+      "sunstatus",
+      "rain indicator",
+      "hourly",
+      "alerts",
+      "radar",
+      "daily",
+      "air quality"
+    ]);
 
     _textScale = PreferenceUtils.getDouble("Text scale", 1.0);
 
     _location = PreferenceUtils.getString("LastPlaceN", "New York");
     _latLon = PreferenceUtils.getString("LastCord", "40.7128, -74.0060");
 
-    _ongoingNotificationOn = PreferenceUtils.getBool("Ongoing notification", false);
-    _ongoingNotificationPlace = PreferenceUtils.getString("Ongoing place", "unknown");
-    _ongoingNotificationLatLon = PreferenceUtils.getString("Ongoing latLon", "unknown");
-    _ongoingNotificationProvider = PreferenceUtils.getString("Ongoing provider", "open-meteo");
+    _ongoingNotificationOn =
+        PreferenceUtils.getBool("Ongoing notification", false);
+    _ongoingNotificationPlace =
+        PreferenceUtils.getString("Ongoing place", "unknown");
+    _ongoingNotificationLatLon =
+        PreferenceUtils.getString("Ongoing latLon", "unknown");
+    _ongoingNotificationProvider =
+        PreferenceUtils.getString("Ongoing provider", "open-meteo");
   }
 
   void _loadLocale() {
@@ -377,7 +407,8 @@ class SettingsProvider with ChangeNotifier {
     PreferenceUtils.setString("Time mode", to);
     _timeMode = to;
     notifyListeners();
-    WidgetService.updateWidgetTimeFormat(to).then((_) => WidgetService.reloadWidgets());
+    WidgetService.updateWidgetTimeFormat(to)
+        .then((_) => WidgetService.reloadWidgets());
   }
 
   void setDateFormat(String to) {
@@ -422,12 +453,6 @@ class SettingsProvider with ChangeNotifier {
       NotificationService().updateOngoingNotification(PreferenceUtils.instance);
     }
 
-    notifyListeners();
-  }
-
-  void setSearchProvider(String to) {
-    PreferenceUtils.setString("Search provider", to);
-    _searchProvider = to;
     notifyListeners();
   }
 
