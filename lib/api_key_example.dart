@@ -20,15 +20,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //To test this project with your own api key, first rename this file to api_key.dart.
 //Then add your own api keys below:
 
-//IMPORTANT: Overmorrow has 3 weather providers (open-meteo and weatherapi and met-norway)
-//but only weatherapi requires an api key. You don't need an api key for open-meteo or met-norway.
+//IMPORTANT: Overmorrow has 4 weather providers (open-meteo, weatherapi, met-norway and meteo-france)
+//but only weatherapi requires an api key. You don't need an api key for open-meteo, met-norway or meteo-france.
 
-const String wapi_key = "YourWeatherApiKey"; //your api key from weatherapi.com
-//the app works without this if you only use the open-meteo or met-norway providers
+const String wapi_Key = "YourWeatherApiKey"; //your api key from weatherapi.com
+//the app works without this if you only use the open-meteo, met-norway or meteo-france providers
 
 const String access_key = "YourUnsplashApiKey"; //your api key from unsplash.com
 //the app works without this if you set the image source to asset
-
-const String timezonedbKey = "YourTimezonedbKey"; //your api key from timezonedb.com
-//the app works without this if you use open-meteo as weather provider
-//both the others don't return local times so they need this instead

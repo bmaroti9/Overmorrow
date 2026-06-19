@@ -65,6 +65,8 @@ dependencies:
   google_fonts: ^6.2.1
   workmanager: ^0.6.0
   maplibre_gl: ^0.25.0
+  timezone: ^0.10.1
+  lat_lng_to_timezone: ^0.2.0
 
 dev_dependencies:
   flutter_test:

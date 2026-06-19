@@ -381,6 +381,16 @@ class ServicesPage extends StatelessWidget {
                            style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 17,
                              decoration: TextDecoration.underline,),),
                         ),
+                       const SizedBox(height: 10,),
+                       GestureDetector(
+                         onTap: () {
+                           HapticFeedback.lightImpact();
+                           _launchUrl("https://meteofrance.com/");
+                         },
+                         child: Text("meteo-france",
+                           style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 17,
+                             decoration: TextDecoration.underline,),),
+                        ),
                       ],
                      ),
                     ),

@@ -391,27 +391,34 @@ class _BackgroundUpdatesPageState extends State<BackgroundUpdatesPage> {
                           child: Text(AppLocalizations.of(context)!.weatherProvderLowercase),
                         ),
 
-                        SegmentedButton(
-                          multiSelectionEnabled: false,
-                          segments: const <ButtonSegment>[
-                            ButtonSegment(
-                              value: "open-meteo",
-                              label: Text('open-meteo'),
-                            ),
-                            ButtonSegment(
-                              value: "weatherapi",
-                              label: Text('weatherapi'),
-                            ),
-                            ButtonSegment(
-                              value: "met-norway",
-                              label: Text('met-norway'),
-                            ),
-                          ],
-                          selected: {context.select((SettingsProvider p) => p.getOngoingNotificationProvider)},
-                          onSelectionChanged: (newSelection) {
-                            HapticFeedback.lightImpact();
-                            context.read<SettingsProvider>().setOngoingNotificationProvider(newSelection.first);
-                          },
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SegmentedButton(
+                            multiSelectionEnabled: false,
+                            segments: const <ButtonSegment>[
+                              ButtonSegment(
+                                value: "open-meteo",
+                                label: Text('open-meteo'),
+                              ),
+                              ButtonSegment(
+                                value: "weatherapi",
+                                label: Text('weatherapi'),
+                              ),
+                              ButtonSegment(
+                                value: "met-norway",
+                                label: Text('met-norway'),
+                              ),
+                              ButtonSegment(
+                                value: "meteo-france",
+                                label: Text('meteo-france'),
+                              ),
+                            ],
+                            selected: {context.select((SettingsProvider p) => p.getOngoingNotificationProvider)},
+                            onSelectionChanged: (newSelection) {
+                              HapticFeedback.lightImpact();
+                              context.read<SettingsProvider>().setOngoingNotificationProvider(newSelection.first);
+                            },
+                          ),
                         ),
                       ],
                     )

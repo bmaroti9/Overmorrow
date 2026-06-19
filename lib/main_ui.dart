@@ -39,7 +39,7 @@ import '../l10n/app_localizations.dart';
 String sanitizeErrorMessage(String e) {
   String newStr = e.toString().replaceAll(wapi_Key, "WAPIKEY");
   newStr = newStr.replaceAll(access_key, "UNSPLASHKEY");
-  newStr = newStr.replaceAll(timezonedbKey, "TIMEZONEDBKEY");
+  newStr = newStr.replaceAll("__Wj7dVSTjV9YGu1guveLyDq0g7S7TfTjaHBTPTpO0kj8__", "METEOFRANCETOKEN");
   return newStr;
 }
 
@@ -586,7 +586,7 @@ class ProviderSelector extends StatelessWidget {
                         child: Icon(Icons.unfold_more, color: Theme.of(context).colorScheme.primary, size: 22,),
                       ),
                       value: context.select((SettingsProvider p) => p.getWeatherProvider),
-                      items: ["weatherapi", "open-meteo", "met-norway"].map((item) {
+                      items: ["weatherapi", "open-meteo", "met-norway", "meteo-france"].map((item) {
                         return DropdownMenuItem(
                           value: item,
                           child: Padding(
