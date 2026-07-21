@@ -4,7 +4,7 @@
     "rain": "Kiša",
     "clearNight": "Vedra noć",
     "tomorrowLowercase": "sutra",
-    "feelsLike": "Osjeća se kao",
+    "feelsLike": "Osjet temperature",
     "humidity": "Vlažnost",
     "windCapital": "Vjetar",
     "uvCapital": "UV",
@@ -40,7 +40,7 @@
     "airQuality": "Kvaliteta zraka",
     "airQualityLowercase": "kvaliteta zraka",
     "good": "dobro",
-    "fair": "pošteno",
+    "fair": "prihvatljivo",
     "moderate": "umjereno",
     "poor": "loše",
     "veryPoor": "vrlo loše",
@@ -62,7 +62,7 @@
     "updatedJustNow": "ažurirano, upravo sada",
     "colorSource": "Izvor boje",
     "imageSource": "Izvor slike",
-    "sumLowercase": "suma",
+    "sumLowercase": "sažetak",
     "@sumLowercase": {
         "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
     },
@@ -162,7 +162,7 @@
     },
     "showMore": "pokaži više",
     "showLess": "pokaži manje",
-    "precipCapital": "Oborine.",
+    "precipCapital": "Oborine",
     "rainInMinutes": "kiša za {minutes, plural, =1 {minute} other {{minutes} minutes}}",
     "@rainInMinutes": {
         "description": "rain in the next X minutes",
