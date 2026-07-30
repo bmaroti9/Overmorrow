@@ -298,7 +298,7 @@ class SettingsProvider with ChangeNotifier {
     _windUnit = PreferenceUtils.getString("Wind", "m/s");
 
     //I'm migrating kph to km/h because it was confusing to a lot of people
-    //this should be removed after next release
+    //I'm actually keeping this for a few updates to make sure everyone gets migrated
     if (_windUnit == "kph") {
       PreferenceUtils.setString("Wind", "km/h");
       _windUnit = "km/h";
@@ -325,6 +325,9 @@ class SettingsProvider with ChangeNotifier {
     _ongoingNotificationPlace = PreferenceUtils.getString("Ongoing place", "unknown");
     _ongoingNotificationLatLon = PreferenceUtils.getString("Ongoing latLon", "unknown");
     _ongoingNotificationProvider = PreferenceUtils.getString("Ongoing provider", "open-meteo");
+
+    //I'm going to use this later for onboarding and default settings
+    PreferenceUtils.setBool("FirstTimeOpened", false);
   }
 
   void _loadLocale() {

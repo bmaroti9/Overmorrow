@@ -1,6 +1,6 @@
 package com.marotidev.overmorrow.receivers
 
-import HomeWidgetGlanceWidgetReceiver
+import es.antonborri.home_widget.HomeWidgetGlanceWidgetReceiver
 import com.marotidev.overmorrow.widgets.CurrentWidget
 
 class CurrentWidgetReceiver : HomeWidgetGlanceWidgetReceiver<CurrentWidget>() {

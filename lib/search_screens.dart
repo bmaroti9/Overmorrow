@@ -337,8 +337,9 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     //start by getting the last position, so there is always some place showing, and then update it later
     try {
       position = (await Geolocator.getLastKnownPosition())!;
+      final Geocoding geocoding = Geocoding();
 
-      List<Placemark> placemarks = await placemarkFromCoordinates(
+      List<Placemark> placemarks = await geocoding.placemarkFromCoordinates(
           position.latitude, position.longitude);
       Placemark place = placemarks[0];
 
@@ -388,8 +389,9 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     }
 
     try {
+      final Geocoding geocoding = Geocoding();
 
-      List<Placemark> placemarks = await placemarkFromCoordinates(
+      List<Placemark> placemarks = await geocoding.placemarkFromCoordinates(
           position.latitude, position.longitude);
       Placemark place = placemarks[0];
 

@@ -47,7 +47,7 @@ class NotificationService {
         const settings = InitializationSettings(android: androidSettings);
 
         await _plugin.initialize(
-          settings,
+          settings: settings,
           onDidReceiveNotificationResponse: (NotificationResponse response) {
           final String? payload = response.payload;
           if (payload != null) {
@@ -94,10 +94,10 @@ class NotificationService {
     const details = NotificationDetails(android: androidDetails);
 
     await _plugin.show(
-      0,
-      'Hello World',
-      'message',
-      details,
+      id: 0,
+      title: 'Hello World',
+      body: 'message',
+      notificationDetails: details,
     );
   }
 
@@ -120,7 +120,7 @@ class NotificationService {
   }
 
   void killOngoingNotification() {
-    _plugin.cancel(1);
+    _plugin.cancel(id: 1);
   }
 
   Future<void> showOngoingNotification(LightCurrentWeatherData data, String location, String latLon) async {
@@ -146,10 +146,10 @@ class NotificationService {
     };
 
     await _plugin.show(
-      1,
-      '${data.temp}° ${data.condition}',
-      data.place,
-      NotificationDetails(android: androidNotificationDetails,),
+      id: 1,
+      title: '${data.temp}° ${data.condition}',
+      body: data.place,
+      notificationDetails: NotificationDetails(android: androidNotificationDetails,),
       payload: jsonEncode(payloadData),
     );
   }

@@ -5,7 +5,6 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
     id("org.jetbrains.kotlin.plugin.compose") version "2.1.0"
 }
-
 android {
     namespace = "com.marotidev.overmorrow"
     compileSdk = flutter.compileSdkVersion

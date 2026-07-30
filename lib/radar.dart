@@ -24,7 +24,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:intl/intl.dart';
-import 'package:overmorrow/pages/radar_page.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:latlong2/latlong.dart';
@@ -224,8 +223,8 @@ class _RadarSmallState extends State<RadarSmall> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) =>
-                                    //RadarBig(data: widget.data, radarHapticsOn: widget.radarHapticsOn,)),
-                                    ThemedMapLibreMap())
+                                    RadarBig(data: widget.data, radarHapticsOn: widget.radarHapticsOn,)),
+                                    //ThemedMapLibreMap())
                               );
                             },
                             child: Icon(Icons.open_in_full,
@@ -500,7 +499,7 @@ class _RadarBigState extends State<RadarBig> {
               initialCenter: LatLng(widget.data.lat, widget.data.lng),
               initialZoom: 6,
               minZoom: 2,
-              maxZoom: 9,
+              maxZoom: 7,
 
               backgroundColor: mode == "dark" ? const Color(0xff262626) : const Color(0xffD4DADC),
               interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate,),
@@ -512,12 +511,6 @@ class _RadarBigState extends State<RadarBig> {
                     ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png'
                     : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
               ),
-              /*
-              TileLayer(
-                urlTemplate: "${widget.data.radar.images[currentFrameIndex.toInt()]}/256/{z}/{x}/{y}/2/1_1.png",
-                tileDisplay: const TileDisplay.instantaneous(),
-              ),
-               */
               ValueListenableBuilder<double>(
                 valueListenable: _frameNotifier,
                 builder: (context, frameIndex, child) {

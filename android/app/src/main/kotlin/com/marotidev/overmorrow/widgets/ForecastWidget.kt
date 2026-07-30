@@ -1,7 +1,7 @@
 package com.marotidev.overmorrow.widgets
 
-import HomeWidgetGlanceState
-import HomeWidgetGlanceStateDefinition
+import es.antonborri.home_widget.HomeWidgetGlanceState
+import es.antonborri.home_widget.HomeWidgetGlanceStateDefinition
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
