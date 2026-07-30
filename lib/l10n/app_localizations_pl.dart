@@ -12,7 +12,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get feelsLike => 'Odczuwalna';
 
   @override
-  String get precipCapital => 'Opady.';
+  String get precipCapital => 'Opady';
 
   @override
   String get humidity => 'Wilgotność';
@@ -42,7 +42,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get temperature => 'Temperatura';
 
   @override
-  String get precipitaion => 'Opady atmosferyczne';
+  String get precipitaion => 'Opady';
 
   @override
   String get rain => 'Deszcz';
@@ -107,10 +107,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever =>
-      'Trwała odmowa pozwolenia na lokalizację';
+      'Trwale odmów pozwolenia na lokalizację';
 
   @override
-  String get grantLocationPermission => 'udzielić pozwolenia na lokalizację';
+  String get grantLocationPermission => 'udziel pozwolenia na lokalizację';
 
   @override
   String get currentLocation => 'obecna lokalizacja';
@@ -122,7 +122,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get failedToAccessGps => 'gps niedostępny';
 
   @override
-  String get search => 'Szukam...';
+  String get search => 'Szukaj...';
 
   @override
   String get sunriseSunset => 'wschód/zachód';
@@ -215,7 +215,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'temperatura';
 
   @override
   String get pressureLowercase => 'ciśnienie';
@@ -361,7 +361,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get europeanAqi => 'europejski aqi';
 
   @override
-  String get unitedStatesAqi => 'amerykański aqi';
+  String get unitedStatesAqi => 'USA aqi';
 
   @override
   String get offline => 'offline';
@@ -513,7 +513,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get hot => 'ciepło';
 
   @override
-  String get calm => 'spokojny';
+  String get calm => 'spokojnie';
 
   @override
   String get severe => 'silny';

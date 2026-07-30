@@ -4,232 +4,232 @@ import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
 
-/// The translations for Slovenian (`sl`).
-class AppLocalizationsSl extends AppLocalizations {
-  AppLocalizationsSl([String locale = 'sl']) : super(locale);
+/// The translations for Bengali Bangla (`bn`).
+class AppLocalizationsBn extends AppLocalizations {
+  AppLocalizationsBn([String locale = 'bn']) : super(locale);
 
   @override
-  String get feelsLike => 'Občutek kot';
+  String get feelsLike => 'অনুভূত হচ্ছে';
 
   @override
-  String get precipCapital => 'Precip.';
+  String get precipCapital => 'বৃষ্টিপাত';
 
   @override
-  String get humidity => 'Vlažnost';
+  String get humidity => 'আর্দ্রতা';
 
   @override
-  String get windCapital => 'Veter';
+  String get windCapital => 'বায়ুপ্রবাহ';
 
   @override
-  String get uvCapital => 'UV';
+  String get uvCapital => 'ইউ ভি';
 
   @override
-  String get settings => 'Nastavitve';
+  String get settings => 'সেটিংস';
 
   @override
-  String get today => 'Danes';
+  String get today => 'আজ';
 
   @override
-  String get tomorrowLowercase => 'Jutri';
+  String get tomorrowLowercase => 'আগামীকাল';
 
   @override
-  String get overmorrowLowercase => 'Pojutrišnjem';
+  String get overmorrowLowercase => 'ওভারমরো';
 
   @override
-  String get language => 'Jezik';
+  String get language => 'ভাষা';
 
   @override
-  String get temperature => 'Temperatura';
+  String get temperature => 'তাপমাত্রা';
 
   @override
-  String get precipitaion => 'Padavine';
+  String get precipitaion => 'বৃষ্টিপাত';
 
   @override
-  String get rain => 'Dež';
+  String get rain => 'বৃষ্টিপাত';
 
   @override
-  String get clearNight => 'Jasna noč';
+  String get clearNight => 'নির্মল রাত্রি';
 
   @override
-  String get partlyCloudy => 'Delno oblačno';
+  String get partlyCloudy => 'আংশিক মেঘলা';
 
   @override
-  String get clearSky => 'Čisto nebo';
+  String get clearSky => 'নির্মল আকাশ';
 
   @override
-  String get overcast => 'Oblačno';
+  String get overcast => 'মেঘলা';
 
   @override
-  String get haze => 'Meglica';
+  String get haze => 'ঝাপসা';
 
   @override
-  String get sleet => 'Sodra';
+  String get sleet => 'Sleet';
 
   @override
-  String get drizzle => 'Rosenje';
+  String get drizzle => 'ঝিরি ঝিরি বৃষ্টি';
 
   @override
-  String get thunderstorm => 'Nevihta';
+  String get thunderstorm => 'বজ্রবিদ্যুৎসহ ঝড়';
 
   @override
-  String get heavySnow => 'Močno sneženje';
+  String get heavySnow => 'ভারী বরফপাত';
 
   @override
-  String get fog => 'Megla';
+  String get fog => 'কুয়াশা';
 
   @override
-  String get snow => 'Sneg';
+  String get snow => 'বরফ';
 
   @override
-  String get heavyRain => 'Močno deževje';
+  String get heavyRain => 'ভারী বৃষ্টিপাত';
 
   @override
-  String get cloudyNight => 'Oblačna noč';
+  String get cloudyNight => 'মেঘলা রাত্রি';
 
   @override
-  String get weakOrNoWifiConnection => 'Slaba ali ni internetne povezave';
+  String get weakOrNoWifiConnection => 'Weak or no wifi connection';
 
   @override
-  String get notConnectedToTheInternet => 'Ni povezave v internet';
+  String get notConnectedToTheInternet => 'ইন্টারনেট সংযোগ বিচ্ছিন্ন';
 
   @override
-  String get placeNotFound => 'Lokacije ni mogoče najti';
+  String get placeNotFound => 'স্থানটি পাওয়া যায়নি';
 
   @override
-  String get unableToLocateDevice => 'Ni mogoče locirati naprave';
+  String get unableToLocateDevice => 'Unable to locate device';
 
   @override
   String get locationServicesAreDisabled =>
-      'Lokacijske stortive so onemogočene.';
+      'অবস্থান পরিষেবা নিষ্ক্রিয় রয়েছে।';
 
   @override
-  String get locationPermissionIsDenied => 'Lokacijske pravice so zavrnjene';
+  String get locationPermissionIsDenied => 'অবস্থান অবলম্বনের অনুমতি নেই';
 
   @override
   String get locationPermissionDeniedForever =>
-      'Dovoljenje za dostop do lokacije je zvrnjeno za vedno';
+      'location permission denied forever';
 
   @override
-  String get grantLocationPermission => 'Dodeli lokacijsko pravico';
+  String get grantLocationPermission => 'অবস্থান অবলম্বনের অনুমতি দিন';
 
   @override
-  String get currentLocation => 'Trenutna lokacija';
+  String get currentLocation => 'বর্তমান অবস্থান';
 
   @override
-  String get favoritesLowercase => 'Priljubljeni';
+  String get favoritesLowercase => 'পছন্দ সমূহ';
 
   @override
-  String get failedToAccessGps => 'Napaka pri dostopanju do gps';
+  String get failedToAccessGps => 'জিপিএস অবলম্বনে ব্যর্থ';
 
   @override
-  String get search => 'Iskanje ...';
+  String get search => 'খুঁজুন…';
 
   @override
-  String get sunriseSunset => 'Sončni vzhod/zahod';
+  String get sunriseSunset => 'সূর্যোদয়/সূর্যাস্ত';
 
   @override
-  String get airQuality => 'Kakovost zraka';
+  String get airQuality => 'বাতাসের গুণমান';
 
   @override
-  String get airQualityLowercase => 'kakovost zraka';
+  String get airQualityLowercase => 'বাতাসের গুণমান';
 
   @override
-  String get good => 'dobro';
+  String get good => 'ভালো';
 
   @override
-  String get fair => 'sprejemljivo';
+  String get fair => 'ন্যায্য';
 
   @override
-  String get moderate => 'zmerno';
+  String get moderate => 'moderate';
 
   @override
-  String get poor => 'slaba';
+  String get poor => 'খারাপ';
 
   @override
-  String get veryPoor => 'zelo slaba';
+  String get veryPoor => 'অত্যন্ত খারাপ';
 
   @override
-  String get unhealthy => 'nezdravo';
+  String get unhealthy => 'অস্বাস্থ্যকর';
 
   @override
-  String get radar => 'Radar';
+  String get radar => 'রেডার';
 
   @override
-  String get colorMode => 'Barvni način';
+  String get colorMode => 'Color mode';
 
   @override
-  String get weatherProvderLowercase => 'Ponudnik vremenskih podatkov';
+  String get weatherProvderLowercase => 'আবহাওয়া তথ্যপ্রদানকারী';
 
   @override
-  String get timeMode => 'Način časa';
+  String get timeMode => 'Time mode';
 
   @override
-  String get mon => 'Pon';
+  String get mon => 'সোম';
 
   @override
-  String get tue => 'Tor';
+  String get tue => 'মঙ্গল';
 
   @override
-  String get wed => 'Sre';
+  String get wed => 'বুধ';
 
   @override
-  String get thu => 'Čet';
+  String get thu => 'বৃহঃ';
 
   @override
-  String get fri => 'Pet';
+  String get fri => 'শুক্র';
 
   @override
-  String get sat => 'Sob';
+  String get sat => 'শনি';
 
   @override
-  String get sun => 'Ned';
+  String get sun => 'রবি';
 
   @override
-  String get fontSize => 'Velikost pisave';
+  String get fontSize => 'Font size';
 
   @override
-  String get dailyLowercase => 'dnevno';
+  String get dailyLowercase => 'প্রতিদিন';
 
   @override
-  String get searchProvider => 'Ponudnik iskanja';
+  String get searchProvider => 'অনুসন্ধান প্রদানকারী';
 
   @override
-  String get updatedJustNow => 'posodobljeno, zdaj';
+  String get updatedJustNow => 'আপডেট হয়েছে, এইমাত্র';
 
   @override
-  String get colorSource => 'Vir barvr';
+  String get colorSource => 'রঙের উৎস';
 
   @override
-  String get imageSource => 'Vir slike';
+  String get imageSource => 'ছবির উৎস';
 
   @override
-  String get sumLowercase => 'Povzetek';
+  String get sumLowercase => 'sum';
 
   @override
-  String get precipLowercase => 'padavine';
+  String get precipLowercase => 'বৃষ্টিপাত';
 
   @override
-  String get windLowercase => 'veter';
+  String get windLowercase => 'বাতাস';
 
   @override
-  String get uvLowercase => 'uv';
+  String get uvLowercase => 'ইউ ভি';
 
   @override
-  String get tempLowercase => 'temperatura';
+  String get tempLowercase => 'তাপমাত্রা';
 
   @override
-  String get pressureLowercase => 'pritisk';
+  String get pressureLowercase => 'চাপ';
 
   @override
-  String get goodAqiDesc => 'Kakovost zraka je odlična, ni tveganj za zdravje.';
+  String get goodAqiDesc => 'Air quality is excellent; no health risk.';
 
   @override
   String get fairAqiDesc =>
-      'Sprejemljiva kakovost zraka; majhno tveganje za občutljive ljudi.';
+      'Acceptable air quality; minor risk for sensitive people.';
 
   @override
   String get moderateAqiDesc =>
-      'Občutljivi posamezniki lahko občutijo blage vplive.';
+      'Sensitive individuals may experience mild effects.';
 
   @override
   String get poorAqiDesc =>
@@ -243,49 +243,49 @@ class AppLocalizationsSl extends AppLocalizations {
       'Emergency conditions; severe health effects for all.';
 
   @override
-  String get photoByXOnUnsplash => 'Fotografija,, x, na ,Unsplash';
+  String get photoByXOnUnsplash => 'ছবি, তুলেছেন, x,, Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'izvorna koda';
+  String get sourceCodeLowercase => 'সোর্স কোড';
 
   @override
-  String get emailLowercase => 'elektronski naslov';
+  String get emailLowercase => 'ইমেল';
 
   @override
-  String get reportAnIssueLowercase => 'sporoči napako/težavo';
+  String get reportAnIssueLowercase => 'সমস্যা জানান';
 
   @override
-  String get donateLowercase => 'doniraj';
+  String get donateLowercase => 'দান করুন';
 
   @override
-  String get versionUppercase => 'Verzija';
+  String get versionUppercase => 'সংস্করণ';
 
   @override
-  String get apiAndServices => 'API-ji in storitve';
+  String get apiAndServices => 'API এবং পরিষেবা সমূহ';
 
   @override
-  String get licenseUppercase => 'Licenca';
+  String get licenseUppercase => 'লাইসেন্স';
 
   @override
-  String get weatherDataLowercase => 'vremenski podatki';
+  String get weatherDataLowercase => 'আবহাওয়া তথ্য';
 
   @override
-  String get imagesLowercase => 'slike';
+  String get imagesLowercase => 'ছবি';
 
   @override
   String get appearance => 'Appearance';
 
   @override
-  String get general => 'Glavno';
+  String get general => 'সাধারণ';
 
   @override
-  String get units => 'Merske enote';
+  String get units => 'Units';
 
   @override
-  String get about => 'O aplikaciji';
+  String get about => 'About';
 
   @override
-  String get backgroundUpdates => 'Posodobitve v ozadju';
+  String get backgroundUpdates => 'Background updates';
 
   @override
   String get appearanceSettingDesc => 'color theme, image source';
@@ -294,31 +294,31 @@ class AppLocalizationsSl extends AppLocalizations {
   String get generalSettingDesc => 'time mode, font size';
 
   @override
-  String get languageSettingDesc => 'uporabljen jezik';
+  String get languageSettingDesc => 'the language used';
 
   @override
-  String get unitsSettingdesc => 'merske enote uporabljene v aplikaciji';
+  String get unitsSettingdesc => 'the units used in the app';
 
   @override
-  String get aboutSettingsDesc => 'o tej aplikaciji';
+  String get aboutSettingsDesc => 'about this app';
 
   @override
   String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
 
   @override
-  String get now => 'zdaj';
+  String get now => 'now';
 
   @override
   String get hr => 'hr';
 
   @override
-  String get layout => 'Postavitev';
+  String get layout => 'Layout';
 
   @override
   String get layoutSettingDesc => 'widget order, customization';
 
   @override
-  String get thirtyMinutes => '30min';
+  String get thirtyMinutes => '30m';
 
   @override
   String get mainPollutant => 'main pollutant';
@@ -345,7 +345,7 @@ class AppLocalizationsSl extends AppLocalizations {
   String get dailyAqi => 'daily AQI';
 
   @override
-  String get dateFormat => 'Format datuma';
+  String get dateFormat => 'Date format';
 
   @override
   String get d => 'd';
@@ -363,19 +363,19 @@ class AppLocalizationsSl extends AppLocalizations {
   String get unitedStatesAqi => 'USA AQI';
 
   @override
-  String get offline => 'brez povezave';
+  String get offline => 'offline';
 
   @override
-  String get helpTranslate => 'pomagaj prevesti';
+  String get helpTranslate => 'help translate';
 
   @override
-  String get extremelyClear => 'izjemno jasno';
+  String get extremelyClear => 'extremely clear';
 
   @override
-  String get veryClear => 'zelo jasno';
+  String get veryClear => 'very clear';
 
   @override
-  String get clear => 'jasno';
+  String get clear => 'clear';
 
   @override
   String get slightlyHazy => 'slightly hazy';

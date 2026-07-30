@@ -213,10 +213,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get uvLowercase => 'الأشعة فوق البنفسجية';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'حرارة';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'ضغط';
 
   @override
   String get goodAqiDesc => 'جودة الهواء ممتازة، لا توجد مخاطر صحية.';
@@ -280,7 +280,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get about => 'حول التطبيق';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'التحديثات الخلفية';
 
   @override
   String get appearanceSettingDesc => 'سمة الألوان، مصدر الصور';
@@ -298,7 +298,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aboutSettingsDesc => 'حول هذا التطبيق';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc =>
+      'تحديثات الأدوات المصغرة، والإشعارات';
 
   @override
   String get now => 'الآن';
@@ -519,32 +520,32 @@ class AppLocalizationsAr extends AppLocalizations {
   String get high => 'مرتفع';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'رادار مباشر';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'إشعار مستمر';
 
   @override
-  String get north => 'N';
+  String get north => 'ش';
 
   @override
-  String get northEast => 'NE';
+  String get northEast => 'ش شر';
 
   @override
-  String get east => 'E';
+  String get east => 'شر';
 
   @override
-  String get southEast => 'SE';
+  String get southEast => 'ج شر';
 
   @override
-  String get south => 'S';
+  String get south => 'ج';
 
   @override
-  String get southWest => 'SW';
+  String get southWest => 'ج غ';
 
   @override
-  String get west => 'W';
+  String get west => 'غ';
 
   @override
-  String get northWest => 'NW';
+  String get northWest => 'ش غ';
 }

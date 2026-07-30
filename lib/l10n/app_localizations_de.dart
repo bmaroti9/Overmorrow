@@ -215,10 +215,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'Tempo.';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'Druck';
 
   @override
   String get goodAqiDesc =>
@@ -287,7 +287,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get about => 'Über';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'Hintergrundaktualisierungen';
 
   @override
   String get appearanceSettingDesc => 'Farbschema, Bildquelle';
@@ -305,7 +305,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get aboutSettingsDesc => 'über diese App';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc =>
+      'Widget-Aktualisierungen, Benachrichtigungen';
 
   @override
   String get now => 'jetzt';
@@ -359,10 +360,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dust => 'Staub';
 
   @override
-  String get europeanAqi => 'eu aqi';
+  String get europeanAqi => 'europäischer Luftqualitätsindex';
 
   @override
-  String get unitedStatesAqi => 'us aqi';
+  String get unitedStatesAqi => 'USA-Luftqualitätsindex';
 
   @override
   String get offline => 'offline';
@@ -508,28 +509,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String get showLess => 'weniger zeigen';
 
   @override
-  String get cold => 'cold';
+  String get cold => 'kalt';
 
   @override
-  String get hot => 'hot';
+  String get hot => 'heiß';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'ruhig';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'schwer';
 
   @override
-  String get low => 'low';
+  String get low => 'niedrig';
 
   @override
-  String get high => 'high';
+  String get high => 'hoch';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'Live-Radar';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'laufende Benachrichtigung';
 
   @override
   String get north => 'N';

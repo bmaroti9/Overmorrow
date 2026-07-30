@@ -132,13 +132,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get airQualityLowercase => '空气质量';
 
   @override
-  String get good => '好';
+  String get good => '优';
 
   @override
-  String get fair => '公平';
+  String get fair => '良';
 
   @override
-  String get moderate => '适中';
+  String get moderate => '中等';
 
   @override
   String get poor => '较差';
@@ -213,7 +213,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get uvLowercase => '紫外线';
 
   @override
-  String get tempLowercase => '气';
+  String get tempLowercase => '温度';
 
   @override
   String get pressureLowercase => '气压';
@@ -387,42 +387,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get poweredByOpenMeteo => 'open-meteo 提供气象支持';
 
   @override
-  String get rainInHalfHour => '半小时后有雨';
+  String get rainInHalfHour => '未来半小时内有雨';
 
   @override
   String rainInMinutes(int minutes) {
-    String _temp0 = intl.Intl.pluralLogic(
-      minutes,
-      locale: localeName,
-      other: '#分钟后有雨',
-      one: '#分钟后有雨',
-    );
-    return '$_temp0';
+    return '未来 $minutes 分钟内有雨';
   }
 
   @override
-  String get rainInOneHour => '一小时后有雨';
+  String get rainInOneHour => '未来一小时内有雨';
 
   @override
   String rainInHours(int hours) {
-    String _temp0 = intl.Intl.pluralLogic(
-      hours,
-      locale: localeName,
-      other: '#小时后有雨',
-      one: '#小时后有雨',
-    );
-    return '$_temp0';
+    return '未来 $hours 小时内有雨';
   }
 
   @override
   String rainExpectedInMinutes(int minutes) {
-    String _temp0 = intl.Intl.pluralLogic(
-      minutes,
-      locale: localeName,
-      other: '#分钟后有雨',
-      one: '#分钟后有雨',
-    );
-    return '预计$_temp0';
+    return '预计 $minutes 分钟后有雨';
   }
 
   @override
@@ -430,40 +412,22 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String rainExpectedInHours(int hours) {
-    String _temp0 = intl.Intl.pluralLogic(
-      hours,
-      locale: localeName,
-      other: '#小时后有雨',
-      one: '#小时后有雨',
-    );
-    return '预计$_temp0';
+    return '预计 $hours 小时后有雨';
   }
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return '$minutes分钟前更新';
+    return '$minutes 分钟前更新';
   }
 
   @override
   String updatedXHoursAgo(int hours) {
-    String _temp0 = intl.Intl.pluralLogic(
-      hours,
-      locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
-    );
-    return '$_temp0 小时前更新';
+    return '$hours 小时前更新';
   }
 
   @override
   String updatedXDaysAgo(int days) {
-    String _temp0 = intl.Intl.pluralLogic(
-      days,
-      locale: localeName,
-      other: '#天前更新',
-      one: '#天前更新',
-    );
-    return '$_temp0';
+    return '$days 天前更新';
   }
 
   @override
@@ -494,10 +458,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get heavy => '重度';
 
   @override
-  String get showMore => '显示更多';
+  String get showMore => '展开';
 
   @override
-  String get showLess => '隐藏更多';
+  String get showLess => '收起';
 
   @override
   String get cold => '冷';

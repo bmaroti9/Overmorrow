@@ -215,10 +215,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'lämpötila';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'ilmanpaine';
 
   @override
   String get goodAqiDesc => 'Ilmanlaatu on erinomainen; ei terveysriskiä.';
@@ -285,7 +285,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get about => 'Tietoja';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'Taustapäivitykset';
 
   @override
   String get appearanceSettingDesc => 'väriteema, kuvalähde';
@@ -303,7 +303,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get aboutSettingsDesc => 'tietoja sovelluksesta';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc => 'widget-päivitykset, ilmoitukset';
 
   @override
   String get now => 'nyt';
@@ -351,16 +351,16 @@ class AppLocalizationsFi extends AppLocalizations {
   String get d => 'pv';
 
   @override
-  String get aerosolOpticalDepth => 'aerosol optical depth';
+  String get aerosolOpticalDepth => 'aerosolien optinen paksuus';
 
   @override
   String get dust => 'pölyä';
 
   @override
-  String get europeanAqi => 'eurooppalainen aqi';
+  String get europeanAqi => 'ilmanlaatuindeksi (euro)';
 
   @override
-  String get unitedStatesAqi => 'yhdysvaltain aqi';
+  String get unitedStatesAqi => 'ilmanlaatuindeksi (US)';
 
   @override
   String get offline => 'ei yhteyttä';
@@ -494,10 +494,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get areas => 'alueet';
 
   @override
-  String get light => 'light';
+  String get light => 'kevyt';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'runsas';
 
   @override
   String get showMore => 'näytä lisää';
@@ -506,28 +506,28 @@ class AppLocalizationsFi extends AppLocalizations {
   String get showLess => 'näytä vähemmän';
 
   @override
-  String get cold => 'cold';
+  String get cold => 'kylmä';
 
   @override
-  String get hot => 'hot';
+  String get hot => 'lämmin';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'tyyni';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'raju';
 
   @override
-  String get low => 'low';
+  String get low => 'matala';
 
   @override
-  String get high => 'high';
+  String get high => 'korkea';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'live-tutka';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'pysyvä sääilmoitus';
 
   @override
   String get north => 'N';

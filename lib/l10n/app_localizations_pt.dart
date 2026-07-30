@@ -907,10 +907,10 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get dust => 'poeira';
 
   @override
-  String get europeanAqi => 'europa aqi';
+  String get europeanAqi => 'aqi europeu';
 
   @override
-  String get unitedStatesAqi => 'aqi estados Unidos';
+  String get unitedStatesAqi => 'aqi estadunidense';
 
   @override
   String get offline => 'off-line';
@@ -1056,13 +1056,13 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get showLess => 'mostrar menos';
 
   @override
-  String get cold => 'Frio';
+  String get cold => 'frio';
 
   @override
-  String get hot => 'Quente';
+  String get hot => 'quente';
 
   @override
-  String get calm => 'Calmo';
+  String get calm => 'calmo';
 
   @override
   String get severe => 'forte';
@@ -1071,11 +1071,35 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get low => 'baixo';
 
   @override
-  String get high => 'Alto';
+  String get high => 'alto';
 
   @override
-  String get liveRadar => 'Radar ao vivo';
+  String get liveRadar => 'radar ao vivo';
 
   @override
   String get ongoingNotification => 'notificação contínua';
+
+  @override
+  String get north => 'N';
+
+  @override
+  String get northEast => 'NE';
+
+  @override
+  String get east => 'L';
+
+  @override
+  String get southEast => 'SE';
+
+  @override
+  String get south => 'S';
+
+  @override
+  String get southWest => 'SO';
+
+  @override
+  String get west => 'O';
+
+  @override
+  String get northWest => 'NO';
 }
