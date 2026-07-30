@@ -237,5 +237,19 @@
     "calm": "هادئ",
     "severe": "قاس",
     "low": "منخفِض",
-    "high": "مرتفع"
+    "high": "مرتفع",
+    "tempLowercase": "حرارة",
+    "pressureLowercase": "ضغط",
+    "backgroundUpdates": "التحديثات الخلفية",
+    "backgroundUpdatesSettingsDesc": "تحديثات الأدوات المصغرة، والإشعارات",
+    "liveRadar": "رادار مباشر",
+    "ongoingNotification": "إشعار مستمر",
+    "north": "ش",
+    "northEast": "ش شر",
+    "east": "شر",
+    "southEast": "ج شر",
+    "south": "ج",
+    "southWest": "ج غ",
+    "west": "غ",
+    "northWest": "ش غ"
 }

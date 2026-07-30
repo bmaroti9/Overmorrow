@@ -39,9 +39,9 @@
     "search": "搜索...",
     "sunriseSunset": "日出/日落",
     "airQuality": "空气质量",
-    "good": "好",
-    "fair": "公平",
-    "moderate": "适中",
+    "good": "优",
+    "fair": "良",
+    "moderate": "中等",
     "poor": "较差",
     "veryPoor": "非常差",
     "unhealthy": "不健康",
@@ -107,11 +107,11 @@
     "europeanAqi": "欧盟aqi",
     "unitedStatesAqi": "美国aqi",
     "offline": "离线",
-    "rainInOneHour": "一小时后有雨",
+    "rainInOneHour": "未来一小时内有雨",
     "@rainInOneHour": {
         "description": "rain in the next hour"
     },
-    "updatedXHoursAgo": "{hours, plural, =1 {1 hour} other {{hours} hours}} 小时前更新",
+    "updatedXHoursAgo": "{hours} 小时前更新",
     "@updatedXHoursAgo": {
         "description": "updated x hours ago",
         "placeholders": {
@@ -120,7 +120,7 @@
             }
         }
     },
-    "updatedXDaysAgo": "{days, plural, =1 {#天前更新} other {#天前更新}}",
+    "updatedXDaysAgo": "{days} 天前更新",
     "@updatedXDaysAgo": {
         "description": "updated x days ago",
         "placeholders": {
@@ -129,7 +129,7 @@
             }
         }
     },
-    "rainInHalfHour": "半小时后有雨",
+    "rainInHalfHour": "未来半小时内有雨",
     "@rainInHalfHour": {
         "description": "rain in the next half an hour"
     },
@@ -189,10 +189,10 @@
     "@heavy": {
         "description": "heavy precipitation"
     },
-    "showMore": "显示更多",
-    "showLess": "隐藏更多",
+    "showMore": "展开",
+    "showLess": "收起",
     "overmorrowLowercase": "后天",
-    "rainInMinutes": "{minutes, plural, =1 {#分钟后有雨} other {#分钟后有雨}}",
+    "rainInMinutes": "未来 {minutes} 分钟内有雨",
     "@rainInMinutes": {
         "description": "rain in the next X minutes",
         "placeholders": {
@@ -201,7 +201,7 @@
             }
         }
     },
-    "rainInHours": "{hours, plural, =1 {#小时后有雨} other {#小时后有雨}}",
+    "rainInHours": "未来 {hours} 小时内有雨",
     "@rainInHours": {
         "description": "rain in the next X hours",
         "placeholders": {
@@ -210,7 +210,7 @@
             }
         }
     },
-    "rainExpectedInMinutes": "预计{minutes, plural, =1 {#分钟后有雨} other {#分钟后有雨}}",
+    "rainExpectedInMinutes": "预计 {minutes} 分钟后有雨",
     "@rainExpectedInMinutes": {
         "description": "rain expected in the next X minutes",
         "placeholders": {
@@ -219,7 +219,7 @@
             }
         }
     },
-    "rainExpectedInHours": "预计{hours, plural, =1 {#小时后有雨} other {#小时后有雨}}",
+    "rainExpectedInHours": "预计 {hours} 小时后有雨",
     "@rainExpectedInHours": {
         "description": "rain expected in the next X hours",
         "placeholders": {
@@ -228,14 +228,14 @@
             }
         }
     },
-    "updatedXMinutesAgo": "{minutes}分钟前更新",
+    "updatedXMinutesAgo": "{minutes} 分钟前更新",
     "cold": "冷",
     "hot": "热",
     "calm": "平静",
     "severe": "剧烈",
     "low": "低",
     "high": "高",
-    "tempLowercase": "气",
+    "tempLowercase": "温度",
     "pressureLowercase": "气压",
     "liveRadar": "实时雷达图",
     "backgroundUpdates": "后台更新",

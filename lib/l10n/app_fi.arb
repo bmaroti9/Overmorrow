@@ -124,8 +124,8 @@
     "appearanceSettingDesc": "väriteema, kuvalähde",
     "alderPollen": "Lepän siitepölyä",
     "extremelyClear": "erittäin selkeää",
-    "europeanAqi": "eurooppalainen aqi",
-    "unitedStatesAqi": "yhdysvaltain aqi",
+    "europeanAqi": "ilmanlaatuindeksi (euro)",
+    "unitedStatesAqi": "ilmanlaatuindeksi (US)",
     "cloudyNight": "Pilvinen yö",
     "unhealthy": "epäterveellinen",
     "colorSource": "Värilähde",
@@ -221,5 +221,35 @@
     "aboutSettingsDesc": "tietoja sovelluksesta",
     "alertsLowercase": "hälytykset",
     "showMore": "näytä lisää",
-    "showLess": "näytä vähemmän"
+    "showLess": "näytä vähemmän",
+    "tempLowercase": "lämpötila",
+    "pressureLowercase": "ilmanpaine",
+    "backgroundUpdates": "Taustapäivitykset",
+    "backgroundUpdatesSettingsDesc": "widget-päivitykset, ilmoitukset",
+    "north": "N",
+    "northEast": "NE",
+    "east": "E",
+    "southEast": "SE",
+    "south": "S",
+    "southWest": "SW",
+    "west": "W",
+    "northWest": "NW",
+    "light": "kevyt",
+    "@light": {
+        "description": "light precipitation"
+    },
+    "heavy": "runsas",
+    "@heavy": {
+        "description": "heavy precipitation"
+    },
+    "cold": "kylmä",
+    "hot": "lämmin",
+    "calm": "tyyni",
+    "severe": "raju",
+    "low": "matala",
+    "high": "korkea",
+    "liveRadar": "live-tutka",
+    "ongoingNotification": "pysyvä sääilmoitus",
+    "aerosolOpticalDepth": "aerosolien optinen paksuus",
+    "overmorrowLowercase": "Overmorrow"
 }
