@@ -192,7 +192,7 @@
     "showMore": "展开",
     "showLess": "收起",
     "overmorrowLowercase": "后天",
-    "rainInMinutes": "未来 {minutes} 分钟内有雨",
+    "rainInMinutes": "{minutes, plural, =1 {1 分钟} other {{minutes} 分钟}}后下雨",
     "@rainInMinutes": {
         "description": "rain in the next X minutes",
         "placeholders": {
