@@ -201,7 +201,7 @@
             }
         }
     },
-    "rainInHours": "未来 {hours} 小时内有雨",
+    "rainInHours": "未来 {hours, plural, =1 {小时} other {{hours} 小时}}内有雨",
     "@rainInHours": {
         "description": "rain in the next X hours",
         "placeholders": {
