@@ -210,7 +210,7 @@
             }
         }
     },
-    "rainExpectedInMinutes": "预计 {minutes} 分钟后有雨",
+    "rainExpectedInMinutes": "预计 {minutes, plural, =1 {1 分钟} other {{minutes} 分钟}}  分钟后有雨",
     "@rainExpectedInMinutes": {
         "description": "rain expected in the next X minutes",
         "placeholders": {
@@ -219,7 +219,7 @@
             }
         }
     },
-    "rainExpectedInHours": "预计 {hours} 小时后有雨",
+    "rainExpectedInHours": "预计 {hours, plural, =1 {hour} other {{hours} hours}} 小时后有雨",
     "@rainExpectedInHours": {
         "description": "rain expected in the next X hours",
         "placeholders": {
