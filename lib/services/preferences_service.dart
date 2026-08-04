@@ -309,6 +309,8 @@ class SettingsProvider with ChangeNotifier {
 
     _timeMode = PreferenceUtils.getString("Time mode", "12 hour");
 
+    _dateFormat = PreferenceUtils.getString("Date format", "mm/dd");
+
     _radarHapticsOn = PreferenceUtils.getBool("Radar haptics", true);
 
     _imageSource = PreferenceUtils.getString("Image source", "network");
