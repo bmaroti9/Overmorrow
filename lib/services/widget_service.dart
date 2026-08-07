@@ -17,10 +17,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:overmorrow/l10n/app_localizations.dart';
 import 'package:overmorrow/services/notification_service.dart';
+import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -36,6 +39,7 @@ const windWidgetReceiver = 'com.marotidev.overmorrow.receivers.WindWidgetReceive
 const uvWidgetReceiver = 'com.marotidev.overmorrow.receivers.UvWidgetReceiver';
 const forecastWidgetReceiver = 'com.marotidev.overmorrow.receivers.ForecastWidgetReceiver';
 const oneHourlyWidgetReceiver = 'com.marotidev.overmorrow.receivers.OneHourlyWidgetReceiver';
+const dailyForecastWidgetReceiver = 'com.marotidev.overmorrow.receivers.DailyForecastWidgetReceiver';
 
 void initializeWidgetServices() {
   Workmanager().initialize(
@@ -62,7 +66,6 @@ class WidgetService {
 
   static Future<void> saveData(String id, value) async {
     await HomeWidget.saveWidgetData(id, value);
-    print(("Saved", id, value));
   }
 
   static Future<void> syncCurrentDataToWidget(LightCurrentWeatherData data, int widgetId) async {
@@ -83,6 +86,46 @@ class WidgetService {
 
   static Future<void> syncUvDataToWidget(LightUvData data, int widgetId) async {
     await saveData("uv.uv.$widgetId", data.uv);
+  }
+
+  // TODO: migrate quotes to l10n system so they can be translated per locale
+  static const List<String> _shakespeareQuotes = [
+    "To be, or not to be, that is the question.",
+    "All the world's a stage, and all the men and women merely players.",
+    "What's in a name? That which we call a rose by any other name would smell as sweet.",
+    "We know what we are, but know not what we may be.",
+    "The course of true love never did run smooth.",
+    "This above all: to thine own self be true.",
+    "brevity is the soul of wit.",
+    "All that glitters is not gold.",
+    "Good night, good night! Parting is such sweet sorrow.",
+    "If music be the food of love, play on.",
+    "Cowards die many times before their deaths; the valiant never taste of death but once.",
+    "There is nothing either good or bad, but thinking makes it so.",
+    "We are such stuff as dreams are made on.",
+  ];
+
+  static Future<void> syncDailyForecastDataToWidget(LightDailyForecastData data, int widgetId, SharedPreferences prefs) async {
+    await saveData("dailyForecast.currentTemp.$widgetId", data.currentTemp);
+    await saveData("dailyForecast.dailyHighTemps.$widgetId", data.dailyHighTemps);
+    await saveData("dailyForecast.dailyLowTemps.$widgetId", data.dailyLowTemps);
+    await saveData("dailyForecast.dailyConditions.$widgetId", data.dailyConditions);
+
+    // Replace index 0/1 names with translated "Today"/"Tomorrow"
+    final localeName = prefs.getString("Language") ?? "English";
+    final locale = languageNameToLocale[localeName] ?? const Locale("en");
+    final l10n = lookupAppLocalizations(locale);
+    final List<String> rawNames = (jsonDecode(data.dailyNames) as List).cast<String>();
+    if (rawNames.isNotEmpty) rawNames[0] = l10n.today;
+    if (rawNames.length > 1) rawNames[1] = l10n.tomorrowLowercase.replaceFirstMapped(RegExp(r'^.'), (m) => m[0]!.toUpperCase());
+    await saveData("dailyForecast.dailyNames.$widgetId", jsonEncode(rawNames));
+
+    await saveData("dailyForecast.dailyPrecipProbs.$widgetId", data.dailyPrecipProbs);
+    await saveData("widget.place.$widgetId", data.place);
+    final todayLabel = DateFormat('EEE, MMM d', locale.languageCode).format(DateTime.now());
+    await saveData("dailyForecast.todayDate.$widgetId", todayLabel);
+    final quoteIndex = (widgetId + DateTime.now().day) % _shakespeareQuotes.length;
+    await saveData("widget.quote.$widgetId", _shakespeareQuotes[quoteIndex]);
   }
 
   static Future<void> syncHourlyForecastDataToWidget(LightHourlyForecastData data, int widgetId) async {
@@ -172,6 +215,10 @@ class WidgetService {
     HomeWidget.updateWidget(
       androidName: 'UvWidget',
       qualifiedAndroidName: uvWidgetReceiver,
+    );
+    HomeWidget.updateWidget(
+      androidName: 'DailyForecastWidget',
+      qualifiedAndroidName: dailyForecastWidgetReceiver,
     );
   }
 }
@@ -274,6 +321,11 @@ void myCallbackDispatcher() {
               LightUvData data = await LightUvData.getLightUvData(placeName, latLon, widgetProvider, prefs);
 
               await WidgetService.syncUvDataToWidget(data, widgetId);
+            } else if (widgetClassName == dailyForecastWidgetReceiver) {
+              LightDailyForecastData data = await LightDailyForecastData
+                  .getLightDailyData(placeName, latLon, widgetProvider, prefs);
+
+              await WidgetService.syncDailyForecastDataToWidget(data, widgetId, prefs);
             }
 
           }

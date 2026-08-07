@@ -12,4 +12,8 @@
     <string name="one_hourly_widget_description">Current condition and temp with 1 hourly forecast</string>
     <string name="uv_widget_name">UV widget</string>
     <string name="uv_widget_description">Shows the current UV</string>
+    <string name="one_hourly_forecast_widget_name">Hourly Forecast (Extended)</string>
+    <string name="one_hourly_forecast_widget_description">Hourly and daily forecast widget</string>
+    <string name="daily_forecast_widget_name">Weekly Forecast</string>
+    <string name="daily_forecast_widget_description">Shows the weekly weather forecast</string>
 </resources>
