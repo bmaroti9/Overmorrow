@@ -360,7 +360,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get europeanAqi => 'avrupa aqi';
 
   @override
-  String get unitedStatesAqi => 'bi̇rleşi̇k devletler aqi';
+  String get unitedStatesAqi => 'ABD AQI';
 
   @override
   String get offline => 'çevrimdışı';
@@ -528,4 +528,28 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get ongoingNotification => 'sürekli bildirim';
+
+  @override
+  String get north => 'K';
+
+  @override
+  String get northEast => 'KD';
+
+  @override
+  String get east => 'D';
+
+  @override
+  String get southEast => 'GD';
+
+  @override
+  String get south => 'G';
+
+  @override
+  String get southWest => 'GB';
+
+  @override
+  String get west => 'B';
+
+  @override
+  String get northWest => 'KB';
 }

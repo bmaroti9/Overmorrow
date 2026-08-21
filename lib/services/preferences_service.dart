@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,10 +16,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'package:flutter/material.dart';
 import 'package:overmorrow/services/notification_service.dart';
+import 'package:overmorrow/services/widget_service.dart';
 import 'package:overmorrow/weather_refact.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
 
 import 'color_service.dart';
 
@@ -53,9 +54,16 @@ Map<String, List<String>> settingSwitches = {
     'Română', //Romanian
     'Tiếng Việt', //Vietnamese
     'Kiswahili', //Swahili
-    'Srpski' //Serbian
+    'Srpski', //Serbian
+    'Dansk', //Danish
+    'Slovenščina', //Slovenian
+    'עברית', //Hebrew
+    'Català', //Catalan
+    'Oʻzbekcha', //Uzbek
+    'Slovenčina', //Slovak
+    'বাংলা', //bengali
   ],
-  'Temperature': ['˚C', '˚F'],
+  'Temperature': ['˚C', '˚F', 'K'],
   'Precipitation': ['mm', 'in'],
   'Wind': ['m/s', 'km/h', 'mph', 'kn'],
 
@@ -291,7 +299,7 @@ class SettingsProvider with ChangeNotifier {
     _windUnit = PreferenceUtils.getString("Wind", "m/s");
 
     //I'm migrating kph to km/h because it was confusing to a lot of people
-    //this should be removed after next release
+    //I'm actually keeping this for a few updates to make sure everyone gets migrated
     if (_windUnit == "kph") {
       PreferenceUtils.setString("Wind", "km/h");
       _windUnit = "km/h";
@@ -300,6 +308,8 @@ class SettingsProvider with ChangeNotifier {
     _precipUnit = PreferenceUtils.getString("Precipitation", "mm");
 
     _timeMode = PreferenceUtils.getString("Time mode", "12 hour");
+
+    _dateFormat = PreferenceUtils.getString("Date format", "mm/dd");
 
     _radarHapticsOn = PreferenceUtils.getBool("Radar haptics", true);
 
@@ -318,6 +328,9 @@ class SettingsProvider with ChangeNotifier {
     _ongoingNotificationPlace = PreferenceUtils.getString("Ongoing place", "unknown");
     _ongoingNotificationLatLon = PreferenceUtils.getString("Ongoing latLon", "unknown");
     _ongoingNotificationProvider = PreferenceUtils.getString("Ongoing provider", "open-meteo");
+
+    //I'm going to use this later for onboarding and default settings
+    PreferenceUtils.setBool("FirstTimeOpened", false);
   }
 
   void _loadLocale() {
@@ -370,6 +383,7 @@ class SettingsProvider with ChangeNotifier {
     PreferenceUtils.setString("Time mode", to);
     _timeMode = to;
     notifyListeners();
+    WidgetService.updateWidgetTimeFormat(to).then((_) => WidgetService.reloadWidgets());
   }
 
   void setDateFormat(String to) {

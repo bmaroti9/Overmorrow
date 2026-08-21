@@ -7,12 +7,16 @@ import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_ar.dart';
 import 'app_localizations_bg.dart';
+import 'app_localizations_bn.dart';
+import 'app_localizations_ca.dart';
+import 'app_localizations_da.dart';
 import 'app_localizations_de.dart';
 import 'app_localizations_el.dart';
 import 'app_localizations_en.dart';
 import 'app_localizations_es.dart';
 import 'app_localizations_fi.dart';
 import 'app_localizations_fr.dart';
+import 'app_localizations_he.dart';
 import 'app_localizations_hr.dart';
 import 'app_localizations_hu.dart';
 import 'app_localizations_id.dart';
@@ -24,6 +28,7 @@ import 'app_localizations_pl.dart';
 import 'app_localizations_pt.dart';
 import 'app_localizations_ro.dart';
 import 'app_localizations_ru.dart';
+import 'app_localizations_sk.dart';
 import 'app_localizations_sl.dart';
 import 'app_localizations_sr.dart';
 import 'app_localizations_sw.dart';
@@ -31,6 +36,7 @@ import 'app_localizations_ta.dart';
 import 'app_localizations_tr.dart';
 import 'app_localizations_uk.dart';
 import 'app_localizations_ur.dart';
+import 'app_localizations_uz.dart';
 import 'app_localizations_vi.dart';
 import 'app_localizations_zh.dart';
 
@@ -122,12 +128,16 @@ abstract class AppLocalizations {
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
     Locale('bg'),
+    Locale('bn'),
+    Locale('ca'),
+    Locale('da'),
     Locale('de'),
     Locale('el'),
     Locale('en'),
     Locale('es'),
     Locale('fi'),
     Locale('fr'),
+    Locale('he'),
     Locale('hr'),
     Locale('hu'),
     Locale('id'),
@@ -140,6 +150,7 @@ abstract class AppLocalizations {
     Locale('pt', 'BR'),
     Locale('ro'),
     Locale('ru'),
+    Locale('sk'),
     Locale('sl'),
     Locale('sr'),
     Locale('sw'),
@@ -147,6 +158,7 @@ abstract class AppLocalizations {
     Locale('tr'),
     Locale('uk'),
     Locale('ur'),
+    Locale('uz'),
     Locale('vi'),
     Locale('zh'),
     Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')
@@ -839,13 +851,13 @@ abstract class AppLocalizations {
   /// No description provided for @europeanAqi.
   ///
   /// In en, this message translates to:
-  /// **'european aqi'**
+  /// **'europæisk aqi'**
   String get europeanAqi;
 
   /// No description provided for @unitedStatesAqi.
   ///
   /// In en, this message translates to:
-  /// **'united states aqi'**
+  /// **'USA AQI'**
   String get unitedStatesAqi;
 
   /// No description provided for @offline.
@@ -1081,6 +1093,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ongoing notification'**
   String get ongoingNotification;
+
+  /// No description provided for @north.
+  ///
+  /// In en, this message translates to:
+  /// **'N'**
+  String get north;
+
+  /// No description provided for @northEast.
+  ///
+  /// In en, this message translates to:
+  /// **'NE'**
+  String get northEast;
+
+  /// No description provided for @east.
+  ///
+  /// In en, this message translates to:
+  /// **'E'**
+  String get east;
+
+  /// No description provided for @southEast.
+  ///
+  /// In en, this message translates to:
+  /// **'SE'**
+  String get southEast;
+
+  /// No description provided for @south.
+  ///
+  /// In en, this message translates to:
+  /// **'S'**
+  String get south;
+
+  /// No description provided for @southWest.
+  ///
+  /// In en, this message translates to:
+  /// **'SW'**
+  String get southWest;
+
+  /// No description provided for @west.
+  ///
+  /// In en, this message translates to:
+  /// **'W'**
+  String get west;
+
+  /// No description provided for @northWest.
+  ///
+  /// In en, this message translates to:
+  /// **'NW'**
+  String get northWest;
 }
 
 class _AppLocalizationsDelegate
@@ -1096,12 +1156,16 @@ class _AppLocalizationsDelegate
   bool isSupported(Locale locale) => <String>[
         'ar',
         'bg',
+        'bn',
+        'ca',
+        'da',
         'de',
         'el',
         'en',
         'es',
         'fi',
         'fr',
+        'he',
         'hr',
         'hu',
         'id',
@@ -1113,6 +1177,7 @@ class _AppLocalizationsDelegate
         'pt',
         'ro',
         'ru',
+        'sk',
         'sl',
         'sr',
         'sw',
@@ -1120,6 +1185,7 @@ class _AppLocalizationsDelegate
         'tr',
         'uk',
         'ur',
+        'uz',
         'vi',
         'zh'
       ].contains(locale.languageCode);
@@ -1159,6 +1225,12 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsAr();
     case 'bg':
       return AppLocalizationsBg();
+    case 'bn':
+      return AppLocalizationsBn();
+    case 'ca':
+      return AppLocalizationsCa();
+    case 'da':
+      return AppLocalizationsDa();
     case 'de':
       return AppLocalizationsDe();
     case 'el':
@@ -1171,6 +1243,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsFi();
     case 'fr':
       return AppLocalizationsFr();
+    case 'he':
+      return AppLocalizationsHe();
     case 'hr':
       return AppLocalizationsHr();
     case 'hu':
@@ -1193,6 +1267,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsRo();
     case 'ru':
       return AppLocalizationsRu();
+    case 'sk':
+      return AppLocalizationsSk();
     case 'sl':
       return AppLocalizationsSl();
     case 'sr':
@@ -1207,6 +1283,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsUk();
     case 'ur':
       return AppLocalizationsUr();
+    case 'uz':
+      return AppLocalizationsUz();
     case 'vi':
       return AppLocalizationsVi();
     case 'zh':

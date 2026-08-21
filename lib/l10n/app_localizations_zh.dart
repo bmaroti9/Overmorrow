@@ -132,13 +132,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get airQualityLowercase => '空气质量';
 
   @override
-  String get good => '好';
+  String get good => '优';
 
   @override
-  String get fair => '公平';
+  String get fair => '良';
 
   @override
-  String get moderate => '适中';
+  String get moderate => '中等';
 
   @override
   String get poor => '较差';
@@ -213,7 +213,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get uvLowercase => '紫外线';
 
   @override
-  String get tempLowercase => '气';
+  String get tempLowercase => '温度';
 
   @override
   String get pressureLowercase => '气压';
@@ -387,31 +387,31 @@ class AppLocalizationsZh extends AppLocalizations {
   String get poweredByOpenMeteo => 'open-meteo 提供气象支持';
 
   @override
-  String get rainInHalfHour => '半小时后有雨';
+  String get rainInHalfHour => '未来半小时内有雨';
 
   @override
   String rainInMinutes(int minutes) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '#分钟后有雨',
-      one: '#分钟后有雨',
+      other: '$minutes 分钟',
+      one: '1 分钟',
     );
-    return '$_temp0';
+    return '$_temp0后下雨';
   }
 
   @override
-  String get rainInOneHour => '一小时后有雨';
+  String get rainInOneHour => '未来一小时内有雨';
 
   @override
   String rainInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '#小时后有雨',
-      one: '#小时后有雨',
+      other: '$hours 小时',
+      one: '小时',
     );
-    return '$_temp0';
+    return '未来 $_temp0内有雨';
   }
 
   @override
@@ -419,10 +419,10 @@ class AppLocalizationsZh extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '#分钟后有雨',
-      one: '#分钟后有雨',
+      other: '$minutes 分钟',
+      one: '1 分钟',
     );
-    return '预计$_temp0';
+    return '预计 $_temp0 分钟后有雨';
   }
 
   @override
@@ -433,37 +433,25 @@ class AppLocalizationsZh extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '#小时后有雨',
-      one: '#小时后有雨',
+      other: '$hours 小时',
+      one: '1 小时',
     );
-    return '预计$_temp0';
+    return '预计 $_temp0 小时后有雨';
   }
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return '$minutes分钟前更新';
+    return '$minutes 分钟前更新';
   }
 
   @override
   String updatedXHoursAgo(int hours) {
-    String _temp0 = intl.Intl.pluralLogic(
-      hours,
-      locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
-    );
-    return '$_temp0 小时前更新';
+    return '$hours 小时前更新';
   }
 
   @override
   String updatedXDaysAgo(int days) {
-    String _temp0 = intl.Intl.pluralLogic(
-      days,
-      locale: localeName,
-      other: '#天前更新',
-      one: '#天前更新',
-    );
-    return '$_temp0';
+    return '$days 天前更新';
   }
 
   @override
@@ -494,10 +482,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get heavy => '重度';
 
   @override
-  String get showMore => '显示更多';
+  String get showMore => '展开';
 
   @override
-  String get showLess => '隐藏更多';
+  String get showLess => '收起';
 
   @override
   String get cold => '冷';
@@ -522,6 +510,30 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get ongoingNotification => '持续通知';
+
+  @override
+  String get north => '北';
+
+  @override
+  String get northEast => '东北';
+
+  @override
+  String get east => '东';
+
+  @override
+  String get southEast => '东南';
+
+  @override
+  String get south => '南';
+
+  @override
+  String get southWest => '西南';
+
+  @override
+  String get west => '西';
+
+  @override
+  String get northWest => '西北';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -733,6 +745,12 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get uvLowercase => '紫外線';
 
   @override
+  String get tempLowercase => '溫度';
+
+  @override
+  String get pressureLowercase => '壓力';
+
+  @override
   String get goodAqiDesc => '空氣品質極佳；無健康風險。';
 
   @override
@@ -793,6 +811,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get about => '關於';
 
   @override
+  String get backgroundUpdates => '背景更新';
+
+  @override
   String get appearanceSettingDesc => '顏色主題, 圖片來源';
 
   @override
@@ -806,6 +827,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get aboutSettingsDesc => '關於此應用程式';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => '桌面物件與通知';
 
   @override
   String get now => '現在';
@@ -859,10 +883,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get dust => '灰塵';
 
   @override
-  String get europeanAqi => '歐盟aqi';
+  String get europeanAqi => '歐洲空氣品質指標';
 
   @override
-  String get unitedStatesAqi => '美國aqi';
+  String get unitedStatesAqi => '美國空氣品質指標';
 
   @override
   String get offline => '離綫';
@@ -1024,4 +1048,34 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get high => '高';
+
+  @override
+  String get liveRadar => '雷達回波圖';
+
+  @override
+  String get ongoingNotification => '背景常駐通知';
+
+  @override
+  String get north => '北';
+
+  @override
+  String get northEast => '東北';
+
+  @override
+  String get east => '東';
+
+  @override
+  String get southEast => '東南';
+
+  @override
+  String get south => '南';
+
+  @override
+  String get southWest => '西南';
+
+  @override
+  String get west => '西';
+
+  @override
+  String get northWest => '西北';
 }

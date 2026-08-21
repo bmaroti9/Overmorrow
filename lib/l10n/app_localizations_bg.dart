@@ -361,10 +361,10 @@ class AppLocalizationsBg extends AppLocalizations {
   String get dust => 'прах';
 
   @override
-  String get europeanAqi => 'европейски aqi';
+  String get europeanAqi => 'Индекс на качеството на въздуха в Европа';
 
   @override
-  String get unitedStatesAqi => 'съединени щати aqi';
+  String get unitedStatesAqi => 'Индекс на качеството на въздуха в САЩ';
 
   @override
   String get offline => 'офлайн';
@@ -532,4 +532,28 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get ongoingNotification => 'текущо известие';
+
+  @override
+  String get north => 'С';
+
+  @override
+  String get northEast => 'СИ';
+
+  @override
+  String get east => 'И';
+
+  @override
+  String get southEast => 'ЮИ';
+
+  @override
+  String get south => 'Ю';
+
+  @override
+  String get southWest => 'ЮЗ';
+
+  @override
+  String get west => 'З';
+
+  @override
+  String get northWest => 'СЗ';
 }

@@ -9,13 +9,13 @@ class AppLocalizationsPl extends AppLocalizations {
   AppLocalizationsPl([String locale = 'pl']) : super(locale);
 
   @override
-  String get feelsLike => 'Odczuwaln.';
+  String get feelsLike => 'Odczuwalna';
 
   @override
   String get precipCapital => 'Opady';
 
   @override
-  String get humidity => 'Wilgot.';
+  String get humidity => 'Wilgotność';
 
   @override
   String get windCapital => 'Wiatr';
@@ -57,7 +57,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get clearSky => 'Bezchmurnie';
 
   @override
-  String get overcast => 'Zachmurzenie';
+  String get overcast => 'Pochmurno';
 
   @override
   String get haze => 'Mglisto';
@@ -107,10 +107,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever =>
-      'Trwała odmowa pozwolenia na lokalizację';
+      'Trwale odmów pozwolenia na lokalizację';
 
   @override
-  String get grantLocationPermission => 'udzielić pozwolenia na lokalizację';
+  String get grantLocationPermission => 'udziel pozwolenia na lokalizację';
 
   @override
   String get currentLocation => 'obecna lokalizacja';
@@ -122,7 +122,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get failedToAccessGps => 'gps niedostępny';
 
   @override
-  String get search => 'Szukam...';
+  String get search => 'Szukaj...';
 
   @override
   String get sunriseSunset => 'wschód/zachód';
@@ -215,10 +215,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get uvLowercase => 'uv';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'temperatura';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'ciśnienie';
 
   @override
   String get goodAqiDesc =>
@@ -285,7 +285,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get about => 'Info';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'Aktualizacja w tle';
 
   @override
   String get appearanceSettingDesc => 'motyw kolorystyczny, źródło obrazu';
@@ -303,7 +303,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get aboutSettingsDesc => 'o tej aplikacji';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get backgroundUpdatesSettingsDesc =>
+      'aktualizacje widżetów, powiadomienia';
 
   @override
   String get now => 'teraz';
@@ -360,7 +361,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get europeanAqi => 'europejski aqi';
 
   @override
-  String get unitedStatesAqi => 'amerykański aqi';
+  String get unitedStatesAqi => 'USA aqi';
 
   @override
   String get offline => 'offline';
@@ -512,20 +513,44 @@ class AppLocalizationsPl extends AppLocalizations {
   String get hot => 'ciepło';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'spokojnie';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'silny';
 
   @override
-  String get low => 'low';
+  String get low => 'niski';
 
   @override
-  String get high => 'high';
+  String get high => 'wysoki';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'radar na żywo';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'bieżące powiadomienie';
+
+  @override
+  String get north => 'N';
+
+  @override
+  String get northEast => 'NE';
+
+  @override
+  String get east => 'E';
+
+  @override
+  String get southEast => 'SE';
+
+  @override
+  String get south => 'S';
+
+  @override
+  String get southWest => 'SW';
+
+  @override
+  String get west => 'W';
+
+  @override
+  String get northWest => 'NW';
 }

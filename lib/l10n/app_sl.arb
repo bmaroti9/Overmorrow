@@ -67,7 +67,7 @@
     "tempLowercase": "temperatura",
     "pressureLowercase": "pritisk",
     "goodAqiDesc": "Kakovost zraka je odlična, ni tveganj za zdravje.",
-    "photoByXOnUnsplash": "Fotografija, x na Unsplash",
+    "photoByXOnUnsplash": "Fotografija,, x, na ,Unsplash",
     "sourceCodeLowercase": "izvorna koda",
     "emailLowercase": "elektronski naslov",
     "reportAnIssueLowercase": "sporoči napako/težavo",
@@ -97,5 +97,12 @@
     "helpTranslate": "pomagaj prevesti",
     "extremelyClear": "izjemno jasno",
     "veryClear": "zelo jasno",
-    "clear": "jasno"
+    "clear": "jasno",
+    "locationPermissionDeniedForever": "Dovoljenje za dostop do lokacije je zvrnjeno za vedno",
+    "failedToAccessGps": "Napaka pri dostopanju do gps",
+    "fair": "sprejemljivo",
+    "moderate": "zmerno",
+    "precipLowercase": "padavine",
+    "fairAqiDesc": "Sprejemljiva kakovost zraka; majhno tveganje za občutljive ljudi.",
+    "moderateAqiDesc": "Občutljivi posamezniki lahko občutijo blage vplive."
 }

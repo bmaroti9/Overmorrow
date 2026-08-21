@@ -1,0 +1,553 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Hebrew (`he`).
+class AppLocalizationsHe extends AppLocalizations {
+  AppLocalizationsHe([String locale = 'he']) : super(locale);
+
+  @override
+  String get feelsLike => 'מרגיש כמו';
+
+  @override
+  String get precipCapital => 'משקעים.';
+
+  @override
+  String get humidity => 'לחות';
+
+  @override
+  String get windCapital => 'רוח';
+
+  @override
+  String get uvCapital => 'קרינת UV';
+
+  @override
+  String get settings => 'הגדרות';
+
+  @override
+  String get today => 'היום';
+
+  @override
+  String get tomorrowLowercase => 'מחר';
+
+  @override
+  String get overmorrowLowercase => 'מחרתיים';
+
+  @override
+  String get language => 'שפה';
+
+  @override
+  String get temperature => 'טמפרטורה';
+
+  @override
+  String get precipitaion => 'משקע';
+
+  @override
+  String get rain => 'גשם';
+
+  @override
+  String get clearNight => 'לילה בהיר';
+
+  @override
+  String get partlyCloudy => 'מעונן חלקית';
+
+  @override
+  String get clearSky => 'שמיים בהירים';
+
+  @override
+  String get overcast => 'מעונן';
+
+  @override
+  String get haze => 'אובך';
+
+  @override
+  String get sleet => 'ברד';
+
+  @override
+  String get drizzle => 'טפטוף';
+
+  @override
+  String get thunderstorm => 'סופת ברקים';
+
+  @override
+  String get heavySnow => 'שלג כבד';
+
+  @override
+  String get fog => 'ערפל';
+
+  @override
+  String get snow => 'שלג';
+
+  @override
+  String get heavyRain => 'גשם כבד';
+
+  @override
+  String get cloudyNight => 'לילה מעונן';
+
+  @override
+  String get weakOrNoWifiConnection => 'חיבור Wi-Fi חלש או לא קיים';
+
+  @override
+  String get notConnectedToTheInternet => 'אין חיבור אינטרנט';
+
+  @override
+  String get placeNotFound => 'מיקום לא נמצא';
+
+  @override
+  String get unableToLocateDevice => 'לא מצליח למצוא מכשיר';
+
+  @override
+  String get locationServicesAreDisabled => 'שירותי מיקום לא פעילים.';
+
+  @override
+  String get locationPermissionIsDenied => 'הרשאת מיקום נדחתה';
+
+  @override
+  String get locationPermissionDeniedForever => 'הרשאת מיקום נדחתה לנצח';
+
+  @override
+  String get grantLocationPermission => 'אשר הרשאת מיקום';
+
+  @override
+  String get currentLocation => 'מיקום נוכחי';
+
+  @override
+  String get favoritesLowercase => 'favorites';
+
+  @override
+  String get failedToAccessGps => 'failed to access gps';
+
+  @override
+  String get search => 'Search...';
+
+  @override
+  String get sunriseSunset => 'sunrise/sunset';
+
+  @override
+  String get airQuality => 'Air Quality';
+
+  @override
+  String get airQualityLowercase => 'air quality';
+
+  @override
+  String get good => 'good';
+
+  @override
+  String get fair => 'fair';
+
+  @override
+  String get moderate => 'moderate';
+
+  @override
+  String get poor => 'poor';
+
+  @override
+  String get veryPoor => 'very poor';
+
+  @override
+  String get unhealthy => 'unhealthy';
+
+  @override
+  String get radar => 'radar';
+
+  @override
+  String get colorMode => 'Color mode';
+
+  @override
+  String get weatherProvderLowercase => 'weather provider';
+
+  @override
+  String get timeMode => 'Time mode';
+
+  @override
+  String get mon => 'Mon';
+
+  @override
+  String get tue => 'Tue';
+
+  @override
+  String get wed => 'Wed';
+
+  @override
+  String get thu => 'Thu';
+
+  @override
+  String get fri => 'Fri';
+
+  @override
+  String get sat => 'Sat';
+
+  @override
+  String get sun => 'Sun';
+
+  @override
+  String get fontSize => 'Font size';
+
+  @override
+  String get dailyLowercase => 'daily';
+
+  @override
+  String get searchProvider => 'Search provider';
+
+  @override
+  String get updatedJustNow => 'updated, just now';
+
+  @override
+  String get colorSource => 'Color source';
+
+  @override
+  String get imageSource => 'Image source';
+
+  @override
+  String get sumLowercase => 'sum';
+
+  @override
+  String get precipLowercase => 'precip';
+
+  @override
+  String get windLowercase => 'wind';
+
+  @override
+  String get uvLowercase => 'uv';
+
+  @override
+  String get tempLowercase => 'temp';
+
+  @override
+  String get pressureLowercase => 'pressure';
+
+  @override
+  String get goodAqiDesc => 'Air quality is excellent; no health risk.';
+
+  @override
+  String get fairAqiDesc =>
+      'Acceptable air quality; minor risk for sensitive people.';
+
+  @override
+  String get moderateAqiDesc =>
+      'Sensitive individuals may experience mild effects.';
+
+  @override
+  String get poorAqiDesc =>
+      'Health effects possible for everyone, serious for sensitive groups.';
+
+  @override
+  String get veryPoorAqiDesc => 'Serious health effects for everyone.';
+
+  @override
+  String get unhealthyAqiDesc =>
+      'Emergency conditions; severe health effects for all.';
+
+  @override
+  String get photoByXOnUnsplash => 'Photo, by ,x, on ,Unsplash';
+
+  @override
+  String get sourceCodeLowercase => 'source code';
+
+  @override
+  String get emailLowercase => 'email';
+
+  @override
+  String get reportAnIssueLowercase => 'report an issue';
+
+  @override
+  String get donateLowercase => 'donate';
+
+  @override
+  String get versionUppercase => 'Version';
+
+  @override
+  String get apiAndServices => 'APIs & Services';
+
+  @override
+  String get licenseUppercase => 'License';
+
+  @override
+  String get weatherDataLowercase => 'weather data';
+
+  @override
+  String get imagesLowercase => 'images';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get general => 'General';
+
+  @override
+  String get units => 'Units';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get backgroundUpdates => 'Background updates';
+
+  @override
+  String get appearanceSettingDesc => 'color theme, image source';
+
+  @override
+  String get generalSettingDesc => 'time mode, font size';
+
+  @override
+  String get languageSettingDesc => 'the language used';
+
+  @override
+  String get unitsSettingdesc => 'the units used in the app';
+
+  @override
+  String get aboutSettingsDesc => 'about this app';
+
+  @override
+  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+
+  @override
+  String get now => 'now';
+
+  @override
+  String get hr => 'hr';
+
+  @override
+  String get layout => 'Layout';
+
+  @override
+  String get layoutSettingDesc => 'widget order, customization';
+
+  @override
+  String get thirtyMinutes => '30m';
+
+  @override
+  String get mainPollutant => 'main pollutant';
+
+  @override
+  String get alderPollen => 'Alder Pollen';
+
+  @override
+  String get birchPollen => 'Birch Pollen';
+
+  @override
+  String get grassPollen => 'Grass Pollen';
+
+  @override
+  String get mugwortPollen => 'Mugwort Pollen';
+
+  @override
+  String get olivePollen => 'Olive Pollen';
+
+  @override
+  String get ragweedPollen => 'Ragweed Pollen';
+
+  @override
+  String get dailyAqi => 'daily AQI';
+
+  @override
+  String get dateFormat => 'Date format';
+
+  @override
+  String get d => 'd';
+
+  @override
+  String get aerosolOpticalDepth => 'aerosol optical depth';
+
+  @override
+  String get dust => 'dust';
+
+  @override
+  String get europeanAqi => 'europæisk aqi';
+
+  @override
+  String get unitedStatesAqi => 'USA AQI';
+
+  @override
+  String get offline => 'offline';
+
+  @override
+  String get helpTranslate => 'help translate';
+
+  @override
+  String get extremelyClear => 'extremely clear';
+
+  @override
+  String get veryClear => 'very clear';
+
+  @override
+  String get clear => 'clear';
+
+  @override
+  String get slightlyHazy => 'slightly hazy';
+
+  @override
+  String get hazy => 'hazy';
+
+  @override
+  String get veryHazy => 'very hazy';
+
+  @override
+  String get extremelyHazy => 'extremely hazy';
+
+  @override
+  String get poweredByOpenMeteo => 'powered by open-meteo';
+
+  @override
+  String get rainInHalfHour => 'rain in the next half an hour';
+
+  @override
+  String rainInMinutes(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes minutes',
+      one: 'minute',
+    );
+    return 'rain in the next $_temp0';
+  }
+
+  @override
+  String get rainInOneHour => 'rain in the next hour';
+
+  @override
+  String rainInHours(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: '$hours hours',
+      one: 'hour',
+    );
+    return 'rain in the next $_temp0';
+  }
+
+  @override
+  String rainExpectedInMinutes(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes minutes',
+      one: 'minute',
+    );
+    return 'rain expected in $_temp0';
+  }
+
+  @override
+  String get rainExpectedInOneHour => 'rain expected in an hour';
+
+  @override
+  String rainExpectedInHours(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: '$hours hours',
+      one: 'hour',
+    );
+    return 'rain expected in $_temp0';
+  }
+
+  @override
+  String updatedXMinutesAgo(Object minutes) {
+    return 'updated, $minutes min ago';
+  }
+
+  @override
+  String updatedXHoursAgo(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: '$hours hours',
+      one: '1 hour',
+    );
+    return 'updated, $_temp0 ago';
+  }
+
+  @override
+  String updatedXDaysAgo(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return 'updated, $_temp0 ago';
+  }
+
+  @override
+  String get radarHaptics => 'Radar haptics';
+
+  @override
+  String get alertsCapital => 'Alerts';
+
+  @override
+  String get alertsLowercase => 'alerts';
+
+  @override
+  String get severity => 'severity';
+
+  @override
+  String get certainty => 'certainty';
+
+  @override
+  String get urgency => 'urgency';
+
+  @override
+  String get areas => 'areas';
+
+  @override
+  String get light => 'light';
+
+  @override
+  String get heavy => 'heavy';
+
+  @override
+  String get showMore => 'show more';
+
+  @override
+  String get showLess => 'show less';
+
+  @override
+  String get cold => 'cold';
+
+  @override
+  String get hot => 'hot';
+
+  @override
+  String get calm => 'calm';
+
+  @override
+  String get severe => 'severe';
+
+  @override
+  String get low => 'low';
+
+  @override
+  String get high => 'high';
+
+  @override
+  String get liveRadar => 'live radar';
+
+  @override
+  String get ongoingNotification => 'ongoing notification';
+
+  @override
+  String get north => 'N';
+
+  @override
+  String get northEast => 'NE';
+
+  @override
+  String get east => 'E';
+
+  @override
+  String get southEast => 'SE';
+
+  @override
+  String get south => 'S';
+
+  @override
+  String get southWest => 'SW';
+
+  @override
+  String get west => 'W';
+
+  @override
+  String get northWest => 'NW';
+}

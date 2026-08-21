@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -69,6 +69,13 @@ String convertToShortTime(DateTime time, BuildContext context) {
   return DateFormat('H:mm').format(time);
 }
 
+String formatHourByTimeMode(DateTime time, String timeMode) {
+  if (timeMode == "12 hour") {
+    return DateFormat('ha').format(time).toLowerCase();
+  }
+  return "${time.hour}h";
+}
+
 String convertToWeekDayTime(DateTime? time, context) {
   if (time != null) {
     String weekName = getWeekName(time.weekday - 1, context);
@@ -119,13 +126,14 @@ String getDayName(DateTime day, BuildContext context, String dateFormat) {
 }
 
 num unitConversion(double value, String unit, {decimals = 2}) {
-  List<double> p = conversionTable[unit] ?? [0, 0];
+  List<double> p = conversionTable[unit] ?? [1, 0];
   double a = p[0] + value * p[1];
   if (decimals == 0) {
     return a.round();
   }
   return double.parse(a.toStringAsFixed(decimals));
 }
+
 
 String aqiDescLocalization(index, localizations) {
   return [

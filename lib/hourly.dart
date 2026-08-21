@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:overmorrow/decoders/weather_data.dart';
+import 'package:overmorrow/pages/hourly_sheet.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/weather_service.dart';
 import 'package:overmorrow/weather_refact.dart';
@@ -67,7 +68,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
             padding: const EdgeInsets.only(top: 20, bottom: 0, left: 5),
             child: Wrap(
               spacing: 5.0,
-              children: List<Widget>.generate(4, (int index) {
+              children: List.generate(4, (int index) {
                   return ChoiceChip(
                     elevation: 0.0,
                     side: BorderSide(
@@ -93,7 +94,7 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
                     },
                   );
                 },
-              ).toList(),
+              ),
             ),
           ),
         ],
@@ -102,26 +103,14 @@ class _NewHourlyState extends State<NewHourly> with AutomaticKeepAliveClientMixi
   }
 }
 
-Widget hourBoxes(hours, _value, elevated, context, String dateFormat) {
+Widget hourBoxes(List<WeatherHour> hours, _value, elevated, context, String dateFormat) {
 
   return AnimationLimiter(
     child: ListView.builder(
       itemCount: hours.length,
       scrollDirection: Axis.horizontal,
       itemBuilder: (BuildContext context, int index) {
-        var hour = hours[index];
-        if (hour is DateTime) {
-          return AnimationConfiguration.staggeredList(
-            position: index,
-            duration: const Duration(milliseconds: 500),
-            child: SlideAnimation(
-              horizontalOffset: 100.0,
-              child: FadeInAnimation(
-                child: dividerWidget(getDayName(hour, context, dateFormat), context)
-              ),
-            ),
-          );
-        }
+        WeatherHour hour = hours[index];
 
         List<Widget> childWidgets = [
           HourlySum(hour: hour),
@@ -136,7 +125,12 @@ Widget hourBoxes(hours, _value, elevated, context, String dateFormat) {
           child: SlideAnimation(
             horizontalOffset: 100.0,
             child: FadeInAnimation(
-              child: hourlyDataBuilder(hour, elevated, childWidgets[_value], context)
+              child: Row(
+                children: [
+                  if (!elevated && hour.time.hour == 1 && index != 0) dividerWidget(getDayName(hour.time, context, dateFormat), context),
+                  hourlyDataBuilder(hours, index, elevated, childWidgets[_value], context),
+                ],
+              )
             ),
           ),
         );
@@ -145,7 +139,7 @@ Widget hourBoxes(hours, _value, elevated, context, String dateFormat) {
   );
 }
 
-Widget hourlyDataBuilder(hour, elevated, childWidget, context) {
+Widget hourlyDataBuilder(List<WeatherHour> hours, int index, elevated, childWidget, context) {
   return Padding(
     padding: const EdgeInsets.all(3),
     child: AnimatedSwitcher(
@@ -161,17 +155,17 @@ Widget hourlyDataBuilder(hour, elevated, childWidget, context) {
             position: offsetAnimation,
             child: GestureDetector(
               onTap: () {
-                /*
+
                 HapticFeedback.lightImpact();
                 showModalBottomSheet<void>(
                   context: context,
                   isScrollControlled: true,
                   enableDrag: true,
                   builder: (BuildContext context) {
-                    return HourlyBottomSheet(hour: hour);
+                    return HourlyBottomSheet(hours: hours, initialIndex: index,);
                   },
                 );
-                 */
+
               },
               child: Container(
                 padding: const EdgeInsets.only(top: 7, bottom: 5),

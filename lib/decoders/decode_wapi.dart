@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -372,7 +372,7 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, placeName) async {
   wapi_body["forecast"]["forecastday"] = wapi_body["forecast"]["forecastday"].sublist(dayDif);
 
   List<WeatherDay> days = [];
-  List<dynamic> hourly72 = [];
+  List<WeatherHour> hourly72 = [];
 
   for (int n = 0; n < wapi_body["forecast"]["forecastday"].length; n++) {
     WeatherDay day = wapiWeatherDayFromJson(
@@ -380,9 +380,6 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, placeName) async {
     days.add(day);
 
     if (hourly72.length < 72) {
-      if (n != 0) {
-        hourly72.add(day.date);
-      }
       for (int z = 0; z < day.hourly.length; z++) {
         if (hourly72.length < 72) {
           hourly72.add(day.hourly[z]);
@@ -490,6 +487,7 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(placeName, lat, lon, Shar
   DateTime now = DateTime.now();
 
   final String tempUnit = prefs.getString("Temperature") ?? "˚C";
+  final String timeMode = prefs.getString("Time mode") ?? "12 hour";
 
   for (int i = 0; i < item["forecast"]["forecastday"][0]["hour"].length; i++) {
     final hour = item["forecast"]["forecastday"][0]["hour"][i];
@@ -499,13 +497,13 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(placeName, lat, lon, Shar
     if (d.hour % 6 == 0) {
       hourly6Conditions.add(wapiTextCorrection(hour["condition"]["code"], hour["is_day"]));
       hourly6Temps.add(unitConversion(hour["temp_c"], tempUnit).round());
-      hourly6Names.add("${d.hour}h");
+      hourly6Names.add(formatHourByTimeMode(d, timeMode));
     }
 
     if (d.difference(now).inHours >= 0 && d.difference(now).inHours < 3) {
       hourly1Conditions.add(wapiTextCorrection(hour["condition"]["code"], hour["is_day"]));
       hourly1Temps.add(unitConversion(hour["temp_c"], tempUnit).round());
-      hourly1Names.add("${d.hour}h");
+      hourly1Names.add(formatHourByTimeMode(d, timeMode));
     }
   }
 

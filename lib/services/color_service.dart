@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -29,6 +29,13 @@ int getColorFromHex(String hexColor) {
     hexColor = "FF$hexColor";
   }
   return int.parse(hexColor, radix: 16);
+}
+
+String colorToHex(Color color, {bool leadingHashSign = true}) {
+  return '${leadingHashSign ? '#' : ''}'
+      '${(255 * color.r).toInt().toRadixString(16).padLeft(2, '0')}'
+      '${(255 * color.g).toInt().toRadixString(16).padLeft(2, '0')}'
+      '${(255 * color.b).toInt().toRadixString(16).padLeft(2, '0')}';
 }
 
 double difFromBackColor(Color front, Color back) {

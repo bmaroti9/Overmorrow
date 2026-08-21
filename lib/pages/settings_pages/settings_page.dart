@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/pages/settings_pages/settings_screens.dart';
 import '../../../l10n/app_localizations.dart';
 import 'about_page.dart';
+import 'bg_updates_page.dart';
 
 class MainSettingEntry extends StatelessWidget {
   final String title;

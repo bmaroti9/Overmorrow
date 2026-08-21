@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -351,7 +351,7 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, placeName) async {
   MnBody["properties"]["timeseries"] = MnBody["properties"]["timeseries"].sublist(start);
 
   List<WeatherDay> days = [];
-  List<dynamic> hourly72 = [];
+  List<WeatherHour> hourly72 = [];
 
   int begin = 0;
   int index = 0;
@@ -359,15 +359,11 @@ Future<WeatherData> MetNGetWeatherData(lat, lng, placeName) async {
   int previous_hour = 0;
   for (int n = 0; n < MnBody["properties"]["timeseries"].length; n++) {
     int hour = (int.parse(MnBody["properties"]["timeseries"][n]["time"].split("T")[1].split(":")[0]) - hourDif) % 24;
-    //int hour = DateTime.parse(MnBody["properties"]["timeseries"][n]["time"]).toLocal().hour;
     if (n > 0 && hour - previous_hour < 1) {
       WeatherDay day = metNWeatherDayFromJson(MnBody, begin, n, index, hourDif);
       days.add(day);
 
       if (hourly72.length < 72) {
-        if (begin != 0) {
-          hourly72.add(day.date);
-        }
         for (int z = 0; z < day.hourly.length; z++) {
           if (hourly72.length < 72) {
             hourly72.add(day.hourly[z]);
@@ -474,6 +470,7 @@ Future<LightHourlyForecastData> metNGetLightHourlyData(placeName, lat, lon, Shar
   DateTime now = DateTime.now();
 
   final String tempUnit = prefs.getString("Temperature") ?? "˚C";
+  final String timeMode = prefs.getString("Time mode") ?? "12 hour";
 
   for (int i = 0; i < min(item["properties"]["timeseries"].length, 23); i++) {
     final hour = item["properties"]["timeseries"][i];
@@ -485,7 +482,7 @@ Future<LightHourlyForecastData> metNGetLightHourlyData(placeName, lat, lon, Shar
           hour["data"]["next_1_hours"]["summary"]["symbol_code"]));
       hourly6Temps.add(unitConversion(
           hour["data"]["instant"]["details"]["air_temperature"],tempUnit).round(),);
-      hourly6Names.add("${d.hour}h");
+      hourly6Names.add(formatHourByTimeMode(d, timeMode));
     }
 
     if (i < 4) {
@@ -493,7 +490,7 @@ Future<LightHourlyForecastData> metNGetLightHourlyData(placeName, lat, lon, Shar
           hour["data"]["next_1_hours"]["summary"]["symbol_code"]));
       hourly1Temps.add(unitConversion(
           hour["data"]["instant"]["details"]["air_temperature"],tempUnit).round(),);
-      hourly1Names.add("${d.hour}h");
+      hourly1Names.add(formatHourByTimeMode(d, timeMode));
     }
   }
 

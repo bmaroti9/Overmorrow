@@ -528,6 +528,30 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get ongoingNotification => 'ongoing notification';
+
+  @override
+  String get north => 'N';
+
+  @override
+  String get northEast => 'NE';
+
+  @override
+  String get east => 'E';
+
+  @override
+  String get southEast => 'SE';
+
+  @override
+  String get south => 'S';
+
+  @override
+  String get southWest => 'SW';
+
+  @override
+  String get west => 'W';
+
+  @override
+  String get northWest => 'NW';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).
@@ -732,13 +756,19 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get sumLowercase => 'resumo';
 
   @override
-  String get precipLowercase => 'precip';
+  String get precipLowercase => 'precipitação';
 
   @override
   String get windLowercase => 'vento';
 
   @override
   String get uvLowercase => 'uv';
+
+  @override
+  String get tempLowercase => 'temperatura';
+
+  @override
+  String get pressureLowercase => 'Pressão';
 
   @override
   String get goodAqiDesc => 'Qualidade do ar excelente; sem risco à saúde.';
@@ -804,6 +834,9 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get about => 'Sobre';
 
   @override
+  String get backgroundUpdates => 'Atualizações em segundo plano';
+
+  @override
   String get appearanceSettingDesc => 'cor do tema, fonte de imagem';
 
   @override
@@ -817,6 +850,10 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get aboutSettingsDesc => 'sobre este aplicativo';
+
+  @override
+  String get backgroundUpdatesSettingsDesc =>
+      'Atualizações de widgets, notificações';
 
   @override
   String get now => 'agora';
@@ -1017,4 +1054,52 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get showLess => 'mostrar menos';
+
+  @override
+  String get cold => 'frio';
+
+  @override
+  String get hot => 'quente';
+
+  @override
+  String get calm => 'calmo';
+
+  @override
+  String get severe => 'forte';
+
+  @override
+  String get low => 'baixo';
+
+  @override
+  String get high => 'alto';
+
+  @override
+  String get liveRadar => 'radar ao vivo';
+
+  @override
+  String get ongoingNotification => 'notificação contínua';
+
+  @override
+  String get north => 'N';
+
+  @override
+  String get northEast => 'NE';
+
+  @override
+  String get east => 'L';
+
+  @override
+  String get southEast => 'SE';
+
+  @override
+  String get south => 'S';
+
+  @override
+  String get southWest => 'SO';
+
+  @override
+  String get west => 'O';
+
+  @override
+  String get northWest => 'NO';
 }

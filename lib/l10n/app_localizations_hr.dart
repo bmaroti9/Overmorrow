@@ -9,10 +9,10 @@ class AppLocalizationsHr extends AppLocalizations {
   AppLocalizationsHr([String locale = 'hr']) : super(locale);
 
   @override
-  String get feelsLike => 'Osjeća se kao';
+  String get feelsLike => 'Osjet temperature';
 
   @override
-  String get precipCapital => 'Oborine.';
+  String get precipCapital => 'Oborine';
 
   @override
   String get humidity => 'Vlažnost';
@@ -136,7 +136,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get good => 'dobro';
 
   @override
-  String get fair => 'pošteno';
+  String get fair => 'prihvatljivo';
 
   @override
   String get moderate => 'umjereno';
@@ -202,7 +202,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get imageSource => 'Izvor slike';
 
   @override
-  String get sumLowercase => 'suma';
+  String get sumLowercase => 'sažetak';
 
   @override
   String get precipLowercase => 'oborina';
@@ -528,4 +528,28 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String get ongoingNotification => 'ongoing notification';
+
+  @override
+  String get north => 'N';
+
+  @override
+  String get northEast => 'NE';
+
+  @override
+  String get east => 'E';
+
+  @override
+  String get southEast => 'SE';
+
+  @override
+  String get south => 'S';
+
+  @override
+  String get southWest => 'SW';
+
+  @override
+  String get west => 'W';
+
+  @override
+  String get northWest => 'NW';
 }

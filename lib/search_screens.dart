@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -337,15 +337,17 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     //start by getting the last position, so there is always some place showing, and then update it later
     try {
       position = (await Geolocator.getLastKnownPosition())!;
+      final Geocoding geocoding = Geocoding();
 
-      List<Placemark> placemarks = await placemarkFromCoordinates(
+      List<Placemark> placemarks = await geocoding.placemarkFromCoordinates(
           position.latitude, position.longitude);
       Placemark place = placemarks[0];
 
       setState(() {
-        placeName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? "";
+        placeName = place.locality ?? place.subLocality ?? place.thoroughfare ?? place.subThoroughfare ?? place.name ??
+            "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
         country = place.isoCountryCode ?? place.country ?? "";
-        region = place.administrativeArea ?? place.subAdministrativeArea ?? "";
+        region = place.administrativeArea ?? place.subAdministrativeArea ?? place.subLocality ?? "";
         placeLatLon = "${position.latitude}, ${position.longitude}";
 
         locationState = "enabled";
@@ -387,8 +389,9 @@ class _HeroSearchPageState extends State<HeroSearchPage> {
     }
 
     try {
+      final Geocoding geocoding = Geocoding();
 
-      List<Placemark> placemarks = await placemarkFromCoordinates(
+      List<Placemark> placemarks = await geocoding.placemarkFromCoordinates(
           position.latitude, position.longitude);
       Placemark place = placemarks[0];
 

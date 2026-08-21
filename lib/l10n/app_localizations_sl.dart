@@ -107,7 +107,7 @@ class AppLocalizationsSl extends AppLocalizations {
 
   @override
   String get locationPermissionDeniedForever =>
-      'location permission denied forever';
+      'Dovoljenje za dostop do lokacije je zvrnjeno za vedno';
 
   @override
   String get grantLocationPermission => 'Dodeli lokacijsko pravico';
@@ -119,7 +119,7 @@ class AppLocalizationsSl extends AppLocalizations {
   String get favoritesLowercase => 'Priljubljeni';
 
   @override
-  String get failedToAccessGps => 'failed to access gps';
+  String get failedToAccessGps => 'Napaka pri dostopanju do gps';
 
   @override
   String get search => 'Iskanje ...';
@@ -137,10 +137,10 @@ class AppLocalizationsSl extends AppLocalizations {
   String get good => 'dobro';
 
   @override
-  String get fair => 'fair';
+  String get fair => 'sprejemljivo';
 
   @override
-  String get moderate => 'moderate';
+  String get moderate => 'zmerno';
 
   @override
   String get poor => 'slaba';
@@ -206,7 +206,7 @@ class AppLocalizationsSl extends AppLocalizations {
   String get sumLowercase => 'Povzetek';
 
   @override
-  String get precipLowercase => 'precip';
+  String get precipLowercase => 'padavine';
 
   @override
   String get windLowercase => 'veter';
@@ -225,11 +225,11 @@ class AppLocalizationsSl extends AppLocalizations {
 
   @override
   String get fairAqiDesc =>
-      'Acceptable air quality; minor risk for sensitive people.';
+      'Sprejemljiva kakovost zraka; majhno tveganje za občutljive ljudi.';
 
   @override
   String get moderateAqiDesc =>
-      'Sensitive individuals may experience mild effects.';
+      'Občutljivi posamezniki lahko občutijo blage vplive.';
 
   @override
   String get poorAqiDesc =>
@@ -243,7 +243,7 @@ class AppLocalizationsSl extends AppLocalizations {
       'Emergency conditions; severe health effects for all.';
 
   @override
-  String get photoByXOnUnsplash => 'Fotografija, x na Unsplash';
+  String get photoByXOnUnsplash => 'Fotografija,, x, na ,Unsplash';
 
   @override
   String get sourceCodeLowercase => 'izvorna koda';
@@ -357,10 +357,10 @@ class AppLocalizationsSl extends AppLocalizations {
   String get dust => 'dust';
 
   @override
-  String get europeanAqi => 'european aqi';
+  String get europeanAqi => 'europæisk aqi';
 
   @override
-  String get unitedStatesAqi => 'united states aqi';
+  String get unitedStatesAqi => 'USA AQI';
 
   @override
   String get offline => 'brez povezave';
@@ -528,4 +528,28 @@ class AppLocalizationsSl extends AppLocalizations {
 
   @override
   String get ongoingNotification => 'ongoing notification';
+
+  @override
+  String get north => 'N';
+
+  @override
+  String get northEast => 'NE';
+
+  @override
+  String get east => 'E';
+
+  @override
+  String get southEast => 'SE';
+
+  @override
+  String get south => 'S';
+
+  @override
+  String get southWest => 'SW';
+
+  @override
+  String get west => 'W';
+
+  @override
+  String get northWest => 'NW';
 }

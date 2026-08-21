@@ -1,5 +1,5 @@
 /*
-Copyright (C) <2025>  <Balint Maroti>
+Copyright (C) <2026>  <Balint Maroti>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -182,7 +182,7 @@ class WeatherData {
   final bool isOnline;
 
   final List<WeatherDay> days;
-  final List<dynamic> hourly72;
+  final List<WeatherHour> hourly72;
   final WeatherCurrent current;
   final WeatherAqi aqi;
   final WeatherSunStatus sunStatus;
