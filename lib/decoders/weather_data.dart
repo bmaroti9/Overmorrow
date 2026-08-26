@@ -386,3 +386,45 @@ class LightHourlyForecastData {
     }
   }
 }
+
+class LightDailyForecastData {
+  final String place;
+  final int currentTemp;
+
+  // JSON-encoded List<int> — high temperatures for each day
+  final String dailyHighTemps;
+  // JSON-encoded List<int> — low temperatures for each day
+  final String dailyLowTemps;
+  // JSON-encoded List<String> — condition string for each day
+  final String dailyConditions;
+  // JSON-encoded List<String> — abbreviated day name, e.g. "Mon"
+  final String dailyNames;
+  // JSON-encoded List<int> — precipitation probability 0-100
+  final String dailyPrecipProbs;
+
+  LightDailyForecastData({
+    required this.place,
+    required this.currentTemp,
+    required this.dailyHighTemps,
+    required this.dailyLowTemps,
+    required this.dailyConditions,
+    required this.dailyNames,
+    required this.dailyPrecipProbs,
+  });
+
+  static Future<LightDailyForecastData> getLightDailyData(placeName, latLon, provider, SharedPreferences prefs) async {
+
+    List<String> split = latLon.split(",");
+    double lat = double.parse(split[0]);
+    double lon = double.parse(split[1]);
+
+    switch (provider) {
+      case "weatherapi":
+        return wapiGetLightDailyData(placeName, lat, lon, prefs);
+      case "met-norway":
+        return metNGetLightDailyData(placeName, lat, lon, prefs);
+      default:
+        return omGetLightDailyData(placeName, lat, lon, prefs);
+    }
+  }
+}

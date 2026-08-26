@@ -76,6 +76,7 @@ import com.marotidev.overmorrow.services.getBackColor
 import com.marotidev.overmorrow.services.getFrontColor
 import com.marotidev.overmorrow.widgets.CurrentWidget
 import com.marotidev.overmorrow.widgets.DateCurrentWidget
+import com.marotidev.overmorrow.widgets.DailyForecastWidget
 import com.marotidev.overmorrow.widgets.ForecastWidget
 import com.marotidev.overmorrow.widgets.OneHourlyWidget
 import com.marotidev.overmorrow.widgets.UvWidget
@@ -119,6 +120,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
                     "com.marotidev.overmorrow.receivers.ForecastWidgetReceiver" -> ForecastWidget()
                     "com.marotidev.overmorrow.receivers.OneHourlyWidgetReceiver" -> OneHourlyWidget()
                     "com.marotidev.overmorrow.receivers.UvWidgetReceiver" -> UvWidget()
+                    "com.marotidev.overmorrow.receivers.DailyForecastWidgetReceiver" -> DailyForecastWidget()
                     else -> {
                         Log.w("WidgetConfig", "Unknown widget provider: $providerClassName for appWidgetId: $appWidgetId")
                         null
