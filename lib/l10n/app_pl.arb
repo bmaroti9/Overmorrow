@@ -121,7 +121,7 @@
     "@rainInOneHour": {
         "description": "rain in the next hour"
     },
-    "updatedXHoursAgo": "zaktualizowano, {hours, plural, =1 {1 hour} other {{hours} hours}} temu",
+    "updatedXHoursAgo": "zaktualizowano, {hours, plural, =1 {1 godz.} other {{hours} godz.}} temu",
     "@updatedXHoursAgo": {
         "description": "updated x hours ago",
         "placeholders": {
@@ -168,7 +168,7 @@
             }
         }
     },
-    "rainInHours": "deszcz w ciągu następnych {hours, plural, =1 {hour} other {{hours} hours}}",
+    "rainInHours": "deszcz w ciągu {hours, plural, =1 {najbliższej godziny} other {najbliższych {hours} godz.}}",
     "@rainInHours": {
         "description": "rain in the next X hours",
         "placeholders": {
@@ -177,7 +177,7 @@
             }
         }
     },
-    "rainExpectedInHours": "spodziewany deszcz za {hours, plural, =1 {hour} other {{hours} hours}}",
+    "rainExpectedInHours": "opady deszczu spodziewane w ciągu {hours, plural, =1 {najbliższej godziny} other {najbliższych {hours} godz.}}",
     "@rainExpectedInHours": {
         "description": "rain expected in the next X hours",
         "placeholders": {
