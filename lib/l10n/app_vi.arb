@@ -41,5 +41,180 @@
     "radar": "radar",
     "colorMode": "Chế độ màu",
     "weatherProvderLowercase": "nhà cung cấp thông tin thời tiết",
-    "mon": "Thứ Hai"
+    "mon": "T2",
+    "failedToAccessGps": "không thể truy cập GPS",
+    "timeMode": "Chế độ thời gian",
+    "tue": "T3",
+    "wed": "T4",
+    "thu": "T5",
+    "fri": "T6",
+    "sat": "T7",
+    "sun": "Cn",
+    "fontSize": "Cỡ chữ",
+    "dailyLowercase": "hàng ngày",
+    "searchProvider": "Nhà cung cấp tìm kiếm",
+    "updatedJustNow": "vừa cập nhật",
+    "colorSource": "Nguồn màu",
+    "imageSource": "Nguồn ảnh",
+    "precipLowercase": "lượng mưa",
+    "windLowercase": "gió",
+    "uvLowercase": "uv",
+    "tempLowercase": "nhiệt độ",
+    "pressureLowercase": "áp suất",
+    "goodAqiDesc": "Không khí rất tốt, không gây hại sức khỏe.",
+    "fairAqiDesc": "Không khí ổn; người nhạy cảm có thể bị ảnh hưởng nhẹ.",
+    "moderateAqiDesc": "Người nhạy cảm có thể bị ảnh hưởng nhẹ.",
+    "poorAqiDesc": "Có thể ảnh hưởng sức khỏe mọi người; nghiêm trọng hơn với nhóm nhạy cảm.",
+    "veryPoorAqiDesc": "Ảnh hưởng nghiêm trọng đến sức khỏe mọi người.",
+    "unhealthyAqiDesc": "Tình trạng khẩn cấp; nguy hại nghiêm trọng cho mọi người.",
+    "photoByXOnUnsplash": "Ảnh, của ,x, trên ,Unsplash",
+    "sourceCodeLowercase": "mã nguồn",
+    "emailLowercase": "email",
+    "reportAnIssueLowercase": "báo lỗi",
+    "donateLowercase": "ủng hộ",
+    "versionUppercase": "Phiên bản",
+    "apiAndServices": "API & Dịch vụ",
+    "licenseUppercase": "Giấy phép",
+    "weatherDataLowercase": "dữ liệu thời tiết",
+    "imagesLowercase": "ảnh",
+    "appearance": "Giao diện",
+    "general": "Chung",
+    "units": "Đơn vị",
+    "about": "Giới thiệu",
+    "backgroundUpdates": "Cập nhật nền",
+    "appearanceSettingDesc": "chủ đề màu, nguồn ảnh",
+    "generalSettingDesc": "chế độ thời gian, cỡ chữ",
+    "languageSettingDesc": "ngôn ngữ sử dụng",
+    "unitsSettingdesc": "đơn vị sử dụng trong ứng dụng",
+    "aboutSettingsDesc": "giới thiệu ứng dụng",
+    "backgroundUpdatesSettingsDesc": "cập nhật tiện ích, thông báo",
+    "now": "bây giờ",
+    "layout": "Bố cục",
+    "layoutSettingDesc": "thứ tự tiện ích, tùy chỉnh",
+    "thirtyMinutes": "30p",
+    "mainPollutant": "chất ô nhiễm chính",
+    "alderPollen": "Phấn hoa cây trăn",
+    "offline": "ngoại tuyến",
+    "helpTranslate": "hỗ trợ dịch",
+    "extremelyClear": "cực kỳ trong lành",
+    "veryClear": "rất trong lành",
+    "clear": "trong lành",
+    "slightlyHazy": "hơi mờ",
+    "hazy": "sương mù",
+    "veryHazy": "rất mờ",
+    "extremelyHazy": "cực kỳ mờ",
+    "poweredByOpenMeteo": "dữ liệu chất lượng không khí được cung cấp bởi open-meteo",
+    "@poweredByOpenMeteo": {
+        "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+    },
+    "rainInHalfHour": "mưa trong nửa giờ tới",
+    "@rainInHalfHour": {
+        "description": "rain in the next half an hour"
+    },
+    "rainInMinutes": "mưa trong {minutes, plural, =1 {1 phút} other {{minutes} phút}} tới",
+    "@rainInMinutes": {
+        "description": "rain in the next X minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "rainInOneHour": "mưa trong một giờ tới",
+    "@rainInOneHour": {
+        "description": "rain in the next hour"
+    },
+    "rainInHours": "mưa trong {hours, plural, =1 {1 giờ} other {{hours} giờ}} tới",
+    "@rainInHours": {
+        "description": "rain in the next X hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "rainExpectedInMinutes": "dự kiến có mưa trong {minutes, plural, =1 {1 phút} other {{minutes} phút}} tới",
+    "@rainExpectedInMinutes": {
+        "description": "rain expected in the next X minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "rainExpectedInOneHour": "dự kiến có mưa trong một giờ tới",
+    "@rainExpectedInOneHour": {
+        "description": "rain expected in the next hour"
+    },
+    "rainExpectedInHours": "dự kiến có mưa trong {hours, plural, =1 {1 giờ} other {{hours} giờ}} tới",
+    "@rainExpectedInHours": {
+        "description": "rain expected in the next X hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXMinutesAgo": "đã cập nhật, {minutes} phút trước",
+    "updatedXHoursAgo": "đã cập nhật, {hours, plural, =1 {1 giờ} other {{hours} giờ}} trước",
+    "@updatedXHoursAgo": {
+        "description": "updated x hours ago",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXDaysAgo": "đã cập nhật, {days, plural, =1 {1 ngày} other {{days} ngày}} trước",
+    "@updatedXDaysAgo": {
+        "description": "updated x days ago",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "radarHaptics": "Rung phản hồi radar",
+    "@radarHaptics": {
+        "description": "setting for enabling or disabling haptic feedback for the radar"
+    },
+    "alertsCapital": "Cảnh báo",
+    "alertsLowercase": "cảnh báo",
+    "severity": "mức độ nghiêm trọng",
+    "certainty": "mức độ chắc chắn",
+    "urgency": "mức độ khẩn cấp",
+    "areas": "khu vực",
+    "light": "nhỏ",
+    "@light": {
+        "description": "light precipitation"
+    },
+    "heavy": "to",
+    "@heavy": {
+        "description": "heavy precipitation"
+    },
+    "showMore": "hiển thị thêm",
+    "showLess": "ẩn bớt",
+    "cold": "lạnh",
+    "hot": "nóng",
+    "calm": "lặng gió",
+    "severe": "mức độ dữ dội",
+    "low": "thấp",
+    "high": "cao",
+    "liveRadar": "radar trực tiếp",
+    "ongoingNotification": "thông báo thường trực",
+    "north": "B",
+    "northEast": "ĐB",
+    "east": "Đ",
+    "southEast": "ĐN",
+    "south": "N",
+    "southWest": "TN",
+    "west": "T",
+    "northWest": "TB",
+    "cloudyNight": "Đêm nhiều mây",
+    "locationServicesAreDisabled": "dịch vụ vị trí bị tắt.",
+    "locationPermissionIsDenied": "quuyền vị trí bị từ chối",
+    "locationPermissionDeniedForever": "quuyền vị trí bị từ chối vĩnh viễn",
+    "grantLocationPermission": "cấp quyền vị trí",
+    "fair": "trời quang",
+    "unhealthy": "xấu"
 }
