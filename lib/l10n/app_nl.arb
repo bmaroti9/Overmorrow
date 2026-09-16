@@ -228,5 +228,13 @@
     "backgroundUpdates": "Achtergrond­updates",
     "backgroundUpdatesSettingsDesc": "Widget-updates, meldingen",
     "liveRadar": "Live-radar",
-    "ongoingNotification": "Doorlopende melding"
+    "ongoingNotification": "Doorlopende melding",
+    "north": "noorden",
+    "northEast": "noordoosten",
+    "east": "oosten",
+    "southEast": "zuidoost",
+    "south": "zuid",
+    "southWest": "zuidwest",
+    "west": "west",
+    "northWest": "noordwest"
 }
