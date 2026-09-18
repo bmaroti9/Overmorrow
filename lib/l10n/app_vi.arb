@@ -1,7 +1,7 @@
 {
     "feelsLike": "Cảm giác như",
-    "precipCapital": "Giáng thủy",
-    "humidity": "Độ ẩm",
+    "precipCapital": "Lg Mưa",
+    "humidity": "Lượng mưa",
     "windCapital": "Gió",
     "uvCapital": "UV",
     "settings": "Cài đặt",
@@ -216,5 +216,12 @@
     "locationPermissionDeniedForever": "quuyền vị trí bị từ chối vĩnh viễn",
     "grantLocationPermission": "cấp quyền vị trí",
     "fair": "trời quang",
-    "unhealthy": "xấu"
+    "unhealthy": "xấu",
+    "aerosolOpticalDepth": "Độ sâu quang học aerosol",
+    "dust": "bụi",
+    "dateFormat": "Định dạng ngày",
+    "hr": "giờ",
+    "dailyAqi": "Chất lượng không khí hàng ngày",
+    "unitedStatesAqi": "Chất lượng không khí ở Mỹ",
+    "europeanAqi": "Chất lượng không khí ở Châu Âu"
 }
