@@ -1,6 +1,6 @@
 {
     "@@locale": "de",
-    "feelsLike": "Gefühlt wie",
+    "feelsLike": "Fühlt sich an wie:",
     "precipCapital": "Niederschlag",
     "humidity": "Luftfeuchtigkeit",
     "windCapital": "Wind",
@@ -29,7 +29,7 @@
     "heavyRain": "Starker Regen",
     "cloudyNight": "Bewölkte Nacht",
     "weakOrNoWifiConnection": "Schwache oder keine WLAN-Verbindung",
-    "notConnectedToTheInternet": "Nicht mit dem Internet verbunden",
+    "notConnectedToTheInternet": "Keine Internetverbindung",
     "placeNotFound": "Ort nicht gefunden",
     "unableToLocateDevice": "Standort konnte nicht gefunden werden",
     "locationServicesAreDisabled": "Standortdienste sind deaktiviert.",
