@@ -26,6 +26,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../api_key.dart';
 import '../services/caching_service.dart';
 import '../services/weather_service.dart';
+import '../weather_refact.dart';
 import 'decode_OM.dart';
 import 'decode_RV.dart';
 import 'weather_data.dart';
@@ -881,6 +882,88 @@ Future<WeatherData> MfGetWeatherData(lat, lng, placeName) async {
   );
 }
 
+/// Meteo-France reports temperatures in Celsius, so this is the key
+/// `conversionTable` uses. It matches the entries in preferences_service.dart.
+/// Written as an escape so the unit cannot be corrupted by file encoding.
+const String _mfDefaultTempUnit = '\u02daC';
+
+/// Maps the stored temperature preference onto a unit `conversionTable`
+/// understands. `unitConversion` answers `[1, 0]` for an unknown unit, which
+/// reports a constant 1 degree, so anything unexpected falls back to Celsius.
+String mfResolveTempUnit(String? stored) {
+  if (stored != null && conversionTable.containsKey(stored)) {
+    return stored;
+  }
+  return _mfDefaultTempUnit;
+}
+
+/// The widget and ongoing notification run in a background isolate where the
+/// temperature preference is often absent, because it is only stored once the
+/// user changes it.
+String _mfTempUnit(SharedPreferences prefs) {
+  return mfResolveTempUnit(prefs.getString('Temperature'));
+}
+
+/// One forecast series for the home screen widgets. The three lists are always
+/// filled together so the widget can read them by index.
+class MfLightSeries {
+  final List<String> conditions = <String>[];
+  final List<int> temps = <int>[];
+  final List<String> names = <String>[];
+
+  bool get isFull => conditions.length >= 4;
+
+  void add(dynamic item, WeatherSunStatus sunStatus, String tempUnit,
+      String timeMode) {
+    final time = _mfDateFromTimestamp(item['dt']);
+    conditions
+        .add(mfTextCorrection(item['weather'], time, sunStatus: sunStatus));
+    temps.add(
+        unitConversion(_mfNestedDouble(item, 'T', 'value'), tempUnit).round());
+    names.add(formatHourByTimeMode(time, timeMode));
+  }
+}
+
+/// The 1 hour and 6 hour series the forecast widgets read, derived from the raw
+/// Meteo-France forecast list.
+class MfLightHourlySeries {
+  final MfLightSeries hourly1 = MfLightSeries();
+  final MfLightSeries hourly6 = MfLightSeries();
+}
+
+/// Meteo-France mixes hourly and 3 hourly steps in the same list, so both series
+/// are built from the timestamps themselves: the 1 hour series starts at the
+/// current hour, like the other providers, and the 6 hour series keeps the
+/// entries that sit on a six hour boundary.
+MfLightHourlySeries mfBuildLightHourlySeries(
+  List<dynamic> forecast,
+  DateTime now,
+  WeatherSunStatus sunStatus,
+  String tempUnit,
+  String timeMode,
+) {
+  final series = MfLightHourlySeries();
+  final currentHour = DateTime(now.year, now.month, now.day, now.hour);
+
+  final sorted = List<dynamic>.from(forecast)
+    ..sort((a, b) =>
+        _mfDateFromTimestamp(a['dt']).compareTo(_mfDateFromTimestamp(b['dt'])));
+
+  for (final item in sorted) {
+    final time = _mfDateFromTimestamp(item['dt']);
+
+    if (time.hour % 6 == 0 && !series.hourly6.isFull) {
+      series.hourly6.add(item, sunStatus, tempUnit, timeMode);
+    }
+
+    if (!time.isBefore(currentHour) && !series.hourly1.isFull) {
+      series.hourly1.add(item, sunStatus, tempUnit, timeMode);
+    }
+  }
+
+  return series;
+}
+
 Future<LightCurrentWeatherData> mfGetLightCurrentData(
   placeName,
   lat,
@@ -898,7 +981,7 @@ Future<LightCurrentWeatherData> mfGetLightCurrentData(
     place: placeName,
     temp: unitConversion(
       _mfNestedDouble(current, 'T', 'value'),
-      prefs.getString('Temperature') ?? 'ËšC',
+      _mfTempUnit(prefs),
     ).round(),
     condition: mfTextCorrection(current['weather'], now, sunStatus: sunStatus),
     updatedTime: '${now.hour}:${now.minute.toString().padLeft(2, '0')}',
@@ -944,38 +1027,11 @@ Future<LightHourlyForecastData> mfGetLightHourlyData(
   final current = _mfNearestForecast(forecast, now);
   final sunStatus = mfWeatherSunStatusFromDaily(_mfFirstOrEmpty(daily), now);
 
-  final hourly6Conditions = <String>[];
-  final hourly6Temps = <int>[];
-  final hourly6Names = <String>[];
-
-  final hourly1Conditions = <String>[];
-  final hourly1Temps = <int>[];
-  final hourly1Names = <String>[];
-
-  final tempUnit = prefs.getString('Temperature') ?? 'ËšC';
+  final tempUnit = _mfTempUnit(prefs);
   final timeMode = prefs.getString('Time mode') ?? '12 hour';
 
-  for (final hour in forecast) {
-    final time = _mfDateFromTimestamp(hour['dt']);
-
-    if (time.hour % 6 == 0 && hourly6Conditions.length < 4) {
-      hourly6Conditions
-          .add(mfTextCorrection(hour['weather'], time, sunStatus: sunStatus));
-      hourly6Temps.add(
-          unitConversion(_mfNestedDouble(hour, 'T', 'value'), tempUnit)
-              .round());
-      hourly6Names.add(formatHourByTimeMode(time, timeMode));
-    }
-
-    if (!time.isBefore(now) && hourly1Conditions.length < 4) {
-      hourly1Conditions
-          .add(mfTextCorrection(hour['weather'], time, sunStatus: sunStatus));
-      hourly1Temps.add(
-          unitConversion(_mfNestedDouble(hour, 'T', 'value'), tempUnit)
-              .round());
-      hourly1Names.add(formatHourByTimeMode(time, timeMode));
-    }
-  }
+  final series =
+      mfBuildLightHourlySeries(forecast, now, sunStatus, tempUnit, timeMode);
 
   return LightHourlyForecastData(
     currentTemp:
@@ -985,11 +1041,11 @@ Future<LightHourlyForecastData> mfGetLightHourlyData(
         mfTextCorrection(current['weather'], now, sunStatus: sunStatus),
     place: placeName,
     updatedTime: '${now.hour}:${now.minute.toString().padLeft(2, '0')}',
-    hourly6Conditions: jsonEncode(hourly6Conditions),
-    hourly6Temps: jsonEncode(hourly6Temps),
-    hourly6Names: jsonEncode(hourly6Names),
-    hourly1Conditions: jsonEncode(hourly1Conditions),
-    hourly1Temps: jsonEncode(hourly1Temps),
-    hourly1Names: jsonEncode(hourly1Names),
+    hourly6Conditions: jsonEncode(series.hourly6.conditions),
+    hourly6Temps: jsonEncode(series.hourly6.temps),
+    hourly6Names: jsonEncode(series.hourly6.names),
+    hourly1Conditions: jsonEncode(series.hourly1.conditions),
+    hourly1Temps: jsonEncode(series.hourly1.temps),
+    hourly1Names: jsonEncode(series.hourly1.names),
   );
 }
