@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:async';
 import 'package:overmorrow/decoders/decode_OM.dart';
 import 'package:overmorrow/decoders/decode_RV.dart';
+import 'package:overmorrow/decoders/decode_mf.dart';
 import 'package:overmorrow/decoders/decode_mn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'decode_wapi.dart';
@@ -226,6 +227,9 @@ class WeatherData {
     if (provider == 'weatherapi') {
       return WapiGetWeatherData(lat, lng, placeName);
     }
+    else if (provider == "meteo-france"){
+      return MfGetWeatherData(lat, lng, placeName);
+    }
     else if (provider == "met-norway"){
       return MetNGetWeatherData(lat, lng, placeName);
     }
@@ -281,6 +285,8 @@ class LightCurrentWeatherData {
     switch (provider) {
       case "weatherapi":
         return wapiGetLightCurrentData(placeName, lat, lng, prefs);
+      case "meteo-france":
+        return mfGetLightCurrentData(placeName, lat, lng, prefs);
       case "met-norway":
         return metNGetLightCurrentData(placeName, lat, lng, prefs);
       default:
@@ -309,6 +315,8 @@ class LightWindData {
     switch (provider) {
       case "weatherapi":
         return wapiGetLightWindData(lat, lon, prefs);
+      case "meteo-france":
+        return mfGetLightWindData(lat, lon, prefs);
       case "met-norway":
         return metNGetLightWindData(lat, lon, prefs);
       default:
@@ -333,6 +341,8 @@ class LightUvData {
     switch (provider) {
       case "weatherapi":
         return wapiGetLightUvData(lat, lon, prefs);
+      case "meteo-france":
+        return mfGetLightUvData(lat, lon, prefs);
       case "met-norway":
         return metNGetLightUvData(lat, lon, prefs);
       default:
@@ -379,6 +389,8 @@ class LightHourlyForecastData {
     switch (provider) {
       case "weatherapi":
         return wapiGetLightHourlyData(placeName, lat, lon, prefs);
+      case "meteo-france":
+        return mfGetLightHourlyData(placeName, lat, lon, prefs);
       case "met-norway":
         return metNGetLightHourlyData(placeName, lat, lon, prefs);
       default:
