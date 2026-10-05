@@ -385,12 +385,13 @@ class ServicesPage extends StatelessWidget {
                        GestureDetector(
                          onTap: () {
                            HapticFeedback.lightImpact();
-                           _launchUrl("https://meteofrance.com/");
+                           _launchUrl("https://github.com/hacf-fr/meteofrance-api");
                          },
-                         child: Text("meteo-france",
+                         child: Text("meteo-france reverse by hacf-fr",
                            style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 17,
                              decoration: TextDecoration.underline,),),
                         ),
+                        
                       ],
                      ),
                     ),
