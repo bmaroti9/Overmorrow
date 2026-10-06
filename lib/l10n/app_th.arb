@@ -1,1 +1,240 @@
-{}
+{
+    "feelsLike": "รู้สึกเหมือน",
+    "precipCapital": "ปริมาณฝน",
+    "humidity": "ความชื้น",
+    "windCapital": "ลม",
+    "uvCapital": "รังสีอัลตราไวโอเลต",
+    "settings": "การตั้งค่า",
+    "today": "วันนี้",
+    "tomorrowLowercase": "พรุ่งนี้",
+    "overmorrowLowercase": "มะรืนนี้",
+    "language": "ภาษา",
+    "temperature": "อุณหภูมิ",
+    "precipitaion": "ปริมาณฝน",
+    "rain": "ฝน",
+    "clearNight": "กลางคืนฟ้าใส",
+    "partlyCloudy": "มีเมฆบางส่วน",
+    "clearSky": "ท้องฟ้าแจ่มใส",
+    "overcast": "มีเมฆมาก",
+    "haze": "มีฟ้าหลัว",
+    "sleet": "ฝนน้ำแข็ง",
+    "drizzle": "ฝนละออง",
+    "thunderstorm": "ฝนฟ้าคะนอง",
+    "heavySnow": "หิมะตกหนัก",
+    "fog": "มีหมอก",
+    "snow": "หิมะตก",
+    "heavyRain": "ฝนตกหนัก",
+    "cloudyNight": "กลางคืนมีเมฆมาก",
+    "weakOrNoWifiConnection": "สัญญาณ Wi-Fi อ่อนหรือไม่มีการเชื่อมต่อ",
+    "notConnectedToTheInternet": "ไม่ได้เชื่อมต่ออินเทอร์เน็ต",
+    "placeNotFound": "ไม่พบสถานที่",
+    "unableToLocateDevice": "ไม่สามารถระบุตำแหน่งอุปกรณ์",
+    "locationServicesAreDisabled": "บริการตำแหน่งถูกปิดใช้งาน",
+    "locationPermissionIsDenied": "การอนุญาตตำแหน่งถูกปฏิเสธ",
+    "locationPermissionDeniedForever": "การอนุญาตตำแหน่งถูกปฏิเสธอย่างถาวร",
+    "grantLocationPermission": "อนุญาตการเข้าถึงตำแหน่ง",
+    "currentLocation": "ตำแหน่งปัจจุบัน",
+    "favoritesLowercase": "รายการโปรด",
+    "failedToAccessGps": "ไม่สามารถเข้าถึง GPS ได้",
+    "search": "ค้นหา...",
+    "sunriseSunset": "พระอาทิตย์ขึ้น/ตก",
+    "airQuality": "คุณภาพอากาศ",
+    "airQualityLowercase": "คุณภาพอากาศ",
+    "good": "ดี",
+    "fair": "พอใช้",
+    "moderate": "ปานกลาง",
+    "poor": "แย่",
+    "veryPoor": "แย่ไม่",
+    "unhealthy": "ไม่ดีต่อสุขภาพ",
+    "radar": "เรดาร์",
+    "colorMode": "โหมดสี",
+    "weatherProvderLowercase": "ผู้ให้บริการสภาพอากาศ",
+    "timeMode": "รูปแบบเวลา",
+    "mon": "จ.",
+    "tue": "อ.",
+    "wed": "พ.",
+    "thu": "พฤ.",
+    "fri": "ศ.",
+    "sat": "ส.",
+    "sun": "อา.",
+    "fontSize": "ขนาดตัวอักษร",
+    "dailyLowercase": "รายวัน",
+    "searchProvider": "ผู้ให้บริการค้นหา",
+    "updatedJustNow": "อัปเดตเมื่อสักครู่",
+    "colorSource": "แหล่งที่มาของสี",
+    "imageSource": "แหล่งที่มาของรูปภาพ",
+    "sumLowercase": "สรุป",
+    "@sumLowercase": {
+        "description": "short for summary, overview, gist or something similar, used in the context of hourly list"
+    },
+    "precipLowercase": "ปริมาณฝน",
+    "windLowercase": "ลม",
+    "uvLowercase": "รังสีอัลตราไวโอเลต",
+    "tempLowercase": "อุณหภูมิ",
+    "pressureLowercase": "ความกดอากาศ",
+    "goodAqiDesc": "คุณภาพอากาศดีเยี่ยม ไม่มีผลกระทบต่อสุขภาพ",
+    "fairAqiDesc": "คุณภาพอากาศอยู่ในระดับที่ยอมรับได้ มีความเสี่ยงเล็กน้อยสำหรับกลุ่มที่ไวต่อมลพิษ",
+    "moderateAqiDesc": "กลุ่มที่ไวต่อมลพิษอาจได้รับผลกระทบเล็กน้อย",
+    "poorAqiDesc": "ทุกคนอาจเริ่มได้รับผลกระทบต่อสุขภาพ และอาจรุนแรงในกลุ่มที่ไวต่อมลพิษ",
+    "veryPoorAqiDesc": "มีผลกระทบต่อสุขภาพอย่างรุนแรงต่อทุกคน",
+    "unhealthyAqiDesc": "สภาวะฉุกเฉิน มีผลกระทบต่อสุขภาพอย่างรุนแรงต่อทุกคน",
+    "photoByXOnUnsplash": "รูปภาพ, โดย ,x, บน ,Unsplash",
+    "sourceCodeLowercase": "ซอร์สโค้ด",
+    "emailLowercase": "อีเมล",
+    "reportAnIssueLowercase": "รายงานปัญหา",
+    "donateLowercase": "บริจาค",
+    "versionUppercase": "เวอร์ชัน",
+    "apiAndServices": "API และ บริการ",
+    "licenseUppercase": "ใบอนุญาต",
+    "weatherDataLowercase": "ข้อมูลสภาพอากาศ",
+    "imagesLowercase": "รูปภาพ",
+    "appearance": "ลักษณะที่ปรากฏ",
+    "general": "ทั่วไป",
+    "units": "หน่วยวัด",
+    "about": "เกี่ยวกับ",
+    "backgroundUpdates": "อัปเดตพื้นหลัง",
+    "appearanceSettingDesc": "ธีมสี, แหล่งที่มาของรูปภาพ",
+    "generalSettingDesc": "รูปแบบเวลา, ขนาดตัวอักษ",
+    "languageSettingDesc": "ภาษาที่ใช้",
+    "unitsSettingdesc": "หน่วยวัดที่ใช้ในแอป",
+    "aboutSettingsDesc": "เกี่ยวกับแอปนี้",
+    "backgroundUpdatesSettingsDesc": "อัปเดตวิดเจ็ต, การแจ้งเตือน",
+    "now": "ตอนนี้",
+    "hr": "ชม.",
+    "layout": "เค้าโครง",
+    "layoutSettingDesc": "ลำดับวิดเจ็ต, การปรับแต่ง",
+    "thirtyMinutes": "30 นาที",
+    "mainPollutant": "มลพิษหลัก",
+    "alderPollen": "ละอองเกสรต้นอัลเดอร์",
+    "birchPollen": "ละอองเกสรต้นเบิร์ช",
+    "grassPollen": "ละอองเกสรหญ้า",
+    "mugwortPollen": "ละอองเกสรมักเวิร์ต",
+    "olivePollen": "ละอองเกสรต้นมะกอก",
+    "ragweedPollen": "ละอองเกสรแร็กวีด",
+    "dailyAqi": "AQI รายวัน",
+    "dateFormat": "รูปแบบวันที่",
+    "d": "ว.",
+    "@d": {
+        "description": "short for day"
+    },
+    "aerosolOpticalDepth": "ความหนาเชิงแสงของละอองลอย",
+    "dust": "ฝุ่นละออง",
+    "europeanAqi": "AQI ยุโรป",
+    "unitedStatesAqi": "AQI สหรัฐอเมริกา",
+    "offline": "ออฟไลน์",
+    "helpTranslate": "ช่วยแปลภาษา",
+    "extremelyClear": "แจ่มใสมาก",
+    "veryClear": "แจ่มใส",
+    "clear": "ใส",
+    "slightlyHazy": "มีฟ้าหลัวเล็กน้อย",
+    "hazy": "มีฟ้าหลัว",
+    "veryHazy": "มีฟ้าหลัวจัด",
+    "extremelyHazy": "มีฟ้าหลัวหนาแน่น",
+    "poweredByOpenMeteo": "สนับสนุนข้อมูลโดย open-meteo",
+    "@poweredByOpenMeteo": {
+        "description": "text displayed at the end of the air quality page, crediting open-meteo for the data"
+    },
+    "rainInHalfHour": "ฝนจะตกในอีกครึ่งชั่วโมง",
+    "@rainInHalfHour": {
+        "description": "rain in the next half an hour"
+    },
+    "rainInMinutes": "ฝนจะตกในอีก {minutes, plural, =1 {1 นาที} other {{minutes} นาที}}",
+    "@rainInMinutes": {
+        "description": "rain in the next X minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "rainInOneHour": "ฝนจะตกในอีกหนึ่งชั่วโมง",
+    "@rainInOneHour": {
+        "description": "rain in the next hour"
+    },
+    "rainInHours": "ฝนจะตกในอีก {hours, plural, =1 {1 ชั่วโมง} other {{hours} ชั่วโมง}}",
+    "@rainInHours": {
+        "description": "rain in the next X hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "rainExpectedInMinutes": "คาดว่าจะมีฝนในอีก {minutes, plural, =1 {1 นาที} other {{minutes} นาที}}",
+    "@rainExpectedInMinutes": {
+        "description": "rain expected in the next X minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "rainExpectedInOneHour": "คาดว่าจะมีฝนในอีกหนึ่งชั่วโมง",
+    "@rainExpectedInOneHour": {
+        "description": "rain expected in the next hour"
+    },
+    "rainExpectedInHours": "คาดว่าจะมีฝนในอีก {hours, plural, =1 {1 ชั่วโมง} other {{hours} ชั่วโมง}}",
+    "@rainExpectedInHours": {
+        "description": "rain expected in the next X hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXMinutesAgo": "อัปเดตเมื่อ {minutes} นาทีที่แล้ว",
+    "updatedXHoursAgo": "อัปเดตเมื่อ {hours, plural, =1 {1 ชั่วโมง} other {{hours} ชั่วโมง}}ที่แล้ว",
+    "@updatedXHoursAgo": {
+        "description": "updated x hours ago",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "updatedXDaysAgo": "อัปเดตเมื่อ {days, plural, =1 {1 วัน} other {{days} วัน}}ที่แล้ว",
+    "@updatedXDaysAgo": {
+        "description": "updated x days ago",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "radarHaptics": "การสั่นเมื่อใช้เรดาร์",
+    "@radarHaptics": {
+        "description": "setting for enabling or disabling haptic feedback for the radar"
+    },
+    "alertsCapital": "การแจ้งเตือน",
+    "alertsLowercase": "การแจ้งเตือน",
+    "severity": "ความรุนแรง",
+    "certainty": "ความแน่นอน",
+    "urgency": "ความเร่งด่วน",
+    "areas": "พื้นที่",
+    "light": "เบาบาง",
+    "@light": {
+        "description": "light precipitation"
+    },
+    "heavy": "หนัก",
+    "@heavy": {
+        "description": "heavy precipitation"
+    },
+    "showMore": "แสดงเพิ่มเติม",
+    "showLess": "แสดงน้อยลง",
+    "cold": "หนาว",
+    "hot": "ร้อน",
+    "calm": "สงบ",
+    "severe": "รุนแรง",
+    "low": "ต่ำ",
+    "high": "สูง",
+    "liveRadar": "เรดาร์สด",
+    "ongoingNotification": "การแจ้งเตือนต่อเนื่อง",
+    "north": "เหนือ",
+    "northEast": "ต.อ.เฉียงเหนือ",
+    "east": "ตะวันออก",
+    "southEast": "ต.อ.เฉียงใต้",
+    "south": "ใต้",
+    "southWest": "ต.ต.เฉียงใต้",
+    "west": "ตะวันตก",
+    "northWest": "ต.ต.เฉียงเหนือ"
+}
