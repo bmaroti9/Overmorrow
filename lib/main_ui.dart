@@ -512,7 +512,7 @@ class SinceLastUpdate extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                await _launchUrl("${imageService.photoLink}?utm_source=overmorrow&utm_medium=referral");
+                await _launchUrl("${imageService.photoLink}?brautm_source=overmorrow&utm_medium=referral");
               },
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.all(1),
