@@ -28,11 +28,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api_key.dart';
 import '../services/caching_service.dart';
+import '../services/timezone_service.dart';
 
 import '../weather_refact.dart' as weather_refactor;
 import 'decode_RV.dart';
 import 'weather_data.dart';
-
 
 Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   //gets the json response for weatherapi.com
@@ -45,7 +45,8 @@ Future<List<dynamic>> WapiMakeRequest(String latlong, String real_loc) async {
   };
   final url = Uri.https('api.weatherapi.com', 'v1/forecast.json', params);
 
-  var file = await XCustomCacheManager.fetchData(url.toString(), "$real_loc, weatherapi.com");
+  var file = await XCustomCacheManager.fetchData(
+      url.toString(), "$real_loc, weatherapi.com");
 
   DateTime fetch_datetime = await file[0].lastModified();
   bool isonline = file[1];
@@ -66,8 +67,8 @@ int wapiGetWindDir(var data) {
   return (total / data.length).round();
 }
 
-
-double getSunStatus(String sunrise, String sunset, DateTime localtime, {by = " "}) {
+double getSunStatus(String sunrise, String sunset, DateTime localtime,
+    {by = " "}) {
   List<String> splited1 = sunrise.split(by);
   List<String> num1 = splited1[0].split(":");
   int hour1 = int.parse(num1[0]);
@@ -94,53 +95,38 @@ double getSunStatus(String sunrise, String sunset, DateTime localtime, {by = " "
 }
 
 Future<DateTime> WapiGetLocalTime(lat, lng) async {
-  final params = {
-    'key': timezonedbKey,
-    'lat': lat.toString(),
-    'lng': lng.toString(),
-    'format': 'json',
-    'by': 'position'
-  };
-  final url = Uri.https('api.timezonedb.com', 'v2.1/get-time-zone', params);
-  var file = await XCustomCacheManager.fetchData(url.toString(), "$lat, $lng timezonedb.com");
-  var response = await file[0].readAsString();
-  var body = jsonDecode(response);
-  
-  return DateTime.parse(body["formatted"]);
+  return TimezoneService.getLocalTime(
+      (lat as num).toDouble(), (lng as num).toDouble());
 }
 
 String wapiTextCorrection(name, isday) {
   String x = weather_refactor.weatherTextMap[name] ?? 'Clear Sky';
-  if (x == 'Clear Sky'){
+  if (x == 'Clear Sky') {
     if (isday == 1) {
-      x =  'Clear Sky';
+      x = 'Clear Sky';
+    } else {
+      x = 'Clear Night';
     }
-    else{
-      x =  'Clear Night';
-    }
-  }
-  else if (x == 'Partly Cloudy'){
+  } else if (x == 'Partly Cloudy') {
     if (isday == 1) {
-      x =  'Partly Cloudy';
-    }
-    else{
-      x =  'Cloudy Night';
+      x = 'Partly Cloudy';
+    } else {
+      x = 'Cloudy Night';
     }
   }
   return x;
 }
-
 
 //---------------------------------Weather Classes--------------------------------
 
 WeatherCurrent wapiWeatherCurrentFromJson(item, start) {
   return WeatherCurrent(
     condition: wapiTextCorrection(
-      item["hour"][start]["condition"]["code"], item["hour"][start]["is_day"],
+      item["hour"][start]["condition"]["code"],
+      item["hour"][start]["is_day"],
     ),
     tempC: item["hour"][start]["temp_c"],
     feelsLikeC: item["hour"][start]["feelslike_c"],
-
     uv: item["hour"][start]["uv"].round(),
     humidity: item["hour"][start]["humidity"],
     precipMm: item["day"]["totalprecip_mm"],
@@ -153,13 +139,11 @@ WeatherDay wapiWeatherDayFromJson(item, approximatelocal) {
   return WeatherDay(
     condition: wapiTextCorrection(item["day"]["condition"]["code"], 1),
     date: DateTime.parse(item["date"]),
-
     minTempC: item["day"]["mintemp_c"],
     maxTempC: item["day"]["maxtemp_c"],
-
     hourly: wapiBuildWeatherHourList(item["hour"], approximatelocal),
-
-    totalPrecipMm: item["day"]["totalprecip_mm"] + item["day"]["totalsnow_cm"] / 10,
+    totalPrecipMm:
+        item["day"]["totalprecip_mm"] + item["day"]["totalsnow_cm"] / 10,
     precipProb: item["day"]["daily_chance_of_rain"],
     windKmh: item["day"]["maxwind_kph"],
     uv: item["day"]["uv"].round(),
@@ -185,10 +169,8 @@ WeatherHour wapiWeatherHourFromJson(item, approximatelocal) {
     tempC: item["temp_c"],
     time: DateTime.parse(item["time"]),
     precipMm: item["precip_mm"] + (item["snow_cm"] / 10),
-
     windKmh: item["wind_kph"],
     windGustKmh: item["gust_kph"],
-
     precipProb: max(item["chance_of_rain"], item["chance_of_snow"]),
     uv: item["uv"].round(),
     windDirA: item["wind_degree"],
@@ -197,10 +179,14 @@ WeatherHour wapiWeatherHourFromJson(item, approximatelocal) {
 
 WeatherSunStatus wapiWeatherSunStatusFromJson(item, localtime) {
   return WeatherSunStatus(
-    sunrise: DateFormat('h:mm a').parse(item["forecast"]["forecastday"][0]["astro"]["sunrise"]),
-    sunset: DateFormat('h:mm a').parse(item["forecast"]["forecastday"][0]["astro"]["sunset"]),
-    sunstatus: getSunStatus(item["forecast"]["forecastday"][0]["astro"]["sunrise"],
-        item["forecast"]["forecastday"][0]["astro"]["sunset"], localtime),
+    sunrise: DateFormat('h:mm a')
+        .parse(item["forecast"]["forecastday"][0]["astro"]["sunrise"]),
+    sunset: DateFormat('h:mm a')
+        .parse(item["forecast"]["forecastday"][0]["astro"]["sunset"]),
+    sunstatus: getSunStatus(
+        item["forecast"]["forecastday"][0]["astro"]["sunrise"],
+        item["forecast"]["forecastday"][0]["astro"]["sunset"],
+        localtime),
   );
 }
 
@@ -209,7 +195,6 @@ WeatherAqi wapiWeatherAqiFromJson(item) {
     aqiIndex: item["current"]["air_quality"]["us-epa-index"],
   );
 }
-
 
 List<WeatherAlert> wapiGetWeatherAlerts(item) {
   final List<WeatherAlert> alerts = [];
@@ -241,7 +226,6 @@ WeatherAlert wapiWeatherAlertFromJson(item) {
 }
 
 WeatherRain15Minutes wapiWeatherRain15MinutesFromJson(item, day, hour) {
-
   //weatherapi doesn't actaully have 15 minute forecast(well it does but it's paid), but i figured i could just use the
   //hourly data and just use some smoothing between the hours to emulate the 15 minutes
   //still better than not having it
@@ -266,9 +250,10 @@ WeatherRain15Minutes wapiWeatherRain15MinutesFromJson(item, day, hour) {
       double x;
       if (hour == 0 && day == 0) {
         x = double.parse(item["current"]["precip_mm"].toStringAsFixed(1));
-      }
-      else {
-        x = double.parse(item["forecast"]["forecastday"][day]["hour"][hour]["precip_mm"].toStringAsFixed(1));
+      } else {
+        x = double.parse(item["forecast"]["forecastday"][day]["hour"][hour]
+                ["precip_mm"]
+            .toStringAsFixed(1));
       }
 
       if (x > 0.0) {
@@ -284,8 +269,7 @@ WeatherRain15Minutes wapiWeatherRain15MinutesFromJson(item, day, hour) {
 
       i += 1;
       hour += 1;
-    }
-    else {
+    } else {
       day += 1;
     }
   }
@@ -298,7 +282,8 @@ WeatherRain15Minutes wapiWeatherRain15MinutesFromJson(item, day, hour) {
 
     double dif = next - now;
     for (double x = 0; x <= 1; x += 0.25) {
-      double g = (now + (dif * x)) / 4; //because we are dividing the sum of 1 hour into quarters
+      double g = (now + (dif * x)) /
+          4; //because we are dividing the sum of 1 hour into quarters
       sum += g;
       precips.add(g);
     }
@@ -310,16 +295,13 @@ WeatherRain15Minutes wapiWeatherRain15MinutesFromJson(item, day, hour) {
     if (closest <= 2) {
       if (end <= 1) {
         text = "rainInOneHour";
-      }
-      else {
+      } else {
         text = "rainInHours";
         time = end;
       }
-    }
-    else if (closest < 1) {
+    } else if (closest < 1) {
       text = "rainExpectedInOneHour";
-    }
-    else {
+    } else {
       text = "rainExpectedInHours";
       time = closest;
     }
@@ -333,35 +315,30 @@ WeatherRain15Minutes wapiWeatherRain15MinutesFromJson(item, day, hour) {
     precipSumMm: sum,
     precipListMm: precips,
   );
-
 }
 
-
 Future<WeatherData> WapiGetWeatherData(lat, lng, placeName) async {
-
   var wapi = await WapiMakeRequest("$lat,$lng", placeName);
 
   var wapi_body = wapi[0];
   DateTime fetch_datetime = wapi[1];
   bool isonline = wapi[2];
 
-  //DateTime lastKnowTime = DateTime.parse(wapi_body["location"]["localtime"]);
-  DateTime lastKnowTime = await WapiGetLocalTime(lat, lng);
-
-  //this gives us the time passed since last fetch, this is all basically for offline mode
-  Duration realTimeOffset = DateTime.now().difference(fetch_datetime);
-
-  //now we just need to apply this time offset to get the real current time
-  DateTime localtime = lastKnowTime.add(realTimeOffset);
+  DateTime localtime = await WapiGetLocalTime(lat, lng);
+  DateTime firstForecastDate =
+      DateTime.parse(wapi_body["forecast"]["forecastday"][0]["date"]);
 
   //get hour diff
-  DateTime approximateLocal = DateTime(localtime.year, localtime.month, localtime.day, localtime.hour);
-  int start = approximateLocal.difference(DateTime(lastKnowTime.year,
-      lastKnowTime.month, lastKnowTime.day)).inHours % 24;
+  DateTime approximateLocal =
+      DateTime(localtime.year, localtime.month, localtime.day, localtime.hour);
+  int start = approximateLocal.hour;
 
   //get day diff
-  int dayDif = DateTime(localtime.year, localtime.month, localtime.day).difference(
-      DateTime(lastKnowTime.year, lastKnowTime.month, lastKnowTime.day)).inDays;
+  int dayDif = max(
+      DateTime(localtime.year, localtime.month, localtime.day)
+          .difference(firstForecastDate)
+          .inDays,
+      0);
 
   //make sure that there is data left
   if (dayDif >= wapi_body["forecast"]["forecastday"].length) {
@@ -369,7 +346,8 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, placeName) async {
   }
 
   //remove outdated days
-  wapi_body["forecast"]["forecastday"] = wapi_body["forecast"]["forecastday"].sublist(dayDif);
+  wapi_body["forecast"]["forecastday"] =
+      wapi_body["forecast"]["forecastday"].sublist(dayDif);
 
   List<WeatherDay> days = [];
   List<WeatherHour> hourly72 = [];
@@ -389,32 +367,29 @@ Future<WeatherData> WapiGetWeatherData(lat, lng, placeName) async {
   }
 
   return WeatherData(
-    provider: "weatherapi.com",
-
-    place: placeName,
-    lat: lat,
-    lng: lng,
-
-    hourly72: hourly72,
-
-    current: wapiWeatherCurrentFromJson(wapi_body["forecast"]["forecastday"][0], start,),
-    days: days,
-    sunStatus: wapiWeatherSunStatusFromJson(wapi_body,
-        DateTime(localtime.year, localtime.month, localtime.day, localtime.hour, localtime.minute)),
-    aqi: wapiWeatherAqiFromJson(wapi_body),
-    radar: await RainviewerRadar.getData(),
-
-    dailyMinMaxTemp: weatherGetMaxMinTempForDaily(days),
-
-    fetchDatetime: fetch_datetime,
-    updatedTime: DateTime.now(),
-    localTime: localtime,
-
-    minutely15Precip: wapiWeatherRain15MinutesFromJson(wapi_body, 0, start),
-    alerts: wapiGetWeatherAlerts(wapi_body),
-
-    isOnline: isonline
-  );
+      provider: "weatherapi.com",
+      place: placeName,
+      lat: lat,
+      lng: lng,
+      hourly72: hourly72,
+      current: wapiWeatherCurrentFromJson(
+        wapi_body["forecast"]["forecastday"][0],
+        start,
+      ),
+      days: days,
+      sunStatus: wapiWeatherSunStatusFromJson(
+          wapi_body,
+          DateTime(localtime.year, localtime.month, localtime.day,
+              localtime.hour, localtime.minute)),
+      aqi: wapiWeatherAqiFromJson(wapi_body),
+      radar: await RainviewerRadar.getData(),
+      dailyMinMaxTemp: weatherGetMaxMinTempForDaily(days),
+      fetchDatetime: fetch_datetime,
+      updatedTime: DateTime.now(),
+      localTime: localtime,
+      minutely15Precip: wapiWeatherRain15MinutesFromJson(wapi_body, 0, start),
+      alerts: wapiGetWeatherAlerts(wapi_body),
+      isOnline: isonline);
 }
 
 Future<dynamic> wapiGetCurrentResponse(lat, lon) async {
@@ -431,39 +406,46 @@ Future<dynamic> wapiGetCurrentResponse(lat, lon) async {
   return jsonDecode(response);
 }
 
-Future<LightCurrentWeatherData> wapiGetLightCurrentData(placeName, lat, lon, SharedPreferences prefs) async {
+Future<LightCurrentWeatherData> wapiGetLightCurrentData(
+    placeName, lat, lon, SharedPreferences prefs) async {
   final item = await wapiGetCurrentResponse(lat, lon);
 
   DateTime now = DateTime.now();
 
   return LightCurrentWeatherData(
-    condition: wapiTextCorrection(item["current"]["condition"]["code"], item["current"]["is_day"]),
+    condition: wapiTextCorrection(
+        item["current"]["condition"]["code"], item["current"]["is_day"]),
     place: placeName,
-    temp:  unitConversion(item["current"]["temp_c"], prefs.getString("Temperature") ?? "˚C").round(),
+    temp: unitConversion(
+            item["current"]["temp_c"], prefs.getString("Temperature") ?? "˚C")
+        .round(),
     updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
     dateString: getDateStringFromLocalTime(now),
   );
 }
 
-Future<LightWindData> wapiGetLightWindData(lat, lon, SharedPreferences prefs) async {
+Future<LightWindData> wapiGetLightWindData(
+    lat, lon, SharedPreferences prefs) async {
   final item = await wapiGetCurrentResponse(lat, lon);
 
   return LightWindData(
-      windDirAngle: item["current"]["wind_degree"],
-      windSpeed:  unitConversion(item["current"]["wind_kph"], prefs.getString("Wind") ?? "m/s").round(),
-      windUnit: prefs.getString("Wind") ?? "m/s",
+    windDirAngle: item["current"]["wind_degree"],
+    windSpeed: unitConversion(
+            item["current"]["wind_kph"], prefs.getString("Wind") ?? "m/s")
+        .round(),
+    windUnit: prefs.getString("Wind") ?? "m/s",
   );
 }
 
-Future<LightUvData> wapiGetLightUvData(lat, lon, SharedPreferences prefs) async {
+Future<LightUvData> wapiGetLightUvData(
+    lat, lon, SharedPreferences prefs) async {
   final item = await wapiGetCurrentResponse(lat, lon);
 
-  return LightUvData(
-      uv: item["current"]["uv"].round()
-  );
+  return LightUvData(uv: item["current"]["uv"].round());
 }
 
-Future<LightHourlyForecastData> wapiGetLightHourlyData(placeName, lat, lon, SharedPreferences prefs) async {
+Future<LightHourlyForecastData> wapiGetLightHourlyData(
+    placeName, lat, lon, SharedPreferences prefs) async {
   final params = {
     'key': wapi_Key,
     'q': "$lat, $lon",
@@ -492,16 +474,20 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(placeName, lat, lon, Shar
   for (int i = 0; i < item["forecast"]["forecastday"][0]["hour"].length; i++) {
     final hour = item["forecast"]["forecastday"][0]["hour"][i];
 
-    DateTime d = DateTime.fromMillisecondsSinceEpoch(hour["time_epoch"] * 1000, isUtc: true).toLocal();
+    DateTime d = DateTime.fromMillisecondsSinceEpoch(hour["time_epoch"] * 1000,
+            isUtc: true)
+        .toLocal();
 
     if (d.hour % 6 == 0) {
-      hourly6Conditions.add(wapiTextCorrection(hour["condition"]["code"], hour["is_day"]));
+      hourly6Conditions
+          .add(wapiTextCorrection(hour["condition"]["code"], hour["is_day"]));
       hourly6Temps.add(unitConversion(hour["temp_c"], tempUnit).round());
       hourly6Names.add(formatHourByTimeMode(d, timeMode));
     }
 
     if (d.difference(now).inHours >= 0 && d.difference(now).inHours < 3) {
-      hourly1Conditions.add(wapiTextCorrection(hour["condition"]["code"], hour["is_day"]));
+      hourly1Conditions
+          .add(wapiTextCorrection(hour["condition"]["code"], hour["is_day"]));
       hourly1Temps.add(unitConversion(hour["temp_c"], tempUnit).round());
       hourly1Names.add(formatHourByTimeMode(d, timeMode));
     }
@@ -509,7 +495,8 @@ Future<LightHourlyForecastData> wapiGetLightHourlyData(placeName, lat, lon, Shar
 
   return LightHourlyForecastData(
     place: placeName,
-    currentCondition: wapiTextCorrection(item["current"]["condition"]["code"], item["current"]["is_day"]),
+    currentCondition: wapiTextCorrection(
+        item["current"]["condition"]["code"], item["current"]["is_day"]),
     currentTemp: unitConversion(item["current"]["temp_c"], tempUnit).round(),
     updatedTime: "${now.hour}:${now.minute.toString().padLeft(2, "0")}",
     //i can't sync lists to widgets so i need to encode and then decode them

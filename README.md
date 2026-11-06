@@ -45,7 +45,7 @@
   *Track pollen, air pollutants, dust, and more, with 5 days of aqi forecast*  
 -  **☔ 15 minute rain trend**  
   *See the overview of the precipitation in the next 6 hours in 15 minute intervals*  
--  **🗃️ 3 different weather providers**  
+-  **🗃️ 4 different weather providers**  
   *Choose the weather source that you find best*
 -  **🛜 Offline mode**  
   *See previously loaded data, even when offline*
@@ -98,6 +98,7 @@ Localizations are hosted on [Weblate](https://hosted.weblate.org/engage/overmorr
 - [weatherapi.com](https://www.weatherapi.com)
 - [met-norway](https://api.met.no/)
 - [rainvewer](https://www.rainviewer.com/api.html)
+- [meteo-france](https://meteofrance.com/) by [hacf-fr reverse engineer](https://github.com/hacf-fr/meteofrance-api)
 
 
 ## ❓ Why make Overmorrow?

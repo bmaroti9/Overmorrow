@@ -39,23 +39,28 @@ class AppearancePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     String colorSource = context.select((ThemeProvider p) => p.getColorSource);
-    String customColorHex = context.select((ThemeProvider p) => p.getThemeSeedColorHex);
+    String customColorHex =
+        context.select((ThemeProvider p) => p.getThemeSeedColorHex);
 
     return Material(
       color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
-            leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
+            leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 onPressed: () {
                   HapticFeedback.lightImpact();
                   Navigator.pop(context);
                 }),
-            title: Text(AppLocalizations.of(context)!.appearance,
-              style: const TextStyle(fontSize: 30),),
+            title: Text(
+              AppLocalizations.of(context)!.appearance,
+              style: const TextStyle(fontSize: 30),
+            ),
             backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
@@ -64,106 +69,138 @@ class AppearancePage extends StatelessWidget {
               padding: const EdgeInsets.only(left: 30, right: 30),
               child: AnimationLimiter(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: AnimationConfiguration.toStaggeredList(
-                    duration: const Duration(milliseconds: 500),
-                    childAnimationBuilder: (widget) => SlideAnimation(
-                      horizontalOffset: 80.0,
-                      child: FadeInAnimation(
-                        child: widget,
-                      ),
-                    ),
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 1, bottom: 14, top: 30),
-                        child: Text("app theme", style: TextStyle(fontSize: 17),)
-                      ),
-
-                      SegmentedButton(
-                        selected: <String>{context.watch<ThemeProvider>().getBrightness},
-                        onSelectionChanged: (Set<String> newSelection) {
-                          HapticFeedback.mediumImpact();
-                          context.read<ThemeProvider>().setBrightness(newSelection.first);
-                        },
-                        segments: const [
-                          ButtonSegment(
-                            icon: Icon(Icons.light_mode_outlined),
-                            value: "light",
-                            label: Text("light", style: TextStyle(fontSize: 18),),
-                          ),
-                          ButtonSegment(
-                            icon: Icon(Icons.dark_mode_outlined),
-                            value: "dark",
-                            label: Text("dark", style: TextStyle(fontSize: 18),),
-                          ),
-                          ButtonSegment(
-                            icon: Icon(Icons.brightness_6_outlined),
-                            value: "auto",
-                            label: Text("auto", style: TextStyle(fontSize: 18),),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 30),
-
-                      SettingsEntry(
-                        icon: Icons.download_for_offline_outlined,
-                        text: AppLocalizations.of(context)!.imageSource,
-                        rawText: 'Image source',
-                        selected: context.select((SettingsProvider p) => p.getImageSource),
-                        update: context.read<SettingsProvider>().setImageSource,
-                      ),
-
-                      SettingsEntry(
-                        icon: Icons.colorize,
-                        text: AppLocalizations.of(context)!.colorSource,
-                        rawText: 'Color source',
-                        selected: colorSource,
-                        update: context.read<ThemeProvider>().setColorSource,
-                      ),
-
-                      const SizedBox(height: 30,),
-
-                      if (colorSource == "custom") SizedBox(
-                        height: 65,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: settingSwitches["Custom color"]!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            String name = settingSwitches["Custom color"]![index];
-                            return GestureDetector(
-                              onTap: () {
-                                HapticFeedback.mediumImpact();
-                                context.read<ThemeProvider>().setCustomColorScheme(name);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(3.0),
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: Color(getColorFromHex(name)),
-                                            borderRadius: BorderRadius.circular(33)
-                                        ),
-                                      ),
-                                      if (customColorHex == name) const Center(
-                                          child: Icon(Icons.check, color: Colors.white,))
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: AnimationConfiguration.toStaggeredList(
+                      duration: const Duration(milliseconds: 500),
+                      childAnimationBuilder: (widget) => SlideAnimation(
+                        horizontalOffset: 80.0,
+                        child: FadeInAnimation(
+                          child: widget,
                         ),
                       ),
+                      children: [
+                        const Padding(
+                            padding:
+                                EdgeInsets.only(left: 1, bottom: 14, top: 30),
+                            child: Text(
+                              "app theme",
+                              style: TextStyle(fontSize: 17),
+                            )),
 
-                      const SizedBox(height: 20,),
+                        SegmentedButton(
+                          selected: <String>{
+                            context.watch<ThemeProvider>().getBrightness
+                          },
+                          onSelectionChanged: (Set<String> newSelection) {
+                            HapticFeedback.mediumImpact();
+                            context
+                                .read<ThemeProvider>()
+                                .setBrightness(newSelection.first);
+                          },
+                          segments: const [
+                            ButtonSegment(
+                              icon: Icon(Icons.light_mode_outlined),
+                              value: "light",
+                              label: Text(
+                                "light",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                            ButtonSegment(
+                              icon: Icon(Icons.dark_mode_outlined),
+                              value: "dark",
+                              label: Text(
+                                "dark",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                            ButtonSegment(
+                              icon: Icon(Icons.brightness_6_outlined),
+                              value: "auto",
+                              label: Text(
+                                "auto",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          ],
+                        ),
 
-                      //settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source', context),
+                        const SizedBox(height: 30),
 
-                      /*
+                        SettingsEntry(
+                          icon: Icons.download_for_offline_outlined,
+                          text: AppLocalizations.of(context)!.imageSource,
+                          rawText: 'Image source',
+                          selected: context
+                              .select((SettingsProvider p) => p.getImageSource),
+                          update:
+                              context.read<SettingsProvider>().setImageSource,
+                        ),
+
+                        SettingsEntry(
+                          icon: Icons.colorize,
+                          text: AppLocalizations.of(context)!.colorSource,
+                          rawText: 'Color source',
+                          selected: colorSource,
+                          update: context.read<ThemeProvider>().setColorSource,
+                        ),
+
+                        const SizedBox(
+                          height: 30,
+                        ),
+
+                        if (colorSource == "custom")
+                          SizedBox(
+                            height: 65,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount:
+                                  settingSwitches["Custom color"]!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                String name =
+                                    settingSwitches["Custom color"]![index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    HapticFeedback.mediumImpact();
+                                    context
+                                        .read<ThemeProvider>()
+                                        .setCustomColorScheme(name);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(3.0),
+                                    child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                color: Color(
+                                                    getColorFromHex(name)),
+                                                borderRadius:
+                                                    BorderRadius.circular(33)),
+                                          ),
+                                          if (customColorHex == name)
+                                            const Center(
+                                                child: Icon(
+                                              Icons.check,
+                                              color: Colors.white,
+                                            ))
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+
+                        const SizedBox(
+                          height: 20,
+                        ),
+
+                        //settingEntry(Icons.colorize_rounded, localizations.colorSource, settings, palette, updatePage, 'Color source', context),
+
+                        /*
                       if (settings["Color source"] == "custom") SizedBox(
                         height: 80,
                         child: ListView.builder(
@@ -201,23 +238,22 @@ class AppearancePage extends StatelessWidget {
                       ),
 
                        */
-                      /*
+                        /*
                       settingEntry(Icons.image_outlined, localizations.imageSource, settings, palette, updatePage, 'Image source', context),
 
                        */
-                      const SizedBox(height: 70,),
-                    ],
-                  )
-                ),
+                        const SizedBox(
+                          height: 70,
+                        ),
+                      ],
+                    )),
               ),
             ),
           ),
         ],
       ),
     );
-
   }
-
 }
 
 class UnitsPage extends StatelessWidget {
@@ -225,63 +261,67 @@ class UnitsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Material(
       color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
-            leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
+            leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 onPressed: () {
                   HapticFeedback.lightImpact();
                   Navigator.pop(context);
                 }),
-            title: Text(AppLocalizations.of(context)!.units,
-              style: const TextStyle(fontSize: 30),),
+            title: Text(
+              AppLocalizations.of(context)!.units,
+              style: const TextStyle(fontSize: 30),
+            ),
             backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
-
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(left: 30, right: 30),
               child: AnimationLimiter(
                 child: Column(
-                  children: AnimationConfiguration.toStaggeredList(
-                    duration: const Duration(milliseconds: 500),
-                    childAnimationBuilder: (widget) => SlideAnimation(
-                      horizontalOffset: 80.0,
-                      child: FadeInAnimation(
-                        child: widget,
-                      ),
+                    children: AnimationConfiguration.toStaggeredList(
+                  duration: const Duration(milliseconds: 500),
+                  childAnimationBuilder: (widget) => SlideAnimation(
+                    horizontalOffset: 80.0,
+                    child: FadeInAnimation(
+                      child: widget,
                     ),
-                    children: [
-
-                      SettingsEntry(
-                          icon: Icons.ac_unit,
-                          text: AppLocalizations.of(context)!.temperature,
-                          rawText: 'Temperature',
-                          selected: context.select((SettingsProvider p) => p.getTempUnit),
-                          update: context.read<SettingsProvider>().setTempUnit,
-                      ),
-                      SettingsEntry(
-                        icon: Icons.water_drop_outlined,
-                        text: AppLocalizations.of(context)!.precipitaion,
-                        rawText: 'Precipitation',
-                        selected: context.select((SettingsProvider p) => p.getPrecipUnit),
-                        update: context.read<SettingsProvider>().setPrecipUnit,
-                      ),
-                      SettingsEntry(
-                        icon: Icons.air,
-                        text: AppLocalizations.of(context)!.windCapital,
-                        rawText: 'Wind',
-                        selected: context.select((SettingsProvider p) => p.getWindUnit),
-                        update: context.read<SettingsProvider>().setWindUnit,
-                      ),
-                    ],
-                  )
-                ),
+                  ),
+                  children: [
+                    SettingsEntry(
+                      icon: Icons.ac_unit,
+                      text: AppLocalizations.of(context)!.temperature,
+                      rawText: 'Temperature',
+                      selected:
+                          context.select((SettingsProvider p) => p.getTempUnit),
+                      update: context.read<SettingsProvider>().setTempUnit,
+                    ),
+                    SettingsEntry(
+                      icon: Icons.water_drop_outlined,
+                      text: AppLocalizations.of(context)!.precipitaion,
+                      rawText: 'Precipitation',
+                      selected: context
+                          .select((SettingsProvider p) => p.getPrecipUnit),
+                      update: context.read<SettingsProvider>().setPrecipUnit,
+                    ),
+                    SettingsEntry(
+                      icon: Icons.air,
+                      text: AppLocalizations.of(context)!.windCapital,
+                      rawText: 'Wind',
+                      selected:
+                          context.select((SettingsProvider p) => p.getWindUnit),
+                      update: context.read<SettingsProvider>().setWindUnit,
+                    ),
+                  ],
+                )),
               ),
             ),
           ),
@@ -296,103 +336,109 @@ class GeneralSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Material(
       color: Theme.of(context).colorScheme.surface,
       child: CustomScrollView(
         slivers: <Widget>[
-
           SliverAppBar.large(
-            leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
-              onPressed: () {
-                HapticFeedback.lightImpact();
-                Navigator.pop(context);
-              }),
-            title: Text(AppLocalizations.of(context)!.general,
-              style: const TextStyle(fontSize: 30),),
+            leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(context);
+                }),
+            title: Text(
+              AppLocalizations.of(context)!.general,
+              style: const TextStyle(fontSize: 30),
+            ),
             backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
-
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(left: 30, right: 30),
               child: AnimationLimiter(
                 child: Column(
-                  children: AnimationConfiguration.toStaggeredList(
-                    duration: const Duration(milliseconds: 500),
-                    childAnimationBuilder: (widget) => SlideAnimation(
-                      horizontalOffset: 80.0,
-                      child: FadeInAnimation(
-                        child: widget,
-                      ),
+                    children: AnimationConfiguration.toStaggeredList(
+                  duration: const Duration(milliseconds: 500),
+                  childAnimationBuilder: (widget) => SlideAnimation(
+                    horizontalOffset: 80.0,
+                    child: FadeInAnimation(
+                      child: widget,
                     ),
-                    children: [
-
-                      SettingsEntry(
-                        icon: Icons.access_time_outlined,
-                        text: AppLocalizations.of(context)!.timeMode,
-                        rawText: 'Time mode',
-                        selected: context.select((SettingsProvider p) => p.getTimeMode),
-                        update: context.read<SettingsProvider>().setTimeMode,
-                      ),
-
-                      SettingsEntry(
-                        icon: Icons.date_range,
-                        text: AppLocalizations.of(context)!.dateFormat,
-                        rawText: 'Date format',
-                        selected: context.select((SettingsProvider p) => p.getDateFormat),
-                        update: context.read<SettingsProvider>().setDateFormat,
-                      ),
-
-                      SwitchSettingEntry(
-                          icon: Icons.vibration,
-                          text: AppLocalizations.of(context)!.radarHaptics,
-                          selected: context.select((SettingsProvider p) => p.getRadarHapticsOn),
-                          update: context.read<SettingsProvider>().setRadarHaptics,
-                      ),
-
-                      SettingsEntry(
-                        icon: Icons.manage_search,
-                        text: AppLocalizations.of(context)!.searchProvider,
-                        rawText: 'Search provider',
-                        selected: context.select((SettingsProvider p) => p.getSearchProvider),
-                        update: context.read<SettingsProvider>().setSearchProvider,
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(top: 14, bottom: 14),
-                        child: Row(
-                          children: [
-                            circleBorderIcon(Icons.format_size_rounded, context),
-                            const SizedBox(width: 20,),
-                            Expanded(child: Text(AppLocalizations.of(context)!.fontSize,
-                              style: const TextStyle(fontSize: 20, height: 1.2),),),
-                            SliderTheme(
+                  ),
+                  children: [
+                    SettingsEntry(
+                      icon: Icons.access_time_outlined,
+                      text: AppLocalizations.of(context)!.timeMode,
+                      rawText: 'Time mode',
+                      selected:
+                          context.select((SettingsProvider p) => p.getTimeMode),
+                      update: context.read<SettingsProvider>().setTimeMode,
+                    ),
+                    SettingsEntry(
+                      icon: Icons.date_range,
+                      text: AppLocalizations.of(context)!.dateFormat,
+                      rawText: 'Date format',
+                      selected: context
+                          .select((SettingsProvider p) => p.getDateFormat),
+                      update: context.read<SettingsProvider>().setDateFormat,
+                    ),
+                    SwitchSettingEntry(
+                      icon: Icons.vibration,
+                      text: AppLocalizations.of(context)!.radarHaptics,
+                      selected: context
+                          .select((SettingsProvider p) => p.getRadarHapticsOn),
+                      update: context.read<SettingsProvider>().setRadarHaptics,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 14, bottom: 14),
+                      child: Row(
+                        children: [
+                          circleBorderIcon(Icons.format_size_rounded, context),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              AppLocalizations.of(context)!.fontSize,
+                              style: const TextStyle(fontSize: 20, height: 1.2),
+                              maxLines: 2,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: SliderTheme(
                               data: SliderTheme.of(context).copyWith(
                                 trackHeight: 19,
-                                thumbColor: Theme.of(context).colorScheme.secondary,
-                                activeTrackColor: Theme.of(context).colorScheme.secondary,
-
+                                thumbColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                activeTrackColor:
+                                    Theme.of(context).colorScheme.secondary,
                                 year2023: false,
                               ),
                               child: Slider(
-                                min: 0.7,
-                                max: 1.3,
-                                divisions: 10,
-                                value: context.select((SettingsProvider p) => p.getTextScale),
+                                  min: 0.7,
+                                  max: 1.3,
+                                  divisions: 10,
+                                  value: context.select(
+                                      (SettingsProvider p) => p.getTextScale),
                                   onChanged: (double value) {
-                                    context.read<SettingsProvider>().setTextScale(value);
-                                  }
-                              ),
+                                    context
+                                        .read<SettingsProvider>()
+                                        .setTextScale(value);
+                                  }),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  )
-                ),
+                    ),
+                  ],
+                )),
               ),
             ),
           ),
@@ -407,8 +453,8 @@ class LanguagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    String selectedLocale = context.select((SettingsProvider p) => p.getLocaleName);
+    String selectedLocale =
+        context.select((SettingsProvider p) => p.getLocaleName);
 
     List<String> options = settingSwitches["Language"]!;
     return Material(
@@ -416,24 +462,30 @@ class LanguagePage extends StatelessWidget {
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar.large(
-            leading:
-            IconButton(icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary,),
+            leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 onPressed: () {
                   HapticFeedback.lightImpact();
                   Navigator.pop(context);
                 }),
-            title: Text(AppLocalizations.of(context)!.language, style: const TextStyle(fontSize: 30),),
+            title: Text(
+              AppLocalizations.of(context)!.language,
+              style: const TextStyle(fontSize: 30),
+            ),
             backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
-
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(left: 25, right: 25, top: 30),
               child: GestureDetector(
                 onTap: () {
                   HapticFeedback.lightImpact();
-                  _launchUrl("https://hosted.weblate.org/engage/overmorrow-weather/");
+                  _launchUrl(
+                      "https://hosted.weblate.org/engage/overmorrow-weather/");
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -445,9 +497,15 @@ class LanguagePage extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(AppLocalizations.of(context)!.helpTranslate,
-                          style: TextStyle(color: Theme.of(context).colorScheme.tertiary, fontSize: 21)),
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.tertiary,
+                                fontSize: 21)),
                         const Spacer(),
-                        Icon(Icons.arrow_forward, color: Theme.of(context).colorScheme.tertiary, size: 23,)
+                        Icon(
+                          Icons.arrow_forward,
+                          color: Theme.of(context).colorScheme.tertiary,
+                          size: 23,
+                        )
                       ],
                     ),
                   ),
@@ -458,7 +516,8 @@ class LanguagePage extends StatelessWidget {
           SliverToBoxAdapter(
             child: AnimationLimiter(
               child: ListView.builder(
-                padding: const EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 40),
+                padding: const EdgeInsets.only(
+                    top: 30, left: 30, right: 30, bottom: 40),
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: options.length,
@@ -472,20 +531,28 @@ class LanguagePage extends StatelessWidget {
                         child: ListTile(
                           onTap: () {
                             HapticFeedback.mediumImpact();
-                            context.read<SettingsProvider>().setLocale(options[index]);
+                            context
+                                .read<SettingsProvider>()
+                                .setLocale(options[index]);
                           },
                           title: Padding(
-                            padding: const EdgeInsets.only(top: 12, bottom: 12, left: 13),
-                            child: Text(options[index], style: const TextStyle(fontSize: 20),)
-                          ),
+                              padding: const EdgeInsets.only(
+                                  top: 12, bottom: 12, left: 13),
+                              child: Text(
+                                options[index],
+                                style: const TextStyle(fontSize: 20),
+                              )),
                           contentPadding: EdgeInsets.zero,
                           trailing: Radio<String>(
-                            fillColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
+                            fillColor: WidgetStateProperty.all(
+                                Theme.of(context).colorScheme.primary),
                             value: options[index],
                             groupValue: selectedLocale,
                             onChanged: (String? value) {
                               HapticFeedback.mediumImpact();
-                              context.read<SettingsProvider>().setLocale(options[index]);
+                              context
+                                  .read<SettingsProvider>()
+                                  .setLocale(options[index]);
                             },
                           ),
                         ),
@@ -503,15 +570,21 @@ class LanguagePage extends StatelessWidget {
 }
 
 class LayoutPage extends StatelessWidget {
-
   const LayoutPage({super.key});
 
   //also the default order
-  static const allNames = ["sunstatus", "rain indicator", "hourly", "alerts", "radar", "daily", "air quality"];
+  static const allNames = [
+    "sunstatus",
+    "rain indicator",
+    "hourly",
+    "alerts",
+    "radar",
+    "daily",
+    "air quality"
+  ];
 
   @override
   Widget build(BuildContext context) {
-
     List<String> _items = context.watch<SettingsProvider>().getLayout;
 
     List<String> removed = [];
@@ -527,7 +600,8 @@ class LayoutPage extends StatelessWidget {
         slivers: <Widget>[
           SliverAppBar.large(
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary),
+              icon: Icon(Icons.arrow_back,
+                  color: Theme.of(context).colorScheme.primary),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 Navigator.pop(context);
@@ -537,7 +611,11 @@ class LayoutPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: IconButton(
-                  icon: Icon(Icons.restore, color: Theme.of(context).colorScheme.primary, size: 26,),
+                  icon: Icon(
+                    Icons.restore,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 26,
+                  ),
                   onPressed: () {
                     HapticFeedback.heavyImpact();
                     context.read<SettingsProvider>().setLayoutOrder(allNames);
@@ -545,7 +623,10 @@ class LayoutPage extends StatelessWidget {
                 ),
               ),
             ],
-            title: Text(AppLocalizations.of(context)!.layout, style: const TextStyle(fontSize: 30),),
+            title: Text(
+              AppLocalizations.of(context)!.layout,
+              style: const TextStyle(fontSize: 30),
+            ),
             backgroundColor: Theme.of(context).colorScheme.surface,
             pinned: false,
           ),
@@ -560,7 +641,8 @@ class LayoutPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     child: child,
                   ),
-                  padding: const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 50),
+                  padding: const EdgeInsets.only(
+                      left: 25, right: 25, top: 10, bottom: 50),
                   children: <Widget>[
                     for (int index = 0; index < _items.length; index += 1)
                       Container(
@@ -569,30 +651,42 @@ class LayoutPage extends StatelessWidget {
                         padding: const EdgeInsets.all(4),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surfaceContainer,
+                            color:
+                                Theme.of(context).colorScheme.surfaceContainer,
                             borderRadius: BorderRadius.circular(33),
                           ),
                           height: 67,
-                          padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 10),
+                          padding: const EdgeInsets.only(
+                              top: 6, bottom: 6, left: 20, right: 10),
                           child: Row(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(right: 10),
-                                child: Icon(Icons.drag_indicator, color: Theme.of(context).colorScheme.outline,),
+                                child: Icon(
+                                  Icons.drag_indicator,
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
                               ),
                               Expanded(
-                                child: Text(_items[index], style: const TextStyle(fontSize: 19),),
+                                child: Text(
+                                  _items[index],
+                                  style: const TextStyle(fontSize: 19),
+                                ),
                               ),
                               IconButton(
                                 onPressed: () {
                                   HapticFeedback.heavyImpact();
-                                  final List<String> newOrder = List.from(_items);
+                                  final List<String> newOrder =
+                                      List.from(_items);
                                   newOrder.removeAt(index);
-                                  context.read<SettingsProvider>().setLayoutOrder(newOrder);
+                                  context
+                                      .read<SettingsProvider>()
+                                      .setLayoutOrder(newOrder);
                                 },
                                 icon: Icon(
                                   Icons.remove_circle_outline_rounded,
-                                  color: Theme.of(context).colorScheme.tertiary, size: 23,
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  size: 23,
                                 ),
                               )
                             ],
@@ -611,7 +705,7 @@ class LayoutPage extends StatelessWidget {
                   },
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top:0, left: 20, right: 20),
+                  padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
                   child: Wrap(
                     spacing: 6,
                     runSpacing: 6,
@@ -621,21 +715,34 @@ class LayoutPage extends StatelessWidget {
                           HapticFeedback.mediumImpact();
                           final List<String> newOrder = List.from(_items);
                           newOrder.add(removed[i]);
-                          context.read<SettingsProvider>().setLayoutOrder(newOrder);
+                          context
+                              .read<SettingsProvider>()
+                              .setLayoutOrder(newOrder);
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18),
-                            border: Border.all(width: 2, color: Theme.of(context).colorScheme.outlineVariant)
-                          ),
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(
+                                  width: 2,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .outlineVariant)),
                           padding: const EdgeInsets.all(10),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.add_rounded, color: Theme.of(context).colorScheme.primary, size: 22,),
+                              Icon(
+                                Icons.add_rounded,
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 22,
+                              ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 3, right: 3),
-                                child: Text(removed[i], style: const TextStyle(fontSize: 17),),
+                                padding:
+                                    const EdgeInsets.only(left: 3, right: 3),
+                                child: Text(
+                                  removed[i],
+                                  style: const TextStyle(fontSize: 17),
+                                ),
                               ),
                             ],
                           ),

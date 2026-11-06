@@ -306,7 +306,7 @@ class CurrentWidgetConfigurationActivity : ComponentActivity() {
         Log.i("LastKnownLocation", lastKnownLocation)
         Log.i("selectedBackground", selectedBackgroundOnStartup)
 
-        val providers : List<String> = listOf("open-meteo", "weatherapi", "met-norway")
+        val providers : List<String> = listOf("open-meteo", "weatherapi", "met-norway", "meteo-france")
         val backColors : List<String> = listOf("secondary container", "primary container", "tertiary container", "surface", "transparent")
         val frontColors : List<String> = listOf("primary", "secondary", "tertiary", "transparent")
 
