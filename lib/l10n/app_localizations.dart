@@ -9,6 +9,7 @@ import 'app_localizations_ar.dart';
 import 'app_localizations_bg.dart';
 import 'app_localizations_bn.dart';
 import 'app_localizations_ca.dart';
+import 'app_localizations_cs.dart';
 import 'app_localizations_da.dart';
 import 'app_localizations_de.dart';
 import 'app_localizations_el.dart';
@@ -33,6 +34,7 @@ import 'app_localizations_sl.dart';
 import 'app_localizations_sr.dart';
 import 'app_localizations_sw.dart';
 import 'app_localizations_ta.dart';
+import 'app_localizations_th.dart';
 import 'app_localizations_tr.dart';
 import 'app_localizations_uk.dart';
 import 'app_localizations_ur.dart';
@@ -130,6 +132,7 @@ abstract class AppLocalizations {
     Locale('bg'),
     Locale('bn'),
     Locale('ca'),
+    Locale('cs'),
     Locale('da'),
     Locale('de'),
     Locale('el'),
@@ -155,6 +158,7 @@ abstract class AppLocalizations {
     Locale('sr'),
     Locale('sw'),
     Locale('ta'),
+    Locale('th'),
     Locale('tr'),
     Locale('uk'),
     Locale('ur'),
@@ -710,6 +714,24 @@ abstract class AppLocalizations {
   /// **'Background updates'**
   String get backgroundUpdates;
 
+  /// No description provided for @enableGadgetbridge.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable GadgetBridge'**
+  String get enableGadgetbridge;
+
+  /// No description provided for @gadgetbridgeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Send weather for the last viewed location to GadgetBridge during background updates.'**
+  String get gadgetbridgeDescription;
+
+  /// No description provided for @gadgetbridgeUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not schedule a GadgetBridge weather update.'**
+  String get gadgetbridgeUpdateFailed;
+
   /// No description provided for @appearanceSettingDesc.
   ///
   /// In en, this message translates to:
@@ -1158,6 +1180,7 @@ class _AppLocalizationsDelegate
         'bg',
         'bn',
         'ca',
+        'cs',
         'da',
         'de',
         'el',
@@ -1182,6 +1205,7 @@ class _AppLocalizationsDelegate
         'sr',
         'sw',
         'ta',
+        'th',
         'tr',
         'uk',
         'ur',
@@ -1229,6 +1253,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsBn();
     case 'ca':
       return AppLocalizationsCa();
+    case 'cs':
+      return AppLocalizationsCs();
     case 'da':
       return AppLocalizationsDa();
     case 'de':
@@ -1277,6 +1303,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsSw();
     case 'ta':
       return AppLocalizationsTa();
+    case 'th':
+      return AppLocalizationsTh();
     case 'tr':
       return AppLocalizationsTr();
     case 'uk':

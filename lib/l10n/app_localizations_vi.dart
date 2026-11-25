@@ -12,10 +12,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get feelsLike => 'Cảm giác như';
 
   @override
-  String get precipCapital => 'Giáng thủy';
+  String get precipCapital => 'Lg Mưa';
 
   @override
-  String get humidity => 'Độ ẩm';
+  String get humidity => 'Lượng mưa';
 
   @override
   String get windCapital => 'Gió';
@@ -63,267 +63,279 @@ class AppLocalizationsVi extends AppLocalizations {
   String get haze => 'Sương mù';
 
   @override
-  String get sleet => 'Sleet';
+  String get sleet => 'Mưa tuyết';
 
   @override
-  String get drizzle => 'Drizzle';
+  String get drizzle => 'Mưa phùn';
 
   @override
-  String get thunderstorm => 'Thunderstorm';
+  String get thunderstorm => 'Dông';
 
   @override
-  String get heavySnow => 'Heavy Snow';
+  String get heavySnow => 'Tuyết rơi dày';
 
   @override
-  String get fog => 'Fog';
+  String get fog => 'Sương mù';
 
   @override
-  String get snow => 'Snow';
+  String get snow => 'Tuyết';
 
   @override
-  String get heavyRain => 'Heavy Rain';
+  String get heavyRain => 'Mưa lớn';
 
   @override
-  String get cloudyNight => 'Cloudy Night';
+  String get cloudyNight => 'Đêm nhiều mây';
 
   @override
-  String get weakOrNoWifiConnection => 'Weak or no wifi connection';
+  String get weakOrNoWifiConnection =>
+      'Kết nối Wi-Fi yếu hoặc không có kết nối';
 
   @override
-  String get notConnectedToTheInternet => 'Not connected to the internet';
+  String get notConnectedToTheInternet => 'Không có kết nối Internet';
 
   @override
-  String get placeNotFound => 'Place not found';
+  String get placeNotFound => 'Không tìm thấy địa điểm';
 
   @override
-  String get unableToLocateDevice => 'Unable to locate device';
+  String get unableToLocateDevice => 'Không tìm thấy thiết bị';
 
   @override
-  String get locationServicesAreDisabled => 'location services are disabled.';
+  String get locationServicesAreDisabled => 'dịch vụ vị trí bị tắt.';
 
   @override
-  String get locationPermissionIsDenied => 'location permission is denied';
+  String get locationPermissionIsDenied => 'quuyền vị trí bị từ chối';
 
   @override
   String get locationPermissionDeniedForever =>
-      'location permission denied forever';
+      'quuyền vị trí bị từ chối vĩnh viễn';
 
   @override
-  String get grantLocationPermission => 'grant location permission';
+  String get grantLocationPermission => 'cấp quyền vị trí';
 
   @override
-  String get currentLocation => 'current location';
+  String get currentLocation => 'Vị trí hiện tại';
 
   @override
-  String get favoritesLowercase => 'favorites';
+  String get favoritesLowercase => 'Yêu thích';
 
   @override
-  String get failedToAccessGps => 'failed to access gps';
+  String get failedToAccessGps => 'không thể truy cập GPS';
 
   @override
-  String get search => 'Search...';
+  String get search => 'Tìm kiếm...';
 
   @override
-  String get sunriseSunset => 'sunrise/sunset';
+  String get sunriseSunset => 'bình minh/hoàng hôn';
 
   @override
-  String get airQuality => 'Air Quality';
+  String get airQuality => 'Chất lượng không khí';
 
   @override
-  String get airQualityLowercase => 'air quality';
+  String get airQualityLowercase => 'chất lượng không khí';
 
   @override
-  String get good => 'good';
+  String get good => 'tốt';
 
   @override
-  String get fair => 'fair';
+  String get fair => 'trời quang';
 
   @override
-  String get moderate => 'moderate';
+  String get moderate => 'vừa phải';
 
   @override
-  String get poor => 'poor';
+  String get poor => 'kém';
 
   @override
-  String get veryPoor => 'very poor';
+  String get veryPoor => 'rất kém';
 
   @override
-  String get unhealthy => 'unhealthy';
+  String get unhealthy => 'xấu';
 
   @override
   String get radar => 'radar';
 
   @override
-  String get colorMode => 'Color mode';
+  String get colorMode => 'Chế độ màu';
 
   @override
-  String get weatherProvderLowercase => 'weather provider';
+  String get weatherProvderLowercase => 'nhà cung cấp thông tin thời tiết';
 
   @override
-  String get timeMode => 'Time mode';
+  String get timeMode => 'Chế độ thời gian';
 
   @override
-  String get mon => 'Mon';
+  String get mon => 'T2';
 
   @override
-  String get tue => 'Tue';
+  String get tue => 'T3';
 
   @override
-  String get wed => 'Wed';
+  String get wed => 'T4';
 
   @override
-  String get thu => 'Thu';
+  String get thu => 'T5';
 
   @override
-  String get fri => 'Fri';
+  String get fri => 'T6';
 
   @override
-  String get sat => 'Sat';
+  String get sat => 'T7';
 
   @override
-  String get sun => 'Sun';
+  String get sun => 'Cn';
 
   @override
-  String get fontSize => 'Font size';
+  String get fontSize => 'Cỡ chữ';
 
   @override
-  String get dailyLowercase => 'daily';
+  String get dailyLowercase => 'hàng ngày';
 
   @override
-  String get searchProvider => 'Search provider';
+  String get searchProvider => 'Nhà cung cấp tìm kiếm';
 
   @override
-  String get updatedJustNow => 'updated, just now';
+  String get updatedJustNow => 'vừa cập nhật';
 
   @override
-  String get colorSource => 'Color source';
+  String get colorSource => 'Nguồn màu';
 
   @override
-  String get imageSource => 'Image source';
+  String get imageSource => 'Nguồn ảnh';
 
   @override
   String get sumLowercase => 'sum';
 
   @override
-  String get precipLowercase => 'precip';
+  String get precipLowercase => 'lượng mưa';
 
   @override
-  String get windLowercase => 'wind';
+  String get windLowercase => 'gió';
 
   @override
   String get uvLowercase => 'uv';
 
   @override
-  String get tempLowercase => 'temp';
+  String get tempLowercase => 'nhiệt độ';
 
   @override
-  String get pressureLowercase => 'pressure';
+  String get pressureLowercase => 'áp suất';
 
   @override
-  String get goodAqiDesc => 'Air quality is excellent; no health risk.';
+  String get goodAqiDesc => 'Không khí rất tốt, không gây hại sức khỏe.';
 
   @override
   String get fairAqiDesc =>
-      'Acceptable air quality; minor risk for sensitive people.';
+      'Không khí ổn; người nhạy cảm có thể bị ảnh hưởng nhẹ.';
 
   @override
-  String get moderateAqiDesc =>
-      'Sensitive individuals may experience mild effects.';
+  String get moderateAqiDesc => 'Người nhạy cảm có thể bị ảnh hưởng nhẹ.';
 
   @override
   String get poorAqiDesc =>
-      'Health effects possible for everyone, serious for sensitive groups.';
+      'Có thể ảnh hưởng sức khỏe mọi người; nghiêm trọng hơn với nhóm nhạy cảm.';
 
   @override
-  String get veryPoorAqiDesc => 'Serious health effects for everyone.';
+  String get veryPoorAqiDesc =>
+      'Ảnh hưởng nghiêm trọng đến sức khỏe mọi người.';
 
   @override
   String get unhealthyAqiDesc =>
-      'Emergency conditions; severe health effects for all.';
+      'Tình trạng khẩn cấp; nguy hại nghiêm trọng cho mọi người.';
 
   @override
-  String get photoByXOnUnsplash => 'Photo, by ,x, on ,Unsplash';
+  String get photoByXOnUnsplash => 'Ảnh, của ,x, trên ,Unsplash';
 
   @override
-  String get sourceCodeLowercase => 'source code';
+  String get sourceCodeLowercase => 'mã nguồn';
 
   @override
   String get emailLowercase => 'email';
 
   @override
-  String get reportAnIssueLowercase => 'report an issue';
+  String get reportAnIssueLowercase => 'báo lỗi';
 
   @override
-  String get donateLowercase => 'donate';
+  String get donateLowercase => 'ủng hộ';
 
   @override
-  String get versionUppercase => 'Version';
+  String get versionUppercase => 'Phiên bản';
 
   @override
-  String get apiAndServices => 'APIs & Services';
+  String get apiAndServices => 'API & Dịch vụ';
 
   @override
-  String get licenseUppercase => 'License';
+  String get licenseUppercase => 'Giấy phép';
 
   @override
-  String get weatherDataLowercase => 'weather data';
+  String get weatherDataLowercase => 'dữ liệu thời tiết';
 
   @override
-  String get imagesLowercase => 'images';
+  String get imagesLowercase => 'ảnh';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Giao diện';
 
   @override
-  String get general => 'General';
+  String get general => 'Chung';
 
   @override
-  String get units => 'Units';
+  String get units => 'Đơn vị';
 
   @override
-  String get about => 'About';
+  String get about => 'Giới thiệu';
 
   @override
-  String get backgroundUpdates => 'Background updates';
+  String get backgroundUpdates => 'Cập nhật nền';
 
   @override
-  String get appearanceSettingDesc => 'color theme, image source';
+  String get enableGadgetbridge => 'Enable GadgetBridge';
 
   @override
-  String get generalSettingDesc => 'time mode, font size';
+  String get gadgetbridgeDescription =>
+      'Send weather for the last viewed location to GadgetBridge during background updates.';
 
   @override
-  String get languageSettingDesc => 'the language used';
+  String get gadgetbridgeUpdateFailed =>
+      'Could not schedule a GadgetBridge weather update.';
 
   @override
-  String get unitsSettingdesc => 'the units used in the app';
+  String get appearanceSettingDesc => 'chủ đề màu, nguồn ảnh';
 
   @override
-  String get aboutSettingsDesc => 'about this app';
+  String get generalSettingDesc => 'chế độ thời gian, cỡ chữ';
 
   @override
-  String get backgroundUpdatesSettingsDesc => 'widget updates, notifications';
+  String get languageSettingDesc => 'ngôn ngữ sử dụng';
 
   @override
-  String get now => 'now';
+  String get unitsSettingdesc => 'đơn vị sử dụng trong ứng dụng';
 
   @override
-  String get hr => 'hr';
+  String get aboutSettingsDesc => 'giới thiệu ứng dụng';
 
   @override
-  String get layout => 'Layout';
+  String get backgroundUpdatesSettingsDesc => 'cập nhật tiện ích, thông báo';
 
   @override
-  String get layoutSettingDesc => 'widget order, customization';
+  String get now => 'bây giờ';
 
   @override
-  String get thirtyMinutes => '30m';
+  String get hr => 'giờ';
 
   @override
-  String get mainPollutant => 'main pollutant';
+  String get layout => 'Bố cục';
 
   @override
-  String get alderPollen => 'Alder Pollen';
+  String get layoutSettingDesc => 'thứ tự tiện ích, tùy chỉnh';
+
+  @override
+  String get thirtyMinutes => '30p';
+
+  @override
+  String get mainPollutant => 'chất ô nhiễm chính';
+
+  @override
+  String get alderPollen => 'Phấn hoa cây trăn';
 
   @override
   String get birchPollen => 'Birch Pollen';
@@ -341,82 +353,83 @@ class AppLocalizationsVi extends AppLocalizations {
   String get ragweedPollen => 'Ragweed Pollen';
 
   @override
-  String get dailyAqi => 'daily AQI';
+  String get dailyAqi => 'Chất lượng không khí hàng ngày';
 
   @override
-  String get dateFormat => 'Date format';
+  String get dateFormat => 'Định dạng ngày';
 
   @override
   String get d => 'd';
 
   @override
-  String get aerosolOpticalDepth => 'aerosol optical depth';
+  String get aerosolOpticalDepth => 'Độ sâu quang học aerosol';
 
   @override
-  String get dust => 'dust';
+  String get dust => 'bụi';
 
   @override
-  String get europeanAqi => 'europæisk aqi';
+  String get europeanAqi => 'Chất lượng không khí ở Châu Âu';
 
   @override
-  String get unitedStatesAqi => 'USA AQI';
+  String get unitedStatesAqi => 'Chất lượng không khí ở Mỹ';
 
   @override
-  String get offline => 'offline';
+  String get offline => 'ngoại tuyến';
 
   @override
-  String get helpTranslate => 'help translate';
+  String get helpTranslate => 'hỗ trợ dịch';
 
   @override
-  String get extremelyClear => 'extremely clear';
+  String get extremelyClear => 'cực kỳ trong lành';
 
   @override
-  String get veryClear => 'very clear';
+  String get veryClear => 'rất trong lành';
 
   @override
-  String get clear => 'clear';
+  String get clear => 'trong lành';
 
   @override
-  String get slightlyHazy => 'slightly hazy';
+  String get slightlyHazy => 'hơi mờ';
 
   @override
-  String get hazy => 'hazy';
+  String get hazy => 'sương mù';
 
   @override
-  String get veryHazy => 'very hazy';
+  String get veryHazy => 'rất mờ';
 
   @override
-  String get extremelyHazy => 'extremely hazy';
+  String get extremelyHazy => 'cực kỳ mờ';
 
   @override
-  String get poweredByOpenMeteo => 'powered by open-meteo';
+  String get poweredByOpenMeteo =>
+      'dữ liệu chất lượng không khí được cung cấp bởi open-meteo';
 
   @override
-  String get rainInHalfHour => 'rain in the next half an hour';
+  String get rainInHalfHour => 'mưa trong nửa giờ tới';
 
   @override
   String rainInMinutes(int minutes) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes phút',
+      one: '1 phút',
     );
-    return 'rain in the next $_temp0';
+    return 'mưa trong $_temp0 tới';
   }
 
   @override
-  String get rainInOneHour => 'rain in the next hour';
+  String get rainInOneHour => 'mưa trong một giờ tới';
 
   @override
   String rainInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours giờ',
+      one: '1 giờ',
     );
-    return 'rain in the next $_temp0';
+    return 'mưa trong $_temp0 tới';
   }
 
   @override
@@ -424,29 +437,29 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: 'minute',
+      other: '$minutes phút',
+      one: '1 phút',
     );
-    return 'rain expected in $_temp0';
+    return 'dự kiến có mưa trong $_temp0 tới';
   }
 
   @override
-  String get rainExpectedInOneHour => 'rain expected in an hour';
+  String get rainExpectedInOneHour => 'dự kiến có mưa trong một giờ tới';
 
   @override
   String rainExpectedInHours(int hours) {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: 'hour',
+      other: '$hours giờ',
+      one: '1 giờ',
     );
-    return 'rain expected in $_temp0';
+    return 'dự kiến có mưa trong $_temp0 tới';
   }
 
   @override
   String updatedXMinutesAgo(Object minutes) {
-    return 'updated, $minutes min ago';
+    return 'đã cập nhật, $minutes phút trước';
   }
 
   @override
@@ -454,10 +467,10 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: '$hours hours',
-      one: '1 hour',
+      other: '$hours giờ',
+      one: '1 giờ',
     );
-    return 'updated, $_temp0 ago';
+    return 'đã cập nhật, $_temp0 trước';
   }
 
   @override
@@ -465,90 +478,90 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       days,
       locale: localeName,
-      other: '$days days',
-      one: '1 day',
+      other: '$days ngày',
+      one: '1 ngày',
     );
-    return 'updated, $_temp0 ago';
+    return 'đã cập nhật, $_temp0 trước';
   }
 
   @override
-  String get radarHaptics => 'Radar haptics';
+  String get radarHaptics => 'Rung phản hồi radar';
 
   @override
-  String get alertsCapital => 'Alerts';
+  String get alertsCapital => 'Cảnh báo';
 
   @override
-  String get alertsLowercase => 'alerts';
+  String get alertsLowercase => 'cảnh báo';
 
   @override
-  String get severity => 'severity';
+  String get severity => 'mức độ nghiêm trọng';
 
   @override
-  String get certainty => 'certainty';
+  String get certainty => 'mức độ chắc chắn';
 
   @override
-  String get urgency => 'urgency';
+  String get urgency => 'mức độ khẩn cấp';
 
   @override
-  String get areas => 'areas';
+  String get areas => 'khu vực';
 
   @override
-  String get light => 'light';
+  String get light => 'nhỏ';
 
   @override
-  String get heavy => 'heavy';
+  String get heavy => 'to';
 
   @override
-  String get showMore => 'show more';
+  String get showMore => 'hiển thị thêm';
 
   @override
-  String get showLess => 'show less';
+  String get showLess => 'ẩn bớt';
 
   @override
-  String get cold => 'cold';
+  String get cold => 'lạnh';
 
   @override
-  String get hot => 'hot';
+  String get hot => 'nóng';
 
   @override
-  String get calm => 'calm';
+  String get calm => 'lặng gió';
 
   @override
-  String get severe => 'severe';
+  String get severe => 'mức độ dữ dội';
 
   @override
-  String get low => 'low';
+  String get low => 'thấp';
 
   @override
-  String get high => 'high';
+  String get high => 'cao';
 
   @override
-  String get liveRadar => 'live radar';
+  String get liveRadar => 'radar trực tiếp';
 
   @override
-  String get ongoingNotification => 'ongoing notification';
+  String get ongoingNotification => 'thông báo thường trực';
 
   @override
-  String get north => 'N';
+  String get north => 'B';
 
   @override
-  String get northEast => 'NE';
+  String get northEast => 'ĐB';
 
   @override
-  String get east => 'E';
+  String get east => 'Đ';
 
   @override
-  String get southEast => 'SE';
+  String get southEast => 'ĐN';
 
   @override
-  String get south => 'S';
+  String get south => 'N';
 
   @override
-  String get southWest => 'SW';
+  String get southWest => 'TN';
 
   @override
-  String get west => 'W';
+  String get west => 'T';
 
   @override
-  String get northWest => 'NW';
+  String get northWest => 'TB';
 }

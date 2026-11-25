@@ -288,6 +288,17 @@ class AppLocalizationsTa extends AppLocalizations {
   String get backgroundUpdates => 'பின்னணி புதுப்பிப்புகள்';
 
   @override
+  String get enableGadgetbridge => 'Enable GadgetBridge';
+
+  @override
+  String get gadgetbridgeDescription =>
+      'Send weather for the last viewed location to GadgetBridge during background updates.';
+
+  @override
+  String get gadgetbridgeUpdateFailed =>
+      'Could not schedule a GadgetBridge weather update.';
+
+  @override
   String get appearanceSettingDesc => 'வண்ண கருப்பொருள், பட மூல';
 
   @override

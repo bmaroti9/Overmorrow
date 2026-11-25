@@ -9,7 +9,7 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
-  String get feelsLike => 'Gefühlt wie';
+  String get feelsLike => 'Fühlt sich an wie:';
 
   @override
   String get precipCapital => 'Niederschlag';
@@ -90,7 +90,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get weakOrNoWifiConnection => 'Schwache oder keine WLAN-Verbindung';
 
   @override
-  String get notConnectedToTheInternet => 'Nicht mit dem Internet verbunden';
+  String get notConnectedToTheInternet => 'Keine Internetverbindung';
 
   @override
   String get placeNotFound => 'Ort nicht gefunden';
@@ -288,6 +288,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get backgroundUpdates => 'Hintergrundaktualisierungen';
+
+  @override
+  String get enableGadgetbridge => 'Enable GadgetBridge';
+
+  @override
+  String get gadgetbridgeDescription =>
+      'Send weather for the last viewed location to GadgetBridge during background updates.';
+
+  @override
+  String get gadgetbridgeUpdateFailed =>
+      'Could not schedule a GadgetBridge weather update.';
 
   @override
   String get appearanceSettingDesc => 'Farbschema, Bildquelle';

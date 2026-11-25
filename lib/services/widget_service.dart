@@ -20,6 +20,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:overmorrow/services/gadgetbridge_service.dart';
 import 'package:overmorrow/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
@@ -36,6 +37,14 @@ const windWidgetReceiver = 'com.marotidev.overmorrow.receivers.WindWidgetReceive
 const uvWidgetReceiver = 'com.marotidev.overmorrow.receivers.UvWidgetReceiver';
 const forecastWidgetReceiver = 'com.marotidev.overmorrow.receivers.ForecastWidgetReceiver';
 const oneHourlyWidgetReceiver = 'com.marotidev.overmorrow.receivers.OneHourlyWidgetReceiver';
+
+Future<void> scheduleWeatherUpdate() async {
+  await Workmanager().registerOneOffTask(
+    "weather_update_${DateTime.now().microsecondsSinceEpoch}",
+    updateWeatherDataKey,
+    constraints: Constraints(networkType: NetworkType.connected),
+  );
+}
 
 void initializeWidgetServices() {
   Workmanager().initialize(
@@ -197,8 +206,19 @@ void myCallbackDispatcher() {
     switch (task) {
       case updateWeatherDataKey :
 
+        Object? gadgetbridgeError;
         try {
           print("HEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE");
+
+          if (defaultTargetPlatform == TargetPlatform.android &&
+              (prefs.getBool("GadgetBridge enabled") ?? false)) {
+            try {
+              await GadgetbridgeService.update(prefs);
+            } catch (error, stackTrace) {
+              gadgetbridgeError = error;
+              debugPrint("GadgetBridge update failed: $error\n$stackTrace");
+            }
+          }
 
           //--------------------NOTIFICATIONS--------------------
 
@@ -211,13 +231,23 @@ void myCallbackDispatcher() {
           final List<HomeWidgetInfo> installedWidgets = await HomeWidget.getInstalledWidgets();
 
           if (installedWidgets.isEmpty) {
+            if (gadgetbridgeError != null) {
+              await WidgetService.saveBackgroundTaskState(
+                  "WORKER RESULT FAILURE AT ${DateTime.now()} \nGadgetBridge: ${sanitizeErrorMessage(gadgetbridgeError.toString())}");
+              return Future.value(false);
+            }
             if (prefs.getBool("Ongoing notification") ?? false) {
               WidgetService.saveBackgroundTaskState("WORKER RESULT SUCCESS AT ${DateTime.now()} \nONGOING NOTIFICATION");
               WidgetService.logUpdateTime(prefs);
             }
             else {
-              print("no widgets installed, skipping update");
-              WidgetService.saveBackgroundTaskState("WORKER RESULT SUCCESS AT ${DateTime.now()} \nNO WIDGETS INSTALLED");
+              if (prefs.getBool("GadgetBridge enabled") ?? false) {
+                WidgetService.saveBackgroundTaskState("WORKER RESULT SUCCESS AT ${DateTime.now()} \nGADGETBRIDGE");
+                WidgetService.logUpdateTime(prefs);
+              } else {
+                print("no widgets installed, skipping update");
+                WidgetService.saveBackgroundTaskState("WORKER RESULT SUCCESS AT ${DateTime.now()} \nNO WIDGETS INSTALLED");
+              }
             }
             return Future.value(true);
           }
@@ -280,6 +310,11 @@ void myCallbackDispatcher() {
 
           WidgetService.reloadWidgets();
 
+          if (gadgetbridgeError != null) {
+            await WidgetService.saveBackgroundTaskState(
+                "WORKER RESULT FAILURE AT ${DateTime.now()} \nGadgetBridge: ${sanitizeErrorMessage(gadgetbridgeError.toString())}");
+            return Future.value(false);
+          }
         } catch (err, stacktrace) {
           if (kDebugMode) {
             print("ERRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRRRRR");

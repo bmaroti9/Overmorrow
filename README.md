@@ -39,6 +39,8 @@
   *The weather images seamlessly adapt to your current weather condition*
 -  **📱Home screen weather widgets**  
   *Beautiful Material-You home screen widgets*
+-  **⌚ GadgetBridge weather**
+  *Enable GadgetBridge on Android to send weather updates to smart watches*
 -  **🕒 72 hour forecast**  
   *Track the temperature, precipitation chance, wind-speed, uv and more for the next 72 hours*
 -  **🍃 Dedicated Air quality page**  

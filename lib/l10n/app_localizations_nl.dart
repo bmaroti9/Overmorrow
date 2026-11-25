@@ -289,6 +289,17 @@ class AppLocalizationsNl extends AppLocalizations {
   String get backgroundUpdates => 'Achtergrond­updates';
 
   @override
+  String get enableGadgetbridge => 'Enable GadgetBridge';
+
+  @override
+  String get gadgetbridgeDescription =>
+      'Send weather for the last viewed location to GadgetBridge during background updates.';
+
+  @override
+  String get gadgetbridgeUpdateFailed =>
+      'Could not schedule a GadgetBridge weather update.';
+
+  @override
   String get appearanceSettingDesc => 'Kleur­thema, afbeeldings­bron';
 
   @override
@@ -531,26 +542,26 @@ class AppLocalizationsNl extends AppLocalizations {
   String get ongoingNotification => 'Doorlopende melding';
 
   @override
-  String get north => 'N';
+  String get north => 'noorden';
 
   @override
-  String get northEast => 'NE';
+  String get northEast => 'noordoosten';
 
   @override
-  String get east => 'E';
+  String get east => 'oosten';
 
   @override
-  String get southEast => 'SE';
+  String get southEast => 'zuidoost';
 
   @override
-  String get south => 'S';
+  String get south => 'zuid';
 
   @override
-  String get southWest => 'SW';
+  String get southWest => 'zuidwest';
 
   @override
-  String get west => 'W';
+  String get west => 'west';
 
   @override
-  String get northWest => 'NW';
+  String get northWest => 'noordwest';
 }

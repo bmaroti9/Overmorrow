@@ -290,6 +290,17 @@ class AppLocalizationsCa extends AppLocalizations {
   String get backgroundUpdates => 'Actualitzacions en segon pla';
 
   @override
+  String get enableGadgetbridge => 'Enable GadgetBridge';
+
+  @override
+  String get gadgetbridgeDescription =>
+      'Send weather for the last viewed location to GadgetBridge during background updates.';
+
+  @override
+  String get gadgetbridgeUpdateFailed =>
+      'Could not schedule a GadgetBridge weather update.';
+
+  @override
   String get appearanceSettingDesc => 'tema de color, font de la imatge';
 
   @override
