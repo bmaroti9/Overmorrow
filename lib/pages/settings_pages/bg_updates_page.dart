@@ -17,7 +17,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -298,6 +300,28 @@ class _BackgroundUpdatesPageState extends State<BackgroundUpdatesPage> {
                         ),
 
                         const SizedBox(height: 30,),
+
+                        if (!kIsWeb && Platform.isAndroid) ...[
+                          SwitchSettingEntry(
+                            icon: Icons.watch_outlined,
+                            text: AppLocalizations.of(context)!.enableGadgetbridge,
+                            selected: context.select((SettingsProvider p) => p.getGadgetbridgeEnabled),
+                            update: (bool enabled) async {
+                              try {
+                                await context.read<SettingsProvider>().setGadgetbridgeEnabled(enabled);
+                              } catch (error, stackTrace) {
+                                debugPrint('GadgetBridge setting failed: $error\n$stackTrace');
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(AppLocalizations.of(context)!.gadgetbridgeUpdateFailed),
+                                  ));
+                                }
+                              }
+                            },
+                          ),
+                          Text(AppLocalizations.of(context)!.gadgetbridgeDescription),
+                          const SizedBox(height: 20),
+                        ],
 
                         SwitchSettingEntry(
                           icon: Icons.published_with_changes,

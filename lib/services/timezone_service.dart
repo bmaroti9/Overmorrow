@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
+import 'package:flutter/foundation.dart';
 import 'package:lat_lng_to_timezone/lat_lng_to_timezone.dart' as tzmap;
 import 'package:timezone/data/latest_10y.dart' as timezone_data;
 import 'package:timezone/timezone.dart' as timezone;
@@ -39,6 +40,25 @@ class TimezoneService {
       return _withoutTimezone(localTime);
     } catch (_) {
       return approximateLocalDateTimeFromUtc(lng, utcTime);
+    }
+  }
+
+  static DateTime utcFromLocalDateTime(double lat, double lng, DateTime localTime) {
+    _ensureInitialized();
+    try {
+      final location = timezone.getLocation(tzmap.latLngToTimezoneString(lat, lng));
+      return timezone.TZDateTime(
+        location, localTime.year, localTime.month, localTime.day,
+        localTime.hour, localTime.minute, localTime.second,
+        localTime.millisecond, localTime.microsecond,
+      ).toUtc();
+    } catch (error, stackTrace) {
+      debugPrint('Could not resolve forecast time zone: $error\n$stackTrace');
+      return DateTime.utc(
+        localTime.year, localTime.month, localTime.day, localTime.hour,
+        localTime.minute, localTime.second, localTime.millisecond,
+        localTime.microsecond,
+      ).subtract(Duration(hours: approximateOffsetHours(lng)));
     }
   }
 

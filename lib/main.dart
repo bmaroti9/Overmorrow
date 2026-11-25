@@ -30,6 +30,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:overmorrow/main_screens.dart';
 import 'package:overmorrow/services/image_service.dart';
+import 'package:overmorrow/services/gadgetbridge_service.dart';
 import 'package:overmorrow/services/notification_service.dart';
 import 'package:overmorrow/services/preferences_service.dart';
 import 'package:overmorrow/services/widget_service.dart';
@@ -286,7 +287,15 @@ class MyHomePageState extends State<MyHomePage> {
     try {
       await fetchData(location, latLon);
       if (mounted) {
-        context.read<SettingsProvider>().setLocationAndLatLon(location, latLon);
+        final settings = context.read<SettingsProvider>();
+        await settings.setLocationAndLatLon(location, latLon);
+        if (!kIsWeb && Platform.isAndroid && settings.getGadgetbridgeEnabled &&
+            data != null && data!.isOnline) {
+          unawaited(GadgetbridgeService.sendIfSelected(data!, PreferenceUtils.instance)
+              .catchError((Object error, StackTrace stackTrace) {
+            debugPrint('GadgetBridge update failed: $error\n$stackTrace');
+          }));
+        }
       }
       weatherError = null;
     } on TimeoutException {

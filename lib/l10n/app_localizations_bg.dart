@@ -291,6 +291,17 @@ class AppLocalizationsBg extends AppLocalizations {
   String get backgroundUpdates => 'Актуализации на фона';
 
   @override
+  String get enableGadgetbridge => 'Enable GadgetBridge';
+
+  @override
+  String get gadgetbridgeDescription =>
+      'Send weather for the last viewed location to GadgetBridge during background updates.';
+
+  @override
+  String get gadgetbridgeUpdateFailed =>
+      'Could not schedule a GadgetBridge weather update.';
+
+  @override
   String get appearanceSettingDesc => 'цветна тема, източник на изображения';
 
   @override

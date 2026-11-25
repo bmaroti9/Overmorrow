@@ -41,6 +41,7 @@ dependencies:
   geocoding: ^5.0.0
 
   home_widget: ^0.9.3
+  android_intent_plus: ^6.1.0
 
   expressive_loading_indicator: ^0.0.1
   flutter_cache_manager: ^3.4.2

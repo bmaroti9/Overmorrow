@@ -272,6 +272,7 @@ class SettingsProvider with ChangeNotifier {
   String _latLon = "40.7128, -74.0060";
 
   bool _ongoingNotificationOn = false;
+  bool _gadgetbridgeEnabled = false;
   String _ongoingNotificationPlace = "unknown";
   String _ongoingNotificationLatLon = "unknown";
   String _ongoingNotificationProvider = "open-meteo";
@@ -300,6 +301,7 @@ class SettingsProvider with ChangeNotifier {
   String get getLatLon => _latLon;
 
   bool get getOngoingNotificationOn => _ongoingNotificationOn;
+  bool get getGadgetbridgeEnabled => _gadgetbridgeEnabled;
   String get getOngoingNotificationPlace => _ongoingNotificationPlace;
   String get getOngoingNotificationLatLon => _ongoingNotificationLatLon;
   String get getOngoingNotificationProvider => _ongoingNotificationProvider;
@@ -351,6 +353,7 @@ class SettingsProvider with ChangeNotifier {
     _latLon = PreferenceUtils.getString("LastCord", "40.7128, -74.0060");
 
     _ongoingNotificationOn = PreferenceUtils.getBool("Ongoing notification", false);
+    _gadgetbridgeEnabled = PreferenceUtils.getBool("GadgetBridge enabled", false);
     _ongoingNotificationPlace = PreferenceUtils.getString("Ongoing place", "unknown");
     _ongoingNotificationLatLon = PreferenceUtils.getString("Ongoing latLon", "unknown");
     _ongoingNotificationProvider = PreferenceUtils.getString("Ongoing provider", "open-meteo");
@@ -364,9 +367,9 @@ class SettingsProvider with ChangeNotifier {
     _locale = languageNameToLocale[_localeName] ?? const Locale("en");
   }
 
-  void setLocationAndLatLon(String location, String latLon) {
-    PreferenceUtils.setString("LastPlaceN", location);
-    PreferenceUtils.setString("LastCord", latLon);
+  Future<void> setLocationAndLatLon(String location, String latLon) async {
+    await PreferenceUtils.instance.setString("LastPlaceN", location);
+    await PreferenceUtils.instance.setString("LastCord", latLon);
 
     _location = location;
     _latLon = latLon;
@@ -432,6 +435,17 @@ class SettingsProvider with ChangeNotifier {
     _ongoingNotificationOn = to;
 
     notifyListeners();
+  }
+
+  Future<void> setGadgetbridgeEnabled(bool enabled) async {
+    if (!await PreferenceUtils.instance.setBool("GadgetBridge enabled", enabled)) {
+      throw StateError("Could not save GadgetBridge preference");
+    }
+    _gadgetbridgeEnabled = enabled;
+    notifyListeners();
+    if (enabled) {
+      await scheduleWeatherUpdate();
+    }
   }
 
   void setOngoingNotificationPlaceAndLatLon(String place, String latLon) {

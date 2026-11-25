@@ -49,6 +49,17 @@ void main() {
         year: 2026, month: 1, day: 15, hour: 17, minute: 30);
   });
 
+  test('converts location wall times to UTC with DST and fractional offsets', () {
+    expect(
+      TimezoneService.utcFromLocalDateTime(48.8566, 2.3522, DateTime(2026, 7, 1, 14)),
+      DateTime.utc(2026, 7, 1, 12),
+    );
+    expect(
+      TimezoneService.utcFromLocalDateTime(22.5726, 88.3639, DateTime(2026, 1, 15, 17, 30)),
+      DateTime.utc(2026, 1, 15, 12),
+    );
+  });
+
   test('uses longitude approximation fallback with clamped offsets', () {
     final localTime = TimezoneService.approximateLocalDateTimeFromUtc(
       30,
